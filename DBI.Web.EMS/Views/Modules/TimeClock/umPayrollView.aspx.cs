@@ -48,6 +48,16 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                     TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
                     item.ACTUAL_HOURS_GRID = actualhours.ToString("dd\\.hh\\:mm");
 
+                    if (item.ADJUSTED_LUNCH != null)
+                    {
+                        TimeSpan adjustedlunch = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_LUNCH.Value));
+                        item.ADJUSTED_LUNCH_GRID = adjustedlunch.ToString("dd\\.hh\\:mm");
+                    }
+                    else
+                    {
+                        item.ADJUSTED_LUNCH_GRID = "0.00:00";
+                    }
+
 
                 }
                 uxPayrollAuditStore.DataSource = data;
@@ -68,6 +78,16 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
                     TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
                     item.ACTUAL_HOURS_GRID = actualhours.ToString("dd\\.hh\\:mm");
+
+                    if (item.ADJUSTED_LUNCH != null)
+                    {
+                        TimeSpan adjustedlunch = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_LUNCH.Value));
+                        item.ADJUSTED_LUNCH_GRID = adjustedlunch.ToString("dd\\.hh\\:mm");
+                    }
+                    else
+                    {
+                        item.ADJUSTED_LUNCH_GRID = "0.00:00";
+                    }
 
 
                 }
