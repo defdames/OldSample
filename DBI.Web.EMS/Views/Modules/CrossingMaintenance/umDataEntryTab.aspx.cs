@@ -36,6 +36,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         }
         protected void deApplicationGridData(object sender, StoreReadDataEventArgs e)
         {
+            CheckboxSelectionModel csm = CheckboxSelectionModel1;
             decimal Application = Convert.ToDecimal(ComboBox1.SelectedItem.Value);
             long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
       
@@ -48,25 +49,23 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             if (Application == 1)
             {
                 dataSource = dataSource.Where(x => x.APPLICATION_REQUESTED == null).ToList();
+                csm.ClearSelection();
             }
 
             if (Application == 2)
             {
                 dataSource = dataSource.Where(x => x.APPLICATION_REQUESTED == 1).ToList();
-
+                csm.ClearSelection();
             }
 
             if (Application == 3)
             {
                 dataSource = dataSource.Where(x => x.APPLICATION_REQUESTED == 2).ToList();
+                csm.ClearSelection();
             }
             List<object> _data = dataSource.ToList<object>();
             uxAppEntryCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
-            e.Total = count;
-
-
-
-          
+            e.Total = count;         
             
         }
       

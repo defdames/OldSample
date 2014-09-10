@@ -77,8 +77,12 @@
 									<ext:ModelField Name="ADJUSTED_HOURS_GRID" />
 									<ext:ModelField Name="ACTUAL_HOURS" />
 									<ext:ModelField Name="ACTUAL_HOURS_GRID" />
+                                    <ext:ModelField Name ="ADJUSTED_LUNCH" />
+                                    <ext:ModelField Name ="ADJUSTED_LUNCH_GRID" />
 									<ext:ModelField Name="APPROVED" />
 									<ext:ModelField Name="SUBMITTED" />
+                                    <ext:ModelField Name="PERSON_ID" />
+                                    <ext:ModelField Name="DAY_OF_WEEK" />
 								</Fields>
 							</ext:Model>
 						</Model>
@@ -99,6 +103,9 @@
                         </ext:Column>
 						<ext:Column ID="Column2" runat="server" Text="Adjusted Time" Flex="1" DataIndex="ADJUSTED_HOURS_GRID">
                             <Renderer Fn="colorErrors" />
+                        </ext:Column>
+                        <ext:Column ID="AdjustedLunch" runat="server" Text="Adjusted Lunch" Flex="1" DataIndex="ADJUSTED_LUNCH_GRID">
+                        <Renderer Fn="colorErrors" />
                         </ext:Column>
 						<ext:Column ID="Approved" runat="server" Text="Approved" Flex="1" DataIndex="APPROVED" />
 						<ext:Column ID="Submitted" runat="server" Text="Submitted" Flex="1" DataIndex="SUBMITTED" />

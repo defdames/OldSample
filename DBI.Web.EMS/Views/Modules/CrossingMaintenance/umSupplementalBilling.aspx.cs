@@ -27,14 +27,19 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue") != string.Empty)
+            {
+                deGetRRType("Add");
 
+            }
         }
 
         protected void deInvoiceSupplementalGrid(object sender, StoreReadDataEventArgs e)
         {
             DateTime StartDate = uxStartDate.SelectedDate;
             DateTime EndDate = uxEndDate.SelectedDate;
-
+            string ServiceUnit = uxAddServiceUnit.SelectedItem.Value;
+            string SubDiv = uxAddSubDiv.SelectedItem.Value;
             using (Entities _context = new Entities())
             {
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
@@ -54,7 +59,14 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 {
                     allData = allData.Where(x => x.APPROVED_DATE >= StartDate && x.APPROVED_DATE <= EndDate);
                 }
-
+                if (ServiceUnit != null)
+                {
+                    allData = allData.Where(x => x.SERVICE_UNIT == ServiceUnit);
+                }
+                if (SubDiv != null)
+                {
+                    allData = allData.Where(x => x.SUB_DIVISION == SubDiv);
+                }
                 List<object> _data = allData.ToList<object>();
 
 
@@ -160,6 +172,46 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 //uxInvoiceSupplementalStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.InvoicedCrossingsSupplemental>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], allData, out count);
                 //e.Total = count;
             
+        }
+        protected void deGetRRType(string rrLoad)
+        {
+
+            using (Entities _context = new Entities())
+            {
+                long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
+                var RRdata = (from r in _context.CROSSING_RAILROAD
+                              where r.RAILROAD_ID == RailroadId
+                              select new
+                              {
+                                  r
+
+                              }).SingleOrDefault();
+
+                uxRRCI.SetValue(RRdata.r.RAILROAD);
+
+                string rrType = RRdata.r.RAILROAD;
+                if (rrLoad == "Add")
+                {
+                    List<ServiceUnitResponse> units = ServiceUnitData.ServiceUnitUnits(rrType).ToList();
+                    //uxAddServiceUnit.Clear();
+                    //uxAddSubDiv.Clear();
+                    uxAddServiceUnitStore.DataSource = units;
+                    uxAddServiceUnitStore.DataBind();
+                }
+
+            }
+        }
+        protected void deLoadSubDiv(object sender, DirectEventArgs e)
+        {
+
+
+            if (e.ExtraParams["Type"] == "Add")
+            {
+                List<ServiceUnitResponse> divisions = ServiceUnitData.ServiceUnitDivisions(uxAddServiceUnit.SelectedItem.Value).ToList();
+                uxAddSubDiv.Clear();
+                uxAddSubDivStore.DataSource = divisions;
+                uxAddSubDivStore.DataBind();
+            }
         }
         protected void deValidationInvoiceButton(object sender, DirectEventArgs e)
         {

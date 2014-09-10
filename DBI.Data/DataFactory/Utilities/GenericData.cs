@@ -29,14 +29,10 @@ namespace DBI.Data
 
             try
             {
-
-
-
                 using (Entities _context = new Entities())
                 {
-                    int count = _context.SYS_ACTIVITY.Count();
+                    isValid = _context.SYS_ACTIVITY.Any();
                 }
-                isValid = true;
             }
             catch
             {
@@ -825,8 +821,8 @@ namespace DBI.Data
                 {
                     _context.Set<T>().Attach(item);
                     _context.Set<T>().Remove(item);
-                    _context.SaveChanges();
                 }
+                _context.SaveChanges();
             }
         }
 
@@ -843,8 +839,8 @@ namespace DBI.Data
                 {
                     _context.Set<T>().Attach(item);
                     _context.Entry(item).State = System.Data.EntityState.Modified;
-                    _context.SaveChanges();
                 }
+                _context.SaveChanges();
             }
         }
 
@@ -860,8 +856,8 @@ namespace DBI.Data
                 foreach (T item in entityCollection)
                 {
                     _context.Set<T>().Add(item);
-                    _context.SaveChanges();
                 }
+                _context.SaveChanges();
             }
         }
 

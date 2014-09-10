@@ -16,12 +16,12 @@ namespace DBI.Data
     {
         public CUSTOMER_SURVEY_QUES_CAT()
         {
-            this.CUSTOMER_SURVEY_QUESTIONS = new HashSet<CUSTOMER_SURVEY_QUESTIONS>();
+            this.CUSTOMER_SURVEY_FIELDSETS = new HashSet<CUSTOMER_SURVEY_FIELDSETS>();
         }
     
         public decimal CATEGORY_ID { get; set; }
         public string CATEGORY_NAME { get; set; }
     
-        public virtual ICollection<CUSTOMER_SURVEY_QUESTIONS> CUSTOMER_SURVEY_QUESTIONS { get; set; }
+        public virtual ICollection<CUSTOMER_SURVEY_FIELDSETS> CUSTOMER_SURVEY_FIELDSETS { get; set; }
     }
 }

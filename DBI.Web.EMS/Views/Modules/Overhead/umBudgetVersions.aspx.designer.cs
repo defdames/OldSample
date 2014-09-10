@@ -10,7 +10,7 @@
 namespace DBI.Web.EMS.Views.Modules.Overhead {
     
     
-    public partial class umOverheadMaintainBudgets {
+    public partial class umBudgetVersions {
         
         /// <summary>
         /// ResourceManager1 control.

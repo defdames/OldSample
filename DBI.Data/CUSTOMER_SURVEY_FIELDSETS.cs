@@ -28,8 +28,10 @@ namespace DBI.Data
         public string MODIFIED_BY { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string IS_ACTIVE { get; set; }
+        public decimal CATEGORY_ID { get; set; }
     
-        public virtual ICollection<CUSTOMER_SURVEY_RELATION> CUSTOMER_SURVEY_RELATION { get; set; }
+        public virtual CUSTOMER_SURVEY_QUES_CAT CUSTOMER_SURVEY_QUES_CAT { get; set; }
         public virtual CUSTOMER_SURVEY_FORMS CUSTOMER_SURVEY_FORMS { get; set; }
+        public virtual ICollection<CUSTOMER_SURVEY_RELATION> CUSTOMER_SURVEY_RELATION { get; set; }
     }
 }

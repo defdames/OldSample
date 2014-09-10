@@ -100,21 +100,36 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                  join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
                                  where d.PERSON_ID == PersonId && EntityFunctions.TruncateTime(h.DA_DATE) == EntityFunctions.TruncateTime(HeaderDate) && d.LUNCH == "Y"
                                  select d).SingleOrDefault();
-                if (ExistingLunch != null)
-                {
-                    ExistingLunch.LUNCH_LENGTH = null;
-                    ExistingLunch.LUNCH = null;
-                }
-                //Create New Lunch Record
                 EmployeeToUpdate = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                     where d.HEADER_ID == ChosenLunch && d.PERSON_ID == PersonId
                                     select d).Single();
+
+                if (ExistingLunch != null)
+                {
+                    if (ExistingLunch.DAILY_ACTIVITY_HEADER.STATUS != 4)
+                    {
+                        ExistingLunch.LUNCH_LENGTH = null;
+                        ExistingLunch.LUNCH = null;
+                    }
+                    else
+                    {
+                        if (ExistingLunch.LUNCH_LENGTH == 30)
+                        {
+                            EmployeeToUpdate.LUNCH_LENGTH = 30;
+                        }
+                    }
+                }
+                else
+                {
+                    EmployeeToUpdate.LUNCH_LENGTH = GetLunchLength(PersonId, HeaderDate);
+                }
+                //Create New Lunch Record
                 EmployeeToUpdate.LUNCH = "Y";
-                EmployeeToUpdate.LUNCH_LENGTH = GetLunchLength(PersonId, HeaderDate);
+
                 EmployeeToUpdate.LUNCH_TASK_ID = long.Parse(uxHiddenTask.Value.ToString());
             }
 
-            if (ExistingLunch != null)
+            if (ExistingLunch != null && ExistingLunch.DAILY_ACTIVITY_HEADER.STATUS != 4)
             {
                 GenericData.Update<DAILY_ACTIVITY_EMPLOYEE>(ExistingLunch);
             }

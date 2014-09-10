@@ -141,6 +141,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     if (_commentR != null)
                         uxAccountComments.Text = _commentR.COMMENTS;
 
+
                     int count;
                     uxDetailStore.DataSource = GenericData.EnumerableFilterHeader<OVERHEAD_BUDGET_DETAIL>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _detail, out count);
                     e.Total = count;

@@ -74,14 +74,15 @@
                                     </Click>
                                 </DirectEvents>
                                 </ext:Button>
+                              
                                
                                 <ext:ToolbarFill runat="server">
 
                                 </ext:ToolbarFill>
                                 
-                                <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Show Active Organizations" ID="uxHideInActiveCheckbox" >
+                                <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Show All Organizations" ID="uxShowAllOrganizationsCheckBox" >
                                     <DirectEvents>
-                                        <Change OnEvent="deHideInActive" />
+                                        <Change OnEvent="deShowAllOrganizations" />
                                     </DirectEvents>
                                 </ext:Checkbox>
                             </Items>

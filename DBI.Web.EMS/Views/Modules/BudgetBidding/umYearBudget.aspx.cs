@@ -877,7 +877,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 data.STATUS_ID = Convert.ToInt64(uxHidStatusID.Text);
                 data.ACRES = ForceToDecimal(uxAcres.Text, -9999999999.99M, 9999999999.99M);
                 data.DAYS = ForceToDecimal(uxDays.Text, -9999999999.99M, 9999999999.99M);
-                data.OH_ID = 0;
                 data.APP_TYPE = uxAppType.Text;
                 data.CHEMICAL_MIX = uxChemMix.Text;
                 data.COMMENTS = uxComments.Text;

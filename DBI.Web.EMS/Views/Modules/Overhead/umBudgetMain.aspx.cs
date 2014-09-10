@@ -21,7 +21,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     X.Redirect("~/Views/uxDefault.aspx");
                 }
 
-                AddTab("bmaint", "Organization Budget Versions", "umOverheadMaintainBudgets.aspx", false, true);
+                AddTab("bmaint", "Organization Budget Versions", "umBudgetVersions.aspx", false, true);
             }
         }
 

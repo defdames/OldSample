@@ -43,15 +43,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             using (Entities _context = new Entities())
             {
-                long CrossingId = long.Parse(e.Parameters["CrossingId"]);
+                //long CrossingId = long.Parse(e.Parameters["CrossingId"]);
                 IQueryable<CROSSING_MAINTENANCE.IncidentList> data;
                 if (uxToggleClosed.Checked)
                 {
-                    data = CROSSING_MAINTENANCE.GetIncidents(CrossingId, _context);
+                    data = CROSSING_MAINTENANCE.GetIncidents(_context);
                 }
                 else
                 {
-                    data = CROSSING_MAINTENANCE.GetIncidents(CrossingId, _context).Where(i => i.DATE_CLOSED == null);
+                    data = CROSSING_MAINTENANCE.GetIncidents(_context).Where(i => i.DATE_CLOSED == null);
                 }
          
                 int count;

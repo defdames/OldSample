@@ -59,7 +59,7 @@
         <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
             <Items>
 
-                <ext:GridPanel ID="uxSummaryGrid" runat="server" Region="North" Height="400">
+                <ext:GridPanel ID="uxSummaryGrid" runat="server" Region="North" Height="300">
                     <SelectionModel>
                         <ext:RowSelectionModel ID="uxGridRowModel" runat="server" AllowDeselect="false" Mode="Single" />
                     </SelectionModel>
@@ -263,11 +263,11 @@
                             <ext:Column ID="Column32" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" />
                             <ext:NumberColumn ID="NumberColumn3" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="NumberColumn4" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
-                            <ext:NumberColumn ID="NumberColumn5" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
-                            <ext:NumberColumn ID="uxOH" runat="server" DataIndex="OH" Text="Overhead" Flex="2" Align="Right" />
+                            <ext:NumberColumn ID="NumberColumn5" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />                            
                             <ext:NumberColumn ID="NumberColumn6" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="NumberColumn61" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="NumberColumn8" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
+                            <ext:NumberColumn ID="uxOH" runat="server" DataIndex="OH" Text="Overhead" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="NumberColumn9" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="NumberColumn10" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
                         </Columns>
@@ -280,11 +280,11 @@
                                 <ext:DisplayField ID="DisplayField34" runat="server" Text="" Flex="2" />
                                 <ext:DisplayField ID="DisplayField37" runat="server" Text="" Flex="2" />
                                 <ext:DisplayField ID="DisplayField38" runat="server" Text="" Flex="2" />
-                                <ext:DisplayField ID="DisplayField39" runat="server" Text="" Flex="2" />
-                                <ext:DisplayField ID="uxNetCont" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                <ext:DisplayField ID="DisplayField39" runat="server" Text="" Flex="2" />                                
                                 <ext:DisplayField ID="DisplayField40" runat="server" Text="" Flex="2" />
                                 <ext:DisplayField ID="DisplayField42" runat="server" Text="" Flex="2" />
                                 <ext:DisplayField ID="DisplayField1" runat="server" Text="" Flex="2" />
+                                <ext:DisplayField ID="uxNetCont" runat="server" Text="0.00" Flex="2" FieldStyle="text-align:right" Cls="grandTotalForeground" />
                                 <ext:DisplayField ID="DisplayField2" runat="server" Text="" Flex="2" />
                                 <ext:DisplayField ID="DisplayField3" runat="server" Text="" Flex="2" />
                                 <ext:DisplayField ID="DisplayField44" runat="server" Width="20" />

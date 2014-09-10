@@ -58,13 +58,13 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.Container uxSurveyContainer;
         
         /// <summary>
-        /// uxSurveyDisplay control.
+        /// uxLogoContainer control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FormPanel uxSurveyDisplay;
+        protected global::Ext.Net.Container uxLogoContainer;
         
         /// <summary>
         /// uxLogoImage control.
@@ -74,6 +74,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Image uxLogoImage;
+        
+        /// <summary>
+        /// uxSurveyDisplay control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FormPanel uxSurveyDisplay;
         
         /// <summary>
         /// uxCodeFieldset control.
@@ -92,6 +101,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.TextField uxFormCode;
+        
+        /// <summary>
+        /// uxCustomerField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField uxCustomerField;
         
         /// <summary>
         /// uxSubmitSurveyButton control.

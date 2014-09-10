@@ -26,6 +26,20 @@
         }
           
     </style>
+     <script type="text/javascript">
+
+         var GetAdditionalData = function (data, rowIndex, record, orig) {
+             var headerCt = this.view.headerCt,
+             colspan = headerCt.getColumnCount();
+             return {
+                 rowBody: data.SPECIAL_INSTRUCTIONS,
+                 rowBodyCls: this.rowBodyCls,
+                 rowBodyColspan: colspan,
+
+
+             };
+         };
+    </script>
      <script>
          var saveData = function () {
              App.Hidden1.setValue(Ext.encode(App.GridPanel1.getRowsValues({ selectedOnly: false })));
@@ -192,7 +206,7 @@
                                 <ext:ModelField Name="PROPERTY_TYPE" />
                                 <ext:ModelField Name="SQUARE_FEET" />
                                <ext:ModelField Name="SEGMENT1" />
-                          
+                                <ext:ModelField Name="SPECIAL_INSTRUCTIONS" />
                                
                                
 
@@ -224,7 +238,12 @@
 
                 </Columns>
             </ColumnModel>
-         
+            <Features>
+                <ext:RowBody ID="RowBody1" runat="server" RowBodyCls="rowBodyCls">
+
+                    <GetAdditionalData Fn="GetAdditionalData" />
+                </ext:RowBody>
+            </Features>
             <Features>
                 <ext:Grouping ID="Grouping1"
                     runat="server"

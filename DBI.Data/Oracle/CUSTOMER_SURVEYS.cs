@@ -186,7 +186,7 @@ namespace DBI.Data
             public int NUM_QUESTIONS { get; set; }
             public decimal CATEGORY_ID { get; set; }
             public decimal ORG_ID { get; set; }
-            public int PhantomId { get; set; }
+            public string PhantomId { get; set; }
         }
 
         public class CustomerSurveyQuestions
