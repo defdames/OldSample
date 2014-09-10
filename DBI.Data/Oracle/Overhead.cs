@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 
 namespace DBI.Data
 {
@@ -201,7 +204,7 @@ namespace DBI.Data
         /// <returns></returns>
         public static OVERHEAD_ACCOUNT_CATEGORY AccountCategoryByID(Entities context, long ID)
         {
-            var _data = AccountAsQueryable(context).Where(x => x.ACCOUNT_CATEGORY_ID == ID).SingleOrDefault();
+            var _data = AccountCategoryAsQueryable(context).Where(x => x.ACCOUNT_CATEGORY_ID == ID).SingleOrDefault();
             return _data;
         }
 
@@ -210,7 +213,7 @@ namespace DBI.Data
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static IQueryable<OVERHEAD_ACCOUNT_CATEGORY> AccountAsQueryable(Entities context)
+        public static IQueryable<OVERHEAD_ACCOUNT_CATEGORY> AccountCategoryAsQueryable(Entities context)
         {
             var _data = context.OVERHEAD_ACCOUNT_CATEGORY.AsQueryable();
             return _data;
@@ -225,15 +228,10 @@ namespace DBI.Data
         /// <returns></returns>
         public static string AccountDescriptionBySegment(Entities context, long segmentPosition, string segmentCode)
         {
-            string _sql = string.Format("select XXEMS.GET_GL_ACCOUNT_DESCRIPTION (50328,{0},{1}) from dual", segmentPosition, segmentCode);
+            string _sql = string.Format("select XXEMS.GET_GL_ACCOUNT_DESCRIPTION (50328,{0},'{1}') from dual", segmentPosition, segmentCode);
             string _accountDescription = context.Database.SqlQuery<string>(_sql).FirstOrDefault();
             return _accountDescription;
         }
-
-
-
-
-
 
 
         public class ACCOUNT_CATEGORY_LIST : OVERHEAD_ACCOUNT_CATEGORY
@@ -476,7 +474,7 @@ namespace DBI.Data
             var _budgetDetail = BudgetDetailByBudgetID(context, budgetID);
             var _validAccounts = AccountListValidByOrganizationID(context, organizationID);
             var _categoryList = CategoryAsQueryable(context);
-            var _accountCategoryList = AccountAsQueryable(context);
+            var _accountCategoryList = AccountCategoryAsQueryable(context);
 
             List<OVERHEAD_BUDGET_VIEW> _data = new List<OVERHEAD_BUDGET_VIEW>();
 
@@ -509,7 +507,7 @@ namespace DBI.Data
 
                 _record.ACCOUNT_SEGMENT = _account.SEGMENT5;
                 _record.CODE_COMBINATION_ID = _account.CODE_COMBINATION_ID;
-                _record.ACCOUNT_DESCRIPTION = _account.SEGMENT5_DESC + " (" + _account.SEGMENT5 + ")";
+                _record.ACCOUNT_DESCRIPTION = _account.SEGMENT5_DESC + " (" + _account.SEGMENT4 + "." + _account.SEGMENT5 + ")";
                 _record.AMOUNT1 = GetAccountTotalByPeriod(_condensedBudgetDetail, 1);
                 _record.AMOUNT2 = GetAccountTotalByPeriod(_condensedBudgetDetail, 2);
                 _record.AMOUNT3 = GetAccountTotalByPeriod(_condensedBudgetDetail, 3);
@@ -704,8 +702,165 @@ namespace DBI.Data
             public long PERIOD_NUM { get; set; }
         }
 
+
         #endregion
 
+        #region Add Account Range Window
+
+        public static IQueryable<GL_ACCOUNT_LIST> GeneralLedgerAccounts(Entities context)
+        {
+            string sql = "SELECT code_combination_id, segment1, segment2, segment3, segment4, segment5, segment6, segment7 FROM apps.gl_code_combinations gccl";
+            IQueryable<GL_ACCOUNT_LIST> _data = context.Database.SqlQuery<GL_ACCOUNT_LIST>(sql).AsQueryable();
+            return _data;
+        }
+
+            
+        public class GL_ACCOUNT_LIST
+        {
+            public long CODE_COMBINATION_ID { get; set; }
+            public string SEGMENT1 { get; set; }
+            public string SEGMENT2 { get; set; }
+            public string SEGMENT3 { get; set; }
+            public string SEGMENT4 { get; set; }
+            public string SEGMENT5 { get; set; }
+            public string SEGMENT6 { get; set; }
+            public string SEGMENT7 { get; set; }
+        }
+
+        #endregion
+
+        #region Misc functions
+
+        public static MemoryStream GenerateReport(Entities context, long organizationID, short fiscalYear, long budgetID, string description, PRINT_OPTIONS printOptions)
+        {
+
+            using (MemoryStream _pdfMemoryStream = new MemoryStream())
+            {
+                //Create the document
+                Document _document = new Document(new Rectangle(288f, 144f), 10, 10, 10, 10);
+                _document.SetPageSize(iTextSharp.text.PageSize.A4.Rotate());
+                PdfWriter ExportWriter = PdfWriter.GetInstance(_document, _pdfMemoryStream);
+               
+                Paragraph NewLine = new Paragraph("\n");
+                Font HeaderFont = FontFactory.GetFont("Verdana", 6, Font.BOLD);
+                Font HeadFootTitleFont = FontFactory.GetFont("Verdana", 5, Font.BOLD);
+                Font HeadFootCellFont = FontFactory.GetFont("Verdana", 7);
+                Font CellFont = FontFactory.GetFont("Verdana", 6);
+
+                //Open Document
+                _document.Open();
+
+                Paragraph Title = new Paragraph("Overhead Budget System", FontFactory.GetFont("Verdana", 12, Font.BOLD));
+                Title.Alignment = 1;
+                _document.Add(Title);
+
+                Title = new Paragraph(description, FontFactory.GetFont("Verdana", 12, Font.BOLD));
+                Title.Alignment = 1;
+                _document.Add(Title);
+
+                //Add blank line
+                _document.Add(NewLine);
+
+                //Header Table with Columns
+                PdfPTable _headerPdfTable = new PdfPTable(14);
+                _headerPdfTable.WidthPercentage = 100;
+                PdfPCell[] Cells;
+                PdfPRow Row;
+
+                var _glMonthPeriods = OVERHEAD_BUDGET_FORECAST.GeneralLedgerPeriods(context).Where(x => x.PERIOD_YEAR == fiscalYear & x.PERIOD_TYPE == "Month");
+                var _glWeekPeriods = OVERHEAD_BUDGET_FORECAST.GeneralLedgerPeriods(context).Where(x => x.PERIOD_YEAR == fiscalYear & x.PERIOD_TYPE == "Week");
+
+                 Cells = new PdfPCell[]{
+                     new PdfPCell(new Phrase("Account Name", HeadFootTitleFont )),
+                     new PdfPCell(new Phrase("Total", HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0} - ({1} Weeks)", _glMonthPeriods.Where(x => x.PERIOD_NUM == 1).Single().ENTERED_PERIOD_NAME, _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 1).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0} - ({1} Weeks)", _glMonthPeriods.Where(x => x.PERIOD_NUM == 2).Single().ENTERED_PERIOD_NAME, _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 2).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0} - ({1} Weeks)", _glMonthPeriods.Where(x => x.PERIOD_NUM == 3).Single().ENTERED_PERIOD_NAME, _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 3).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0} - ({1} Weeks)", _glMonthPeriods.Where(x => x.PERIOD_NUM == 4).Single().ENTERED_PERIOD_NAME, _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 4).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0} - ({1} Weeks)", _glMonthPeriods.Where(x => x.PERIOD_NUM == 5).Single().ENTERED_PERIOD_NAME, _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 5).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0} - ({1} Weeks)", _glMonthPeriods.Where(x => x.PERIOD_NUM == 6).Single().ENTERED_PERIOD_NAME, _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 6).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0} - ({1} Weeks)", _glMonthPeriods.Where(x => x.PERIOD_NUM == 7).Single().ENTERED_PERIOD_NAME, _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 7).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0} - ({1} Weeks)", _glMonthPeriods.Where(x => x.PERIOD_NUM == 8).Single().ENTERED_PERIOD_NAME, _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 8).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0} - ({1} Weeks)", _glMonthPeriods.Where(x => x.PERIOD_NUM == 9).Single().ENTERED_PERIOD_NAME, _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 9).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0} - ({1} Weeks)", _glMonthPeriods.Where(x => x.PERIOD_NUM == 10).Single().ENTERED_PERIOD_NAME, _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 10).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0} - ({1} Weeks)", _glMonthPeriods.Where(x => x.PERIOD_NUM == 11).Single().ENTERED_PERIOD_NAME, _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 11).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0} - ({1} Weeks)", _glMonthPeriods.Where(x => x.PERIOD_NUM == 12).Single().ENTERED_PERIOD_NAME, _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 12).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont))
+                 };
+
+                 foreach (PdfPCell _cell in Cells)
+                 {
+                     _cell.BackgroundColor = iTextSharp.text.Color.LIGHT_GRAY;
+                     _cell.HorizontalAlignment = PdfCell.ALIGN_CENTER;
+                 }
+
+                Row = new PdfPRow(Cells);
+                _headerPdfTable.Rows.Add(Row);
+
+                //Details Row
+                //Return budget detail information
+                IEnumerable<OVERHEAD_BUDGET_VIEW> _budgetView = BudgetDetailsViewByBudgetID(context, budgetID, organizationID).OrderBy(x => x.CATEGORY_SORT_ORDER).ThenBy(x => x.SORT_ORDER).ThenBy(x => x.ACCOUNT_SEGMENT);
+
+                foreach (OVERHEAD_BUDGET_VIEW _row in _budgetView)
+                {
+
+                    Cells = new PdfPCell[]{
+                     new PdfPCell(new Phrase(_row.ACCOUNT_DESCRIPTION, HeadFootTitleFont )),
+                     new PdfPCell(new Phrase(_row.TOTAL.ToString(), HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(_row.AMOUNT1.ToString() ,HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(_row.AMOUNT2.ToString() ,HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(_row.AMOUNT3.ToString() ,HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(_row.AMOUNT4.ToString() ,HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(_row.AMOUNT5.ToString() ,HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(_row.AMOUNT6.ToString() ,HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(_row.AMOUNT7.ToString() ,HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(_row.AMOUNT8.ToString() ,HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(_row.AMOUNT9.ToString() ,HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(_row.AMOUNT10.ToString() ,HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(_row.AMOUNT11.ToString() ,HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(_row.AMOUNT12.ToString() ,HeadFootTitleFont))
+                 };
+
+                    //Enable 1st column light gray
+                    int rowcount = 1;
+                    foreach (PdfPCell _cell in Cells)
+                    {
+                        if (rowcount == 1)
+                        {
+                            _cell.BackgroundColor = iTextSharp.text.Color.LIGHT_GRAY;
+                        }
+                        else
+                        {
+                            _cell.HorizontalAlignment = PdfCell.ALIGN_RIGHT;
+                        }
+
+                        rowcount = rowcount + 1;
+                    }
+
+                    Row = new PdfPRow(Cells);
+                    _headerPdfTable.Rows.Add(Row);
+                }
+
+                _document.Add(_headerPdfTable);
+
+                ExportWriter.CloseStream = false;
+                _document.Close();
+                return _pdfMemoryStream;
+            }
+       
+        }
+
+
+        public class PRINT_OPTIONS
+        {
+            public Boolean SHOW_DECMIALS {get; set;}
+            public Boolean SHOW_ACCOUNT_NOTES {get; set;}
+            public Boolean SHOW_BUDGET_NOTES {get; set;}
+            public Boolean ROLLUP {get; set;}
+            public Boolean HIDE_BLANK_LINES {get; set;}
+        }
+
+        
+        #endregion
     }
 }
 

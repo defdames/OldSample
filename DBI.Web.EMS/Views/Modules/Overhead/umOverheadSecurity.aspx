@@ -12,7 +12,7 @@
     <form id="form1" runat="server">
         <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout" Namespace="App" IDMode="Explicit">
             <Items>
-                <ext:Panel runat="server" Layout="AccordionLayout" Width="250" Region="West" Collapsible="true">
+                <ext:Panel runat="server" Layout="AccordionLayout" Width="250" Region="West" Collapsible="true" ID="uxAccordingPanel">
                     <Items>
                         <ext:TreePanel
                     ID="uxOrganizationTreePanel"

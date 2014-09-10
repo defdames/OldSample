@@ -10,6 +10,7 @@ using DBI.Data;
 using System.Xml;
 using System.Xml.Xsl;
 using System.Reflection;
+using System.IO;
 
 namespace DBI.Web.EMS.Views.Modules.Overhead
 {
@@ -234,7 +235,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             long _organizationID;
             bool checkOrgId = long.TryParse(Request.QueryString["orgid"], out _organizationID);
             short _fiscal_year = short.Parse(Request.QueryString["fiscalyear"]);
-            long _fiscalyear = long.Parse(Request.QueryString["fiscalyear"]);
             long _budgetid = long.Parse(Request.QueryString["budget_id"]);
 
 
@@ -244,12 +244,9 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                 //pull budget detail data
                 var _budgetDetail = OVERHEAD_BUDGET_FORECAST.BudgetByID(_context, _budgetid);
-    
-                if (_budgetDetail.STATUS == "L")
+
+                if (_budgetDetail.STATUS == "C")
                 {
-                    uxCompleteBudget.Disable();
-                    uxCompleteBudget.Text = "Budget Locked";
-                    uxCompleteBudget.Icon = Icon.Lock;
                     uxImportActualsButton.Disable();
                 }
 
@@ -309,7 +306,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 //pull budget detail data
                 OVERHEAD_ORG_BUDGETS _budgetDetail = OVERHEAD_BUDGET_FORECAST.BudgetByID(_context, _budgetID);
 
-                if (_budgetDetail.STATUS == "P" || _budgetDetail.STATUS == "L")
+                if (_budgetDetail.STATUS == "C")
                 {
                     return;
                 }
@@ -343,26 +340,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
             win.Render(this.Form);
             win.Show();
-
-        }
-
-        protected void deCompleteBudget(object sender, DirectEventArgs e)
-        {
-            uxCompleteBudget.Disable();
-            uxCompleteBudget.Text = "Budget Pending";
-            uxCompleteBudget.Icon = Icon.ApplicationOsxTerminal;
-
-            using (Entities _context = new Entities())
-            {
-                long _budgetSelectedID = long.Parse(Request.QueryString["budget_id"]);
-                //pull budget detail data
-                OVERHEAD_ORG_BUDGETS _budgetDetail = OVERHEAD_BUDGET_FORECAST.BudgetByID(_context, _budgetSelectedID);
-
-                _budgetDetail.STATUS = "P";
-                GenericData.Update<OVERHEAD_ORG_BUDGETS>(_budgetDetail);
-            }
-
-            uxOrganizationAccountStore.Reload();
 
         }
 
@@ -403,6 +380,28 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     break;
             }
             this.Response.End();
+        }
+
+        public void printOverheadBudget(object sender, DirectEventArgs e)
+        {
+
+            short _fiscal_year = short.Parse(Request.QueryString["fiscalyear"]);
+            long _organizationID = long.Parse(Request.QueryString["orgid"]);
+            long _budgetid = long.Parse(Request.QueryString["budget_id"]);
+            string _description = Request.QueryString["description"];
+
+            using(Entities _context = new Entities())
+            {
+                MemoryStream PdfStream = OVERHEAD_BUDGET_FORECAST.GenerateReport(_context,_organizationID,_fiscal_year,_budgetid,_description, new OVERHEAD_BUDGET_FORECAST.PRINT_OPTIONS());
+
+                Response.Clear();
+                Response.ClearContent();
+                Response.ClearHeaders();
+                Response.ContentType = "application/pdf";
+                Response.AppendHeader("Content-Disposition", "attachment;filename=budget.pdf");
+                Response.BinaryWrite(PdfStream.ToArray());
+                Response.End();
+            }
         }
 
         public class OVERHEAD_BUDGET_DETAIL_V
