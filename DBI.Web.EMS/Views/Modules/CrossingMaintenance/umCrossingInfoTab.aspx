@@ -5,7 +5,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
-
+    <style type="text/css">
+       
+        .allowBlank-field {
+            background-color: #EFF7FF !important;
+            background-image: none;
+        }
+       
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -311,7 +318,7 @@
                     Layout="FormLayout"
                     Hidden="true"
                     Title="Add New Crossing" Height="645" AutoScroll="true"
-                    Width="850" Closable="false" Modal="true">
+                    Width="875" Closable="false" Modal="true">
                     <Items>
                         <ext:FormPanel runat="server" ID="uxAddCrossingForm" Layout="FormLayout" >
                        
@@ -321,9 +328,9 @@
 
                                         <ext:FieldContainer ID="FieldContainer9" runat="server" Layout="HBoxLayout">
                                             <Items>
-                                                <ext:TextField runat="server" ID="uxAddRailRoadCITextField" LabelAlign="Right" FieldLabel="Railroad" AnchorHorizontal="100%" TabIndex="1" />
+                                                <ext:TextField runat="server" ID="uxAddRailRoadCITextField" LabelAlign="Right" FieldLabel="Railroad" AnchorHorizontal="100%" Width="275" TabIndex="1" ReadOnly="true" />
                                                 <ext:TextField ID="uxAddRouteCI" runat="server" FieldLabel="Route" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="5" />
-                                                <ext:TextField ID="uxAddDotCI" runat="server" FieldLabel="DOT #" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="9" AllowBlank="false" />
+                                                <ext:TextField ID="uxAddDotCI" runat="server" FieldLabel="DOT #" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="9" AllowBlank="false" InvalidCls="allowBlank" IndicatorIcon="BulletRed" MsgTarget="Side" />
                                             </Items>
                                         </ext:FieldContainer>
 
@@ -334,7 +341,7 @@
                                                     LabelAlign="Right"
                                                     DisplayField="service_unit"
                                                     ValueField="service_unit"
-                                                    QueryMode="Local" TypeAhead="true" TabIndex="2" AllowBlank="false">
+                                                    QueryMode="Local" TypeAhead="true" TabIndex="2" AllowBlank="false" IndicatorIcon="BulletRed" InvalidCls="allowBlank"  MsgTarget="Side">
                                                     <Store>
                                                         <ext:Store runat="server"
                                                             ID="uxAddServiceUnitStore" AutoLoad="false">
@@ -362,7 +369,7 @@
 
                                                 <ext:TextField ID="uxAddStreetCI" runat="server" FieldLabel="Street" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="6" />
 
-                                                <ext:NumberField ID="uxAddMPCINumberField" runat="server" FieldLabel="MP" LabelAlign="Right" TabIndex="10" AllowBlank="false" />
+                                                <ext:NumberField ID="uxAddMPCINumberField" runat="server" FieldLabel="MP" LabelAlign="Right" TabIndex="10" Width="275" AllowBlank="false" InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side" />
                                             </Items>
                                         </ext:FieldContainer>
 
@@ -375,7 +382,7 @@
                                                     AnchorHorizontal="100%"
                                                     DisplayField="sub_division"
                                                     ValueField="sub_division"
-                                                    TypeAhead="true" TabIndex="3" AllowBlank="false">
+                                                    TypeAhead="true" TabIndex="3" AllowBlank="false" IndicatorIcon="BulletRed" InvalidCls="allowBlank"  MsgTarget="Side">
                                                     <Store>
                                                         <ext:Store runat="server"
                                                             ID="uxAddSubDivStore">
@@ -408,7 +415,7 @@
                                                     QueryMode="Local"
                                                     TypeAhead="true"
                                                     AllowBlank="false"
-                                                    ForceSelection="true" TabIndex="4">
+                                                    ForceSelection="true" TabIndex="4" IndicatorIcon="BulletRed" InvalidCls="allowBlank"  MsgTarget="Side">
                                                     <Store>
                                                         <ext:Store ID="uxAddStateList" runat="server" AutoDataBind="true">
                                                             <Model>
@@ -544,7 +551,7 @@
                                                     ValueField="name"
                                                     QueryMode="Local"
                                                     TypeAhead="true"
-                                                    ForceSelection="true" TabIndex="26" AllowBlank="false">
+                                                    ForceSelection="true" TabIndex="26" AllowBlank="false" IndicatorIcon="BulletRed" InvalidCls="allowBlank"  MsgTarget="Side">
                                                     <Store>
                                                         <ext:Store ID="uxAddPropertyType" runat="server" AutoDataBind="true">
                                                             <Model>
@@ -575,7 +582,7 @@
 
                                                 <%----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%>
 
-                                                <ext:DropDownField ID="uxAddManagerCIDropDownField" runat="server" FieldLabel="Manager" AnchorHorizontal="100%" LabelAlign="Right" Width="475" Mode="ValueText" TabIndex="26" Editable="false">
+                                              <%--  <ext:DropDownField ID="uxAddManagerCIDropDownField" runat="server" FieldLabel="Manager" AnchorHorizontal="100%" LabelAlign="Right" Width="475" Mode="ValueText" TabIndex="26" Editable="false">
                                                     <Component>
                                                         <ext:GridPanel runat="server"
                                                             ID="uxAddManager"
@@ -629,7 +636,7 @@
                                                             </Plugins>
                                                         </ext:GridPanel>
                                                     </Component>
-                                                </ext:DropDownField>
+                                                </ext:DropDownField>--%>
 
                                             </Items>
                                         </ext:FieldContainer>
@@ -697,7 +704,7 @@
                     Layout="FormLayout"
                     Hidden="true"
                     Title="Edit Crossing"
-                    Width="850" Closable="false" Modal="true">
+                    Width="875" Closable="false" Modal="true">
                     <Items>
                         <ext:FormPanel ID="uxEditCrossingForm" runat="server" Layout="FormLayout">
                             <Items>
@@ -710,9 +717,9 @@
                                         </ext:FieldContainer>
                                         <ext:FieldContainer ID="FieldContainer21" runat="server" Layout="HBoxLayout">
                                             <Items>
-                                                <ext:TextField ID="uxEditRRCI" runat="server" FieldLabel="Railroad" LabelAlign="Right" AnchorHorizontal="100%" TabIndex="2" />
+                                                <ext:TextField ID="uxEditRRCI" runat="server" FieldLabel="Railroad" LabelAlign="Right" Width="275" AnchorHorizontal="100%" TabIndex="2" />
                                                 <ext:TextField ID="uxEditRouteCI" runat="server" FieldLabel="Route" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="6" />
-                                                <ext:TextField ID="uxEditDotCI" runat="server" FieldLabel="DOT #" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="10" AllowBlank="false" />
+                                                <ext:TextField ID="uxEditDotCI" runat="server" FieldLabel="DOT #" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="10" AllowBlank="false" IndicatorIcon="BulletRed" InvalidCls="allowBlank"  MsgTarget="Side" />
 
                                             </Items>
                                         </ext:FieldContainer>
@@ -725,7 +732,7 @@
                                                     DisplayField="service_unit"
                                                     ValueField="service_unit"
                                                     LabelAlign="Right"
-                                                    AnchorHorizontal="100%" TabIndex="3" AllowBlank="false">
+                                                    AnchorHorizontal="100%" TabIndex="3" AllowBlank="false" IndicatorIcon="BulletRed" InvalidCls="allowBlank"  MsgTarget="Side">
                                                     <Store>
                                                         <ext:Store runat="server"
                                                             ID="uxEditServiceUnitStore">
@@ -754,7 +761,7 @@
                                                 </ext:ComboBox>
                                                 <ext:TextField ID="uxEditStreetCI" runat="server" FieldLabel="Street" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="7" />
 
-                                                <ext:NumberField ID="uxEditMPCINumberField" runat="server" FieldLabel="MP" LabelAlign="Right" TabIndex="11" AllowBlank="false" />
+                                                <ext:NumberField ID="uxEditMPCINumberField" runat="server" FieldLabel="MP" LabelAlign="Right" TabIndex="11" AllowBlank="false" Width="275" IndicatorIcon="BulletRed" InvalidCls="allowBlank"  MsgTarget="Side" />
                                             </Items>
                                         </ext:FieldContainer>
 
@@ -765,7 +772,7 @@
                                                     LabelAlign="Right"
                                                     DisplayField="sub_division"
                                                     ValueField="sub_division"
-                                                    AnchorHorizontal="100%" TabIndex="4" AllowBlank="false" ForceSelection="false">
+                                                    AnchorHorizontal="100%" TabIndex="4" AllowBlank="false" ForceSelection="false" IndicatorIcon="BulletRed" InvalidCls="allowBlank"  MsgTarget="Side">
                                                     <Store>
                                                         <ext:Store runat="server"
                                                             ID="uxEditSubDivStore">
@@ -797,9 +804,9 @@
                                                     ValueField="name"
                                                     QueryMode="Local"
                                                     TypeAhead="true"
-                                                    AllowBlank="false" ForceSelection="true" TabIndex="5">
+                                                    AllowBlank="false" ForceSelection="true" TabIndex="5" IndicatorIcon="BulletRed" InvalidCls="allowBlank"  MsgTarget="Side">
                                                     <Store>
-                                                        <ext:Store ID="uxEditStateList" runat="server" AutoDataBind="true">
+                                                        <ext:Store ID="uxEditStateList" runat="server" AutoDataBind="true" >
                                                             <Model>
                                                                 <ext:Model ID="Model11" runat="server">
                                                                     <Fields>
@@ -870,7 +877,7 @@
                                                     ValueField="name"
                                                     QueryMode="Local"
                                                     TypeAhead="true"
-                                                    ForceSelection="true" TabIndex="26" AllowBlank="false">
+                                                    ForceSelection="true" TabIndex="26" AllowBlank="false" IndicatorIcon="BulletRed" InvalidCls="allowBlank"  MsgTarget="Side">
                                                     <Store>
                                                         <ext:Store ID="uxEditPropertyType" runat="server" AutoDataBind="true">
                                                             <Model>
@@ -896,7 +903,7 @@
                                     <Items>
                                         <ext:FieldContainer ID="FieldContainer30" runat="server" Layout="HBoxLayout">
                                             <Items>
-                                                <ext:DropDownField ID="uxEditManagerCI" runat="server" FieldLabel="Manager" AnchorHorizontal="100%" LabelAlign="Right" Width="475" Mode="ValueText" TabIndex="26">
+                                                <%--<ext:DropDownField ID="uxEditManagerCI" runat="server" FieldLabel="Manager" AnchorHorizontal="100%" LabelAlign="Right" Width="475" Mode="ValueText" TabIndex="26">
                                                     <Component>
                                                         <ext:GridPanel runat="server"
                                                             ID="uxEditManager"
@@ -949,7 +956,7 @@
                                                             </Plugins>
                                                         </ext:GridPanel>
                                                     </Component>
-                                                </ext:DropDownField>
+                                                </ext:DropDownField>--%>
                                             </Items>
                                         </ext:FieldContainer>
 

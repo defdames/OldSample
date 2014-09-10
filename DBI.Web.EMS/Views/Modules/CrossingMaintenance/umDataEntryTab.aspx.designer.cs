@@ -328,31 +328,31 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.FieldContainer FieldContainer1;
         
         /// <summary>
-        /// uxAddAppReqeusted control.
+        /// uxAddApp control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ComboBox uxAddAppReqeusted;
+        protected global::Ext.Net.TextField uxAddApp;
         
         /// <summary>
-        /// uxAddAppRequestedStore control.
+        /// Label4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store uxAddAppRequestedStore;
+        protected global::Ext.Net.Label Label4;
         
         /// <summary>
-        /// Model3 control.
+        /// uxAddEntrySprayBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Model Model3;
+        protected global::Ext.Net.Checkbox uxAddEntrySprayBox;
         
         /// <summary>
         /// Label3 control.
@@ -364,13 +364,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Label Label3;
         
         /// <summary>
-        /// uxAddEntrySprayBox control.
+        /// uxAddEntryCutBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Checkbox uxAddEntrySprayBox;
+        protected global::Ext.Net.Checkbox uxAddEntryCutBox;
         
         /// <summary>
         /// FieldContainer0 control.
@@ -398,15 +398,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Label Label1;
-        
-        /// <summary>
-        /// uxAddEntryCutBox control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Checkbox uxAddEntryCutBox;
         
         /// <summary>
         /// Label2 control.

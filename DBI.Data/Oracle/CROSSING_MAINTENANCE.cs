@@ -407,8 +407,7 @@ SELECT
           {
               return (from d in _context.CROSSINGS
                       join a in _context.CROSSING_SUPPLEMENTAL on d.CROSSING_ID equals a.CROSSING_ID
-                      join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID
-                      join p in _context.PROJECTS_V on r.PROJECT_ID equals p.PROJECT_ID
+                      join p in _context.PROJECTS_V on a.PROJECT_ID equals p.PROJECT_ID
                       where d.RAILROAD_ID == RailroadId
                       select new SupplementalBillingList
                       {

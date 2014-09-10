@@ -25,6 +25,10 @@
             background: white;
             cursor: pointer;
         }
+         .allowBlank-field {
+            background-color: #EFF7FF !important;
+            background-image: none;
+        }
     </style>
    
    <script>
@@ -119,9 +123,9 @@
                      
                      <ext:FieldSet ID="FieldSet2" runat="server" Title=" Supplemental Invoice Information">
                         <Items>
-                                    <ext:TextField ID="uxInvoiceNumber" runat="server" FieldLabel="Invoice Number" AnchorHorizontal="20%" AllowBlank="false" LabelAlign="Right" TabIndex="5" />
+                                    <ext:TextField ID="uxInvoiceNumber" runat="server" FieldLabel="Invoice Number" AnchorHorizontal="20%" AllowBlank="false" LabelAlign="Right" TabIndex="5" InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side" />
 
-                                    <ext:DateField ID="uxInvoiceDate" runat="server" AnchorHorizontal="20s%" FieldLabel="Invoice Date" AllowBlank="false" LabelAlign="Right"  Editable="false" TabIndex="6" />
+                                    <ext:DateField ID="uxInvoiceDate" runat="server" AnchorHorizontal="20s%" FieldLabel="Invoice Date" AllowBlank="false" LabelAlign="Right"  Editable="false" TabIndex="6" InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side" />
                       </Items>
                     </ext:FieldSet>
                 </Items>
