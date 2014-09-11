@@ -369,7 +369,7 @@
 
                                                 <ext:TextField ID="uxAddStreetCI" runat="server" FieldLabel="Street" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="6" />
 
-                                                <ext:NumberField ID="uxAddMPCINumberField" runat="server" FieldLabel="MP" LabelAlign="Right" TabIndex="10" Width="275" AllowBlank="false" InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side" />
+                                                <ext:NumberField ID="uxAddMPCINumberField" runat="server" FieldLabel="MP" LabelAlign="Right" TabIndex="10" Width="275" AllowBlank="false"   />
                                             </Items>
                                         </ext:FieldContainer>
 

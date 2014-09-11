@@ -175,10 +175,10 @@
                                     <ext:ModelField Name="APPROVED_DATE" DateFormat="MM/dd/yyyy" /> 
                                     <ext:ModelField Name="MILE_POST" />
                                     <ext:ModelField Name="SERVICE_TYPE" />
-                                    <ext:ModelField Name="TRUCK_NUMBER" />
                                     <ext:ModelField Name="SQUARE_FEET" />
                                     <ext:ModelField Name="SERVICE_UNIT" />
                                     <ext:ModelField Name="SUB_DIVISION" />
+                                     <ext:ModelField Name="SEGMENT1" />
 
                                 </Fields>
                             </ext:Model>
@@ -194,14 +194,15 @@
 
                 <ColumnModel>
                     <Columns>
-                         <ext:Column ID="Column1" runat="server" DataIndex="CROSSING_NUMBER" Text="DOT Number" Flex="1" />
+                         <ext:Column ID="Column1" runat="server" DataIndex="CROSSING_NUMBER" Text="DOT #" Flex="1" />
                         <ext:Column ID="Column2" runat="server" DataIndex="MILE_POST" Text="MP" Flex="1" />
                         <ext:Column ID="Column12" runat="server" DataIndex="SERVICE_UNIT" Text="Service Unit" Flex="1" />
                         <ext:Column ID="Column3" runat="server" DataIndex="SUB_DIVISION" Text="Sub Division" Flex="1" />                     
                         <ext:DateColumn ID="DateColumn1" runat="server" DataIndex="APPROVED_DATE" Text="Approved Date" Flex="1" Format="MM/dd/yyyy" />
                     <ext:Column ID="Column6" runat="server" DataIndex="SERVICE_TYPE" Text="Service Type" Flex="1" />
-                    <ext:Column ID="Column4" runat="server" DataIndex="TRUCK_NUMBER" Text="Truck" Flex="1" />
                     <ext:Column ID="Column5" runat="server" DataIndex="SQUARE_FEET" Text="Square Feet" Flex="1" />
+                    <ext:Column ID="Column13" runat="server" DataIndex="SEGMENT1" Text="Project #" Flex="1" />
+
 
                     </Columns>
                 </ColumnModel> 

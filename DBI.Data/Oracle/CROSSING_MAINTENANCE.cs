@@ -290,6 +290,7 @@ SELECT
           {
               return (from a in _context.CROSSING_SUPPLEMENTAL
                       join d in _context.CROSSINGS on a.CROSSING_ID equals d.CROSSING_ID
+                      join v in _context.PROJECTS_V on a.PROJECT_ID equals v.PROJECT_ID
                       where d.RAILROAD_ID == RailroadId
                       select new CompletedCrossingsSupplemental
                       {
@@ -305,6 +306,7 @@ SELECT
                           TRUCK_NUMBER = a.TRUCK_NUMBER,
                           SQUARE_FEET = a.SQUARE_FEET,
                           REMARKS = a.REMARKS,
+                          SEGMENT1 = v.SEGMENT1,
                       });
 
           }
@@ -607,6 +609,7 @@ SELECT
               public string SERVICE_TYPE { get; set; }
               public decimal? SQUARE_FEET { get; set; }
               public string REMARKS { get; set; }
+              public string SEGMENT1 { get; set; }
           }
           public class CompletedCrossings
           {
