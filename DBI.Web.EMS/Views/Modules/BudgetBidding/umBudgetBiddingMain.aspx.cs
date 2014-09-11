@@ -22,59 +22,28 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
         protected void deLoadOrgTree(object sender, NodeLoadEventArgs e)
         {
-            // User clicked on legal entity or hierarchy
-            if (e.NodeID.Contains(":") == false)
+            // Add LE
+            if (e.NodeID == "0")
             {
-                if (e.NodeID == "0")
+                var allowedOrgs = BB.UserAllowedOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name));
+                using (Entities context = new Entities())
                 {
-                    var data = HR.LegalEntityHierarchies().Select(a => new { a.ORGANIZATION_ID, a.ORGANIZATION_NAME }).Distinct().ToList();
-                    bool exitHeirarchyForEach = false;
-                    foreach (var view in data)
-                    {                        
-                        var heirarchyData = HR.LegalEntityHierarchies().Where(a => a.ORGANIZATION_ID == view.ORGANIZATION_ID);
-                        var orgsList = BB.UserAllowedOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name));
-                        foreach (var heirarchy in heirarchyData)
-                        {
-                            var nextData = HR.ActiveOrganizationsByHierarchy(heirarchy.ORGANIZATION_STRUCTURE_ID, heirarchy.ORGANIZATION_ID);
-
-                            // In next org?
-                            foreach (long allowedOrgs in orgsList)
-                            {
-                                if (nextData.Select(x => x.ORGANIZATION_ID).Contains(allowedOrgs))
-                                {
-                                    Node node = new Node();
-                                    node.Text = view.ORGANIZATION_NAME;
-                                    node.NodeID = view.ORGANIZATION_ID.ToString();
-                                    e.Nodes.Add(node);
-                                    exitHeirarchyForEach = true;
-                                    break;
-                                }
-                            }
-                            if (exitHeirarchyForEach == true)
-                            {
-                                exitHeirarchyForEach = false;
-                                break;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    long nodeID = long.Parse(e.NodeID);
-                    var data = HR.LegalEntityHierarchies().Where(a => a.ORGANIZATION_ID == nodeID);
-                    var orgsList = BB.UserAllowedOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name));
-                    foreach (var view in data)
+                    var profileLEs = context.SYS_ORG_PROFILE_OPTIONS.Where(x => x.PROFILE_OPTION_ID == 23);                 
+                    foreach (var le in profileLEs)
                     {
-                        var nextData = HR.ActiveOrganizationsByHierarchy(view.ORGANIZATION_STRUCTURE_ID, view.ORGANIZATION_ID);
-
-                        // In next org?
-                        foreach (long allowedOrgs in orgsList)
+                        string leName = HR.LegalEntityHierarchies().Where(x => x.ORGANIZATION_ID == le.ORGANIZATION_ID).Select(x => x.ORGANIZATION_NAME).FirstOrDefault();
+                        var nextData = HR.ActiveOrganizationsByHierarchy(Convert.ToInt64(le.PROFILE_VALUE), le.ORGANIZATION_ID);
+                        foreach (long allowedOrg in allowedOrgs)
                         {
-                            if (nextData.Select(x => x.ORGANIZATION_ID).Contains(allowedOrgs))
+                            if (nextData.Select(x => x.ORGANIZATION_ID).Contains(allowedOrg))
                             {
                                 Node node = new Node();
-                                node.Text = view.HIERARCHY_NAME;
-                                node.NodeID = string.Format("{0}:{1}", view.ORGANIZATION_STRUCTURE_ID.ToString(), view.ORGANIZATION_ID.ToString());
+                                node.NodeID = string.Format("{0}:{1}:{2}", le.PROFILE_VALUE, le.ORGANIZATION_ID.ToString(), le.ORGANIZATION_ID.ToString());
+                                node.Text = leName;
+                                if (BB.IsRollup(le.ORGANIZATION_ID) == true)
+                                {
+                                    node.Icon = Icon.Building;
+                                }
                                 e.Nodes.Add(node);
                                 break;
                             }
@@ -83,13 +52,14 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 }
             }
 
-            // User clicked on org
+            // Add orgs
             else
             {
                 char[] delimChars = { ':' };
                 string[] selID = e.NodeID.Split(delimChars);
                 long hierarchyID = long.Parse(selID[0].ToString());
-                long orgID = long.Parse(selID[1].ToString());
+                long leOrgID = long.Parse(selID[1].ToString());
+                long orgID = long.Parse(selID[2].ToString());
                 var data = HR.ActiveOrganizationsByHierarchy(hierarchyID, orgID);
                 var orgsList = BB.UserAllowedOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name));
                 bool addNode;
@@ -126,23 +96,37 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                         if (addNode == true)
                         {
                             Node node = new Node();
-                            node.NodeID = string.Format("{0}:{1}", hierarchyID.ToString(), view.ORGANIZATION_ID.ToString());
+                            node.NodeID = string.Format("{0}:{1}:{2}", hierarchyID.ToString(), leOrgID, view.ORGANIZATION_ID.ToString());
                             node.Text = view.ORGANIZATION_NAME;
                             node.Leaf = leafNode;
                             if (colorNode == true)
-                            {
-                                node.Icon = Icon.Accept;
+                            {                                
+                                if (BB.IsRollup(view.ORGANIZATION_ID) == true)
+                                {
+                                    node.Icon = Icon.PackageGreen;
+                                }
+                                else
+                                {
+                                    node.Icon = Icon.Accept;
+                                }
                             }
                             else
                             {
-                                node.Icon = Icon.FolderGo;
+                                if (BB.IsRollup(view.ORGANIZATION_ID) == true)
+                                {
+                                    node.Icon = Icon.PackageGreen;
+                                }
+                                else
+                                {
+                                    node.Icon = Icon.TagsGrey;
+                                }
                             }
                             e.Nodes.Add(node);
                         }
                     }
                 }
             }
-        }        
+        }
 
         protected void deLoadFiscalYears(object sender, StoreReadDataEventArgs e)
         {
@@ -161,7 +145,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             char[] delimChars = { ':' };
             string[] selID = nodeID.Split(delimChars);
 
-            if (nodeID == "0" || selID.GetUpperBound(0) == 0)
+            if (nodeID == "0")
             {
                 uxHidOrgOK.Text = "";
                 uxYearVersionTitle.Text = "";
@@ -170,20 +154,20 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 return;
             }
 
-            long orgID = long.Parse(selID[1].ToString());
-            
-            if (BB.IsUserOrgAndAllowed(SYS_USER_INFORMATION.UserID(User.Identity.Name), orgID) == false)
-            {
-                uxHidOrgOK.Text = "";
-                uxYearVersionTitle.Text = "";
-                DisableToolbar();
-                LoadBudget(prevBlank);
-            }
-            else
+            long orgID = long.Parse(selID[2].ToString());
+
+            if (BB.IsRollup(orgID) == true || BB.IsUserOrgAndAllowed(SYS_USER_INFORMATION.UserID(User.Identity.Name), orgID) == true)
             {
                 uxHidOrgOK.Text = "Y";
                 uxYearVersionTitle.Text = uxOrgPanel.SelectedNodes[0].Text;
                 EnableToolbar();
+                LoadBudget(prevBlank);
+            }
+            else
+            {
+                uxHidOrgOK.Text = "";
+                uxYearVersionTitle.Text = "";
+                DisableToolbar();
                 LoadBudget(prevBlank);
             }     
         }
@@ -227,7 +211,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 char[] delimChars = { ':' };
                 string[] selID = nodeID.Split(delimChars);
                 string hierarchyID = selID[0].ToString();
-                long orgID = Convert.ToInt64(selID[1].ToString());
+                long leOrgID = Convert.ToInt64(selID[1].ToString());
+                long orgID = Convert.ToInt64(selID[2].ToString());
 
                 string orgName = HttpUtility.UrlEncode(uxOrgPanel.SelectedNodes[0].Text);
                 long fiscalYear = Convert.ToInt64(uxFiscalYear.SelectedItem.Value);
@@ -236,11 +221,11 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
                 if (BB.IsRollup(orgID) == false)
                 {
-                    url = "umYearBudget.aspx?hierID=" + hierarchyID + "&orgID=" + orgID + "&orgName=" + orgName + "&fiscalYear=" + fiscalYear + "&verID=" + verID + "&verName=" + verName;
+                    url = "umYearBudget.aspx?hierID=" + hierarchyID + "&leOrgID=" + leOrgID + "&orgID=" + orgID + "&orgName=" + orgName + "&fiscalYear=" + fiscalYear + "&verID=" + verID + "&verName=" + verName;
                 }
                 else
                 {
-                    url = "umYearRollupSummary.aspx?hierID=" + hierarchyID + "&orgID=" + orgID + "&orgName=" + orgName + "&fiscalYear=" + fiscalYear + "&verID=" + verID + "&verName=" + verName;
+                    url = "umYearRollupSummary.aspx?hierID=" + hierarchyID + "&leOrgID=" + leOrgID + "&orgID=" + orgID + "&orgName=" + orgName + "&fiscalYear=" + fiscalYear + "&verID=" + verID + "&verName=" + verName;
                 }
             }
 

@@ -263,7 +263,7 @@
                             <ext:Column ID="Column32" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" />
                             <ext:NumberColumn ID="NumberColumn3" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="NumberColumn4" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
-                            <ext:NumberColumn ID="NumberColumn5" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />                            
+                            <ext:NumberColumn ID="NumberColumn5" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="NumberColumn6" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="NumberColumn61" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="NumberColumn8" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
@@ -280,7 +280,7 @@
                                 <ext:DisplayField ID="DisplayField34" runat="server" Text="" Flex="2" />
                                 <ext:DisplayField ID="DisplayField37" runat="server" Text="" Flex="2" />
                                 <ext:DisplayField ID="DisplayField38" runat="server" Text="" Flex="2" />
-                                <ext:DisplayField ID="DisplayField39" runat="server" Text="" Flex="2" />                                
+                                <ext:DisplayField ID="DisplayField39" runat="server" Text="" Flex="2" />
                                 <ext:DisplayField ID="DisplayField40" runat="server" Text="" Flex="2" />
                                 <ext:DisplayField ID="DisplayField42" runat="server" Text="" Flex="2" />
                                 <ext:DisplayField ID="DisplayField1" runat="server" Text="" Flex="2" />
