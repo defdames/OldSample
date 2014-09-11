@@ -107,7 +107,7 @@
                                 <ext:ToolbarFill ID="ToolbarFill1" runat="server"></ext:ToolbarFill>
                                 <ext:Button ID="uxPrintReport" runat="server" Text="Print" Icon="Printer" Disabled="false">
                                    <DirectEvents>
-                                       <Click OnEvent="printOverheadBudget" IsUpload="true"><EventMask ShowMask="true"></EventMask></Click>
+                                       <Click OnEvent="printOverheadBudget" IsUpload="true"></Click>
                                    </DirectEvents>
                                 </ext:Button>
                                 <ext:ToolbarSeparator ID="ToolbarSeparator3" runat="server"></ext:ToolbarSeparator>

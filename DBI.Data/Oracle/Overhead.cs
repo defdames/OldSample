@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -469,7 +470,7 @@ namespace DBI.Data
         /// <param name="budgetID"></param>
         /// <param name="organizationID"></param>
         /// <returns></returns>
-        public static List<OVERHEAD_BUDGET_VIEW> BudgetDetailsViewByBudgetID(Entities context, long budgetID, long organizationID, Boolean hideBlankLines = false)
+        public static List<OVERHEAD_BUDGET_VIEW> BudgetDetailsViewByBudgetID(Entities context, long budgetID, long organizationID, Boolean printView = false, Boolean hideBlankLines = false)
         {
             var _budgetDetail = BudgetDetailByBudgetID(context, budgetID);
             var _validAccounts = AccountListValidByOrganizationID(context, organizationID);
@@ -507,7 +508,16 @@ namespace DBI.Data
 
                 _record.ACCOUNT_SEGMENT = _account.SEGMENT5;
                 _record.CODE_COMBINATION_ID = _account.CODE_COMBINATION_ID;
-                _record.ACCOUNT_DESCRIPTION = _account.SEGMENT5_DESC + " (" + _account.SEGMENT4 + "." + _account.SEGMENT5 + ")";
+
+                if (printView)
+                {
+                    _record.ACCOUNT_DESCRIPTION = _account.SEGMENT5_DESC;
+                    _record.ACCOUNT_DESCRIPTION2 = "(" + _account.SEGMENT5 + ")";
+                }
+                else
+                {
+                    _record.ACCOUNT_DESCRIPTION = _account.SEGMENT5_DESC + " (" + _account.SEGMENT4 + "." + _account.SEGMENT5 + ")";
+                }
                 _record.AMOUNT1 = GetAccountTotalByPeriod(_condensedBudgetDetail, 1);
                 _record.AMOUNT2 = GetAccountTotalByPeriod(_condensedBudgetDetail, 2);
                 _record.AMOUNT3 = GetAccountTotalByPeriod(_condensedBudgetDetail, 3);
@@ -521,6 +531,7 @@ namespace DBI.Data
                 _record.AMOUNT11 = GetAccountTotalByPeriod(_condensedBudgetDetail, 11);
                 _record.AMOUNT12 = GetAccountTotalByPeriod(_condensedBudgetDetail, 12);
                 _record.TOTAL = (_record.AMOUNT1 + _record.AMOUNT2 + _record.AMOUNT3 + _record.AMOUNT4 + _record.AMOUNT5 + _record.AMOUNT6 + _record.AMOUNT7 + _record.AMOUNT8 + _record.AMOUNT9 + _record.AMOUNT10 + _record.AMOUNT11 + _record.AMOUNT12);
+                _record.BUDGET_ID = budgetID;
 
                 if (hideBlankLines)
                 {
@@ -531,14 +542,73 @@ namespace DBI.Data
                 {
                     _data.Add(_record);
                 }
-
-
-                
+               
             }
 
-            return _data;
+            if (printView)
+            {
+                var _orderedPrint = _data.OrderBy(x => x.CATEGORY_SORT_ORDER).ThenBy(x => x.SORT_ORDER).ThenBy(x => x.ACCOUNT_SEGMENT);
+                return _orderedPrint.ToList();
+            }
+
+                return _data;
+
         }
 
+        public static OVERHEAD_BUDGET_VIEW SummaryViewByCategoryID(IEnumerable<OVERHEAD_BUDGET_VIEW> reportList, long categoryID)
+        {
+
+                //Cacluate summary
+                var _summaryData = reportList.Where(x => x.CATEGORY_ID == categoryID).GroupBy(I => I.CATEGORY_ID)
+                    .Select(g => new OVERHEAD_BUDGET_VIEW
+                    {
+                        CATEGORY_ID = g.Key,
+                        AMOUNT1 = g.Sum(i => i.AMOUNT1),
+                        AMOUNT2 = g.Sum(i => i.AMOUNT2),
+                        AMOUNT3 = g.Sum(i => i.AMOUNT3),
+                        AMOUNT4 = g.Sum(i => i.AMOUNT4),
+                        AMOUNT5 = g.Sum(i => i.AMOUNT5),
+                        AMOUNT6 = g.Sum(i => i.AMOUNT6),
+                        AMOUNT7 = g.Sum(i => i.AMOUNT7),
+                        AMOUNT8 = g.Sum(i => i.AMOUNT8),
+                        AMOUNT9 = g.Sum(i => i.AMOUNT9),
+                        AMOUNT10 = g.Sum(i => i.AMOUNT10),
+                        AMOUNT11 = g.Sum(i => i.AMOUNT11),
+                        AMOUNT12 = g.Sum(i => i.AMOUNT12),
+                        TOTAL = g.Sum(i => i.TOTAL),
+                        CATEGORY_NAME = g.Max(i => i.CATEGORY_NAME),
+                    }).Where(x => x.CATEGORY_ID == categoryID).Single();
+
+                return _summaryData;
+        }
+
+        public static OVERHEAD_BUDGET_VIEW SummaryViewByBudgetID(IEnumerable<OVERHEAD_BUDGET_VIEW> reportList, long budgetID)
+        {
+
+            //Cacluate summary
+            var _summaryData = reportList.Where(x => x.BUDGET_ID == budgetID).GroupBy(I => I.BUDGET_ID)
+                .Select(g => new OVERHEAD_BUDGET_VIEW
+                {
+                    BUDGET_ID = g.Key,
+                    AMOUNT1 = g.Sum(i => i.AMOUNT1),
+                    AMOUNT2 = g.Sum(i => i.AMOUNT2),
+                    AMOUNT3 = g.Sum(i => i.AMOUNT3),
+                    AMOUNT4 = g.Sum(i => i.AMOUNT4),
+                    AMOUNT5 = g.Sum(i => i.AMOUNT5),
+                    AMOUNT6 = g.Sum(i => i.AMOUNT6),
+                    AMOUNT7 = g.Sum(i => i.AMOUNT7),
+                    AMOUNT8 = g.Sum(i => i.AMOUNT8),
+                    AMOUNT9 = g.Sum(i => i.AMOUNT9),
+                    AMOUNT10 = g.Sum(i => i.AMOUNT10),
+                    AMOUNT11 = g.Sum(i => i.AMOUNT11),
+                    AMOUNT12 = g.Sum(i => i.AMOUNT12),
+                    TOTAL = g.Sum(i => i.TOTAL)
+                }).Single();
+
+            return _summaryData;
+        }
+
+       
         /// <summary>
         /// Returns the total needed for the details view
         /// </summary>
@@ -560,6 +630,7 @@ namespace DBI.Data
 
         public class OVERHEAD_BUDGET_VIEW
         {
+            public long BUDGET_ID { get; set; }
             public long CATEGORY_ID { get; set; }
             public long CATEGORY_SORT_ORDER { get; set; }
             public long? SORT_ORDER { get; set; }
@@ -567,6 +638,7 @@ namespace DBI.Data
             public string CATEGORY_NAME { get; set; }
             public long CODE_COMBINATION_ID { get; set; }
             public string ACCOUNT_DESCRIPTION { get; set; }
+            public string ACCOUNT_DESCRIPTION2 { get; set; }
             public decimal TOTAL { get; set; }
             public decimal AMOUNT1 { get; set; }
             public decimal AMOUNT2 { get; set; }
@@ -742,82 +814,176 @@ namespace DBI.Data
                 PdfWriter ExportWriter = PdfWriter.GetInstance(_document, _pdfMemoryStream);
                
                 Paragraph NewLine = new Paragraph("\n");
-                Font HeaderFont = FontFactory.GetFont("Verdana", 6, Font.BOLD);
-                Font HeadFootTitleFont = FontFactory.GetFont("Verdana", 5, Font.BOLD);
-                Font HeadFootCellFont = FontFactory.GetFont("Verdana", 7);
-                Font CellFont = FontFactory.GetFont("Verdana", 6);
+                Font HeaderFont = FontFactory.GetFont("Verdana", 9);
+                Font HeadFootTitleFont = FontFactory.GetFont("Verdana", 9);
+                Font HeadFootCellFont = FontFactory.GetFont("Verdana", 9);
+                Font CellFont = FontFactory.GetFont("Verdana", 8);
+                Font TotalCellFont = FontFactory.GetFont("Verdana", 8, Font.BOLD);
 
                 //Open Document
                 _document.Open();
 
-                Paragraph Title = new Paragraph("Overhead Budget System", FontFactory.GetFont("Verdana", 12, Font.BOLD));
-                Title.Alignment = 1;
-                _document.Add(Title);
-
-                Title = new Paragraph(description, FontFactory.GetFont("Verdana", 12, Font.BOLD));
-                Title.Alignment = 1;
-                _document.Add(Title);
-
-                //Add blank line
-                _document.Add(NewLine);
+                HeaderFooter _footer = new HeaderFooter(new Phrase(""),true);
+                _document.Footer = _footer;
 
                 //Header Table with Columns
                 PdfPTable _headerPdfTable = new PdfPTable(14);
                 _headerPdfTable.WidthPercentage = 100;
+                int[] intTblWidth = { 25, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6 };
+                _headerPdfTable.SetWidths(intTblWidth);
+
                 PdfPCell[] Cells;
                 PdfPRow Row;
+                _headerPdfTable.HeaderRows = 2;
+
+                List<string> _title = description.Split('/').ToList<string>();
 
                 var _glMonthPeriods = OVERHEAD_BUDGET_FORECAST.GeneralLedgerPeriods(context).Where(x => x.PERIOD_YEAR == fiscalYear & x.PERIOD_TYPE == "Month");
                 var _glWeekPeriods = OVERHEAD_BUDGET_FORECAST.GeneralLedgerPeriods(context).Where(x => x.PERIOD_YEAR == fiscalYear & x.PERIOD_TYPE == "Week");
 
                  Cells = new PdfPCell[]{
-                     new PdfPCell(new Phrase("Account Name", HeadFootTitleFont )),
+                     new PdfPCell(new Phrase("Overhead Budget / " + _title[0], TotalCellFont )),
+                     new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 1).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 2).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 3).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 4).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 5).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 6).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 7).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 8).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 9).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 10).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 11).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 12).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),
                      new PdfPCell(new Phrase("Total", HeadFootTitleFont)),
-                     new PdfPCell(new Phrase(string.Format("{0} - ({1} Weeks)", _glMonthPeriods.Where(x => x.PERIOD_NUM == 1).Single().ENTERED_PERIOD_NAME, _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 1).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
-                     new PdfPCell(new Phrase(string.Format("{0} - ({1} Weeks)", _glMonthPeriods.Where(x => x.PERIOD_NUM == 2).Single().ENTERED_PERIOD_NAME, _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 2).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
-                     new PdfPCell(new Phrase(string.Format("{0} - ({1} Weeks)", _glMonthPeriods.Where(x => x.PERIOD_NUM == 3).Single().ENTERED_PERIOD_NAME, _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 3).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
-                     new PdfPCell(new Phrase(string.Format("{0} - ({1} Weeks)", _glMonthPeriods.Where(x => x.PERIOD_NUM == 4).Single().ENTERED_PERIOD_NAME, _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 4).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
-                     new PdfPCell(new Phrase(string.Format("{0} - ({1} Weeks)", _glMonthPeriods.Where(x => x.PERIOD_NUM == 5).Single().ENTERED_PERIOD_NAME, _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 5).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
-                     new PdfPCell(new Phrase(string.Format("{0} - ({1} Weeks)", _glMonthPeriods.Where(x => x.PERIOD_NUM == 6).Single().ENTERED_PERIOD_NAME, _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 6).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
-                     new PdfPCell(new Phrase(string.Format("{0} - ({1} Weeks)", _glMonthPeriods.Where(x => x.PERIOD_NUM == 7).Single().ENTERED_PERIOD_NAME, _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 7).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
-                     new PdfPCell(new Phrase(string.Format("{0} - ({1} Weeks)", _glMonthPeriods.Where(x => x.PERIOD_NUM == 8).Single().ENTERED_PERIOD_NAME, _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 8).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
-                     new PdfPCell(new Phrase(string.Format("{0} - ({1} Weeks)", _glMonthPeriods.Where(x => x.PERIOD_NUM == 9).Single().ENTERED_PERIOD_NAME, _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 9).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
-                     new PdfPCell(new Phrase(string.Format("{0} - ({1} Weeks)", _glMonthPeriods.Where(x => x.PERIOD_NUM == 10).Single().ENTERED_PERIOD_NAME, _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 10).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
-                     new PdfPCell(new Phrase(string.Format("{0} - ({1} Weeks)", _glMonthPeriods.Where(x => x.PERIOD_NUM == 11).Single().ENTERED_PERIOD_NAME, _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 11).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
-                     new PdfPCell(new Phrase(string.Format("{0} - ({1} Weeks)", _glMonthPeriods.Where(x => x.PERIOD_NUM == 12).Single().ENTERED_PERIOD_NAME, _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 12).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont))
                  };
 
                  foreach (PdfPCell _cell in Cells)
                  {
-                     _cell.BackgroundColor = iTextSharp.text.Color.LIGHT_GRAY;
+                     _cell.BackgroundColor = new Color(230, 230, 230);
                      _cell.HorizontalAlignment = PdfCell.ALIGN_CENTER;
                  }
 
                 Row = new PdfPRow(Cells);
                 _headerPdfTable.Rows.Add(Row);
 
+                Cells = new PdfPCell[]{
+                     new PdfPCell(new Phrase(_title[1] + " / " + _title[2], TotalCellFont )),
+                     new PdfPCell(new Phrase(string.Format("{0} Weeks", _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 1).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0} Weeks", _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 2).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0} Weeks", _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 3).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0} Weeks", _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 4).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0} Weeks", _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 5).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0} Weeks", _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 6).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0} Weeks", _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 7).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0} Weeks", _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 8).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0} Weeks", _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 9).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0} Weeks", _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 10).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0} Weeks", _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 11).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase(string.Format("{0} Weeks", _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 12).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+                     new PdfPCell(new Phrase("", HeadFootTitleFont)),
+                 };
+
+                 foreach (PdfPCell _cell in Cells)
+                 {
+                     _cell.BackgroundColor = new Color(230, 230, 230);
+                     _cell.HorizontalAlignment = PdfCell.ALIGN_CENTER;
+                 }
+
+
+                Row = new PdfPRow(Cells);
+                _headerPdfTable.Rows.Add(Row);
+
+
+                 
+
                 //Details Row
                 //Return budget detail information
-                IEnumerable<OVERHEAD_BUDGET_VIEW> _budgetView = BudgetDetailsViewByBudgetID(context, budgetID, organizationID).OrderBy(x => x.CATEGORY_SORT_ORDER).ThenBy(x => x.SORT_ORDER).ThenBy(x => x.ACCOUNT_SEGMENT);
+                IEnumerable<OVERHEAD_BUDGET_VIEW> _budgetView = BudgetDetailsViewByBudgetID(context, budgetID, organizationID,true,printOptions.HIDE_BLANK_LINES);
+
+                NumberFormatInfo nfi = CultureInfo.CurrentCulture.NumberFormat;
+                nfi = (NumberFormatInfo)nfi.Clone();
+                nfi.CurrencySymbol = "";
+
+                long _lastCategoryID = 0;
 
                 foreach (OVERHEAD_BUDGET_VIEW _row in _budgetView)
                 {
 
+                    if (_lastCategoryID != 0)
+                    {
+                        if (_lastCategoryID != _row.CATEGORY_ID)
+                        {
+                            //Add a total line
+                            OVERHEAD_BUDGET_VIEW _summaryView = SummaryViewByCategoryID(_budgetView, _lastCategoryID);
+
+                            Phrase _totalPhase = new Phrase();
+                            _totalPhase.Add(new Chunk(_summaryView.CATEGORY_NAME + " - Total", TotalCellFont));
+                            _totalPhase.Add(new Chunk("\n"));
+
+                            
+
+                            Cells = new PdfPCell[]{
+                            new PdfPCell(_totalPhase),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryView.AMOUNT1) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryView.AMOUNT2) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryView.AMOUNT3) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryView.AMOUNT4) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryView.AMOUNT5) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryView.AMOUNT6) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryView.AMOUNT7) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryView.AMOUNT8) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryView.AMOUNT9) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryView.AMOUNT10) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryView.AMOUNT11) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryView.AMOUNT12) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryView.TOTAL), TotalCellFont))
+                        };
+
+                            int cellCount = 1;
+                            foreach (PdfPCell _cell in Cells)
+                            {
+                                if (cellCount == 1)
+                                {
+                                    _cell.BackgroundColor = new Color(224, 224, 209);
+                                }
+                                else
+                                {
+                                    _cell.BackgroundColor = new Color(224, 224, 209);
+                                    _cell.HorizontalAlignment = PdfCell.ALIGN_RIGHT;
+                                }
+
+                                cellCount = cellCount + 1;
+                            }
+
+
+                            Row = new PdfPRow(Cells);
+                            _headerPdfTable.Rows.Add(Row);
+                        }
+
+                    }
+
+
+                    Phrase _accountPhase = new Phrase();
+                    _accountPhase.Add(new Chunk(_row.ACCOUNT_DESCRIPTION, CellFont));
+                    _accountPhase.Add(new Chunk("\n"));
+                    _accountPhase.Add(new Chunk("     " +_row.ACCOUNT_DESCRIPTION2, CellFont));
+
                     Cells = new PdfPCell[]{
-                     new PdfPCell(new Phrase(_row.ACCOUNT_DESCRIPTION, HeadFootTitleFont )),
-                     new PdfPCell(new Phrase(_row.TOTAL.ToString(), HeadFootTitleFont)),
-                     new PdfPCell(new Phrase(_row.AMOUNT1.ToString() ,HeadFootTitleFont)),
-                     new PdfPCell(new Phrase(_row.AMOUNT2.ToString() ,HeadFootTitleFont)),
-                     new PdfPCell(new Phrase(_row.AMOUNT3.ToString() ,HeadFootTitleFont)),
-                     new PdfPCell(new Phrase(_row.AMOUNT4.ToString() ,HeadFootTitleFont)),
-                     new PdfPCell(new Phrase(_row.AMOUNT5.ToString() ,HeadFootTitleFont)),
-                     new PdfPCell(new Phrase(_row.AMOUNT6.ToString() ,HeadFootTitleFont)),
-                     new PdfPCell(new Phrase(_row.AMOUNT7.ToString() ,HeadFootTitleFont)),
-                     new PdfPCell(new Phrase(_row.AMOUNT8.ToString() ,HeadFootTitleFont)),
-                     new PdfPCell(new Phrase(_row.AMOUNT9.ToString() ,HeadFootTitleFont)),
-                     new PdfPCell(new Phrase(_row.AMOUNT10.ToString() ,HeadFootTitleFont)),
-                     new PdfPCell(new Phrase(_row.AMOUNT11.ToString() ,HeadFootTitleFont)),
-                     new PdfPCell(new Phrase(_row.AMOUNT12.ToString() ,HeadFootTitleFont))
+                     new PdfPCell(_accountPhase),
+                     new PdfPCell(new Phrase((_row.AMOUNT1.ToString() == "0")? "" : String.Format(nfi,"{0:C0}", _row.AMOUNT1) ,CellFont)),
+                     new PdfPCell(new Phrase((_row.AMOUNT2.ToString() == "0") ? "" :String.Format(nfi,"{0:C0}", _row.AMOUNT2) ,CellFont)),
+                     new PdfPCell(new Phrase((_row.AMOUNT3.ToString() == "0") ? "" :String.Format(nfi,"{0:C0}", _row.AMOUNT3) ,CellFont)),
+                     new PdfPCell(new Phrase((_row.AMOUNT4.ToString() == "0") ? "" :String.Format(nfi,"{0:C0}", _row.AMOUNT4) ,CellFont)),
+                     new PdfPCell(new Phrase((_row.AMOUNT5.ToString() == "0") ? "" :String.Format(nfi,"{0:C0}", _row.AMOUNT5) ,CellFont)),
+                     new PdfPCell(new Phrase((_row.AMOUNT6.ToString() == "0") ? "" :String.Format(nfi,"{0:C0}", _row.AMOUNT6) ,CellFont)),
+                     new PdfPCell(new Phrase((_row.AMOUNT7.ToString() == "0") ? "" :String.Format(nfi,"{0:C0}", _row.AMOUNT7) ,CellFont)),
+                     new PdfPCell(new Phrase((_row.AMOUNT8.ToString() == "0") ? "" :String.Format(nfi,"{0:C0}", _row.AMOUNT8) ,CellFont)),
+                     new PdfPCell(new Phrase((_row.AMOUNT9.ToString() == "0") ? "" :String.Format(nfi,"{0:C0}", _row.AMOUNT9) ,CellFont)),
+                     new PdfPCell(new Phrase((_row.AMOUNT10.ToString() == "0") ? "" :String.Format(nfi,"{0:C0}", _row.AMOUNT10) ,CellFont)),
+                     new PdfPCell(new Phrase((_row.AMOUNT11.ToString() == "0") ? "" :String.Format(nfi,"{0:C0}", _row.AMOUNT11) ,CellFont)),
+                     new PdfPCell(new Phrase((_row.AMOUNT12.ToString() == "0") ? "" :String.Format(nfi,"{0:C0}", _row.AMOUNT12) ,CellFont)),
+                     new PdfPCell(new Phrase((_row.TOTAL.ToString() == "0") ? "" : String.Format(nfi,"{0:C0}", _row.TOTAL), CellFont))
                  };
 
                     //Enable 1st column light gray
@@ -826,7 +992,7 @@ namespace DBI.Data
                     {
                         if (rowcount == 1)
                         {
-                            _cell.BackgroundColor = iTextSharp.text.Color.LIGHT_GRAY;
+                            _cell.BackgroundColor = new Color(230, 230, 230);
                         }
                         else
                         {
@@ -838,7 +1004,110 @@ namespace DBI.Data
 
                     Row = new PdfPRow(Cells);
                     _headerPdfTable.Rows.Add(Row);
+
+                    _lastCategoryID = _row.CATEGORY_ID;
+
                 }
+
+                Row = new PdfPRow(Cells);
+                _headerPdfTable.Rows.Add(Row);
+
+
+                //Add Other Row
+
+                //Add a total line based on other
+                OVERHEAD_BUDGET_VIEW _summaryViewOther = SummaryViewByCategoryID(_budgetView, _lastCategoryID);
+
+                Phrase _totalPhaseOther = new Phrase();
+                _totalPhaseOther.Add(new Chunk(_summaryViewOther.CATEGORY_NAME + " - Total", TotalCellFont));
+                _totalPhaseOther.Add(new Chunk("\n"));
+
+                Cells = new PdfPCell[]{
+                            new PdfPCell(_totalPhaseOther),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewOther.AMOUNT1) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewOther.AMOUNT2) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewOther.AMOUNT3) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewOther.AMOUNT4) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewOther.AMOUNT5) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewOther.AMOUNT6) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewOther.AMOUNT7) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewOther.AMOUNT8) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewOther.AMOUNT9) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewOther.AMOUNT10) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewOther.AMOUNT11) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewOther.AMOUNT12) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewOther.TOTAL), TotalCellFont))
+                        };
+
+                int cellCount2 = 1;
+                foreach (PdfPCell _cell in Cells)
+                {
+                    if (cellCount2 == 1)
+                    {
+                        _cell.BackgroundColor = new Color(224, 224, 209);
+                    }
+                    else
+                    {
+                        _cell.BackgroundColor = new Color(224, 224, 209);
+                        _cell.HorizontalAlignment = PdfCell.ALIGN_RIGHT;
+                    }
+
+                    cellCount2 = cellCount2 + 1;
+                }
+
+
+
+                Row = new PdfPRow(Cells);
+                _headerPdfTable.Rows.Add(Row);
+
+
+                //Add a total line based on budget
+
+                OVERHEAD_BUDGET_VIEW _summaryViewTotal = SummaryViewByBudgetID(_budgetView, budgetID);
+
+                Phrase _totalPhaseFinal = new Phrase();
+                _totalPhaseFinal.Add(new Chunk("Budget Total", FontFactory.GetFont("Verdana", 8, Font.BOLD)));
+                _totalPhaseFinal.Add(new Chunk("\n"));
+
+                Cells = new PdfPCell[]{
+                            new PdfPCell(_totalPhaseFinal),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewTotal.AMOUNT1) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewTotal.AMOUNT2) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewTotal.AMOUNT3) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewTotal.AMOUNT4) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewTotal.AMOUNT5) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewTotal.AMOUNT6) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewTotal.AMOUNT7) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewTotal.AMOUNT8) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewTotal.AMOUNT9) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewTotal.AMOUNT10) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewTotal.AMOUNT11) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewTotal.AMOUNT12) ,TotalCellFont)),
+                            new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewTotal.TOTAL), TotalCellFont))
+                        };
+
+                int cellCount3 = 1;
+                foreach (PdfPCell _cell in Cells)
+                {
+                    if (cellCount3 == 1)
+                    {
+                        _cell.BackgroundColor = new Color(224, 224, 209);
+                    }
+                    else
+                    {
+                        _cell.BackgroundColor = new Color(224, 224, 209);
+                        _cell.HorizontalAlignment = PdfCell.ALIGN_RIGHT;
+                    }
+
+                    cellCount3 = cellCount3 + 1;
+                }
+
+
+
+                Row = new PdfPRow(Cells);
+                _headerPdfTable.Rows.Add(Row);
+
+
 
                 _document.Add(_headerPdfTable);
 
@@ -852,7 +1121,6 @@ namespace DBI.Data
 
         public class PRINT_OPTIONS
         {
-            public Boolean SHOW_DECMIALS {get; set;}
             public Boolean SHOW_ACCOUNT_NOTES {get; set;}
             public Boolean SHOW_BUDGET_NOTES {get; set;}
             public Boolean ROLLUP {get; set;}

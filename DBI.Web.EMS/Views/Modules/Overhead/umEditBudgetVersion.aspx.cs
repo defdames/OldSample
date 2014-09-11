@@ -255,7 +255,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                             //Check toggle button if button is active, hide zero lines (zero total)
                     if (uxHideBlankLinesCheckbox.Checked)
                     {
-                         _data = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByBudgetID(_context, _budgetid, _organizationID, true);
+                         _data = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByBudgetID(_context, _budgetid, _organizationID,false,true);
                     }
                     else
                     {
@@ -382,6 +382,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             this.Response.End();
         }
 
+
         public void printOverheadBudget(object sender, DirectEventArgs e)
         {
 
@@ -392,7 +393,11 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
             using(Entities _context = new Entities())
             {
-                MemoryStream PdfStream = OVERHEAD_BUDGET_FORECAST.GenerateReport(_context,_organizationID,_fiscal_year,_budgetid,_description, new OVERHEAD_BUDGET_FORECAST.PRINT_OPTIONS());
+
+                OVERHEAD_BUDGET_FORECAST.PRINT_OPTIONS _printOptions = new OVERHEAD_BUDGET_FORECAST.PRINT_OPTIONS();
+                _printOptions.HIDE_BLANK_LINES = uxHideBlankLinesCheckbox.Checked;
+
+                MemoryStream PdfStream = OVERHEAD_BUDGET_FORECAST.GenerateReport(_context, _organizationID, _fiscal_year, _budgetid, _description, _printOptions);
 
                 Response.Clear();
                 Response.ClearContent();
@@ -402,6 +407,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 Response.BinaryWrite(PdfStream.ToArray());
                 Response.End();
             }
+
         }
 
         public class OVERHEAD_BUDGET_DETAIL_V
