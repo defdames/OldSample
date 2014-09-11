@@ -67,6 +67,41 @@
                 return Ext.String.format(template, (n >= 0 || red == false) ? "black" : "red", r);
             };
         };
+        // EXAMPLE
+        //var colorErrors = function (value, metadata, record) {
+        //    if (record.data.WARNING == "Error") {
+        //        metadata.style = "background-color: red;";
+        //    }
+        //    else if (record.data.WARNING == "Warning") {
+        //        metadata.style = "background-color: yellow;";
+        //    }
+        //    return value;
+        //};
+        var colorSubGridOverride = function (value, metadata, record) {
+            if (record.data.OVERRIDDEN == 1) {
+                metadata.style = "background-color: #FFFF99;";
+            }
+
+            if (isNaN(parseInt.value) == true) { return value; }
+
+            var template = '<span style="color:{0};">{1}</span>';
+
+            var dp = 2;
+            var dSeparator = ".";
+            var tSeparator = ",";
+            var symbol = '';
+            var red = false;
+
+            var m = /(\d+)(?:(\.\d+)|)/.exec(value + ""),
+                x = m[1].length > 3 ? m[1].length % 3 : 0;
+            var r = (value < 0 ? '-' : '') // preserve minus sign
+                    + (x ? m[1].substr(0, x) + tSeparator : "")
+                    + m[1].substr(x).replace(/(\d{3})(?=\d)/g, "$1" + tSeparator)
+                    + (dp ? dSeparator + (+m[2] || 0).toFixed(dp).substr(2) : "")
+                    + symbol;
+
+            return Ext.String.format(template, (value >= 0 || red == false) ? "black" : "red", r);
+        };
     </script>
 </head>
 <body>
@@ -112,7 +147,7 @@
                             Layout="HBoxLayout">
                             <Items>
                                 <ext:Label ID="uxDetailNameLabel" runat="server" Width="140" Text="Detail Sheet (1 of 1): " />
-                                <ext:TextField ID="uxDetailName" runat="server" Width="480" ReadOnly="false" Text="" SelectOnFocus="true" MaxLength="200" EnforceMaxLength="true" TabIndex="1">
+                                <ext:TextField ID="uxDetailName" runat="server" Width="480" ReadOnly="false" Text="" SelectOnFocus="true" MaxLength="200" EnforceMaxLength="true" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;">
                                     <DirectEvents>
                                         <Change OnEvent="deCheckAllowDetailSave" />
                                     </DirectEvents>
@@ -150,7 +185,7 @@
                                         <ext:TextField ID="uxSGrossRec" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" TabIndex="-1" />
                                         <ext:TextField ID="uxSMatUsage" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" TabIndex="-2" />
                                         <ext:TextField ID="uxSGrossRev" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" TabIndex="-3" />
-                                        <ext:TextField ID="uxSDirects" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" TabIndex="-4"/>
+                                        <ext:TextField ID="uxSDirects" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" TabIndex="-4" />
                                         <ext:TextField ID="uxSOP" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" TabIndex="-5" />
                                         <ext:Label ID="Label10" runat="server" Width="77" />
                                     </Items>
@@ -220,7 +255,7 @@
                                             Layout="HBoxLayout">
                                             <Items>
                                                 <ext:Label ID="Label44" runat="server" Width="180" Text="Total Days Per Week Worked:" />
-                                                <ext:TextField ID="uxDaysWorked" runat="server" Width="100" ReadOnly="false" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" SelectOnFocus="true" TabIndex="4"> 
+                                                <ext:TextField ID="uxDaysWorked" runat="server" Width="100" ReadOnly="false" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" SelectOnFocus="true" TabIndex="4">
                                                     <DirectEvents>
                                                         <Blur OnEvent="deSaveMainTabField">
                                                             <ExtraParams>
@@ -309,6 +344,7 @@
                                                                 <ext:ModelField Name="DESC_2" />
                                                                 <ext:ModelField Name="AMT_2" />
                                                                 <ext:ModelField Name="TOTAL" />
+                                                                <ext:ModelField Name="OVERRIDDEN" />
                                                             </Fields>
                                                         </ext:Model>
                                                     </Model>
@@ -384,26 +420,28 @@
                                                                 </Component>
                                                             </ext:DropDownField>
                                                         </Editor>
+                                                        <Renderer Fn="colorSubGridOverride" />
                                                     </ext:Column>
                                                     <ext:NumberColumn ID="NumberField4" runat="server" DataIndex="AMT_1" Text="Unit Cost" Flex="1" Align="Right">
                                                         <Editor>
                                                             <ext:NumberField ID="uxMaterialUnitCost" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
                                                         </Editor>
-                                                        <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                                        <Renderer Fn="colorSubGridOverride" />
                                                     </ext:NumberColumn>
                                                     <ext:Column ID="NumberField5" runat="server" DataIndex="DESC_2" Text="UOM" Flex="1">
                                                         <Editor>
                                                             <ext:TextField ID="uxMaterialUOM" runat="server" SelectOnFocus="true" MaxLength="200" EnforceMaxLength="true" />
                                                         </Editor>
+                                                        <Renderer Fn="colorSubGridOverride" />
                                                     </ext:Column>
                                                     <ext:NumberColumn ID="Column3" runat="server" DataIndex="AMT_2" Text="Qty" Flex="1" Align="Right">
                                                         <Editor>
                                                             <ext:NumberField ID="uxMaterialQuantity" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
                                                         </Editor>
-                                                        <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                                        <Renderer Fn="colorSubGridOverride" />
                                                     </ext:NumberColumn>
                                                     <ext:NumberColumn ID="Column5" runat="server" DataIndex="TOTAL" Text="Total" Flex="1" Align="Right">
-                                                        <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                                        <Renderer Fn="colorSubGridOverride" />
                                                     </ext:NumberColumn>
                                                 </Columns>
                                             </ColumnModel>
@@ -494,6 +532,7 @@
                                                                 <ext:ModelField Name="AMT_2" />
                                                                 <ext:ModelField Name="AMT_3" />
                                                                 <ext:ModelField Name="TOTAL" />
+                                                                <ext:ModelField Name="OVERRIDDEN" />
                                                             </Fields>
                                                         </ext:Model>
                                                     </Model>
@@ -511,7 +550,7 @@
                                                         <Editor>
                                                             <ext:NumberField ID="uxEquipmentQuantity" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
                                                         </Editor>
-                                                        <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                                        <Renderer Fn="colorSubGridOverride" />
                                                     </ext:NumberColumn>
                                                     <ext:Column ID="Column1" runat="server" DataIndex="DESC_1" Text="Equipment/Equipment Travel" Flex="2">
                                                         <Editor>
@@ -566,27 +605,28 @@
                                                                             </SelectionChange>
                                                                         </DirectEvents>
                                                                         <Plugins>
-                                                                            <ext:FilterHeader runat="server" ID="FilterHeader1" Remote="true" />
+                                                                            <ext:FilterHeader runat="server" ID="uxEquipmentFilter" Remote="true" />
                                                                         </Plugins>
                                                                     </ext:GridPanel>
                                                                 </Component>
                                                             </ext:DropDownField>
                                                         </Editor>
+                                                        <Renderer Fn="colorSubGridOverride" />
                                                     </ext:Column>
                                                     <ext:NumberColumn ID="NumberColumn2" runat="server" DataIndex="AMT_2" Text="Hours" Flex="1" Align="Right">
                                                         <Editor>
                                                             <ext:NumberField ID="uxEquipmentHours" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
                                                         </Editor>
-                                                        <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                                        <Renderer Fn="colorSubGridOverride" />
                                                     </ext:NumberColumn>
                                                     <ext:NumberColumn ID="NumberColumn22" runat="server" DataIndex="AMT_3" Text="Cost per Hour" Flex="1" Align="Right">
                                                         <Editor>
                                                             <ext:NumberField ID="uxEquipmentCostPerHour" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
                                                         </Editor>
-                                                        <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                                        <Renderer Fn="colorSubGridOverride" />
                                                     </ext:NumberColumn>
                                                     <ext:NumberColumn ID="NumberColumn3" runat="server" DataIndex="TOTAL" Text="Total" Flex="1" Align="Right">
-                                                        <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                                        <Renderer Fn="colorSubGridOverride" />
                                                     </ext:NumberColumn>
                                                 </Columns>
                                             </ColumnModel>
@@ -749,7 +789,7 @@
                                                                             </SelectionChange>
                                                                         </DirectEvents>
                                                                         <Plugins>
-                                                                            <ext:FilterHeader runat="server" ID="FilterHeader2" Remote="true" />
+                                                                            <ext:FilterHeader runat="server" ID="uxPersonnelFilter" Remote="true" />
                                                                         </Plugins>
                                                                     </ext:GridPanel>
                                                                 </Component>
@@ -1419,7 +1459,7 @@
                                 <ext:TextField ID="uxLaborBurden" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" TabIndex="-6" />
                                 <ext:Label ID="Label22" runat="server" Width="105" />
                                 <ext:Label ID="Label23" runat="server" Width="180" Text="Average Units per Day:" />
-                                <ext:TextField ID="uxAvgUnitsPerDay" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" TabIndex="-7"/>
+                                <ext:TextField ID="uxAvgUnitsPerDay" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" TabIndex="-7" />
                             </Items>
                         </ext:FieldContainer>
                         <ext:FieldContainer ID="FieldContainer11"
@@ -1427,10 +1467,10 @@
                             Layout="HBoxLayout">
                             <Items>
                                 <ext:Label ID="Label24" runat="server" Width="180" Text="Total Weekly Direct Expense:" />
-                                <ext:TextField ID="uxTotalWklyDirects" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" TabIndex="-8"/>
+                                <ext:TextField ID="uxTotalWklyDirects" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" TabIndex="-8" />
                                 <ext:Label ID="Label38" runat="server" Width="105" />
                                 <ext:Label ID="Label39" runat="server" Width="180" Text="Total Direct Expenses Left:" />
-                                <ext:TextField ID="uxTotalDirectsLeft" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" TabIndex="-9"/>
+                                <ext:TextField ID="uxTotalDirectsLeft" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" TabIndex="-9" />
                             </Items>
                         </ext:FieldContainer>
                         <ext:FieldContainer ID="FieldContainer14"
@@ -1438,10 +1478,10 @@
                             Layout="HBoxLayout">
                             <Items>
                                 <ext:Label ID="Label25" runat="server" Width="180" Text="Total Direct Expenses per Day:" />
-                                <ext:TextField ID="uxTotalDirectsPerDay" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" TabIndex="-10"/>
+                                <ext:TextField ID="uxTotalDirectsPerDay" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" TabIndex="-10" />
                                 <ext:Label ID="Label41" runat="server" Width="105" />
                                 <ext:Label ID="Label42" runat="server" Width="180" Text="Total Material Expense Left:" />
-                                <ext:TextField ID="uxTotalMaterialLeft" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" TabIndex="-11"/>
+                                <ext:TextField ID="uxTotalMaterialLeft" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" TabIndex="-11" />
                             </Items>
                         </ext:FieldContainer>
                         <ext:FieldContainer ID="FieldContainer16"
@@ -1473,11 +1513,11 @@
                                     Layout="HBoxLayout">
                                     <Items>
                                         <ext:Label ID="Label19" runat="server" Width="77" />
-                                        <ext:TextField ID="uxEGrossRec" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" TabIndex="-12"/>
-                                        <ext:TextField ID="uxEMatUsage" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" TabIndex="-13"/>
-                                        <ext:TextField ID="uxEGrossRev" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" TabIndex="-14"/>
-                                        <ext:TextField ID="uxEDirects" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" TabIndex="-15"/>
-                                        <ext:TextField ID="uxEOP" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" TabIndex="-16"/>
+                                        <ext:TextField ID="uxEGrossRec" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" TabIndex="-12" />
+                                        <ext:TextField ID="uxEMatUsage" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" TabIndex="-13" />
+                                        <ext:TextField ID="uxEGrossRev" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" TabIndex="-14" />
+                                        <ext:TextField ID="uxEDirects" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" TabIndex="-15" />
+                                        <ext:TextField ID="uxEOP" runat="server" Width="100" ReadOnly="true" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" TabIndex="-16" />
                                         <ext:Label ID="Label20" runat="server" Width="77" />
                                     </Items>
                                 </ext:FieldContainer>
