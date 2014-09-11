@@ -26,6 +26,10 @@
             background: white;
             cursor: pointer;
         }
+         .allowBlank-field {
+            background-color: #EFF7FF !important;
+            background-image: none;
+        }
     </style>
 </head>
 <body>
@@ -70,7 +74,7 @@
             <ColumnModel>
                 <Columns>
 
-                    <ext:Column ID="uxMainCrossing" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing #" Flex="1" />
+                    <ext:Column ID="uxMainCrossing" runat="server" DataIndex="CROSSING_NUMBER" Text="DOT #" Flex="1" />
                     <ext:Column ID="Column12" runat="server" DataIndex="SERVICE_UNIT" Text="Service Unit" Flex="1" />
                     <ext:Column ID="uxSubDiv" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="1" />
                     <ext:Column ID="uxMTM" runat="server" DataIndex="STATE" Text="State" Flex="1" />
@@ -128,7 +132,7 @@
 
             <ColumnModel>
                 <Columns>
-                     <ext:Column ID="Column2" runat="server" DataIndex="CROSSING_NUMBER" Text="Dot #" Flex="1" />
+                     <ext:Column ID="Column2" runat="server" DataIndex="CROSSING_NUMBER" Text="DOT #" Flex="1" />
                     <ext:DateColumn ID="DateColumn1" runat="server" DataIndex="APPROVED_DATE" Text="Approved Date" Flex="1" Format="MM/dd/yyyy" />
                     <ext:DateColumn ID="DateColumn2" runat="server" DataIndex="CUT_TIME" Text="Cut Date" Flex="1" Format="MM/dd/yyyy" />
                     <ext:Column ID="Column6" runat="server" DataIndex="SERVICE_TYPE" Text="Service Type" Flex="1" />
@@ -191,8 +195,8 @@
                     <Items>
                         <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
                             <Items>
-                                <ext:DateField ID="uxAddApprovedDateField" runat="server" FieldLabel="Approved Date" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false" Editable="false" TabIndex="1"/>
-                                <ext:DateField ID="uxAddCutDateField" runat="server" FieldLabel="Cut Date" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false" Editable="false" TabIndex="2"/>                       
+                                <ext:DateField ID="uxAddApprovedDateField" runat="server" FieldLabel="Approved Date" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false" Editable="false" TabIndex="1"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side"/>
+                                <ext:DateField ID="uxAddCutDateField" runat="server" FieldLabel="Cut Date" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false" Editable="false" TabIndex="2"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side"/>                       
                                   <ext:Label ID="Label2" runat="server" Text="" Width="25" />                                
                                 <ext:Checkbox ID="uxAddRecurringBox" runat="server" BoxLabel="Recurring" BoxLabelAlign="After" AllowBlank="false" TabIndex="3" />
 
@@ -202,7 +206,7 @@
                               <ext:FieldContainer ID="FieldContainer2" runat="server" Layout="HBoxLayout">
                             <Items>
 
-                                <ext:TextField runat="server" ID="uxAddSquareFeet" FieldLabel="Square Feet" LabelAlign="Right" AnchorHorizontal="100%" AllowBlank="false" TabIndex="4" />
+                                <ext:TextField runat="server" ID="uxAddSquareFeet" FieldLabel="Square Feet" LabelAlign="Right" AnchorHorizontal="100%" AllowBlank="false" TabIndex="4"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side" />
                                   <ext:ComboBox ID="uxAddServiceType"
                                     runat="server"
                                     FieldLabel="Service Type"
@@ -210,7 +214,7 @@
                                     DisplayField="type"
                                     ValueField="type"
                                     QueryMode="Local"
-                                    TypeAhead="true" TabIndex="5" Width="350" AllowBlank="false" ForceSelection="true">
+                                    TypeAhead="true" TabIndex="5" Width="350" AllowBlank="false" ForceSelection="true"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side">
                                     <Store>
                                         <ext:Store runat="server"
                                             ID="uxAddServiceTypeStore" AutoDataBind="true">
@@ -235,7 +239,7 @@
                         
 
                         
-                           <ext:DropDownField ID="uxAddProjectDropDownField" runat="server" FieldLabel="Choose Project" AnchorHorizontal="100%" LabelAlign="Right" Width="755" TabIndex="6" Mode="ValueText" Editable="false" AllowBlank="false">
+                           <ext:DropDownField ID="uxAddProjectDropDownField" runat="server" FieldLabel="Choose Project" AnchorHorizontal="100%" LabelAlign="Right" Width="755" TabIndex="6" Mode="ValueText" Editable="false" AllowBlank="false"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side">
                                                     <Component>
                                                         <ext:GridPanel runat="server"
                                                             ID="uxAddProject"

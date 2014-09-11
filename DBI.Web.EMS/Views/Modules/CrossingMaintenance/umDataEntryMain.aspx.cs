@@ -55,6 +55,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             uxDataEntryTab.Reload();
             uxIncident.Reload();
             uxSupplemental.Reload();
+            uxViewCrossings.Reload();
         }
           protected void deReadRRTypes(object sender, StoreReadDataEventArgs e)
         {
@@ -108,6 +109,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             uxDataEntryTab.Reload();
             uxIncident.Reload();
             uxSupplemental.Reload();
+            uxViewCrossings.Reload();
         }
         
 

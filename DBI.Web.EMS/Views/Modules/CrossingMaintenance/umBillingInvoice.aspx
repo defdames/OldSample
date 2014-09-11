@@ -25,6 +25,10 @@
             background: white;
             cursor: pointer;
         }
+         .allowBlank-field {
+            background-color: #EFF7FF !important;
+            background-image: none;
+        }
     </style>
 </head>
 <body>
@@ -47,7 +51,7 @@
                                     DisplayField="type"
                                     ValueField="type"
                                     QueryMode="Local"
-                                    TypeAhead="true" Width="300" AllowBlank="false" ForceSelection="true" TabIndex="1">
+                                    TypeAhead="true" Width="300" AllowBlank="false" ForceSelection="true" TabIndex="1" InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side">
                                     <Store>
                                         <ext:Store runat="server"
                                             ID="uxAddAppRequestedStore" AutoDataBind="true">
@@ -134,8 +138,8 @@
                     </ext:FieldSet>
                       <ext:FieldSet ID="FieldSet2" runat="server" Title="Invoice Information">
                         <Items>
-                                  <ext:TextField ID="uxInvoiceNumber" runat="server" FieldLabel="Invoice Number" AnchorHorizontal="20%" LabelAlign="Right" TabIndex="6" AllowBlank="false" />
-                                  <ext:DateField ID="uxInvoiceDate" runat="server" AnchorHorizontal="20s%" FieldLabel="Invoice Date" LabelAlign="Right"  Editable="false" TabIndex="7" AllowBlank="false" />                                 
+                                  <ext:TextField ID="uxInvoiceNumber" runat="server" FieldLabel="Invoice Number" AnchorHorizontal="20%" LabelAlign="Right" TabIndex="6" AllowBlank="false" InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side" />
+                                  <ext:DateField ID="uxInvoiceDate" runat="server" AnchorHorizontal="20s%" FieldLabel="Invoice Date" LabelAlign="Right"  Editable="false" TabIndex="7" AllowBlank="false" InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side" />                                 
                         </Items>
                     </ext:FieldSet>
                 </Items>
