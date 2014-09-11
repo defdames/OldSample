@@ -115,9 +115,21 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 //pull budget detail data
                 OVERHEAD_ORG_BUDGETS _budgetDetail = OVERHEAD_BUDGET_FORECAST.BudgetByID(_context, _budgetid);
                 uxBudgetComments.Text = _budgetDetail.COMMENTS;
+
+                //pull budget detail data
+                var _detail = OVERHEAD_BUDGET_FORECAST.BudgetByID(_context, _budgetid);
+
+                if (_budgetDetail.STATUS == "C")
+                {
+                    uxSaveBudgetNote.Disable();
+                }
+
+            
             }
             uxBudgetNotesWindow.Center();
             uxBudgetNotesWindow.Show();
+
+
 
         }
 
@@ -147,7 +159,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             {
                 ID = "uxViewActualsWn",
                 Title = "View Account Actuals - " + _accountDescription + " / Fiscal Year " + _fiscal_year,
-                Height = 750,
+                Height = 550,
                 Width = 900,
                 Modal = true,
                 Resizable = false,

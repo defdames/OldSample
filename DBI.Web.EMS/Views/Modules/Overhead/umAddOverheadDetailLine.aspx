@@ -166,7 +166,7 @@
                 </ext:GridPanel>
 
                 <ext:FormPanel ID="FormPanel2" runat="server" Header="true" BodyPadding="5" Frame="true"
-                    Margins="5 5 5 5" Region="Center" Title="Comments" Layout="FitLayout" Flex="1" >
+                    Margins="5 5 5 5" Region="Center" Title="Account Notes" Layout="FitLayout" Flex="1" >
                     <Items>
                       <ext:FieldContainer ID="FieldContainer2" 
                         runat="server"

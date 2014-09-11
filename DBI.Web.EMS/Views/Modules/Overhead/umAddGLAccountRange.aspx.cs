@@ -274,7 +274,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             using (Entities _context = new Entities())
             {
                 int count;
-                var _data = _context.GL_ACCOUNTS_V.Where(x => string.Compare(x.SEGMENT1 + x.SEGMENT2 + x.SEGMENT3 + x.SEGMENT4 + x.SEGMENT5 + x.SEGMENT6 + x.SEGMENT7,uxSRSegment1.SelectedItem.Value + uxSRSegment2.SelectedItem.Value + uxSRSegment3.SelectedItem.Value + uxSRSegment4.SelectedItem.Value + uxSRSegment5.SelectedItem.Value + uxSRSegment6.SelectedItem.Value + uxSRSegment7.SelectedItem.Value) >= 0).Where(x => string.Compare(x.SEGMENT1 + x.SEGMENT2 + x.SEGMENT3 + x.SEGMENT4 + x.SEGMENT5 + x.SEGMENT6 + x.SEGMENT7,uxSRSegment1.SelectedItem.Value + uxSRSegment2.SelectedItem.Value + uxSRSegment3.SelectedItem.Value + uxSRSegment4.SelectedItem.Value + uxSRSegment5.SelectedItem.Value + uxSRSegment6.SelectedItem.Value + uxSRSegment7.SelectedItem.Value) <= 0);
+                var _data = _context.GL_ACCOUNTS_V.Where(x => string.Compare(x.SEGMENT1 + x.SEGMENT2 + x.SEGMENT3 + x.SEGMENT4 + x.SEGMENT5 + x.SEGMENT6 + x.SEGMENT7,uxSRSegment1.SelectedItem.Value + uxSRSegment2.SelectedItem.Value + uxSRSegment3.SelectedItem.Value + uxSRSegment4.SelectedItem.Value + uxSRSegment5.SelectedItem.Value + uxSRSegment6.SelectedItem.Value + uxSRSegment7.SelectedItem.Value) >= 0).Where(x => string.Compare(x.SEGMENT1 + x.SEGMENT2 + x.SEGMENT3 + x.SEGMENT4 + x.SEGMENT5 + x.SEGMENT6 + x.SEGMENT7,uxERSegment1.SelectedItem.Value + uxERSegment2.SelectedItem.Value + uxERSegment3.SelectedItem.Value + uxERSegment4.SelectedItem.Value + uxERSegment5.SelectedItem.Value + uxERSegment6.SelectedItem.Value + uxERSegment7.SelectedItem.Value) <= 0);
 
                 List<GL_ACCOUNTS_V> _temp = _data.ToList();
                 List<DBI.Web.EMS.Views.Modules.Overhead.umOverheadGeneralLedger.GL_ACCOUNTS_V2> _newTemp = new List<DBI.Web.EMS.Views.Modules.Overhead.umOverheadGeneralLedger.GL_ACCOUNTS_V2>();
@@ -304,6 +304,8 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 e.Total = count;
 
 
+
+  
 
 
 
