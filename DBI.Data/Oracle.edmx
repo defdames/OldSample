@@ -921,6 +921,10 @@
             <End Role="JOB_COST_BALANCE_TYPE" EntitySet="JOB_COST_BALANCE_TYPE" />
             <End Role="JOB_COST_TASK" EntitySet="JOB_COST_TASK" />
           </AssociationSet>
+          <AssociationSet Name="FK_THRESH_AMT_FORMS_ID" Association="OracleModel.Store.FK_THRESH_AMT_FORMS_ID">
+            <End Role="CUSTOMER_SURVEY_FORM_TYPES" EntitySet="CUSTOMER_SURVEY_FORM_TYPES" />
+            <End Role="CUSTOMER_SURVEY_THRESH_AMT" EntitySet="CUSTOMER_SURVEY_THRESH_AMT" />
+          </AssociationSet>
           <AssociationSet Name="FK_THRSH_AMTS_FK" Association="OracleModel.Store.FK_THRSH_AMTS_FK">
             <End Role="CUSTOMER_SURVEY_THRESH_AMT" EntitySet="CUSTOMER_SURVEY_THRESH_AMT" />
             <End Role="CUSTOMER_SURVEY_THRESHOLDS" EntitySet="CUSTOMER_SURVEY_THRESHOLDS" />
@@ -1783,6 +1787,7 @@
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="TYPE_ID" Type="number" Nullable="false" />
         </EntityType>
         <EntityType Name="CUSTOMER_SURVEY_THRESHOLDS">
           <Key>
@@ -4353,6 +4358,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_THRESH_AMT_FORMS_ID">
+          <End Role="CUSTOMER_SURVEY_FORM_TYPES" Type="OracleModel.Store.CUSTOMER_SURVEY_FORM_TYPES" Multiplicity="1" />
+          <End Role="CUSTOMER_SURVEY_THRESH_AMT" Type="OracleModel.Store.CUSTOMER_SURVEY_THRESH_AMT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CUSTOMER_SURVEY_FORM_TYPES">
+              <PropertyRef Name="TYPE_ID" />
+            </Principal>
+            <Dependent Role="CUSTOMER_SURVEY_THRESH_AMT">
+              <PropertyRef Name="TYPE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_THRSH_AMTS_FK">
           <End Role="CUSTOMER_SURVEY_THRESH_AMT" Type="OracleModel.Store.CUSTOMER_SURVEY_THRESH_AMT" Multiplicity="1" />
           <End Role="CUSTOMER_SURVEY_THRESHOLDS" Type="OracleModel.Store.CUSTOMER_SURVEY_THRESHOLDS" Multiplicity="*" />
@@ -4630,12 +4647,7 @@
           <EntitySet Name="CROSSING_INVOICE" EntityType="OracleModel.CROSSING_INVOICE" />
           <EntitySet Name="CROSSING_SUPP_INVOICE" EntityType="OracleModel.CROSSING_SUPP_INVOICE" />
           <EntitySet Name="CUSTOMER_SURVEY_CAT" EntityType="OracleModel.CUSTOMER_SURVEY_CAT" />
-          <EntitySet Name="CUSTOMER_SURVEY_THRESH_AMT" EntityType="OracleModel.CUSTOMER_SURVEY_THRESH_AMT" />
           <EntitySet Name="CUSTOMER_SURVEY_THRESHOLDS" EntityType="OracleModel.CUSTOMER_SURVEY_THRESHOLDS" />
-          <AssociationSet Name="FK_THRSH_AMTS_FK" Association="OracleModel.FK_THRSH_AMTS_FK">
-            <End Role="CUSTOMER_SURVEY_THRESH_AMT" EntitySet="CUSTOMER_SURVEY_THRESH_AMT" />
-            <End Role="CUSTOMER_SURVEY_THRESHOLDS" EntitySet="CUSTOMER_SURVEY_THRESHOLDS" />
-          </AssociationSet>
           <EntitySet Name="BUD_BID_ADJUSTMENT" EntityType="OracleModel.BUD_BID_ADJUSTMENT" />
           <EntitySet Name="PA_ROLES_V" EntityType="OracleModel.PA_ROLES_V" />
           <EntitySet Name="JOB_COST" EntityType="OracleModel.JOB_COST" />
@@ -4723,6 +4735,15 @@
           <AssociationSet Name="FK_RELATION_QUESTION_ID" Association="OracleModel.FK_RELATION_QUESTION_ID">
             <End Role="CUSTOMER_SURVEY_QUESTIONS" EntitySet="CUSTOMER_SURVEY_QUESTIONS" />
             <End Role="CUSTOMER_SURVEY_RELATION" EntitySet="CUSTOMER_SURVEY_RELATION" />
+          </AssociationSet>
+          <EntitySet Name="CUSTOMER_SURVEY_THRESH_AMT" EntityType="OracleModel.CUSTOMER_SURVEY_THRESH_AMT" />
+          <AssociationSet Name="FK_THRESH_AMT_FORMS_ID" Association="OracleModel.FK_THRESH_AMT_FORMS_ID">
+            <End Role="CUSTOMER_SURVEY_FORM_TYPES" EntitySet="CUSTOMER_SURVEY_FORM_TYPES" />
+            <End Role="CUSTOMER_SURVEY_THRESH_AMT" EntitySet="CUSTOMER_SURVEY_THRESH_AMT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_THRSH_AMTS_FK" Association="OracleModel.FK_THRSH_AMTS_FK">
+            <End Role="CUSTOMER_SURVEY_THRESH_AMT" EntitySet="CUSTOMER_SURVEY_THRESH_AMT" />
+            <End Role="CUSTOMER_SURVEY_THRESHOLDS" EntitySet="CUSTOMER_SURVEY_THRESHOLDS" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="SYS_USERS">
@@ -7528,20 +7549,6 @@
           <Property Type="DateTime" Name="MODIFY_DATE" />
           <NavigationProperty Name="CUSTOMER_SURVEY_FORMS" Relationship="OracleModel.FK_FORMS_CAT_ID" FromRole="CUSTOMER_SURVEY_CAT" ToRole="CUSTOMER_SURVEY_FORMS" />
         </EntityType>
-        <EntityType Name="CUSTOMER_SURVEY_THRESH_AMT">
-          <Key>
-            <PropertyRef Name="AMOUNT_ID" />
-          </Key>
-          <Property Type="Decimal" Name="AMOUNT_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Decimal" Name="LOW_DOLLAR_AMT" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="HIGH_DOLLAR_AMT" Precision="38" Scale="0" />
-          <Property Type="Int64" Name="ORG_ID" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="CUSTOMER_SURVEY_THRESHOLDS" Relationship="OracleModel.FK_THRSH_AMTS_FK" FromRole="CUSTOMER_SURVEY_THRESH_AMT" ToRole="CUSTOMER_SURVEY_THRESHOLDS" />
-        </EntityType>
         <EntityType Name="CUSTOMER_SURVEY_THRESHOLDS">
           <Key>
             <PropertyRef Name="THRESHOLD_ID" />
@@ -7553,21 +7560,9 @@
           <Property Type="DateTime" Name="MODIFY_DATE" />
           <Property Type="Decimal" Name="AMOUNT_ID" Nullable="false" Precision="38" Scale="0" />
           <Property Type="Decimal" Name="THRESHOLD" Nullable="false" Precision="38" Scale="0" />
-          <NavigationProperty Name="CUSTOMER_SURVEY_THRESH_AMT" Relationship="OracleModel.FK_THRSH_AMTS_FK" FromRole="CUSTOMER_SURVEY_THRESHOLDS" ToRole="CUSTOMER_SURVEY_THRESH_AMT" />
           <NavigationProperty Name="CUSTOMER_SURVEY_FORMS_COMP" Relationship="OracleModel.FK_FORMS_COMP_THRESH_ID" FromRole="CUSTOMER_SURVEY_THRESHOLDS" ToRole="CUSTOMER_SURVEY_FORMS_COMP" />
+          <NavigationProperty Name="CUSTOMER_SURVEY_THRESH_AMT" Relationship="OracleModel.FK_THRSH_AMTS_FK" FromRole="CUSTOMER_SURVEY_THRESHOLDS" ToRole="CUSTOMER_SURVEY_THRESH_AMT" />
         </EntityType>
-        <Association Name="FK_THRSH_AMTS_FK">
-          <End Type="OracleModel.CUSTOMER_SURVEY_THRESH_AMT" Role="CUSTOMER_SURVEY_THRESH_AMT" Multiplicity="1" />
-          <End Type="OracleModel.CUSTOMER_SURVEY_THRESHOLDS" Role="CUSTOMER_SURVEY_THRESHOLDS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CUSTOMER_SURVEY_THRESH_AMT">
-              <PropertyRef Name="AMOUNT_ID" />
-            </Principal>
-            <Dependent Role="CUSTOMER_SURVEY_THRESHOLDS">
-              <PropertyRef Name="AMOUNT_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="BUD_BID_ADJUSTMENT">
           <Key>
             <PropertyRef Name="ADJ_ID" />
@@ -8224,6 +8219,7 @@
           <Property Type="String" Name="TYPE_NAME" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="Decimal" Name="SORT_ORDER" Precision="38" Scale="0" />
           <NavigationProperty Name="CUSTOMER_SURVEY_FORMS" Relationship="OracleModel.FK_FORMS_TYPES_ID" FromRole="CUSTOMER_SURVEY_FORM_TYPES" ToRole="CUSTOMER_SURVEY_FORMS" />
+          <NavigationProperty Name="CUSTOMER_SURVEY_THRESH_AMT" Relationship="OracleModel.FK_THRESH_AMT_FORMS_ID" FromRole="CUSTOMER_SURVEY_FORM_TYPES" ToRole="CUSTOMER_SURVEY_THRESH_AMT" />
         </EntityType>
         <EntityType Name="CUSTOMER_SURVEY_FORMS">
           <Key>
@@ -8380,6 +8376,46 @@
             </Principal>
             <Dependent Role="CUSTOMER_SURVEY_RELATION">
               <PropertyRef Name="QUESTION_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CUSTOMER_SURVEY_THRESH_AMT">
+          <Key>
+            <PropertyRef Name="AMOUNT_ID" />
+          </Key>
+          <Property Type="Decimal" Name="AMOUNT_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Decimal" Name="LOW_DOLLAR_AMT" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="HIGH_DOLLAR_AMT" Precision="38" Scale="0" />
+          <Property Type="Int64" Name="ORG_ID" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="TYPE_ID" Nullable="false" Precision="38" Scale="0" />
+          <NavigationProperty Name="CUSTOMER_SURVEY_FORM_TYPES" Relationship="OracleModel.FK_THRESH_AMT_FORMS_ID" FromRole="CUSTOMER_SURVEY_THRESH_AMT" ToRole="CUSTOMER_SURVEY_FORM_TYPES" />
+          <NavigationProperty Name="CUSTOMER_SURVEY_THRESHOLDS" Relationship="OracleModel.FK_THRSH_AMTS_FK" FromRole="CUSTOMER_SURVEY_THRESH_AMT" ToRole="CUSTOMER_SURVEY_THRESHOLDS" />
+        </EntityType>
+        <Association Name="FK_THRESH_AMT_FORMS_ID">
+          <End Type="OracleModel.CUSTOMER_SURVEY_FORM_TYPES" Role="CUSTOMER_SURVEY_FORM_TYPES" Multiplicity="1" />
+          <End Type="OracleModel.CUSTOMER_SURVEY_THRESH_AMT" Role="CUSTOMER_SURVEY_THRESH_AMT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CUSTOMER_SURVEY_FORM_TYPES">
+              <PropertyRef Name="TYPE_ID" />
+            </Principal>
+            <Dependent Role="CUSTOMER_SURVEY_THRESH_AMT">
+              <PropertyRef Name="TYPE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_THRSH_AMTS_FK">
+          <End Type="OracleModel.CUSTOMER_SURVEY_THRESH_AMT" Role="CUSTOMER_SURVEY_THRESH_AMT" Multiplicity="1" />
+          <End Type="OracleModel.CUSTOMER_SURVEY_THRESHOLDS" Role="CUSTOMER_SURVEY_THRESHOLDS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CUSTOMER_SURVEY_THRESH_AMT">
+              <PropertyRef Name="AMOUNT_ID" />
+            </Principal>
+            <Dependent Role="CUSTOMER_SURVEY_THRESHOLDS">
+              <PropertyRef Name="AMOUNT_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -10525,20 +10561,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CUSTOMER_SURVEY_THRESH_AMT">
-            <EntityTypeMapping TypeName="OracleModel.CUSTOMER_SURVEY_THRESH_AMT">
-              <MappingFragment StoreEntitySet="CUSTOMER_SURVEY_THRESH_AMT">
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
-                <ScalarProperty Name="HIGH_DOLLAR_AMT" ColumnName="HIGH_DOLLAR_AMT" />
-                <ScalarProperty Name="LOW_DOLLAR_AMT" ColumnName="LOW_DOLLAR_AMT" />
-                <ScalarProperty Name="AMOUNT_ID" ColumnName="AMOUNT_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CUSTOMER_SURVEY_THRESHOLDS">
             <EntityTypeMapping TypeName="OracleModel.CUSTOMER_SURVEY_THRESHOLDS">
               <MappingFragment StoreEntitySet="CUSTOMER_SURVEY_THRESHOLDS">
@@ -11168,6 +11190,21 @@
                 <ScalarProperty Name="TEXT" ColumnName="TEXT" />
                 <ScalarProperty Name="TYPE_ID" ColumnName="TYPE_ID" />
                 <ScalarProperty Name="QUESTION_ID" ColumnName="QUESTION_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CUSTOMER_SURVEY_THRESH_AMT">
+            <EntityTypeMapping TypeName="OracleModel.CUSTOMER_SURVEY_THRESH_AMT">
+              <MappingFragment StoreEntitySet="CUSTOMER_SURVEY_THRESH_AMT">
+                <ScalarProperty Name="TYPE_ID" ColumnName="TYPE_ID" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
+                <ScalarProperty Name="HIGH_DOLLAR_AMT" ColumnName="HIGH_DOLLAR_AMT" />
+                <ScalarProperty Name="LOW_DOLLAR_AMT" ColumnName="LOW_DOLLAR_AMT" />
+                <ScalarProperty Name="AMOUNT_ID" ColumnName="AMOUNT_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

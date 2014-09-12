@@ -1003,13 +1003,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.RowSelectionModel RowSelectionModel2;
         
         /// <summary>
-        /// FilterHeader1 control.
+        /// uxEquipmentFilter control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FilterHeader FilterHeader1;
+        protected global::Ext.Net.FilterHeader uxEquipmentFilter;
         
         /// <summary>
         /// NumberColumn2 control.
@@ -1318,13 +1318,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.RowSelectionModel RowSelectionModel3;
         
         /// <summary>
-        /// FilterHeader2 control.
+        /// uxPersonnelFilter control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FilterHeader FilterHeader2;
+        protected global::Ext.Net.FilterHeader uxPersonnelFilter;
         
         /// <summary>
         /// NumberColumn5 control.

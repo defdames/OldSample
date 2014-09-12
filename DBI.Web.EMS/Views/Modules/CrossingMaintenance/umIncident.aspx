@@ -25,6 +25,10 @@
             background: white;
             cursor: pointer;
         }
+         .allowBlank-field {
+            background-color: #EFF7FF !important;
+            background-image: none;
+        }
     </style>
 </head>
 <body>
@@ -188,12 +192,12 @@
                         <Items>
                             <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
                                 <Items>
-                                    <ext:TextField ID="uxIncidentNumber" runat="server" FieldLabel="Incident #" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false" />
+                                    <ext:TextField ID="uxIncidentNumber" runat="server" FieldLabel="Incident #" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side"/>
                                 </Items>
                             </ext:FieldContainer>
                             <ext:FieldContainer ID="FieldContainer37" runat="server" Layout="HBoxLayout">
                                 <Items>
-                                    <ext:DateField ID="uxIncidentDateReported" runat="server" FieldLabel="Date Reported" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false" />
+                                    <ext:DateField ID="uxIncidentDateReported" runat="server" FieldLabel="Date Reported" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side" />
                                      <ext:Label ID="Label2" runat="server" Text="" Width="25" />
                                     <ext:Checkbox ID="uxIncidentSlowOrder" runat="server" BoxLabel="Slow Order" BoxLabelAlign="After" AnchorHorizontal="100%" />
 

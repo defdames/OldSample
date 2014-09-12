@@ -25,6 +25,10 @@
             background: white;
             cursor: pointer;
         }
+         .allowBlank-field {
+            background-color: #EFF7FF !important;
+            background-image: none;
+        }
     </style>
 </head>
 <body>
@@ -101,7 +105,7 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column ID="uxMainCrossing" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing #" Flex="1" />
+                            <ext:Column ID="uxMainCrossing" runat="server" DataIndex="CROSSING_NUMBER" Text="DOT #" Flex="1" />
                             <ext:Column ID="Column12" runat="server" DataIndex="SERVICE_UNIT" Text="Service Unit" Flex="1" />
                             <ext:Column ID="uxSubDiv" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="1" />
                             <ext:Column ID="Column4" runat="server" DataIndex="STATE" Text="State" Flex="1" />
@@ -166,7 +170,7 @@
 
                     <ColumnModel>
                         <Columns>
-                            <ext:Column ID="Column1" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing Number" Flex="1" />
+                            <ext:Column ID="Column1" runat="server" DataIndex="CROSSING_NUMBER" Text="DOT #" Flex="1" />
                             <ext:Column ID="Column2" runat="server" DataIndex="APPLICATION_REQUESTED" Text="Appplication #" Flex="1" />
                             <ext:DateColumn ID="DateColumn2" runat="server" DataIndex="APPLICATION_DATE" Text="Date" Flex="1" Format="MM/dd/yyyy" />
                             <ext:Column ID="Column3" runat="server" DataIndex="TRUCK_NUMBER" Text="Truck #" Flex="1" />
@@ -229,7 +233,12 @@
 
                                 <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
                                     <Items>
-                                        <ext:ComboBox ID="uxAddAppReqeusted"
+                              <ext:TextField runat="server" ID="uxAddApp" LabelAlign="Right" FieldLabel="Application #" Width="235" ReadOnly="true" AnchorHorizontal="100%" TabIndex="1" />
+                                        <ext:Label ID="Label4" runat="server" Text="" Width="25" />
+                                        <ext:Checkbox ID="uxAddEntrySprayBox" runat="server" BoxLabel="Spray" BoxLabelAlign="After" TabIndex="3" />
+                              
+                                
+                                       <%-- <ext:ComboBox ID="uxAddAppReqeusted"
                                             runat="server"
                                             FieldLabel="Application #"
                                             LabelAlign="Right"
@@ -253,18 +262,18 @@
 
                                                 </ext:Store>
                                             </Store>
-                                        </ext:ComboBox>
+                                        </ext:ComboBox>--%>
                                         <ext:Label ID="Label3" runat="server" Text="" Width="25" />
-                                        <ext:Checkbox ID="uxAddEntrySprayBox" runat="server" BoxLabel="Spray" BoxLabelAlign="After" Width="250" TabIndex="3" />
+                                         <ext:Checkbox ID="uxAddEntryCutBox" runat="server" BoxLabel="Cut" BoxLabelAlign="After" TabIndex="4" />
+
                                     </Items>
                                 </ext:FieldContainer>
 
                                 <ext:FieldContainer ID="FieldContainer0" runat="server" Layout="HBoxLayout">
                                     <Items>
-                                        <ext:DateField ID="uxAddEntryDate" runat="server" FieldLabel="Date" LabelAlign="Right" Width="300" AllowBlank="false" Editable="false" TabIndex="2" />
+                                        <ext:DateField ID="uxAddEntryDate" runat="server" FieldLabel="Date" LabelAlign="Right" Width="300" AllowBlank="false" Editable="false" TabIndex="2"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side" />
                                         <ext:Label ID="Label1" runat="server" Text="" Width="25" />
-                                        <ext:Checkbox ID="uxAddEntryCutBox" runat="server" BoxLabel="Cut" BoxLabelAlign="After" TabIndex="4" />
-                                        <ext:Label ID="Label2" runat="server" Text="" Width="25" />
+                                        <ext:Label ID="Label2" runat="server" Text="" Width="8" />
                                         <ext:Checkbox ID="uxAddEntryInspectBox" runat="server" BoxLabel="Inspect" BoxLabelAlign="After" Width="250" TabIndex="5" />
 
 
@@ -279,7 +288,7 @@
                                             ID="uxAddEquipmentDropDown"
                                             FieldLabel="Choose Equipment"
                                             Mode="ValueText" LabelAlign="Right"
-                                            AllowBlank="false" Width="500" TabIndex="6">
+                                            AllowBlank="false" Width="500" TabIndex="6"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side">
                                             <Component>
                                                 <ext:GridPanel runat="server"
                                                     ID="uxEquipmentGrid"

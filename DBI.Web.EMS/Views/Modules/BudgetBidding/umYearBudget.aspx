@@ -11,7 +11,7 @@
         }
 
         .inactiveBackground {
-            background-color: gray;
+            background-color: lightgray;
         }
 
         .grandTotalBackground {
@@ -93,6 +93,68 @@
 
                 return Ext.String.format(template, (n >= 0 || red == false) ? "black" : "red", r);
             };
+        };
+        // EXAMPLE
+        //var colorErrors = function (value, metadata, record) {
+        //    if (record.data.WARNING == "Error") {
+        //        metadata.style = "background-color: red;";
+        //    }
+        //    else if (record.data.WARNING == "Warning") {
+        //        metadata.style = "background-color: yellow;";
+        //    }
+        //    return value;
+        //};
+        var colorProjectOverride = function (value, metadata, record) {
+            if (record.data.TYPE == "OVERRIDE") {
+                metadata.style = "background-color: #FFFF99;";
+            }
+            return value;
+        };
+        var colorCompareOverride = function (value, metadata, record) {
+            if (record.data.COMPARE_PRJ_OVERRIDE == "Y") {
+                metadata.style = "background-color: #FFFF99;";
+            }
+
+            var template = '<span style="color:{0};">{1}</span>';
+
+            var dp = 2;
+            var dSeparator = ".";
+            var tSeparator = ",";
+            var symbol = '';
+            var red = false;
+
+            var m = /(\d+)(?:(\.\d+)|)/.exec(value + ""),
+                x = m[1].length > 3 ? m[1].length % 3 : 0;
+            var r = (value < 0 ? '-' : '') // preserve minus sign
+                    + (x ? m[1].substr(0, x) + tSeparator : "")
+                    + m[1].substr(x).replace(/(\d{3})(?=\d)/g, "$1" + tSeparator)
+                    + (dp ? dSeparator + (+m[2] || 0).toFixed(dp).substr(2) : "")
+                    + symbol;
+
+            return Ext.String.format(template, (value >= 0 || red == false) ? "black" : "red", r);
+        };
+        var colorWEOverride = function (value, metadata, record) {
+            if (record.data.WE_OVERRIDE == "Y") {
+                metadata.style = "background-color: #FFFF99;";
+            }
+
+            var template = '<span style="color:{0};">{1}</span>';
+
+            var dp = 2;
+            var dSeparator = ".";
+            var tSeparator = ",";
+            var symbol = '';
+            var red = false;
+
+            var m = /(\d+)(?:(\.\d+)|)/.exec(value + ""),
+                x = m[1].length > 3 ? m[1].length % 3 : 0;
+            var r = (value < 0 ? '-' : '') // preserve minus sign
+                    + (x ? m[1].substr(0, x) + tSeparator : "")
+                    + m[1].substr(x).replace(/(\d{3})(?=\d)/g, "$1" + tSeparator)
+                    + (dp ? dSeparator + (+m[2] || 0).toFixed(dp).substr(2) : "")
+                    + symbol;
+
+            return Ext.String.format(template, (value >= 0 || red == false) ? "black" : "red", r);
         };
     </script>
 </head>
@@ -209,6 +271,8 @@
                                         <ext:ModelField Name="OP" />
                                         <ext:ModelField Name="OP_PERC" />
                                         <ext:ModelField Name="OP_VAR" />
+                                        <ext:ModelField Name="COMPARE_PRJ_OVERRIDE" />
+                                        <ext:ModelField Name="WE_OVERRIDE" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -219,7 +283,9 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column ID="Column1" runat="server" DataIndex="PROJECT_NAME" Text="Project Long Name" Flex="6" />
+                            <ext:Column ID="Column1" runat="server" DataIndex="PROJECT_NAME" Text="Project Long Name" Flex="6">
+                                <Renderer Fn="colorProjectOverride" />
+                            </ext:Column>
                             <ext:Column ID="Column2" runat="server" DataIndex="STATUS" Text="Status" Flex="2" />
                             <ext:NumberColumn ID="Column3" runat="server" DataIndex="ACRES" Text="Acres" Flex="1" Align="Right">
                                 <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
@@ -228,25 +294,25 @@
                                 <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="Column5" runat="server" DataIndex="GROSS_REC" Text="Gross Receipts" Flex="2" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorWEOverride" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="Column6" runat="server" DataIndex="MAT_USAGE" Text="Material Usage" Flex="2" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorWEOverride" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="Column7" runat="server" DataIndex="GROSS_REV" Text="Gross Revenue" Flex="2" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorWEOverride" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="Column8" runat="server" DataIndex="DIR_EXP" Text="Direct Expenses" Flex="2" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorWEOverride" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="Column9" runat="server" DataIndex="OP" Text="OP" Flex="2" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorWEOverride" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="Column10" runat="server" DataIndex="OP_PERC" Text="OP %" Flex="2" Align="Right">
                                 <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','%',false)" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="Column11" runat="server" DataIndex="OP_VAR" Text="OP +/-" Flex="2" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorCompareOverride" />
                             </ext:NumberColumn>
                         </Columns>
                     </ColumnModel>
@@ -477,7 +543,7 @@
                             Layout="HBoxLayout">
                             <Items>
                                 <ext:Label ID="Label1" runat="server" Width="120" Text="Project Number:" />
-                                <ext:DropDownField ID="uxProjectNum" runat="server" Width="110" Mode="ValueText" Editable="false">
+                                <ext:DropDownField ID="uxProjectNum" runat="server" Width="110" Mode="ValueText" Editable="false" FieldStyle="background-color: #EFF7FF; background-image: none;">
                                     <Listeners>
                                         <Expand Handler="this.picker.setWidth(500);" />
                                     </Listeners>
@@ -604,7 +670,8 @@
                                     DisplayField="ID_NAME"
                                     Width="110"
                                     EmptyText="-- Select --"
-                                    Editable="false">
+                                    Editable="false"
+                                    FieldStyle="background-color: #EFF7FF; background-image: none;">
                                     <Store>
                                         <ext:Store ID="uxStatusStore" runat="server" OnReadData="deLoadStatusDropdown" AutoLoad="false">
                                             <Model>
@@ -885,11 +952,11 @@
                                     Layout="HBoxLayout">
                                     <Items>
                                         <ext:Label ID="Label32" runat="server" Width="160" />
-                                        <ext:TextField ID="uxEGrossRec" runat="server" Width="110" ReadOnly="true" Text="0.00" Cls="textRightAlign" SelectOnFocus="true" TabIndex="-3"/>
-                                        <ext:TextField ID="uxEMatUsage" runat="server" Width="110" ReadOnly="true" Text="0.00" Cls="textRightAlign" SelectOnFocus="true" TabIndex="-4"/>
-                                        <ext:TextField ID="uxEGrossRev" runat="server" Width="110" ReadOnly="true" Text="0.00" Cls="textRightAlign" SelectOnFocus="true" TabIndex="-5"/>
-                                        <ext:TextField ID="uxEDirects" runat="server" Width="110" ReadOnly="true" Text="0.00" Cls="textRightAlign" SelectOnFocus="true" TabIndex="-6"/>
-                                        <ext:TextField ID="uxEOP" runat="server" Width="110" ReadOnly="true" Text="0.00" Cls="textRightAlign" SelectOnFocus="true" TabIndex="-7"/>
+                                        <ext:TextField ID="uxEGrossRec" runat="server" Width="110" ReadOnly="true" Text="0.00" Cls="textRightAlign" SelectOnFocus="true" TabIndex="-3" />
+                                        <ext:TextField ID="uxEMatUsage" runat="server" Width="110" ReadOnly="true" Text="0.00" Cls="textRightAlign" SelectOnFocus="true" TabIndex="-4" />
+                                        <ext:TextField ID="uxEGrossRev" runat="server" Width="110" ReadOnly="true" Text="0.00" Cls="textRightAlign" SelectOnFocus="true" TabIndex="-5" />
+                                        <ext:TextField ID="uxEDirects" runat="server" Width="110" ReadOnly="true" Text="0.00" Cls="textRightAlign" SelectOnFocus="true" TabIndex="-6" />
+                                        <ext:TextField ID="uxEOP" runat="server" Width="110" ReadOnly="true" Text="0.00" Cls="textRightAlign" SelectOnFocus="true" TabIndex="-7" />
                                     </Items>
                                 </ext:FieldContainer>
 

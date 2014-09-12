@@ -23,7 +23,7 @@
 <body style="overflow:visible">
     <form id="form1" runat="server">
         <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="false" />
-        <ext:Viewport ID="Viewport1" runat="server" Cls="test" >
+        <ext:Viewport ID="Viewport1" runat="server" Cls="test" Layout="FitLayout" >
             <Items>
                 <ext:Container runat="server" AutoScroll="true" ID="uxSurveyContainer" Hidden="true">
                     <Items>
@@ -32,11 +32,11 @@
                                 <ext:Image ID="uxLogoImage" runat="server" ImageUrl="/Resources/Images/dbis_black_logo.png" Width="250" MaxWidth="250" MaxHeight="154" StyleSpec="text-align: center" />
                             </Items>
                         </ext:Container>
-                        <ext:FormPanel runat="server" ID="uxSurveyDisplay" Layout="FormLayout" MaxWidth="1000" BodyPadding="10" Flex="500" ManageHeight="true" Border="false" >
+                        <ext:FormPanel runat="server" ID="uxSurveyDisplay" Layout="VBoxLayout" MaxWidth="1000" BodyPadding="10" Flex="500" ManageHeight="true" Border="false" >
                             <Items>
                                 <ext:FieldSet runat="server" Title="Form Code" Margin="5" ID="uxCodeFieldset">
                                     <Items>
-                                        <ext:TextField runat="server" ID="uxFormCode" FieldLabel="Enter Form Code" AllowBlank="false" InvalidCls="allowBlank" LabelWidth="150" MsgTarget="Side" IndicatorIcon="BulletRed">
+                                        <ext:TextField runat="server" ID="uxFormCode" FieldLabel="Enter Form Code" AllowBlank="false" InvalidCls="allowBlank" LabelWidth="150" MsgTarget="Side" IndicatorIcon="BulletRed" >
                                             <DirectEvents>
                                                 <Blur OnEvent="deLoadCustomer" />
                                             </DirectEvents>
@@ -60,6 +60,9 @@
                             <Listeners>
                                 <ValidityChange Handler="#{uxSubmitSurveyButton}.setDisabled(!valid)" />
                             </Listeners>
+                            <LayoutConfig>
+                                <ext:VBoxLayoutConfig Align="Stretch" />
+                            </LayoutConfig>
                         </ext:FormPanel>
                     </Items>
                 </ext:Container>
