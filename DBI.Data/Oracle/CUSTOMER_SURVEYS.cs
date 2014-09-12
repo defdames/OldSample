@@ -100,8 +100,9 @@ namespace DBI.Data
         {
             return (from c in _context.CUSTOMER_SURVEY_THRESH_AMT
                     join o in _context.ORG_HIER_V on c.ORG_ID equals o.ORG_ID
+                    join f in _context.CUSTOMER_SURVEY_FORM_TYPES on c.TYPE_ID equals f.TYPE_ID
                     where c.ORG_ID == OrgID
-                    select new CustomerSurveyThresholdStore { AMOUNT_ID = c.AMOUNT_ID, HIGH_DOLLAR_AMT = c.HIGH_DOLLAR_AMT, LOW_DOLLAR_AMT = c.LOW_DOLLAR_AMT, ORG_HIER = o.ORG_HIER }).Distinct();
+                    select new CustomerSurveyThresholdStore { AMOUNT_ID = c.AMOUNT_ID, HIGH_DOLLAR_AMT = c.HIGH_DOLLAR_AMT, LOW_DOLLAR_AMT = c.LOW_DOLLAR_AMT, ORG_HIER = o.ORG_HIER, TYPE_NAME = f.TYPE_NAME, TYPE_ID = f.TYPE_ID }).Distinct();
         }
 
         public static CUSTOMER_SURVEY_THRESH_AMT GetOrganizationThresholdAmount(decimal AmountId, Entities _context)
@@ -249,6 +250,8 @@ namespace DBI.Data
             public decimal? LOW_DOLLAR_AMT { get; set; }
             public decimal? HIGH_DOLLAR_AMT { get; set; }
             public string ORG_HIER { get; set; }
+            public string TYPE_NAME { get; set; }
+            public decimal TYPE_ID { get; set; }
         }
 
         public class CustomerSurveyCategoryStore

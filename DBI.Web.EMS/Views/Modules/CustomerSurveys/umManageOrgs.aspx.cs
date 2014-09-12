@@ -204,6 +204,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             if (uxDollarFormType.Value.ToString() == "Add")
             {
                 Dollars = new CUSTOMER_SURVEY_THRESH_AMT();
+                Dollars.TYPE_ID = decimal.Parse(uxFormTypeCombo.Value.ToString());
                 Dollars.LOW_DOLLAR_AMT = decimal.Parse(uxLowDollar.Text);
                 Dollars.HIGH_DOLLAR_AMT = decimal.Parse(uxHighDollar.Text);
                 Dollars.ORG_ID = OrgId;
@@ -226,6 +227,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 Dollars.HIGH_DOLLAR_AMT = decimal.Parse(uxHighDollar.Text);
                 Dollars.MODIFY_DATE = DateTime.Now;
                 Dollars.MODIFIED_BY = User.Identity.Name;
+                Dollars.TYPE_ID = decimal.Parse(uxFormTypeCombo.Value.ToString());
 
                 GenericData.Update<CUSTOMER_SURVEY_THRESH_AMT>(Dollars);
             }
@@ -239,16 +241,22 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
         {
             uxDollarFormType.Value = "Edit";
             uxDollarAmountId.Value = e.ExtraParams["AmountId"];
-            
+
+            string TypeName;
             CUSTOMER_SURVEY_THRESH_AMT DollarToEdit;
             using (Entities _context = new Entities())
             {
                 DollarToEdit = CUSTOMER_SURVEYS.GetOrganizationThresholdAmount(decimal.Parse(e.ExtraParams["AmountId"].ToString()), _context);
+                TypeName = _context.CUSTOMER_SURVEY_FORM_TYPES.Where(x => x.TYPE_ID == DollarToEdit.TYPE_ID).Select(x => x.TYPE_NAME).Single();
             }
+
 
             uxLowDollar.Value = DollarToEdit.LOW_DOLLAR_AMT;
             uxHighDollar.Value = DollarToEdit.HIGH_DOLLAR_AMT;
-
+            uxFormTypeCombo.SelectedItems.Clear();
+            uxFormTypeCombo.SetRawValue(DollarToEdit.TYPE_ID);
+            uxFormTypeCombo.SelectedItems.Add(new Ext.Net.ListItem(TypeName, DollarToEdit.TYPE_ID));
+            uxFormTypeCombo.UpdateSelectedItems();
             uxAddEditDollarWindow.Show();
         }
 

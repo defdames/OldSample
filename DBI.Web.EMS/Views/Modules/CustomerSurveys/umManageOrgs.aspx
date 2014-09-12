@@ -48,6 +48,7 @@
                                 <ext:Model runat="server">
                                     <Fields>
                                         <ext:ModelField Name="AMOUNT_ID" />
+                                        <ext:ModelField Name="TYPE_NAME" />
                                         <ext:ModelField Name="ORG_ID" />
                                         <ext:ModelField Name="ORG_HIER" />
                                         <ext:ModelField Name="LOW_DOLLAR_AMT" />
@@ -72,6 +73,7 @@
                             <ext:Column runat="server" Text="Upper Amount" DataIndex="HIGH_DOLLAR_AMT" Flex="25">
                                 <Renderer Format="UsMoney" />
                             </ext:Column>
+                            <ext:Column ID="Column1" runat="server" Text="Type Name" DataIndex="TYPE_NAME" />
                         </Columns>
                     </ColumnModel>
                     <Plugins>
@@ -191,7 +193,7 @@
                     <Items>
                         <ext:Hidden runat="server" ID="uxDollarFormType" />
                         <ext:Hidden runat="server" ID="uxDollarAmountId" />
-                        <ext:ComboBox runat="server" ID="uxFormTypeCombo" FieldLabel="Form Type" DisplayField="TYPE_NAME" ValueField="TYPE_ID">
+                        <ext:ComboBox runat="server" ID="uxFormTypeCombo" FieldLabel="Form Type" DisplayField="TYPE_NAME" ValueField="TYPE_ID" AllowBlank="false" InvalidCls="allowBlank" MsgTarget="Side" IndicatorIcon="BulletRed">
                             <Store>
                                 <ext:Store runat="server" ID="uxFormTypeStore" OnReadData="deReadFormTypes" AutoDataBind="true">
                                     <Model>
