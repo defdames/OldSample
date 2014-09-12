@@ -58,7 +58,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             {
                 using (Entities _context = new Entities())
                 {
-                    ToBeSaved = CUSTOMER_SURVEYS.GetCategory(decimal.Parse(uxCategoryId.Text), _context);    
+                    ToBeSaved = CUSTOMER_SURVEYS.GetCategory(decimal.Parse(uxCategoryId.Text), _context);
                 }
                 ToBeSaved.CATEGORY_ID = decimal.Parse(uxCategoryId.Text);
                 ToBeSaved.NAME = uxCategoryName.Text;
@@ -93,6 +93,51 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             }
 
             uxCategoriesStore.Reload();
+        }
+        protected void deReadQuestionCategories(object sender, StoreReadDataEventArgs e)
+        {
+            using (Entities _context = new Entities())
+            {
+                int count;
+                IQueryable<CUSTOMER_SURVEYS.CustomerSurveyQuestionCategoryStore> data = CUSTOMER_SURVEYS.GetQuestionCategories(_context);
+                uxQuestionCategoryStore.DataSource = GenericData.ListFilterHeader<CUSTOMER_SURVEYS.CustomerSurveyQuestionCategoryStore>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                e.Total = count;
+            }
+        }
+
+        protected void deLoadEditQuestionCategoryForm(object sender, DirectEventArgs e)
+        {
+            uxQuestionCategoryFormType.Value = "Edit";
+            uxQuestionCategoryId.Value = e.ExtraParams["CategoryId"];
+            uxQuestionCategoryName.Text = e.ExtraParams["CategoryName"];
+            uxAddEditQuestionCategoryWindow.Show();
+        }
+
+        protected void deSaveQuestionCategory(object sender, DirectEventArgs e)
+        {
+            if (uxQuestionCategoryFormType.Value == "Edit")
+            {
+                //Get Existing
+                decimal CategoryId = decimal.Parse(e.ExtraParams["CategoryId"]);
+                CUSTOMER_SURVEY_QUES_CAT CategoryToEdit;
+
+                using (Entities _context = new Entities())
+                {
+                    CategoryToEdit = CUSTOMER_SURVEYS.GetQuestionCategory(CategoryId, _context);
+                }
+                CategoryToEdit.CATEGORY_NAME = uxQuestionCategoryName.Text;
+                GenericData.Update<CUSTOMER_SURVEY_QUES_CAT>(CategoryToEdit);
+            }
+            else
+            {
+                CUSTOMER_SURVEY_QUES_CAT NewCategory = new CUSTOMER_SURVEY_QUES_CAT();
+                NewCategory.CATEGORY_NAME = uxQuestionCategoryName.Text;
+                GenericData.Insert<CUSTOMER_SURVEY_QUES_CAT>(NewCategory);
+            }
+
+            uxAddEditQuestionCategoryWindow.Hide();
+            uxQuestionCategoryForm.Reset();
+            uxQuestionCategoryStore.Reload();
         }
     }
 }

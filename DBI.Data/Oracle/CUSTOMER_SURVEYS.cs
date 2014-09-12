@@ -28,7 +28,7 @@ namespace DBI.Data
             return (from f in _context.CUSTOMER_SURVEY_FIELDSETS
                     orderby f.SORT_ORDER ascending
                     where f.FORM_ID == FormId
-                    select new CustomerSurveyFieldsets { FIELDSET_ID = f.FIELDSET_ID, FORM_ID = f.FORM_ID, IS_ACTIVE = (f.IS_ACTIVE == "Y" ? true : false), SORT_ORDER = f.SORT_ORDER, TITLE = f.TITLE });
+                    select new CustomerSurveyFieldsets { FIELDSET_ID = f.FIELDSET_ID, FORM_ID = f.FORM_ID, IS_ACTIVE = (f.IS_ACTIVE == "Y" ? true : false), SORT_ORDER = f.SORT_ORDER, TITLE = f.TITLE, CATEGORY_ID = f.CATEGORY_ID });
         }
 
         public static IQueryable<CustomerSurveyQuestions> GetFieldsetQuestionsForGrid(decimal FieldSetId, Entities _context)
@@ -179,6 +179,23 @@ namespace DBI.Data
                     select new CustomerSurveyCompletions { COMPLETION_ID = d.COMPLETION_ID, FORM_ID = f.FORM_ID, LONG_NAME = p.LONG_NAME, FILLED_BY = d.FILLED_BY, FILLED_ON = d.FILLED_ON, FORMS_NAME = f.FORMS_NAME }).Distinct();
         }
 
+        public static IQueryable<CustomerSurveyQuestionCategoryStore> GetQuestionCategories(Entities _context)
+        {
+            return(from c in _context.CUSTOMER_SURVEY_QUES_CAT
+                   join f in _context.CUSTOMER_SURVEY_FIELDSETS on c.CATEGORY_ID equals f.CATEGORY_ID into cf
+                   from subdata in cf.DefaultIfEmpty()
+                   join r in _context.CUSTOMER_SURVEY_RELATION on subdata.FIELDSET_ID equals r.FIELDSET_ID into fr
+                   from secondsub in fr.DefaultIfEmpty()
+                   join q in _context.CUSTOMER_SURVEY_QUESTIONS on secondsub.QUESTION_ID equals q.QUESTION_ID into rq
+                   from thirdsub in rq.DefaultIfEmpty()
+                   group new {c, thirdsub} by new{c.CATEGORY_ID, c.CATEGORY_NAME, thirdsub.QUESTION_ID} into qc
+                   select new CustomerSurveyQuestionCategoryStore{CATEGORY_ID = qc.Key.CATEGORY_ID, CATEGORY_NAME = qc.Key.CATEGORY_NAME, NUM_QUESTIONS = qc.Count(x => x.thirdsub.QUESTION_ID != null)});
+        }
+
+        public static CUSTOMER_SURVEY_QUES_CAT GetQuestionCategory(decimal CategoryId, Entities _context)
+        {
+            return _context.CUSTOMER_SURVEY_QUES_CAT.Where(x => x.CATEGORY_ID == CategoryId).Single();
+        }
         public class CustomerSurveyForms
         {
             public decimal FORM_ID { get; set; }
@@ -186,6 +203,7 @@ namespace DBI.Data
             public int NUM_QUESTIONS { get; set; }
             public decimal CATEGORY_ID { get; set; }
             public decimal ORG_ID { get; set; }
+            public decimal? TYPE_ID { get; set; }
             public string PhantomId { get; set; }
         }
 
@@ -210,6 +228,7 @@ namespace DBI.Data
             public string TITLE { get; set; }
             public decimal SORT_ORDER { get; set; }
             public bool IS_ACTIVE { get; set; }
+            public decimal? CATEGORY_ID { get; set; }
             public int PhantomId { get; set; }
         }
 
@@ -248,6 +267,13 @@ namespace DBI.Data
             public string FORMS_NAME { get; set; }
             public string FILLED_BY { get; set; }
             public string LONG_NAME { get; set; }
+        }
+
+        public class CustomerSurveyQuestionCategoryStore
+        {
+            public decimal CATEGORY_ID { get; set; }
+            public string CATEGORY_NAME { get; set; }
+            public int NUM_QUESTIONS { get; set; }
         }
     }
 }

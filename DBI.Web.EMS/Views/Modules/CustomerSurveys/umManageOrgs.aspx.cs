@@ -36,6 +36,13 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             }
         }
 
+        protected void deReadFormTypes(object sender, StoreReadDataEventArgs e)
+        {
+            using (Entities _context = new Entities())
+            {
+                uxFormTypeStore.DataSource = _context.CUSTOMER_SURVEY_FORM_TYPES.ToList();
+            }
+        }
         protected long GetOrgFromTree(string _selectedRecordID)
         {
             if (_selectedRecordID.Contains(":"))

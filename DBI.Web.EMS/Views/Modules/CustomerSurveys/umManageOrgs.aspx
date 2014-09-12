@@ -5,6 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+    <link rel="stylesheet" type="text/css" href="../../../Resources/StyleSheets/main.css" />
 </head>
 <body>
     <form id="form1" runat="server">
@@ -21,7 +22,6 @@
                     Width="300"
                     AutoScroll="true"
                     RootVisible="true"
-                    SingleExpand="true"
                     Lines="false"
                     UseArrows="true">
                     <Store>
@@ -182,14 +182,34 @@
                 </ext:GridPanel>
             </Items>
         </ext:Viewport>
-        <ext:Window runat="server" ID="uxAddEditDollarWindow" Hidden="true" Modal="true" Title="Add Dollar Amounts" Width="250">
+        <ext:Window runat="server" ID="uxAddEditDollarWindow" Hidden="true" Modal="true" Title="Add Dollar Amounts" Width="350">
             <Items>
-                <ext:FormPanel runat="server" ID="uxDollarForm" Layout="FormLayout">
+                <ext:FormPanel runat="server" ID="uxDollarForm" Layout="VBoxLayout">
+                    <LayoutConfig>
+                        <ext:VBoxLayoutConfig Align="Stretch" />
+                    </LayoutConfig>
                     <Items>
                         <ext:Hidden runat="server" ID="uxDollarFormType" />
                         <ext:Hidden runat="server" ID="uxDollarAmountId" />
-                        <ext:NumberField runat="server" ID="uxLowDollar" FieldLabel="Low Dollar Amount" MinValue="1" AllowBlank="false" AllowExponential="false" />
-                        <ext:NumberField runat="server" ID="uxHighDollar" FieldLabel="High Dollar Amount" MinValue="1" AllowBlank="false" AllowExponential="false" />
+                        <ext:ComboBox runat="server" ID="uxFormTypeCombo" FieldLabel="Form Type" DisplayField="TYPE_NAME" ValueField="TYPE_ID">
+                            <Store>
+                                <ext:Store runat="server" ID="uxFormTypeStore" OnReadData="deReadFormTypes" AutoDataBind="true">
+                                    <Model>
+                                        <ext:Model runat="server">
+                                            <Fields>
+                                                <ext:ModelField Name="TYPE_ID" />
+                                                <ext:ModelField Name="TYPE_NAME" />
+                                            </Fields>
+                                        </ext:Model>
+                                    </Model>
+                                    <Proxy>
+                                        <ext:PageProxy />
+                                    </Proxy>
+                                </ext:Store>
+                            </Store>
+                        </ext:ComboBox>
+                        <ext:NumberField runat="server" ID="uxLowDollar" FieldLabel="Low Dollar Amount" MinValue="1" AllowBlank="false" AllowExponential="false" InvalidCls="allowBlank" MsgTarget="Side" IndicatorIcon="BulletRed" />
+                        <ext:NumberField runat="server" ID="uxHighDollar" FieldLabel="High Dollar Amount" MinValue="1" AllowBlank="false" AllowExponential="false" InvalidCls="allowBlank" MsgTarget="Side" IndicatorIcon="BulletRed" />
                     </Items>
                     <Buttons>
                         <ext:Button runat="server" ID="uxSaveDollarButton" Text="Submit" Icon="Add">
@@ -217,7 +237,7 @@
                     <Items>
                         <ext:Hidden runat="server" ID="uxThresholdFormType" />
                         <ext:Hidden runat="server" ID="uxThresholdId" />
-                        <ext:NumberField runat="server" ID="uxThreshold" FieldLabel="Threshold in %" AllowBlank="false" MinValue="1" MaxValue="100" AllowDecimals="false" AllowExponential="false" />
+                        <ext:NumberField runat="server" ID="uxThreshold" FieldLabel="Threshold in %" AllowBlank="false" MinValue="1" MaxValue="100" AllowDecimals="false" AllowExponential="false" InvalidCls="allowBlank" MsgTarget="Side" IndicatorIcon="BulletRed" />
                     </Items>
                     <Buttons>
                         <ext:Button runat="server" ID="uxSaveThresholdButton" Text="Submit" Icon="Add" Disabled="true">

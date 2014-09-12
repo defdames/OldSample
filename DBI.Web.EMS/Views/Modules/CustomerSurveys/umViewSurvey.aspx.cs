@@ -493,11 +493,19 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
         protected void deLoadCustomer(object sender, DirectEventArgs e)
         {
-
+            
             decimal CompletionId = 0;
             if (uxFormCode.Value != null)
             {
-                CompletionId = decimal.Parse(uxFormCode.Value.ToString());
+                try
+                {
+                    CompletionId = decimal.Parse(uxFormCode.Value.ToString());
+                }
+                catch (Exception ex)
+                {
+                    X.Msg.Alert("Error", "Invalid Form Code entered, please try again.").Show();
+                    uxFormCode.Clear();
+                }
             }
             PROJECT_CONTACTS_V Contact;
             string ProjectName = null;

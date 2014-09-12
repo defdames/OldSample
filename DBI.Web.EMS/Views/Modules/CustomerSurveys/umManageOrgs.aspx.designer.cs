@@ -175,6 +175,24 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.Hidden uxDollarAmountId;
         
         /// <summary>
+        /// uxFormTypeCombo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ComboBox uxFormTypeCombo;
+        
+        /// <summary>
+        /// uxFormTypeStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxFormTypeStore;
+        
+        /// <summary>
         /// uxLowDollar control.
         /// </summary>
         /// <remarks>
