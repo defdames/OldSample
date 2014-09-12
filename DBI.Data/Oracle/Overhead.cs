@@ -334,11 +334,12 @@ namespace DBI.Data
                     BUDGET_VERSION _data = new BUDGET_VERSION();
                     _data.ORGANIZATION_ID = _orgInformation.ORGANIZATION_ID;
                     _data.ORGANIZATION_NAME = _orgInformation.ORGANIZATION_NAME;
-                    _data.BUDGET_STATUS = (_budget.STATUS == "O") ? "Open" : (_budget.STATUS == "C") ? "Closed" : (_budget.STATUS == "P") ? "Pending" : "Locked";
+                    _data.BUDGET_STATUS = (_budget.STATUS == "O") ? "Open" : "Closed" ;
                     _data.FISCAL_YEAR = _budget.FISCAL_YEAR;
                     _data.BUDGET_DESCRIPTION = BudgetVersionDescriptionByTypeID(context, _budget.OVERHEAD_BUDGET_TYPE_ID);
                     _data.ACCOUNT_RANGE = AccountRangeByOrganizationID(context, _data.ORGANIZATION_ID);
                     _data.ORG_BUDGET_ID = _budget.ORG_BUDGET_ID;
+                    _data.OVERHEAD_BUDGET_TYPE_ID = _budget.OVERHEAD_BUDGET_TYPE_ID;
                     _budgetOrgList.Add(_data);
             }
 
@@ -354,6 +355,7 @@ namespace DBI.Data
             public string ACCOUNT_RANGE { get; set; }
             public short FISCAL_YEAR { get; set; }
             public long ORG_BUDGET_ID { get; set; }
+            public long OVERHEAD_BUDGET_TYPE_ID { get; set; }
         }
 
 
@@ -462,7 +464,6 @@ namespace DBI.Data
             return _data;
         }
 
-
         /// <summary>
         /// Returns the budget detail by organization id and budget id
         /// </summary>
@@ -470,8 +471,19 @@ namespace DBI.Data
         /// <param name="budgetID"></param>
         /// <param name="organizationID"></param>
         /// <returns></returns>
-        public static List<OVERHEAD_BUDGET_VIEW> BudgetDetailsViewByBudgetID(Entities context, long budgetID, long organizationID, Boolean printView = false, Boolean hideBlankLines = false)
+        public static List<OVERHEAD_BUDGET_VIEW> BudgetDetailsViewByBudgetID(Entities context, long budgetID, long organizationID, Boolean printView = false, Boolean hideBlankLines = false, Boolean rollup = false, long leID = 0)
         {
+            // If this is a rollup we need additional information
+            if (rollup)
+            {
+                //First get the current information from the budget displayed
+                var _budgetRollupDetail = BudgetDetailByBudgetID(context, budgetID);
+
+                //Now I need a list of organizations that are in that hierarchy listed below
+               List<HR.ORGANIZATION_V1> _activeOrganizationHierarchy =  HR.ActiveOrganizationsByHierarchy(long.Parse(SYS_ORG_PROFILE_OPTIONS.OrganizationProfileOption("OverheadBudgetHierarchy",leID)),organizationID);
+
+            }
+
             var _budgetDetail = BudgetDetailByBudgetID(context, budgetID);
             var _validAccounts = AccountListValidByOrganizationID(context, organizationID);
             var _categoryList = CategoryAsQueryable(context);

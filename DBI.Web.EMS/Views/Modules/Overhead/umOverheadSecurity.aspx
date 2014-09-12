@@ -58,7 +58,7 @@
                         <ext:MenuPanel ID="uxSystem"
                             runat="server"
                             Title="System Maintenance"
-                            Icon="Database">
+                            Icon="Database" Hidden="true">
                             <Menu ID="Menu2" runat="server">
                                 <Items>
                                     <ext:MenuItem Text="Import Actuals" Icon="PageAttach">

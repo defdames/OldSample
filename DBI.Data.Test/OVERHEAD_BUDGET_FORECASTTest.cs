@@ -118,5 +118,21 @@ namespace DBI.Data.Test
         }
 
 
+
+        /// <summary>
+        ///A test for BudgetDetailsViewByOrganizationID
+        ///</summary>
+        [TestMethod()]
+        public void BudgetDetailsViewByOrganizationIDTest()
+        {
+            Entities context = new Entities(); // TODO: Initialize to an appropriate value
+            long organizationID = 121; // TODO: Initialize to an appropriate value
+            long hierarchyID = 64; // TODO: Initialize to an appropriate value
+            bool printView = false; // TODO: Initialize to an appropriate value
+            bool hideBlankLines = false; // TODO: Initialize to an appropriate value
+            List<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW> actual;
+            actual = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByOrganizationID(context, organizationID, hierarchyID, printView, hideBlankLines);
+            Assert.Inconclusive("Verify the correctness of this test method.");
+        }
     }
 }

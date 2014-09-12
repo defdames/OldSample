@@ -78,18 +78,11 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                 var data = HR.OverheadOrganizationStatusByHierarchy(_hierarchyID, _organizationID);
 
-                if (e.Parameters.Count > 4)
+                if (!uxShowAllOrganizationsCheckBox.Checked)
                 {
-                    if (e.Parameters["TOGGLE_ACTIVE"] == "Y")
-                    {
-                        data = data.Where(x => x.ORGANIZATION_STATUS == "Active").ToList();
-                    }
+                    data = data.Where(x => x.ORGANIZATION_STATUS == "Active").ToList();
                 }
-                else
-                    {
-                        data = data.Where(x => x.ORGANIZATION_STATUS == "Active").ToList();
-                    }
-            
+    
                 int count;
                 uxOrganizationSecurityStore.DataSource = GenericData.EnumerableFilterHeader<HR.ORGANIZATION_V1>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                 e.Total = count;
