@@ -307,7 +307,7 @@ namespace DBI.Data
         /// <param name="hierarchyId"></param>
         /// <param name="organizationId"></param>
         /// <returns></returns>
-        public static List<BUDGET_VERSION> OrganizationsByHierarchy(Entities context, long hierarchyID = 0, long leOrganizationID = 0, Boolean withSecurity = false)
+        public static List<BUDGET_VERSION> OrganizationBudgetsByHierarchy(Entities context, long hierarchyID = 0, long leOrganizationID = 0, Boolean withSecurity = false, Boolean withEMSSecurity = false)
         {
             List<BUDGET_VERSION> _budgetOrgList = new List<BUDGET_VERSION>();
             IEnumerable<OVERHEAD_ORG_BUDGETS> _budgetlist = BudgetOrganizations(context).ToList();
@@ -326,6 +326,15 @@ namespace DBI.Data
                                    select b);
             }
 
+            //Limit list to organizations in hierarchy and that I have access to view in EMS
+            if (withEMSSecurity)
+            {
+                //List of All organiztions in hierarchy and must be in organizations I have access to view
+                _budgetlist = (from b in _budgetlist
+                               where SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.LoggedInUser().USER_ID).Any(x => x.ORG_ID == b.ORGANIZATION_ID)
+                               select b);                
+            }
+
             foreach (OVERHEAD_ORG_BUDGETS _budget in _budgetlist)
             {
                 //Get Organization Information
@@ -341,6 +350,31 @@ namespace DBI.Data
                     _data.ORG_BUDGET_ID = _budget.ORG_BUDGET_ID;
                     _data.OVERHEAD_BUDGET_TYPE_ID = _budget.OVERHEAD_BUDGET_TYPE_ID;
                     _budgetOrgList.Add(_data);
+            }
+
+            // Return budget version for current org if they exist (which they should)
+            if (withEMSSecurity)
+            {
+                IEnumerable<OVERHEAD_ORG_BUDGETS> _currentbudgetlist = BudgetOrganizations(context).Where(x => x.ORGANIZATION_ID == leOrganizationID).ToList();
+
+
+                foreach (OVERHEAD_ORG_BUDGETS _budget in _currentbudgetlist)
+                {
+                    //Get Organization Information
+                    HR.ORGANIZATION _orgInformation = HR.Organization(leOrganizationID);
+
+                    BUDGET_VERSION _data = new BUDGET_VERSION();
+                    _data.ORGANIZATION_ID = _orgInformation.ORGANIZATION_ID;
+                    _data.ORGANIZATION_NAME = _orgInformation.ORGANIZATION_NAME;
+                    _data.BUDGET_STATUS = (_budget.STATUS == "O") ? "Open" : "Closed";
+                    _data.FISCAL_YEAR = _budget.FISCAL_YEAR;
+                    _data.BUDGET_DESCRIPTION = BudgetVersionDescriptionByTypeID(context, _budget.OVERHEAD_BUDGET_TYPE_ID);
+                    _data.ACCOUNT_RANGE = AccountRangeByOrganizationID(context, _data.ORGANIZATION_ID);
+                    _data.ORG_BUDGET_ID = _budget.ORG_BUDGET_ID;
+                    _data.OVERHEAD_BUDGET_TYPE_ID = _budget.OVERHEAD_BUDGET_TYPE_ID;
+                    _budgetOrgList.Add(_data);
+                }
+
             }
 
             return _budgetOrgList;
@@ -412,13 +446,7 @@ namespace DBI.Data
 
             foreach (OVERHEAD_GL_RANGE _range in _rangeList)
             {
-                var _adata = context.GL_ACCOUNTS_V.Where(x => String.Compare(x.SEGMENT1, _range.SRSEGMENT1) >= 0 && String.Compare(x.SEGMENT1, _range.ERSEGMENT1) <= 0);
-                _adata = _adata.Where(x => String.Compare(x.SEGMENT2, _range.SRSEGMENT2) >= 0 && String.Compare(x.SEGMENT2, _range.ERSEGMENT2) <= 0);
-                _adata = _adata.Where(x => String.Compare(x.SEGMENT3, _range.SRSEGMENT3) >= 0 && String.Compare(x.SEGMENT3, _range.ERSEGMENT3) <= 0);
-                _adata = _adata.Where(x => String.Compare(x.SEGMENT4, _range.SRSEGMENT4) >= 0 && String.Compare(x.SEGMENT4, _range.ERSEGMENT4) <= 0);
-                _adata = _adata.Where(x => String.Compare(x.SEGMENT5, _range.SRSEGMENT5) >= 0 && String.Compare(x.SEGMENT5, _range.ERSEGMENT5) <= 0);
-                _adata = _adata.Where(x => String.Compare(x.SEGMENT6, _range.SRSEGMENT6) >= 0 && String.Compare(x.SEGMENT6, _range.ERSEGMENT6) <= 0);
-                _adata = _adata.Where(x => String.Compare(x.SEGMENT7, _range.SRSEGMENT7) >= 0 && String.Compare(x.SEGMENT7, _range.ERSEGMENT7) <= 0);
+                var _adata = context.GL_ACCOUNTS_V.Where(x => string.Compare(x.SEGMENT1 + x.SEGMENT2 + x.SEGMENT3 + x.SEGMENT4 + x.SEGMENT5 + x.SEGMENT6 + x.SEGMENT7, _range.SRSEGMENT1 + _range.SRSEGMENT2 + _range.SRSEGMENT3 + _range.SRSEGMENT4 + _range.SRSEGMENT5 + _range.SRSEGMENT6 + _range.SRSEGMENT7) >= 0).Where(x => string.Compare(x.SEGMENT1 + x.SEGMENT2 + x.SEGMENT3 + x.SEGMENT4 + x.SEGMENT5 + x.SEGMENT6 + x.SEGMENT7, _range.ERSEGMENT1 + _range.ERSEGMENT2 + _range.ERSEGMENT3 + _range.ERSEGMENT4 + _range.ERSEGMENT5 + _range.ERSEGMENT6 + _range.ERSEGMENT7) <= 0);
                 List<GL_ACCOUNTS_V> _accountRange = _adata.ToList();
                 _accountList.AddRange(_accountRange);
             }
@@ -471,16 +499,17 @@ namespace DBI.Data
         /// <param name="budgetID"></param>
         /// <param name="organizationID"></param>
         /// <returns></returns>
-        public static List<OVERHEAD_BUDGET_VIEW> BudgetDetailsViewByBudgetID(Entities context, long budgetID, long organizationID, Boolean printView = false, Boolean hideBlankLines = false, Boolean rollup = false, long leID = 0)
+        public static List<OVERHEAD_BUDGET_VIEW> BudgetDetailsViewByBudgetID(Entities context, long budgetID, long organizationID, Boolean printView = false, Boolean hideBlankLines = false, Boolean rollup = false, long leorganizationID = 0)
         {
             // If this is a rollup we need additional information
             if (rollup)
             {
                 //First get the current information from the budget displayed
-                var _budgetRollupDetail = BudgetDetailByBudgetID(context, budgetID);
+                var _budgetRollupHeader = BudgetByID(context, budgetID);
 
-                //Now I need a list of organizations that are in that hierarchy listed below
-               List<HR.ORGANIZATION_V1> _activeOrganizationHierarchy =  HR.ActiveOrganizationsByHierarchy(long.Parse(SYS_ORG_PROFILE_OPTIONS.OrganizationProfileOption("OverheadBudgetHierarchy",leID)),organizationID);
+                //Now get a list of budgets I have access to view in EMS using hierarchy security
+                List<BUDGET_VERSION> _mySystemOrganizations = OVERHEAD_BUDGET_FORECAST.OrganizationBudgetsByHierarchy(context, long.Parse(SYS_ORG_PROFILE_OPTIONS.OrganizationProfileOption("OverheadBudgetHierarchy", leorganizationID)), organizationID, true, true)
+                    .Where(x => x.OVERHEAD_BUDGET_TYPE_ID == _budgetRollupHeader.OVERHEAD_BUDGET_TYPE_ID & x.FISCAL_YEAR == _budgetRollupHeader.FISCAL_YEAR).ToList();
 
             }
 

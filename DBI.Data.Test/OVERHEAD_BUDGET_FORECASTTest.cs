@@ -120,18 +120,18 @@ namespace DBI.Data.Test
 
 
         /// <summary>
-        ///A test for BudgetDetailsViewByOrganizationID
+        ///A test for OrganizationBudgetsByHierarchy
         ///</summary>
         [TestMethod()]
-        public void BudgetDetailsViewByOrganizationIDTest()
+        public void OrganizationBudgetsByHierarchyTest()
         {
             Entities context = new Entities(); // TODO: Initialize to an appropriate value
-            long organizationID = 121; // TODO: Initialize to an appropriate value
             long hierarchyID = 64; // TODO: Initialize to an appropriate value
-            bool printView = false; // TODO: Initialize to an appropriate value
-            bool hideBlankLines = false; // TODO: Initialize to an appropriate value
-            List<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW> actual;
-            actual = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByOrganizationID(context, organizationID, hierarchyID, printView, hideBlankLines);
+            long leOrganizationID = 138; // TODO: Initialize to an appropriate value
+            bool withSecurity = true; // TODO: Initialize to an appropriate value
+            bool withEMSSecurity = true; // TODO: Initialize to an appropriate value
+            List<OVERHEAD_BUDGET_FORECAST.BUDGET_VERSION> actual;
+            actual = OVERHEAD_BUDGET_FORECAST.OrganizationBudgetsByHierarchy(context, hierarchyID, leOrganizationID, withSecurity, withEMSSecurity);
             Assert.Inconclusive("Verify the correctness of this test method.");
         }
     }
