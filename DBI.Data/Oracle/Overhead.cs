@@ -511,6 +511,11 @@ namespace DBI.Data
                 List<BUDGET_VERSION> _mySystemOrganizations = OVERHEAD_BUDGET_FORECAST.OrganizationBudgetsByHierarchy(context, long.Parse(SYS_ORG_PROFILE_OPTIONS.OrganizationProfileOption("OverheadBudgetHierarchy", leorganizationID)), organizationID, true, true)
                     .Where(x => x.OVERHEAD_BUDGET_TYPE_ID == _budgetRollupHeader.OVERHEAD_BUDGET_TYPE_ID & x.FISCAL_YEAR == _budgetRollupHeader.FISCAL_YEAR).ToList();
 
+                List<OVERHEAD_BUDGET_DETAIL> _rollUpBudgetDetail = new List<OVERHEAD_BUDGET_DETAIL>();
+
+
+
+
             }
 
             var _budgetDetail = BudgetDetailByBudgetID(context, budgetID);
