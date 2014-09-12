@@ -17,6 +17,7 @@ namespace DBI.Data
         public CUSTOMER_SURVEY_FORM_TYPES()
         {
             this.CUSTOMER_SURVEY_FORMS = new HashSet<CUSTOMER_SURVEY_FORMS>();
+            this.CUSTOMER_SURVEY_THRESH_AMT = new HashSet<CUSTOMER_SURVEY_THRESH_AMT>();
         }
     
         public decimal TYPE_ID { get; set; }
@@ -24,5 +25,6 @@ namespace DBI.Data
         public Nullable<decimal> SORT_ORDER { get; set; }
     
         public virtual ICollection<CUSTOMER_SURVEY_FORMS> CUSTOMER_SURVEY_FORMS { get; set; }
+        public virtual ICollection<CUSTOMER_SURVEY_THRESH_AMT> CUSTOMER_SURVEY_THRESH_AMT { get; set; }
     }
 }
