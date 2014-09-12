@@ -180,6 +180,7 @@
                                 <Click OnEvent="deLoadPanel">
                                     <ExtraParams>
                                         <ext:Parameter Name="OrgId" Value="#{uxProjectsGrid}.getSelectionModel().getSelection()[0].data.CARRYING_OUT_ORGANIZATION_ID" Mode="Raw" />
+                                        <ext:Parameter Name="ProjectId" Value="#{uxProjectsGrid}.getSelectionModel().getSelection()[0].data.PROJECT_ID" Mode="Raw" />
                                     </ExtraParams>
                                 </Click>
                             </DirectEvents>

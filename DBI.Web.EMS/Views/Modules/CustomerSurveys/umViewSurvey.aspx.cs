@@ -28,8 +28,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 uxCodeFieldset.Hide();
                 uxLogoImage.Hide();
                 uxLogoContainer.Hide();
-                uxSubmitSurveyButton.Hide();
-                uxCancelSurveyButton.Hide();
+                
 
                 if (Request.QueryString["Print"] != "print")
                 {
@@ -38,6 +37,8 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 else
                 {
                     uxSurveyDisplay.MaxWidth = 600;
+                    uxSubmitSurveyButton.Hide();
+                    uxCancelSurveyButton.Hide();
                    
                 }
             }
@@ -217,6 +218,12 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             {
                 List<CUSTOMER_SURVEYS.CustomerSurveyFieldsets> Fieldsets = CUSTOMER_SURVEYS.GetFormFieldSets(FormId, _context).Where(x => x.IS_ACTIVE == true).OrderBy(x => x.SORT_ORDER).ToList();
 
+                string FilledBy = CUSTOMER_SURVEYS.GetFormCompletion(_context).Where(x => x.COMPLETION_ID == CompletionId && x.FILLED_ON == null).Select(x => x.FILLED_BY).SingleOrDefault();
+                if (!string.IsNullOrEmpty(FilledBy))
+                {
+                    uxSubmitSurveyButton.Hide();
+                    uxCancelSurveyButton.Hide();
+                }
                 foreach (CUSTOMER_SURVEYS.CustomerSurveyFieldsets Fieldset in Fieldsets)
                 {
                     var QuestionQuery = CUSTOMER_SURVEYS.GetFieldsetQuestionsForGrid(Fieldset.FIELDSET_ID, _context).OrderBy(x => x.SORT_ORDER);
@@ -239,7 +246,10 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                     TextField.ID = "question" + Question.QUESTION_ID.ToString();
                                     TextField.AllowBlank = !Question.IS_REQUIRED;
                                     TextField.FieldLabel = Question.TEXT;
-                                    TextField.ReadOnly = true;
+                                    if (!string.IsNullOrEmpty(FilledBy))
+                                    {
+                                        TextField.ReadOnly = true;
+                                    }
                                     TextField.LabelWidth = 250;
                                     TextField.Width = 600;
                                     try
@@ -259,7 +269,10 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                     TextArea.ID = "question" + Question.QUESTION_ID.ToString();
                                     TextArea.AllowBlank = !Question.IS_REQUIRED;
                                     TextArea.FieldLabel = Question.TEXT;
-                                    TextArea.ReadOnly = true;
+                                    if (!string.IsNullOrEmpty(FilledBy))
+                                    {
+                                        TextArea.ReadOnly = true;
+                                    }
                                     TextArea.LabelWidth = 150;
                                     TextArea.Width = 600;
                                     try
@@ -278,7 +291,10 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                     Combobox.AllowBlank = !Question.IS_REQUIRED;
                                     Combobox.TypeAhead = true;
                                     Combobox.ForceSelection = true;
-                                    Combobox.ReadOnly = true;
+                                    if (!string.IsNullOrEmpty(FilledBy))
+                                    {
+                                        Combobox.ReadOnly = true;
+                                    }
                                     Combobox.QueryMode = DataLoadMode.Local;
                                     try
                                     {
@@ -318,7 +334,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                                 BoxLabel = Option.OPTION_NAME,
                                                 Value = Option.OPTION_NAME,
                                                 Checked = (Answer.ANSWER == Option.OPTION_NAME ? true : false),
-                                                Disabled = true
+                                                Disabled = !string.IsNullOrEmpty(FilledBy)
                                             });
                                         }
                                         catch (Exception e)
@@ -329,7 +345,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                                 BoxLabel = Option.OPTION_NAME,
                                                 Value = Option.OPTION_NAME,
                                                 Checked = false,
-                                                Disabled = true
+                                                Disabled = !string.IsNullOrEmpty(FilledBy)
                                             });
                                         }
                                     }
@@ -357,7 +373,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                                 BoxLabel = Option.OPTION_NAME,
                                                 Value = Option.OPTION_NAME,
                                                 Checked = (Answer.ANSWER == Option.OPTION_NAME ? true : false),
-                                                Disabled = true
+                                                Disabled = !string.IsNullOrEmpty(FilledBy)
                                             });
                                         }
                                         catch (Exception e)
@@ -368,7 +384,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                                 BoxLabel = Option.OPTION_NAME,
                                                 Value = Option.OPTION_NAME,
                                                 Checked = false,
-                                                Disabled = true
+                                                Disabled = !string.IsNullOrEmpty(FilledBy)
                                             });
                                         }
                                     }
@@ -386,7 +402,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                         DateQuestion.Value = Answer.ANSWER;
                                     }
                                     catch (Exception e) { }
-                                    DateQuestion.ReadOnly = true;
+                                    DateQuestion.ReadOnly = !string.IsNullOrEmpty(FilledBy);
                                     NewFieldset.Items.Add(DateQuestion);
                                     break;
                             }
