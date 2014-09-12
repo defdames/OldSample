@@ -283,6 +283,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.NumberField uxThreshold;
         
         /// <summary>
+        /// uxRandomCheckbox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Checkbox uxRandomCheckbox;
+        
+        /// <summary>
         /// uxSaveThresholdButton control.
         /// </summary>
         /// <remarks>

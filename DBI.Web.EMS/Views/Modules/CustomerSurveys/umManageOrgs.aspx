@@ -240,6 +240,7 @@
                         <ext:Hidden runat="server" ID="uxThresholdFormType" />
                         <ext:Hidden runat="server" ID="uxThresholdId" />
                         <ext:NumberField runat="server" ID="uxThreshold" FieldLabel="Threshold in %" AllowBlank="false" MinValue="1" MaxValue="100" AllowDecimals="false" AllowExponential="false" InvalidCls="allowBlank" MsgTarget="Side" IndicatorIcon="BulletRed" />
+                        <ext:Checkbox runat="server" ID="uxRandomCheckbox" LabelAlign="Right" FieldLabel="Random" />
                     </Items>
                     <Buttons>
                         <ext:Button runat="server" ID="uxSaveThresholdButton" Text="Submit" Icon="Add" Disabled="true">
