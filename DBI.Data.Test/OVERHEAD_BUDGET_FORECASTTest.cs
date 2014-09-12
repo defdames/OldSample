@@ -75,7 +75,7 @@ namespace DBI.Data.Test
             long budgetID = 187; // TODO: Initialize to an appropriate value
             long organizationID = 138; // TODO: Initialize to an appropriate value
             List<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW> actual;
-            actual = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByBudgetID(context, budgetID, organizationID);
+            actual = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByBudgetID(context, budgetID, organizationID,true);
         }
 
         /// <summary>
@@ -115,6 +115,24 @@ namespace DBI.Data.Test
             string loggedInUser = "LJANKOWSKI";// TODO: Initialize to an appropriate value
             bool actual;
             actual = OVERHEAD_BUDGET_FORECAST.ImportActualForBudgetVersion(context, periodsToImport, budgetid, loggedInUser, lockImportData);
+        }
+
+
+
+        /// <summary>
+        ///A test for BudgetDetailsViewByOrganizationID
+        ///</summary>
+        [TestMethod()]
+        public void BudgetDetailsViewByOrganizationIDTest()
+        {
+            Entities context = new Entities(); // TODO: Initialize to an appropriate value
+            long organizationID = 121; // TODO: Initialize to an appropriate value
+            long hierarchyID = 64; // TODO: Initialize to an appropriate value
+            bool printView = false; // TODO: Initialize to an appropriate value
+            bool hideBlankLines = false; // TODO: Initialize to an appropriate value
+            List<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW> actual;
+            actual = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByOrganizationID(context, organizationID, hierarchyID, printView, hideBlankLines);
+            Assert.Inconclusive("Verify the correctness of this test method.");
         }
     }
 }

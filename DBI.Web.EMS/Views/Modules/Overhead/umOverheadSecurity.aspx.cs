@@ -100,10 +100,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             string _nodeText = e.ExtraParams["ORGANIZATION_NAME"];
 
                 uxCenterTabPanel.RemoveAll();
-                AddTab(sm.SelectedRecordID + "OF", _nodeText + " - Budget Versions", "umBudgetVersions.aspx?orgid=" + sm.SelectedRecordID, false, true);
+                //AddTab(sm.SelectedRecordID + "OF", _nodeText + " - Budget Versions", "umBudgetVersions.aspx?orgid=" + sm.SelectedRecordID, false, true);
                 AddTab(sm.SelectedRecordID + "OS", _nodeText + " - Organization Security", "umOverheadOrganizationSecurity.aspx?orgid=" + sm.SelectedRecordID, false, false);
-                AddTab(sm.SelectedRecordID + "BT", _nodeText + " - Budget Types", "umOverheadBudgetTypes.aspx?leid=" + sm.SelectedRecordID, false, false);
-                uxOrganizationTreePanel.Collapse();
+                //AddTab(sm.SelectedRecordID + "BT", _nodeText + " - Budget Types", "umOverheadBudgetTypes.aspx?leid=" + sm.SelectedRecordID, false, false);
+                uxAccordingPanel.Collapse();
 
         }
 
