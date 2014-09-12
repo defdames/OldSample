@@ -359,27 +359,29 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         protected void deLoadReports(object sender, StoreReadDataEventArgs e)
         {
 
-                long orgID = long.Parse(Request.QueryString["OrgID"]);
+                
                 string strOrgID = Request.QueryString["OrgID"];
-                string orgName = Request.QueryString["orgName"];
-                long yearID = long.Parse(Request.QueryString["fiscalYear"]);
                 string strYearID = Request.QueryString["fiscalYear"];
-                long verID = long.Parse(Request.QueryString["verID"]);
                 string strVerID = Request.QueryString["verID"];
-
-                long prevYearID = Convert.ToInt64(uxHidPrevYear.Text);
                 string strPrevYearID = uxHidPrevYear.Text;
-                long prevVerID = Convert.ToInt64(uxHidPrevVer.Text);
                 string strPrevVerID = uxHidPrevVer.Text;
 
-                string url = "/Views/Modules/BudgetBidding/Reports/umReport1.aspx?orgName=" + orgName + "strOrgID=" + strOrgID + "strYearID=" + strYearID + "strVerID=" + strVerID + "strPrevYearID=" + strPrevYearID + "strPrevVerID=" + strPrevVerID;
+                string strorgName = Request.QueryString["orgName"];
+                long orgID = long.Parse(Request.QueryString["OrgID"]);
+                long yearID = long.Parse(Request.QueryString["fiscalYear"]);
+                long verID = long.Parse(Request.QueryString["verID"]);
+                long prevYearID = Convert.ToInt64(uxHidPrevYear.Text);
+                long prevVerID = Convert.ToInt64(uxHidPrevVer.Text);
+                
+
+                string url = "/Views/Modules/BudgetBidding/Reports/umReport1.aspx?orgName=" + strorgName + "orgID=" + orgID + "yearID=" + yearID + "verID=" + verID + "prevYearID=" + prevYearID + "prevVerID=" + prevVerID;
 
                 Window win = new Window
                 {
                     ID = "uxReport",
                     Title = "Report",
-                    Height = 350,
-                    Width = 500,
+                    Height = 600,
+                    Width = 800,
                     Modal = true,
                     Resizable = true,
                     CloseAction = CloseAction.Destroy,
@@ -1470,13 +1472,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             if (amount < lowRange || amount > highRange) { amount = 0; }
             return amount;
         }
-<<<<<<< HEAD
+
         
         private void LoadReport()
         {
             
         }
-=======
+
         protected void deCancel(object sender, DirectEventArgs e)
         {
             uxProjectInfo.Disable();
@@ -1545,7 +1547,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
             uxSGrossRev.Text = String.Format("{0:N2}", sGrossRev);
             uxSOP.Text = String.Format("{0:N2}", sOP);
->>>>>>> develop
+
 
             UpdateCompareNums(uxCompareOverride.Checked);
             PopulateProjectEndNumbers();

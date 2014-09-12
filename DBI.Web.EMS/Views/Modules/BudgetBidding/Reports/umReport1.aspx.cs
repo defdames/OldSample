@@ -13,8 +13,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding.Reports
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            
-            
+
+            long hierID = Convert.ToInt64(Request.QueryString["hierID"]);
             
         }
 
@@ -25,4 +25,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding.Reports
             LocalReport localReport = ReportViewer1.LocalReport;
         }
     }
+
+    //public static DataTable GetReportData( )
 }

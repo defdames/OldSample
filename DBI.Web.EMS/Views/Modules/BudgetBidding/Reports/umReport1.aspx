@@ -25,12 +25,12 @@
     
         <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="Data" TypeName="DBI.Data.BBSummary+Grid, DBI.Data, Version=2.2014.718.199, Culture=neutral, PublicKeyToken=null">
             <SelectParameters>
-                <asp:QueryStringParameter DefaultValue="" Name="orgName" QueryStringField="orgName" Type="String" />
-                <asp:QueryStringParameter DefaultValue="" Name="orgID" QueryStringField="strOrgID" Type="Int64" />
-                <asp:QueryStringParameter DefaultValue="" Name="yearID" QueryStringField="strYearID" Type="Int64" />
-                <asp:QueryStringParameter DefaultValue="" Name="verID" QueryStringField="strVerID" Type="Int64" />
-                <asp:QueryStringParameter DefaultValue="" Name="prevYearID" QueryStringField="strPrevYearID" Type="Int64" />
-                <asp:QueryStringParameter DefaultValue="" Name="prevVerID" QueryStringField="strPrevVerID" Type="Int64" />
+                <asp:QueryStringParameter DefaultValue="" Name="orgName" QueryStringField="strorgName" Type="String" />
+                <asp:QueryStringParameter DefaultValue="" Name="orgID" QueryStringField="orgID" Type="Int64" />
+                <asp:QueryStringParameter DefaultValue="" Name="yearID" QueryStringField="yearID" Type="Int64" />
+                <asp:QueryStringParameter DefaultValue="" Name="verID" QueryStringField="verID" Type="Int64" />
+                <asp:QueryStringParameter DefaultValue="" Name="prevYearID" QueryStringField="prevYearID" Type="Int64" />
+                <asp:QueryStringParameter DefaultValue="" Name="prevVerID" QueryStringField="prevVerID" Type="Int64" />
             </SelectParameters>
         </asp:ObjectDataSource>
 
