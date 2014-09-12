@@ -26,6 +26,10 @@
             background: white;
             cursor: pointer;
         }
+         .allowBlank-field {
+            background-color: #EFF7FF !important;
+            background-image: none;
+        }
     </style>
 </head>
 <body>
@@ -54,6 +58,7 @@
                                 <ext:ModelField Name="SERVICE_UNIT" />
                                 <ext:ModelField Name="SUB_DIVISION" />
                                 <ext:ModelField Name="CONTACT_NAME" />
+                                <ext:ModelField Name="STATE" />
 
                             </Fields>
                         </ext:Model>
@@ -69,10 +74,10 @@
             <ColumnModel>
                 <Columns>
 
-                    <ext:Column ID="uxMainCrossing" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing #" Flex="1" />
+                    <ext:Column ID="uxMainCrossing" runat="server" DataIndex="CROSSING_NUMBER" Text="DOT #" Flex="1" />
                     <ext:Column ID="Column12" runat="server" DataIndex="SERVICE_UNIT" Text="Service Unit" Flex="1" />
                     <ext:Column ID="uxSubDiv" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="1" />
-                    <ext:Column ID="uxMTM" runat="server" DataIndex="CONTACT_NAME" Text="Manager" Flex="1" />
+                    <ext:Column ID="uxMTM" runat="server" DataIndex="STATE" Text="State" Flex="1" />
 
                 </Columns>
             </ColumnModel>
@@ -85,7 +90,7 @@
                 </ext:PagingToolbar>
             </BottomBar>
             <Listeners>
-                <Select Handler="#{uxSupplementalStore}.reload(); #{uxAddSuppButton}.enable()" />
+                <Select Handler="#{uxSupplementalStore}.reload(); #{uxAddSuppButton}.enable(); #{uxSupplementalProjectStore}.reload();" />
                 <Deselect Handler="#{uxAddSuppButton}.disable();" />
             </Listeners>
            
@@ -109,6 +114,7 @@
                                 <ext:ModelField Name="CROSSING_NUMBER" />
                                 <ext:ModelField Name="SUPPLEMENTAL_ID" />
                                 <ext:ModelField Name="APPROVED_DATE" Type="Date" />
+                                <ext:ModelField Name="CUT_TIME" Type="Date" />
                                 <ext:ModelField Name="SERVICE_TYPE" />
                                 <ext:ModelField Name="TRUCK_NUMBER" />
                                 <ext:ModelField Name="SQUARE_FEET" />
@@ -126,10 +132,10 @@
 
             <ColumnModel>
                 <Columns>
-                     <ext:Column ID="Column2" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing Number" Flex="1" />
+                     <ext:Column ID="Column2" runat="server" DataIndex="CROSSING_NUMBER" Text="DOT #" Flex="1" />
                     <ext:DateColumn ID="DateColumn1" runat="server" DataIndex="APPROVED_DATE" Text="Approved Date" Flex="1" Format="MM/dd/yyyy" />
+                    <ext:DateColumn ID="DateColumn2" runat="server" DataIndex="CUT_TIME" Text="Cut Date" Flex="1" Format="MM/dd/yyyy" />
                     <ext:Column ID="Column6" runat="server" DataIndex="SERVICE_TYPE" Text="Service Type" Flex="1" />
-                    <ext:Column ID="Column3" runat="server" DataIndex="TRUCK_NUMBER" Text="Truck" Flex="1" />
                     <ext:Column ID="Column1" runat="server" DataIndex="SQUARE_FEET" Text="Square Feet" Flex="1" />
                     <ext:Column ID="Column13" runat="server" DataIndex="RECURRING" Text="Recurring" Flex="1" />
                     <ext:Column ID="Column5" runat="server" DataIndex="REMARKS" Text="Remarks" Flex="3" />
@@ -189,17 +195,26 @@
                     <Items>
                         <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
                             <Items>
-                                <ext:DateField ID="uxAddApprovedDateField" runat="server" FieldLabel="Approved Date" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false" Editable="false"/>
-                                <ext:DateField ID="uxAddCutDateField" runat="server" FieldLabel="Cut Date" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false" Editable="false"/>
+                                <ext:DateField ID="uxAddApprovedDateField" runat="server" FieldLabel="Approved Date" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false" Editable="false" TabIndex="1"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side"/>
+                                <ext:DateField ID="uxAddCutDateField" runat="server" FieldLabel="Cut Date" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false" Editable="false" TabIndex="2"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side"/>                       
+                                  <ext:Label ID="Label2" runat="server" Text="" Width="25" />                                
+                                <ext:Checkbox ID="uxAddRecurringBox" runat="server" BoxLabel="Recurring" BoxLabelAlign="After" AllowBlank="false" TabIndex="3" />
 
-                                <ext:ComboBox ID="uxAddServiceType"
+                            </Items>
+                        </ext:FieldContainer>
+                                                     
+                              <ext:FieldContainer ID="FieldContainer2" runat="server" Layout="HBoxLayout">
+                            <Items>
+
+                                <ext:TextField runat="server" ID="uxAddSquareFeet" FieldLabel="Square Feet" LabelAlign="Right" AnchorHorizontal="100%" AllowBlank="false" TabIndex="4"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side" />
+                                  <ext:ComboBox ID="uxAddServiceType"
                                     runat="server"
                                     FieldLabel="Service Type"
                                     LabelAlign="Right"
                                     DisplayField="type"
                                     ValueField="type"
                                     QueryMode="Local"
-                                    TypeAhead="true" TabIndex="2" Width="300" AllowBlank="false" ForceSelection="true">
+                                    TypeAhead="true" TabIndex="5" Width="350" AllowBlank="false" ForceSelection="true"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side">
                                     <Store>
                                         <ext:Store runat="server"
                                             ID="uxAddServiceTypeStore" AutoDataBind="true">
@@ -217,26 +232,14 @@
                                     </Store>
 
                                 </ext:ComboBox>
-
-                            </Items>
-                        </ext:FieldContainer>
-
-                      
-                                
-                                  <ext:Label ID="Label2" runat="server" Text="" Width="25" />
-                              <ext:FieldContainer ID="FieldContainer2" runat="server" Layout="HBoxLayout">
-                            <Items>
-
-                                <ext:TextField runat="server" ID="uxAddSquareFeet" FieldLabel="Square Feet" LabelAlign="Right" AnchorHorizontal="100%" AllowBlank="false" />
                                 <ext:Label ID="Label1" runat="server" Width="65" />
-                                   <ext:Checkbox ID="uxAddRecurringBox" runat="server" BoxLabel="Recurring" BoxLabelAlign="After" AllowBlank="false" />
 
                             </Items>
                         </ext:FieldContainer> 
                         
 
                         
-                           <ext:DropDownField ID="uxAddProjectDropDownField" runat="server" FieldLabel="Choose Project" AnchorHorizontal="100%" LabelAlign="Right" Width="475" Mode="ValueText" Editable="false">
+                           <ext:DropDownField ID="uxAddProjectDropDownField" runat="server" FieldLabel="Choose Project" AnchorHorizontal="100%" LabelAlign="Right" Width="755" TabIndex="6" Mode="ValueText" Editable="false" AllowBlank="false"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side">
                                                     <Component>
                                                         <ext:GridPanel runat="server"
                                                             ID="uxAddProject"
@@ -247,6 +250,9 @@
                                                                     PageSize="10"
                                                                     RemoteSort="true"
                                                                     OnReadData="deAddProjectGrid">
+                                                                     <Parameters>
+                                                                         <ext:StoreParameter Name="CrossingId" Value="#{uxSupplementalCrossingGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
+                                                                     </Parameters>
                                                                     <Model>
                                                                         <ext:Model ID="Model6" runat="server">
                                                                             <Fields>
@@ -254,13 +260,22 @@
                                                                                 <ext:ModelField Name="LONG_NAME" />
                                                                                 <ext:ModelField Name="SEGMENT1" />
                                                                                 <ext:ModelField Name="ORGANIZATION_NAME" />
+                                                                                <ext:ModelField Name="CARRYING_OUT_ORGANIZATION_ID" />
+                                                                                <ext:ModelField Name="PROJECT_TYPE" />
+                                                                                <ext:ModelField Name="PROJECT_STATUS_CODE" />
+                                                                                <ext:ModelField Name="TEMPLATE_FLAG" />
+                                                                                <ext:ModelField Name="RAILROAD_ID" />
+                                                                                <ext:ModelField Name="CROSSING_ID" />
+
                                                                             </Fields>
                                                                         </ext:Model>
                                                                     </Model>
                                                                     <Proxy>
                                                                         <ext:PageProxy />
                                                                     </Proxy>
-                                                      
+                                                       <Sorters>
+                                                             <ext:DataSorter Property="SEGMENT1" Direction="ASC" />
+                                                       </Sorters>
                                                                 </ext:Store>
                                                             </Store>
                                                             <ColumnModel>
@@ -280,7 +295,7 @@
                                                                 <SelectionChange OnEvent="deAddProjectValue">
                                                                     <ExtraParams>
                                                                         <ext:Parameter Name="ProjectId" Value="#{uxAddProject}.getSelectionModel().getSelection()[0].data.PROJECT_ID" Mode="Raw" />
-                                                                        <ext:Parameter Name="ProjectName" Value="#{uxAddProject}.getSelectionModel().getSelection()[0].data.SEGMENT1" Mode="Raw" />
+                                                                        <ext:Parameter Name="ProjectName" Value="#{uxAddProject}.getSelectionModel().getSelection()[0].data.LONG_NAME" Mode="Raw" />
                                                                         <ext:Parameter Name="Type" Value="Add" />
                                                                     </ExtraParams>
                                                                 </SelectionChange>
@@ -293,7 +308,7 @@
                                                 </ext:DropDownField>
                          
 
-                        <ext:TextArea ID="uxAddRemarks" runat="server" FieldLabel="Remarks" AnchorHorizontal="92%" LabelAlign="Right" />
+                        <ext:TextArea ID="uxAddRemarks" runat="server" FieldLabel="Remarks" AnchorHorizontal="92%" LabelAlign="Right" TabIndex="7" />
                     </Items>
                     <Buttons>
                         <ext:Button ID="uxAddNewSupplementalButton" runat="server" Text="Add" Icon="Add">
@@ -307,9 +322,12 @@
                         </ext:Button>
                         <ext:Button ID="uxCancelNewSupplementalButton" runat="server" Text="Cancel" Icon="Delete">
                             <Listeners>
-                                <Click Handler="#{uxAddSupplementalForm}.reset();
+                                <Click Handler="#{uxAddSupplementalForm}.reset(); 
 									#{uxAddNewSupplementalWindow}.hide()" />
                             </Listeners>
+                          <%--  <DirectEvents>
+                                <Click OnEvent="deReloadStore" />
+                            </DirectEvents>--%>
                         </ext:Button>
                     </Buttons>
                     <Listeners>

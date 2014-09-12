@@ -25,6 +25,10 @@
             background: white;
             cursor: pointer;
         }
+         .allowBlank-field {
+            background-color: #EFF7FF !important;
+            background-image: none;
+        }
     </style>
 </head>
 <body>
@@ -36,6 +40,8 @@
                 <Items>
       <ext:FormPanel ID="uxFilterForm" runat="server" Margin="5" Region="North" Title="Crossing Invoice Form">
                 <Items>
+                        <ext:TextField ID="uxRRCI" runat="server" FieldLabel="Railroad" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" Hidden="true" />
+
                     <ext:FieldSet ID="FieldSet1" runat="server" Title="Invoicing Form">
                         <Items>
                              <ext:ComboBox ID="uxAddAppReqeusted"
@@ -45,7 +51,7 @@
                                     DisplayField="type"
                                     ValueField="type"
                                     QueryMode="Local"
-                                    TypeAhead="true" Width="300" AllowBlank="false" ForceSelection="true" TabIndex="1">
+                                    TypeAhead="true" Width="300" AllowBlank="false" ForceSelection="true" TabIndex="1" InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side">
                                     <Store>
                                         <ext:Store runat="server"
                                             ID="uxAddAppRequestedStore" AutoDataBind="true">
@@ -64,21 +70,78 @@
                                 </ext:ComboBox>
                             <ext:FieldContainer runat="server" Layout="HBoxLayout">
                                 <Items>
-                                  <ext:DateField ID="uxStartDate" runat="server" AnchorHorizontal="100%" FieldLabel="Start Date" LabelAlign="Right" Editable="false" TabIndex="1" />
-                                  <ext:TextField ID="uxInvoiceNumber" runat="server" FieldLabel="Invoice Number" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="3" AllowBlank="false" />
-                                </Items>
+                                  <ext:DateField ID="uxStartDate" runat="server" AnchorHorizontal="100%" FieldLabel="Start Date" LabelAlign="Right" Editable="false" TabIndex="2" EmptyText="ALL" />
+                                  <ext:ComboBox ID="uxAddServiceUnit"
+                            runat="server" FieldLabel="Service Unit"
+                            LabelAlign="Right"
+                            AnchorHorizontal="25%"
+                            DisplayField="service_unit"
+                            ValueField="service_unit"
+                            QueryMode="Local" TypeAhead="true" TabIndex="4" ForceSelection="true"  EmptyText="ALL" >
+                            <Store>
+                                <ext:Store runat="server"
+                                    ID="uxAddServiceUnitStore">
+                                    <Model>
+                                        <ext:Model ID="Model5" runat="server">
+                                            <Fields>
+                                                <ext:ModelField Name="service_unit" />
+                                                <ext:ModelField Name="service_unit" />
+                                            </Fields>
+                                        </ext:Model>
+                                    </Model>
+                                </ext:Store>
+                            </Store>
+                            <DirectEvents>
+                                <Select OnEvent="deLoadSubDiv">
+                                    <ExtraParams>
+                                        <ext:Parameter Name="Type" Value="Add" />
+                                    </ExtraParams>
+                                </Select>
+                            </DirectEvents>
+                            <Listeners>
+                                <Select Handler="#{uxAddSubDivStore}.load()" />
+                            </Listeners>
+                        </ext:ComboBox>
+                      
+                                     </Items>
                             </ext:FieldContainer>
                            <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
                                 <Items>
-                                    <ext:DateField ID="uxEndDate" runat="server" AnchorHorizontal="100%" FieldLabel="End Date" LabelAlign="Right"  Editable="false" TabIndex="2" />
-                                    <ext:DateField ID="uxInvoiceDate" runat="server" AnchorHorizontal="100s%" FieldLabel="Invoice Date" LabelAlign="Right"  Editable="false" TabIndex="4" AllowBlank="false" />
-                                </Items>
+                                    <ext:DateField ID="uxEndDate" runat="server" AnchorHorizontal="100%" FieldLabel="End Date" LabelAlign="Right"  Editable="false" TabIndex="3" EmptyText="ALL" />
+                                <ext:ComboBox ID="uxAddSubDiv"
+                            runat="server"
+                            FieldLabel="Sub-Division"
+                            LabelAlign="Right"
+                            AnchorHorizontal="25%"
+                            DisplayField="sub_division"
+                            ValueField="sub_division"
+                            TypeAhead="true" TabIndex="5" ForceSelection="true"  EmptyText="ALL" >
+                            <Store>
+                                <ext:Store runat="server"
+                                    ID="uxAddSubDivStore">
+                                    <Model>
+                                        <ext:Model ID="Model7" runat="server">
+                                            <Fields>
+                                                <ext:ModelField Name="sub_division" />
+                                                <ext:ModelField Name="sub_division" />
+                                            </Fields>
+                                        </ext:Model>
+                                    </Model>
+                                </ext:Store>
+                            </Store>
+
+                        </ext:ComboBox>
+                                 </Items>
                             </ext:FieldContainer>
-                           
-                                                   
+                                   
                         </Items>
                     </ext:FieldSet>
-                    
+                      <ext:FieldSet ID="FieldSet2" runat="server" Title="Invoice Information">
+                        <Items>
+                                  <ext:TextField ID="uxInvoiceNumber" runat="server" FieldLabel="Invoice Number" AnchorHorizontal="20%" LabelAlign="Right" TabIndex="6" AllowBlank="false" InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side" />
+                                  <ext:DateField ID="uxInvoiceDate" runat="server" AnchorHorizontal="20s%" FieldLabel="Invoice Date" LabelAlign="Right"  Editable="false" TabIndex="7" AllowBlank="false" InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side" />                                 
+                        </Items>
+                    </ext:FieldSet>
                 </Items>
                 <BottomBar>
                     <ext:Toolbar ID="Toolbar1" runat="server">
@@ -106,6 +169,7 @@
                  <Listeners>
 			 <ValidityChange Handler="#{Button4}.setDisabled(!valid);" />
 		  </Listeners>
+            
             </ext:FormPanel>
              <ext:GridPanel ID="uxApplicationEntryGrid" Title="Completed Crossings" runat="server" Region="Center" Frame="false" Collapsible="true" MultiSelect="true" >
                 <SelectionModel>

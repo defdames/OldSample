@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umAccountCategory.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.Overhead.umAccountCategory" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umCategoryMaint.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.Overhead.umCategoryMaint" %>
 
 <!DOCTYPE html>
 
@@ -72,7 +72,7 @@
                             <DirectEvents>
                                 <Select OnEvent="selectCategory">
                                 </Select>
-                                <Deselect OnEvent="deSelectCategory"></Deselect>
+                                <Deselect OnEvent="selectCategory"></Deselect>
                             </DirectEvents>
                         </ext:RowSelectionModel>
                     </SelectionModel>
@@ -83,7 +83,7 @@
                                 </ext:GridDragDrop>
                             </Plugins>
                             <DirectEvents>
-                                <Drop OnEvent="saveAccountCategorySortOrder">
+                                <Drop OnEvent="saveCategorySortOrder">
                                     <ExtraParams>
                                         <ext:Parameter Name="Values" Value="Ext.encode(#{uxAccountCategoryGridPanel}.getRowsValues())" Mode="Raw" />
                                     </ExtraParams>
@@ -101,7 +101,7 @@
                             <Items>
                                 <ext:Button runat="server" ID="uxAccountMaintenace" Icon="Add" Text="Add" Disabled="true">
                                     <DirectEvents>
-                                        <Click OnEvent="deAddAccountToCategory"></Click>
+                                        <Click OnEvent="addCategoryAccount"></Click>
                                     </DirectEvents>
                                 </ext:Button>
                                 <ext:Button runat="server" ID="uxUnAssignAccounts" Icon="Delete" Text="Delete" Disabled="true">
@@ -159,7 +159,7 @@
                                 </ext:GridDragDrop>
                             </Plugins>
                             <DirectEvents>
-                                <Drop OnEvent="deSaveAccountSortOrder">
+                                <Drop OnEvent="saveAccountCategorySortOrder">
                                     <ExtraParams>
                                         <ext:Parameter Name="Values" Value="Ext.encode(#{uxAccountListGridPanel}.getRowsValues())" Mode="Raw" />
                                     </ExtraParams>
@@ -199,7 +199,7 @@
             <Buttons>
                 <ext:Button runat="server" ID="uxSaveCategory" Icon="Accept" Text="Save">
                     <DirectEvents>
-                        <Click OnEvent="deSaveAccountCategory">
+                        <Click OnEvent="saveAccountCategory">
                             <Confirmation ConfirmRequest="true" Message="Are you sure you want to save this account category"></Confirmation>
                             <EventMask ShowMask="true"></EventMask>
                         </Click>

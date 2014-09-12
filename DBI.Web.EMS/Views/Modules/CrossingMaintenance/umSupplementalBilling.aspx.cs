@@ -27,14 +27,19 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue") != string.Empty)
+            {
+                deGetRRType("Add");
 
+            }
         }
 
         protected void deInvoiceSupplementalGrid(object sender, StoreReadDataEventArgs e)
         {
             DateTime StartDate = uxStartDate.SelectedDate;
             DateTime EndDate = uxEndDate.SelectedDate;
-
+            string ServiceUnit = uxAddServiceUnit.SelectedItem.Value;
+            string SubDiv = uxAddSubDiv.SelectedItem.Value;
             using (Entities _context = new Entities())
             {
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
@@ -54,7 +59,14 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 {
                     allData = allData.Where(x => x.APPROVED_DATE >= StartDate && x.APPROVED_DATE <= EndDate);
                 }
-
+                if (ServiceUnit != null)
+                {
+                    allData = allData.Where(x => x.SERVICE_UNIT == ServiceUnit);
+                }
+                if (SubDiv != null)
+                {
+                    allData = allData.Where(x => x.SUB_DIVISION == SubDiv);
+                }
                 List<object> _data = allData.ToList<object>();
 
 
@@ -113,53 +125,98 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         }
         protected void deResetInvoice(object sender, DirectEventArgs e)
         {
-            uxInvoiceSupplementalStore.Reload();
+            uxInvoiceSupplementalStore.RemoveAll();
         }
         protected void deInvoiceReportGrid(object sender, StoreReadDataEventArgs e)
         {
             List<object> allData;
-
+           
             string json = (e.Parameters["selectedSupp"]);
             List<SupplementalDetails> suppList = JSON.Deserialize<List<SupplementalDetails>>(json);
             List<decimal> ReportList = new List<decimal>();
             foreach (SupplementalDetails supp in suppList)
             {
                 ReportList.Add(supp.SUPPLEMENTAL_ID);
-            }
-            using (Entities _context = new Entities())
-            {
+
+                using (Entities _context = new Entities())
+                {
                 //IQueryable<CROSSING_MAINTENANCE.InvoicedCrossingsSupplemental> allData = CROSSING_MAINTENANCE.GetInvoicedCrossings(_context).Where(s => ReportList.Contains(s.SUPPLEMENTAL_ID));
-                    allData = (from a in _context.CROSSING_SUPPLEMENTAL
-                               join d in _context.CROSSINGS on a.CROSSING_ID equals d.CROSSING_ID
-                               join v in _context.CROSSING_INVOICE on a.INVOICE_SUPP_ID equals v.INVOICE_ID
-                               where ReportList.Contains(a.SUPPLEMENTAL_ID)
-                               select new
-                               {
-                                   v.INVOICE_NUMBER,
-                                   v.INVOICE_DATE,
-                                   d.CROSSING_ID,
-                                   a.SUPPLEMENTAL_ID,
-                                   a.APPROVED_DATE,
-                                   d.CROSSING_NUMBER,
-                                   d.SUB_DIVISION,
-                                   d.SERVICE_UNIT,
-                                   d.STATE,
-                                   a.SERVICE_TYPE,
-                                   d.MILE_POST,
-                                   a.TRUCK_NUMBER,
-                                   a.SQUARE_FEET,
+                allData = (from a in _context.CROSSING_SUPPLEMENTAL
+                           join d in _context.CROSSINGS on a.CROSSING_ID equals d.CROSSING_ID
+                           join v in _context.CROSSING_SUPP_INVOICE on a.INVOICE_SUPP_ID equals v.INVOICE_SUPP_ID
+                           where ReportList.Contains(a.SUPPLEMENTAL_ID)
+                           select new
+                           {
+                               a.INVOICE_SUPP_ID,
+                               v.INVOICE_SUPP_NUMBER,
+                               v.INVOICE_SUPP_DATE,
+                               d.CROSSING_ID,
+                               a.SUPPLEMENTAL_ID,
+                               a.APPROVED_DATE,
+                               d.CROSSING_NUMBER,
+                               d.SUB_DIVISION,
+                               d.SERVICE_UNIT,
+                               d.STATE,
+                               a.SERVICE_TYPE,
+                               d.MILE_POST,
+                               a.TRUCK_NUMBER,
+                               a.SQUARE_FEET,
+                               a.PROJECT_ID,
 
 
-                               }).ToList<object>();
 
-
+                           }).ToList<object>();
+                uxInvoiceReportStore.DataSource = allData;
 
                 }
-                uxInvoiceReportStore.DataSource = allData;
+
+              
+               
                 //int count;
-                //uxInvoiceSupplementalStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.InvoicedCrossingsSupplemental>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], allData, out count);
+                //uxInvoiceReportStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], allData, out count);
                 //e.Total = count;
+            }
             
+        }
+        protected void deGetRRType(string rrLoad)
+        {
+
+            using (Entities _context = new Entities())
+            {
+                long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
+                var RRdata = (from r in _context.CROSSING_RAILROAD
+                              where r.RAILROAD_ID == RailroadId
+                              select new
+                              {
+                                  r
+
+                              }).SingleOrDefault();
+
+                uxRRCI.SetValue(RRdata.r.RAILROAD);
+
+                string rrType = RRdata.r.RAILROAD;
+                if (rrLoad == "Add")
+                {
+                    List<ServiceUnitResponse> units = ServiceUnitData.ServiceUnitUnits(rrType).ToList();
+                    //uxAddServiceUnit.Clear();
+                    //uxAddSubDiv.Clear();
+                    uxAddServiceUnitStore.DataSource = units;
+                    uxAddServiceUnitStore.DataBind();
+                }
+
+            }
+        }
+        protected void deLoadSubDiv(object sender, DirectEventArgs e)
+        {
+
+
+            if (e.ExtraParams["Type"] == "Add")
+            {
+                List<ServiceUnitResponse> divisions = ServiceUnitData.ServiceUnitDivisions(uxAddServiceUnit.SelectedItem.Value).ToList();
+                uxAddSubDiv.Clear();
+                uxAddSubDivStore.DataSource = divisions;
+                uxAddSubDivStore.DataBind();
+            }
         }
         protected void deValidationInvoiceButton(object sender, DirectEventArgs e)
         {
@@ -232,7 +289,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         }
         public class SupplementalDetails
         {
-            public decimal INVOICE_SUPP_ID { get; set; }
+            public decimal? INVOICE_SUPP_ID { get; set; }
             public decimal SUPPLEMENTAL_ID { get; set; }
             public long CROSSING_ID { get; set; }
             public DateTime APPROVED_DATE { get; set; }          

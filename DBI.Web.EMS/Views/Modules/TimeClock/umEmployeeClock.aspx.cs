@@ -99,6 +99,10 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                 time.ACTUAL_HOURS = (decimal)ts.TotalHours;
                 decimal adjts = GetAdjustedHours((TimeSpan)ts);
                 time.ADJUSTED_HOURS = adjts;
+                decimal lcts = GetLunchTime(adjts);
+                time.ADJUSTED_LUNCH = lcts;
+               
+                
 
 
                 GenericData.Update<TIME_CLOCK>(time);
@@ -180,6 +184,29 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
             decimal fixedtime = adjts.Hours + (decimal)adjtime;
             return fixedtime;
 
+        }
+
+        protected static decimal GetLunchTime(decimal lcts)
+        {
+            
+            if (lcts >= 5 && lcts < 12)
+            {
+                decimal lunchded = lcts - .5m;
+                //decimal lunchtime = (decimal)lunchded / 60;
+                return lunchded;
+            }
+            else if (lcts < 5)
+            {
+                decimal lunchded = lcts;
+                //decimal lunchtime = (decimal)lunchded / 60;
+                return lunchded;
+            }
+            else
+            {
+                decimal lunchded = lcts - 1m;
+                //decimal lunchtime = (decimal)lunchded / 60;
+                return lunchded;
+            }
         }
     }
     public class EmployeeTimeView

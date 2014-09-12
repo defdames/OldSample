@@ -34,6 +34,13 @@ namespace DBI.Data
                     select new ProjectList { PROJECT_TYPE = v.PROJECT_TYPE, CARRYING_OUT_ORGANIZATION_ID = v.CARRYING_OUT_ORGANIZATION_ID, PROJECT_STATUS_CODE = v.PROJECT_STATUS_CODE, TEMPLATE_FLAG = v.TEMPLATE_FLAG, PROJECT_ID = v.PROJECT_ID, LONG_NAME = v.LONG_NAME, ORGANIZATION_NAME = v.ORGANIZATION_NAME, SEGMENT1 = v.SEGMENT1 });
 
         }
+        public static IQueryable<ProjectList> GetProjectList(decimal RailroadId, decimal CrossingId, Entities _context)
+        {
+
+            return (from v in _context.PROJECTS_V
+                    select new ProjectList { PROJECT_TYPE = v.PROJECT_TYPE, CARRYING_OUT_ORGANIZATION_ID = v.CARRYING_OUT_ORGANIZATION_ID, PROJECT_STATUS_CODE = v.PROJECT_STATUS_CODE, TEMPLATE_FLAG = v.TEMPLATE_FLAG, PROJECT_ID = v.PROJECT_ID, LONG_NAME = v.LONG_NAME, ORGANIZATION_NAME = v.ORGANIZATION_NAME, SEGMENT1 = v.SEGMENT1 });
+
+        }
         public static IQueryable<CrossingList> GetCrossingProjectList(decimal RailroadId, Entities _context)
         {
 
@@ -92,7 +99,7 @@ namespace DBI.Data
                         join i in _context.CROSSING_RAILROAD on d.RAILROAD_ID equals i.RAILROAD_ID
                         where d.RAILROAD_ID == RailroadId
 
-                        select new CrossingAssignedList { CROSSING_ID = r.CROSSING_ID, PROJECT_ID = r.PROJECT_ID, CROSSING_NUMBER = d.CROSSING_NUMBER, RAILROAD = i.RAILROAD, SERVICE_UNIT = d.SERVICE_UNIT, SUB_DIVISION = d.SUB_DIVISION });
+                        select new CrossingAssignedList { CROSSING_ID = r.CROSSING_ID, PROJECT_ID = r.PROJECT_ID, CROSSING_NUMBER = d.CROSSING_NUMBER, RAILROAD = i.RAILROAD, SERVICE_UNIT = d.SERVICE_UNIT, SUB_DIVISION = d.SUB_DIVISION, STATE = d.STATE });
         }
         public static IQueryable<ServiceUnitList> GetKCSServiceUnit(Entities _context)
         {
@@ -151,48 +158,86 @@ SELECT MAX(CROSSING_APPLICATION.APPLICATION_REQUESTED) APPLICATION_REQUESTED,
             }
         }
 
-        //public static IQueryable<CrossingData> GetAppCrossingList(decimal RailroadId, decimal Application, Entities _context)
-        //{
-
-                      
-        //    return (from d in _context.CROSSINGS
-        //          join a in _context.CROSSING_APPLICATION on d.CROSSING_ID equals a.CROSSING_ID into appGroup
-        //           from app in appGroup.DefaultIfEmpty()
-        //           join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID                
-        //           join p in _context.PROJECTS_V on r.PROJECT_ID equals p.PROJECT_ID
-        //           where d.RAILROAD_ID == RailroadId && d.STATUS != "DELETED"
-        //          select new CrossingData { APPLICATION_REQUESTED = app.APPLICATION_REQUESTED, RAILROAD_ID = d.RAILROAD_ID, CONTACT_ID = d.CONTACT_ID, CROSSING_ID = d.CROSSING_ID, STATUS = d.STATUS, STATE = d.STATE,
-        //           CROSSING_NUMBER = d.CROSSING_NUMBER, SERVICE_UNIT = d.SERVICE_UNIT,SUB_DIVISION = d.SUB_DIVISION, CONTACT_NAME = d.CROSSING_CONTACTS.CONTACT_NAME,
-        //           PROJECT_TYPE = p.PROJECT_TYPE, CARRYING_OUT_ORGANIZATION_ID = p.CARRYING_OUT_ORGANIZATION_ID, PROJECT_STATUS_CODE = p.PROJECT_STATUS_CODE, TEMPLATE_FLAG = p.TEMPLATE_FLAG, PROJECT_ID = p.PROJECT_ID, ORGANIZATION_NAME = p.ORGANIZATION_NAME }).Distinct();
-        //}
-        public static IQueryable<CrossingData> GetSuppCrossingList(decimal RailroadId, Entities _context)
+        public static List<CrossingData1> GetSuppCrossingList(decimal RailroadId, decimal UserId)
         {
-            return (from d in _context.CROSSINGS
-                    join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID
-                    join p in _context.PROJECTS_V on r.PROJECT_ID equals p.PROJECT_ID
-                    //where (from c in _context.CROSSINGS
-                    //       select c.CROSSING_NUMBER).Distinct()
-                    where d.RAILROAD_ID == RailroadId
+            string sql = string.Format(@"                           
+               WITH
+ALLOWED_RECORDS AS (
+  SELECT a.RAILROAD_ID,
+    a.CONTACT_ID,
+    a.CROSSING_ID,
+    a.STATUS,
+    a.STATE,
+    a.CROSSING_NUMBER,
+    a.SERVICE_UNIT,
+    a.SUB_DIVISION   
+  FROM CROSSINGS a
+  INNER JOIN CROSSING_RELATIONSHIP b ON a.CROSSING_ID = b.CROSSING_ID
+  INNER JOIN PROJECTS_V c ON b.PROJECT_ID = c.PROJECT_ID
+  INNER JOIN SYS_USER_ORGS d ON c.CARRYING_OUT_ORGANIZATION_ID = d.ORG_ID
+  WHERE d.USER_ID = {1}
+)
+SELECT 
+                      ALLOWED_RECORDS.RAILROAD_ID,
+                      ALLOWED_RECORDS.CONTACT_ID,
+                      ALLOWED_RECORDS.CROSSING_ID,
+                      ALLOWED_RECORDS.STATUS,
+                      ALLOWED_RECORDS.STATE,
+                      ALLOWED_RECORDS.CROSSING_NUMBER,
+                      ALLOWED_RECORDS.SERVICE_UNIT,
+                      ALLOWED_RECORDS.SUB_DIVISION,
+                      PROJECTS_V.PROJECT_TYPE                      
+                    FROM (ALLOWED_RECORDS
+                    LEFT JOIN CROSSING_SUPPLEMENTAL ON ALLOWED_RECORDS.CROSSING_ID = CROSSING_SUPPLEMENTAL.CROSSING_ID
+                    LEFT JOIN CROSSING_RELATIONSHIP ON ALLOWED_RECORDS.CROSSING_ID = CROSSING_RELATIONSHIP.CROSSING_ID)
+                    LEFT JOIN PROJECTS_V ON CROSSING_RELATIONSHIP.PROJECT_ID = PROJECTS_V.PROJECT_ID
+                    WHERE ALLOWED_RECORDS.RAILROAD_ID = {0} AND PROJECTS_V.PROJECT_TYPE = 'CUSTOMER BILLING' AND PROJECTS_V.TEMPLATE_FLAG = 'N' AND PROJECTS_V.PROJECT_STATUS_CODE = 'APPROVED'
+                    GROUP BY ALLOWED_RECORDS.RAILROAD_ID,
+                      ALLOWED_RECORDS.CONTACT_ID,
+                      ALLOWED_RECORDS.CROSSING_ID,
+                      ALLOWED_RECORDS.STATUS,
+                      ALLOWED_RECORDS.STATE,
+                      ALLOWED_RECORDS.CROSSING_NUMBER,
+                      ALLOWED_RECORDS.SERVICE_UNIT,
+                      ALLOWED_RECORDS.SUB_DIVISION,
+                      PROJECTS_V.PROJECT_TYPE    
 
-                    select new CrossingData
-                    {
-                        RAILROAD_ID = d.RAILROAD_ID,
-                        CONTACT_ID = d.CONTACT_ID,
-                        CROSSING_ID = d.CROSSING_ID,
-                        CROSSING_NUMBER = d.CROSSING_NUMBER,
-                        SERVICE_UNIT = d.SERVICE_UNIT,
-                        SUB_DIVISION = d.SUB_DIVISION,
-                        CONTACT_NAME = d.CROSSING_CONTACTS.CONTACT_NAME,
-                        PROJECT_TYPE = p.PROJECT_TYPE,
-                        CARRYING_OUT_ORGANIZATION_ID = p.CARRYING_OUT_ORGANIZATION_ID,
-                        PROJECT_STATUS_CODE = p.PROJECT_STATUS_CODE,
-                        TEMPLATE_FLAG = p.TEMPLATE_FLAG,
-                        PROJECT_ID = p.PROJECT_ID,
-                        STATE = d.STATE,
-                        ORGANIZATION_NAME = p.ORGANIZATION_NAME
-                    }).Distinct();
-                      
+                   ", RailroadId, UserId);
+
+            using (Entities context = new Entities())
+            {
+                return context.Database.SqlQuery<CrossingData1>(sql).ToList();
+            }
         }
+
+        //public static IQueryable<CrossingData> GetSuppCrossingList(decimal RailroadId, Entities _context)
+        //{
+        //    return (from d in _context.CROSSINGS
+        //            join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID
+        //            join p in _context.PROJECTS_V on r.PROJECT_ID equals p.PROJECT_ID
+        //            //where (from c in _context.CROSSINGS
+        //            //       select c.CROSSING_NUMBER).Distinct()
+        //            where d.RAILROAD_ID == RailroadId
+
+        //            select new CrossingData
+        //            {
+        //                RAILROAD_ID = d.RAILROAD_ID,
+        //                CONTACT_ID = d.CONTACT_ID,
+        //                CROSSING_ID = d.CROSSING_ID,
+        //                CROSSING_NUMBER = d.CROSSING_NUMBER,
+        //                SERVICE_UNIT = d.SERVICE_UNIT,
+        //                SUB_DIVISION = d.SUB_DIVISION,
+        //                CONTACT_NAME = d.CROSSING_CONTACTS.CONTACT_NAME,
+        //                PROJECT_TYPE = p.PROJECT_TYPE,
+        //                CARRYING_OUT_ORGANIZATION_ID = p.CARRYING_OUT_ORGANIZATION_ID,
+        //                PROJECT_STATUS_CODE = p.PROJECT_STATUS_CODE,
+        //                TEMPLATE_FLAG = p.TEMPLATE_FLAG,
+        //                PROJECT_ID = p.PROJECT_ID,
+        //                STATE = d.STATE,
+        //                ORGANIZATION_NAME = p.ORGANIZATION_NAME
+        //            }).Distinct();
+                      
+        //}
         public static IQueryable<ApplicationList> GetApplications( Entities _context)
         {
            
@@ -207,15 +252,15 @@ SELECT MAX(CROSSING_APPLICATION.APPLICATION_REQUESTED) APPLICATION_REQUESTED,
             return (from s in _context.CROSSING_SUPPLEMENTAL
                     join c in _context.CROSSINGS on s.CROSSING_ID equals c.CROSSING_ID
                     select new SupplementalList { CROSSING_NUMBER = c.CROSSING_NUMBER, CROSSING_ID = s.CROSSING_ID, SUPPLEMENTAL_ID = s.SUPPLEMENTAL_ID, APPROVED_DATE = s.APPROVED_DATE,
-                    COMPLETED_DATE = s.COMPLETED_DATE, SERVICE_TYPE = s.SERVICE_TYPE, INSPECT_START = s.INSPECT_START, INSPECT_END = s.INSPECT_END, SQUARE_FEET = s.SQUARE_FEET, TRUCK_NUMBER = s.TRUCK_NUMBER,
+                    CUT_DATE = s.CUT_TIME, SERVICE_TYPE = s.SERVICE_TYPE, INSPECT_START = s.INSPECT_START, INSPECT_END = s.INSPECT_END, SQUARE_FEET = s.SQUARE_FEET, TRUCK_NUMBER = s.TRUCK_NUMBER,
                     SPRAY = s.SPRAY, CUT = s.CUT, INSPECT = s.INSPECT, MAINTAIN = s.MAINTAIN, RECURRING = s.RECURRING, REMARKS = s.REMARKS });
 
         }
-          public static IQueryable<IncidentList> GetIncidents(decimal CrossingId, Entities _context)
+          public static IQueryable<IncidentList> GetIncidents( Entities _context)
           {
               return (from i in _context.CROSSING_INCIDENT
                       join c in _context.CROSSINGS on i.CROSSING_ID equals c.CROSSING_ID
-                      where i.CROSSING_ID == CrossingId
+                      //where i.CROSSING_ID == CrossingId
                       select new IncidentList { CROSSING_NUMBER = c.CROSSING_NUMBER, CROSSING_ID = i.CROSSING_ID, INCIDENT_ID = i.INCIDENT_ID, INCIDENT_NUMBER = i.INCIDENT_NUMBER,
                       DATE_REPORTED = i.DATE_REPORTED, DATE_CLOSED = i.DATE_CLOSED, SLOW_ORDER = i.SLOW_ORDER, REMARKS = i.REMARKS });
 
@@ -245,6 +290,7 @@ SELECT MAX(CROSSING_APPLICATION.APPLICATION_REQUESTED) APPLICATION_REQUESTED,
           {
               return (from a in _context.CROSSING_SUPPLEMENTAL
                       join d in _context.CROSSINGS on a.CROSSING_ID equals d.CROSSING_ID
+                      join v in _context.PROJECTS_V on a.PROJECT_ID equals v.PROJECT_ID
                       where d.RAILROAD_ID == RailroadId
                       select new CompletedCrossingsSupplemental
                       {
@@ -260,6 +306,7 @@ SELECT MAX(CROSSING_APPLICATION.APPLICATION_REQUESTED) APPLICATION_REQUESTED,
                           TRUCK_NUMBER = a.TRUCK_NUMBER,
                           SQUARE_FEET = a.SQUARE_FEET,
                           REMARKS = a.REMARKS,
+                          SEGMENT1 = v.SEGMENT1,
                       });
 
           }
@@ -362,8 +409,7 @@ SELECT MAX(CROSSING_APPLICATION.APPLICATION_REQUESTED) APPLICATION_REQUESTED,
           {
               return (from d in _context.CROSSINGS
                       join a in _context.CROSSING_SUPPLEMENTAL on d.CROSSING_ID equals a.CROSSING_ID
-                      join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID
-                      join p in _context.PROJECTS_V on r.PROJECT_ID equals p.PROJECT_ID
+                      join p in _context.PROJECTS_V on a.PROJECT_ID equals p.PROJECT_ID
                       where d.RAILROAD_ID == RailroadId
                       select new SupplementalBillingList
                       {
@@ -381,7 +427,7 @@ SELECT MAX(CROSSING_APPLICATION.APPLICATION_REQUESTED) APPLICATION_REQUESTED,
                          CUT = a.CUT,
                          INSPECT = a.INSPECT,
                          SEGMENT1 = p.SEGMENT1,
-
+                         SPECIAL_INSTRUCTIONS = d.SPECIAL_INSTRUCTIONS,
 
                       });
 
@@ -472,24 +518,25 @@ SELECT MAX(CROSSING_APPLICATION.APPLICATION_REQUESTED) APPLICATION_REQUESTED,
               public string CUT { get; set; }
               public string INSPECT { get; set; }
           }
-          public class SupplementalBillingList
-          {
-              public long SUPPLEMENTAL_ID { get; set; }
-              public long CROSSING_ID { get; set; }
-              public string CROSSING_NUMBER { get; set; }
-              public DateTime? APPROVED_DATE { get; set; }
-              public string SERVICE_TYPE { get; set; }
-              public string SERVICE_UNIT { get; set; }
-              public string SPRAY { get; set; }
-              public decimal? SQUARE_FEET { get; set; }
-              public string CUT { get; set; }
-              public string MAINTAIN { get; set; }
-              public string INSPECT { get; set; }
-              public decimal? MILE_POST { get; set; }
-              public string SUB_DIVISION { get; set; }
-              public string SEGMENT1 { get; set; }
-              public string STATE { get; set; }
-          }
+            public class SupplementalBillingList
+            {
+                public long SUPPLEMENTAL_ID { get; set; }
+                public long CROSSING_ID { get; set; }
+                public string CROSSING_NUMBER { get; set; }
+                public DateTime? APPROVED_DATE { get; set; }
+                public string SERVICE_TYPE { get; set; }
+                public string SERVICE_UNIT { get; set; }
+                public string SPRAY { get; set; }
+                public decimal? SQUARE_FEET { get; set; }
+                public string CUT { get; set; }
+                public string MAINTAIN { get; set; }
+                public string INSPECT { get; set; }
+                public decimal? MILE_POST { get; set; }
+                public string SUB_DIVISION { get; set; }
+                public string SEGMENT1 { get; set; }
+                public string STATE { get; set; }
+                public string SPECIAL_INSTRUCTIONS { get; set; }
+            }
 
           public class IncidentReportList
           {
@@ -562,6 +609,7 @@ SELECT MAX(CROSSING_APPLICATION.APPLICATION_REQUESTED) APPLICATION_REQUESTED,
               public string SERVICE_TYPE { get; set; }
               public decimal? SQUARE_FEET { get; set; }
               public string REMARKS { get; set; }
+              public string SEGMENT1 { get; set; }
           }
           public class CompletedCrossings
           {
@@ -608,7 +656,7 @@ SELECT MAX(CROSSING_APPLICATION.APPLICATION_REQUESTED) APPLICATION_REQUESTED,
             public long CROSSING_ID { get; set; }
             public string CROSSING_NUMBER { get; set; }
             public DateTime? APPROVED_DATE { get; set; }
-            public DateTime? COMPLETED_DATE { get; set; }
+            public DateTime? CUT_DATE { get; set; }
             public string SERVICE_TYPE { get; set; }
             public string TRUCK_NUMBER { get; set; }
             public DateTime? INSPECT_START { get; set; }
@@ -636,6 +684,7 @@ SELECT MAX(CROSSING_APPLICATION.APPLICATION_REQUESTED) APPLICATION_REQUESTED,
             public long CARRYING_OUT_ORGANIZATION_ID { get; set; }
             public long CROSSING_ID { get; set; }
         }
+       
         public class CrossingList
         {
             public string RAILROAD_ID { get; set; }
@@ -656,7 +705,8 @@ SELECT MAX(CROSSING_APPLICATION.APPLICATION_REQUESTED) APPLICATION_REQUESTED,
             public long? CROSSING_ID { get; set; }
             public string CROSSING_NUMBER { get; set; }
             public string SERVICE_UNIT { get; set; }
-            public string SUB_DIVISION { get; set; }          
+            public string SUB_DIVISION { get; set; }
+            public string STATE { get; set; }
         }
         public class CrossingProject
         {

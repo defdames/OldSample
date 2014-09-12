@@ -10,7 +10,7 @@
 namespace DBI.Web.EMS.Views.Modules.Overhead {
     
     
-    public partial class umEditBudget {
+    public partial class umEditBudgetVersion {
         
         /// <summary>
         /// Head1 control.
