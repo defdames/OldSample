@@ -122,7 +122,7 @@
                                                 </Click>
                                             </DirectEvents>
                                         </ext:Button>
-                                        <ext:Button runat="server" ID="uxManualEntryButton" Text="Manual Survey Entry" Icon="PencilAdd" Disabled="true">
+                                        <ext:Button runat="server" ID="uxManualEntryButton" Text="Manual Survey Entry" Icon="PencilAdd">
                                             <Listeners>
                                                 <Click Handler="#{uxChooseProjectWindow}.show()" />
                                             </Listeners>
@@ -133,9 +133,6 @@
                             <BottomBar>
                                 <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
                             </BottomBar>
-                            <Listeners>
-                                <Select Handler="#{uxManualEntryButton}.enable()" />
-                            </Listeners>
                         </ext:GridPanel>
                     </Items>
                 </ext:TabPanel>

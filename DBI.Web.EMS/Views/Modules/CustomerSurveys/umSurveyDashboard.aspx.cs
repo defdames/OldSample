@@ -213,6 +213,10 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
                 smtp.Send(EmailMessage);
                 X.Msg.Alert("Email sent", string.Format("Message has been sent to {0}", ToAddress)).Show();
             }
+            else
+            {
+                X.Msg.Alert("No Email Address", "The selected project does not have an associated email address").Show();
+            }
         }
 
         protected void dePrintPDF(object sender, DirectEventArgs e)
