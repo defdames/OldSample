@@ -96,7 +96,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             string _accountRange = e.ExtraParams["ACCOUNT_RANGE"];
             string _budget_id = uxBudgetVersionByOrganizationSelectionModel.SelectedRow.RecordID;
 
-            X.Js.Call("parent.App.direct.AddTabPanel", "bmw" + _organization_id + _fiscalYear + _budget_id, _organization_name + " - " + "Budget Maintenance / " + _fiscalYear + " / " + _description + " (" + _accountRange + ")", "~/Views/Modules/Overhead/umEditBudgetVersion.aspx?orgid=" + _organization_id + "&fiscalyear=" + _fiscalYear + "&budget_id=" + _budget_id);
+            X.Js.Call("parent.App.direct.AddTabPanel", "bmw" + _organization_id + _fiscalYear + _budget_id, _organization_name + " - " + "Budget Maintenance / " + _fiscalYear + " / " + _description + " (" + _accountRange + ")", "~/Views/Modules/Overhead/umEditBudgetVersion.aspx?orgid=" + _organization_id + "&fiscalyear=" + _fiscalYear + "&budget_id=" + _budget_id + "&description=" + _organization_name + " / " + _fiscalYear + " / " + _description + " (" + _accountRange + ")");
         }
 
 
