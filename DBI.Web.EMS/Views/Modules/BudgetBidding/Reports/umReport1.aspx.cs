@@ -14,7 +14,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding.Reports
         protected void Page_Load(object sender, EventArgs e)
         {
 
-            long hierID = Convert.ToInt64(Request.QueryString["hierID"]);
+            string orgName = Request.QueryString["orgName"];
+            long orgID = Convert.ToInt64(Request.QueryString["orgID"]);
             
         }
 
