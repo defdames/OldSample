@@ -121,6 +121,13 @@ namespace DBI.Data
                 return false;
             }
         }
+        public static bool IsBudgetOrg(long orgID)
+        {
+            using (Entities context = new Entities())
+            {
+                return context.SYS_ORG_PROFILE_OPTIONS.Where(x => x.PROFILE_OPTION_ID == 48 && x.PROFILE_VALUE == "Y").Select(x => x.ORGANIZATION_ID).Contains(orgID);
+            }
+        }
         public static bool IsReadOnly(long orgID, long yearID, long verID)
         {
             string lookupValue = orgID + ":" + yearID + ":" + verID + ":Y";
@@ -259,9 +266,19 @@ namespace DBI.Data
             }
         }        
         
-        public static decimal LaborBurdenRate()
+        public static decimal LaborBurdenRate(long leOrgID, long yearID)
         {
-            return .40M;
+            decimal laborBurden;
+            try
+            {
+                laborBurden = PA.LaborBurden(leOrgID.ToString(), yearID.ToString());
+            }
+            catch (DBICustomException ex)
+            {
+                laborBurden = 0;
+            }
+
+            return laborBurden;
         }
         public static string OrgName(long orgID)
         {
@@ -291,7 +308,7 @@ namespace DBI.Data
                 return false;
             }
         }
-        public static List<long> RollupAndLeafOrgsIsUserAndIsAllowedOrgs(long userID, long hierarchyID, long selOrg)
+        public static List<long> OverallSummaryBudgetOrgsBelowCurrent(long userID, long hierarchyID, long selOrg)
         {
             List<long> testOrgs = new List<long>();
             List<long> showOrgs = new List<long>();
@@ -313,7 +330,7 @@ namespace DBI.Data
 
                 if (leafCount == 0 || rollupCount != 0)
                 {
-                    if (IsUserOrgAndAllowed(userID, selOrg) == true)
+                    if (IsBudgetOrg(selOrg) == true)
                     {
                         showOrgs.Add(selOrg);
                     }
@@ -550,10 +567,10 @@ namespace DBI.Data
             }
             #endregion
 
-            public static List<Fields> Data(long userID, long hierarchyID, long orgID, long yearID, long verID, long prevYearID, long prevVerID)
+            public static List<Fields> ORIGData(long userID, long hierarchyID, long orgID, long yearID, long verID, long prevYearID, long prevVerID)
             {
                 string ohVersion = BB.BudBidVerToOHBudVer(verID);
-                List<long> summaryOrgs = BB.RollupAndLeafOrgsIsUserAndIsAllowedOrgs(userID, hierarchyID, orgID);
+                List<long> summaryOrgs = BB.OverallSummaryBudgetOrgsBelowCurrent(userID, hierarchyID, orgID);
                 List<Fields> lineDetail = new List<Fields>();
                 foreach (long summaryOrg in summaryOrgs)
                 {
@@ -618,23 +635,36 @@ namespace DBI.Data
                             LEFT OUTER JOIN PREV_OP ON ORG_NAME.ORGANIZATION_ID = PREV_OP.ORG_ID
                             LEFT OUTER JOIN OVERHEAD ON ORG_NAME.ORGANIZATION_ID = OVERHEAD.ORG_BUDGET_ID
                             LEFT OUTER JOIN PREV_OVERHEAD ON ORG_NAME.ORGANIZATION_ID = PREV_OVERHEAD.PREV_ORG_BUDGET_ID", orgName, yearID, verID, prevYearID, prevVerID, ohVersion);                         
-
-                    List<long> whereOrgs = HR.ActiveOrganizationsByHierarchy(hierarchyID, summaryOrg).Select(x => x.ORGANIZATION_ID).ToList();                    
-                    if (whereOrgs.Count() == 0 && BB.IsUserOrgAndAllowed(userID, orgID) == true) { whereOrgs.Add(summaryOrg); }
-                    string sql2 = " WHERE ORGANIZATION_ID = ";
-                    int i = 0;
-                    foreach (long org in whereOrgs)
+                    
+                    List<long> whereOrgs = HR.ActiveOrganizationsByHierarchy(hierarchyID, summaryOrg).Select(x => x.ORGANIZATION_ID).ToList();
+                    string sql2 = "";
+                    if (whereOrgs.Count() == 0)
                     {
-                        if (BB.IsUserOrgAndAllowed(userID, org) == true)
+                        if (BB.IsUserOrgAndAllowed(userID, summaryOrg) == true)
                         {
-                            if (i == 0)
+                            sql2 = " WHERE ORGANIZATION_ID = " + summaryOrg;
+                        }
+                        else
+                        {
+                            sql2 = " WHERE ORGANIZATION_ID = 0";
+                        }
+                    }
+                    else
+                    {
+                        int i = 0;
+                        foreach (long org in whereOrgs)
+                        {
+                            if (BB.IsUserOrgAndAllowed(userID, org) == true)
                             {
-                                sql2 = sql2 + org;
-                                i = 1;
-                            }
-                            else
-                            {
-                                sql2 = sql2 + " OR ORGANIZATION_ID = " + org;
+                                if (i == 0)
+                                {
+                                    sql2 = " WHERE ORGANIZATION_ID = " + org;
+                                    i = 1;
+                                }
+                                else
+                                {
+                                    sql2 = sql2 + " OR ORGANIZATION_ID = " + org;
+                                }
                             }
                         }
                     }
@@ -652,7 +682,111 @@ namespace DBI.Data
 
                 return lineDetail;
             }
+
+            public static List<Fields> Data(long userID, long hierarchyID, long orgID, long yearID, long verID, long prevYearID, long prevVerID)
+            {
+                string ohVersion = BB.BudBidVerToOHBudVer(verID);
+                List<long> summaryOrgs = BB.OverallSummaryBudgetOrgsBelowCurrent(userID, hierarchyID, orgID);
+                List<Fields> lineDetail = new List<Fields>();
+                foreach (long summaryOrg in summaryOrgs)
+                {
+                    string orgName = BB.OrgName(summaryOrg);
+
+                    string sql1 = string.Format(@"                          
+                        WITH
+                            ORG_NAME AS(
+                                SELECT ORGANIZATION_ID, NAME
+                                FROM APPS.HR_ALL_ORGANIZATION_UNITS      
+                            ),
+                            BUDGET_LINE_AMOUNTS AS (
+                                SELECT * FROM (           
+                                    SELECT BUD_BID_BUDGET_NUM.LINE_ID, BUD_BID_BUDGET_NUM.NOV, BUD_BID_PROJECTS.ORG_ID
+                                    FROM BUD_BID_PROJECTS
+                                    LEFT OUTER JOIN BUD_BID_DETAIL_TASK ON BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = BUD_BID_DETAIL_TASK.PROJECT_ID
+                                    LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_BUDGET_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_BUDGET_NUM.DETAIL_TASK_ID 
+                                    WHERE BUD_BID_PROJECTS.YEAR_ID = {1} AND BUD_BID_PROJECTS.VER_ID = {2} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT')       
+                                PIVOT(
+                                    SUM(NOV) FOR (LINE_ID)
+                                    IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                            ),
+                            PREV_OP AS (                         
+                                SELECT BUD_BID_PROJECTS.ORG_ID, SUM(NOV) PREV_OP                                         
+                                FROM BUD_BID_PROJECTS
+                                LEFT OUTER JOIN BUD_BID_DETAIL_TASK ON BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = BUD_BID_DETAIL_TASK.PROJECT_ID
+                                LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_BUDGET_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_BUDGET_NUM.DETAIL_TASK_ID 
+                                WHERE BUD_BID_PROJECTS.YEAR_ID = {3} AND BUD_BID_PROJECTS.VER_ID = {4} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT' AND BUD_BID_BUDGET_NUM.LINE_ID = 10                             
+                                GROUP BY BUD_BID_PROJECTS.ORG_ID         
+                            ),
+                            OVERHEAD AS (
+                                SELECT OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID,
+                                    NVL(SUM(AMOUNT), 0) OH
+                                FROM OVERHEAD_ORG_BUDGETS
+                                LEFT JOIN OVERHEAD_BUDGET_TYPE ON OVERHEAD_ORG_BUDGETS.OVERHEAD_BUDGET_TYPE_ID = OVERHEAD_BUDGET_TYPE.OVERHEAD_BUDGET_TYPE_ID
+                                LEFT JOIN OVERHEAD_BUDGET_DETAIL ON OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID = OVERHEAD_BUDGET_DETAIL.ORG_BUDGET_ID 
+                                WHERE OVERHEAD_ORG_BUDGETS.FISCAL_YEAR = {1} AND OVERHEAD_BUDGET_TYPE.BUDGET_NAME = '{5}'
+                                GROUP BY OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID
+                            ),
+                            PREV_OVERHEAD AS (
+                                SELECT OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID PREV_ORG_BUDGET_ID,
+                                    NVL(SUM(AMOUNT), 0) PREV_OH
+                                FROM OVERHEAD_ORG_BUDGETS
+                                LEFT JOIN OVERHEAD_BUDGET_TYPE ON OVERHEAD_ORG_BUDGETS.OVERHEAD_BUDGET_TYPE_ID = OVERHEAD_BUDGET_TYPE.OVERHEAD_BUDGET_TYPE_ID
+                                LEFT JOIN OVERHEAD_BUDGET_DETAIL ON OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID = OVERHEAD_BUDGET_DETAIL.ORG_BUDGET_ID 
+                                WHERE OVERHEAD_ORG_BUDGETS.FISCAL_YEAR = {3} AND OVERHEAD_BUDGET_TYPE.BUDGET_NAME = '{5}'
+                                GROUP BY OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID
+                            )
+                            SELECT '{0}' NAME,
+                                SUM(NVL(GROSS_REC, 0)) GROSS_REC,                            
+                                SUM(NVL(MAT_USAGE, 0)) MAT_USAGE,
+                                SUM(NVL(GROSS_REV, 0)) GROSS_REV,
+                                SUM(NVL(DIR_EXP, 0)) DIR_EXP,
+                                SUM(NVL(OP, 0)) OP,
+                                CASE WHEN SUM(GROSS_REV) = 0 OR SUM(GROSS_REV) IS NULL THEN 0 ELSE ROUND((SUM(OP)/SUM(GROSS_REV)) * 100, 2) END OP_PERC,
+                                SUM(NVL(OH, 0)) OH,
+                                SUM(NVL(OP, 0)) - SUM(NVL(OH, 0)) NET_CONT,                              
+                                SUM(NVL(OP, 0)) - SUM(NVL(PREV_OP.PREV_OP, 0)) OP_VAR,
+                                (SUM(NVL(OP, 0)) - SUM(NVL(OH, 0))) - (SUM(NVL(PREV_OP.PREV_OP, 0))) - SUM(NVL(PREV_OH, 0)) NET_CONT_VAR                 
+                            FROM ORG_NAME
+                            LEFT OUTER JOIN BUDGET_LINE_AMOUNTS ON ORG_NAME.ORGANIZATION_ID = BUDGET_LINE_AMOUNTS.ORG_ID
+                            LEFT OUTER JOIN PREV_OP ON ORG_NAME.ORGANIZATION_ID = PREV_OP.ORG_ID
+                            LEFT OUTER JOIN OVERHEAD ON ORG_NAME.ORGANIZATION_ID = OVERHEAD.ORG_BUDGET_ID
+                            LEFT OUTER JOIN PREV_OVERHEAD ON ORG_NAME.ORGANIZATION_ID = PREV_OVERHEAD.PREV_ORG_BUDGET_ID", orgName, yearID, verID, prevYearID, prevVerID, ohVersion);
+
+                    List<long> whereOrgs = HR.ActiveOrganizationsByHierarchy(hierarchyID, summaryOrg).Select(x => x.ORGANIZATION_ID).ToList();
+                    string sql2 = " WHERE ORGANIZATION_ID = 0";
+                    if (whereOrgs.Count() == 0)
+                    {
+                        if (BB.IsUserOrgAndAllowed(userID, summaryOrg) == true)
+                        {
+                            sql2 = sql2 + " OR ORGANIZATION_ID = " + summaryOrg;
+                        }
+                    }
+                    else
+                    {
+                        foreach (long org in whereOrgs)
+                        {
+                            if (BB.IsUserOrgAndAllowed(userID, org) == true)
+                            {
+                                sql2 = sql2 + " OR ORGANIZATION_ID = " + org;                                
+                            }
+                        }
+                    }
+                    string sql3 = " ORDER BY NAME";
+                    string sql = sql1 + sql2 + sql3;
+
+                    List<Fields> lineData;
+                    using (Entities context = new Entities())
+                    {
+                        lineData = context.Database.SqlQuery<Fields>(sql).ToList();
+                    }
+
+                    lineDetail.AddRange(lineData);
+                }
+
+                return lineDetail;
+            }
         }
+
         public class Subtotals
         {
             #region Fields
@@ -669,7 +803,7 @@ namespace DBI.Data
                 public decimal OP_VAR { get; set; }
                 public decimal NET_CONT_VAR { get; set; }
             }
-            #endregion
+            #endregion 
 
             public static Fields Data(long userID, long hierarchyID, long orgID, long yearID, long verID, long prevYearID, long prevVerID)
             {
@@ -733,23 +867,23 @@ namespace DBI.Data
                         LEFT OUTER JOIN OVERHEAD ON ORG_NAME.ORGANIZATION_ID = OVERHEAD.ORG_BUDGET_ID
                         LEFT OUTER JOIN PREV_OVERHEAD ON ORG_NAME.ORGANIZATION_ID = PREV_OVERHEAD.PREV_ORG_BUDGET_ID", yearID, verID, prevYearID, prevVerID, ohVersion);
 
-                List<long> summaryOrgs = BB.RollupAndLeafOrgsIsUserAndIsAllowedOrgs(userID, hierarchyID, orgID);
-                string sql2 = " WHERE ORGANIZATION_ID = ";
-                int i = 0;
+                List<long> summaryOrgs = BB.OverallSummaryBudgetOrgsBelowCurrent(userID, hierarchyID, orgID);
+                string sql2 = " WHERE ORGANIZATION_ID = 0";
                 foreach (long summaryOrg in summaryOrgs)
                 {
                     List<long> whereOrgs = HR.ActiveOrganizationsByHierarchy(hierarchyID, summaryOrg).Select(x => x.ORGANIZATION_ID).ToList();
-                    if (whereOrgs.Count() == 0 && BB.IsUserOrgAndAllowed(userID, orgID) == true) { whereOrgs.Add(summaryOrg); }                    
-                    foreach (long org in whereOrgs)
+                    if (whereOrgs.Count() == 0)
                     {
-                        if (BB.IsUserOrgAndAllowed(userID, org) == true)
+                        if (BB.IsUserOrgAndAllowed(userID, summaryOrg) == true)
                         {
-                            if (i == 0)
-                            {
-                                sql2 = sql2 + org;
-                                i = 1;
-                            }
-                            else
+                            sql2 = sql2 + " OR ORGANIZATION_ID = " + summaryOrg;
+                        }
+                    }
+                    else
+                    {
+                        foreach (long org in whereOrgs)
+                        {
+                            if (BB.IsUserOrgAndAllowed(userID, org) == true)
                             {
                                 sql2 = sql2 + " OR ORGANIZATION_ID = " + org;
                             }
@@ -757,20 +891,18 @@ namespace DBI.Data
                     }
                 }
 
-                string sql3 = " ORDER BY NAME";
-                string sql = sql1 + sql2 + sql3;
-
+                string sql = sql1 + sql2;
                 using (Entities context = new Entities())
                 {
                     return context.Database.SqlQuery<Fields>(sql).SingleOrDefault();
-                }      
-            }        
+                }  
+            }
         } 
     }
 
     public class BBSummary
     {
-        public static void DBUpdateAllJCNums(string hierID, long orgID, string jcDate)
+        public static void DBUpdateAllJCNums(string hierID, long orgID, long leOrgID, long yearID, string jcDate)
         {
             // Get org's project list
             List<BUD_BID_PROJECTS> data;
@@ -838,7 +970,7 @@ namespace DBI.Data
                     BBProject.StartNumbers.DBUpdate(budBidProjectID, sGrossRec, sMaterial, sGrossRev, sDirects, sOP);
 
                     // Update end nums
-                    BBDetail.Sheets.EndNumbers.DBCalculate(budBidProjectID, sGrossRec, sMaterial, sGrossRev, sDirects, sOP);
+                    BBDetail.Sheets.EndNumbers.DBCalculate(leOrgID, yearID, budBidProjectID, sGrossRec, sMaterial, sGrossRev, sDirects, sOP);
                 }
             }
         }
@@ -867,6 +999,8 @@ namespace DBI.Data
                 public decimal DIRECTS_PERC { get; set; }
                 public decimal OP_PERC { get; set; }
                 public decimal OP_VAR { get; set; }
+                public string COMPARE_PRJ_OVERRIDE { get; set; }
+                public string WE_OVERRIDE { get; set; }
             }
             #endregion
 
@@ -876,7 +1010,7 @@ namespace DBI.Data
                     WITH
                         CUR_PROJECT_INFO_WITH_STATUS AS(
                             SELECT BUD_BID_STATUS.STATUS_ID, BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID, BUD_BID_PROJECTS.PROJECT_ID, BUD_BID_PROJECTS.TYPE, BUD_BID_PROJECTS.PRJ_NAME, BUD_BID_STATUS.STATUS,
-                                BUD_BID_PROJECTS.ACRES, BUD_BID_PROJECTS.DAYS, BUD_BID_PROJECTS.COMPARE_PRJ_OVERRIDE, BUD_BID_PROJECTS.COMPARE_PRJ_AMOUNT
+                                BUD_BID_PROJECTS.ACRES, BUD_BID_PROJECTS.DAYS, BUD_BID_PROJECTS.COMPARE_PRJ_OVERRIDE, BUD_BID_PROJECTS.COMPARE_PRJ_AMOUNT, BUD_BID_PROJECTS.WE_OVERRIDE 
                             FROM BUD_BID_PROJECTS
                             INNER JOIN BUD_BID_STATUS
                             ON BUD_BID_PROJECTS.STATUS_ID = BUD_BID_STATUS.STATUS_ID
@@ -940,7 +1074,9 @@ namespace DBI.Data
                         CASE WHEN BUDGET_LINE_AMOUNTS.GROSS_REV = 0 THEN 0 ELSE ROUND((BUDGET_LINE_AMOUNTS.GROSS_REC/BUDGET_LINE_AMOUNTS.GROSS_REV) * 100, 2) END GR_PERC,
                         CASE WHEN BUDGET_LINE_AMOUNTS.GROSS_REV = 0 THEN 0 ELSE ROUND((BUDGET_LINE_AMOUNTS.DIR_EXP/BUDGET_LINE_AMOUNTS.GROSS_REV) * 100, 2) END DIRECTS_PERC,
                         CASE WHEN BUDGET_LINE_AMOUNTS.GROSS_REV = 0 THEN 0 ELSE ROUND((BUDGET_LINE_AMOUNTS.OP/BUDGET_LINE_AMOUNTS.GROSS_REV) * 100, 2) END OP_PERC,       
-                        BUDGET_LINE_AMOUNTS.OP - (CASE WHEN CUR_PROJECT_INFO_WITH_STATUS.COMPARE_PRJ_OVERRIDE = 'Y' THEN CUR_PROJECT_INFO_WITH_STATUS.COMPARE_PRJ_AMOUNT ELSE (CASE WHEN PREV_OP.PREV_OP IS NULL THEN 0 ELSE PREV_OP.PREV_OP END) END) OP_VAR    
+                        BUDGET_LINE_AMOUNTS.OP - (CASE WHEN CUR_PROJECT_INFO_WITH_STATUS.COMPARE_PRJ_OVERRIDE = 'Y' THEN CUR_PROJECT_INFO_WITH_STATUS.COMPARE_PRJ_AMOUNT ELSE (CASE WHEN PREV_OP.PREV_OP IS NULL THEN 0 ELSE PREV_OP.PREV_OP END) END) OP_VAR,
+CUR_PROJECT_INFO_WITH_STATUS.COMPARE_PRJ_OVERRIDE,
+CUR_PROJECT_INFO_WITH_STATUS.WE_OVERRIDE
                     FROM CUR_PROJECT_INFO_WITH_STATUS
                     LEFT OUTER JOIN ORACLE_PROJECT_NAMES ON CUR_PROJECT_INFO_WITH_STATUS.PROJECT_ID = ORACLE_PROJECT_NAMES.PROJECT_ID AND CUR_PROJECT_INFO_WITH_STATUS.TYPE = ORACLE_PROJECT_NAMES.TYPE
                     LEFT OUTER JOIN BUDGET_LINE_AMOUNTS ON CUR_PROJECT_INFO_WITH_STATUS.BUD_BID_PROJECTS_ID = BUDGET_LINE_AMOUNTS.PROJECT_ID
@@ -1352,7 +1488,7 @@ namespace DBI.Data
                 List<BUD_BID_ACTUAL_NUM> data;
                 using (Entities context = new Entities())
                 {
-                    data = context.Database.SqlQuery<BUD_BID_ACTUAL_NUM>(sql).ToList();
+                    data = context.Database.SqlQuery<BUD_BID_ACTUAL_NUM>(sql).OrderBy(x => x.LINE_ID).ToList();
                 }
 
                 int a = 0;
@@ -1459,7 +1595,7 @@ namespace DBI.Data
                 List<BUD_BID_BUDGET_NUM> data;
                 using (Entities context = new Entities())
                 {
-                    data = context.Database.SqlQuery<BUD_BID_BUDGET_NUM>(sql).ToList();
+                    data = context.Database.SqlQuery<BUD_BID_BUDGET_NUM>(sql).OrderBy(x => x.LINE_ID).ToList();
                 }
 
                 int a = 0;
@@ -2004,7 +2140,7 @@ namespace DBI.Data
                 }
                 #endregion
 
-                public static Fields Calculate(long detailSheetID, decimal sGrossRec, decimal sMaterial, decimal sGrossRev, decimal sDirects, decimal sOP, decimal totalDaysRemain, 
+                public static Fields Calculate(long leOrgID, long yearID, long detailSheetID, decimal sGrossRec, decimal sMaterial, decimal sGrossRev, decimal sDirects, decimal sOP, decimal totalDaysRemain, 
                     decimal totalUnitsRemain, decimal totalDaysWorked)
                 {
                     BBDetail.Sheet.Subtotals.Fields subtotal = BBDetail.Sheet.Subtotals.Get(detailSheetID);
@@ -2017,7 +2153,7 @@ namespace DBI.Data
                     decimal totalMisc = subtotal.MISC ?? 0;
                     decimal totalLumpSum = subtotal.LUMPSUM ?? 0;
 
-                    decimal laborBurdenRate = BB.LaborBurdenRate();
+                    decimal laborBurdenRate = BB.LaborBurdenRate(leOrgID, yearID);
                     decimal laborBurden = (totalPersonnel + totalTravel) * laborBurdenRate;
                     decimal totalWklyDirects = totalEquipment + totalPersonnel + totalPerDiem + totalTravel + totalMotels + totalMisc + laborBurden;
                     decimal totalDirectsPerDay = totalDaysWorked == 0 ? 0 : totalWklyDirects / totalDaysWorked;
@@ -2088,7 +2224,7 @@ namespace DBI.Data
                     List<BUD_BID_BUDGET_NUM> data;
                     using (Entities context = new Entities())
                     {
-                        data = context.BUD_BID_BUDGET_NUM.Where(x => x.DETAIL_TASK_ID == detailSheetID).ToList();
+                        data = context.BUD_BID_BUDGET_NUM.Where(x => x.DETAIL_TASK_ID == detailSheetID).OrderBy(x => x.LINE_ID).ToList();
                     }
 
                     int a = 0;
@@ -2100,10 +2236,10 @@ namespace DBI.Data
 
                     GenericData.Update<BUD_BID_BUDGET_NUM>(data);
                 }
-                public static Fields Calculate(long detailSheetID, decimal sGrossRec, decimal sMaterial, decimal sGrossRev, decimal sDirects, decimal sOP,  decimal totalReceiptsRemain, 
+                public static Fields Calculate(long leOrgID, long yearID, long detailSheetID, decimal sGrossRec, decimal sMaterial, decimal sGrossRev, decimal sDirects, decimal sOP,  decimal totalReceiptsRemain, 
                     decimal totalDaysRemain, decimal totalUnitsRemain, decimal totalDaysWorked)
                 {
-                    BBDetail.Sheet.BottomNumbers.Fields data = BBDetail.Sheet.BottomNumbers.Calculate(detailSheetID, sGrossRec, sMaterial, sGrossRev, sDirects, sOP, 
+                    BBDetail.Sheet.BottomNumbers.Fields data = BBDetail.Sheet.BottomNumbers.Calculate(leOrgID, yearID, detailSheetID, sGrossRec, sMaterial, sGrossRev, sDirects, sOP, 
                         totalDaysRemain, totalUnitsRemain, totalDaysWorked);
                     decimal totalMatLeft = data.TOTAL_MATERIAL_LEFT;
                     decimal totalDirectsLeft = data.TOTAL_DIRECTS_LEFT;
@@ -2170,7 +2306,7 @@ namespace DBI.Data
                         SELECT EXPENDITURE_TYPE,
                             COST_RATE                        
                         FROM APPS.PA_EXPENDITURE_COST_RATES_ALL
-                        WHERE ORG_ID = 121 AND 
+                        WHERE ORG_ID = {0} AND 
                             SYSDATE BETWEEN START_DATE_ACTIVE
                             AND NVL (END_DATE_ACTIVE, '31-DEC-4712')
                             GROUP BY EXPENDITURE_TYPE, COST_RATE
@@ -2196,23 +2332,13 @@ namespace DBI.Data
 
                 public static List<Fields> Data(string company)
                 {
-                    string sql = "";
-
-                    switch (company)
-                    {
-                        case "DBI":
-                            sql = string.Format(@"
-                                SELECT 'DBI' COMPANY,
-                                    'FOREMAN' POSITION,
-                                    25 COST_PER_HR
-                                FROM DUAL");
-                            break;
-                    }
-
-                    using (Entities context = new Entities())
-                    {
-                        return context.Database.SqlQuery<Fields>(sql).ToList();
-                    }
+                    List<Fields> data = new List<Fields>();
+                    data.Add(new Fields { COMPANY = "DBI", POSITION = "Foreman", COST_PER_HR = 0 });
+                    data.Add(new Fields { COMPANY = "DBI", POSITION = "Laborer", COST_PER_HR = 0 });
+                    data.Add(new Fields { COMPANY = "DBI", POSITION = "Supervisor", COST_PER_HR = 0 });
+                    data.Add(new Fields { COMPANY = "DBI", POSITION = "Technician", COST_PER_HR = 0 });
+                    data.Add(new Fields { COMPANY = "DBI", POSITION = "Truck Driver", COST_PER_HR = 0 });
+                    return data;
                 }
             }
         }
@@ -2321,7 +2447,7 @@ namespace DBI.Data
                 }
                 #endregion
 
-                public static void DBCalculate(long budBidProjectID, decimal sGrossRec, decimal sMaterial, decimal sGrossRev, decimal sDirects, decimal sOP)
+                public static void DBCalculate(long leOrgID, long yearID, long budBidProjectID, decimal sGrossRec, decimal sMaterial, decimal sGrossRev, decimal sDirects, decimal sOP)
                 {
                     List<BUD_BID_DETAIL_TASK> data;
                     using (Entities context = new Entities())
@@ -2345,7 +2471,7 @@ namespace DBI.Data
                         decimal totalUnitsRemain = mainTabData.UNITREMAIN ?? 0;
                         decimal totalDaysWorked = mainTabData.DAYSWORKED ?? 0;
 
-                        BBDetail.Sheet.EndNumbers.Fields endNums = BBDetail.Sheet.EndNumbers.Calculate(detailSheetID, sGrossRec, sMaterial, sGrossRev, sDirects, sOP,  
+                        BBDetail.Sheet.EndNumbers.Fields endNums = BBDetail.Sheet.EndNumbers.Calculate(leOrgID, yearID, detailSheetID, sGrossRec, sMaterial, sGrossRev, sDirects, sOP,  
                             totalReceiptsRemain, totalDaysRemain,  totalUnitsRemain,  totalDaysWorked);
                         eGrossRec = endNums.GROSS_REC;
                         eMatUsage = endNums.MAT_USAGE;
@@ -2397,27 +2523,130 @@ namespace DBI.Data
                     public decimal? AMT_4 { get; set; }
                     public decimal? AMT_5 { get; set; }
                     public decimal? TOTAL { get; set; }
+                    public decimal? OVERRIDDEN { get; set; }
                 }
                 #endregion
 
-                public static List<Fields> Get(long projectID, long detailSheetID, string recType)
+                public static List<Fields> Get(long orgID, long projectID, long detailSheetID, string recType)
                 {
-                    string sql = string.Format(@"
-                            SELECT DETAIL_SHEET_ID,
-                                PROJECT_ID,
-                                DETAIL_TASK_ID,
-                                REC_TYPE,
-                                DESC_1,
-                                DESC_2,
-                                AMT_1,
-                                AMT_2,
-                                AMT_3,
-                                AMT_4,
-                                AMT_5,
-                                TOTAL
-                            FROM BUD_BID_DETAIL_SHEET 
-                            WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND REC_TYPE = '{2}'
-                            ORDER BY DETAIL_SHEET_ID", projectID, detailSheetID, recType);
+                    string sql;
+                    switch (recType)
+                    {
+                        case "MATERIAL":
+                            long invOrgID = BB.InventoryOrg(orgID);
+                            sql = string.Format(@"
+                                WITH
+                                    MY_LISTING AS (
+                                        SELECT DETAIL_SHEET_ID,
+                                            PROJECT_ID,
+                                            DETAIL_TASK_ID,
+                                            REC_TYPE,
+                                            DESC_1,
+                                            DESC_2,
+                                            AMT_1,
+                                            AMT_2,
+                                            AMT_3,
+                                            AMT_4,
+                                            AMT_5,
+                                            TOTAL
+                                        FROM BUD_BID_DETAIL_SHEET 
+                                        WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND REC_TYPE = '{2}'                                        
+                                    ),
+                                    ORACLE_LISTING AS (
+                                        SELECT DESCRIPTION,
+                                            UOM_CODE,
+                                            ITEM_COST 
+                                        FROM XXEMS.INVENTORY_V
+                                        WHERE INV_LOCATION = {3}
+                                    )
+                                SELECT MY_LISTING.DETAIL_SHEET_ID,
+                                    MY_LISTING.PROJECT_ID,
+                                    MY_LISTING.DETAIL_TASK_ID,
+                                    MY_LISTING.REC_TYPE,
+                                    MY_LISTING.DESC_1,
+                                    MY_LISTING.DESC_2,
+                                    MY_LISTING.AMT_1,
+                                    MY_LISTING.AMT_2,
+                                    MY_LISTING.AMT_3,
+                                    MY_LISTING.AMT_4,
+                                    MY_LISTING.AMT_5,
+                                    MY_LISTING.TOTAL,
+                                    CASE WHEN (ORACLE_LISTING.DESCRIPTION IS NULL
+                                    OR MY_LISTING.DESC_2 <> ORACLE_LISTING.UOM_CODE
+                                    OR MY_LISTING.AMT_1 <> ORACLE_LISTING.ITEM_COST) THEN 1 ELSE 0 END OVERRIDDEN  
+                                FROM MY_LISTING
+                                LEFT JOIN ORACLE_LISTING ON MY_LISTING.DESC_1 = ORACLE_LISTING.DESCRIPTION
+                                ORDER BY DETAIL_SHEET_ID", projectID, detailSheetID, recType, invOrgID);
+                            break;
+
+                        case "EQUIPMENT":
+                            long equipOrgID = BB.EquipmentOrg(orgID);
+                            sql = string.Format(@"
+                                WITH
+                                    MY_LISTING AS (
+                                        SELECT DETAIL_SHEET_ID,
+                                            PROJECT_ID,
+                                            DETAIL_TASK_ID,
+                                            REC_TYPE,
+                                            DESC_1,
+                                            DESC_2,
+                                            AMT_1,
+                                            AMT_2,
+                                            AMT_3,
+                                            AMT_4,
+                                            AMT_5,
+                                            TOTAL
+                                        FROM BUD_BID_DETAIL_SHEET 
+                                        WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND REC_TYPE = '{2}'
+                                    ),
+                                    ORACLE_LISTING AS (
+                                        SELECT EXPENDITURE_TYPE,
+                                            COST_RATE                        
+                                        FROM APPS.PA_EXPENDITURE_COST_RATES_ALL
+                                        WHERE ORG_ID = {3} AND 
+                                            SYSDATE BETWEEN START_DATE_ACTIVE
+                                            AND NVL (END_DATE_ACTIVE, '31-DEC-4712')
+                                        GROUP BY EXPENDITURE_TYPE, COST_RATE
+                                    )
+                                    SELECT MY_LISTING.DETAIL_SHEET_ID,
+                                        MY_LISTING.PROJECT_ID,
+                                        MY_LISTING.DETAIL_TASK_ID,
+                                        MY_LISTING.REC_TYPE,
+                                        MY_LISTING.DESC_1,
+                                        MY_LISTING.DESC_2,
+                                        MY_LISTING.AMT_1,
+                                        MY_LISTING.AMT_2,
+                                        MY_LISTING.AMT_3,
+                                        MY_LISTING.AMT_4,
+                                        MY_LISTING.AMT_5,
+                                        MY_LISTING.TOTAL,
+                                        CASE WHEN (ORACLE_LISTING.EXPENDITURE_TYPE IS NULL
+                                            OR MY_LISTING.AMT_3 <> ORACLE_LISTING.COST_RATE) THEN 1 ELSE 0 END OVERRIDDEN  
+                                    FROM MY_LISTING
+                                    LEFT JOIN ORACLE_LISTING ON MY_LISTING.DESC_1 = ORACLE_LISTING.EXPENDITURE_TYPE
+                                    ORDER BY DETAIL_SHEET_ID", projectID, detailSheetID, recType, equipOrgID);
+                            break;
+
+                        default:
+                            sql = string.Format(@"
+                                SELECT DETAIL_SHEET_ID,
+                                    PROJECT_ID,
+                                    DETAIL_TASK_ID,
+                                    REC_TYPE,
+                                    DESC_1,
+                                    DESC_2,
+                                    AMT_1,
+                                    AMT_2,
+                                    AMT_3,
+                                    AMT_4,
+                                    AMT_5,
+                                    TOTAL,
+                                    0 OVERRIDDEN
+                                FROM BUD_BID_DETAIL_SHEET 
+                                WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND REC_TYPE = '{2}'
+                                ORDER BY DETAIL_SHEET_ID", projectID, detailSheetID, recType);
+                            break;
+                    }
 
                     List<Fields> data;
                     using (Entities context = new Entities())

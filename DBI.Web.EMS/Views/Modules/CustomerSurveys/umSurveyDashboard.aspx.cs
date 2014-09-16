@@ -213,6 +213,10 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
                 smtp.Send(EmailMessage);
                 X.Msg.Alert("Email sent", string.Format("Message has been sent to {0}", ToAddress)).Show();
             }
+            else
+            {
+                X.Msg.Alert("No Email Address", "The selected project does not have an associated email address").Show();
+            }
         }
 
         protected void dePrintPDF(object sender, DirectEventArgs e)
@@ -557,6 +561,15 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
             {
                 FormId = CUSTOMER_SURVEYS.GetFormIdByOrg(OrgId, _context);
             }
+            CUSTOMER_SURVEY_FORMS_COMP NewComp =  new CUSTOMER_SURVEY_FORMS_COMP();
+            NewComp.FORM_ID = FormId;
+            NewComp.CREATE_DATE = DateTime.Now;
+            NewComp.CREATED_BY = User.Identity.Name;
+            NewComp.MODIFIED_BY = User.Identity.Name;
+            NewComp.MODIFY_DATE = DateTime.Now;
+            NewComp.PROJECT_ID = long.Parse(e.ExtraParams["ProjectId"]);
+
+            GenericData.Insert<CUSTOMER_SURVEY_FORMS_COMP>(NewComp);
             Ext.Net.Panel uxSurveyPanel = new Ext.Net.Panel();
             uxSurveyPanel.ID = "uxSurveyPanel";
             uxSurveyPanel.Layout = "Fit";
@@ -564,7 +577,7 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
             uxSurveyPanel.Title = "Preview Survey";
             uxSurveyPanel.Loader = new ComponentLoader
             {
-                Url = "/Views/Modules/CustomerSurveys/umViewSurvey.aspx?FormId=" + FormId,
+                Url = "/Views/Modules/CustomerSurveys/umViewSurvey.aspx?FormId=" + FormId  + "&CompletionId="+ NewComp.COMPLETION_ID,
                 Mode = LoadMode.Frame,
                 AutoLoad = true
             };

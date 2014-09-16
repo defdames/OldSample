@@ -193,6 +193,7 @@
     <Content Include="Views\Modules\CustomerSurveys\umCopyExisting.aspx" />
     <Content Include="Views\Modules\CustomerSurveys\umManageForms.aspx" />
     <Content Include="Views\Modules\CustomerSurveys\umManageOrgs.aspx" />
+    <Content Include="Views\Modules\CustomerSurveys\umQuestionCategories.aspx" />
     <Content Include="Views\Modules\CustomerSurveys\umSurveyCategories.aspx" />
     <Content Include="Views\Modules\CustomerSurveys\umSurveyDashboard.aspx" />
     <Content Include="Views\Modules\CustomerSurveys\umViewCompleted.aspx" />
@@ -609,6 +610,13 @@
     </Compile>
     <Compile Include="Views\Modules\CustomerSurveys\umManageOrgs.aspx.designer.cs">
       <DependentUpon>umManageOrgs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CustomerSurveys\umQuestionCategories.aspx.cs">
+      <DependentUpon>umQuestionCategories.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CustomerSurveys\umQuestionCategories.aspx.designer.cs">
+      <DependentUpon>umQuestionCategories.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CustomerSurveys\umSurveyCategories.aspx.cs">
       <DependentUpon>umSurveyCategories.aspx</DependentUpon>

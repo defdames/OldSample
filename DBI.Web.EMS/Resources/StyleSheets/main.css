@@ -52,3 +52,8 @@
 .x-grid-dirty-cell {
     background: none;
 }
+
+.allowBlank-field {
+            background-color: #EFF7FF !important;
+            background-image: none;
+        }

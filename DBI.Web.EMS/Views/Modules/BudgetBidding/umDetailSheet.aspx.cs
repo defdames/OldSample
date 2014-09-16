@@ -17,7 +17,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!X.IsAjaxRequest)
-            {                
+            {
+                long leOrgID = long.Parse(Request.QueryString["leOrgID"]);
                 long orgID = long.Parse(Request.QueryString["orgID"]);
                 long yearID = long.Parse(Request.QueryString["yearID"]);
                 long verID = long.Parse(Request.QueryString["verID"]);
@@ -80,7 +81,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 uxUnitsRemaining.Text = String.Format("{0:N2}", unitsRemain);
                 uxDaysWorked.Text = String.Format("{0:N2}", daysWorked);
 
-                decimal laborBurden = BB.LaborBurdenRate() * 100;
+                decimal laborBurden = BB.LaborBurdenRate(leOrgID, yearID) * 100;
                 uxLaborBurdenLabel.Text = "Labor Burden @ " + (String.Format("{0:N2}", laborBurden)) + "%:";
 
                 CalulateDetailSheet(true);
@@ -118,6 +119,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         // Sub grid
         protected void deReadGridData(object sender, StoreReadDataEventArgs e)
         {
+            long orgID = long.Parse(Request.QueryString["OrgID"]);
             long projectID = long.Parse(Request.QueryString["projectID"]);
             long detailSheetID = long.Parse(Request.QueryString["detailSheetID"]);
             string recType = e.Parameters["RecordType"];
@@ -125,35 +127,35 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             switch (recType)
             {
                 case "MATERIAL":
-                    uxMaterialGridStore.DataSource = BBDetail.SubGrid.Data.Get(projectID, detailSheetID, recType);
+                    uxMaterialGridStore.DataSource = BBDetail.SubGrid.Data.Get(orgID, projectID, detailSheetID, recType);
                     break;
 
                 case "EQUIPMENT":
-                    uxEquipmentGridStore.DataSource = BBDetail.SubGrid.Data.Get(projectID, detailSheetID, recType);
+                    uxEquipmentGridStore.DataSource = BBDetail.SubGrid.Data.Get(orgID, projectID, detailSheetID, recType);
                     break;
 
                 case "PERSONNEL":
-                    uxPersonnelGridStore.DataSource = BBDetail.SubGrid.Data.Get(projectID, detailSheetID, recType);
+                    uxPersonnelGridStore.DataSource = BBDetail.SubGrid.Data.Get(orgID, projectID, detailSheetID, recType);
                     break;
 
                 case "PERDIEM":
-                    uxPerDiemGridStore.DataSource = BBDetail.SubGrid.Data.Get(projectID, detailSheetID, recType);
+                    uxPerDiemGridStore.DataSource = BBDetail.SubGrid.Data.Get(orgID, projectID, detailSheetID, recType);
                     break;
 
                 case "TRAVEL":
-                    uxTravelGridStore.DataSource = BBDetail.SubGrid.Data.Get(projectID, detailSheetID, recType);
+                    uxTravelGridStore.DataSource = BBDetail.SubGrid.Data.Get(orgID, projectID, detailSheetID, recType);
                     break;
 
                 case "MOTELS":
-                    uxMotelsGridStore.DataSource = BBDetail.SubGrid.Data.Get(projectID, detailSheetID, recType);
+                    uxMotelsGridStore.DataSource = BBDetail.SubGrid.Data.Get(orgID, projectID, detailSheetID, recType);
                     break;
 
                 case "MISC":
-                    uxMiscGridStore.DataSource = BBDetail.SubGrid.Data.Get(projectID, detailSheetID, recType);
+                    uxMiscGridStore.DataSource = BBDetail.SubGrid.Data.Get(orgID, projectID, detailSheetID, recType);
                     break;
 
                 case "LUMPSUM":
-                    uxLumpSumGridStore.DataSource = BBDetail.SubGrid.Data.Get(projectID, detailSheetID, recType);
+                    uxLumpSumGridStore.DataSource = BBDetail.SubGrid.Data.Get(orgID, projectID, detailSheetID, recType);
                     break;
 
                 default:
@@ -360,6 +362,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxMaterialGridStore.Reload();
 
             CalulateDetailSheet();
+            uxMaterialFilter.ClearFilter();
         }
         protected void deGetMatRecID(object sender, DirectEventArgs e)
         {
@@ -402,6 +405,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxEquipmentGridStore.Reload();
 
             CalulateDetailSheet();
+            uxEquipmentFilter.ClearFilter();
         }
         protected void deGetEquipRecID(object sender, DirectEventArgs e)
         {
@@ -444,6 +448,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxPersonnelGridStore.Reload();
 
             CalulateDetailSheet();
+            uxPersonnelFilter.ClearFilter();
         }
         protected void deGetPersRecID(object sender, DirectEventArgs e)
         {
@@ -460,7 +465,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         }
         protected void CalulateDetailSheet(bool pageLoad = false)
         {
-            long orgID = long.Parse(Request.QueryString["OrgID"]);
+            long leOrgID = long.Parse(Request.QueryString["leOrgID"]);
+            long orgID = long.Parse(Request.QueryString["orgID"]);
             long yearID = long.Parse(Request.QueryString["yearID"]);
             long verID = long.Parse(Request.QueryString["verID"]);
 
@@ -502,7 +508,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxTotalLumpSum.Text = String.Format("{0:N2}", totalLumpSum);
 
             // Update Sheet's Bottom Numbers
-            BBDetail.Sheet.BottomNumbers.Fields bottomData = BBDetail.Sheet.BottomNumbers.Calculate(detailSheetID, sGrossRec, sMatUsage, sGrossRev, sDirects, sOP, totalDaysRemain, totalUnitsRemain, totalDaysWorked);
+            BBDetail.Sheet.BottomNumbers.Fields bottomData = BBDetail.Sheet.BottomNumbers.Calculate(leOrgID, yearID, detailSheetID, sGrossRec, sMatUsage, sGrossRev, sDirects, sOP, totalDaysRemain, totalUnitsRemain, totalDaysWorked);
             uxLaborBurden.Text = String.Format("{0:N2}", bottomData.LABOR_BURDEN);
             uxAvgUnitsPerDay.Text = String.Format("{0:N2}", bottomData.AVG_UNITS_PER_DAY);
             uxTotalWklyDirects.Text = String.Format("{0:N2}", bottomData.TOTAL_WKLY_DIRECTS);
@@ -511,7 +517,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxTotalMaterialLeft.Text = String.Format("{0:N2}", bottomData.TOTAL_MATERIAL_LEFT);
 
             // Update End Numbers
-            BBDetail.Sheet.EndNumbers.Fields endNums = BBDetail.Sheet.EndNumbers.Calculate(detailSheetID, sGrossRec, sMatUsage, sGrossRev, sDirects, sOP, recRemaining, totalDaysRemain, totalUnitsRemain, totalDaysWorked);
+            BBDetail.Sheet.EndNumbers.Fields endNums = BBDetail.Sheet.EndNumbers.Calculate(leOrgID, yearID, detailSheetID, sGrossRec, sMatUsage, sGrossRev, sDirects, sOP, recRemaining, totalDaysRemain, totalUnitsRemain, totalDaysWorked);
             decimal eGrossRec = endNums.GROSS_REC;
             decimal eMatUsage = endNums.MAT_USAGE;
             decimal eGrossRev = endNums.GROSS_REV;

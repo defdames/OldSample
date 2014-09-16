@@ -83,7 +83,7 @@
                         </ext:GridView>
                     </View> 
                     <SelectionModel>
-                        <ext:CheckboxSelectionModel runat="server" Mode="Simple" AllowDeselect="true" ID="uxPeriodSelectionModel" >
+                        <ext:CheckboxSelectionModel runat="server" Mode="Single" AllowDeselect="true" ID="uxPeriodSelectionModel" ShowHeaderCheckbox="false">
                              <Listeners>
                                  <Select Handler="if(#{uxPeriodSelectionModel}.getCount() > 0){#{uxImportSelected}.enable();}else {#{uxImportSelected}.disable();}"></Select>
                                   <Deselect Handler="if(#{uxPeriodSelectionModel}.getCount() > 0){#{uxImportSelected}.enable();}else {#{uxImportSelected}.disable();}"></Deselect>
@@ -94,7 +94,7 @@
                        <Buttons>
                            <ext:Button runat="server" ID="uxImportSelected" Text="Import" Icon="DatabaseCopy" AutoFocus="true" TabIndex="2" Disabled="true">
                                <DirectEvents>
-                                   <Click OnEvent="deImportActuals" Success="parent.Ext.getCmp('uxOrganizationAccountGridPanel').getStore().load();parent.Ext.getCmp('uxImportActualsWn').close();"><Confirmation ConfirmRequest="true" Message="Are you sure you want to import actuals for these dates? This will overwrite your current numbers with actual numbers. You can not go back, Are you sure?"></Confirmation>
+                                   <Click OnEvent="deImportActuals" Success="parent.Ext.getCmp('uxOrganizationAccountGridPanel').getStore().load();parent.Ext.getCmp('uxImportActualsWn').close();"><Confirmation ConfirmRequest="true" Message="Are you sure you want to import actuals for this period? This will overwrite your current numbers with actual numbers. You can not go back, Are you sure?"></Confirmation>
                                        <EventMask ShowMask="true" Msg="Import actuals, please Wait..."></EventMask>
                                    </Click>
                                </DirectEvents>

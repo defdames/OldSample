@@ -37,10 +37,12 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         protected void deUpdate(object sender, DirectEventArgs e)
         {
             string hierID = Request.QueryString["hierID"];
+            long leOrgID = long.Parse(Request.QueryString["leOrgID"]);
+            long yearID = long.Parse(Request.QueryString["yearID"]);
             long orgID = Convert.ToInt64(Request.QueryString["orgID"]);
             string jcDate = uxWEDate.Text;
 
-            BBSummary.DBUpdateAllJCNums(hierID, orgID, jcDate);
+            BBSummary.DBUpdateAllJCNums(hierID, orgID, leOrgID, yearID, jcDate);
             X.Js.Call("closeUpdate");
         }
     }

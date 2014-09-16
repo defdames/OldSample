@@ -69,37 +69,9 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             uxForecastPeriodsByOrganizationSelectionModel.DeselectAll(true);
             uxOpenPeriod.Disable();
             uxClosePeriod.Disable();
-            uxLockPeriod.Disable();
             uxDelete.Disable();
             uxImportActuals.Disable();
-
-        }
-
-        protected void deLockPeriod(object sender, DirectEventArgs e)
-        {
-            using (Entities _context = new Entities())
-            {
-                foreach (SelectedRow row in uxForecastPeriodsByOrganizationSelectionModel.SelectedRows)
-                {
-                    long _budgetID = long.Parse(row.RecordID);
-
-                    OVERHEAD_ORG_BUDGETS _budget = _context.OVERHEAD_ORG_BUDGETS.Where(x => x.ORG_BUDGET_ID == _budgetID).SingleOrDefault();
-
-                    if (_budget != null)
-                    {
-                            _budget.STATUS = "L";
-                            GenericData.Update<OVERHEAD_ORG_BUDGETS>(_budget);
-                    }
-                }
-            }
-
-            uxForecastPeriodsByOrganization.Reload();
-            uxForecastPeriodsByOrganizationSelectionModel.DeselectAll(true);
-            uxOpenPeriod.Disable();
-            uxClosePeriod.Disable();
-            uxLockPeriod.Disable();
-            uxDelete.Disable();
-            uxImportActuals.Disable();
+            uxEditBudget.Disable();
 
         }
 
@@ -127,9 +99,9 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             uxForecastPeriodsByOrganizationSelectionModel.DeselectAll(true);
             uxOpenPeriod.Disable();
             uxClosePeriod.Disable();
-            uxLockPeriod.Disable();
             uxDelete.Disable();
             uxImportActuals.Disable();
+            uxEditBudget.Disable();
 
         }
 
@@ -197,9 +169,9 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             uxForecastPeriodsByOrganizationSelectionModel.DeselectAll(true);
             uxOpenPeriod.Disable();
             uxClosePeriod.Disable();
-            uxLockPeriod.Disable();
             uxDelete.Disable();
             uxImportActuals.Disable();
+            uxEditBudget.Disable();
         }       
 
 
@@ -247,17 +219,17 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             {
                 uxOpenPeriod.Enable();
                 uxClosePeriod.Enable();
-                uxLockPeriod.Enable();
                 uxDelete.Enable();
                 uxImportActuals.Enable();
+                uxEditBudget.Enable();
             }
             else
             {
                 uxOpenPeriod.Disable();
                 uxClosePeriod.Disable();
-                uxLockPeriod.Disable();
                 uxDelete.Disable();
                 uxImportActuals.Disable();
+                uxEditBudget.Disable();
             }
 
         }
@@ -268,18 +240,40 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             {
                 uxOpenPeriod.Enable();
                 uxClosePeriod.Enable();
-                uxLockPeriod.Enable();
                 uxDelete.Enable();
                 uxImportActuals.Enable();
+                uxEditBudget.Enable();
             }
             else
             {
                 uxOpenPeriod.Disable();
                 uxClosePeriod.Disable();
-                uxLockPeriod.Disable();
                 uxDelete.Disable();
                 uxImportActuals.Disable();
+                uxEditBudget.Disable();
             }
+        }
+
+
+        protected void deEditBudget(object sender, DirectEventArgs e)
+        {
+            long _budgetID = long.Parse(e.ExtraParams["ORG_BUDGET_ID"]);
+            using (Entities _context = new Entities())
+            {
+                OVERHEAD_ORG_BUDGETS _budgetHeader = OVERHEAD_BUDGET_FORECAST.BudgetByID(_context, _budgetID);
+
+
+
+                string _organization_id = _budgetHeader.ORGANIZATION_ID.ToString();
+                string _organization_name = HR.Organization(_budgetHeader.ORGANIZATION_ID).ORGANIZATION_NAME;
+                string _fiscalYear = _budgetHeader.FISCAL_YEAR.ToString();
+                string _description = e.ExtraParams["BUDGET_DESCRIPTION"];
+                string _accountRange = OVERHEAD_BUDGET_FORECAST.AccountRangeByOrganizationID(_context, _budgetHeader.ORGANIZATION_ID);
+                string _budget_id = _budgetID.ToString();
+
+                X.Js.Call("parent.App.direct.AddTabPanel", "bmw" + _organization_id + _fiscalYear + _budget_id, _organization_name + " - " + "Budget Maintenance / " + _fiscalYear + " / " + _description + " (" + _accountRange + ")", "~/Views/Modules/Overhead/umEditBudgetVersion.aspx?orgid=" + _organization_id + "&fiscalyear=" + _fiscalYear + "&budget_id=" + _budget_id + "&description=" + _organization_name + " / " + _fiscalYear + " / " + _description + " (" + _accountRange + ")");
+            }
+
         }
     }
 }

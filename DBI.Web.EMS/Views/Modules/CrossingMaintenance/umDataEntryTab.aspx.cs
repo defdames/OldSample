@@ -27,7 +27,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
             if (!X.IsAjaxRequest)
             {
-                uxAddAppRequestedStore.Data = StaticLists.ApplicationRequested;
+                //uxAddAppRequestedStore.Data = StaticLists.ApplicationRequested;
                 Store1.Data = StaticLists.ApplicationRequested;
                 CheckboxSelectionModel sm = CheckboxSelectionModel1;
                 sm.ClearSelection();
@@ -39,7 +39,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             CheckboxSelectionModel csm = CheckboxSelectionModel1;
             decimal Application = Convert.ToDecimal(ComboBox1.SelectedItem.Value);
             long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
-      
+            uxAddApp.SetValue(Application);
             decimal UserId = SYS_USER_INFORMATION.UserID(User.Identity.Name);
            
             List<CROSSING_MAINTENANCE.CrossingData1> dataSource = CROSSING_MAINTENANCE.GetAppCrossingList(RailroadId, UserId).ToList();
@@ -135,13 +135,14 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 CROSSING_APPLICATION data;
 
                 //do type conversions
+                
                 DateTime Date = (DateTime)uxAddEntryDate.Value;
-                decimal AppRequested = Convert.ToDecimal(uxAddAppReqeusted.Value);
+                decimal AppRequested = Convert.ToDecimal(uxAddApp.Value);
                 string TruckNumber = uxAddEquipmentDropDown.Value.ToString();
                 string Spray = uxAddEntrySprayBox.Value.ToString();
                 string Cut = uxAddEntryCutBox.Value.ToString();
                 string Inspect = uxAddEntryInspectBox.Value.ToString();
-            
+                uxAddApp.SetValue(ComboBox1.SelectedItem.Value);
                 if (uxAddEntrySprayBox.Checked)
                 {
                     Spray = "Y";
@@ -222,6 +223,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                             GenericData.Insert<CROSSING_APPLICATION>(data);
 
                             uxAddNewApplicationEntryWindow.Hide();
+                            uxAppEntryCrossingStore.Reload();
+                            sm.ClearSelection();
                             uxApplicationStore.Reload();
                             uxAddApplicationForm.Reset();
 

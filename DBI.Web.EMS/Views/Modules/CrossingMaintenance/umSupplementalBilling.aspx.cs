@@ -125,52 +125,57 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         }
         protected void deResetInvoice(object sender, DirectEventArgs e)
         {
-            uxInvoiceSupplementalStore.Reload();
+            uxInvoiceSupplementalStore.RemoveAll();
         }
         protected void deInvoiceReportGrid(object sender, StoreReadDataEventArgs e)
         {
             List<object> allData;
-
+           
             string json = (e.Parameters["selectedSupp"]);
             List<SupplementalDetails> suppList = JSON.Deserialize<List<SupplementalDetails>>(json);
             List<decimal> ReportList = new List<decimal>();
             foreach (SupplementalDetails supp in suppList)
             {
                 ReportList.Add(supp.SUPPLEMENTAL_ID);
-            }
-            using (Entities _context = new Entities())
-            {
+
+                using (Entities _context = new Entities())
+                {
                 //IQueryable<CROSSING_MAINTENANCE.InvoicedCrossingsSupplemental> allData = CROSSING_MAINTENANCE.GetInvoicedCrossings(_context).Where(s => ReportList.Contains(s.SUPPLEMENTAL_ID));
-                    allData = (from a in _context.CROSSING_SUPPLEMENTAL
-                               join d in _context.CROSSINGS on a.CROSSING_ID equals d.CROSSING_ID
-                               join v in _context.CROSSING_INVOICE on a.INVOICE_SUPP_ID equals v.INVOICE_ID
-                               where ReportList.Contains(a.SUPPLEMENTAL_ID)
-                               select new
-                               {
-                                   v.INVOICE_NUMBER,
-                                   v.INVOICE_DATE,
-                                   d.CROSSING_ID,
-                                   a.SUPPLEMENTAL_ID,
-                                   a.APPROVED_DATE,
-                                   d.CROSSING_NUMBER,
-                                   d.SUB_DIVISION,
-                                   d.SERVICE_UNIT,
-                                   d.STATE,
-                                   a.SERVICE_TYPE,
-                                   d.MILE_POST,
-                                   a.TRUCK_NUMBER,
-                                   a.SQUARE_FEET,
+                allData = (from a in _context.CROSSING_SUPPLEMENTAL
+                           join d in _context.CROSSINGS on a.CROSSING_ID equals d.CROSSING_ID
+                           join v in _context.CROSSING_SUPP_INVOICE on a.INVOICE_SUPP_ID equals v.INVOICE_SUPP_ID
+                           where ReportList.Contains(a.SUPPLEMENTAL_ID)
+                           select new
+                           {
+                               a.INVOICE_SUPP_ID,
+                               v.INVOICE_SUPP_NUMBER,
+                               v.INVOICE_SUPP_DATE,
+                               d.CROSSING_ID,
+                               a.SUPPLEMENTAL_ID,
+                               a.APPROVED_DATE,
+                               d.CROSSING_NUMBER,
+                               d.SUB_DIVISION,
+                               d.SERVICE_UNIT,
+                               d.STATE,
+                               a.SERVICE_TYPE,
+                               d.MILE_POST,
+                               a.TRUCK_NUMBER,
+                               a.SQUARE_FEET,
+                               a.PROJECT_ID,
 
 
-                               }).ToList<object>();
 
-
+                           }).ToList<object>();
+                uxInvoiceReportStore.DataSource = allData;
 
                 }
-                uxInvoiceReportStore.DataSource = allData;
+
+              
+               
                 //int count;
-                //uxInvoiceSupplementalStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.InvoicedCrossingsSupplemental>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], allData, out count);
+                //uxInvoiceReportStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], allData, out count);
                 //e.Total = count;
+            }
             
         }
         protected void deGetRRType(string rrLoad)
@@ -284,7 +289,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         }
         public class SupplementalDetails
         {
-            public decimal INVOICE_SUPP_ID { get; set; }
+            public decimal? INVOICE_SUPP_ID { get; set; }
             public decimal SUPPLEMENTAL_ID { get; set; }
             public long CROSSING_ID { get; set; }
             public DateTime APPROVED_DATE { get; set; }          

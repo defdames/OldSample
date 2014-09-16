@@ -52,6 +52,20 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             uxOrganizationSecurityStore.Reload();
         }
 
+        protected void deShowBudgetTypes(object sender, DirectEventArgs e)
+        {
+            string _selectedRecordID = Request.QueryString["orgid"];
+
+            char[] _delimiterChars = { ':' };
+            string[] _selectedID = _selectedRecordID.Split(_delimiterChars);
+            long _hierarchyID = long.Parse(_selectedID[1].ToString());
+            long _organizationID = long.Parse(_selectedID[0].ToString());
+
+            HR.ORGANIZATION _organizationDetails = HR.Organization(_organizationID);
+
+            X.Js.Call("parent.App.direct.AddTabPanel", "bt", _organizationDetails.ORGANIZATION_NAME + " - Budget Types", "umOverheadBudgetTypes.aspx?leid=" + _selectedRecordID);
+        }
+
 
         protected void deLoadOrganizationsByHierarchy(object sender, StoreReadDataEventArgs e)
         {
@@ -64,9 +78,11 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                 var data = HR.OverheadOrganizationStatusByHierarchy(_hierarchyID, _organizationID);
 
-                if (e.Parameters["TOGGLE_ACTIVE"] == "Y")
+                if (!uxShowAllOrganizationsCheckBox.Checked)
+                {
                     data = data.Where(x => x.ORGANIZATION_STATUS == "Active").ToList();
-            
+                }
+    
                 int count;
                 uxOrganizationSecurityStore.DataSource = GenericData.EnumerableFilterHeader<HR.ORGANIZATION_V1>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                 e.Total = count;
