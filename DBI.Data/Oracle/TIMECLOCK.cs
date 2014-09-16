@@ -270,7 +270,7 @@ namespace DBI.Data
                          : (adjts.Minutes > 53 && adjts.Minutes <= 60) ? 1
                          : 0;
 
-            decimal fixedtime = (decimal)adjts.TotalHours + (decimal)adjtime;
+            decimal fixedtime = Math.Floor((decimal)adjts.TotalHours)  + (decimal)adjtime;
 
             
 
