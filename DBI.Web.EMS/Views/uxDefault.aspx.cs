@@ -120,11 +120,11 @@ namespace DBI.Web.EMS.Views
             if (Permissions.Exists(x => x.PERMISSION_ID == 1))
             {
                 //SuperUser, so load all modules and menu items
-                List<SYS_MODULES> ModulesList = SYS_MODULES.GetModules().OrderBy(x => x.MODULE_NAME).ToList();
+                List<SYS_MODULES> ModulesList = SYS_MODULES.GetModules().OrderBy(x => x.SORT_ORDER).ToList();
                 foreach (SYS_MODULES Module in ModulesList)
                 {
                     Ext.Net.MenuPanel AppPanel = CreateMenu(Module);
-                    List<SYS_MENU> MenuItems = SYS_MENU.GetMenuItems(Module.MODULE_ID);
+                    List<SYS_MENU> MenuItems = SYS_MENU.GetMenuItems(Module.MODULE_ID).OrderBy(x => x.SORT_ORDER).ToList();
                     foreach (SYS_MENU MenuItem in MenuItems)
                     {
                         Ext.Net.MenuItem AppMenuItem = CreateMenuItem(MenuItem);
