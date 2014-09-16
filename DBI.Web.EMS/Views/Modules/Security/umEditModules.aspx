@@ -15,12 +15,18 @@
                     <Store>
                         <ext:Store runat="server" ID="uxModuleStore" AutoDataBind="true" OnReadData="deReadModules" PageSize="10" RemoteSort="true">
                             <Model>
-                                <ext:Model runat="server">
+                                <ext:Model runat="server" IDProperty="MODULE_ID">
                                     <Fields>
                                         <ext:ModelField Name="MODULE_ID" />
                                         <ext:ModelField Name="MODULE_NAME" />
+                                        <ext:ModelField Name="PERMISSION_ID" />
                                         <ext:ModelField Name="PERMISSION_NAME" ServerMapping="SYS_PERMISSIONS.PERMISSION_NAME" />
                                         <ext:ModelField Name="PERMISSION_DESCRIPTION" ServerMapping="SYS_PERMISSIONS.DESCRIPTION" />
+                                        <ext:ModelField Name="SORT_ORDER" />
+                                        <ext:ModelField Name="CREATE_DATE" />
+                                        <ext:ModelField Name="MODIFY_DATE" />
+                                        <ext:ModelField Name="CREATED_BY" />
+                                        <ext:ModelField Name="MODIFIED_BY" />
                                     </Fields>                                    
                                 </ext:Model>
                             </Model>
@@ -28,7 +34,7 @@
                                 <ext:PageProxy />
                             </Proxy>
                             <Sorters>
-                                <ext:DataSorter Property="MODULE_NAME" Direction="ASC" />
+                                <ext:DataSorter Property="SORT_ORDER" Direction="ASC" />
                             </Sorters>
                         </ext:Store>
                     </Store>
@@ -92,17 +98,40 @@
                     <Listeners>
                         <SelectionChange Handler="#{uxEditModuleButton}.enable(); #{uxDeleteModuleButton}.enable(); #{uxEditMenuItemButton}.disable(); #{uxDeleteMenuItemButton}.disable()" />
                     </Listeners>
+                    <View>
+                        <ext:GridView ID="uxAccountCategoryGridView" StripeRows="true" runat="server">
+                            <Plugins>
+                                <ext:GridDragDrop ID="GridDragDrop1" runat="server" DragText="Drag and drop to reorganize" DDGroup="moduleDD">
+                                </ext:GridDragDrop>
+                            </Plugins>
+                            <DirectEvents>
+                                <Drop OnEvent="saveModuleSortOrder">
+                                    <ExtraParams>
+                                        <ext:Parameter Name="Values" Value="Ext.encode(#{uxModuleGrid}.getRowsValues())" Mode="Raw" />
+                                    </ExtraParams>
+                                </Drop>
+                            </DirectEvents>
+                        </ext:GridView>
+                    </View>
                 </ext:GridPanel>
                 <ext:GridPanel runat="server" ID="uxMenuItemsGrid" Region="Center">
                     <Store>
                         <ext:Store runat="server" ID="uxMenuItemsStore" PageSize="10" RemoteSort="true" OnReadData="deReadMenuItems">
                             <Model>
-                                <ext:Model runat="server">
+                                <ext:Model runat="server" IDProperty="MENU_ID">
                                     <Fields>
                                         <ext:ModelField Name="MENU_ID" />
                                         <ext:ModelField Name="ITEM_NAME" />
                                         <ext:ModelField Name="ITEM_URL" />
+                                        <ext:ModelField Name="MODULE_ID" />
+                                        <ext:ModelField Name="PERMISSION_ID" />
+                                        <ext:ModelField Name ="ICON" />
                                         <ext:ModelField Name="PERMISSION_NAME" ServerMapping="SYS_PERMISSIONS.PERMISSION_NAME" />
+                                        <ext:ModelField Name="SORT_ORDER" />
+                                        <ext:ModelField Name="CREATE_DATE" />
+                                        <ext:ModelField Name="MODIFY_DATE" />
+                                        <ext:ModelField Name="CREATED_BY" />
+                                        <ext:ModelField Name="MODIFIED_BY" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -110,7 +139,7 @@
                                 <ext:PageProxy />
                             </Proxy>
                             <Sorters>
-                                <ext:DataSorter Property="ITEM_NAME" Direction="ASC" />
+                                <ext:DataSorter Property="SORT_ORDER" Direction="ASC" />
                             </Sorters>
                         </ext:Store>
                     </Store>
@@ -164,6 +193,21 @@
                     <Listeners>
                         <Select Handler="#{uxEditMenuItemButton}.enable(); #{uxDeleteMenuItemButton}.enable()" />
                     </Listeners>
+                    <View>
+                        <ext:GridView ID="GridView12" StripeRows="true" runat="server">
+                            <Plugins>
+                                <ext:GridDragDrop ID="GridDragDrop2" runat="server" DragText="Drag and drop to reorganize" DDGroup="menuDD">
+                                </ext:GridDragDrop>
+                            </Plugins>
+                            <DirectEvents>
+                                <Drop OnEvent="saveMenuSortOrder">
+                                    <ExtraParams>
+                                        <ext:Parameter Name="Values" Value="Ext.encode(#{uxMenuItemsGrid}.getRowsValues())" Mode="Raw" />
+                                    </ExtraParams>
+                                </Drop>
+                            </DirectEvents>
+                        </ext:GridView>
+                    </View>
                 </ext:GridPanel>
             </Items>
         </ext:Viewport>
