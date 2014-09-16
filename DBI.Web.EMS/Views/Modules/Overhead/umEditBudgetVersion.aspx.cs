@@ -267,11 +267,11 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                             //Check toggle button if button is active, hide zero lines (zero total)
                     if (uxHideBlankLinesCheckbox.Checked)
                     {
-                         _data = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByBudgetID(_context, _budgetid, _organizationID,false,true);
+                         _data = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByBudgetID(_context, _budgetid,false,true);
                     }
                     else
                     {
-                       _data = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByBudgetID(_context, _budgetid, _organizationID);
+                       _data = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByBudgetID(_context, _budgetid);
                     }
 
                 int count;
