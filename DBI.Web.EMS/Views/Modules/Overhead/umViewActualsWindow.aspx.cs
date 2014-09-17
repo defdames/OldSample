@@ -10,6 +10,8 @@ using DBI.Data;
 using DBI.Core.Web;
 using System.Xml.Xsl;
 using System.Xml;
+using System.IO;
+using OfficeOpenXml;
 
 namespace DBI.Web.EMS.Views.Modules.Overhead
 {
@@ -60,6 +62,92 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 int count;
                 uxDetailStore.DataSource = GenericData.EnumerableFilterHeader<GL_PERIODS>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _periodMonthList, out count);
                 e.Total = count;
+            }
+        }
+
+        protected void ExportToExcel(object sender, DirectEventArgs e)
+        {
+
+            short _fiscal_year = short.Parse(Request.QueryString["fiscalyear"]);
+            long _accountID = long.Parse(Request.QueryString["accountID"]);
+
+            string _filename = _accountID + "_" + _fiscal_year + "_actuals.xlsx";
+            string _filePath = Request.PhysicalApplicationPath + _filename;
+
+            FileInfo newFile = new FileInfo(_filePath + _filename);
+
+            ExcelPackage pck = new ExcelPackage(newFile);
+            //Add the Content sheet
+            var ws = pck.Workbook.Worksheets.Add("Export");
+
+            using (Entities _context = new Entities())
+            {
+
+                ws.Cells["A1"].Value = "Transaction Date";
+                ws.Cells["B1"].Value = "Posted Date";
+                ws.Cells["C1"].Value = "Line Reference";
+                ws.Cells["D1"].Value = "Line Description";
+                ws.Cells["E1"].Value = "Debit";
+                ws.Cells["F1"].Value = "Credit";
+                ws.Cells["G1"].Value = "Total";
+
+                string sql2 = string.Format("select ROW_ID as ROW_ID, Line_reference_1 as LINE_REFERENCE, Line_description as LINE_DESCRIPTION, nvl(line_entered_dr,0) AS DEBIT, nvl(line_entered_cr,0) AS CREDIT, je_category AS CATEGORY, header_effective_date AS TRANSACTION_DATE,header_posted_date as POSTED_DATE, 0 as TOTAL from APPS.GL_JE_JOURNAL_LINES_V where period_year = {0} and period_num = {1} and line_code_combination_id = {2} and set_of_books_id in (select distinct set_of_books_id from apps.hr_operating_units)", _fiscal_year, uxPeriodSelectionModel.SelectedRow.RecordID, _accountID);
+                List<BALANCE_DETAILS> _details = _context.Database.SqlQuery<BALANCE_DETAILS>(sql2).ToList();
+
+                int _cellCount = 2;
+                foreach (BALANCE_DETAILS _detail in _details)
+                {
+
+                    ws.Cells["A" + _cellCount].Formula = "=DATE(" + _detail.TRANSACTION_DATE.Year.ToString() + "," + _detail.TRANSACTION_DATE.Month.ToString() + "," + _detail.TRANSACTION_DATE.Day.ToString() + ")";
+                    ws.Cells["A" + _cellCount].Style.Numberformat.Format = "DD/MM/YYYY";
+                    ws.Cells["B" + _cellCount].Formula = "=DATE(" + _detail.POSTED_DATE.Year.ToString() + "," + _detail.POSTED_DATE.Month.ToString() + "," + _detail.POSTED_DATE.Day.ToString() + ")";
+                    ws.Cells["B" + _cellCount].Style.Numberformat.Format = "DD/MM/YYYY";
+                    ws.Cells["C" + _cellCount].Value = _detail.LINE_REFERENCE;
+                    ws.Cells["D" + _cellCount].Value = _detail.LINE_DESCRIPTION;
+                    ws.Cells["E" + _cellCount].Value = _detail.DEBIT;
+                    ws.Cells["E" + _cellCount].Style.Numberformat.Format = "#,##0.00";
+                    ws.Cells["F" + _cellCount].Value = _detail.CREDIT;
+                    ws.Cells["F" + _cellCount].Style.Numberformat.Format = "#,##0.00";
+                    ws.Cells["G" + _cellCount].Value = (_detail.DEBIT + Decimal.Negate(_detail.CREDIT));
+                    ws.Cells["G" + _cellCount].Style.Numberformat.Format = "#,##0.00";
+                    _cellCount = _cellCount + 1;
+                }
+                                
+            }
+
+            Byte[] bin = pck.GetAsByteArray();
+            File.WriteAllBytes(_filePath, bin);
+
+            X.Msg.Confirm("File Download", "Your exported file is now ready to download.", new MessageBoxButtonsConfig
+            {
+                No = new MessageBoxButtonConfig
+                {
+                    Handler = "App.direct.Download('" + _filename + "','" + Server.UrlEncode(_filePath) + "', { isUpload : true })",
+                    Text = "Download " + _filename
+                }
+            }).Show();
+
+        }
+
+        [DirectMethod]
+        public void Download(string filename, string filePath)
+        {
+            using (FileStream fileStream = File.OpenRead(Server.UrlDecode(filePath)))
+            {
+
+                //create new MemoryStream object
+                MemoryStream memStream = new MemoryStream();
+                memStream.SetLength(fileStream.Length);
+                //read file to MemoryStream
+                fileStream.Read(memStream.GetBuffer(), 0, (int)fileStream.Length);
+
+                Response.Clear();
+                Response.ClearContent();
+                Response.ClearHeaders();
+                Response.ContentType = "application/octet-stream";
+                Response.AppendHeader("Content-Disposition", "attachment;filename=" + filename);
+                Response.BinaryWrite(memStream.ToArray());
+                Response.End();
             }
         }
 

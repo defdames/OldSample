@@ -57,16 +57,16 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                         long _hierarchyID = long.Parse(_selectedID[1].ToString());
                         long _organizationID = long.Parse(_selectedID[0].ToString());
 
-                        _data = OVERHEAD_BUDGET_FORECAST.OrganizationsByHierarchy(_context, _hierarchyID, _organizationID, true);
+                        _data = OVERHEAD_BUDGET_FORECAST.OrganizationBudgetsByHierarchy(_context, _hierarchyID, _organizationID, true);
                     }
                     else
                     {
-                        _data = OVERHEAD_BUDGET_FORECAST.OrganizationsByHierarchy(_context);
+                        _data = OVERHEAD_BUDGET_FORECAST.OrganizationBudgetsByHierarchy(_context);
                     }
                 }
                 else
                 {
-                    _data = OVERHEAD_BUDGET_FORECAST.OrganizationsByHierarchy(_context);
+                    _data = OVERHEAD_BUDGET_FORECAST.OrganizationBudgetsByHierarchy(_context);
                 }
 
             if (uxHideClosedBudgetsCheckbox.Checked)

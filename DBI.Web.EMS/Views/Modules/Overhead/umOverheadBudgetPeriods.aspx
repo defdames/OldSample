@@ -34,6 +34,7 @@
                                         <Click OnEvent="deEditBudget"><EventMask ShowMask="true"></EventMask>
                                             <ExtraParams>
                                                  <ext:Parameter Mode="Raw" Name="ORG_BUDGET_ID" Value="#{uxForecastPeriodsByOrganizationGridPanel}.getView().getSelectionModel().getSelection()[0].data.ORG_BUDGET_ID"></ext:Parameter>
+                                                 <ext:Parameter Mode="Raw" Name="BUDGET_DESCRIPTION" Value="#{uxForecastPeriodsByOrganizationGridPanel}.getView().getSelectionModel().getSelection()[0].data.BUDGET_DESCRIPTION"></ext:Parameter>
                                             </ExtraParams>
                                         </Click>
                                     </DirectEvents>      

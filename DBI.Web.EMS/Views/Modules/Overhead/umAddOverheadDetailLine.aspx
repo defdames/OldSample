@@ -136,7 +136,7 @@
                     </View> 
                     
                     <Features>               
-                     <ext:Summary ID="Summary1" runat="server" Dock="Bottom" />
+                     <ext:Summary ID="Summary1" runat="server"  />
             </Features>  
                     <Plugins>
                            <ext:CellEditing runat="server" ClicksToEdit="1" ID="uxGridEditor">

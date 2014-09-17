@@ -307,7 +307,7 @@ namespace DBI.Data
         /// <param name="hierarchyId"></param>
         /// <param name="organizationId"></param>
         /// <returns></returns>
-        public static List<BUDGET_VERSION> OrganizationsByHierarchy(Entities context, long hierarchyID = 0, long leOrganizationID = 0, Boolean withSecurity = false)
+        public static List<BUDGET_VERSION> OrganizationBudgetsByHierarchy(Entities context, long hierarchyID = 0, long leOrganizationID = 0, Boolean withSecurity = false, Boolean withEMSSecurity = false)
         {
             List<BUDGET_VERSION> _budgetOrgList = new List<BUDGET_VERSION>();
             IEnumerable<OVERHEAD_ORG_BUDGETS> _budgetlist = BudgetOrganizations(context).ToList();
@@ -326,6 +326,15 @@ namespace DBI.Data
                                    select b);
             }
 
+            //Limit list to organizations in hierarchy and that I have access to view in EMS
+            if (withEMSSecurity)
+            {
+                //List of All organiztions in hierarchy and must be in organizations I have access to view
+                _budgetlist = (from b in _budgetlist
+                               where SYS_USER_ORGS.GetUserOrgs(1154).Any(x => x.ORG_ID == b.ORGANIZATION_ID)
+                               select b);                
+            }
+
             foreach (OVERHEAD_ORG_BUDGETS _budget in _budgetlist)
             {
                 //Get Organization Information
@@ -341,6 +350,31 @@ namespace DBI.Data
                     _data.ORG_BUDGET_ID = _budget.ORG_BUDGET_ID;
                     _data.OVERHEAD_BUDGET_TYPE_ID = _budget.OVERHEAD_BUDGET_TYPE_ID;
                     _budgetOrgList.Add(_data);
+            }
+
+            // Return budget version for current org if they exist (which they should)
+            if (withEMSSecurity)
+            {
+                IEnumerable<OVERHEAD_ORG_BUDGETS> _currentbudgetlist = BudgetOrganizations(context).Where(x => x.ORGANIZATION_ID == leOrganizationID).ToList();
+
+
+                foreach (OVERHEAD_ORG_BUDGETS _budget in _currentbudgetlist)
+                {
+                    //Get Organization Information
+                    HR.ORGANIZATION _orgInformation = HR.Organization(leOrganizationID);
+
+                    BUDGET_VERSION _data = new BUDGET_VERSION();
+                    _data.ORGANIZATION_ID = _orgInformation.ORGANIZATION_ID;
+                    _data.ORGANIZATION_NAME = _orgInformation.ORGANIZATION_NAME;
+                    _data.BUDGET_STATUS = (_budget.STATUS == "O") ? "Open" : "Closed";
+                    _data.FISCAL_YEAR = _budget.FISCAL_YEAR;
+                    _data.BUDGET_DESCRIPTION = BudgetVersionDescriptionByTypeID(context, _budget.OVERHEAD_BUDGET_TYPE_ID);
+                    _data.ACCOUNT_RANGE = AccountRangeByOrganizationID(context, _data.ORGANIZATION_ID);
+                    _data.ORG_BUDGET_ID = _budget.ORG_BUDGET_ID;
+                    _data.OVERHEAD_BUDGET_TYPE_ID = _budget.OVERHEAD_BUDGET_TYPE_ID;
+                    _budgetOrgList.Add(_data);
+                }
+
             }
 
             return _budgetOrgList;
@@ -412,13 +446,7 @@ namespace DBI.Data
 
             foreach (OVERHEAD_GL_RANGE _range in _rangeList)
             {
-                var _adata = context.GL_ACCOUNTS_V.Where(x => String.Compare(x.SEGMENT1, _range.SRSEGMENT1) >= 0 && String.Compare(x.SEGMENT1, _range.ERSEGMENT1) <= 0);
-                _adata = _adata.Where(x => String.Compare(x.SEGMENT2, _range.SRSEGMENT2) >= 0 && String.Compare(x.SEGMENT2, _range.ERSEGMENT2) <= 0);
-                _adata = _adata.Where(x => String.Compare(x.SEGMENT3, _range.SRSEGMENT3) >= 0 && String.Compare(x.SEGMENT3, _range.ERSEGMENT3) <= 0);
-                _adata = _adata.Where(x => String.Compare(x.SEGMENT4, _range.SRSEGMENT4) >= 0 && String.Compare(x.SEGMENT4, _range.ERSEGMENT4) <= 0);
-                _adata = _adata.Where(x => String.Compare(x.SEGMENT5, _range.SRSEGMENT5) >= 0 && String.Compare(x.SEGMENT5, _range.ERSEGMENT5) <= 0);
-                _adata = _adata.Where(x => String.Compare(x.SEGMENT6, _range.SRSEGMENT6) >= 0 && String.Compare(x.SEGMENT6, _range.ERSEGMENT6) <= 0);
-                _adata = _adata.Where(x => String.Compare(x.SEGMENT7, _range.SRSEGMENT7) >= 0 && String.Compare(x.SEGMENT7, _range.ERSEGMENT7) <= 0);
+                var _adata = context.GL_ACCOUNTS_V.Where(x => string.Compare(x.SEGMENT1 + x.SEGMENT2 + x.SEGMENT3 + x.SEGMENT4 + x.SEGMENT5 + x.SEGMENT6 + x.SEGMENT7, _range.SRSEGMENT1 + _range.SRSEGMENT2 + _range.SRSEGMENT3 + _range.SRSEGMENT4 + _range.SRSEGMENT5 + _range.SRSEGMENT6 + _range.SRSEGMENT7) >= 0).Where(x => string.Compare(x.SEGMENT1 + x.SEGMENT2 + x.SEGMENT3 + x.SEGMENT4 + x.SEGMENT5 + x.SEGMENT6 + x.SEGMENT7, _range.ERSEGMENT1 + _range.ERSEGMENT2 + _range.ERSEGMENT3 + _range.ERSEGMENT4 + _range.ERSEGMENT5 + _range.ERSEGMENT6 + _range.ERSEGMENT7) <= 0);
                 List<GL_ACCOUNTS_V> _accountRange = _adata.ToList();
                 _accountList.AddRange(_accountRange);
             }
@@ -464,6 +492,7 @@ namespace DBI.Data
             return _data;
         }
 
+
         /// <summary>
         /// Returns the budget detail by organization id and budget id
         /// </summary>
@@ -471,91 +500,174 @@ namespace DBI.Data
         /// <param name="budgetID"></param>
         /// <param name="organizationID"></param>
         /// <returns></returns>
-        public static List<OVERHEAD_BUDGET_VIEW> BudgetDetailsViewByBudgetID(Entities context, long budgetID, long organizationID, Boolean printView = false, Boolean hideBlankLines = false, Boolean rollup = false, long leID = 0)
+        public static List<OVERHEAD_BUDGET_VIEW> BudgetDetailsViewByBudgetID(Entities context, long budgetID, Boolean printView = false, Boolean hideBlankLines = false, Boolean rollup = false, long leorganizationID = 0, long organizationID = 0, short fiscalYear = 0, long budgetTypeID = 0)
         {
-            // If this is a rollup we need additional information
-            if (rollup)
-            {
-                //First get the current information from the budget displayed
-                var _budgetRollupDetail = BudgetDetailByBudgetID(context, budgetID);
 
-                //Now I need a list of organizations that are in that hierarchy listed below
-               List<HR.ORGANIZATION_V1> _activeOrganizationHierarchy =  HR.ActiveOrganizationsByHierarchy(long.Parse(SYS_ORG_PROFILE_OPTIONS.OrganizationProfileOption("OverheadBudgetHierarchy",leID)),organizationID);
-
-            }
-
-            var _budgetDetail = BudgetDetailByBudgetID(context, budgetID);
-            var _validAccounts = AccountListValidByOrganizationID(context, organizationID);
             var _categoryList = CategoryAsQueryable(context);
             var _accountCategoryList = AccountCategoryAsQueryable(context);
 
             List<OVERHEAD_BUDGET_VIEW> _data = new List<OVERHEAD_BUDGET_VIEW>();
 
+            // If this is a rollup we need additional information
+            if (rollup)
+            {
+                //Now get a list of budgets I have access to view in EMS using hierarchy security
+                List<BUDGET_VERSION> _mySystemOrganizations = OVERHEAD_BUDGET_FORECAST.OrganizationBudgetsByHierarchy(context, long.Parse(SYS_ORG_PROFILE_OPTIONS.OrganizationProfileOption("OverheadBudgetHierarchy", leorganizationID)), organizationID, true, true)
+                    .Where(x => x.OVERHEAD_BUDGET_TYPE_ID == budgetTypeID & x.FISCAL_YEAR == fiscalYear).ToList();
+
+                //We have all the budgets we now have to get the details from these budgets for all accounts
+                List<OVERHEAD_BUDGET_VIEW> _rollUpBudgetView = new List<OVERHEAD_BUDGET_VIEW>();
+
+                foreach (BUDGET_VERSION _version in _mySystemOrganizations)
+                {
+                    var _detail = BudgetDetailByBudgetID(context, _version.ORG_BUDGET_ID);
+                    var _accounts = AccountListValidByOrganizationID(context, _version.ORGANIZATION_ID);
+
+
+                    foreach (GL_ACCOUNTS_V _account in _accounts)
+                    {
+                        OVERHEAD_CATEGORY _category = new OVERHEAD_CATEGORY();
+                        OVERHEAD_BUDGET_VIEW _record = new OVERHEAD_BUDGET_VIEW();
+
+                          //Return the data for the year
+                List<OVERHEAD_BUDGET_DETAIL> _condensedBudgetDetail = _detail.Where(x => x.CODE_COMBINATION_ID == _account.CODE_COMBINATION_ID).ToList();
+
+                if (_condensedBudgetDetail.Any())
+                {
+
+                    var _accountCategory = _accountCategoryList.Where(x => x.ACCOUNT_SEGMENT == _account.SEGMENT5).OrderBy(x => x.ACCOUNT_SEGMENT).SingleOrDefault();
+
+                    if (_accountCategory != null)
+                    {
+                        _category = _categoryList.Where(x => x.CATEGORY_ID == _accountCategory.CATEGORY_ID).SingleOrDefault();
+                        _record.CATEGORY_ID = _accountCategory.CATEGORY_ID;
+                        _record.CATEGORY_NAME = _category.NAME;
+                        _record.SORT_ORDER = _accountCategory.SORT_ORDER;
+                        _record.CATEGORY_SORT_ORDER = (long)_category.SORT_ORDER;
+                    }
+                    else
+                    {
+                        _record.CATEGORY_NAME = "Other";
+                        _record.CATEGORY_SORT_ORDER = 99999;
+                        _record.SORT_ORDER = 0;
+
+                    }
+
+
+                    _record.ACCOUNT_SEGMENT = _account.SEGMENT5;
+                    _record.CODE_COMBINATION_ID = _account.CODE_COMBINATION_ID;
+
+                    if (printView)
+                    {
+                        _record.ACCOUNT_DESCRIPTION = _account.SEGMENT5_DESC;
+                        _record.ACCOUNT_DESCRIPTION2 = "(" + _account.SEGMENT5 + ")";
+                    }
+                    else
+                    {
+                        _record.ACCOUNT_DESCRIPTION = _account.SEGMENT5_DESC + " (" + _account.SEGMENT4 + "." + _account.SEGMENT5 + ")";
+                    }
+                    _record.AMOUNT1 = GetAccountTotalByPeriod(_condensedBudgetDetail, 1);
+                    _record.AMOUNT2 = GetAccountTotalByPeriod(_condensedBudgetDetail, 2);
+                    _record.AMOUNT3 = GetAccountTotalByPeriod(_condensedBudgetDetail, 3);
+                    _record.AMOUNT4 = GetAccountTotalByPeriod(_condensedBudgetDetail, 4);
+                    _record.AMOUNT5 = GetAccountTotalByPeriod(_condensedBudgetDetail, 5);
+                    _record.AMOUNT6 = GetAccountTotalByPeriod(_condensedBudgetDetail, 6);
+                    _record.AMOUNT7 = GetAccountTotalByPeriod(_condensedBudgetDetail, 7);
+                    _record.AMOUNT8 = GetAccountTotalByPeriod(_condensedBudgetDetail, 8);
+                    _record.AMOUNT9 = GetAccountTotalByPeriod(_condensedBudgetDetail, 9);
+                    _record.AMOUNT10 = GetAccountTotalByPeriod(_condensedBudgetDetail, 10);
+                    _record.AMOUNT11 = GetAccountTotalByPeriod(_condensedBudgetDetail, 11);
+                    _record.AMOUNT12 = GetAccountTotalByPeriod(_condensedBudgetDetail, 12);
+                    _record.TOTAL = (_record.AMOUNT1 + _record.AMOUNT2 + _record.AMOUNT3 + _record.AMOUNT4 + _record.AMOUNT5 + _record.AMOUNT6 + _record.AMOUNT7 + _record.AMOUNT8 + _record.AMOUNT9 + _record.AMOUNT10 + _record.AMOUNT11 + _record.AMOUNT12);
+                    _record.BUDGET_ID = _version.ORG_BUDGET_ID;
+
+                    if (hideBlankLines)
+                    {
+                        if (_record.TOTAL > 0 || _record.TOTAL < 0)
+                            _data.Add(_record);
+                    }
+                    else
+                    {
+                        _data.Add(_record);
+                    }
+                }
+
+                    }
+
+                }
+            }
+
+            var _budgetHeader = BudgetByID(context, budgetID);
+
+            var _budgetDetail = BudgetDetailByBudgetID(context, budgetID);
+            var _validAccounts = AccountListValidByOrganizationID(context, _budgetHeader.ORGANIZATION_ID);
+
             foreach (GL_ACCOUNTS_V _account in _validAccounts)
             {
                 OVERHEAD_CATEGORY _category = new OVERHEAD_CATEGORY();
                 OVERHEAD_BUDGET_VIEW _record = new OVERHEAD_BUDGET_VIEW();
-                var _accountCategory = _accountCategoryList.Where(x => x.ACCOUNT_SEGMENT == _account.SEGMENT5).OrderBy(x => x.ACCOUNT_SEGMENT).SingleOrDefault();
-
-                if (_accountCategory != null)
-                {
-                    _category = _categoryList.Where(x => x.CATEGORY_ID == _accountCategory.CATEGORY_ID).SingleOrDefault();
-                    _record.CATEGORY_ID = _accountCategory.CATEGORY_ID;
-                    _record.CATEGORY_NAME = _category.NAME;
-                    _record.SORT_ORDER = _accountCategory.SORT_ORDER;
-                    _record.CATEGORY_SORT_ORDER = (long)_category.SORT_ORDER;
-                }
-                else
-                {
-                    _record.CATEGORY_NAME = "Other";
-                    _record.CATEGORY_SORT_ORDER = 99999;
-                    _record.SORT_ORDER = 0;
-
-                }
 
 
                 //Return the data for the year
                 List<OVERHEAD_BUDGET_DETAIL> _condensedBudgetDetail = _budgetDetail.Where(x => x.CODE_COMBINATION_ID == _account.CODE_COMBINATION_ID).ToList();
 
+                    var _accountCategory = _accountCategoryList.Where(x => x.ACCOUNT_SEGMENT == _account.SEGMENT5).OrderBy(x => x.ACCOUNT_SEGMENT).SingleOrDefault();
 
-                _record.ACCOUNT_SEGMENT = _account.SEGMENT5;
-                _record.CODE_COMBINATION_ID = _account.CODE_COMBINATION_ID;
+                    if (_accountCategory != null)
+                    {
+                        _category = _categoryList.Where(x => x.CATEGORY_ID == _accountCategory.CATEGORY_ID).SingleOrDefault();
+                        _record.CATEGORY_ID = _accountCategory.CATEGORY_ID;
+                        _record.CATEGORY_NAME = _category.NAME;
+                        _record.SORT_ORDER = _accountCategory.SORT_ORDER;
+                        _record.CATEGORY_SORT_ORDER = (long)_category.SORT_ORDER;
+                    }
+                    else
+                    {
+                        _record.CATEGORY_NAME = "Other";
+                        _record.CATEGORY_SORT_ORDER = 99999;
+                        _record.SORT_ORDER = 0;
 
-                if (printView)
-                {
-                    _record.ACCOUNT_DESCRIPTION = _account.SEGMENT5_DESC;
-                    _record.ACCOUNT_DESCRIPTION2 = "(" + _account.SEGMENT5 + ")";
-                }
-                else
-                {
-                    _record.ACCOUNT_DESCRIPTION = _account.SEGMENT5_DESC + " (" + _account.SEGMENT4 + "." + _account.SEGMENT5 + ")";
-                }
-                _record.AMOUNT1 = GetAccountTotalByPeriod(_condensedBudgetDetail, 1);
-                _record.AMOUNT2 = GetAccountTotalByPeriod(_condensedBudgetDetail, 2);
-                _record.AMOUNT3 = GetAccountTotalByPeriod(_condensedBudgetDetail, 3);
-                _record.AMOUNT4 = GetAccountTotalByPeriod(_condensedBudgetDetail, 4);
-                _record.AMOUNT5 = GetAccountTotalByPeriod(_condensedBudgetDetail, 5);
-                _record.AMOUNT6 = GetAccountTotalByPeriod(_condensedBudgetDetail, 6);
-                _record.AMOUNT7 = GetAccountTotalByPeriod(_condensedBudgetDetail, 7);
-                _record.AMOUNT8 = GetAccountTotalByPeriod(_condensedBudgetDetail, 8);
-                _record.AMOUNT9 = GetAccountTotalByPeriod(_condensedBudgetDetail, 9);
-                _record.AMOUNT10 = GetAccountTotalByPeriod(_condensedBudgetDetail, 10);
-                _record.AMOUNT11 = GetAccountTotalByPeriod(_condensedBudgetDetail, 11);
-                _record.AMOUNT12 = GetAccountTotalByPeriod(_condensedBudgetDetail, 12);
-                _record.TOTAL = (_record.AMOUNT1 + _record.AMOUNT2 + _record.AMOUNT3 + _record.AMOUNT4 + _record.AMOUNT5 + _record.AMOUNT6 + _record.AMOUNT7 + _record.AMOUNT8 + _record.AMOUNT9 + _record.AMOUNT10 + _record.AMOUNT11 + _record.AMOUNT12);
-                _record.BUDGET_ID = budgetID;
+                    }
 
-                if (hideBlankLines)
-                {
-                    if (_record.TOTAL > 0 || _record.TOTAL < 0)
+
+                    _record.ACCOUNT_SEGMENT = _account.SEGMENT5;
+                    _record.CODE_COMBINATION_ID = _account.CODE_COMBINATION_ID;
+
+                    if (printView)
+                    {
+                        _record.ACCOUNT_DESCRIPTION = _account.SEGMENT5_DESC;
+                        _record.ACCOUNT_DESCRIPTION2 = "(" + _account.SEGMENT5 + ")";
+                    }
+                    else
+                    {
+                        _record.ACCOUNT_DESCRIPTION = _account.SEGMENT5_DESC + " (" + _account.SEGMENT4 + "." + _account.SEGMENT5 + ")";
+                    }
+                    _record.AMOUNT1 = GetAccountTotalByPeriod(_condensedBudgetDetail, 1);
+                    _record.AMOUNT2 = GetAccountTotalByPeriod(_condensedBudgetDetail, 2);
+                    _record.AMOUNT3 = GetAccountTotalByPeriod(_condensedBudgetDetail, 3);
+                    _record.AMOUNT4 = GetAccountTotalByPeriod(_condensedBudgetDetail, 4);
+                    _record.AMOUNT5 = GetAccountTotalByPeriod(_condensedBudgetDetail, 5);
+                    _record.AMOUNT6 = GetAccountTotalByPeriod(_condensedBudgetDetail, 6);
+                    _record.AMOUNT7 = GetAccountTotalByPeriod(_condensedBudgetDetail, 7);
+                    _record.AMOUNT8 = GetAccountTotalByPeriod(_condensedBudgetDetail, 8);
+                    _record.AMOUNT9 = GetAccountTotalByPeriod(_condensedBudgetDetail, 9);
+                    _record.AMOUNT10 = GetAccountTotalByPeriod(_condensedBudgetDetail, 10);
+                    _record.AMOUNT11 = GetAccountTotalByPeriod(_condensedBudgetDetail, 11);
+                    _record.AMOUNT12 = GetAccountTotalByPeriod(_condensedBudgetDetail, 12);
+                    _record.TOTAL = (_record.AMOUNT1 + _record.AMOUNT2 + _record.AMOUNT3 + _record.AMOUNT4 + _record.AMOUNT5 + _record.AMOUNT6 + _record.AMOUNT7 + _record.AMOUNT8 + _record.AMOUNT9 + _record.AMOUNT10 + _record.AMOUNT11 + _record.AMOUNT12);
+                    _record.BUDGET_ID = budgetID;
+
+                    if (hideBlankLines)
+                    {
+                        if (_record.TOTAL > 0 || _record.TOTAL < 0)
+                            _data.Add(_record);
+                    }
+                    else
+                    {
                         _data.Add(_record);
-                }
-                else
-                {
-                    _data.Add(_record);
+                    }
                 }
                
-            }
 
             if (printView)
             {
@@ -715,11 +827,11 @@ namespace DBI.Data
             return _data;
         }
 
-        public static Boolean ImportActualForBudgetVersion(Entities context, List<string> periodsToImport, long budgetid, string loggedInUser, string lockImportData = "N")
+        public static Boolean ImportActualForBudgetVersion(Entities context, long periodToImport, long budgetid, string loggedInUser, string lockImportData = "N")
         {
             OVERHEAD_ORG_BUDGETS _budgetHeader = BudgetByID(context, budgetid);
             IQueryable<OVERHEAD_BUDGET_DETAIL> _budgetDetail = OVERHEAD_BUDGET_FORECAST.BudgetDetailByBudgetID(context, budgetid);
-            List<OVERHEAD_BUDGET_FORECAST.GL_PERIOD> _periodList = OVERHEAD_BUDGET_FORECAST.GeneralLedgerPeriods(context).Where(x => x.PERIOD_YEAR == _budgetHeader.FISCAL_YEAR & x.PERIOD_TYPE == "Month" & periodsToImport.Contains(x.PERIOD_NUM.ToString())).ToList();
+            List<OVERHEAD_BUDGET_FORECAST.GL_PERIOD> _periodList = OVERHEAD_BUDGET_FORECAST.GeneralLedgerPeriods(context).Where(x => x.PERIOD_YEAR == _budgetHeader.FISCAL_YEAR & x.PERIOD_TYPE == "Month" & x.PERIOD_NUM == periodToImport).ToList();
             var _accountList = OVERHEAD_BUDGET_FORECAST.AccountListValidByOrganizationID(context, _budgetHeader.ORGANIZATION_ID);
             List<OVERHEAD_BUDGET_DETAIL> _insertData = new List<OVERHEAD_BUDGET_DETAIL>();
             List<OVERHEAD_BUDGET_DETAIL> _updateData = new List<OVERHEAD_BUDGET_DETAIL>();
@@ -911,7 +1023,7 @@ namespace DBI.Data
 
                 //Details Row
                 //Return budget detail information
-                IEnumerable<OVERHEAD_BUDGET_VIEW> _budgetView = BudgetDetailsViewByBudgetID(context, budgetID, organizationID,true,printOptions.HIDE_BLANK_LINES);
+                IEnumerable<OVERHEAD_BUDGET_VIEW> _budgetView = BudgetDetailsViewByBudgetID(context, budgetID,true,printOptions.HIDE_BLANK_LINES);
 
                 NumberFormatInfo nfi = CultureInfo.CurrentCulture.NumberFormat;
                 nfi = (NumberFormatInfo)nfi.Clone();

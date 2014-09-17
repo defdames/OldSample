@@ -157,13 +157,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.FilterHeader uxGlAccountSecurityGridFilter;
         
         /// <summary>
-        /// Button3 control.
+        /// Button1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button3;
+        protected global::Ext.Net.Button Button1;
         
         /// <summary>
         /// Store1 control.

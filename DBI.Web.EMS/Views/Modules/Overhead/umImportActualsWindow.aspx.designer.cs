@@ -40,84 +40,66 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.Viewport Viewport1;
         
         /// <summary>
-        /// uxPeriodImportGridPanel control.
+        /// FormPanel1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel uxPeriodImportGridPanel;
+        protected global::Ext.Net.FormPanel FormPanel1;
         
         /// <summary>
-        /// uxDetailStore control.
+        /// FieldContainer1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store uxDetailStore;
+        protected global::Ext.Net.FieldContainer FieldContainer1;
         
         /// <summary>
-        /// Model4 control.
+        /// uxPeriodName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Model Model4;
+        protected global::Ext.Net.ComboBox uxPeriodName;
         
         /// <summary>
-        /// Column116 control.
+        /// uxPeriodNameStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column116;
+        protected global::Ext.Net.Store uxPeriodNameStore;
         
         /// <summary>
-        /// GridView4 control.
+        /// Model5 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridView GridView4;
+        protected global::Ext.Net.Model Model5;
         
         /// <summary>
-        /// uxPeriodSelectionModel control.
+        /// uxImportButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.CheckboxSelectionModel uxPeriodSelectionModel;
+        protected global::Ext.Net.Button uxImportButton;
         
         /// <summary>
-        /// uxImportSelected control.
+        /// Button2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxImportSelected;
-        
-        /// <summary>
-        /// uxCloseButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxCloseButton;
-        
-        /// <summary>
-        /// uxInformationPanel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel uxInformationPanel;
+        protected global::Ext.Net.Button Button2;
     }
 }
