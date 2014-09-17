@@ -38,7 +38,7 @@
     <style>
         .x-grid-row-summary .x-grid-cell-inner {
             font-weight      : bold;
-            font-size        : 11px;
+            font-size        : 10px;
             background-color : #E0E0D1;
         }
 
@@ -60,11 +60,11 @@
                             <Model>
                                 <ext:Model ID="Model4" runat="server" IDProperty="PERIOD_NUM">
                                     <Fields>
-                                        <ext:ModelField Name="ENTERED_PERIOD_NAME"></ext:ModelField>
-                                        <ext:ModelField Name="PERIOD_NUM"></ext:ModelField>
-                                        <ext:ModelField Name="PERIOD_DR"></ext:ModelField>
-                                        <ext:ModelField Name="PERIOD_CR"></ext:ModelField>
-                                        <ext:ModelField Name="PERIOD_TOTAL"></ext:ModelField>
+                                        <ext:ModelField Name="ENTERED_PERIOD_NAME" ></ext:ModelField>
+                                        <ext:ModelField Name="PERIOD_NUM" ></ext:ModelField>
+                                        <ext:ModelField Name="PERIOD_DR" ></ext:ModelField>
+                                        <ext:ModelField Name="PERIOD_CR" ></ext:ModelField>
+                                        <ext:ModelField Name="PERIOD_TOTAL" ></ext:ModelField>
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -76,25 +76,25 @@
                     </Store>                   
                     <ColumnModel>
                        <Columns>
-                            <ext:Column ID="Column116" runat="server" DataIndex="ENTERED_PERIOD_NAME" Text="Period" Flex="1"  >
+                            <ext:Column ID="Column116" runat="server" DataIndex="ENTERED_PERIOD_NAME" Text="Period"  Flex="1"  >
                                 <SummaryRenderer Handler="return ('Total');" />  
                             </ext:Column>
-                            <ext:Column ID="Column3" runat="server" DataIndex="PERIOD_DR" Text="Debit" Flex="1" SummaryType="Sum" >
+                            <ext:Column ID="Column3" runat="server" DataIndex="PERIOD_DR" Text="Debit"  SummaryType="Sum" Align="Right" Flex="1"  >
                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                                 <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                             </ext:Column>
-                            <ext:Column ID="Column4" runat="server" DataIndex="PERIOD_CR" Text="Credit" Flex="1" SummaryType="Sum" >
+                            <ext:Column ID="Column4" runat="server" DataIndex="PERIOD_CR" Text="Credit"  SummaryType="Sum" Align="Right" Flex="1" >
                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                                 <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                             </ext:Column>
-                            <ext:Column ID="Column2" runat="server" DataIndex="PERIOD_TOTAL" Text="Total" Flex="1" SummaryType="Sum" >
+                            <ext:Column ID="Column2" runat="server" DataIndex="PERIOD_TOTAL" Text="Total"  SummaryType="Sum" Align="Right" Flex="1"  >
                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                                 <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                             </ext:Column>
                         </Columns>
                     </ColumnModel>
                      <Features>               
-                     <ext:Summary ID="Summary1" runat="server" Dock="Bottom" />
+                     <ext:Summary ID="Summary1" runat="server" />
                     </Features>  
                     <View>
                         <ext:GridView ID="GridView4" StripeRows="true" runat="server" TrackOver="true">
@@ -166,15 +166,15 @@
                             </ext:Column>
                            <ext:Column ID="Column7" runat="server" DataIndex="CATEGORY" Text="Category" Flex="1"  >
                             </ext:Column>
-                           <ext:Column ID="Column8" runat="server" DataIndex="DEBIT" Text="Debit" Flex="1" SummaryType="Sum" >
+                           <ext:Column ID="Column8" runat="server" DataIndex="DEBIT" Text="Debit" Flex="1" SummaryType="Sum" Align="Left">
                                 <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                                 <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                             </ext:Column>
-                           <ext:Column ID="Column9" runat="server" DataIndex="CREDIT" Text="Credit" Flex="1" SummaryType="Sum"  >
+                           <ext:Column ID="Column9" runat="server" DataIndex="CREDIT" Text="Credit" Flex="1" SummaryType="Sum"  Align="Left">
                                 <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                                 <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                             </ext:Column>
-                           <ext:Column ID="Column10" runat="server" DataIndex="TOTAL" Text="Total" Flex="1" SummaryType="Sum" >
+                           <ext:Column ID="Column10" runat="server" DataIndex="TOTAL" Text="Total" Flex="1" SummaryType="Sum" Align="Left">
                                 <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                                 <SummaryRenderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','')" />
                             </ext:Column>
