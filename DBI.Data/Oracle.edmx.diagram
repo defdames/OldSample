@@ -136,8 +136,6 @@
         <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
         <EntityTypeShape EntityType="OracleModel.EMPLOYEES_V" Width="1.5" PointX="5.0377610218887039" PointY="11.013042469980681" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_PRICING" Width="1.5" PointX="8.875" PointY="145" />
-        <EntityTypeShape EntityType="OracleModel.CROSSING_APPLICATION" Width="1.5" PointX="30.625" PointY="2.375" />
-        <AssociationConnector Association="OracleModel.FK_APPLICATION_INVOICE_ID" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_DETAIL_SHEET" Width="1.5" PointX="18.25" PointY="87.5" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_PROJECTS" Width="1.5" PointX="20.5" PointY="89.375" />
         <AssociationConnector Association="OracleModel.FK_DETAIL_DETAIL_TASK_ID" />
@@ -161,6 +159,8 @@
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_THRESH_AMT" Width="1.5" PointX="39" PointY="54.375" />
         <AssociationConnector Association="OracleModel.FK_THRESH_AMT_FORMS_ID" />
         <AssociationConnector Association="OracleModel.FK_THRSH_AMTS_FK" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING_APPLICATION" Width="1.5" PointX="29.875" PointY="2.375" />
+        <AssociationConnector Association="OracleModel.FK_APPLICATION_INVOICE_ID" />
         </Diagram>
       <Diagram DiagramId="e84dee89c5a844eb84c350f94a998eb6" Name="OVERHEAD" >
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" Width="4.25" PointX="2.75" PointY="0.75" />
