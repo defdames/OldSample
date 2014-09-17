@@ -118,11 +118,11 @@
                          <ext:Toolbar runat="server">
                              <Items>
                                  <ext:ToolbarFill runat="server"></ext:ToolbarFill>
-                                  <ext:Button ID="Button3" runat="server" Text="To Excel" Icon="PageExcel">
-                              <Listeners>
-                                  <Click Handler="submitValue(#{GridPanel1}, #{FormatType}, 'xls');" />
-                              </Listeners>
-                          </ext:Button>
+                                 <ext:Button ID="Button1" runat="server" Text="Export" Icon="PageExcel">
+                                    <DirectEvents>
+                                        <Click OnEvent="ExportToExcel" IsUpload="true"><EventMask ShowMask="true" Msg="Generating Export, Please Wait..." /></Click>
+                                    </DirectEvents>
+                                </ext:Button>
                              </Items>
                          </ext:Toolbar>
                      </TopBar>

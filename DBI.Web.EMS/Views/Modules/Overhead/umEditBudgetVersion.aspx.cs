@@ -200,10 +200,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             {
                 ID = "uxImportActualsWn",
                 Title = "Import Actuals For Selected Periods",
-                Height = 400,
-                Width = 800,
+                Height = 250,
+                Width = 400,
                 Modal = true,
-                Resizable = false,
+                Resizable = true,
                 CloseAction = CloseAction.Destroy,
                 Loader = new ComponentLoader
                 {
@@ -253,8 +253,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
             using (Entities _context = new Entities())
             {
-                var _validAccounts = OVERHEAD_BUDGET_FORECAST.AccountListValidByOrganizationID(_context, _organizationID);
-
                 //pull budget detail data
                 var _budgetDetail = OVERHEAD_BUDGET_FORECAST.BudgetByID(_context, _budgetid);
 

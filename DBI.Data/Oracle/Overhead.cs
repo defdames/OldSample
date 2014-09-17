@@ -611,9 +611,6 @@ namespace DBI.Data
                 //Return the data for the year
                 List<OVERHEAD_BUDGET_DETAIL> _condensedBudgetDetail = _budgetDetail.Where(x => x.CODE_COMBINATION_ID == _account.CODE_COMBINATION_ID).ToList();
 
-                if (_condensedBudgetDetail.Any())
-                {
-
                     var _accountCategory = _accountCategoryList.Where(x => x.ACCOUNT_SEGMENT == _account.SEGMENT5).OrderBy(x => x.ACCOUNT_SEGMENT).SingleOrDefault();
 
                     if (_accountCategory != null)
@@ -671,7 +668,6 @@ namespace DBI.Data
                     }
                 }
                
-            }
 
             if (printView)
             {
@@ -831,11 +827,11 @@ namespace DBI.Data
             return _data;
         }
 
-        public static Boolean ImportActualForBudgetVersion(Entities context, List<string> periodsToImport, long budgetid, string loggedInUser, string lockImportData = "N")
+        public static Boolean ImportActualForBudgetVersion(Entities context, long periodToImport, long budgetid, string loggedInUser, string lockImportData = "N")
         {
             OVERHEAD_ORG_BUDGETS _budgetHeader = BudgetByID(context, budgetid);
             IQueryable<OVERHEAD_BUDGET_DETAIL> _budgetDetail = OVERHEAD_BUDGET_FORECAST.BudgetDetailByBudgetID(context, budgetid);
-            List<OVERHEAD_BUDGET_FORECAST.GL_PERIOD> _periodList = OVERHEAD_BUDGET_FORECAST.GeneralLedgerPeriods(context).Where(x => x.PERIOD_YEAR == _budgetHeader.FISCAL_YEAR & x.PERIOD_TYPE == "Month" & periodsToImport.Contains(x.PERIOD_NUM.ToString())).ToList();
+            List<OVERHEAD_BUDGET_FORECAST.GL_PERIOD> _periodList = OVERHEAD_BUDGET_FORECAST.GeneralLedgerPeriods(context).Where(x => x.PERIOD_YEAR == _budgetHeader.FISCAL_YEAR & x.PERIOD_TYPE == "Month" & x.PERIOD_NUM == periodToImport).ToList();
             var _accountList = OVERHEAD_BUDGET_FORECAST.AccountListValidByOrganizationID(context, _budgetHeader.ORGANIZATION_ID);
             List<OVERHEAD_BUDGET_DETAIL> _insertData = new List<OVERHEAD_BUDGET_DETAIL>();
             List<OVERHEAD_BUDGET_DETAIL> _updateData = new List<OVERHEAD_BUDGET_DETAIL>();
