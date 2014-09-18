@@ -56,7 +56,7 @@
                                                 runat="server"
                                                 LabelAlign="Right"
                                                 DisplayField="RAILROAD"
-                                                ValueField="RAILROAD_ID"
+                                                ValueField="RAILROAD"
                                                 QueryMode="Local"
                                                 TypeAhead="true" Editable="false" >
                                                 <Store>
@@ -134,6 +134,8 @@
 
                                     <DirectEvents>
                                         <Click OnEvent="deRemovePricing" >
+                                   <Confirmation ConfirmRequest="true" Title="Delete?" Message="Are you sure you want to delete the selected pricing?" />
+
                                             <ExtraParams>
                                                 <ext:Parameter Name="PricingInfo" Value="Ext.encode(#{uxPricingMainGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
                                             </ExtraParams>

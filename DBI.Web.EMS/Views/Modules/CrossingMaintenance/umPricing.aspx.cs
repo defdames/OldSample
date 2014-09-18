@@ -53,6 +53,18 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 NewPricing.MODIFIED_BY = User.Identity.Name;
                 GenericData.Insert<CROSSING_PRICING>(NewPricing);
                 uxPriceStore.Reload();
+
+                Notification.Show(new NotificationConfig()
+                {
+                    Title = "Success",
+                    Html = "Pricing Added Successfully",
+                    HideDelay = 1000,
+                    AlignCfg = new NotificationAlignConfig
+                    {
+                        ElementAnchor = AnchorPoint.Center,
+                        TargetAnchor = AnchorPoint.Center
+                    }
+                });
             }
         }
         protected void deRemovePricing(object sender, DirectEventArgs e)
