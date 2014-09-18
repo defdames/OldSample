@@ -194,6 +194,21 @@ namespace DBI.Data
 
             DBI.Data.GenericData.Update<TIME_CLOCK>(_data);
         }
+        public static void InsertAddedEmployeeTime(DateTime newTimeIn, DateTime newTimeOut, string personName)
+        {
+
+            
+            TimeSpan ts = newTimeOut - newTimeIn;
+            decimal adjts = ConvertTimeToOraclePayrollFormat(ts);
+            decimal lcts = GetLunchTime(adjts);
+            TIME_CLOCK _data = new TIME_CLOCK
+            {
+
+
+
+            };
+            
+        }
 
         /// <summary>
         /// Marks a flag on the TIMECLOCK table that a time was record was deleted.  Said flg will hide record from all screens

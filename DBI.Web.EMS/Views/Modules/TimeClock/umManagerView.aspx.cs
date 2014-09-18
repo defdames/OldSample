@@ -179,6 +179,38 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
             }
 
         }
+        protected void deAddTime(object sender, DirectEventArgs e)
+        {
+            string url = "/Views/Modules/TimeClock/Edit/umAddTime.aspx";
+            Window win = new Window
+            {
+                ID = "uxAddTimeWin",
+                Title = "Add Time",
+                Height = 350,
+                Width = 500,
+                Modal = true,
+                Resizable = false,
+                CloseAction = CloseAction.Destroy,
+                Loader = new ComponentLoader
+                {
+                    Mode = LoadMode.Frame,
+                    DisableCaching = true,
+                    Url = url,
+                    AutoLoad = true,
+                    LoadMask =
+                    {
+                        ShowMask = true
+                    }
+                }
+
+
+            };
+
+            win.Listeners.Close.Handler = "#{uxEmployeeHoursGrid}.getStore().load();";
+            win.Render(this.Form);
+            win.Show();
+
+        }
 
         protected void deEditTime(object sender, DirectEventArgs e)
         {

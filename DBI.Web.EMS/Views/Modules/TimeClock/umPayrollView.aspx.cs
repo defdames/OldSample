@@ -385,8 +385,8 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                             dtrecord.FRINGE_RATE = 0;
                             dtrecord.TOTAL_HOURS =_TimeSum;
                             dtrecord.PREVAILING_WAGE_RATE = null;
-                            dtrecord.EFFECTIVE_START_DATE = current.GetFirstDayOfWeek().Date;
-                            dtrecord.EFFECTIVE_END_DATE = current.GetLastDayOfWeek().Date;
+                            dtrecord.EFFECTIVE_START_DATE = current.GetFirstDayOfWeek().AddDays(-7).Date;
+                            dtrecord.EFFECTIVE_END_DATE = current.GetLastDayOfWeek().AddDays(-7).Date;
 
                             //XXDBI_PAYROLL_AUDIT_V _payrollData = new XXDBI_PAYROLL_AUDIT_V();
 
