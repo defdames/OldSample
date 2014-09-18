@@ -146,7 +146,7 @@
                                 </Listeners>
                             </ext:Panel>
                              <ext:Panel runat="server"
-                                Title="Pricing Maintenance"
+                                Title="Pricing Management"
                                 ID="uxPricing"
                                 Disabled="false">   
                                                                

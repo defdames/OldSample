@@ -108,8 +108,6 @@
                     <Model>
                         <ext:Model ID="Model1" runat="server">
                             <Fields>
-                               
-
                                 <ext:ModelField Name="CROSSING_ID" />
                                 <ext:ModelField Name="CROSSING_NUMBER" />
                                 <ext:ModelField Name="SUPPLEMENTAL_ID" />
@@ -197,7 +195,7 @@
                             <Items>
                                 <ext:DateField ID="uxAddApprovedDateField" runat="server" FieldLabel="Approved Date" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false" Editable="false" TabIndex="1"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side"/>
                                 <ext:DateField ID="uxAddCutDateField" runat="server" FieldLabel="Cut Date" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false" Editable="false" TabIndex="2"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side"/>                       
-                                  <ext:Label ID="Label2" runat="server" Text="" Width="25" />                                
+                                  <ext:Label ID="Label2" runat="server" Text="" Width="70" />                                
                                 <ext:Checkbox ID="uxAddRecurringBox" runat="server" BoxLabel="Recurring" BoxLabelAlign="After" AllowBlank="false" TabIndex="3" />
 
                             </Items>
@@ -207,7 +205,7 @@
                             <Items>
 
                                 <ext:TextField runat="server" ID="uxAddSquareFeet" FieldLabel="Square Feet" LabelAlign="Right" AnchorHorizontal="100%" AllowBlank="false" TabIndex="4"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side" />
-                                  <ext:ComboBox ID="uxAddServiceType"
+                                 <%-- <ext:ComboBox ID="uxAddServiceType"
                                     runat="server"
                                     FieldLabel="Service Type"
                                     LabelAlign="Right"
@@ -231,7 +229,66 @@
                                         </ext:Store>
                                     </Store>
 
-                                </ext:ComboBox>
+                                </ext:ComboBox>--%>
+                                 <ext:DropDownField ID="uxAddPricingGrid" runat="server" FieldLabel="Service Type" AnchorHorizontal="100%" LabelAlign="Right" Width="480" TabIndex="5" Mode="ValueText" Editable="false" AllowBlank="false"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side">
+                                                    <Component>
+                                                        <ext:GridPanel runat="server"
+                                                            ID="uxSupplementalPricingGrid"
+                                                            Layout="HBoxLayout">
+                                                            <Store>
+                                                                <ext:Store runat="server"
+                                                                    ID="uxSupplementalPricingStore"
+                                                                    PageSize="10"
+                                                                    RemoteSort="true"
+                                                                    OnReadData="deAddPricingGrid">
+                                                                   
+                                                                    <Model>
+                                                                        <ext:Model ID="Model3" runat="server">
+                                                                            <Fields>
+                                                                                <ext:ModelField Name="PRICING_ID" />
+                                                                                <ext:ModelField Name="SERVICE_CATEGORY" />
+                                                                                <ext:ModelField Name="PRICE" />
+                                                                             
+
+                                                                            </Fields>
+                                                                        </ext:Model>
+                                                                    </Model>
+                                                                    <Proxy>
+                                                                        <ext:PageProxy />
+                                                                    </Proxy>
+                                                       <Sorters>
+                                                             <ext:DataSorter Property="PRICE" Direction="ASC" />
+                                                       </Sorters>
+                                                                </ext:Store>
+                                                            </Store>
+                                                            <ColumnModel>
+                                                                <Columns>
+                                                                    <ext:Column ID="Column3" runat="server" DataIndex="SERVICE_CATEGORY" Text="Service Category" Flex="1" />
+                                                                    <ext:Column ID="Column7" runat="server" DataIndex="PRICE" Text="Price" Flex="1" />
+                                                                 
+                                                                </Columns>
+                                                            </ColumnModel>
+                                                            <BottomBar>
+                                                                <ext:PagingToolbar ID="PagingToolbar2" runat="server" />
+                                                            </BottomBar>
+                                                            <SelectionModel>
+                                                                <ext:RowSelectionModel ID="RowSelectionModel4" runat="server" Mode="Single" />
+                                                            </SelectionModel>
+                                                            <DirectEvents>
+                                                                <SelectionChange OnEvent="deAddPricingValue">
+                                                                    <ExtraParams>
+                                                                        <ext:Parameter Name="PricingId" Value="#{uxSupplementalPricingGrid}.getSelectionModel().getSelection()[0].data.PRICING_ID" Mode="Raw" />
+                                                                        <ext:Parameter Name="ServiceCategory" Value="#{uxSupplementalPricingGrid}.getSelectionModel().getSelection()[0].data.SERVICE_CATEGORY" Mode="Raw" />
+                                                                        <ext:Parameter Name="Type" Value="Add" />
+                                                                    </ExtraParams>
+                                                                </SelectionChange>
+                                                            </DirectEvents>
+                                                            <Plugins>
+                                                                <ext:FilterHeader runat="server" ID="uxAddPricingFilter" Remote="true" />
+                                                            </Plugins>
+                                                        </ext:GridPanel>
+                                                    </Component>
+                                                </ext:DropDownField>
                                 <ext:Label ID="Label1" runat="server" Width="65" />
 
                             </Items>
@@ -306,7 +363,10 @@
                                                         </ext:GridPanel>
                                                     </Component>
                                                 </ext:DropDownField>
-                         
+
+
+
+                                           
 
                         <ext:TextArea ID="uxAddRemarks" runat="server" FieldLabel="Remarks" AnchorHorizontal="92%" LabelAlign="Right" TabIndex="7" />
                     </Items>
