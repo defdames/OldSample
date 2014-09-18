@@ -25,7 +25,8 @@
             background: white;
             cursor: pointer;
         }
-         .allowBlank-field {
+
+        .allowBlank-field {
             background-color: #EFF7FF !important;
             background-image: none;
         }
@@ -63,10 +64,84 @@
 
                                 </ext:Store>
                             </Store>
-                            <Listeners>
-                                <Select Handler="#{uxAppEntryCrossingStore}.reload()" />
-                            </Listeners>
+                            <DirectEvents>
+                                <Select OnEvent="deSelectYear" />
+                            </DirectEvents>
                         </ext:ComboBox>
+                        <ext:DropDownField ID="uxAddProjectDropDownField" runat="server" FieldLabel="Choose Project" AnchorHorizontal="100%" LabelAlign="Right" Width="755" TabIndex="6" Mode="ValueText" Editable="false">
+                            <Component>
+                                <ext:GridPanel runat="server"
+                                    ID="uxAddProject"
+                                    Layout="HBoxLayout">
+                                    <Store>
+                                        <ext:Store runat="server"
+                                            ID="uxApplicationProjectStore"
+                                            PageSize="10"
+                                            RemoteSort="true"
+                                            OnReadData="deAddProjectGrid">
+                                            <%-- <Parameters>
+                                                                         <ext:StoreParameter Name="CrossingId" Value="#{uxSupplementalCrossingGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
+                                                                     </Parameters>--%>
+                                            <Model>
+                                                <ext:Model ID="Model6" runat="server">
+                                                    <Fields>
+                                                        <ext:ModelField Name="PROJECT_ID" />
+                                                        <ext:ModelField Name="LONG_NAME" />
+                                                        <ext:ModelField Name="SEGMENT1" />
+                                                        <ext:ModelField Name="ORGANIZATION_NAME" />
+                                                        <ext:ModelField Name="CARRYING_OUT_ORGANIZATION_ID" />
+                                                        <ext:ModelField Name="PROJECT_TYPE" />
+                                                        <ext:ModelField Name="PROJECT_STATUS_CODE" />
+                                                        <ext:ModelField Name="TEMPLATE_FLAG" />
+                                                        <ext:ModelField Name="RAILROAD_ID" />
+                                                        <ext:ModelField Name="CROSSING_ID" />
+
+                                                    </Fields>
+                                                </ext:Model>
+                                            </Model>
+                                            <Proxy>
+                                                <ext:PageProxy />
+                                            </Proxy>
+                                            <Sorters>
+                                                <ext:DataSorter Property="ORGANIZATION_NAME" Direction="ASC" />
+                                            </Sorters>
+                                        </ext:Store>
+                                    </Store>
+                                    <ColumnModel>
+                                        <Columns>
+                                            <ext:Column ID="Column11" runat="server" DataIndex="SEGMENT1" Text="Project" Flex="1" />
+                                            <ext:Column ID="Column6" runat="server" DataIndex="LONG_NAME" Text="Project Name" Flex="2" />
+                                            <ext:Column ID="Column14" runat="server" DataIndex="ORGANIZATION_NAME" Text="Organization Name" Flex="1" />
+                                        </Columns>
+                                    </ColumnModel>
+                                    <BottomBar>
+                                        <ext:PagingToolbar ID="PagingToolbar3" runat="server" />
+                                    </BottomBar>
+                                    <SelectionModel>
+                                        <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" Mode="Single" />
+                                    </SelectionModel>
+                                    <DirectEvents>
+                                        <SelectionChange OnEvent="deAddProjectValue">
+                                            <ExtraParams>
+                                                <ext:Parameter Name="ProjectId" Value="#{uxAddProject}.getSelectionModel().getSelection()[0].data.PROJECT_ID" Mode="Raw" />
+                                                <ext:Parameter Name="ProjectName" Value="#{uxAddProject}.getSelectionModel().getSelection()[0].data.LONG_NAME" Mode="Raw" />
+                                                <ext:Parameter Name="Type" Value="Add" />
+                                            </ExtraParams>
+                                        </SelectionChange>
+                                    </DirectEvents>
+                                    <DirectEvents>
+                                        <Select OnEvent="deSelectVersion" />
+                                    </DirectEvents>
+                                    <%--  <Listeners>
+                                                                <Select Handler="#{uxAppEntryCrossingStore}.reload()" />
+                                                            </Listeners>--%>
+                                    <Plugins>
+                                        <ext:FilterHeader runat="server" ID="uxAddProjectFilter" Remote="true" />
+                                    </Plugins>
+                                </ext:GridPanel>
+                            </Component>
+                        </ext:DropDownField>
+
                     </Items>
                 </ext:Toolbar>
                 <ext:GridPanel ID="uxApplicationCrossingGrid" Title="CROSSING LIST FOR APPLICATION ENTRY" runat="server" Region="North" Layout="HBoxLayout" Collapsible="true" SelectionMemory="true">
@@ -74,8 +149,9 @@
                     <Store>
                         <ext:Store runat="server"
                             ID="uxAppEntryCrossingStore"
-                            OnReadData="deApplicationGridData" AutoLoad="false"
+                            AutoLoad="false"
                             PageSize="10"
+                            OnReadData="deApplicationGridData"
                             AutoDataBind="true" WarningOnDirty="false">
                             <Model>
                                 <ext:Model ID="Model2" runat="server" IDProperty="CROSSING_ID">
@@ -89,8 +165,9 @@
                                         <ext:ModelField Name="CROSSING_NUMBER" Type="String" />
                                         <ext:ModelField Name="SERVICE_UNIT" />
                                         <ext:ModelField Name="SUB_DIVISION" />
-                                      <ext:ModelField Name="CARRYING_OUT_ORGANIZATION_ID" />
+                                        <ext:ModelField Name="CARRYING_OUT_ORGANIZATION_ID" />
                                         <ext:ModelField Name="PROJECT_TYPE" />
+
 
                                     </Fields>
                                 </ext:Model>
@@ -233,45 +310,18 @@
 
                                 <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
                                     <Items>
-                              <ext:TextField runat="server" ID="uxAddApp" LabelAlign="Right" FieldLabel="Application #" Width="235" ReadOnly="true" AnchorHorizontal="100%" TabIndex="1" />
+                                        <ext:TextField runat="server" ID="uxAddApp" LabelAlign="Right" FieldLabel="Application #" Width="235" ReadOnly="true" AnchorHorizontal="100%" TabIndex="1" />
                                         <ext:Label ID="Label4" runat="server" Text="" Width="25" />
                                         <ext:Checkbox ID="uxAddEntrySprayBox" runat="server" BoxLabel="Spray" BoxLabelAlign="After" TabIndex="3" />
-                              
-                                
-                                       <%-- <ext:ComboBox ID="uxAddAppReqeusted"
-                                            runat="server"
-                                            FieldLabel="Application #"
-                                            LabelAlign="Right"
-                                            DisplayField="type"
-                                            ValueField="type"
-                                            QueryMode="Local"
-                                            TypeAhead="true" Width="300" AllowBlank="false" ForceSelection="true" TabIndex="1">
-                                            <Store>
-                                                <ext:Store runat="server"
-                                                    ID="uxAddAppRequestedStore" AutoDataBind="true">
-                                                    <Model>
-                                                        <ext:Model ID="Model3" runat="server">
-                                                            <Fields>
-                                                                <ext:ModelField Name="type" />
-                                                            </Fields>
-                                                        </ext:Model>
-                                                    </Model>
-                                                    <Reader>
-                                                        <ext:ArrayReader />
-                                                    </Reader>
-
-                                                </ext:Store>
-                                            </Store>
-                                        </ext:ComboBox>--%>
                                         <ext:Label ID="Label3" runat="server" Text="" Width="25" />
-                                         <ext:Checkbox ID="uxAddEntryCutBox" runat="server" BoxLabel="Cut" BoxLabelAlign="After" TabIndex="4" />
+                                        <ext:Checkbox ID="uxAddEntryCutBox" runat="server" BoxLabel="Cut" BoxLabelAlign="After" TabIndex="4" />
 
                                     </Items>
                                 </ext:FieldContainer>
 
                                 <ext:FieldContainer ID="FieldContainer0" runat="server" Layout="HBoxLayout">
                                     <Items>
-                                        <ext:DateField ID="uxAddEntryDate" runat="server" FieldLabel="Date" LabelAlign="Right" Width="300" AllowBlank="false" Editable="false" TabIndex="2"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side" />
+                                        <ext:DateField ID="uxAddEntryDate" runat="server" FieldLabel="Date" LabelAlign="Right" Width="300" AllowBlank="false" Editable="false" TabIndex="2" InvalidCls="allowBlank" IndicatorIcon="BulletRed" MsgTarget="Side" />
                                         <ext:Label ID="Label1" runat="server" Text="" Width="25" />
                                         <ext:Label ID="Label2" runat="server" Text="" Width="8" />
                                         <ext:Checkbox ID="uxAddEntryInspectBox" runat="server" BoxLabel="Inspect" BoxLabelAlign="After" Width="250" TabIndex="5" />
@@ -288,11 +338,11 @@
                                             ID="uxAddEquipmentDropDown"
                                             FieldLabel="Choose Equipment"
                                             Mode="ValueText" LabelAlign="Right"
-                                            AllowBlank="false" Width="500" TabIndex="6"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side">
+                                            AllowBlank="false" Width="500" TabIndex="6" InvalidCls="allowBlank" IndicatorIcon="BulletRed" MsgTarget="Side">
                                             <Component>
                                                 <ext:GridPanel runat="server"
                                                     ID="uxEquipmentGrid"
-                                                    Layout="HBoxLayout" >
+                                                    Layout="HBoxLayout">
                                                     <Store>
                                                         <ext:Store runat="server"
                                                             ID="uxEquipmentStore"
@@ -387,7 +437,6 @@
                                     </Items>
                                 </ext:FieldContainer>
 
-
                                 <ext:TextArea ID="uxAddEntryRemarks" FieldLabel="Remarks" runat="server" LabelAlign="Right" TabIndex="7" />
                             </Items>
                             <Buttons>
@@ -418,6 +467,11 @@
 
 
                 </ext:Window>
+
+                <ext:Hidden ID="uxHidYearOK" runat="server" />
+                <ext:Hidden ID="uxHidVerOK" runat="server" />
+
+
                 <%-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------%>
             </Items>
         </ext:Viewport>
