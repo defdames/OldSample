@@ -27,114 +27,244 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         protected void deLoadSegment(object sender, StoreReadDataEventArgs e)
         {
+            try
+            {
+
            Ext.Net.Store _storeDetails = sender as Ext.Net.Store;
            Entities _context = new Entities();          
 
                if (_storeDetails.ID == "uxSRSegment1Store")
                {
-                   IQueryable<DBI.Data.Generic.DoubleComboStringID> _data = _context.GL_ACCOUNTS_V.GroupBy(x => new { x.SEGMENT1, x.SEGMENT1_DESC }).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT1, ID_NAME = x.Key.SEGMENT1 + " (" + x.Key.SEGMENT1_DESC + ")" }).OrderBy(x => x.ID);
-                   uxSRSegment1Store.DataSource = _data.ToList();
+                   IQueryable<OVERHEAD_BUDGET_FORECAST.GL_ACCOUNT_LIST> _data = OVERHEAD_BUDGET_FORECAST.GeneralLedgerAccounts(_context);
+                   List<DBI.Data.Generic.DoubleComboStringID> _rdata = _data.GroupBy(x => new { x.SEGMENT1}).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT1 }).OrderBy(x => x.ID).ToList();
+
+                   if (_rdata.Count == 0)
+                       throw new DBICustomException("Not a valid account, please try another selection!");
+
+                   foreach (DBI.Data.Generic.DoubleComboStringID _row in _rdata)
+                   {
+                       _row.ID_NAME = string.Format("{0} - {1}",_row.ID, OVERHEAD_BUDGET_FORECAST.AccountDescriptionBySegment(_context, 1, _row.ID));
+                   }
+
+                   uxSRSegment1Store.DataSource = _rdata;
+
                }
 
                if (_storeDetails.ID == "uxSRSegment2Store")
                {
-                   IQueryable<DBI.Data.Generic.DoubleComboStringID> _data = _context.GL_ACCOUNTS_V.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2, x.SEGMENT2_DESC }).Where(x => x.Key.SEGMENT1 == uxSRSegment1.SelectedItem.Value).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT2, ID_NAME = x.Key.SEGMENT2 + " (" + x.Key.SEGMENT2_DESC + ")" }).Distinct().OrderBy(x => x.ID);
-                   uxSRSegment2Store.DataSource = _data.ToList();
-                   if (_data.Count() == 1)
+                   IQueryable<OVERHEAD_BUDGET_FORECAST.GL_ACCOUNT_LIST> _data = OVERHEAD_BUDGET_FORECAST.GeneralLedgerAccounts(_context);
+                   List<DBI.Data.Generic.DoubleComboStringID> _rdata = _data.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2 }).Where(x => x.Key.SEGMENT1 == uxSRSegment1.SelectedItem.Value).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT2 }).OrderBy(x => x.ID).ToList();
+
+                   if (_rdata.Count == 0)
+                       throw new DBICustomException("Not a valid account, please try another selection!");
+
+                   foreach (DBI.Data.Generic.DoubleComboStringID _row in _rdata)
                    {
-                       uxSRSegment1.SelectedItem.Index = -1;
+                       _row.ID_NAME = string.Format("{0} - {1}", _row.ID, OVERHEAD_BUDGET_FORECAST.AccountDescriptionBySegment(_context, 2, _row.ID));
                    }
+
+                   uxSRSegment2Store.DataSource = _rdata;
+
                }
 
                if (_storeDetails.ID == "uxSRSegment3Store")
                {
-                   IQueryable<DBI.Data.Generic.DoubleComboStringID> _data = _context.GL_ACCOUNTS_V.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2,x.SEGMENT3, x.SEGMENT3_DESC }).Where(x => x.Key.SEGMENT1 == uxSRSegment1.SelectedItem.Value && x.Key.SEGMENT2 == uxSRSegment2.SelectedItem.Value).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT3, ID_NAME = x.Key.SEGMENT3 + " (" + x.Key.SEGMENT3_DESC + ")" }).Distinct().OrderBy(x => x.ID);
-                   uxSRSegment3Store.DataSource = _data.ToList();
-                   if (_data.Count() == 1)
+                   IQueryable<OVERHEAD_BUDGET_FORECAST.GL_ACCOUNT_LIST> _data = OVERHEAD_BUDGET_FORECAST.GeneralLedgerAccounts(_context);
+                   List<DBI.Data.Generic.DoubleComboStringID> _rdata = _data.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2, x.SEGMENT3 }).Where(x => x.Key.SEGMENT1 == uxSRSegment1.SelectedItem.Value & x.Key.SEGMENT2 == uxSRSegment2.SelectedItem.Value).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT3 }).OrderBy(x => x.ID).ToList();
+
+                   if (_rdata.Count == 0)
+                       throw new DBICustomException("Not a valid account, please try another selection!");
+
+                   foreach (DBI.Data.Generic.DoubleComboStringID _row in _rdata)
                    {
-                       uxSRSegment3.SelectedItem.Index = -1;
+                       _row.ID_NAME = string.Format("{0} - {1}", _row.ID, OVERHEAD_BUDGET_FORECAST.AccountDescriptionBySegment(_context, 3, _row.ID));
                    }
+
+                   uxSRSegment3Store.DataSource = _rdata;
                }
 
                if (_storeDetails.ID == "uxSRSegment4Store")
                {
-                   IQueryable<DBI.Data.Generic.DoubleComboStringID> _data = _context.GL_ACCOUNTS_V.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2, x.SEGMENT3,x.SEGMENT4, x.SEGMENT4_DESC }).Where(x => x.Key.SEGMENT1 == uxSRSegment1.SelectedItem.Value && x.Key.SEGMENT2 == uxSRSegment2.SelectedItem.Value && x.Key.SEGMENT3 == uxSRSegment3.SelectedItem.Value).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT4, ID_NAME = x.Key.SEGMENT4 + " (" + x.Key.SEGMENT4_DESC + ")" }).Distinct().OrderBy(x => x.ID);
-                   uxSRSegment4Store.DataSource = _data.ToList();
-                   if (_data.Count() == 1)
+                   IQueryable<OVERHEAD_BUDGET_FORECAST.GL_ACCOUNT_LIST> _data = OVERHEAD_BUDGET_FORECAST.GeneralLedgerAccounts(_context);
+                   List<DBI.Data.Generic.DoubleComboStringID> _rdata = _data.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2, x.SEGMENT3, x.SEGMENT4 }).Where(x => x.Key.SEGMENT1 == uxSRSegment1.SelectedItem.Value & x.Key.SEGMENT2 == uxSRSegment2.SelectedItem.Value & x.Key.SEGMENT3 == uxSRSegment3.SelectedItem.Value).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT4 }).OrderBy(x => x.ID).ToList();
+
+                   if (_rdata.Count == 0)
+                       throw new DBICustomException("Not a valid account, please try another selection!");
+                   
+                   foreach (DBI.Data.Generic.DoubleComboStringID _row in _rdata)
                    {
-                       uxSRSegment4.SelectedItem.Index = -1;
+                       _row.ID_NAME = string.Format("{0} - {1}", _row.ID, OVERHEAD_BUDGET_FORECAST.AccountDescriptionBySegment(_context, 4, _row.ID));
                    }
-                   _context.Dispose();
+
+                   uxSRSegment4Store.DataSource = _rdata;
                }
 
                if (_storeDetails.ID == "uxSRSegment5Store")
                {
-                   IQueryable<DBI.Data.Generic.DoubleComboStringID> _data = _context.GL_ACCOUNTS_V.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2, x.SEGMENT3, x.SEGMENT4,x.SEGMENT5, x.SEGMENT5_DESC }).Where(x => x.Key.SEGMENT1 == uxSRSegment1.SelectedItem.Value && x.Key.SEGMENT2 == uxSRSegment2.SelectedItem.Value && x.Key.SEGMENT3 == uxSRSegment3.SelectedItem.Value && x.Key.SEGMENT4 == uxSRSegment4.SelectedItem.Value).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT5, ID_NAME = x.Key.SEGMENT5 + " (" + x.Key.SEGMENT5_DESC + ")" }).Distinct().OrderBy(x => x.ID);
-                   uxSRSegment5Store.DataSource = _data.ToList();
-                   if (_data.Count() == 1)
+                   IQueryable<OVERHEAD_BUDGET_FORECAST.GL_ACCOUNT_LIST> _data = OVERHEAD_BUDGET_FORECAST.GeneralLedgerAccounts(_context);
+                   List<DBI.Data.Generic.DoubleComboStringID> _rdata = _data.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2, x.SEGMENT3, x.SEGMENT4, x.SEGMENT5 }).Where(x => x.Key.SEGMENT1 == uxSRSegment1.SelectedItem.Value & x.Key.SEGMENT2 == uxSRSegment2.SelectedItem.Value & x.Key.SEGMENT3 == uxSRSegment3.SelectedItem.Value & x.Key.SEGMENT4 == uxSRSegment4.SelectedItem.Value).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT5 }).OrderBy(x => x.ID).ToList();
+
+                   if (_rdata.Count == 0)
+                       throw new DBICustomException("Not a valid account, please try another selection!");
+                   
+                   foreach (DBI.Data.Generic.DoubleComboStringID _row in _rdata)
                    {
-                       uxSRSegment5.SelectedItem.Index = -1;
+                       _row.ID_NAME = string.Format("{0} - {1}", _row.ID, OVERHEAD_BUDGET_FORECAST.AccountDescriptionBySegment(_context, 5, _row.ID));
                    }
+
+                   uxSRSegment5Store.DataSource = _rdata;
                }
 
                if (_storeDetails.ID == "uxSRSegment6Store")
                {
-                   IQueryable<DBI.Data.Generic.DoubleComboStringID> _data = _context.GL_ACCOUNTS_V.GroupBy(x => new {x.SEGMENT1, x.SEGMENT2, x.SEGMENT3, x.SEGMENT4,x.SEGMENT5, x.SEGMENT6, x.SEGMENT6_DESC }).Where(x => x.Key.SEGMENT1 == uxSRSegment1.SelectedItem.Value && x.Key.SEGMENT2 == uxSRSegment2.SelectedItem.Value && x.Key.SEGMENT3 == uxSRSegment3.SelectedItem.Value && x.Key.SEGMENT4 == uxSRSegment4.SelectedItem.Value && x.Key.SEGMENT5 == uxSRSegment5.SelectedItem.Value).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT6, ID_NAME = x.Key.SEGMENT6 + " (" + x.Key.SEGMENT6_DESC + ")" }).Distinct().OrderBy(x => x.ID);
-                   uxSRSegment6Store.DataSource = _data.ToList();
-                   if (_data.Count() == 1)
+                   IQueryable<OVERHEAD_BUDGET_FORECAST.GL_ACCOUNT_LIST> _data = OVERHEAD_BUDGET_FORECAST.GeneralLedgerAccounts(_context);
+                   List<DBI.Data.Generic.DoubleComboStringID> _rdata = _data.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2, x.SEGMENT3, x.SEGMENT4, x.SEGMENT5, x.SEGMENT6 }).Where(x => x.Key.SEGMENT1 == uxSRSegment1.SelectedItem.Value & x.Key.SEGMENT2 == uxSRSegment2.SelectedItem.Value & x.Key.SEGMENT3 == uxSRSegment3.SelectedItem.Value & x.Key.SEGMENT4 == uxSRSegment4.SelectedItem.Value & x.Key.SEGMENT5 == uxSRSegment5.SelectedItem.Value ).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT6 }).OrderBy(x => x.ID).ToList();
+
+                   if (_rdata.Count == 0)
+                       throw new DBICustomException("Not a valid account, please try another selection!");
+                   
+                   foreach (DBI.Data.Generic.DoubleComboStringID _row in _rdata)
                    {
-                       uxSRSegment6.SelectedItem.Index = -1;
+                       _row.ID_NAME = string.Format("{0} - {1}", _row.ID, OVERHEAD_BUDGET_FORECAST.AccountDescriptionBySegment(_context, 6, _row.ID));
                    }
+
+                   uxSRSegment6Store.DataSource = _rdata;
                }
 
                if (_storeDetails.ID == "uxSRSegment7Store")
                {
-                   IQueryable<DBI.Data.Generic.DoubleComboStringID> _data = _context.GL_ACCOUNTS_V.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2, x.SEGMENT3, x.SEGMENT4, x.SEGMENT5, x.SEGMENT6,x.SEGMENT7, x.SEGMENT7_DESC }).Where(x => x.Key.SEGMENT1 == uxSRSegment1.SelectedItem.Value && x.Key.SEGMENT2 == uxSRSegment2.SelectedItem.Value && x.Key.SEGMENT3 == uxSRSegment3.SelectedItem.Value && x.Key.SEGMENT4 == uxSRSegment4.SelectedItem.Value && x.Key.SEGMENT5 == uxSRSegment5.SelectedItem.Value && x.Key.SEGMENT6 == uxSRSegment6.SelectedItem.Value).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT7, ID_NAME = x.Key.SEGMENT7 + " (" + x.Key.SEGMENT7_DESC + ")" }).Distinct().OrderBy(x => x.ID);
-                   uxSRSegment7Store.DataSource = _data.ToList();
+                   IQueryable<OVERHEAD_BUDGET_FORECAST.GL_ACCOUNT_LIST> _data = OVERHEAD_BUDGET_FORECAST.GeneralLedgerAccounts(_context);
+                   List<DBI.Data.Generic.DoubleComboStringID> _rdata = _data.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2, x.SEGMENT3, x.SEGMENT4, x.SEGMENT5, x.SEGMENT6, x.SEGMENT7 }).Where(x => x.Key.SEGMENT1 == uxSRSegment1.SelectedItem.Value & x.Key.SEGMENT2 == uxSRSegment2.SelectedItem.Value & x.Key.SEGMENT3 == uxSRSegment3.SelectedItem.Value & x.Key.SEGMENT4 == uxSRSegment4.SelectedItem.Value & x.Key.SEGMENT6 == uxSRSegment6.SelectedItem.Value).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT7 }).OrderBy(x => x.ID).ToList();
+
+                   if (_rdata.Count == 0)
+                       throw new DBICustomException("Not a valid account, please try another selection!");
+                   
+                   foreach (DBI.Data.Generic.DoubleComboStringID _row in _rdata)
+                   {
+                       _row.ID_NAME = string.Format("{0} - {1}", _row.ID, OVERHEAD_BUDGET_FORECAST.AccountDescriptionBySegment(_context, 7, _row.ID));
+                   }
+
+                   uxSRSegment7Store.DataSource = _rdata.ToList();
                }
 
                if (_storeDetails.ID == "uxERSegment1Store")
                {
+                   IQueryable<OVERHEAD_BUDGET_FORECAST.GL_ACCOUNT_LIST> _data = OVERHEAD_BUDGET_FORECAST.GeneralLedgerAccounts(_context);
+                   List<DBI.Data.Generic.DoubleComboStringID> _rdata = _data.GroupBy(x => new { x.SEGMENT1 }).Where(y => y.Key.SEGMENT1 == uxSRSegment1.SelectedItem.Value).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT1 }).OrderBy(x => x.ID).ToList();
 
-                   IQueryable<DBI.Data.Generic.DoubleComboStringID> _data = _context.GL_ACCOUNTS_V.GroupBy(x => new { x.SEGMENT1, x.SEGMENT1_DESC }).Where(x => x.Key.SEGMENT1 == uxSRSegment1.SelectedItem.Value).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT1, ID_NAME = x.Key.SEGMENT1 + " (" + x.Key.SEGMENT1_DESC + ")" }).Distinct().OrderBy(x => x.ID);
-                   uxERSegment1Store.DataSource = _data.ToList();
+                   if (_rdata.Count == 0)
+                       throw new DBICustomException("Not a valid account, please try another selection!");
+                   
+                   foreach (DBI.Data.Generic.DoubleComboStringID _row in _rdata)
+                   {
+                       _row.ID_NAME = string.Format("{0} - {1}", _row.ID, OVERHEAD_BUDGET_FORECAST.AccountDescriptionBySegment(_context, 1, _row.ID));
+                   }
+
+                   uxERSegment1Store.DataSource = _rdata;
                }
 
                if (_storeDetails.ID == "uxERSegment2Store")
                {
-                   IQueryable<DBI.Data.Generic.DoubleComboStringID> _data = _context.GL_ACCOUNTS_V.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2, x.SEGMENT2_DESC }).Where(x => x.Key.SEGMENT1 == uxERSegment1.SelectedItem.Value && String.Compare(x.Key.SEGMENT2, uxSRSegment2.SelectedItem.Value) >= 0).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT2, ID_NAME = x.Key.SEGMENT2 + " (" + x.Key.SEGMENT2_DESC + ")" }).Distinct().OrderBy(x => x.ID);
-                   uxERSegment2Store.DataSource = _data.ToList();
+                   IQueryable<OVERHEAD_BUDGET_FORECAST.GL_ACCOUNT_LIST> _data = OVERHEAD_BUDGET_FORECAST.GeneralLedgerAccounts(_context);
+                   List<DBI.Data.Generic.DoubleComboStringID> _rdata = _data.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2 }).Where(x => x.Key.SEGMENT1 == uxERSegment1.SelectedItem.Value & String.Compare(x.Key.SEGMENT2, uxSRSegment2.SelectedItem.Value) >= 0).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT2 }).OrderBy(x => x.ID).ToList();
+
+                   if (_rdata.Count == 0)
+                       throw new DBICustomException("Not a valid account, please try another selection!");
+                   
+                   foreach (DBI.Data.Generic.DoubleComboStringID _row in _rdata)
+                   {
+                       _row.ID_NAME = string.Format("{0} - {1}", _row.ID, OVERHEAD_BUDGET_FORECAST.AccountDescriptionBySegment(_context, 2, _row.ID));
+                   }
+
+                   uxERSegment2Store.DataSource = _rdata;
+
                }
 
                if (_storeDetails.ID == "uxERSegment3Store")
                {
-                   IQueryable<DBI.Data.Generic.DoubleComboStringID> _data = _context.GL_ACCOUNTS_V.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2, x.SEGMENT3, x.SEGMENT3_DESC }).Where(x => x.Key.SEGMENT1 == uxERSegment1.SelectedItem.Value && x.Key.SEGMENT2 == uxERSegment2.SelectedItem.Value && String.Compare(x.Key.SEGMENT3, uxSRSegment3.SelectedItem.Value) >= 0).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT3, ID_NAME = x.Key.SEGMENT3 + " (" + x.Key.SEGMENT3_DESC + ")" }).Distinct().OrderBy(x => x.ID);
-                   uxERSegment3Store.DataSource = _data.ToList();
+                   IQueryable<OVERHEAD_BUDGET_FORECAST.GL_ACCOUNT_LIST> _data = OVERHEAD_BUDGET_FORECAST.GeneralLedgerAccounts(_context);
+                   List<DBI.Data.Generic.DoubleComboStringID> _rdata = _data.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2, x.SEGMENT3 }).Where(x => x.Key.SEGMENT1 == uxERSegment1.SelectedItem.Value & x.Key.SEGMENT2 == uxERSegment2.SelectedItem.Value & String.Compare(x.Key.SEGMENT3, uxSRSegment3.SelectedItem.Value) >= 0).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT3 }).OrderBy(x => x.ID).ToList();
+
+                   if (_rdata.Count == 0)
+                       throw new DBICustomException("Not a valid account, please try another selection!");
+                   
+                   foreach (DBI.Data.Generic.DoubleComboStringID _row in _rdata)
+                   {
+                       _row.ID_NAME = string.Format("{0} - {1}", _row.ID, OVERHEAD_BUDGET_FORECAST.AccountDescriptionBySegment(_context, 3, _row.ID));
+                   }
+
+                   uxERSegment3Store.DataSource = _rdata;
                }
 
                if (_storeDetails.ID == "uxERSegment4Store")
                {
-                   IQueryable<DBI.Data.Generic.DoubleComboStringID> _data = _context.GL_ACCOUNTS_V.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2, x.SEGMENT3, x.SEGMENT4, x.SEGMENT4_DESC }).Where(x => x.Key.SEGMENT1 == uxERSegment1.SelectedItem.Value && x.Key.SEGMENT2 == uxERSegment2.SelectedItem.Value && x.Key.SEGMENT3 == uxERSegment3.SelectedItem.Value && String.Compare(x.Key.SEGMENT4, uxSRSegment4.SelectedItem.Value) >= 0).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT4, ID_NAME = x.Key.SEGMENT4 + " (" + x.Key.SEGMENT4_DESC + ")" }).Distinct().OrderBy(x => x.ID);
-                   uxERSegment4Store.DataSource = _data.ToList();
+                   IQueryable<OVERHEAD_BUDGET_FORECAST.GL_ACCOUNT_LIST> _data = OVERHEAD_BUDGET_FORECAST.GeneralLedgerAccounts(_context);
+                   List<DBI.Data.Generic.DoubleComboStringID> _rdata = _data.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2, x.SEGMENT3, x.SEGMENT4 }).Where(x => x.Key.SEGMENT1 == uxERSegment1.SelectedItem.Value & x.Key.SEGMENT2 == uxERSegment2.SelectedItem.Value & x.Key.SEGMENT3 == uxERSegment3.SelectedItem.Value & String.Compare(x.Key.SEGMENT4, uxSRSegment4.SelectedItem.Value) >= 0).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT4 }).OrderBy(x => x.ID).ToList();
+
+                   if (_rdata.Count == 0)
+                       throw new DBICustomException("Not a valid account, please try another selection!");
+                   
+                   foreach (DBI.Data.Generic.DoubleComboStringID _row in _rdata)
+                   {
+                       _row.ID_NAME = string.Format("{0} - {1}", _row.ID, OVERHEAD_BUDGET_FORECAST.AccountDescriptionBySegment(_context, 4, _row.ID));
+                   }
+
+                   uxERSegment4Store.DataSource = _rdata.ToList();
                }
 
                if (_storeDetails.ID == "uxERSegment5Store")
                {
-                   IQueryable<DBI.Data.Generic.DoubleComboStringID> _data = _context.GL_ACCOUNTS_V.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2, x.SEGMENT3, x.SEGMENT4,x.SEGMENT5, x.SEGMENT5_DESC }).Where(x => x.Key.SEGMENT1 == uxERSegment1.SelectedItem.Value && x.Key.SEGMENT2 == uxERSegment2.SelectedItem.Value && x.Key.SEGMENT3 == uxERSegment3.SelectedItem.Value && x.Key.SEGMENT4 == uxERSegment4.SelectedItem.Value && String.Compare(x.Key.SEGMENT5, uxSRSegment5.SelectedItem.Value) >= 0).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT5, ID_NAME = x.Key.SEGMENT5 + " (" + x.Key.SEGMENT5_DESC + ")" }).Distinct().OrderBy(x => x.ID);
-                   uxERSegment5Store.DataSource = _data.ToList();
+                   IQueryable<OVERHEAD_BUDGET_FORECAST.GL_ACCOUNT_LIST> _data = OVERHEAD_BUDGET_FORECAST.GeneralLedgerAccounts(_context);
+                   List<DBI.Data.Generic.DoubleComboStringID> _rdata = _data.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2, x.SEGMENT3, x.SEGMENT4, x.SEGMENT5 }).Where(x => x.Key.SEGMENT1 == uxERSegment1.SelectedItem.Value & x.Key.SEGMENT2 == uxERSegment2.SelectedItem.Value & x.Key.SEGMENT3 == uxERSegment3.SelectedItem.Value & x.Key.SEGMENT4 == uxERSegment4.SelectedItem.Value & String.Compare(x.Key.SEGMENT5, uxSRSegment5.SelectedItem.Value) >= 0).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT5 }).OrderBy(x => x.ID).ToList();
+
+                   if (_rdata.Count == 0)
+                       throw new DBICustomException("Not a valid account, please try another selection!");
+                   
+                   foreach (DBI.Data.Generic.DoubleComboStringID _row in _rdata)
+                   {
+                       _row.ID_NAME = string.Format("{0} - {1}", _row.ID, OVERHEAD_BUDGET_FORECAST.AccountDescriptionBySegment(_context, 5, _row.ID));
+                   }
+
+                   uxERSegment5Store.DataSource = _rdata;
                }
 
                if (_storeDetails.ID == "uxERSegment6Store")
                {
-                   IQueryable<DBI.Data.Generic.DoubleComboStringID> _data = _context.GL_ACCOUNTS_V.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2, x.SEGMENT3, x.SEGMENT4, x.SEGMENT5, x.SEGMENT6, x.SEGMENT6_DESC }).Where(x => x.Key.SEGMENT1 == uxERSegment1.SelectedItem.Value && x.Key.SEGMENT2 == uxERSegment2.SelectedItem.Value && x.Key.SEGMENT3 == uxERSegment3.SelectedItem.Value && x.Key.SEGMENT4 == uxERSegment4.SelectedItem.Value && x.Key.SEGMENT5 == uxERSegment5.SelectedItem.Value && String.Compare(x.Key.SEGMENT6, uxSRSegment6.SelectedItem.Value) >= 0).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT6, ID_NAME = x.Key.SEGMENT6 + " (" + x.Key.SEGMENT6_DESC + ")" }).Distinct().OrderBy(x => x.ID);
-                   uxERSegment6Store.DataSource = _data.ToList();
+                   IQueryable<OVERHEAD_BUDGET_FORECAST.GL_ACCOUNT_LIST> _data = OVERHEAD_BUDGET_FORECAST.GeneralLedgerAccounts(_context);
+                   List<DBI.Data.Generic.DoubleComboStringID> _rdata = _data.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2, x.SEGMENT3, x.SEGMENT4, x.SEGMENT5, x.SEGMENT6 }).Where(x => x.Key.SEGMENT1 == uxERSegment1.SelectedItem.Value & x.Key.SEGMENT2 == uxERSegment2.SelectedItem.Value & x.Key.SEGMENT3 == uxERSegment3.SelectedItem.Value & x.Key.SEGMENT4 == uxERSegment4.SelectedItem.Value & x.Key.SEGMENT5 == uxERSegment5.SelectedItem.Value & String.Compare(x.Key.SEGMENT6, uxSRSegment6.SelectedItem.Value) >= 0).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT6 }).OrderBy(x => x.ID).ToList();
+
+                   if (_rdata.Count == 0)
+                       throw new DBICustomException("Not a valid account, please try another selection!");
+                   
+                   foreach (DBI.Data.Generic.DoubleComboStringID _row in _rdata)
+                   {
+                       _row.ID_NAME = string.Format("{0} - {1}", _row.ID, OVERHEAD_BUDGET_FORECAST.AccountDescriptionBySegment(_context, 6, _row.ID));
+                   }
+
+                   uxERSegment6Store.DataSource = _rdata;
                }
 
                if (_storeDetails.ID == "uxERSegment7Store")
                {
-                   IQueryable<DBI.Data.Generic.DoubleComboStringID> _data = _context.GL_ACCOUNTS_V.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2, x.SEGMENT3, x.SEGMENT4, x.SEGMENT5, x.SEGMENT6, x.SEGMENT7, x.SEGMENT7_DESC }).Where(x => x.Key.SEGMENT1 == uxERSegment1.SelectedItem.Value && x.Key.SEGMENT2 == uxERSegment2.SelectedItem.Value && x.Key.SEGMENT3 == uxERSegment3.SelectedItem.Value && x.Key.SEGMENT4 == uxERSegment4.SelectedItem.Value && x.Key.SEGMENT5 == uxERSegment5.SelectedItem.Value && x.Key.SEGMENT6 == uxERSegment6.SelectedItem.Value && String.Compare(x.Key.SEGMENT7, uxSRSegment7.SelectedItem.Value) >= 0).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT7, ID_NAME = x.Key.SEGMENT7 + " (" + x.Key.SEGMENT7_DESC + ")" }).Distinct().OrderBy(x => x.ID);
-                   uxERSegment7Store.DataSource = _data.ToList();
+                   IQueryable<OVERHEAD_BUDGET_FORECAST.GL_ACCOUNT_LIST> _data = OVERHEAD_BUDGET_FORECAST.GeneralLedgerAccounts(_context);
+                   List<DBI.Data.Generic.DoubleComboStringID> _rdata = _data.GroupBy(x => new { x.SEGMENT1, x.SEGMENT2, x.SEGMENT3, x.SEGMENT4, x.SEGMENT5, x.SEGMENT6, x.SEGMENT7 }).Where(x => x.Key.SEGMENT1 == uxERSegment1.SelectedItem.Value & x.Key.SEGMENT2 == uxERSegment2.SelectedItem.Value & x.Key.SEGMENT3 == uxERSegment3.SelectedItem.Value & x.Key.SEGMENT4 == uxERSegment4.SelectedItem.Value & x.Key.SEGMENT6 == uxERSegment6.SelectedItem.Value & String.Compare(x.Key.SEGMENT7, uxSRSegment7.SelectedItem.Value) >= 0).Select(x => new DBI.Data.Generic.DoubleComboStringID { ID = x.Key.SEGMENT7 }).OrderBy(x => x.ID).ToList();
+
+                   if (_rdata.Count == 0)
+                       throw new DBICustomException("Not a valid account, please try another selection!");
+                   
+                   foreach (DBI.Data.Generic.DoubleComboStringID _row in _rdata)
+                   {
+                       _row.ID_NAME = string.Format("{0} - {1}", _row.ID, OVERHEAD_BUDGET_FORECAST.AccountDescriptionBySegment(_context, 7, _row.ID));
+                   }
+
+                   uxERSegment7Store.DataSource = _rdata;
                }
+
+            }
+            catch (DBICustomException ex)
+            {
+                X.Msg.Alert("Invalid GL Account", ex.Message.ToString()).Show();
+            }
         }
 
 
@@ -144,13 +274,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             using (Entities _context = new Entities())
             {
                 int count;
-                var _data = _context.GL_ACCOUNTS_V.Where(x => String.Compare(x.SEGMENT1, uxSRSegment1.SelectedItem.Value) >= 0 && String.Compare(x.SEGMENT1, uxERSegment1.SelectedItem.Value) <= 0);
-                _data = _data.Where(x => String.Compare(x.SEGMENT2, uxSRSegment2.SelectedItem.Value) >= 0 && String.Compare(x.SEGMENT2, uxERSegment2.SelectedItem.Value) <= 0);
-                _data = _data.Where(x => String.Compare(x.SEGMENT3, uxSRSegment3.SelectedItem.Value) >= 0 && String.Compare(x.SEGMENT3, uxERSegment3.SelectedItem.Value) <= 0);
-                _data = _data.Where(x => String.Compare(x.SEGMENT4, uxSRSegment4.SelectedItem.Value) >= 0 && String.Compare(x.SEGMENT4, uxERSegment4.SelectedItem.Value) <= 0);
-                _data = _data.Where(x => String.Compare(x.SEGMENT5, uxSRSegment5.SelectedItem.Value) >= 0 && String.Compare(x.SEGMENT5, uxERSegment5.SelectedItem.Value) <= 0);
-                _data = _data.Where(x => String.Compare(x.SEGMENT6, uxSRSegment6.SelectedItem.Value) >= 0 && String.Compare(x.SEGMENT6, uxERSegment6.SelectedItem.Value) <= 0);
-                _data = _data.Where(x => String.Compare(x.SEGMENT7, uxSRSegment7.SelectedItem.Value) >= 0 && String.Compare(x.SEGMENT7, uxERSegment7.SelectedItem.Value) <= 0);
+                var _data = _context.GL_ACCOUNTS_V.Where(x => string.Compare(x.SEGMENT1 + x.SEGMENT2 + x.SEGMENT3 + x.SEGMENT4 + x.SEGMENT5 + x.SEGMENT6 + x.SEGMENT7,uxSRSegment1.SelectedItem.Value + uxSRSegment2.SelectedItem.Value + uxSRSegment3.SelectedItem.Value + uxSRSegment4.SelectedItem.Value + uxSRSegment5.SelectedItem.Value + uxSRSegment6.SelectedItem.Value + uxSRSegment7.SelectedItem.Value) >= 0).Where(x => string.Compare(x.SEGMENT1 + x.SEGMENT2 + x.SEGMENT3 + x.SEGMENT4 + x.SEGMENT5 + x.SEGMENT6 + x.SEGMENT7,uxERSegment1.SelectedItem.Value + uxERSegment2.SelectedItem.Value + uxERSegment3.SelectedItem.Value + uxERSegment4.SelectedItem.Value + uxERSegment5.SelectedItem.Value + uxERSegment6.SelectedItem.Value + uxERSegment7.SelectedItem.Value) <= 0);
 
                 List<GL_ACCOUNTS_V> _temp = _data.ToList();
                 List<DBI.Web.EMS.Views.Modules.Overhead.umOverheadGeneralLedger.GL_ACCOUNTS_V2> _newTemp = new List<DBI.Web.EMS.Views.Modules.Overhead.umOverheadGeneralLedger.GL_ACCOUNTS_V2>();
@@ -180,6 +304,8 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 e.Total = count;
 
 
+
+  
 
 
 

@@ -33,7 +33,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 IQueryable<CUSTOMER_SURVEY_FORMS> FormData = CUSTOMER_SURVEYS.GetForms(_context);
                 int count;
                 List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
-                IQueryable<CUSTOMER_SURVEYS.CustomerSurveyForms> AllData = FormData.Where(x => OrgsList.Contains((long)x.ORG_ID)).Select(x => new CUSTOMER_SURVEYS.CustomerSurveyForms { FORM_ID = x.FORM_ID, FORMS_NAME = x.FORMS_NAME, ORG_ID = x.ORG_ID, CATEGORY_ID = x.CATEGORY_ID });
+                IQueryable<CUSTOMER_SURVEYS.CustomerSurveyForms> AllData = FormData.Where(x => OrgsList.Contains((long)x.ORG_ID)).Select(x => new CUSTOMER_SURVEYS.CustomerSurveyForms { FORM_ID = x.FORM_ID, FORMS_NAME = x.FORMS_NAME, ORG_ID = x.ORG_ID, CATEGORY_ID = x.CATEGORY_ID, TYPE_ID = x.TYPE_ID });
                 List<CUSTOMER_SURVEYS.CustomerSurveyForms> Data = GenericData.ListFilterHeader<CUSTOMER_SURVEYS.CustomerSurveyForms>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], AllData, out count);
                 foreach (CUSTOMER_SURVEYS.CustomerSurveyForms ThisForm in Data)
                 {
@@ -93,6 +93,13 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             }
         }
 
+        protected void deReadFieldsetCategories(object sender, StoreReadDataEventArgs e)
+        {
+            using (Entities _context = new Entities())
+            {
+                uxQuestionCategoryStore.DataSource = _context.CUSTOMER_SURVEY_QUES_CAT.ToList();
+            }
+        }
         protected void deReadQuestionFieldsets(object sender, StoreReadDataEventArgs e)
         {
             using (Entities _context = new Entities())
@@ -130,6 +137,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
         
         protected void deSaveForm(object sender, DirectEventArgs e)
         {
+            
             ChangeRecords<CUSTOMER_SURVEYS.CustomerSurveyForms> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<CUSTOMER_SURVEYS.CustomerSurveyForms>();
             foreach (CUSTOMER_SURVEYS.CustomerSurveyForms CreatedForm in data.Created)
             {
@@ -142,6 +150,17 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 NewForm.CREATED_BY = User.Identity.Name;
                 NewForm.MODIFIED_BY = User.Identity.Name;
 
+                if (CreatedForm.TYPE_ID == null)
+                {
+                    CUSTOMER_SURVEY_FORM_TYPES FormTypes = new CUSTOMER_SURVEY_FORM_TYPES();
+                    FormTypes.TYPE_NAME = e.ExtraParams["TypeName"];
+                    GenericData.Insert<CUSTOMER_SURVEY_FORM_TYPES>(FormTypes);
+                    NewForm.TYPE_ID = FormTypes.TYPE_ID;
+                }
+                else
+                {
+                    NewForm.TYPE_ID = (decimal)CreatedForm.TYPE_ID;
+                }
                 GenericData.Insert<CUSTOMER_SURVEY_FORMS>(NewForm);
 
                 ModelProxy Record = uxFormsStore.GetByInternalId(CreatedForm.PhantomId);
@@ -156,6 +175,18 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 using (Entities _context = new Entities())
                 {
                     ToBeUpdated = CUSTOMER_SURVEYS.GetForms(_context).Where(x => x.FORM_ID == UpdatedForm.FORM_ID).Single();
+                }
+
+                if (UpdatedForm.TYPE_ID == null)
+                {
+                    CUSTOMER_SURVEY_FORM_TYPES FormTypes = new CUSTOMER_SURVEY_FORM_TYPES();
+                    FormTypes.TYPE_NAME = e.ExtraParams["TypeName"];
+                    GenericData.Insert<CUSTOMER_SURVEY_FORM_TYPES>(FormTypes);
+                    ToBeUpdated.TYPE_ID = FormTypes.TYPE_ID;
+                }
+                else
+                {
+                    ToBeUpdated.TYPE_ID = (decimal)UpdatedForm.TYPE_ID;
                 }
                 ToBeUpdated.FORMS_NAME = UpdatedForm.FORMS_NAME;
                 ToBeUpdated.ORG_ID = UpdatedForm.ORG_ID;
@@ -185,6 +216,17 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 ToBeAdded.FORM_ID = decimal.Parse(e.ExtraParams["FormId"]);
                 ToBeAdded.IS_ACTIVE = (NewFieldset.IS_ACTIVE == true ? "Y" : "N");
 
+                if (NewFieldset.CATEGORY_ID == null)
+                {
+                    CUSTOMER_SURVEY_QUES_CAT NewCategory = new CUSTOMER_SURVEY_QUES_CAT();
+                    NewCategory.CATEGORY_NAME = e.ExtraParams["CategoryName"];
+                    GenericData.Insert<CUSTOMER_SURVEY_QUES_CAT>(NewCategory);
+                    ToBeAdded.CATEGORY_ID = NewCategory.CATEGORY_ID;
+                }
+                else
+                {
+                    ToBeAdded.CATEGORY_ID = (decimal)NewFieldset.CATEGORY_ID;
+                }
                 GenericData.Insert<CUSTOMER_SURVEY_FIELDSETS>(ToBeAdded);
 
                 ModelProxy Record = uxFieldsetsStore.GetByInternalId(NewFieldset.PhantomId);
@@ -205,6 +247,17 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                     ToBeUpdated.FORM_ID = decimal.Parse(e.ExtraParams["FormId"]);
                     ToBeUpdated.MODIFIED_BY = User.Identity.Name;
                     ToBeUpdated.MODIFY_DATE = DateTime.Now;
+                }
+                if (UpdatedFieldset.CATEGORY_ID == null)
+                {
+                    CUSTOMER_SURVEY_QUES_CAT NewCategory = new CUSTOMER_SURVEY_QUES_CAT();
+                    NewCategory.CATEGORY_NAME = e.ExtraParams["CategoryName"];
+                    GenericData.Insert<CUSTOMER_SURVEY_QUES_CAT>(NewCategory);
+                    ToBeUpdated.CATEGORY_ID = NewCategory.CATEGORY_ID;
+                }
+                else
+                {
+                    ToBeUpdated.CATEGORY_ID = (decimal)UpdatedFieldset.CATEGORY_ID;
                 }
                 GenericData.Update<CUSTOMER_SURVEY_FIELDSETS>(ToBeUpdated);
 
@@ -715,5 +768,20 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             win.Show();
         }
 
+        protected void deReadQuestionCategories(object sender, StoreReadDataEventArgs e)
+        {
+            using (Entities _context = new Entities())
+            {
+                uxQuestionCategoryStore.DataSource = _context.CUSTOMER_SURVEY_QUES_CAT.ToList();
+            }
+        }
+
+        protected void deReadFormTypes(object sender, StoreReadDataEventArgs e)
+        {
+            using (Entities _context = new Entities())
+            {
+                uxFormTypeStore.DataSource = _context.CUSTOMER_SURVEY_FORM_TYPES.ToList();
+            }
+        }
     }
 }

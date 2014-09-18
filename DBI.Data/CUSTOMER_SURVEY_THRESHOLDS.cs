@@ -27,7 +27,7 @@ namespace DBI.Data
         public decimal AMOUNT_ID { get; set; }
         public decimal THRESHOLD { get; set; }
     
-        public virtual CUSTOMER_SURVEY_THRESH_AMT CUSTOMER_SURVEY_THRESH_AMT { get; set; }
         public virtual ICollection<CUSTOMER_SURVEY_FORMS_COMP> CUSTOMER_SURVEY_FORMS_COMP { get; set; }
+        public virtual CUSTOMER_SURVEY_THRESH_AMT CUSTOMER_SURVEY_THRESH_AMT { get; set; }
     }
 }

@@ -30,12 +30,28 @@
             return r.data.QUESTION_TYPE_NAME;
         };
 
+        var FormTypeRenderer = function (value) {
+            var r = App.uxFormTypeStore.getById(value);
+            if (Ext.isEmpty(r)) {
+                return "";
+            }
+            return r.data.TYPE_NAME;
+        };
+
         var FieldsetRenderer = function (value) {
             var r = App.uxQuestionFieldsetStore.getById(value);
             if (Ext.isEmpty(r)) {
                 return "";
             }
             return r.data.TITLE;
+        };
+
+        var FieldsetCatRenderer = function (value) {
+            var r = App.uxQuestionCategoryStore.getById(value);
+            if (Ext.isEmpty(r)) {
+                return "";
+            }
+            return r.data.CATEGORY_NAME;
         };
 
         var AddOption = function () {
@@ -45,6 +61,12 @@
             App.uxOptionsStore.insert(0, Option);
         };
     </script>
+    <style type="text/css">
+        .allowBlank-field {
+            background-color: #EFF7FF !important;
+            background-image: none;
+        }
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -71,6 +93,7 @@
                                                         <ext:ModelField Name="CATEGORY_ID" />
                                                         <ext:ModelField Name="ORG_ID" />
                                                         <ext:ModelField Name="NUM_QUESTIONS" Type="Int" DefaultValue="0" />
+                                                        <ext:ModelField Name="TYPE_ID" Type="Int" />
                                                     </Fields>
                                                 </ext:Model>
                                             </Model>
@@ -86,13 +109,13 @@
                                         <Columns>
                                             <ext:Column runat="server" DataIndex="FORMS_NAME" Text="Form Name" Flex="1">
                                                 <Editor>
-                                                    <ext:TextField runat="server" AllowBlank="false" EmptyText="Form Name" />
+                                                    <ext:TextField runat="server" AllowBlank="false" EmptyText="Form Name" InvalidCls="allowBlank" />
                                                 </Editor>
                                             </ext:Column>
                                             <ext:Column runat="server" DataIndex="ORG_ID" Text="Organization Name" Flex="1">
                                                 <Renderer Fn="OrgRenderer" />
                                                 <Editor>
-                                                    <ext:ComboBox runat="server" ForceSelection="true" TypeAhead="true" QueryMode="Local" ValueField="ORG_ID" DisplayField="ORG_HIER" AllowBlank="false" EmptyText="Choose Organization">
+                                                    <ext:ComboBox runat="server" ForceSelection="true" TypeAhead="true" QueryMode="Local" ValueField="ORG_ID" DisplayField="ORG_HIER" AllowBlank="false" EmptyText="Choose Organization"  InvalidCls="allowBlank">
                                                         <Store>
                                                             <ext:Store runat="server" ID="uxAddFormOrgStore" OnReadData="deReadOrgs" AutoDataBind="true">
                                                                 <Model>
@@ -117,7 +140,7 @@
                                             <ext:Column runat="server" DataIndex="CATEGORY_ID" Text="Survey Category" Flex="1">
                                                 <Renderer Fn="CatRenderer" />
                                                 <Editor>
-                                                    <ext:ComboBox runat="server" ForceSelection="true" TypeAhead="true" QueryMode="Local" ValueField="CATEGORY_ID" DisplayField="NAME" AllowBlank="false" EmptyText="Choose Category">
+                                                    <ext:ComboBox runat="server" ForceSelection="true" TypeAhead="true" QueryMode="Local" ValueField="CATEGORY_ID" DisplayField="NAME" AllowBlank="false" EmptyText="Choose Category" InvalidCls="allowBlank">
                                                         <Store>
                                                             <ext:Store runat="server" ID="uxAddFormCatStore" OnReadData="deReadCategories" AutoDataBind="true">
                                                                 <Model>
@@ -125,6 +148,31 @@
                                                                         <Fields>
                                                                             <ext:ModelField Name="CATEGORY_ID" />
                                                                             <ext:ModelField Name="NAME" />
+                                                                        </Fields>
+                                                                    </ext:Model>
+                                                                </Model>
+                                                                <Proxy>
+                                                                    <ext:PageProxy />
+                                                                </Proxy>
+                                                                <Listeners>
+                                                                    <Load Handler="#{uxFormsGrid}.getView().refresh()" />
+                                                                </Listeners>
+                                                            </ext:Store>
+                                                        </Store>
+                                                    </ext:ComboBox>
+                                                </Editor>
+                                            </ext:Column>
+                                            <ext:Column runat="server" DataIndex="TYPE_ID" Text="Form Target Type" Flex="1">
+                                                <Renderer Fn="FormTypeRenderer" />
+                                                <Editor>
+                                                    <ext:ComboBox runat="server" ID="uxFormTypeCombo" Editable="true" ForceSelection="false" TypeAhead="true" QueryMode="Local" ValueField="TYPE_ID" DisplayField="TYPE_NAME" AllowBlank="false" EmptyText="Choose Target Type" InvalidCls="allowBlank">
+                                                        <Store>
+                                                            <ext:Store runat="server" ID="uxFormTypeStore" OnReadData="deReadFormTypes" AutoDataBind="true">
+                                                                <Model>
+                                                                    <ext:Model runat="server" IDProperty="TYPE_ID">
+                                                                        <Fields>
+                                                                            <ext:ModelField Name="TYPE_ID" />
+                                                                            <ext:ModelField Name="TYPE_NAME" />
                                                                         </Fields>
                                                                     </ext:Model>
                                                                 </Model>
@@ -148,6 +196,7 @@
                                                 <Edit OnEvent="deSaveForm" Before="return #{uxFormsStore}.isDirty();">
                                                     <ExtraParams>
                                                         <ext:Parameter Name="data" Value="#{uxFormsStore}.getChangedData({skipIdForPhantomRecords : false})" Mode="Raw" Encode="true" />
+                                                        <ext:Parameter Name="TypeName" Value="#{uxFormTypeCombo}.rawValue" Mode="Raw" />
                                                     </ExtraParams>
                                                     <EventMask ShowMask="true" />
                                                 </Edit>
@@ -200,14 +249,18 @@
                                         <Select Handler="#{uxDeleteFormButton}.enable(); #{uxViewFormButton}.enable(); #{uxCopyFormButton}.enable()" />
                                     </Listeners>
                                 </ext:GridPanel>
-                                <ext:GridPanel runat="server" Title="Fieldsets" ID="uxFieldsetsGrid" MaxWidth="1100" Margin="5" MinHeight="250">
+                                <ext:GridPanel runat="server" Title="Fieldsets" ID="uxFieldsetsGrid" MaxWidth="1100" Margin="5" MinHeight="250" SelectionMemory="true">
+                                    <SelectionModel>
+                                        <ext:RowSelectionModel Mode="Single" />
+                                    </SelectionModel>
                                     <Store>
-                                        <ext:Store runat="server" ID="uxFieldsetsStore" AutoDataBind="true" AutoLoad="false" PageSize="5" RemoteSort="true" OnReadData="deReadFieldsets" WarningOnDirty="true">
+                                        <ext:Store runat="server" ID="uxFieldsetsStore" AutoDataBind="true" AutoLoad="false" PageSize="5" RemoteSort="true" OnReadData="deReadFieldsets">
                                             <Model>
                                                 <ext:Model ID="Model1" runat="server" Name="Fieldset" IDProperty="FIELDSET_ID" ClientIdProperty="PhantomId">
                                                     <Fields>
                                                         <ext:ModelField Name="FIELDSET_ID" Type="Int" />
                                                         <ext:ModelField Name="TITLE" Type="String" />
+                                                        <ext:ModelField Name="CATEGORY_ID" Type="Int" />
                                                         <ext:ModelField Name="SORT_ORDER" Type="Int" />
                                                         <ext:ModelField Name="IS_ACTIVE" Type="Boolean" />
                                                     </Fields>
@@ -226,27 +279,53 @@
                                     </Store>
                                     <ColumnModel ID="ColumnModel1" runat="server">
                                         <Columns>
-                                            <ext:Column ID="Column1" runat="server" DataIndex="TITLE" Text="Fieldset Name" Width="300">
+                                            <ext:Column ID="Column1" runat="server" DataIndex="TITLE" Text="Fieldset Name" Flex="30">
                                                 <Editor>
-                                                    <ext:TextField runat="server" EmptyText="Fieldset Name" AllowBlank="false" />
+                                                    <ext:TextField runat="server" EmptyText="Fieldset Name" AllowBlank="false" InvalidCls="allowBlank" />
                                                 </Editor>
                                             </ext:Column>
-                                            <ext:Column ID="Column2" runat="server" DataIndex="SORT_ORDER" Text="Sort Order" Width="150">
+                                            <ext:Column ID="Column2" runat="server" DataIndex="SORT_ORDER" Text="Sort Order" Flex="30">
                                                 <Editor>
-                                                    <ext:NumberField runat="server" AllowBlank="false" />
+                                                    <ext:NumberField runat="server" AllowBlank="false" InvalidCls="allowBlank" />
                                                 </Editor>
                                             </ext:Column>
-                                            <ext:CheckColumn runat="server" DataIndex="IS_ACTIVE" Text="Active" Width="50" Editable="true" />
+                                            <ext:Column runat="server" DataIndex="CATEGORY_ID" Text="Category" Flex="30">
+                                                <Renderer Fn="FieldsetCatRenderer" />
+                                                <Editor>
+                                                    <ext:ComboBox runat="server" ID="uxFieldsetCatCombo" Editable="true" ForceSelection="false" InvalidCls="allowBlank" TypeAhead="true" QueryMode="Local" ValueField="CATEGORY_ID" DisplayField="CATEGORY_NAME" AllowBlank="false" EmptyText="Select a Question Category">
+                                                        <Store>
+                                                            <ext:Store runat="server" ID="uxQuestionCategoryStore" OnReadData="deReadQuestionCategories" AutoDataBind="true">
+                                                                <Model>
+                                                                    <ext:Model runat="server" IDProperty="CATEGORY_ID">
+                                                                        <Fields>
+                                                                            <ext:ModelField Name="CATEGORY_ID" />
+                                                                            <ext:ModelField Name="CATEGORY_NAME" />
+                                                                        </Fields>
+                                                                    </ext:Model>
+                                                                </Model>
+                                                                <Proxy>
+                                                                    <ext:PageProxy />
+                                                                </Proxy>
+                                                                <Listeners>
+                                                                    <Load Handler="#{uxFieldsetsGrid}.getView().refresh()" />
+                                                                </Listeners>
+                                                            </ext:Store>
+                                                        </Store>
+                                                    </ext:ComboBox>
+                                                </Editor>
+                                            </ext:Column>
+                                            <ext:CheckColumn runat="server" DataIndex="IS_ACTIVE" Text="Active" Flex="10" Editable="true" />
                                         </Columns>
                                     </ColumnModel>
                                     <Plugins>
-                                        <ext:FilterHeader ID="FilterHeader1" runat="server" Remote="true" />
+                                        <ext:FilterHeader runat="server" Remote="true" />
                                         <ext:RowEditing runat="server" ClicksToMoveEditor="1" AutoCancel="false">
                                             <DirectEvents>
                                                 <Edit OnEvent="deSaveFieldsets" Before="return #{uxFieldsetsStore}.isDirty();">
                                                     <ExtraParams>
                                                         <ext:Parameter Name="data" Value="#{uxFieldsetsStore}.getChangedData()" Mode="Raw" Encode="true" />
                                                         <ext:Parameter Name="FormId" Value="#{uxFormsGrid}.getSelectionModel().getSelection()[0].data.FORM_ID" Mode="Raw" />
+                                                        <ext:Parameter Name="CategoryName" Value="#{uxFieldsetCatCombo}.rawValue" Mode="Raw" />
                                                     </ExtraParams>
                                                     <EventMask ShowMask="true" />
                                                 </Edit>
@@ -281,6 +360,7 @@
                                     <Listeners>
                                         <Select Handler="#{uxDeleteFieldsetButton}.enable()" />
                                     </Listeners>
+
                                 </ext:GridPanel>
                                 <ext:GridPanel runat="server" ID="uxQuestionsGrid" Title="Form Questions" MaxWidth="1100" Margin="5" MinHeight="250">
                                     <Store>
@@ -315,13 +395,13 @@
                                         <Columns>
                                             <ext:Column runat="server" DataIndex="TEXT" Text="Question Name" Flex="40">
                                                 <Editor>
-                                                    <ext:TextField runat="server" AllowBlank="false" EmptyText="Question Text" />
+                                                    <ext:TextField runat="server" AllowBlank="false" EmptyText="Question Text" InvalidCls="allowBlank" />
                                                 </Editor>
                                             </ext:Column>
                                             <ext:Column runat="server" DataIndex="TYPE_ID" Text="Question Type" Flex="20">
                                                 <Renderer Fn="TypeRenderer" />
                                                 <Editor>
-                                                    <ext:ComboBox runat="server" ForceSelection="true" TypeAhead="true" QueryMode="Local" DisplayField="QUESTION_TYPE_NAME" ValueField="TYPE_ID" AllowBlank="false" EmptyText="Select a Question Type">
+                                                    <ext:ComboBox runat="server" ForceSelection="true" TypeAhead="true" InvalidCls="allowBlank" QueryMode="Local" DisplayField="QUESTION_TYPE_NAME" ValueField="TYPE_ID" AllowBlank="false" EmptyText="Select a Question Type">
                                                         <Store>
                                                             <ext:Store runat="server" ID="uxQuestionTypeStore" OnReadData="deReadQuestionTypes" AutoDataBind="true">
                                                                 <Model>
@@ -346,7 +426,7 @@
                                             <ext:Column runat="server" DataIndex="FIELDSET_ID" Text="Fieldset" Flex="20">
                                                 <Renderer Fn="FieldsetRenderer" />
                                                 <Editor>
-                                                    <ext:ComboBox runat="server" ForceSelection="true" TypeAhead="true" QueryMode="Local" DisplayField="TITLE" ValueField="FIELDSET_ID" AllowBlank="false" EmptyText="Select a Fieldset">
+                                                    <ext:ComboBox runat="server" ForceSelection="true" InvalidCls="allowBlank" TypeAhead="true" QueryMode="Local" DisplayField="TITLE" ValueField="FIELDSET_ID" AllowBlank="false" EmptyText="Select a Fieldset">
                                                         <Store>
                                                             <ext:Store runat="server" ID="uxQuestionFieldsetStore" OnReadData="deReadQuestionFieldsets" AutoDataBind="true" AutoLoad="false">
                                                                 <Model>
@@ -375,7 +455,7 @@
                                             <ext:CheckColumn runat="server" DataIndex="IS_ACTIVE" Text="Active" Editable="true" Flex="8" />
                                             <ext:Column runat="server" DataIndex="SORT_ORDER" Text="Sort Order" Flex="8">
                                                 <Editor>
-                                                    <ext:NumberField runat="server" AllowBlank="false" />
+                                                    <ext:NumberField runat="server" AllowBlank="false" InvalidCls="allowBlank" />
                                                 </Editor>
                                             </ext:Column>
                                         </Columns>
@@ -460,12 +540,12 @@
                                             <ext:Column runat="server" DataIndex="TEXT" Text="Question" Flex="40" />
                                             <ext:Column runat="server" DataIndex="OPTION_NAME" Text="Option Name" Flex="30">
                                                 <Editor>
-                                                    <ext:TextField runat="server" AllowBlank="false" EmptyText="Option Name" />
+                                                    <ext:TextField runat="server" AllowBlank="false" EmptyText="Option Name" InvalidCls="allowBlank" />
                                                 </Editor>
                                             </ext:Column>
                                             <ext:Column runat="server" DataIndex="SORT_ORDER" Text="Sort Order" Flex="20">
                                                 <Editor>
-                                                    <ext:NumberField runat="server" AllowBlank="false" />
+                                                    <ext:NumberField runat="server" AllowBlank="false" InvalidCls="allowBlank" />
                                                 </Editor>
                                             </ext:Column>
                                             <ext:CheckColumn runat="server" DataIndex="IS_ACTIVE" Text="Active" Editable="true" Flex="10" />

@@ -103,6 +103,24 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.Store uxAddFormCatStore;
         
         /// <summary>
+        /// uxFormTypeCombo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ComboBox uxFormTypeCombo;
+        
+        /// <summary>
+        /// uxFormTypeStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxFormTypeStore;
+        
+        /// <summary>
         /// uxAddFormButton control.
         /// </summary>
         /// <remarks>
@@ -184,13 +202,22 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.Column Column2;
         
         /// <summary>
-        /// FilterHeader1 control.
+        /// uxFieldsetCatCombo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FilterHeader FilterHeader1;
+        protected global::Ext.Net.ComboBox uxFieldsetCatCombo;
+        
+        /// <summary>
+        /// uxQuestionCategoryStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxQuestionCategoryStore;
         
         /// <summary>
         /// PagingToolbar1 control.

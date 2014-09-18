@@ -15,16 +15,6 @@
                       <TopBar>
                         <ext:Toolbar ID="Toolbar2" runat="server">
                             <Items>
-                                 <ext:Button runat="server" Text="Add Budget Period" Icon="Add" ID="uxCreateBudget"  >
-                                    <ToolTips>
-                                        <ext:ToolTip ID="ToolTip1" runat="server" UI="Info" Html="Creates a new period for an organization so it can be used for the budget overhead system."></ext:ToolTip>
-                                    </ToolTips>
-                                    <DirectEvents>
-                                        <Click OnEvent="deCreateBudgetPeriod">
-                                        </Click>
-                                    </DirectEvents>      
-                                </ext:Button>
-                                 <ext:ToolbarSeparator ID="ToolbarSeparator9" runat="server"></ext:ToolbarSeparator>
                                 <ext:Button runat="server" Text="Import Actuals" Icon="CalculatorLink" Disabled="true" ID="uxImportActuals">
                                       <DirectEvents>
                                     <Click OnEvent="deImportActuals">
@@ -36,7 +26,31 @@
                                 </DirectEvents>
                                 </ext:Button>
                                   <ext:ToolbarSeparator ID="ToolbarSeparator1" runat="server"></ext:ToolbarSeparator>
-                                <ext:Button runat="server" Text="Open" Icon="BookOpen" ID="uxOpenPeriod" Disabled="true" >
+                                <ext:Button runat="server" Text="Edit Budget" Icon="BookOpenMark" ID="uxEditBudget" Disabled="true" >
+                                    <ToolTips>
+                                        <ext:ToolTip ID="ToolTip2" runat="server" UI="Info" Html="Allows you to edit this budget version."></ext:ToolTip>
+                                    </ToolTips>
+                                    <DirectEvents>
+                                        <Click OnEvent="deEditBudget"><EventMask ShowMask="true"></EventMask>
+                                            <ExtraParams>
+                                                 <ext:Parameter Mode="Raw" Name="ORG_BUDGET_ID" Value="#{uxForecastPeriodsByOrganizationGridPanel}.getView().getSelectionModel().getSelection()[0].data.ORG_BUDGET_ID"></ext:Parameter>
+                                                 <ext:Parameter Mode="Raw" Name="BUDGET_DESCRIPTION" Value="#{uxForecastPeriodsByOrganizationGridPanel}.getView().getSelectionModel().getSelection()[0].data.BUDGET_DESCRIPTION"></ext:Parameter>
+                                            </ExtraParams>
+                                        </Click>
+                                    </DirectEvents>      
+                                </ext:Button>
+                                 <ext:ToolbarSeparator ID="ToolbarSeparator3" runat="server"></ext:ToolbarSeparator>
+                                 <ext:Button runat="server" Text="New Budget Period" Icon="Add" ID="uxCreateBudget"  >
+                                    <ToolTips>
+                                        <ext:ToolTip ID="ToolTip1" runat="server" UI="Info" Html="Creates a new period for an organization so it can be used for the budget overhead system."></ext:ToolTip>
+                                    </ToolTips>
+                                    <DirectEvents>
+                                        <Click OnEvent="deCreateBudgetPeriod">
+                                        </Click>
+                                    </DirectEvents>      
+                                </ext:Button>
+                                 <ext:ToolbarSeparator ID="ToolbarSeparator9" runat="server"></ext:ToolbarSeparator>
+                                <ext:Button runat="server" Text="Open Period" Icon="BookOpen" ID="uxOpenPeriod" Disabled="true" >
                                     <ToolTips>
                                         <ext:ToolTip ID="ToolTip3" runat="server" UI="Info" Html="Opens a period for an organization so it can be used for the budget overhead system."></ext:ToolTip>
                                     </ToolTips>
@@ -45,7 +59,7 @@
                                     </DirectEvents>      
                                 </ext:Button>
                                   <ext:ToolbarSeparator ID="ToolbarSeparator2" runat="server"></ext:ToolbarSeparator>
-                                  <ext:Button runat="server" Text="Close"  Icon="Book" ID="uxClosePeriod" Disabled="true" >
+                                  <ext:Button runat="server" Text="Close Period"  Icon="Book" ID="uxClosePeriod" Disabled="true" >
                                     <ToolTips>
                                         <ext:ToolTip ID="ToolTip4" runat="server" UI="Info" Html="Close a period organization so that it can't be used for the budget overhead system."></ext:ToolTip>
                                     </ToolTips>
@@ -54,16 +68,7 @@
                                     </DirectEvents> 
                                 </ext:Button>
                                   <ext:ToolbarSeparator ID="ToolbarSeparator4" runat="server"></ext:ToolbarSeparator>
-                                <ext:Button runat="server" Text="Lock" Icon="Lock" ID="uxLockPeriod" Disabled="true" >
-                                    <ToolTips>
-                                        <ext:ToolTip ID="ToolTip2" runat="server" UI="Info" Html="Locks a period organization so that it can't be modified by the user for the budget overhead system."></ext:ToolTip>
-                                    </ToolTips>
-                                      <DirectEvents>
-                                        <Click OnEvent="deLockPeriod"><EventMask ShowMask="true"></EventMask><Confirmation ConfirmRequest="true" Message="Are you sure you want to lock these budget version(s)?"></Confirmation></Click>
-                                    </DirectEvents> 
-                                </ext:Button>
-                                  <ext:ToolbarSeparator ID="ToolbarSeparator5" runat="server"></ext:ToolbarSeparator>
-                                <ext:Button runat="server" Text="Delete" Icon="Delete" ID="uxDelete" Disabled="true" >
+                                <ext:Button runat="server" Text="Delete Period" Icon="Delete" ID="uxDelete" Disabled="true" >
                                     <ToolTips>
                                         <ext:ToolTip ID="ToolTip5" runat="server" UI="Info" Html="Deletes a budget from the overhead system."></ext:ToolTip>
                                     </ToolTips>
@@ -94,7 +99,7 @@
                         </ext:Store>
                     </Store>
                     <ColumnModel>
-                        <Columns>
+                        <Columns>                           
                             <ext:Column ID="Column3" runat="server" DataIndex="FISCAL_YEAR" Text="Fiscal Year" Flex="1" />
                             <ext:Column ID="Column4" runat="server" DataIndex="BUDGET_DESCRIPTION" Text="Budget Forecast" Flex="1" />
                             <ext:Column ID="Column5" runat="server" DataIndex="BUDGET_STATUS" Text="Status" Flex="1" />
@@ -103,12 +108,12 @@
                     <Plugins>
                         <ext:FilterHeader ID="FilterHeader1" runat="server" Remote="true" />
                     </Plugins>
-                     <SelectionModel><ext:CheckboxSelectionModel ID="uxForecastPeriodsByOrganizationSelectionModel" runat="server" Mode="Simple" AllowDeselect="true">
+                     <SelectionModel><ext:RowSelectionModel ID="uxForecastPeriodsByOrganizationSelectionModel" runat="server" Mode="Single" AllowDeselect="true">
                          <DirectEvents>
                              <Select OnEvent="deSelectForecast"></Select>
                              <Deselect OnEvent="deDeSelectForecast" />
                          </DirectEvents>
-                     </ext:CheckboxSelectionModel>
+                     </ext:RowSelectionModel>
                      </SelectionModel>
                     <BottomBar>
                         <ext:PagingToolbar ID="PagingToolbar1" runat="server" />

@@ -16,7 +16,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         {
             if (!X.IsAjaxRequest)
             {
-                long orgID = long.Parse(Request.QueryString["OrgID"]);
+                long leOrgID = long.Parse(Request.QueryString["leOrgID"]);
+                long orgID = long.Parse(Request.QueryString["orgID"]);
                 long yearID = long.Parse(Request.QueryString["fiscalYear"]);
                 long verID = long.Parse(Request.QueryString["verID"]);
 
@@ -28,6 +29,11 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 else
                 {
                     uxUpdateAllActuals.Enable();
+                }
+
+                if (BB.LaborBurdenRate(leOrgID, yearID) == 0)
+                {
+                    StandardMsgBox("Labor Burden", "Labor burden does not exist for this legal entity and year combination.  All calculations will be based on a labor burden of 0.00.", "INFO");
                 }
 
                 uxHidPrevYear.Text = BB.CalcPrevYear(yearID, verID).ToString();
@@ -304,6 +310,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         protected void deUpdateAllActuals(object sender, DirectEventArgs e)
         {
             string hierID = Request.QueryString["hierID"];
+            string leOrgID = Request.QueryString["leOrgID"];
             long orgID = Convert.ToInt64(Request.QueryString["orgID"]);
             long yearID = Convert.ToInt64(Request.QueryString["fiscalYear"]);
             long verID = long.Parse(Request.QueryString["verID"]);
@@ -314,8 +321,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 StandardMsgBox("Update All Projects", "There are no projects to update.", "INFO");
                 return;
             }
-            
-            string url = "/Views/Modules/BudgetBidding/umUpdateAllActuals.aspx?hierID=" + hierID + "&orgID=" + orgID + "&yearID=" + yearID + "&verName=" + verName;
+
+            string url = "/Views/Modules/BudgetBidding/umUpdateAllActuals.aspx?hierID=" + hierID + "&leOrgID=" + leOrgID + "&orgID=" + orgID + "&yearID=" + yearID + "&verName=" + verName;
 
             Window win = new Window
             {
@@ -576,6 +583,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
             LoadJCNumbers();
             UpdateCompareNums(uxCompareOverride.Checked);
+            uxProjectFilter.ClearFilter();
         }
         protected void deSelectStatus(object sender, DirectEventArgs e)
         {
@@ -1206,7 +1214,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         }
         protected void LoadDetailSheet()
         {
-            long orgID = long.Parse(Request.QueryString["OrgID"]);
+            long orgID = long.Parse(Request.QueryString["orgID"]);
+            long leOrgID = long.Parse(Request.QueryString["leOrgID"]);
             long yearID = long.Parse(Request.QueryString["fiscalYear"]);
             long verID = long.Parse(Request.QueryString["verID"]);
 
@@ -1237,7 +1246,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             string sDirects = uxSDirects.Text;
             string sOP = uxSOP.Text;
 
-            string url = "/Views/Modules/BudgetBidding/umDetailSheet.aspx?projectID=" + budBidProjectID + "&detailSheetID=" + detailSheetID + "&orgID=" + orgID + "&yearID=" + yearID + "&verID=" + verID +
+            string url = "/Views/Modules/BudgetBidding/umDetailSheet.aspx?projectID=" + budBidProjectID + "&detailSheetID=" + detailSheetID + "&leOrgID=" + leOrgID + "&orgID=" + orgID + "&yearID=" + yearID + "&verID=" + verID +
                 "&verName=" + verName + "&weDate=" + weDate + "&projectName=" + projectName + "&sheetNum=" + sheetNum + "&detailSheetName=" + detailSheetName +
                 "&sGrossRec=" + sGrossRec + "&sMatUsage=" + sMatUsage + "&sGrossRev=" + sGrossRev + "&sDirects=" + sDirects + "&sOP=" + sOP;
 
@@ -1280,6 +1289,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         }
         protected void PopulateProjectEndNumbers()
         {
+            long leOrgID = long.Parse(Request.QueryString["leOrgID"]);
+            long yearID = long.Parse(Request.QueryString["fiscalYear"]);
             long budBidProjectID = uxHidBudBidID.Text == "" ? 0 : Convert.ToInt64(uxHidBudBidID.Text);
 
             decimal sGrossRec = ForceToDecimal(uxSGrossRec.Text, -9999999999.99M, 9999999999.99M);
@@ -1289,7 +1300,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             decimal sOP = ForceToDecimal(uxSOP.Text);
 
 
-            BBDetail.Sheets.EndNumbers.DBCalculate(budBidProjectID, sGrossRec, sMatUsage, sGrossRev, sDirects, sOP);
+            BBDetail.Sheets.EndNumbers.DBCalculate(leOrgID, yearID, budBidProjectID, sGrossRec, sMatUsage, sGrossRev, sDirects, sOP);
 
             long maxOrder = BBDetail.Sheets.MaxOrder(budBidProjectID);
             decimal eGrossRec;

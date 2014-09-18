@@ -60,6 +60,12 @@
             hiddenFormat.setValue(format);
             grid.submitData(false, { isUpload: true });
         };
+
+        function printWindow(url) {
+            window.open(url, "PrintWindow", "menubar=0,resizable=1");
+        }
+
+
     </script>
 
     <style>
@@ -104,22 +110,21 @@
                                         <Click OnEvent="editBudgetNotes"></Click>
                                     </DirectEvents>
                                 </ext:Button>
-                                <ext:ToolbarSeparator ID="ToolbarSeparator2" runat="server"></ext:ToolbarSeparator>
-                                <ext:Button runat="server" Icon="Accept" Text="Complete Budget" ID="uxCompleteBudget">
-                                    <DirectEvents>
-                                        <Click OnEvent="deCompleteBudget">
-                                            <Confirmation ConfirmRequest="true" Message="Are you sure you want to complete this budget? This will lock your budget for this forecast and only finance will be allowed to unlock it." />
-                                            <EventMask ShowMask="true"></EventMask>
+                                <ext:ToolbarFill ID="ToolbarFill1" runat="server"></ext:ToolbarFill>
+                                <ext:Button ID="uxPrintReport" runat="server" Text="Print" Icon="Printer" Disabled="false">
+                                  <DirectEvents>
+                                    <Click OnEvent="printOverheadBudget" Timeout="500000">
+                                    <EventMask ShowMask="true" Msg="Generating Report, Please Wait..." />
                                         </Click>
                                     </DirectEvents>
                                 </ext:Button>
-                                <ext:ToolbarFill ID="ToolbarFill1" runat="server"></ext:ToolbarFill>
-                                <ext:Button ID="Button3" runat="server" Text="To Excel" Icon="PageExcel" Disabled="true">
-                                    <Listeners>
-                                        <Click Handler="submitValue(#{uxOrganizationAccountGridPanel}, #{FormatType}, 'xls');" />
-                                    </Listeners>
-                                </ext:Button>
                                 <ext:ToolbarSeparator ID="ToolbarSeparator3" runat="server"></ext:ToolbarSeparator>
+                                <ext:Button runat="server" Text="Export" Icon="PageExcel">
+                                    <DirectEvents>
+                                        <Click OnEvent="ExportToExcel" IsUpload="true"><EventMask ShowMask="true" Msg="Generating Export, Please Wait..." /></Click>
+                                    </DirectEvents>
+                                </ext:Button>
+                                <ext:ToolbarSeparator ID="ToolbarSeparator2" runat="server"></ext:ToolbarSeparator>
                                 <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Hide Blank Lines" ID="uxHideBlankLinesCheckbox">
                                     <DirectEvents>
                                         <Change OnEvent="deHideBlankLines">
@@ -232,7 +237,7 @@
                         </Columns>
                     </ColumnModel>
                     <Features>
-                        <ext:Summary ID="uxSummary" runat="server" Dock="Bottom" ShowSummaryRow="true" />
+                        <ext:Summary ID="uxSummary" runat="server" ShowSummaryRow="true" />
                         <ext:GroupingSummary
                             ID="GroupingSummary1"
                             runat="server"
@@ -264,7 +269,7 @@
             </Items>
         </ext:Viewport>
 
-        <ext:Window runat="server" Stateful="false" Width="550" Height="450" Title="Budget Notes" Layout="FitLayout" Header="true" Resizable="false" Frame="true" Hidden="true" ID="uxBudgetNotesWindow" CloseAction="Hide" Closable="true" Modal="true" DefaultButton="uxSaveBudgetNote">
+        <ext:Window runat="server" Stateful="false" Width="650" Height="400" Title="Budget Notes" Layout="FitLayout" Header="true" Resizable="false" Frame="true" Hidden="true" ID="uxBudgetNotesWindow" CloseAction="Hide" Closable="true" Modal="true" DefaultButton="uxSaveBudgetNote">
             <Items>
                 <ext:FormPanel ID="FormPanel2" runat="server" Header="false" BodyPadding="5"
                     Margins="5 5 5 5" Region="Center" Title="Comments" Layout="FitLayout" Flex="1">

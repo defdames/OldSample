@@ -79,7 +79,12 @@
                                 <ext:ToolbarFill runat="server">
 
                                 </ext:ToolbarFill>
-                                
+                                <ext:Button runat="server" ID="uxShowBudgetTypes" Text="Budget Types" Icon="NoteGo">
+                                    <DirectEvents>
+                                        <Click OnEvent="deShowBudgetTypes"></Click>
+                                    </DirectEvents>
+                                </ext:Button>
+                                <ext:ToolbarSeparator runat="server"></ext:ToolbarSeparator>
                                 <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Show All Organizations" ID="uxShowAllOrganizationsCheckBox" >
                                     <DirectEvents>
                                         <Change OnEvent="deShowAllOrganizations" />

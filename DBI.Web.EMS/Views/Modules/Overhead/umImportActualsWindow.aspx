@@ -18,6 +18,13 @@
             }
         }
 
+        function getParameterByName(name) {
+            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                results = regex.exec(location.search);
+            return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
+
     </script>
   
     <style>
@@ -40,75 +47,53 @@
         </ext:ResourceManager>         
         <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
             <Items>
-                <ext:GridPanel ID="uxPeriodImportGridPanel" runat="server" Flex="1" Header="false" Padding="5" Region="East" Frame="true"   Margins="5 5 5 5">
-                    <KeyMap ID="KeyMap1" runat="server">
-                        <Binding>
-                            <ext:KeyBinding Handler="#{uxImportSelected}.fireEvent('click');">
-                                <Keys>
-                                    <ext:Key Code="ENTER" />
-                                    <ext:Key Code="RETURN" />
-                                </Keys>
-                            </ext:KeyBinding>
-                        </Binding>
-                    </KeyMap>
-                    <Store>
-                        <ext:Store runat="server"
-                            ID="uxDetailStore"
-                            AutoDataBind="true" RemoteSort="true" AutoLoad="true" OnReadData="uxDetailStore_ReadData">
-                            <Model>
-                                <ext:Model ID="Model4" runat="server" IDProperty="PERIOD_NUM">
-                                    <Fields>
-                                        <ext:ModelField Name="ENTERED_PERIOD_NAME"></ext:ModelField>
-                                        <ext:ModelField Name="PERIOD_NUM"></ext:ModelField>
-                                        <ext:ModelField Name="ACTUALS_IMPORTED_FLAG"></ext:ModelField>
-                                          <ext:ModelField Name="ADMIN"></ext:ModelField>
-                                    </Fields>
-                                </ext:Model>
-                            </Model>
-                            <Proxy>
-                                <ext:PageProxy />
-                            </Proxy>
-                           
-                        </ext:Store>
-                    </Store>                   
-                    <ColumnModel>
-                       <Columns>
-                            <ext:Column ID="Column116" runat="server" DataIndex="ENTERED_PERIOD_NAME" Text="Period" Flex="1"  >
-                            </ext:Column>
-                        </Columns>
-                    </ColumnModel>
-                    <View>
-                        <ext:GridView ID="GridView4" StripeRows="true" runat="server" TrackOver="true">
-                            <GetRowClass Fn="getRowClass" />
-                        </ext:GridView>
-                    </View> 
-                    <SelectionModel>
-                        <ext:CheckboxSelectionModel runat="server" Mode="Simple" AllowDeselect="true" ID="uxPeriodSelectionModel" >
-                             <Listeners>
-                                 <Select Handler="if(#{uxPeriodSelectionModel}.getCount() > 0){#{uxImportSelected}.enable();}else {#{uxImportSelected}.disable();}"></Select>
-                                  <Deselect Handler="if(#{uxPeriodSelectionModel}.getCount() > 0){#{uxImportSelected}.enable();}else {#{uxImportSelected}.disable();}"></Deselect>
-                                     <BeforeSelect Handler="return editAllowed(record);"></BeforeSelect>
-                                 </Listeners>
-                        </ext:CheckboxSelectionModel>
-                    </SelectionModel>
-                       <Buttons>
-                           <ext:Button runat="server" ID="uxImportSelected" Text="Import" Icon="DatabaseCopy" AutoFocus="true" TabIndex="2" Disabled="true">
-                               <DirectEvents>
-                                   <Click OnEvent="deImportActuals" Success="parent.Ext.getCmp('uxOrganizationAccountGridPanel').getStore().load();parent.Ext.getCmp('uxImportActualsWn').close();"><Confirmation ConfirmRequest="true" Message="Are you sure you want to import actuals for these dates? This will overwrite your current numbers with actual numbers. You can not go back, Are you sure?"></Confirmation>
-                                       <EventMask ShowMask="true" Msg="Import actuals, please Wait..."></EventMask>
-                                   </Click>
-                               </DirectEvents>
-                                   </ext:Button>
-                                    <ext:Button runat="server" ID="uxCloseButton" Text="Cancel" Icon="Cancel">
-                                        <Listeners>
-                                            <Click Handler="parent.Ext.getCmp('uxImportActualsWn').close();" />
-                                        </Listeners>
-                                    </ext:Button>
-                       </Buttons> 
-                </ext:GridPanel>
-
-                <ext:Panel runat="server" Frame="true" Margins="5 5 5 5" BodyPadding="5" Header="true" Title="Information" Icon="Help" Region="Center" Flex="1" ID="uxInformationPanel">
-                </ext:Panel>
+                <ext:FormPanel ID="FormPanel1" runat="server" Header="false" BodyPadding="10" Flex="1" DefaultButton="uxAddBudgetType"
+                    Margins="5 5 5 5" Region="Center">
+                    <Items>
+                        <ext:FieldContainer ID="FieldContainer1"
+                            runat="server"
+                            LabelStyle="font-weight:bold;padding:0;"
+                            Layout="HBoxLayout">
+                            <Items>
+                                <ext:ComboBox runat="server" ID="uxPeriodName" Editable="true" TypeAhead="true"
+                                    FieldLabel="Select a Period" AnchorHorizontal="55%" DisplayField="ID_NAME"
+                                    ValueField="ID" TriggerAction="All"
+                                    MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1">
+                                    <Store>
+                                        <ext:Store runat="server" ID="uxPeriodNameStore" OnReadData="deLoadPeriodNames" AutoLoad="true" AutoDataBind="true">
+                                            <Proxy>
+                                                <ext:PageProxy />
+                                            </Proxy>
+                                            <Model>
+                                                <ext:Model ID="Model5" runat="server" IDProperty="ID">
+                                                    <Fields>
+                                                        <ext:ModelField Name="ID" />
+                                                        <ext:ModelField Name="ID_NAME" />
+                                                    </Fields>
+                                                </ext:Model>
+                                            </Model>
+                                        </ext:Store>
+                                    </Store>
+                                     <Listeners>
+                                    <Select Handler="#{uxImportButton}.enable();" />
+                                </Listeners>
+                                </ext:ComboBox>
+                            </Items>
+                        </ext:FieldContainer>
+                    </Items>
+                    <Buttons>
+                        <ext:Button runat="server" ID="uxImportButton" Text="Import" Icon="DatabaseCopy" AutoFocus="true" TabIndex="2" Disabled="true">
+                            <DirectEvents>
+                                <Click OnEvent="deImportActuals" Timeout="300000" Success="if(getParameterByName('AdminImport') == 'Y'){parent.Ext.getCmp('uxImportActualsWn').close();}else{parent.Ext.getCmp('uxOrganizationAccountGridPanel').getStore().load();parent.Ext.getCmp('uxImportActualsWn').close();}"><EventMask ShowMask="true"></EventMask><Confirmation Message="Are you sure you want to import this period?" ConfirmRequest="true"></Confirmation></Click>
+                            </DirectEvents>
+                        </ext:Button>
+                        <ext:Button runat="server" ID="Button2" Text="Cancel" Icon="Cancel">
+                            <Listeners>
+                                <Click Handler="parent.Ext.getCmp('uxImportActualsWn').close();" />
+                            </Listeners>
+                        </ext:Button>
+                    </Buttons>
+                </ext:FormPanel>
 
                 </Items>
             </ext:Viewport>

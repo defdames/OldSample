@@ -15,7 +15,7 @@ namespace DBI.Data
     public partial class CROSSING_INCIDENT
     {
         public long INCIDENT_ID { get; set; }
-        public long INCIDENT_NUMBER { get; set; }
+        public string INCIDENT_NUMBER { get; set; }
         public long CROSSING_ID { get; set; }
         public Nullable<System.DateTime> DATE_REPORTED { get; set; }
         public Nullable<System.DateTime> DATE_CLOSED { get; set; }

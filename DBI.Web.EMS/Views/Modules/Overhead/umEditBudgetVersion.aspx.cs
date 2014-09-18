@@ -10,6 +10,8 @@ using DBI.Data;
 using System.Xml;
 using System.Xml.Xsl;
 using System.Reflection;
+using System.IO;
+using OfficeOpenXml;
 
 namespace DBI.Web.EMS.Views.Modules.Overhead
 {
@@ -114,9 +116,21 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 //pull budget detail data
                 OVERHEAD_ORG_BUDGETS _budgetDetail = OVERHEAD_BUDGET_FORECAST.BudgetByID(_context, _budgetid);
                 uxBudgetComments.Text = _budgetDetail.COMMENTS;
+
+                //pull budget detail data
+                var _detail = OVERHEAD_BUDGET_FORECAST.BudgetByID(_context, _budgetid);
+
+                if (_budgetDetail.STATUS == "C")
+                {
+                    uxSaveBudgetNote.Disable();
+                }
+
+            
             }
             uxBudgetNotesWindow.Center();
             uxBudgetNotesWindow.Show();
+
+
 
         }
 
@@ -146,7 +160,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             {
                 ID = "uxViewActualsWn",
                 Title = "View Account Actuals - " + _accountDescription + " / Fiscal Year " + _fiscal_year,
-                Height = 750,
+                Height = 550,
                 Width = 900,
                 Modal = true,
                 Resizable = false,
@@ -186,10 +200,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             {
                 ID = "uxImportActualsWn",
                 Title = "Import Actuals For Selected Periods",
-                Height = 400,
-                Width = 800,
+                Height = 250,
+                Width = 400,
                 Modal = true,
-                Resizable = false,
+                Resizable = true,
                 CloseAction = CloseAction.Destroy,
                 Loader = new ComponentLoader
                 {
@@ -234,22 +248,16 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             long _organizationID;
             bool checkOrgId = long.TryParse(Request.QueryString["orgid"], out _organizationID);
             short _fiscal_year = short.Parse(Request.QueryString["fiscalyear"]);
-            long _fiscalyear = long.Parse(Request.QueryString["fiscalyear"]);
             long _budgetid = long.Parse(Request.QueryString["budget_id"]);
 
 
             using (Entities _context = new Entities())
             {
-                var _validAccounts = OVERHEAD_BUDGET_FORECAST.AccountListValidByOrganizationID(_context, _organizationID);
-
                 //pull budget detail data
                 var _budgetDetail = OVERHEAD_BUDGET_FORECAST.BudgetByID(_context, _budgetid);
-    
-                if (_budgetDetail.STATUS == "L")
+
+                if (_budgetDetail.STATUS == "C")
                 {
-                    uxCompleteBudget.Disable();
-                    uxCompleteBudget.Text = "Budget Locked";
-                    uxCompleteBudget.Icon = Icon.Lock;
                     uxImportActualsButton.Disable();
                 }
 
@@ -258,11 +266,11 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                             //Check toggle button if button is active, hide zero lines (zero total)
                     if (uxHideBlankLinesCheckbox.Checked)
                     {
-                         _data = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByBudgetID(_context, _budgetid, _organizationID, true);
+                         _data = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByBudgetID(_context, _budgetid,false,true);
                     }
                     else
                     {
-                       _data = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByBudgetID(_context, _budgetid, _organizationID);
+                       _data = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByBudgetID(_context, _budgetid);
                     }
 
                 int count;
@@ -309,7 +317,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 //pull budget detail data
                 OVERHEAD_ORG_BUDGETS _budgetDetail = OVERHEAD_BUDGET_FORECAST.BudgetByID(_context, _budgetID);
 
-                if (_budgetDetail.STATUS == "P" || _budgetDetail.STATUS == "L")
+                if (_budgetDetail.STATUS == "C")
                 {
                     return;
                 }
@@ -343,26 +351,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
             win.Render(this.Form);
             win.Show();
-
-        }
-
-        protected void deCompleteBudget(object sender, DirectEventArgs e)
-        {
-            uxCompleteBudget.Disable();
-            uxCompleteBudget.Text = "Budget Pending";
-            uxCompleteBudget.Icon = Icon.ApplicationOsxTerminal;
-
-            using (Entities _context = new Entities())
-            {
-                long _budgetSelectedID = long.Parse(Request.QueryString["budget_id"]);
-                //pull budget detail data
-                OVERHEAD_ORG_BUDGETS _budgetDetail = OVERHEAD_BUDGET_FORECAST.BudgetByID(_context, _budgetSelectedID);
-
-                _budgetDetail.STATUS = "P";
-                GenericData.Update<OVERHEAD_ORG_BUDGETS>(_budgetDetail);
-            }
-
-            uxOrganizationAccountStore.Reload();
 
         }
 
@@ -403,6 +391,155 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     break;
             }
             this.Response.End();
+        }
+
+
+        protected void ExportToExcel(object sender, DirectEventArgs e)
+        {
+
+            short _fiscal_year = short.Parse(Request.QueryString["fiscalyear"]);
+            long _organizationID = long.Parse(Request.QueryString["orgid"]);
+            long _budgetid = long.Parse(Request.QueryString["budget_id"]);
+            string _description = Request.QueryString["description"];
+
+            string _filename = _organizationID + "_" + _fiscal_year + "_budget.xlsx";
+            string _filePath = Request.PhysicalApplicationPath + _filename;
+
+            FileInfo newFile = new FileInfo(_filePath + _filename);
+
+            ExcelPackage pck = new ExcelPackage(newFile);
+            //Add the Content sheet
+            var ws = pck.Workbook.Worksheets.Add("Export");
+
+            using (Entities _context = new Entities())
+            {
+                var _glMonthPeriods = OVERHEAD_BUDGET_FORECAST.GeneralLedgerPeriods(_context).Where(x => x.PERIOD_YEAR == _fiscal_year & x.PERIOD_TYPE == "Month");
+                var _glWeekPeriods = OVERHEAD_BUDGET_FORECAST.GeneralLedgerPeriods(_context).Where(x => x.PERIOD_YEAR == _fiscal_year & x.PERIOD_TYPE == "Week");
+
+                ws.Cells["A1"].Value = "Account Name";
+                ws.Cells["B1"].Value = string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 1).Single().ENTERED_PERIOD_NAME);
+                ws.Cells["C1"].Value = string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 2).Single().ENTERED_PERIOD_NAME);
+                ws.Cells["D1"].Value = string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 3).Single().ENTERED_PERIOD_NAME);
+                ws.Cells["E1"].Value = string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 4).Single().ENTERED_PERIOD_NAME);
+                ws.Cells["F1"].Value = string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 5).Single().ENTERED_PERIOD_NAME);
+                ws.Cells["G1"].Value = string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 6).Single().ENTERED_PERIOD_NAME);
+                ws.Cells["H1"].Value = string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 7).Single().ENTERED_PERIOD_NAME);
+                ws.Cells["I1"].Value = string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 8).Single().ENTERED_PERIOD_NAME);
+                ws.Cells["J1"].Value = string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 9).Single().ENTERED_PERIOD_NAME);
+                ws.Cells["K1"].Value = string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 10).Single().ENTERED_PERIOD_NAME);
+                ws.Cells["L1"].Value = string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 11).Single().ENTERED_PERIOD_NAME);
+                ws.Cells["M1"].Value = string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 12).Single().ENTERED_PERIOD_NAME);
+                ws.Cells["N1"].Value = "Total";
+                //ws.Cells["E2"].Value = new decimal(98222.50);
+                //ws.Cells["E2"].Style.Numberformat.Format = "#,##0.00";
+
+                OVERHEAD_BUDGET_FORECAST.PRINT_OPTIONS _printOptions = new OVERHEAD_BUDGET_FORECAST.PRINT_OPTIONS();
+                _printOptions.HIDE_BLANK_LINES = uxHideBlankLinesCheckbox.Checked;
+
+                IEnumerable<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW> _budgetView = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByBudgetID(_context, _budgetid, true, _printOptions.HIDE_BLANK_LINES);
+
+                int _cellCount = 2;
+                foreach (OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW _row in _budgetView)
+                {
+
+                    ws.Cells["A" + _cellCount].Value = _row.ACCOUNT_DESCRIPTION + " - " + _row.ACCOUNT_DESCRIPTION2;
+                    ws.Cells["B" + _cellCount].Value = _row.AMOUNT1;
+                    ws.Cells["B" + _cellCount].Style.Numberformat.Format = "#,##0.00";
+                    ws.Cells["C" + _cellCount].Value = _row.AMOUNT2;
+                    ws.Cells["c" + _cellCount].Style.Numberformat.Format = "#,##0.00";
+                    ws.Cells["D" + _cellCount].Value = _row.AMOUNT3;
+                    ws.Cells["D" + _cellCount].Style.Numberformat.Format = "#,##0.00";
+                    ws.Cells["E" + _cellCount].Value = _row.AMOUNT4;
+                    ws.Cells["E" + _cellCount].Style.Numberformat.Format = "#,##0.00";
+                    ws.Cells["F" + _cellCount].Value = _row.AMOUNT5;
+                    ws.Cells["F" + _cellCount].Style.Numberformat.Format = "#,##0.00";
+                    ws.Cells["G" + _cellCount].Value = _row.AMOUNT6;
+                    ws.Cells["G" + _cellCount].Style.Numberformat.Format = "#,##0.00";
+                    ws.Cells["H" + _cellCount].Value = _row.AMOUNT7;
+                    ws.Cells["H" + _cellCount].Style.Numberformat.Format = "#,##0.00";
+                    ws.Cells["I" + _cellCount].Value = _row.AMOUNT8;
+                    ws.Cells["I" + _cellCount].Style.Numberformat.Format = "#,##0.00";
+                    ws.Cells["J" + _cellCount].Value = _row.AMOUNT9;
+                    ws.Cells["J" + _cellCount].Style.Numberformat.Format = "#,##0.00";
+                    ws.Cells["K" + _cellCount].Value = _row.AMOUNT10;
+                    ws.Cells["K" + _cellCount].Style.Numberformat.Format = "#,##0.00";
+                    ws.Cells["L" + _cellCount].Value = _row.AMOUNT11;
+                    ws.Cells["L" + _cellCount].Style.Numberformat.Format = "#,##0.00";
+                    ws.Cells["M" + _cellCount].Value = _row.AMOUNT12;
+                    ws.Cells["M" + _cellCount].Style.Numberformat.Format = "#,##0.00";
+                    ws.Cells["N" + _cellCount].Value = _row.TOTAL;
+                    ws.Cells["N" + _cellCount].Style.Numberformat.Format = "#,##0.00";
+                    _cellCount = _cellCount + 1;
+
+                }
+
+            }
+
+            Byte[] bin = pck.GetAsByteArray();
+            File.WriteAllBytes(_filePath, bin);
+
+            X.Msg.Confirm("File Download", "Your exported file is now ready to download.", new MessageBoxButtonsConfig
+            {
+                No = new MessageBoxButtonConfig
+                {
+                    Handler = "App.direct.Download('" + _filename + "','" + Server.UrlEncode(_filePath) + "', { isUpload : true })",
+                    Text = "Download " + _filename
+                }
+            }).Show();
+      
+        }
+
+        [DirectMethod]
+        public void Download(string filename, string filePath)
+        {
+            using (FileStream fileStream = File.OpenRead(Server.UrlDecode(filePath)))
+            {
+
+                //create new MemoryStream object
+                MemoryStream memStream = new MemoryStream();
+                memStream.SetLength(fileStream.Length);
+                //read file to MemoryStream
+                fileStream.Read(memStream.GetBuffer(), 0, (int)fileStream.Length);
+
+                Response.Clear();
+                Response.ClearContent();
+                Response.ClearHeaders();
+                Response.ContentType = "application/octet-stream";
+                Response.AppendHeader("Content-Disposition", "attachment;filename=" + filename);
+                Response.BinaryWrite(memStream.ToArray());
+                Response.End();
+            }
+        }
+
+
+        public void printOverheadBudget(object sender, DirectEventArgs e)
+        {
+
+            short _fiscal_year = short.Parse(Request.QueryString["fiscalyear"]);
+            long _organizationID = long.Parse(Request.QueryString["orgid"]);
+            long _budgetid = long.Parse(Request.QueryString["budget_id"]);
+            string _description = Request.QueryString["description"];
+
+            using(Entities _context = new Entities())
+            {
+
+                OVERHEAD_BUDGET_FORECAST.PRINT_OPTIONS _printOptions = new OVERHEAD_BUDGET_FORECAST.PRINT_OPTIONS();
+                _printOptions.HIDE_BLANK_LINES = uxHideBlankLinesCheckbox.Checked;
+
+                MemoryStream PdfStream = OVERHEAD_BUDGET_FORECAST.GenerateReport(_context, _organizationID, _fiscal_year, _budgetid, _description, _printOptions);
+
+                
+                string _filename = _organizationID + "_" + _fiscal_year + "_budget.pdf";
+                string _filePath = Request.PhysicalApplicationPath + _filename;
+                FileStream fs = new FileStream(_filePath,FileMode.Create);
+                fs.Write(PdfStream.GetBuffer(), 0, PdfStream.GetBuffer().Length);
+                fs.Close();
+
+                string baseUrl = Request.Url.GetLeftPart(UriPartial.Authority);
+
+                X.Js.Call("parent.App.direct.AddTabPanel", "p" + _organizationID + _fiscal_year + _budgetid, _description, "~/" + _filename);
+            }
+
         }
 
         public class OVERHEAD_BUDGET_DETAIL_V
