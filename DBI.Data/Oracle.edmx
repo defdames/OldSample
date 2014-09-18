@@ -1413,7 +1413,7 @@
             <PropertyRef Name="INCIDENT_ID" />
           </Key>
           <Property Name="INCIDENT_ID" Type="number" Nullable="false" Precision="15" StoreGeneratedPattern="Identity" />
-          <Property Name="INCIDENT_NUMBER" Type="number" Nullable="false" Precision="15" />
+          <Property Name="INCIDENT_NUMBER" Type="varchar2" Nullable="false" MaxLength="50" />
           <Property Name="CROSSING_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="DATE_REPORTED" Type="date" />
           <Property Name="DATE_CLOSED" Type="date" />
@@ -2152,6 +2152,7 @@
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="PARENT_BUDGET_TYPE_ID" Type="number" Precision="15" />
+          <Property Name="IMPORT_ACTUALS_ALLOWED" Type="varchar2" MaxLength="1" />
         </EntityType>
         <EntityType Name="OVERHEAD_CATEGORY">
           <Key>
@@ -4496,7 +4497,6 @@
             <End Role="SYS_MODULES" EntitySet="SYS_MODULES" />
             <End Role="SYS_MENU" EntitySet="SYS_MENU" />
           </AssociationSet>
-          <EntitySet Name="CROSSING_INCIDENT" EntityType="OracleModel.CROSSING_INCIDENT" />
           <EntitySet Name="SYS_GROUPS" EntityType="OracleModel.SYS_GROUPS" />
           <AssociationSet Name="FK_GRP_PERMS_GROUP_ID" Association="OracleModel.FK_GRP_PERMS_GROUP_ID">
             <End Role="SYS_GROUPS" EntitySet="SYS_GROUPS" />
@@ -4638,10 +4638,6 @@
             <End Role="CROSSING" EntitySet="CROSSINGS" />
             <End Role="CROSSING_DATA_ENTRY" EntitySet="CROSSING_DATA_ENTRY" />
           </AssociationSet>
-          <AssociationSet Name="FK_INCIDENT_CROSSING_ID" Association="OracleModel.FK_INCIDENT_CROSSING_ID">
-            <End Role="CROSSING" EntitySet="CROSSINGS" />
-            <End Role="CROSSING_INCIDENT" EntitySet="CROSSING_INCIDENT" />
-          </AssociationSet>
           <AssociationSet Name="FK_CROSSINGS_RAILROAD_ID" Association="OracleModel.FK_CROSSINGS_RAILROAD_ID">
             <End Role="CROSSING_RAILROAD" EntitySet="CROSSING_RAILROAD" />
             <End Role="CROSSING" EntitySet="CROSSINGS" />
@@ -4747,6 +4743,11 @@
           <AssociationSet Name="FK_APPLICATION_INVOICE_ID" Association="OracleModel.FK_APPLICATION_INVOICE_ID">
             <End Role="CROSSING_INVOICE" EntitySet="CROSSING_INVOICE" />
             <End Role="CROSSING_APPLICATION" EntitySet="CROSSING_APPLICATION" />
+          </AssociationSet>
+          <EntitySet Name="CROSSING_INCIDENT" EntityType="OracleModel.CROSSING_INCIDENT" />
+          <AssociationSet Name="FK_INCIDENT_CROSSING_ID" Association="OracleModel.FK_INCIDENT_CROSSING_ID">
+            <End Role="CROSSING" EntitySet="CROSSINGS" />
+            <End Role="CROSSING_INCIDENT" EntitySet="CROSSING_INCIDENT" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="SYS_USERS">
@@ -6522,23 +6523,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="CROSSING_INCIDENT">
-          <Key>
-            <PropertyRef Name="INCIDENT_ID" />
-          </Key>
-          <Property Type="Int64" Name="INCIDENT_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int64" Name="INCIDENT_NUMBER" Nullable="false" />
-          <Property Type="Int64" Name="CROSSING_ID" Nullable="false" />
-          <Property Type="DateTime" Name="DATE_REPORTED" />
-          <Property Type="DateTime" Name="DATE_CLOSED" />
-          <Property Type="String" Name="SLOW_ORDER" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="REMARKS" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="MODIFY_DATE" />
-          <NavigationProperty Name="CROSSING" Relationship="OracleModel.FK_INCIDENT_CROSSING_ID" FromRole="CROSSING_INCIDENT" ToRole="CROSSING" />
-        </EntityType>
         <EntityType Name="SYS_GROUPS">
           <Key>
             <PropertyRef Name="GROUP_ID" />
@@ -7450,9 +7434,9 @@
           <Property Type="Decimal" Name="RAILROAD_ID" Precision="38" Scale="0" />
           <NavigationProperty Name="CROSSING_CONTACTS" Relationship="OracleModel.FK_CROSSINGS_CONTACT_ID" FromRole="CROSSING" ToRole="CROSSING_CONTACTS" />
           <NavigationProperty Name="CROSSING_DATA_ENTRY" Relationship="OracleModel.FK_DATA_ENTRY_CROSSING_ID" FromRole="CROSSING" ToRole="CROSSING_DATA_ENTRY" />
-          <NavigationProperty Name="CROSSING_INCIDENT" Relationship="OracleModel.FK_INCIDENT_CROSSING_ID" FromRole="CROSSING" ToRole="CROSSING_INCIDENT" />
           <NavigationProperty Name="CROSSING_RAILROAD" Relationship="OracleModel.FK_CROSSINGS_RAILROAD_ID" FromRole="CROSSING" ToRole="CROSSING_RAILROAD" />
           <NavigationProperty Name="CROSSING_SUPPLEMENTAL" Relationship="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" FromRole="CROSSING" ToRole="CROSSING_SUPPLEMENTAL" />
+          <NavigationProperty Name="CROSSING_INCIDENT" Relationship="OracleModel.FK_INCIDENT_CROSSING_ID" FromRole="CROSSING" ToRole="CROSSING_INCIDENT" />
         </EntityType>
         <Association Name="FK_CROSSINGS_CONTACT_ID">
           <End Type="OracleModel.CROSSING_CONTACTS" Role="CROSSING_CONTACTS" Multiplicity="0..1" />
@@ -7474,18 +7458,6 @@
               <PropertyRef Name="CROSSING_ID" />
             </Principal>
             <Dependent Role="CROSSING_DATA_ENTRY">
-              <PropertyRef Name="CROSSING_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_INCIDENT_CROSSING_ID">
-          <End Type="OracleModel.CROSSING" Role="CROSSING" Multiplicity="1" />
-          <End Type="OracleModel.CROSSING_INCIDENT" Role="CROSSING_INCIDENT" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CROSSING">
-              <PropertyRef Name="CROSSING_ID" />
-            </Principal>
-            <Dependent Role="CROSSING_INCIDENT">
               <PropertyRef Name="CROSSING_ID" />
             </Dependent>
           </ReferentialConstraint>
@@ -7515,6 +7487,7 @@
           <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="Int64" Name="PARENT_BUDGET_TYPE_ID" />
+          <Property Type="String" Name="IMPORT_ACTUALS_ALLOWED" MaxLength="1" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="CROSSING_INVOICE">
           <Key>
@@ -8422,6 +8395,35 @@
             </Principal>
             <Dependent Role="CROSSING_APPLICATION">
               <PropertyRef Name="INVOICE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CROSSING_INCIDENT">
+          <Key>
+            <PropertyRef Name="INCIDENT_ID" />
+          </Key>
+          <Property Type="Int64" Name="INCIDENT_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="INCIDENT_NUMBER" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="CROSSING_ID" Nullable="false" />
+          <Property Type="DateTime" Name="DATE_REPORTED" />
+          <Property Type="DateTime" Name="DATE_CLOSED" />
+          <Property Type="String" Name="SLOW_ORDER" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="REMARKS" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATE_DATE" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFY_DATE" />
+          <NavigationProperty Name="CROSSING" Relationship="OracleModel.FK_INCIDENT_CROSSING_ID" FromRole="CROSSING_INCIDENT" ToRole="CROSSING" />
+        </EntityType>
+        <Association Name="FK_INCIDENT_CROSSING_ID">
+          <End Type="OracleModel.CROSSING" Role="CROSSING" Multiplicity="1" />
+          <End Type="OracleModel.CROSSING_INCIDENT" Role="CROSSING_INCIDENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CROSSING">
+              <PropertyRef Name="CROSSING_ID" />
+            </Principal>
+            <Dependent Role="CROSSING_INCIDENT">
+              <PropertyRef Name="CROSSING_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -9905,23 +9907,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CROSSING_INCIDENT">
-            <EntityTypeMapping TypeName="OracleModel.CROSSING_INCIDENT">
-              <MappingFragment StoreEntitySet="CROSSING_INCIDENT">
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="REMARKS" ColumnName="REMARKS" />
-                <ScalarProperty Name="SLOW_ORDER" ColumnName="SLOW_ORDER" />
-                <ScalarProperty Name="DATE_CLOSED" ColumnName="DATE_CLOSED" />
-                <ScalarProperty Name="DATE_REPORTED" ColumnName="DATE_REPORTED" />
-                <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
-                <ScalarProperty Name="INCIDENT_NUMBER" ColumnName="INCIDENT_NUMBER" />
-                <ScalarProperty Name="INCIDENT_ID" ColumnName="INCIDENT_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="SYS_GROUPS">
             <EntityTypeMapping TypeName="OracleModel.SYS_GROUPS">
               <MappingFragment StoreEntitySet="SYS_GROUPS">
@@ -10518,6 +10503,7 @@
           <EntitySetMapping Name="OVERHEAD_BUDGET_TYPE">
             <EntityTypeMapping TypeName="OracleModel.OVERHEAD_BUDGET_TYPE">
               <MappingFragment StoreEntitySet="OVERHEAD_BUDGET_TYPE">
+                <ScalarProperty Name="IMPORT_ACTUALS_ALLOWED" ColumnName="IMPORT_ACTUALS_ALLOWED" />
                 <ScalarProperty Name="PARENT_BUDGET_TYPE_ID" ColumnName="PARENT_BUDGET_TYPE_ID" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
                 <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
@@ -11214,6 +11200,23 @@
                 <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
                 <ScalarProperty Name="APPLICATION_NUMBER" ColumnName="APPLICATION_NUMBER" />
                 <ScalarProperty Name="APPLICATION_ID" ColumnName="APPLICATION_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CROSSING_INCIDENT">
+            <EntityTypeMapping TypeName="OracleModel.CROSSING_INCIDENT">
+              <MappingFragment StoreEntitySet="CROSSING_INCIDENT">
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="REMARKS" ColumnName="REMARKS" />
+                <ScalarProperty Name="SLOW_ORDER" ColumnName="SLOW_ORDER" />
+                <ScalarProperty Name="DATE_CLOSED" ColumnName="DATE_CLOSED" />
+                <ScalarProperty Name="DATE_REPORTED" ColumnName="DATE_REPORTED" />
+                <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
+                <ScalarProperty Name="INCIDENT_NUMBER" ColumnName="INCIDENT_NUMBER" />
+                <ScalarProperty Name="INCIDENT_ID" ColumnName="INCIDENT_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
