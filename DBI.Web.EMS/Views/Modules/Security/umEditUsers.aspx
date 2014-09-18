@@ -94,14 +94,11 @@
             </Items>
         </ext:Viewport>
         <!--Hidden Window -->
-        <ext:Window runat="server" ID="uxEditUserWindow" Hidden="true" Width="650">
+        <ext:Window runat="server" ID="uxEditUserWindow" Hidden="true" Width="650" Height="550" Layout="FitLayout" >
             <Items>
-                <ext:FormPanel runat="server" ID="uxEditUserForm">
-                    <Items>
-                        <ext:GridPanel runat="server" ID="uxEditUserGrid" Layout="HBoxLayout">
+                        <ext:GridPanel runat="server" ID="uxEditUserGrid">
                             <Store>
-                                <ext:Store runat="server" ID="uxEditUserStore"
-                                    AutoDataBind="true">
+                                <ext:Store runat="server" ID="uxEditUserStore" AutoDataBind="true">
                                     <Model>
                                         <ext:Model runat="server" IDProperty="PERMISSION_NAME">
                                             <Fields>
@@ -124,29 +121,31 @@
                                 </Columns>
                             </ColumnModel>
                             <SelectionModel>
-                                <ext:CheckboxSelectionModel runat="server" AllowDeselect="true" Mode="Multi" />
+                                <ext:CheckboxSelectionModel runat="server" AllowDeselect="true" Mode="Simple" />
                             </SelectionModel>
-                        </ext:GridPanel>
-                    </Items>
-                    <Buttons>
-                        <ext:Button runat="server" Text="Submit" Icon="Add">
+                            <BottomBar>
+                                <ext:PagingToolbar runat="server"></ext:PagingToolbar>
+                            </BottomBar>
+                              <Buttons>
+                        <ext:Button ID="Button1" runat="server" Text="Submit" Icon="Add">
                             <DirectEvents>
                                 <Click OnEvent="deUpdateUserPermissions">
                                     <ExtraParams>
                                         <ext:Parameter Name="Rows" Value="Ext.encode(#{uxEditUserGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
                                         <ext:Parameter Value="#{uxUsersGrid}.getSelectionModel().getSelection()[0].data.USER_ID" Mode="Raw" Name="UserId" />
                                     </ExtraParams>
+                                    <EventMask ShowMask="true"></EventMask>
                                 </Click>
                             </DirectEvents>
                         </ext:Button>
-                        <ext:Button runat="server" Text="Cancel" Icon="Delete">
+                        <ext:Button ID="Button6" runat="server" Text="Cancel" Icon="Delete">
                             <Listeners>
                                 <Click Handler="#{uxEditUserGrid}.getSelectionModel().deselectAll(); #{uxEditUserWindow}.hide()" />
                             </Listeners>
                         </ext:Button>
                     </Buttons>
-
-                </ext:FormPanel>
+                        </ext:GridPanel>
+  
             </Items>
         </ext:Window>
         <ext:Window runat="server" ID="uxTwoGridWindow" Layout="HBoxLayout" Width="700" Height="600" Hidden="true">
@@ -154,7 +153,7 @@
                 <ext:HBoxLayoutConfig Align="Stretch" />
             </LayoutConfig>
             <Items>
-                <ext:GridPanel runat="server" ID="uxAvailableOrgsGrid" Title="Available Orgs" Flex="1">
+                <ext:GridPanel runat="server" ID="uxAvailableOrgsGrid" Title="Available Orgs" Flex="1" Padding="10">
                     <Store>
                         <ext:Store runat="server" ID="uxAvailableOrgsStore">
                             <Model>
@@ -187,9 +186,22 @@
                     <SelectionModel>
                         <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" PruneRemoved="false" Mode="Multi" />
                     </SelectionModel>
+                    <Listeners>
+                        <ItemDblClick Handler="TwoGridSelector.add(uxAvailableOrgsGrid, uxSelectedOrgsGrid);"></ItemDblClick>
+                    </Listeners>
                 </ext:GridPanel>
                         
-                <ext:Panel runat="server" ID="uxButtonsPanel" Layout="VBoxLayout">
+                <ext:Panel runat="server" ID="uxButtonsPanel" 
+                    BodyStyle="background-color: transparent;" 
+                    Border="false" 
+                    Layout="VBoxLayout"
+                    >
+                    <Defaults>
+                <ext:Parameter Name="margins" Value="0 0 5 0" Mode="Value" />
+            </Defaults>
+            <LayoutConfig>
+                <ext:VBoxLayoutConfig Align="Center" Pack="Center" />
+            </LayoutConfig>
                     <Items>
                         <ext:Button ID="Button2" runat="server" Icon="ResultsetNext" StyleSpec="margin-bottom:2px;">
                     <Listeners>
@@ -225,7 +237,7 @@
                 </ext:Button>
                     </Items>
                 </ext:Panel>
-                <ext:GridPanel runat="server" ID="uxSelectedOrgsGrid" Title="Selected Orgs" Flex="1" AutoScroll="true">
+                <ext:GridPanel runat="server" ID="uxSelectedOrgsGrid" Title="Selected Orgs" Flex="1" AutoScroll="true" Padding="10">
                     <Store>
                         <ext:Store runat="server" ID="uxSelectedOrgsStore">
                             <Model>
@@ -248,6 +260,9 @@
                             <ext:Column ID="Column4" runat="server" Text="Business Unit" DataIndex="ORG_ID" Flex="1" />
                         </Columns>
                     </ColumnModel>
+                    <Listeners>
+                        <ItemDblClick Handler="TwoGridSelector.remove(uxAvailableOrgsGrid, uxSelectedOrgsGrid);"></ItemDblClick>
+                    </Listeners>
                 </ext:GridPanel>
             </Items>
             <Buttons>

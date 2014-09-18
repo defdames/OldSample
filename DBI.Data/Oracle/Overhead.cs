@@ -1075,7 +1075,7 @@ namespace DBI.Data
                                 {
                                     _cell.BackgroundColor = new Color(224, 224, 209);
                                     _cell.HorizontalAlignment = PdfCell.ALIGN_RIGHT;
-                                }
+                                  }
 
                                 cellCount = cellCount + 1;
                             }
@@ -1092,6 +1092,10 @@ namespace DBI.Data
                     _accountPhase.Add(new Chunk(_row.ACCOUNT_DESCRIPTION, CellFont));
                     _accountPhase.Add(new Chunk("\n"));
                     _accountPhase.Add(new Chunk("     " +_row.ACCOUNT_DESCRIPTION2, CellFont));
+
+                    Phrase _detailRow = new Phrase();
+                    _detailRow.Add(new Chunk(_row.ACCOUNT_DESCRIPTION, CellFont));
+
 
                     Cells = new PdfPCell[]{
                      new PdfPCell(_accountPhase),

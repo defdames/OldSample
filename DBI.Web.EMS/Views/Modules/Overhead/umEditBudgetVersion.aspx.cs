@@ -154,7 +154,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             string _accountDescription = e.ExtraParams["ACCOUNT_DESCRIPTION"];
             string _AccountSelectedID = uxOrganizationAccountSelectionModel.SelectedRow.RecordID;
 
-            string url = "umViewActualsWindow.aspx?budget_id=" + _budgetid + "&orgid=" + _organizationID + "&fiscalyear=" + _fiscal_year + "&accountID=" + _AccountSelectedID;
+            string url = "umViewActualsWindow.aspx?budget_id=" + _budgetid + "&orgid=" + _organizationID + "&fiscalyear=" + _fiscal_year + "&accountID=" + _AccountSelectedID + "&description=" + _accountDescription;
 
             Window win = new Window
             {
@@ -163,7 +163,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 Height = 550,
                 Width = 900,
                 Modal = true,
-                Resizable = false,
+                Resizable = true,
                 CloseAction = CloseAction.Destroy,
                 Loader = new ComponentLoader
                 {
