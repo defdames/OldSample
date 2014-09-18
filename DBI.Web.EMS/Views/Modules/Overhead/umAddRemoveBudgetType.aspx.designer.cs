@@ -148,6 +148,24 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views {
         protected global::Ext.Net.Model Model1;
         
         /// <summary>
+        /// FieldContainer4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FieldContainer FieldContainer4;
+        
+        /// <summary>
+        /// uxAllowImportCheckbox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Checkbox uxAllowImportCheckbox;
+        
+        /// <summary>
         /// uxAddBudgetType control.
         /// </summary>
         /// <remarks>

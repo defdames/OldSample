@@ -60,6 +60,7 @@
                                     <ext:ModelField Name="SUB_DIVISION" />
                                     <ext:ModelField Name="CONTACT_NAME" />
                                     <ext:ModelField Name="STATE" />
+                                    <ext:ModelField Name="STATUS" />
                                 </Fields>
                             </ext:Model>
                         </Model>
@@ -78,6 +79,7 @@
                         <ext:Column ID="Column12" runat="server" DataIndex="SERVICE_UNIT" Text="Service Unit" Flex="1" />
                         <ext:Column ID="uxSubDiv" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="1" />
                         <ext:Column ID="uxMTM" runat="server" DataIndex="STATE" Text="State" Flex="1" />
+                        <ext:Column ID="Column3" runat="server" DataIndex="STATUS" Text="Status" Flex="1" />
 
                     </Columns>
                 </ColumnModel>

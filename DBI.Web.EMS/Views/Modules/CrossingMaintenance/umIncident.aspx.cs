@@ -204,7 +204,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             public long INCIDENT_ID { get; set; }
             public DateTime DATE_CLOSED { get; set; }
             public string REMARKS {get; set; }
-            public long INCIDENT_NUMBER { get; set; }
+            public string INCIDENT_NUMBER { get; set; }
             public DateTime DATE_REPORTED { get; set; }
             public string SLOW_ORDER { get; set; }
 

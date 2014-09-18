@@ -147,6 +147,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                            where ReportList.Contains(a.SUPPLEMENTAL_ID)
                            select new
                            {
+                             
                                a.INVOICE_SUPP_ID,
                                v.INVOICE_SUPP_NUMBER,
                                v.INVOICE_SUPP_DATE,
