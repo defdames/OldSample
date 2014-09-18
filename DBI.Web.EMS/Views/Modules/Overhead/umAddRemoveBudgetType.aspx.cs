@@ -83,7 +83,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
             _data.MODIFY_DATE = DateTime.Now;
             _data.CREATED_BY = User.Identity.Name;
             _data.MODIFIED_BY = User.Identity.Name;
-            _data.IMPORT_ACTUALS_ALLOWED = (uxAllowImportCheckbox.Checked) ? "Y" : "N";
 
 
             if (uxLinkedBudgetType.SelectedItem.Value != null)
