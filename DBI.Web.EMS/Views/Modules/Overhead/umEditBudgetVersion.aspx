@@ -89,7 +89,7 @@
                     <TopBar>
                         <ext:Toolbar ID="Toolbar1" runat="server">
                             <Items>
-                                <ext:Button runat="server" Icon="MagnifierZoomIn" Text="Account Inquery" ID="uxViewActuals" Disabled="true">
+                                <ext:Button runat="server" Icon="MagnifierZoomIn" Text="Account Inquiry" ID="uxViewActuals" Disabled="true">
                                     <DirectEvents>
                                         <Click OnEvent="viewActuals">
                                             <ExtraParams>
