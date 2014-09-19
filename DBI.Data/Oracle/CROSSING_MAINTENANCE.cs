@@ -61,7 +61,7 @@ namespace DBI.Data
                             where d.CROSSING_ID == r.CROSSING_ID
                             select r.CROSSING_ID)
                        .Contains(d.CROSSING_ID)
-                    where d.RAILROAD_ID == RailroadId && d.STATUS == "ACTIVE"
+                    where d.RAILROAD_ID == RailroadId
                     select new CrossingList { RAILROAD_ID = d.RAILROAD, CONTACT_ID = d.CONTACT_ID, STATUS = d.STATUS, STATE = d.STATE, CROSSING_ID = d.CROSSING_ID, CROSSING_NUMBER = d.CROSSING_NUMBER, SERVICE_UNIT = d.SERVICE_UNIT, SUB_DIVISION = d.SUB_DIVISION, CONTACT_NAME = d.CROSSING_CONTACTS.CONTACT_NAME });
 
         }
@@ -81,6 +81,25 @@ namespace DBI.Data
                             join p in _context.PROJECTS_V on r.PROJECT_ID equals p.PROJECT_ID
                             where r.CROSSING_ID == CrossingId
                             select new CrossingProject { PROJECT_ID = r.PROJECT_ID, LONG_NAME = p.LONG_NAME, SEGMENT1 = p.SEGMENT1, ORGANIZATION_NAME = p.ORGANIZATION_NAME }).ToList();
+                return data;
+            }
+        }
+        public static List<ProjectList> ApplicationProjectList()
+        {
+            using (Entities _context = new Entities())
+            {
+                var data = (from v in _context.PROJECTS_V
+                        select new ProjectList { PROJECT_TYPE = v.PROJECT_TYPE, CARRYING_OUT_ORGANIZATION_ID = v.CARRYING_OUT_ORGANIZATION_ID, PROJECT_STATUS_CODE = v.PROJECT_STATUS_CODE, TEMPLATE_FLAG = v.TEMPLATE_FLAG, PROJECT_ID = v.PROJECT_ID, LONG_NAME = v.LONG_NAME, ORGANIZATION_NAME = v.ORGANIZATION_NAME, SEGMENT1 = v.SEGMENT1 }).ToList();
+             
+                return data;
+            }
+        }
+        public static List<CrossingPricing> CrossingsPricingList()
+        {
+            using (Entities _context = new Entities())
+            {
+                var data = (from r in _context.CROSSING_PRICING                                                 
+                            select new CrossingPricing { PRICING_ID = r.PRICING_ID, SERVICE_CATEGORY = r.SERVICE_CATEGORY, PRICE = r.PRICE}).ToList();
                 return data;
             }
         }
@@ -252,7 +271,7 @@ SELECT
             return (from s in _context.CROSSING_SUPPLEMENTAL
                     join c in _context.CROSSINGS on s.CROSSING_ID equals c.CROSSING_ID
                     select new SupplementalList { CROSSING_NUMBER = c.CROSSING_NUMBER, CROSSING_ID = s.CROSSING_ID, SUPPLEMENTAL_ID = s.SUPPLEMENTAL_ID, APPROVED_DATE = s.APPROVED_DATE,
-                    CUT_DATE = s.CUT_TIME, SERVICE_TYPE = s.SERVICE_TYPE, INSPECT_START = s.INSPECT_START, INSPECT_END = s.INSPECT_END, SQUARE_FEET = s.SQUARE_FEET, TRUCK_NUMBER = s.TRUCK_NUMBER,
+                    CUT_TIME = s.CUT_TIME, SERVICE_TYPE = s.SERVICE_TYPE, INSPECT_START = s.INSPECT_START, INSPECT_END = s.INSPECT_END, SQUARE_FEET = s.SQUARE_FEET, TRUCK_NUMBER = s.TRUCK_NUMBER,
                     SPRAY = s.SPRAY, CUT = s.CUT, INSPECT = s.INSPECT, MAINTAIN = s.MAINTAIN, RECURRING = s.RECURRING, REMARKS = s.REMARKS });
 
         }
@@ -281,7 +300,7 @@ SELECT
                          SERVICE_UNIT = d.SERVICE_UNIT,
                          STATE = d.STATE,
                          MILE_POST = d.MILE_POST,
-                       
+                         SUB_CONTRACTED = d.SUB_CONTRACTED,
                       });
 
           }
@@ -545,7 +564,7 @@ SELECT
               public long INCIDENT_ID { get; set; }
               public DateTime? DATE_CLOSED { get; set; }
               public string REMARKS { get; set; }
-              public long INCIDENT_NUMBER { get; set; }
+              public string INCIDENT_NUMBER { get; set; }
               public DateTime? DATE_REPORTED { get; set; }
               public string SLOW_ORDER { get; set; }
               public string SERVICE_UNIT { get; set; }
@@ -622,6 +641,7 @@ SELECT
               public string SUB_DIVISION { get; set; }
               public string STATE { get; set; }
               public decimal? MILE_POST { get; set; }
+              public string SUB_CONTRACTED { get; set; }
           }
           public class IncidentList
           {
@@ -630,7 +650,7 @@ SELECT
               public long INCIDENT_ID { get; set; }
               public DateTime? DATE_CLOSED { get; set; }
               public string REMARKS { get; set; }
-              public long INCIDENT_NUMBER { get; set; }
+              public string INCIDENT_NUMBER { get; set; }
               public DateTime? DATE_REPORTED { get; set; }
               public string SLOW_ORDER { get; set; }
 
@@ -656,7 +676,7 @@ SELECT
             public long CROSSING_ID { get; set; }
             public string CROSSING_NUMBER { get; set; }
             public DateTime? APPROVED_DATE { get; set; }
-            public DateTime? CUT_DATE { get; set; }
+            public DateTime? CUT_TIME { get; set; }
             public string SERVICE_TYPE { get; set; }
             public string TRUCK_NUMBER { get; set; }
             public DateTime? INSPECT_START { get; set; }
@@ -696,6 +716,7 @@ SELECT
             public string SERVICE_UNIT { get; set; }
             public string SUB_DIVISION { get; set; }
             public string CONTACT_NAME { get; set; }
+           
 
         }
         public class CrossingAssignedList
@@ -714,6 +735,13 @@ SELECT
             public string ORGANIZATION_NAME { get; set; }
             public string LONG_NAME { get; set; }
             public string SEGMENT1 { get; set; }
+        }
+        public class CrossingPricing
+        {
+            public decimal PRICING_ID { get; set; }
+            public decimal? PRICE{ get; set; }
+            public string SERVICE_CATEGORY { get; set; }
+     
         }
         public class StateList
         {

@@ -118,8 +118,8 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             {
                 ID = "uxImportActualsWn",
                 Title = "Import Actuals from General Ledger",
-                Height = 400,
-                Width = 800,
+                Height = 250,
+                Width = 400,
                 Modal = true,
                 Resizable = false,
                 CloseAction = CloseAction.Destroy,
@@ -261,8 +261,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             using (Entities _context = new Entities())
             {
                 OVERHEAD_ORG_BUDGETS _budgetHeader = OVERHEAD_BUDGET_FORECAST.BudgetByID(_context, _budgetID);
-
-
 
                 string _organization_id = _budgetHeader.ORGANIZATION_ID.ToString();
                 string _organization_name = HR.Organization(_budgetHeader.ORGANIZATION_ID).ORGANIZATION_NAME;

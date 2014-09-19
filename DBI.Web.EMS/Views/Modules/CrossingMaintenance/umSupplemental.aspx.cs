@@ -27,68 +27,27 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             if (!X.IsAjaxRequest)
             {
 
-                uxAddServiceTypeStore.Data = StaticLists.ServiceTypes;
+                //uxAddServiceTypeStore.Data = StaticLists.ServiceTypes;
       
             }
         }
-        //protected void deReadGrid(object sender, StoreReadDataEventArgs e)
-        //{
-        //    List<WEB_EQUIPMENT_V> dataIn;
 
-        //    if (e.Parameters["Form"] == "Add")
-        //    {
-        //        if (uxAddEquipmentToggleOrg.Pressed)
-        //        {
-        //            //Get All Projects
-        //            dataIn = WEB_EQUIPMENT_V.ListEquipment();
-        //        }
-        //        else
-        //        {
-        //            int CurrentOrg = Convert.ToInt32(Authentication.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
-        //            //Get projects for my org only
-        //            dataIn = WEB_EQUIPMENT_V.ListEquipment(CurrentOrg);
-        //        }
-        //        int count;
-
-        //        //Get paged, filterable list of Equipment
-        //        List<WEB_EQUIPMENT_V> data = GenericData.EnumerableFilterHeader<WEB_EQUIPMENT_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataIn, out count).ToList();
-
-        //        e.Total = count;
-        //        if (e.Parameters["Form"] == "Add")
-        //        {
-        //            uxEquipmentStore.DataSource = data;
-        //        }
-
-        //    }
-        //}
         protected void deSupplementalGridData(object sender, StoreReadDataEventArgs e)
         {
 
-            //using (Entities _context = new Entities())
-            //{
-               
-                    long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
-                    //List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
-                    decimal UserId = SYS_USER_INFORMATION.UserID(User.Identity.Name);
+            
+            long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
+            //List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
+            decimal UserId = SYS_USER_INFORMATION.UserID(User.Identity.Name);
 
-                 List<CROSSING_MAINTENANCE.CrossingData1> dataSource = CROSSING_MAINTENANCE.GetSuppCrossingList(RailroadId, UserId).ToList();
+            List<CROSSING_MAINTENANCE.CrossingData1> dataSource = CROSSING_MAINTENANCE.GetSuppCrossingList(RailroadId, UserId).ToList();
 
-                 List<object> _data = dataSource.ToList<object>();
-                 int count = 0;
-                 uxSupplementalCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
-                 e.Total = count;      
-                    //IQueryable<CROSSING_MAINTENANCE.CrossingData> data = CROSSING_MAINTENANCE.GetSuppCrossingList(RailroadId, _context).Where(v => v.PROJECT_TYPE == "CUSTOMER BILLING" && v.TEMPLATE_FLAG == "N" && v.PROJECT_STATUS_CODE == "APPROVED" && v.ORGANIZATION_NAME.Contains(" RR") && OrgsList.Contains(v.CARRYING_OUT_ORGANIZATION_ID)).Distinct();
-
-                    //int count;
-                    //uxSupplementalCrossingStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.CrossingData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
-                    //e.Total = count;
-                }
-            //}
-       // }
-        //protected void deReloadStore(object sender, DirectEventArgs e)
-        //{
-        //    uxSupplementalProjectStore.Reload();
-        //}
+            List<object> _data = dataSource.ToList<object>();
+            int count = 0;
+            uxSupplementalCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
+            e.Total = count;
+        }
+                   
         protected void GetSupplementalGridData(object sender, StoreReadDataEventArgs e)
         {
             //Get Supplemental data and set datasource
@@ -148,7 +107,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             DateTime ApprovedDate = (DateTime)uxAddApprovedDateField.Value;
             DateTime CutDate = (DateTime)uxAddCutDateField.Value;
             decimal SquareFeet = Convert.ToDecimal(uxAddSquareFeet.Value);
-            string ServiceType = uxAddServiceType.Value.ToString();
+            string ServiceType = uxAddPricingGrid.Value.ToString();
             string Recurring = uxAddRecurringBox.Value.ToString();
             long ProjectName = Convert.ToInt64(uxAddProjectDropDownField.Value);
 
@@ -236,6 +195,31 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
                 int count;
                 uxSupplementalProjectStore.DataSource = GenericData.EnumerableFilterHeader<CROSSING_MAINTENANCE.CrossingProject>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                e.Total = count;
+
+            }
+        }
+        protected void deAddPricingValue(object sender, DirectEventArgs e)
+        {
+            switch (e.ExtraParams["Type"])
+            {
+                case "Add":
+                    uxAddPricingGrid.SetValue(e.ExtraParams["ServiceCategory"], e.ExtraParams["ServiceCategory"]);
+                    uxAddPricingFilter.ClearFilter();
+                    break;
+
+            }
+        }
+        protected void deAddPricingGrid(object sender, StoreReadDataEventArgs e)
+        {
+
+            
+       
+            using (Entities _context = new Entities())
+            {
+                List<CROSSING_MAINTENANCE.CrossingPricing> data = CROSSING_MAINTENANCE.CrossingsPricingList();
+                int count;
+                uxSupplementalPricingStore.DataSource = GenericData.EnumerableFilterHeader<CROSSING_MAINTENANCE.CrossingPricing>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                 e.Total = count;
 
             }

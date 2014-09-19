@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DBI.Web.EMS.Views.Modules.Overhead {
+namespace DBI.Web.EMS.Views.Modules.TimeClock.Edit {
     
     
-    public partial class umImportActualsWindow {
+    public partial class WebForm1 {
         
         /// <summary>
         /// form1 control.
@@ -31,75 +31,75 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.ResourceManager ResourceManager1;
         
         /// <summary>
-        /// Viewport1 control.
+        /// Panel1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Viewport Viewport1;
+        protected global::Ext.Net.Panel Panel1;
         
         /// <summary>
-        /// FormPanel1 control.
+        /// frmPanelIn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FormPanel FormPanel1;
+        protected global::Ext.Net.FormPanel frmPanelIn;
         
         /// <summary>
-        /// FieldContainer1 control.
+        /// uxDateInField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer1;
+        protected global::Ext.Net.DateField uxDateInField;
         
         /// <summary>
-        /// uxPeriodName control.
+        /// uxTimeInField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.ComboBox uxPeriodName;
+        protected global::Ext.Net.TimeField uxTimeInField;
         
         /// <summary>
-        /// uxPeriodNameStore control.
+        /// frmPanelOut control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store uxPeriodNameStore;
+        protected global::Ext.Net.FormPanel frmPanelOut;
         
         /// <summary>
-        /// Model5 control.
+        /// uxDateOutField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Model Model5;
+        protected global::Ext.Net.DateField uxDateOutField;
         
         /// <summary>
-        /// uxImportButton control.
+        /// uxTimeOutField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button uxImportButton;
+        protected global::Ext.Net.TimeField uxTimeOutField;
         
         /// <summary>
-        /// Button2 control.
+        /// uxAddTime control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Button Button2;
+        protected global::Ext.Net.Button uxAddTime;
     }
 }

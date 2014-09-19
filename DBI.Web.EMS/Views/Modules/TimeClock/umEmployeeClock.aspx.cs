@@ -155,11 +155,16 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
             {
                 var data = (from tc in _context.TIME_CLOCK
                             where tc.PERSON_ID == person_id && tc.DELETED =="N"
-                            select new EmployeeTimeView {TIME_IN = (DateTime)tc.TIME_IN, TIME_OUT = tc.TIME_OUT, MODIFIED_BY = tc.MODIFIED_BY, APPROVED = tc.APPROVED}).ToList();
+                            select new EmployeeTimeView {TIME_IN = (DateTime)tc.TIME_IN, TIME_OUT = tc.TIME_OUT, MODIFIED_BY = tc.MODIFIED_BY, APPROVED = tc.APPROVED, MODIFIED_TIME_IN = tc.MODIFIED_TIME_IN, MODIFIED_TIME_OUT = tc.MODIFIED_TIME_OUT}).ToList();
                 
                 foreach (var item in data)
                 {
-                    if (item.TIME_OUT != null)
+                    //if (item.MODIFIED_TIME_OUT != null)
+                    //{
+                    //    TimeSpan ts = (DateTime)item.MODIFIED_TIME_OUT - (DateTime)item.MODIFIED_TIME_IN;
+                    //    item.TOTAL_HOURS = ts.ToString("dd\\.hh\\:mm");
+                    //}
+                     if (item.TIME_OUT != null)
                     {
                         TimeSpan ts = (DateTime)item.TIME_OUT - item.TIME_IN;
                         item.TOTAL_HOURS = ts.ToString("dd\\.hh\\:mm");
@@ -216,6 +221,9 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
         public string TOTAL_HOURS { get; set; }
         public string MODIFIED_BY { get; set; }
         public string APPROVED { get; set; }
+        public DateTime? MODIFIED_TIME_IN { get; set; }
+        public DateTime? MODIFIED_TIME_OUT { get; set; }
+
     }
 
 }

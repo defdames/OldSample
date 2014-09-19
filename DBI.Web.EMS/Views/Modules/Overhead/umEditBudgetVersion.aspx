@@ -60,6 +60,12 @@
             hiddenFormat.setValue(format);
             grid.submitData(false, { isUpload: true });
         };
+
+        function printWindow(url) {
+            window.open(url, "PrintWindow", "menubar=0,resizable=1");
+        }
+
+
     </script>
 
     <style>
@@ -83,7 +89,7 @@
                     <TopBar>
                         <ext:Toolbar ID="Toolbar1" runat="server">
                             <Items>
-                                <ext:Button runat="server" Icon="MagnifierZoomIn" Text="Account Inquery" ID="uxViewActuals" Disabled="true">
+                                <ext:Button runat="server" Icon="MagnifierZoomIn" Text="Account Inquiry" ID="uxViewActuals" Disabled="true">
                                     <DirectEvents>
                                         <Click OnEvent="viewActuals">
                                             <ExtraParams>
@@ -106,11 +112,19 @@
                                 </ext:Button>
                                 <ext:ToolbarFill ID="ToolbarFill1" runat="server"></ext:ToolbarFill>
                                 <ext:Button ID="uxPrintReport" runat="server" Text="Print" Icon="Printer" Disabled="false">
-                                   <DirectEvents>
-                                       <Click OnEvent="printOverheadBudget" IsUpload="true"></Click>
-                                   </DirectEvents>
+                                  <DirectEvents>
+                                    <Click OnEvent="printOverheadBudget" Timeout="500000">
+                                    <EventMask ShowMask="true" Msg="Generating Report, Please Wait..." />
+                                        </Click>
+                                    </DirectEvents>
                                 </ext:Button>
                                 <ext:ToolbarSeparator ID="ToolbarSeparator3" runat="server"></ext:ToolbarSeparator>
+                                <ext:Button runat="server" Text="Export" Icon="PageExcel">
+                                    <DirectEvents>
+                                        <Click OnEvent="ExportToExcel" IsUpload="true"><EventMask ShowMask="true" Msg="Generating Export, Please Wait..." /></Click>
+                                    </DirectEvents>
+                                </ext:Button>
+                                <ext:ToolbarSeparator ID="ToolbarSeparator2" runat="server"></ext:ToolbarSeparator>
                                 <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Hide Blank Lines" ID="uxHideBlankLinesCheckbox">
                                     <DirectEvents>
                                         <Change OnEvent="deHideBlankLines">
@@ -223,7 +237,7 @@
                         </Columns>
                     </ColumnModel>
                     <Features>
-                        <ext:Summary ID="uxSummary" runat="server" Dock="Bottom" ShowSummaryRow="true" />
+                        <ext:Summary ID="uxSummary" runat="server" ShowSummaryRow="true" />
                         <ext:GroupingSummary
                             ID="GroupingSummary1"
                             runat="server"

@@ -164,10 +164,18 @@
 											<ext:Parameter Name="ApprovedTime" Value="Ext.encode(#{uxEmployeeHoursGrid}.getRowsValues({selectedOnly : true}))" Mode="Raw" />
 											<ext:Parameter Name="NewTime" Value="#{uxEmployeeHoursStore}.getChangedData()" Mode="Raw" Encode="true" />
 										</ExtraParams>
-							   </Click> 
-						</DirectEvents>
-					</ext:Button>
-					<ext:ToolbarSpacer runat="server" />
+							         </Click> 
+						    </DirectEvents>
+					    </ext:Button>
+                        <ext:ToolbarSpacer ID="ToolbarSpacer1" runat="server" />
+                        <%--<ext:Button runat="server" ID="uxAddTime" Text="Add Date" Icon="Add">
+                            <DirectEvents>
+                                <Click OnEvent="deAddTime">
+                                    <EventMask ShowMask="true" />
+                                </Click>    
+                            </DirectEvents>
+                        </ext:Button>--%>
+					<%--<ext:ToolbarSpacer runat="server" />--%>
 					<ext:Checkbox runat="server" ID="uxToggleApproved" BoxLabel="Show Approved" BoxLabelAlign="After" >
 						<Listeners>
 							<Change Handler="#{uxEmployeeHoursStore}.reload()" />

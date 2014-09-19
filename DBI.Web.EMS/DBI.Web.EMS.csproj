@@ -61,6 +61,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="EPPlus">
+      <HintPath>..\..\EMS_DLLs\EPPlus.dll</HintPath>
+    </Reference>
     <Reference Include="Ext.Net, Version=2.5.2.15671, Culture=neutral, PublicKeyToken=2e12ce3d0176cd87, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\EXT\Ext.Net.dll</HintPath>
@@ -250,6 +253,7 @@
     <Content Include="Views\Modules\Security\umSecurityUsersList.aspx" />
     <Content Include="Views\Modules\TimeClock\Edit\umDeleteTime.aspx" />
     <Content Include="Views\Modules\TimeClock\Edit\umEditTime.aspx" />
+    <Content Include="Views\Modules\TimeClock\Edit\umAddTime.aspx" />
     <Content Include="Views\Modules\TimeClock\umNoLunchReport.aspx" />
     <Content Include="Views\Modules\TimeClock\um12HourDayReport.aspx" />
     <Content Include="Views\Modules\TimeClock\umAdjustedverseActualHoursReport.aspx" />
@@ -367,7 +371,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>StateCrossingList.rpt</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umAppDate.aspx.cs">
       <DependentUpon>umAppDate.aspx</DependentUpon>
@@ -1013,6 +1016,13 @@
     </Compile>
     <Compile Include="Views\Modules\TimeClock\Edit\umEditTime.aspx.designer.cs">
       <DependentUpon>umEditTime.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\TimeClock\Edit\umAddTime.aspx.cs">
+      <DependentUpon>umAddTime.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\TimeClock\Edit\umAddTime.aspx.designer.cs">
+      <DependentUpon>umAddTime.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\TimeClock\umNoLunchReport.aspx.cs">
       <DependentUpon>umNoLunchReport.aspx</DependentUpon>
