@@ -15,6 +15,16 @@
                       <TopBar>
                         <ext:Toolbar ID="Toolbar2" runat="server">
                             <Items>
+                                <ext:Button runat="server" Text="New Budget Period" Icon="Add" ID="uxCreateBudget"  >
+                                    <ToolTips>
+                                        <ext:ToolTip ID="ToolTip1" runat="server" UI="Info" Html="Creates a new period for an organization so it can be used for the budget overhead system."></ext:ToolTip>
+                                    </ToolTips>
+                                    <DirectEvents>
+                                        <Click OnEvent="deCreateBudgetPeriod">
+                                        </Click>
+                                    </DirectEvents>      
+                                </ext:Button>
+                                 <ext:ToolbarSeparator ID="ToolbarSeparator9" runat="server"></ext:ToolbarSeparator>
                                 <ext:Button runat="server" Text="Import Actuals" Icon="CalculatorLink" Disabled="true" ID="uxImportActuals">
                                       <DirectEvents>
                                     <Click OnEvent="deImportActuals">
@@ -40,16 +50,6 @@
                                     </DirectEvents>      
                                 </ext:Button>
                                  <ext:ToolbarSeparator ID="ToolbarSeparator3" runat="server"></ext:ToolbarSeparator>
-                                 <ext:Button runat="server" Text="New Budget Period" Icon="Add" ID="uxCreateBudget"  >
-                                    <ToolTips>
-                                        <ext:ToolTip ID="ToolTip1" runat="server" UI="Info" Html="Creates a new period for an organization so it can be used for the budget overhead system."></ext:ToolTip>
-                                    </ToolTips>
-                                    <DirectEvents>
-                                        <Click OnEvent="deCreateBudgetPeriod">
-                                        </Click>
-                                    </DirectEvents>      
-                                </ext:Button>
-                                 <ext:ToolbarSeparator ID="ToolbarSeparator9" runat="server"></ext:ToolbarSeparator>
                                 <ext:Button runat="server" Text="Open Period" Icon="BookOpen" ID="uxOpenPeriod" Disabled="true" >
                                     <ToolTips>
                                         <ext:ToolTip ID="ToolTip3" runat="server" UI="Info" Html="Opens a period for an organization so it can be used for the budget overhead system."></ext:ToolTip>

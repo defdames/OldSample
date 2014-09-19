@@ -79,6 +79,12 @@
                                 <ext:ToolbarFill runat="server">
 
                                 </ext:ToolbarFill>
+                                 <ext:Button runat="server" ID="Button1" Text="Period Maintenance" Icon="DatabaseLink">
+                                    <DirectEvents>
+                                        <Click OnEvent="dePeriodMaintenance"></Click>
+                                    </DirectEvents>
+                                </ext:Button>
+                                <ext:ToolbarSeparator ID="ToolbarSeparator3" runat="server"></ext:ToolbarSeparator>
                                 <ext:Button runat="server" ID="uxShowBudgetTypes" Text="Budget Types" Icon="NoteGo">
                                     <DirectEvents>
                                         <Click OnEvent="deShowBudgetTypes"></Click>

@@ -67,6 +67,16 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 RowSelectionModel _rsm = uxBudgetTypeSelectionModel;
                 Boolean _check = long.TryParse(_rsm.SelectedRecordID, out _budgetTypeIDSelected);
 
+               //First check if its in use somewhere
+
+              using(Entities _context = new Entities())
+              {
+                  if (_context.OVERHEAD_ORG_BUDGETS.Where(x => x.OVERHEAD_BUDGET_TYPE_ID == _budgetTypeIDSelected).Any())
+                  {
+                      X.Msg.Alert("Type in Use Error", "You can not delete this budget type as it is currently in use!").Show();
+                      return;
+                  }
+              }
                 OVERHEAD_BUDGET_TYPE _budgetType = OVERHEAD_BUDGET_TYPE.BudgetType(_budgetTypeIDSelected);
    
                 GenericData.Delete<OVERHEAD_BUDGET_TYPE>(_budgetType);

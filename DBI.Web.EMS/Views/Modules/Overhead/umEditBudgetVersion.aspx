@@ -83,7 +83,7 @@
         }
 
            .blue-row .x-grid-cell, .blue-row .x-grid-rowwrap-div .blue-row .myBoldClass.x-grid3-row td  {
-            background-color: lightblue;
+            background-color: #E0FFFF;
         }
     </style>
 </head>
@@ -136,7 +136,7 @@
                                     </DirectEvents>
                                 </ext:Button>
                                 <ext:ToolbarSeparator ID="ToolbarSeparator2" runat="server"></ext:ToolbarSeparator>
-                                 <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Collapse Account Lines" ID="uxCollapseAccountTotals">
+                                 <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Group Account Lines" ID="uxCollapseAccountTotals">
                                     <DirectEvents>
                                         <Change OnEvent="deCollapseAccounts">
                                             <EventMask ShowMask="true"></EventMask>
@@ -277,6 +277,7 @@
                         <ItemDblClick OnEvent="deItemMaintenance">
                             <ExtraParams>
                                 <ext:Parameter Value="#{uxOrganizationAccountGridPanel}.getView().getSelectionModel().getSelection()[0].data.ACCOUNT_DESCRIPTION" Mode="Raw" Name="ACCOUNT_DESCRIPTION"></ext:Parameter>
+                                <ext:Parameter Value="#{uxOrganizationAccountGridPanel}.getView().getSelectionModel().getSelection()[0].data.GROUPED" Mode="Raw" Name="GROUPED"></ext:Parameter>
                             </ExtraParams>
                         </ItemDblClick>
                     </DirectEvents>
