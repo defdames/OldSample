@@ -277,6 +277,7 @@
                         <ItemDblClick OnEvent="deItemMaintenance">
                             <ExtraParams>
                                 <ext:Parameter Value="#{uxOrganizationAccountGridPanel}.getView().getSelectionModel().getSelection()[0].data.ACCOUNT_DESCRIPTION" Mode="Raw" Name="ACCOUNT_DESCRIPTION"></ext:Parameter>
+                                <ext:Parameter Value="#{uxOrganizationAccountGridPanel}.getView().getSelectionModel().getSelection()[0].data.GROUPED" Mode="Raw" Name="GROUPED"></ext:Parameter>
                             </ExtraParams>
                         </ItemDblClick>
                     </DirectEvents>

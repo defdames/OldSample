@@ -337,31 +337,13 @@ namespace DBI.Data
 
             foreach (OVERHEAD_ORG_BUDGETS _budget in _budgetlist)
             {
-                //Get Organization Information
-                HR.ORGANIZATION _orgInformation = HR.Organization(_budget.ORGANIZATION_ID);
+                string _status = SYS_ORG_PROFILE_OPTIONS.OrganizationProfileOption("OverheadBudgetOrganization", _budget.ORGANIZATION_ID);
 
-                    BUDGET_VERSION _data = new BUDGET_VERSION();
-                    _data.ORGANIZATION_ID = _orgInformation.ORGANIZATION_ID;
-                    _data.ORGANIZATION_NAME = _orgInformation.ORGANIZATION_NAME;
-                    _data.BUDGET_STATUS = (_budget.STATUS == "O") ? "Open" : "Closed" ;
-                    _data.FISCAL_YEAR = _budget.FISCAL_YEAR;
-                    _data.BUDGET_DESCRIPTION = BudgetVersionDescriptionByTypeID(context, _budget.OVERHEAD_BUDGET_TYPE_ID);
-                    _data.ACCOUNT_RANGE = AccountRangeByOrganizationID(context, _data.ORGANIZATION_ID);
-                    _data.ORG_BUDGET_ID = _budget.ORG_BUDGET_ID;
-                    _data.OVERHEAD_BUDGET_TYPE_ID = _budget.OVERHEAD_BUDGET_TYPE_ID;
-                    _budgetOrgList.Add(_data);
-            }
-
-            // Return budget version for current org if they exist (which they should)
-            if (withEMSSecurity)
-            {
-                IEnumerable<OVERHEAD_ORG_BUDGETS> _currentbudgetlist = BudgetOrganizations(context).Where(x => x.ORGANIZATION_ID == leOrganizationID).ToList();
-
-
-                foreach (OVERHEAD_ORG_BUDGETS _budget in _currentbudgetlist)
+                if (_status == "Y")
                 {
+
                     //Get Organization Information
-                    HR.ORGANIZATION _orgInformation = HR.Organization(leOrganizationID);
+                    HR.ORGANIZATION _orgInformation = HR.Organization(_budget.ORGANIZATION_ID);
 
                     BUDGET_VERSION _data = new BUDGET_VERSION();
                     _data.ORGANIZATION_ID = _orgInformation.ORGANIZATION_ID;
@@ -373,6 +355,37 @@ namespace DBI.Data
                     _data.ORG_BUDGET_ID = _budget.ORG_BUDGET_ID;
                     _data.OVERHEAD_BUDGET_TYPE_ID = _budget.OVERHEAD_BUDGET_TYPE_ID;
                     _budgetOrgList.Add(_data);
+                }
+            }
+
+            // Return budget version for current org if they exist (which they should)
+            if (withEMSSecurity)
+            {
+                IEnumerable<OVERHEAD_ORG_BUDGETS> _currentbudgetlist = BudgetOrganizations(context).Where(x => x.ORGANIZATION_ID == leOrganizationID).ToList();
+
+
+                foreach (OVERHEAD_ORG_BUDGETS _budget in _currentbudgetlist)
+                {
+
+                    string _status = SYS_ORG_PROFILE_OPTIONS.OrganizationProfileOption("OverheadBudgetOrganization", _budget.ORGANIZATION_ID);
+
+                    if (_status == "Y")
+                    {
+
+                        //Get Organization Information
+                        HR.ORGANIZATION _orgInformation = HR.Organization(leOrganizationID);
+
+                        BUDGET_VERSION _data = new BUDGET_VERSION();
+                        _data.ORGANIZATION_ID = _orgInformation.ORGANIZATION_ID;
+                        _data.ORGANIZATION_NAME = _orgInformation.ORGANIZATION_NAME;
+                        _data.BUDGET_STATUS = (_budget.STATUS == "O") ? "Open" : "Closed";
+                        _data.FISCAL_YEAR = _budget.FISCAL_YEAR;
+                        _data.BUDGET_DESCRIPTION = BudgetVersionDescriptionByTypeID(context, _budget.OVERHEAD_BUDGET_TYPE_ID);
+                        _data.ACCOUNT_RANGE = AccountRangeByOrganizationID(context, _data.ORGANIZATION_ID);
+                        _data.ORG_BUDGET_ID = _budget.ORG_BUDGET_ID;
+                        _data.OVERHEAD_BUDGET_TYPE_ID = _budget.OVERHEAD_BUDGET_TYPE_ID;
+                        _budgetOrgList.Add(_data);
+                    }
                 }
 
             }

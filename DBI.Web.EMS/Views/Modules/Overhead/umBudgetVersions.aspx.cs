@@ -78,7 +78,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 _data = _data.Where(x => x.ORGANIZATION_ID == _baseOrganizationID).ToList();
             }
 
-
             int count;
             uxBudgetVersionByOrganizationStore.DataSource = GenericData.EnumerableFilterHeader<OVERHEAD_BUDGET_FORECAST.BUDGET_VERSION>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
             e.Total = count;
