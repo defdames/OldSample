@@ -14,7 +14,10 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            uxStartDate.MaxDate = DateTime.Now;
+            uxEndDate.MaxDate = DateTime.Now;
+            uxStartDate.SelectedDate = DateTime.Now;
+            uxEndDate.SelectedDate = DateTime.Now;
         }
 
         protected long GetOrgFromTree(string _selectedRecordID)
@@ -175,6 +178,62 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             //LoadForm(FormId, CompletionId);
             uxCompletedSurveyPanel.LoadContent(string.Format("umViewSurvey.aspx?CompletionId={0}&FormId={1}", CompletionId, FormId));
             
+        }
+
+        protected void ValidateDate(object sender, RemoteValidationEventArgs e)
+        {
+            DateTime StartDate = DateTime.Parse(uxStartDate.Value.ToString());
+
+            DateTime EndDate = DateTime.Parse(uxEndDate.Value.ToString());
+
+            if (StartDate > EndDate)
+            {
+                e.Success = false;
+                e.ErrorMessage = "End Date and Time must be later than Start Date and Time";
+                uxStartDate.MarkInvalid();
+                uxEndDate.MarkInvalid();
+                
+            }
+            else if (StartDate > DateTime.Now.Date || EndDate > DateTime.Now.Date)
+            {
+                e.Success = false;
+                e.ErrorMessage = "Date Cannot be later than today";
+                uxStartDate.MarkInvalid();
+                uxEndDate.MarkInvalid();
+            }
+            else
+            {
+                e.Success = true;
+                uxStartDate.ClearInvalid();
+                uxStartDate.MarkAsValid();
+                uxEndDate.ClearInvalid();
+                uxEndDate.MarkAsValid();
+                
+            }
+        }
+        protected void deExportSurveys(object sender, DirectEventArgs e)
+        {
+            DateTime StartDate = uxStartDate.SelectedDate;
+            DateTime EndDate = uxEndDate.SelectedDate;
+            List<CUSTOMER_SURVEY_FORMS_COMP> Completions;
+            string _selectedRecordID = uxCompanySelectionModel.SelectedRecordID;
+            List<long> OrgsList;
+            if (_selectedRecordID != string.Empty)
+            {
+                long SelectedOrgId = GetOrgFromTree(_selectedRecordID);
+                long HierId = GetHierarchyFromTree(_selectedRecordID);
+
+                using (Entities _context = new Entities())
+                {
+                    OrgsList = HR.ActiveOrganizationsByHierarchy(HierId, SelectedOrgId, _context).Select(x => x.ORGANIZATION_ID).ToList();
+                    Completions = CUSTOMER_SURVEYS.GetCompletionsByDate(StartDate, EndDate, OrgsList, _context).ToList();
+                    foreach (CUSTOMER_SURVEY_FORMS_COMP Completion in Completions)
+                    {
+                        List<CUSTOMER_SURVEY_FORMS_ANS> Answers;
+                        Answers = CUSTOMER_SURVEYS.GetFormAnswersByCompletion(Completion.COMPLETION_ID, _context).ToList();
+                    }
+                }
+            }
         }
     }
 }
