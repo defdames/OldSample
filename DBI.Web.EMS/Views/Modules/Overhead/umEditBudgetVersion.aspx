@@ -66,7 +66,13 @@
         }
 
 
-    </script>
+              var getRowClass = function (record, rowIndex, rowParams, store) {
+                  if (record.data.GROUPED == "Y") {
+                      return "blue-row";
+                  };
+              }
+      </script>
+
 
     <style>
         .x-grid-row-summary .x-grid-cell-inner
@@ -74,6 +80,10 @@
             font-weight: bold;
             font-size: 11px;
             background-color: #E0E0D1;
+        }
+
+           .blue-row .x-grid-cell, .blue-row .x-grid-rowwrap-div .blue-row .myBoldClass.x-grid3-row td  {
+            background-color: lightblue;
         }
     </style>
 </head>
@@ -111,6 +121,7 @@
                                     </DirectEvents>
                                 </ext:Button>
                                 <ext:ToolbarFill ID="ToolbarFill1" runat="server"></ext:ToolbarFill>
+                               
                                 <ext:Button ID="uxPrintReport" runat="server" Text="Print" Icon="Printer" Disabled="false">
                                   <DirectEvents>
                                     <Click OnEvent="printOverheadBudget" Timeout="500000">
@@ -125,6 +136,14 @@
                                     </DirectEvents>
                                 </ext:Button>
                                 <ext:ToolbarSeparator ID="ToolbarSeparator2" runat="server"></ext:ToolbarSeparator>
+                                 <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Collapse Account Lines" ID="uxCollapseAccountTotals">
+                                    <DirectEvents>
+                                        <Change OnEvent="deCollapseAccounts">
+                                            <EventMask ShowMask="true"></EventMask>
+                                        </Change>
+                                    </DirectEvents>
+                                </ext:Checkbox>
+                                 <ext:ToolbarSeparator ID="ToolbarSeparator5" runat="server"></ext:ToolbarSeparator>
                                 <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Hide Blank Lines" ID="uxHideBlankLinesCheckbox">
                                     <DirectEvents>
                                         <Change OnEvent="deHideBlankLines">
@@ -163,6 +182,7 @@
                                         <ext:ModelField Name="AMOUNT10" />
                                         <ext:ModelField Name="AMOUNT11" />
                                         <ext:ModelField Name="AMOUNT12" />
+                                        <ext:ModelField Name="GROUPED" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -262,6 +282,7 @@
                     </DirectEvents>
                     <View>
                         <ext:GridView ID="GridView2" StripeRows="true" runat="server" TrackOver="true">
+                            <GetRowClass Fn="getRowClass"></GetRowClass>
                         </ext:GridView>
                     </View>
 
