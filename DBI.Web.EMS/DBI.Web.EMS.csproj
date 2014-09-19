@@ -253,6 +253,7 @@
     <Content Include="Views\Modules\Security\umSecurityUsersList.aspx" />
     <Content Include="Views\Modules\TimeClock\Edit\umDeleteTime.aspx" />
     <Content Include="Views\Modules\TimeClock\Edit\umEditTime.aspx" />
+    <Content Include="Views\Modules\TimeClock\Edit\umAddTime.aspx" />
     <Content Include="Views\Modules\TimeClock\umNoLunchReport.aspx" />
     <Content Include="Views\Modules\TimeClock\um12HourDayReport.aspx" />
     <Content Include="Views\Modules\TimeClock\umAdjustedverseActualHoursReport.aspx" />
@@ -1015,6 +1016,13 @@
     </Compile>
     <Compile Include="Views\Modules\TimeClock\Edit\umEditTime.aspx.designer.cs">
       <DependentUpon>umEditTime.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\TimeClock\Edit\umAddTime.aspx.cs">
+      <DependentUpon>umAddTime.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\TimeClock\Edit\umAddTime.aspx.designer.cs">
+      <DependentUpon>umAddTime.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\TimeClock\umNoLunchReport.aspx.cs">
       <DependentUpon>umNoLunchReport.aspx</DependentUpon>

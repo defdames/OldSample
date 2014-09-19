@@ -97,6 +97,14 @@
                             </ext:ComboBox>
                         </Items>
                     </ext:FieldContainer>
+                         <ext:FieldContainer ID="FieldContainer4" 
+                        runat="server"
+                        LabelStyle="font-weight:bold;padding:0;"
+                        Layout="HBoxLayout">
+                        <Items>
+                            <ext:Checkbox runat="server" FieldLabel="Allow Import" ID="uxAllowImportCheckbox"></ext:Checkbox>
+                        </Items>
+                    </ext:FieldContainer>
                     </Items>
                     <Buttons>
                         <ext:Button runat="server" ID="uxAddBudgetType" Text="Save" Disabled="true" icon="ApplicationAdd">
