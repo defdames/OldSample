@@ -500,7 +500,7 @@ namespace DBI.Data
         /// <param name="budgetID"></param>
         /// <param name="organizationID"></param>
         /// <returns></returns>
-        public static List<OVERHEAD_BUDGET_VIEW> BudgetDetailsViewByBudgetID(Entities context, long budgetID, Boolean printView = false, Boolean hideBlankLines = false, Boolean rollup = false, long leorganizationID = 0, long organizationID = 0, short fiscalYear = 0, long budgetTypeID = 0)
+        public static List<OVERHEAD_BUDGET_VIEW> BudgetDetailsViewByBudgetID(Entities context, long budgetID, Boolean printView = false, Boolean hideBlankLines = false, Boolean rollup = false, long leorganizationID = 0, long organizationID = 0, short fiscalYear = 0, long budgetTypeID = 0, Boolean collapseAccountLines = false)
         {
 
             var _categoryList = CategoryAsQueryable(context);
@@ -641,6 +641,7 @@ namespace DBI.Data
                     else
                     {
                         _record.ACCOUNT_DESCRIPTION = _account.SEGMENT5_DESC + " (" + _account.SEGMENT4 + "." + _account.SEGMENT5 + ")";
+                        _record.ACCOUNT_DESCRIPTION2 = _account.SEGMENT5_DESC + " (" + _account.SEGMENT5 + ")";
                     }
                     _record.AMOUNT1 = GetAccountTotalByPeriod(_condensedBudgetDetail, 1);
                     _record.AMOUNT2 = GetAccountTotalByPeriod(_condensedBudgetDetail, 2);
@@ -667,7 +668,46 @@ namespace DBI.Data
                         _data.Add(_record);
                     }
                 }
-               
+
+
+            if (collapseAccountLines)
+            {
+                //Group By Account Segment
+                List<OVERHEAD_BUDGET_VIEW> _collapsedView = _data.GroupBy(x => x.ACCOUNT_SEGMENT).Select(s => new OVERHEAD_BUDGET_VIEW
+                {
+                    BUDGET_ID = s.Min(i => i.BUDGET_ID),
+                    CATEGORY_ID = s.Min(i => i.CATEGORY_ID),
+                    CATEGORY_SORT_ORDER = s.Min(i => i.CATEGORY_SORT_ORDER),
+                    SORT_ORDER = s.Min(i => i.SORT_ORDER),
+                    ACCOUNT_SEGMENT = s.Key,
+                    CATEGORY_NAME = s.Min(i => i.CATEGORY_NAME),
+                    CODE_COMBINATION_ID = s.Min(i => i.CODE_COMBINATION_ID),
+                    ACCOUNT_DESCRIPTION = _data.Where(g => g.ACCOUNT_SEGMENT == s.Key).Count() > 1 ? s.Min(i => i.ACCOUNT_DESCRIPTION2) : s.Min(i => i.ACCOUNT_DESCRIPTION),
+                    ACCOUNT_DESCRIPTION2 = s.Min(i => i.ACCOUNT_DESCRIPTION2),
+                    TOTAL = s.Sum(i => i.TOTAL),
+                    AMOUNT1 = s.Sum(i => i.AMOUNT1),
+                    AMOUNT2 = s.Sum(i => i.AMOUNT2),
+                    AMOUNT3 = s.Sum(i => i.AMOUNT3),
+                    AMOUNT4 = s.Sum(i => i.AMOUNT4),
+                    AMOUNT5 = s.Sum(i => i.AMOUNT5),
+                    AMOUNT6 = s.Sum(i => i.AMOUNT6),
+                    AMOUNT7 = s.Sum(i => i.AMOUNT7),
+                    AMOUNT8 = s.Sum(i => i.AMOUNT8),
+                    AMOUNT9 = s.Sum(i => i.AMOUNT9),
+                    AMOUNT10 = s.Sum(i => i.AMOUNT10),
+                    AMOUNT11 = s.Sum(i => i.AMOUNT11),
+                    AMOUNT12 = s.Sum(i => i.AMOUNT12),
+                    GROUPED = _data.Where(g => g.ACCOUNT_SEGMENT == s.Key).Count() > 1 ? "Y" : "N",
+                }).ToList();
+
+               if (printView)
+               {
+                   var _orderedPrint = _collapsedView.OrderBy(x => x.CATEGORY_SORT_ORDER).ThenBy(x => x.SORT_ORDER).ThenBy(x => x.ACCOUNT_SEGMENT);
+                   return _orderedPrint.ToList();
+               }
+
+                return _collapsedView;
+            }
 
             if (printView)
             {
@@ -678,6 +718,7 @@ namespace DBI.Data
                 return _data;
 
         }
+
 
         public static OVERHEAD_BUDGET_VIEW SummaryViewByCategoryID(IEnumerable<OVERHEAD_BUDGET_VIEW> reportList, long categoryID)
         {
@@ -776,6 +817,7 @@ namespace DBI.Data
             public decimal AMOUNT10 { get; set; }
             public decimal AMOUNT11 { get; set; }
             public decimal AMOUNT12 { get; set; }
+            public string GROUPED { get; set; }
         }
 
 
@@ -1023,7 +1065,7 @@ namespace DBI.Data
 
                 //Details Row
                 //Return budget detail information
-                IEnumerable<OVERHEAD_BUDGET_VIEW> _budgetView = BudgetDetailsViewByBudgetID(context, budgetID,true,printOptions.HIDE_BLANK_LINES);
+                IEnumerable<OVERHEAD_BUDGET_VIEW> _budgetView = BudgetDetailsViewByBudgetID(context, budgetID,true,hideBlankLines:printOptions.HIDE_BLANK_LINES);
 
                 NumberFormatInfo nfi = CultureInfo.CurrentCulture.NumberFormat;
                 nfi = (NumberFormatInfo)nfi.Clone();
@@ -1253,6 +1295,7 @@ namespace DBI.Data
             public Boolean SHOW_BUDGET_NOTES {get; set;}
             public Boolean ROLLUP {get; set;}
             public Boolean HIDE_BLANK_LINES {get; set;}
+            public Boolean GROUP_ACCOUNTS { get; set; }
         }
 
         
