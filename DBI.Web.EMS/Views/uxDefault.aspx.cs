@@ -120,11 +120,11 @@ namespace DBI.Web.EMS.Views
             if (Permissions.Exists(x => x.PERMISSION_ID == 1))
             {
                 //SuperUser, so load all modules and menu items
-                List<SYS_MODULES> ModulesList = SYS_MODULES.GetModules();
+                List<SYS_MODULES> ModulesList = SYS_MODULES.GetModules().OrderBy(x => x.SORT_ORDER).ToList();
                 foreach (SYS_MODULES Module in ModulesList)
                 {
                     Ext.Net.MenuPanel AppPanel = CreateMenu(Module);
-                    List<SYS_MENU> MenuItems = SYS_MENU.GetMenuItems(Module.MODULE_ID);
+                    List<SYS_MENU> MenuItems = SYS_MENU.GetMenuItems(Module.MODULE_ID).OrderBy(x => x.SORT_ORDER).ToList();
                     foreach (SYS_MENU MenuItem in MenuItems)
                     {
                         Ext.Net.MenuItem AppMenuItem = CreateMenuItem(MenuItem);
@@ -320,6 +320,16 @@ namespace DBI.Web.EMS.Views
             });
 
             if (MenuItem.ITEM_URL == "http://ems.dbiservices.com")
+            {
+                byte[] UserArray = System.Text.ASCIIEncoding.ASCII.GetBytes(User.Identity.Name.ToUpper());
+                string EncodedUser = Convert.ToBase64String(UserArray);
+                AppMenuItem.DirectEvents.Click.ExtraParams.Add(new Ext.Net.Parameter()
+                {
+                    Name = "Page",
+                    Value = MenuItem.ITEM_URL + "/Redirect.aspx?user=" + EncodedUser
+                });
+            }
+            else if (MenuItem.ITEM_URL == "http://emstest.dbiservices.com")
             {
                 byte[] UserArray = System.Text.ASCIIEncoding.ASCII.GetBytes(User.Identity.Name.ToUpper());
                 string EncodedUser = Convert.ToBase64String(UserArray);

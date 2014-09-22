@@ -6,7 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Ext.Net;
 using DBI.Data;
-using DBI.Data.DataFactory;
+using DBI.Core.Security;
 
 namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 {
@@ -14,52 +14,54 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if (!X.IsAjaxRequest)
-            //{
-                // PUT CODE IN HERE THAT YOU ONLY WANT TO EXECUTE ONE TIME AND NOT EVERYTIME SOMETHING IS CLICKED (POST BACK)
-            //}
+            if (!X.IsAjaxRequest)
+            {
+                BB.CleanOldTempRecords(2);
+            }
         }
 
         protected void deLoadOrgTree(object sender, NodeLoadEventArgs e)
         {
-            // User clicked on legal entity or hierarchy
-            if (e.NodeID.Contains(":") == false)
+            // Add LE
+            if (e.NodeID == "0")
             {
-                if (e.NodeID == "0")
+                var allowedOrgs = BB.UserAllowedOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name));
+                using (Entities context = new Entities())
                 {
-                    var data = HR.ActiveOverheadBudgetLegalEntities();
-                    foreach (var view in data)
+                    var profileLEs = context.SYS_ORG_PROFILE_OPTIONS.Where(x => x.PROFILE_OPTION_ID == 23);                 
+                    foreach (var le in profileLEs)
                     {
-                        Node node = new Node();
-                        node.Text = view.ORGANIZATION_NAME;
-                        node.NodeID = view.ORGANIZATION_ID.ToString();
-                        e.Nodes.Add(node);
-                    }
-                }
-
-                else
-                {
-                    long nodeID = long.Parse(e.NodeID);
-                    var data = HR.LegalEntityHierarchies().Where(a => a.ORGANIZATION_ID == nodeID);
-                    foreach (var view in data)
-                    {
-                        Node node = new Node();
-                        node.Text = view.HIERARCHY_NAME;
-                        node.NodeID = string.Format("{0}:{1}", view.ORGANIZATION_STRUCTURE_ID.ToString(), view.ORGANIZATION_ID.ToString());
-                        e.Nodes.Add(node);
+                        string leName = HR.LegalEntityHierarchies().Where(x => x.ORGANIZATION_ID == le.ORGANIZATION_ID).Select(x => x.ORGANIZATION_NAME).FirstOrDefault();
+                        var nextData = HR.ActiveOrganizationsByHierarchy(Convert.ToInt64(le.PROFILE_VALUE), le.ORGANIZATION_ID);
+                        foreach (long allowedOrg in allowedOrgs)
+                        {
+                            if (nextData.Select(x => x.ORGANIZATION_ID).Contains(allowedOrg))
+                            {
+                                Node node = new Node();
+                                node.NodeID = string.Format("{0}:{1}:{2}", le.PROFILE_VALUE, le.ORGANIZATION_ID.ToString(), le.ORGANIZATION_ID.ToString());
+                                node.Text = leName;
+                                if (BB.IsRollup(le.ORGANIZATION_ID) == true)
+                                {
+                                    node.Icon = Icon.Building;
+                                }
+                                e.Nodes.Add(node);
+                                break;
+                            }
+                        }
                     }
                 }
             }
 
-            // User clicked on org
+            // Add orgs
             else
             {
                 char[] delimChars = { ':' };
                 string[] selID = e.NodeID.Split(delimChars);
                 long hierarchyID = long.Parse(selID[0].ToString());
-                long orgID = long.Parse(selID[1].ToString());
+                long leOrgID = long.Parse(selID[1].ToString());
+                long orgID = long.Parse(selID[2].ToString());
                 var data = HR.ActiveOrganizationsByHierarchy(hierarchyID, orgID);
-                var OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID);
+                var orgsList = BB.UserAllowedOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name));
                 bool addNode;
                 bool leafNode;
                 bool colorNode;
@@ -74,14 +76,14 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                         var nextData = HR.ActiveOrganizationsByHierarchy(hierarchyID, view.ORGANIZATION_ID);
 
                         // In this org?
-                        if (SYS_USER_ORGS.IsInOrg(SYS_USER_INFORMATION.UserID(User.Identity.Name), view.ORGANIZATION_ID) == true)
+                        if (BB.IsUserOrgAndAllowed(SYS_USER_INFORMATION.UserID(User.Identity.Name), view.ORGANIZATION_ID) == true)
                         {
                             addNode = true;
                             colorNode = true;
                         }
 
                         // In next org?
-                        foreach (long allowedOrgs in OrgsList)
+                        foreach (long allowedOrgs in orgsList)
                         {
                             if (nextData.Select(x => x.ORGANIZATION_ID).Contains(allowedOrgs))
                             {
@@ -94,23 +96,37 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                         if (addNode == true)
                         {
                             Node node = new Node();
-                            node.NodeID = string.Format("{0}:{1}", hierarchyID.ToString(), view.ORGANIZATION_ID.ToString());
+                            node.NodeID = string.Format("{0}:{1}:{2}", hierarchyID.ToString(), leOrgID, view.ORGANIZATION_ID.ToString());
                             node.Text = view.ORGANIZATION_NAME;
                             node.Leaf = leafNode;
                             if (colorNode == true)
-                            {
-                                node.Icon = Icon.Tick;
+                            {                                
+                                if (BB.IsRollup(view.ORGANIZATION_ID) == true)
+                                {
+                                    node.Icon = Icon.PackageGreen;
+                                }
+                                else
+                                {
+                                    node.Icon = Icon.Accept;
+                                }
                             }
                             else
                             {
-                                node.Icon = Icon.FolderGo;
+                                if (BB.IsRollup(view.ORGANIZATION_ID) == true)
+                                {
+                                    node.Icon = Icon.PackageGreen;
+                                }
+                                else
+                                {
+                                    node.Icon = Icon.TagsGrey;
+                                }
                             }
                             e.Nodes.Add(node);
                         }
                     }
                 }
             }
-        }        
+        }
 
         protected void deLoadFiscalYears(object sender, StoreReadDataEventArgs e)
         {
@@ -119,7 +135,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
         protected void deLoadBudgetVersions(object sender, StoreReadDataEventArgs e)
         {
-            uxVersionStore.DataSource = BUDGETBIDDING.BudgetVersions();
+            uxVersionStore.DataSource = BB.BudgetVersions();
         }
 
         protected void deSelectOrg(object sender, DirectEventArgs e)
@@ -129,30 +145,29 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             char[] delimChars = { ':' };
             string[] selID = nodeID.Split(delimChars);
 
-            if (nodeID == "0" || selID.GetUpperBound(0) == 0)
+            if (nodeID == "0")
             {
                 uxHidOrgOK.Text = "";
                 uxYearVersionTitle.Text = "";
-                DisableYearAndVersionCombo();
+                DisableToolbar();
                 LoadBudget(prevBlank);
                 return;
             }
 
-            long orgID = long.Parse(selID[1].ToString());
-            
-            if (SYS_USER_ORGS.IsInOrg(SYS_USER_INFORMATION.UserID(User.Identity.Name), orgID) == false)
-            {
-                uxHidOrgOK.Text = "";
-                uxYearVersionTitle.Text = "";
-                DisableYearAndVersionCombo();
-                LoadBudget(prevBlank);
-            }
+            long orgID = long.Parse(selID[2].ToString());
 
-            else
+            if (BB.IsRollup(orgID) == true || BB.IsUserOrgAndAllowed(SYS_USER_INFORMATION.UserID(User.Identity.Name), orgID) == true)
             {
                 uxHidOrgOK.Text = "Y";
                 uxYearVersionTitle.Text = uxOrgPanel.SelectedNodes[0].Text;
-                EnableYearAndVersionCombo();
+                EnableToolbar();
+                LoadBudget(prevBlank);
+            }
+            else
+            {
+                uxHidOrgOK.Text = "";
+                uxYearVersionTitle.Text = "";
+                DisableToolbar();
                 LoadBudget(prevBlank);
             }     
         }
@@ -196,13 +211,22 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 char[] delimChars = { ':' };
                 string[] selID = nodeID.Split(delimChars);
                 string hierarchyID = selID[0].ToString();
-                string orgID = selID[1].ToString();
+                long leOrgID = Convert.ToInt64(selID[1].ToString());
+                long orgID = Convert.ToInt64(selID[2].ToString());
 
-                string nodeName = uxOrgPanel.SelectedNodes[0].Text;
-                string fiscalYear = uxFiscalYear.SelectedItem.Value;
-                string verID = uxVersion.SelectedItem.Value;
+                string orgName = HttpUtility.UrlEncode(uxOrgPanel.SelectedNodes[0].Text);
+                long fiscalYear = Convert.ToInt64(uxFiscalYear.SelectedItem.Value);
+                long verID = Convert.ToInt64(uxVersion.SelectedItem.Value);
+                string verName = HttpUtility.UrlEncode(uxVersion.SelectedItem.Text);
 
-                url = "umYearBudget.aspx?hierID=" + hierarchyID + "&orgID=" + orgID + "&orgName=" + nodeName + "&fiscalYear=" + fiscalYear + "&verID=" + verID;
+                if (BB.IsRollup(orgID) == false)
+                {
+                    url = "umYearBudget.aspx?hierID=" + hierarchyID + "&leOrgID=" + leOrgID + "&orgID=" + orgID + "&orgName=" + orgName + "&fiscalYear=" + fiscalYear + "&verID=" + verID + "&verName=" + verName;
+                }
+                else
+                {
+                    url = "umYearRollupSummary.aspx?hierID=" + hierarchyID + "&leOrgID=" + leOrgID + "&orgID=" + orgID + "&orgName=" + orgName + "&fiscalYear=" + fiscalYear + "&verID=" + verID + "&verName=" + verName;
+                }
             }
 
             else if (prevBlank == true)
@@ -217,16 +241,30 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxBudgetPanel.LoadContent();
         }
       
-        protected void EnableYearAndVersionCombo()
+        protected void EnableToolbar()
         {
             uxFiscalYear.Enable();
             uxVersion.Enable();
+            uxOrgSettings.Disable();  // FIX
         }
 
-        protected void DisableYearAndVersionCombo()
+        protected void DisableToolbar()
         {
             uxFiscalYear.Disable();
             uxVersion.Disable();
+            uxOrgSettings.Disable();
+        }
+
+        protected void StandardMsgBox(string title, string msg, string msgIcon)
+        {
+            // msgIcon can be:  ERROR, INFO, QUESTION, WARNING
+            X.Msg.Show(new MessageBoxConfig()
+            {
+                Title = title,
+                Message = msg,
+                Buttons = MessageBox.Button.OK,
+                Icon = (MessageBox.Icon)Enum.Parse(typeof(MessageBox.Icon), msgIcon)
+            });
         }
     }
 }

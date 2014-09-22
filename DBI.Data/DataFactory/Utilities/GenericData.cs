@@ -29,14 +29,10 @@ namespace DBI.Data
 
             try
             {
-
-
-
                 using (Entities _context = new Entities())
                 {
-                    int count = _context.SYS_ACTIVITY.Count();
+                    isValid = _context.SYS_MENU.Any();
                 }
-                isValid = true;
             }
             catch
             {
@@ -735,6 +731,84 @@ namespace DBI.Data
         }
 
         /// <summary>
+        /// Generic Filter Header using IQueryable for faster results.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="start"></param>
+        /// <param name="limit"></param>
+        /// <param name="sort"></param>
+        /// <param name="filter"></param>
+        /// <param name="data"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public static List<T> ListFilterHeader<T>(int start, int limit, DataSorter[] sort, string filter, IQueryable<T> data, string group, out int count) where T : class
+        {
+            //-- start filtering -----------------------------------------------------------
+            FilterHeaderConditions fhc = new FilterHeaderConditions(filter);
+
+            foreach (FilterHeaderCondition condition in fhc.Conditions)
+            {
+                string dataIndex = condition.DataIndex;
+                FilterType type = condition.Type;
+                string op = condition.Operator;
+                object value = null;
+
+                switch (condition.Type)
+                {
+                    case FilterType.String:
+                        value = condition.Value<string>();
+                        data = data.AddContainsCondition(dataIndex, value);
+                        break;
+                    case FilterType.Date:
+                        value = condition.Value<DateTime>();
+                        data = data.AddEqualCondition(dataIndex, value);
+                        break;
+                    case FilterType.Numeric:
+                        value = condition.Value<string>();
+                        data = data.AddContainsCondition(dataIndex, value);
+                        break;
+                }
+
+            }
+            //-- end filtering ------------------------------------------------------------
+
+
+
+            //-- start sorting ------------------------------------------------------------
+            if (sort.Length > 0)
+            {
+                int counter = 0;
+                foreach (DataSorter s in sort)
+                {
+                    //Remove the first sort as it's the group_name
+                    if (!group.Contains(s.Property))
+                    {
+                        data = data.AddOrderByCondition(s.Property, s.Direction.ToString(), counter);
+                        counter++;
+                    }
+                }
+            }
+            else
+            {
+                throw new DBICustomException("At least 1 data sort is required to use this function!");
+            }
+            //-- end sorting ------------------------------------------------------------
+
+            count = data.Count();
+
+            //Override Limit to count, if limit = 0 adjust pagesize to count size
+            if (limit == 0)
+                limit = count;
+
+            //-- start paging ------------------------------------------------------------
+            data = data.Skip(start).Take(limit);
+            //-- end paging ------------------------------------------------------------
+
+
+            return data.ToList();
+        }
+
+        /// <summary>
         /// This deletes data using a list of objects.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -747,8 +821,8 @@ namespace DBI.Data
                 {
                     _context.Set<T>().Attach(item);
                     _context.Set<T>().Remove(item);
-                    _context.SaveChanges();
                 }
+                _context.SaveChanges();
             }
         }
 
@@ -765,8 +839,8 @@ namespace DBI.Data
                 {
                     _context.Set<T>().Attach(item);
                     _context.Entry(item).State = System.Data.EntityState.Modified;
-                    _context.SaveChanges();
                 }
+                _context.SaveChanges();
             }
         }
 
@@ -782,8 +856,8 @@ namespace DBI.Data
                 foreach (T item in entityCollection)
                 {
                     _context.Set<T>().Add(item);
-                    _context.SaveChanges();
                 }
+                _context.SaveChanges();
             }
         }
 

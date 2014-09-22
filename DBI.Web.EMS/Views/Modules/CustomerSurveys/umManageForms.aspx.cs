@@ -16,9 +16,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+            if (!X.IsAjaxRequest || !IsPostBack)
+            {
+                uxAddFormCatStore.Reload();
+                uxAddFormOrgStore.Reload();
+                uxQuestionFieldsetStore.Reload();
+            }
             
         }
+
 
         protected void deReadForms(object sender, StoreReadDataEventArgs e)
         {
@@ -26,7 +32,8 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             {
                 IQueryable<CUSTOMER_SURVEY_FORMS> FormData = CUSTOMER_SURVEYS.GetForms(_context);
                 int count;
-                IQueryable<CUSTOMER_SURVEYS.CustomerSurveyForms> AllData = FormData.Select(x => new CUSTOMER_SURVEYS.CustomerSurveyForms { FORM_ID = x.FORM_ID, FORMS_NAME = x.FORMS_NAME, ORG_ID = x.ORG_ID, CATEGORY_ID = x.CATEGORY_ID });
+                List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
+                IQueryable<CUSTOMER_SURVEYS.CustomerSurveyForms> AllData = FormData.Where(x => OrgsList.Contains((long)x.ORG_ID)).Select(x => new CUSTOMER_SURVEYS.CustomerSurveyForms { FORM_ID = x.FORM_ID, FORMS_NAME = x.FORMS_NAME, ORG_ID = x.ORG_ID, CATEGORY_ID = x.CATEGORY_ID, TYPE_ID = x.TYPE_ID });
                 List<CUSTOMER_SURVEYS.CustomerSurveyForms> Data = GenericData.ListFilterHeader<CUSTOMER_SURVEYS.CustomerSurveyForms>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], AllData, out count);
                 foreach (CUSTOMER_SURVEYS.CustomerSurveyForms ThisForm in Data)
                 {
@@ -86,24 +93,31 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             }
         }
 
+        protected void deReadFieldsetCategories(object sender, StoreReadDataEventArgs e)
+        {
+            using (Entities _context = new Entities())
+            {
+                uxQuestionCategoryStore.DataSource = _context.CUSTOMER_SURVEY_QUES_CAT.ToList();
+            }
+        }
         protected void deReadQuestionFieldsets(object sender, StoreReadDataEventArgs e)
         {
             using (Entities _context = new Entities())
             {
                 long FormId = long.Parse(e.Parameters["FormId"]);
                 uxQuestionFieldsetStore.DataSource = CUSTOMER_SURVEYS.GetFormFieldSets(FormId, _context).Select(x => new { x.FIELDSET_ID, x.TITLE }).ToList();
-                
             }
         }
 
         protected void deReadOrgs(object sender, StoreReadDataEventArgs e)
         {
+            List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
             using (Entities _context = new Entities())
             {
-                uxAddFormOrgStore.DataSource = _context.ORG_HIER_V.Distinct().ToList();
+                uxAddFormOrgStore.DataSource = _context.ORG_HIER_V.Distinct().Where(x => OrgsList.Contains(x.ORG_ID)).ToList();
+                uxCopyFormOrgStore.DataSource = _context.ORG_HIER_V.Distinct().Where(x => OrgsList.Contains(x.ORG_ID)).ToList();
             }
         }
-
         protected void deReadQuestionTypes(object sender, StoreReadDataEventArgs e)
         {
             using (Entities _context = new Entities())
@@ -117,11 +131,13 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             using (Entities _context = new Entities())
             {
                 uxAddFormCatStore.DataSource = _context.CUSTOMER_SURVEY_CAT.ToList();
+                uxCopyFormCategoryStore.DataSource = _context.CUSTOMER_SURVEY_CAT.ToList();
             }
         }
         
         protected void deSaveForm(object sender, DirectEventArgs e)
         {
+            
             ChangeRecords<CUSTOMER_SURVEYS.CustomerSurveyForms> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<CUSTOMER_SURVEYS.CustomerSurveyForms>();
             foreach (CUSTOMER_SURVEYS.CustomerSurveyForms CreatedForm in data.Created)
             {
@@ -134,6 +150,17 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 NewForm.CREATED_BY = User.Identity.Name;
                 NewForm.MODIFIED_BY = User.Identity.Name;
 
+                if (CreatedForm.TYPE_ID == null)
+                {
+                    CUSTOMER_SURVEY_FORM_TYPES FormTypes = new CUSTOMER_SURVEY_FORM_TYPES();
+                    FormTypes.TYPE_NAME = e.ExtraParams["TypeName"];
+                    GenericData.Insert<CUSTOMER_SURVEY_FORM_TYPES>(FormTypes);
+                    NewForm.TYPE_ID = FormTypes.TYPE_ID;
+                }
+                else
+                {
+                    NewForm.TYPE_ID = (decimal)CreatedForm.TYPE_ID;
+                }
                 GenericData.Insert<CUSTOMER_SURVEY_FORMS>(NewForm);
 
                 ModelProxy Record = uxFormsStore.GetByInternalId(CreatedForm.PhantomId);
@@ -148,6 +175,18 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 using (Entities _context = new Entities())
                 {
                     ToBeUpdated = CUSTOMER_SURVEYS.GetForms(_context).Where(x => x.FORM_ID == UpdatedForm.FORM_ID).Single();
+                }
+
+                if (UpdatedForm.TYPE_ID == null)
+                {
+                    CUSTOMER_SURVEY_FORM_TYPES FormTypes = new CUSTOMER_SURVEY_FORM_TYPES();
+                    FormTypes.TYPE_NAME = e.ExtraParams["TypeName"];
+                    GenericData.Insert<CUSTOMER_SURVEY_FORM_TYPES>(FormTypes);
+                    ToBeUpdated.TYPE_ID = FormTypes.TYPE_ID;
+                }
+                else
+                {
+                    ToBeUpdated.TYPE_ID = (decimal)UpdatedForm.TYPE_ID;
                 }
                 ToBeUpdated.FORMS_NAME = UpdatedForm.FORMS_NAME;
                 ToBeUpdated.ORG_ID = UpdatedForm.ORG_ID;
@@ -177,6 +216,17 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 ToBeAdded.FORM_ID = decimal.Parse(e.ExtraParams["FormId"]);
                 ToBeAdded.IS_ACTIVE = (NewFieldset.IS_ACTIVE == true ? "Y" : "N");
 
+                if (NewFieldset.CATEGORY_ID == null)
+                {
+                    CUSTOMER_SURVEY_QUES_CAT NewCategory = new CUSTOMER_SURVEY_QUES_CAT();
+                    NewCategory.CATEGORY_NAME = e.ExtraParams["CategoryName"];
+                    GenericData.Insert<CUSTOMER_SURVEY_QUES_CAT>(NewCategory);
+                    ToBeAdded.CATEGORY_ID = NewCategory.CATEGORY_ID;
+                }
+                else
+                {
+                    ToBeAdded.CATEGORY_ID = (decimal)NewFieldset.CATEGORY_ID;
+                }
                 GenericData.Insert<CUSTOMER_SURVEY_FIELDSETS>(ToBeAdded);
 
                 ModelProxy Record = uxFieldsetsStore.GetByInternalId(NewFieldset.PhantomId);
@@ -197,6 +247,17 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                     ToBeUpdated.FORM_ID = decimal.Parse(e.ExtraParams["FormId"]);
                     ToBeUpdated.MODIFIED_BY = User.Identity.Name;
                     ToBeUpdated.MODIFY_DATE = DateTime.Now;
+                }
+                if (UpdatedFieldset.CATEGORY_ID == null)
+                {
+                    CUSTOMER_SURVEY_QUES_CAT NewCategory = new CUSTOMER_SURVEY_QUES_CAT();
+                    NewCategory.CATEGORY_NAME = e.ExtraParams["CategoryName"];
+                    GenericData.Insert<CUSTOMER_SURVEY_QUES_CAT>(NewCategory);
+                    ToBeUpdated.CATEGORY_ID = NewCategory.CATEGORY_ID;
+                }
+                else
+                {
+                    ToBeUpdated.CATEGORY_ID = (decimal)UpdatedFieldset.CATEGORY_ID;
                 }
                 GenericData.Update<CUSTOMER_SURVEY_FIELDSETS>(ToBeUpdated);
 
@@ -233,7 +294,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 FieldsetToAdd.CREATE_DATE = DateTime.Now;
                 GenericData.Insert<CUSTOMER_SURVEY_RELATION>(FieldsetToAdd);
 
-                ModelProxy Record = uxFormsStore.GetByInternalId(NewQuestion.PhantomId);
+                ModelProxy Record = uxQuestionsStore.GetByInternalId(NewQuestion.PhantomId);
                 Record.CreateVariable = true;
                 Record.SetId(ToBeAdded.QUESTION_ID);
                 Record.Commit();
@@ -305,7 +366,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 {
                     ToUpdate = CUSTOMER_SURVEYS.GetQuestionOption(UpdatedOption.OPTION_ID, _context);
                     ToUpdate.IS_ACTIVE = (UpdatedOption.IS_ACTIVE == true ? "Y" : "N");
-                    ToUpdate.OPTION_NAME = ToUpdate.OPTION_NAME;
+                    ToUpdate.OPTION_NAME = UpdatedOption.OPTION_NAME;
                     ToUpdate.MODIFIED_BY = User.Identity.Name;
                     ToUpdate.MODIFY_DATE = DateTime.Now;
                 }
@@ -359,36 +420,368 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             uxTabPanel.SetActiveTab(uxSurveyPanel);
         }
 
-        //protected void CreateWindow(string LoaderUrl)
-        //{
-        //    Window win = new Window()
-        //    {
-        //        ID = "uxPlaceholderWindow",
-        //        Title = "View Survey",
-        //        Width = 600,
-        //        Modal = true,
-        //        Resizable = false,
-        //        AutoRender = false,
-        //        Y = 15,
-        //        Constrain = false,
-        //        CloseAction = CloseAction.Destroy,
-        //        Loader = new ComponentLoader
-        //        {
-        //            Url = LoaderUrl,
-        //            DisableCaching = true,
-        //            Mode = LoadMode.Frame,
-        //            AutoLoad = true,
-        //            LoadMask =
-        //            {
-        //                ShowMask = true
-        //            }
-        //        }
-        //    };
+        protected void deDeleteForm(object sender, DirectEventArgs e)
+        {
+            decimal FormId = decimal.Parse(e.ExtraParams["FormId"]);
+            List<CUSTOMER_SURVEY_FORMS_COMP> FormCompletions;
+            List<CUSTOMER_SURVEY_FORMS_ANS> FormAnswers;
+            CUSTOMER_SURVEY_FORMS FormToDelete;
+            bool CannotDelete = false;
+            using (Entities _context = new Entities())
+            {
+                FormCompletions = CUSTOMER_SURVEYS.GetFormCompletion(_context).Where(x => x.FORM_ID == FormId).ToList();
+                FormToDelete = CUSTOMER_SURVEYS.GetForms(_context).Where(x => x.FORM_ID == FormId).Single();
+            }
+            int count = 1;
+            if (FormCompletions.Count > 0)
+            {
+                foreach (CUSTOMER_SURVEY_FORMS_COMP FormCompletion in FormCompletions)
+                {
+                    using (Entities _context = new Entities())
+                    {
+                        FormAnswers = CUSTOMER_SURVEYS.GetFormAnswersByCompletion(FormCompletion.COMPLETION_ID, _context).ToList();
+                    }
+                    if (FormAnswers.Count > 0)
+                    {
+                        X.Msg.Alert("Unable to delete", "This form has already been completed and cannot be deleted.").Show();
+                        CannotDelete = true;
+                        break;
+                    }
+                    else if (count == FormCompletions.Count)
+                    {
+                        List<CUSTOMER_SURVEY_FIELDSETS> Fieldsets;
+                        List<CUSTOMER_SURVEY_QUESTIONS> Questions;
+                        List<CUSTOMER_SURVEY_OPTIONS> Options;
+                        List<CUSTOMER_SURVEY_RELATION> RelationEntries;
 
-        //    this.Form.Controls.Add(win);
-        //    win.Render(this.Form);
-        //    win.Show();
-        //}
 
+                        using (Entities _context = new Entities())
+                        {
+                            //Get Fieldsets
+                            Fieldsets = CUSTOMER_SURVEYS.GetFieldsets(_context).Where(x => x.FORM_ID == FormId).ToList();
+                        }
+                        foreach (CUSTOMER_SURVEY_FIELDSETS Fieldset in Fieldsets)
+                        {
+                            //Get Questions
+                            using (Entities _context = new Entities())
+                            {
+                                Questions = CUSTOMER_SURVEYS.GetFieldsetQuestions(Fieldset.FIELDSET_ID, _context).ToList();
+                            }
+                            foreach (CUSTOMER_SURVEY_QUESTIONS Question in Questions)
+                            {
+                                //Get Options
+                                using (Entities _context = new Entities())
+                                {
+                                    Options = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).ToList();
+                                }
+                                //Delete Options
+                                GenericData.Delete<CUSTOMER_SURVEY_OPTIONS>(Options);
+                            }
+                            using (Entities _context = new Entities())
+                            {
+                                RelationEntries = CUSTOMER_SURVEYS.GetRelationEntries(_context).Where(x => x.FIELDSET_ID == Fieldset.FIELDSET_ID).ToList();
+                            }
+                            GenericData.Delete<CUSTOMER_SURVEY_RELATION>(RelationEntries);
+                            GenericData.Delete<CUSTOMER_SURVEY_QUESTIONS>(Questions);
+
+
+                        }
+                        GenericData.Delete<CUSTOMER_SURVEY_FIELDSETS>(Fieldsets);
+
+                    }
+                    count++;
+                }
+                if (CannotDelete == false)
+                {
+                    GenericData.Delete<CUSTOMER_SURVEY_FORMS>(FormToDelete);
+
+                    uxFormsStore.Reload();
+                    uxQuestionsStore.Reload();
+                    uxFieldsetsStore.Reload();
+                    uxOptionsStore.Reload();
+                }
+            }
+            else
+            {
+                List<CUSTOMER_SURVEY_FIELDSETS> Fieldsets;
+                List<CUSTOMER_SURVEY_QUESTIONS> Questions;
+                List<CUSTOMER_SURVEY_OPTIONS> Options;
+                List<CUSTOMER_SURVEY_RELATION> RelationEntries;
+
+                using (Entities _context = new Entities())
+                {
+                    Fieldsets = CUSTOMER_SURVEYS.GetFieldsets(_context).Where(x => x.FORM_ID == FormId).ToList();
+                    Questions = CUSTOMER_SURVEYS.GetFormQuestion2(FormId, _context).ToList();
+                }    
+                
+                foreach (CUSTOMER_SURVEY_QUESTIONS Question in Questions)
+                {
+                    using (Entities _context = new Entities())
+                    {
+                        Options = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).ToList();
+                    }
+                    GenericData.Delete<CUSTOMER_SURVEY_OPTIONS>(Options);
+                }
+                foreach (CUSTOMER_SURVEY_FIELDSETS Fieldset in Fieldsets)
+                {
+                    using (Entities _context = new Entities())
+                    {
+                        RelationEntries = CUSTOMER_SURVEYS.GetRelationEntries(_context).Where(x => x.FIELDSET_ID == Fieldset.FIELDSET_ID).ToList();
+                    }
+                    GenericData.Delete<CUSTOMER_SURVEY_RELATION>(RelationEntries);
+                }
+                GenericData.Delete<CUSTOMER_SURVEY_QUESTIONS>(Questions);
+                GenericData.Delete<CUSTOMER_SURVEY_FIELDSETS>(Fieldsets);
+                GenericData.Delete<CUSTOMER_SURVEY_FORMS>(FormToDelete);
+
+                uxFormsStore.Reload();
+                uxQuestionsStore.Reload();
+                uxFieldsetsStore.Reload();
+                uxOptionsStore.Reload();
+            }
+            
+        }
+
+        protected void deDeleteFieldset(object sender, DirectEventArgs e)
+        {
+            List<CUSTOMER_SURVEY_QUESTIONS> Questions;
+            
+            decimal FieldsetId = decimal.Parse(e.ExtraParams["FieldsetId"]);
+            using (Entities _context = new Entities())
+            {
+                Questions = CUSTOMER_SURVEYS.GetFieldsetQuestions(FieldsetId, _context).ToList();
+            }
+            int count = 1;
+            foreach (CUSTOMER_SURVEY_QUESTIONS Question in Questions)
+            {
+                bool QuestionHasBeenFilled;
+                using (Entities _context = new Entities())
+                {
+                    QuestionHasBeenFilled = CUSTOMER_SURVEYS.HasQuestionBeenFilledOut(Question.QUESTION_ID, _context);
+                }
+                if (QuestionHasBeenFilled)
+                {
+                    X.Msg.Alert("Unable to delete", "This fieldset has questions that have already been completed.").Show();
+                    break;
+                }
+                else if (count == Questions.Count)
+                {
+                    List<CUSTOMER_SURVEY_QUESTIONS> QuestionsToDelete = Questions;
+                    List<CUSTOMER_SURVEY_RELATION> RelationEntries;
+                    List<CUSTOMER_SURVEY_OPTIONS> Options;
+                    
+                    foreach (CUSTOMER_SURVEY_QUESTIONS QuestionToDelete in QuestionsToDelete)
+                    {
+                        //Get Options
+                        using (Entities _context = new Entities())
+                        {
+                            
+                            Options = CUSTOMER_SURVEYS.GetQuestionOptions(QuestionToDelete.QUESTION_ID, _context).ToList();
+                        }
+                        GenericData.Delete<CUSTOMER_SURVEY_OPTIONS>(Options);
+                    }
+
+                    using (Entities _context = new Entities())
+                    {
+                        RelationEntries = _context.CUSTOMER_SURVEY_RELATION.Where(x => x.FIELDSET_ID == FieldsetId).ToList();
+                    }
+
+                    GenericData.Delete<CUSTOMER_SURVEY_RELATION>(RelationEntries);
+                    GenericData.Delete<CUSTOMER_SURVEY_QUESTIONS>(QuestionsToDelete);
+                    CUSTOMER_SURVEY_FIELDSETS FieldsetToDelete;
+                    using (Entities _context = new Entities())
+                    {
+                        FieldsetToDelete = CUSTOMER_SURVEYS.GetFieldsets(_context).Where(x => x.FIELDSET_ID == FieldsetId).Single();
+                    }
+                    GenericData.Delete<CUSTOMER_SURVEY_FIELDSETS>(FieldsetToDelete);
+                }
+                count++;
+            }
+            uxFieldsetsStore.Reload();
+            uxQuestionsStore.Reload();
+        }
+
+        protected void deDeleteQuestion(object sender, DirectEventArgs e)
+        {
+            decimal QuestionId = decimal.Parse(e.ExtraParams["QuestionId"]);
+            CUSTOMER_SURVEY_QUESTIONS Question;
+            List<CUSTOMER_SURVEY_FORMS_ANS> Answers;
+            List<CUSTOMER_SURVEY_OPTIONS> Options;
+            CUSTOMER_SURVEY_RELATION RelationEntry;
+            bool QuestionHasBeenAnswered;
+            using (Entities _context = new Entities())
+            {
+                Question = CUSTOMER_SURVEYS.GetQuestion(QuestionId, _context);
+                QuestionHasBeenAnswered = CUSTOMER_SURVEYS.HasQuestionBeenFilledOut(QuestionId, _context);
+            }
+            if (QuestionHasBeenAnswered)
+            {
+                X.Msg.Alert("Unable to delete", "This question has already been completed and cannot be deleted").Show();
+            }
+            else
+            {
+                using (Entities _context = new Entities())
+                {
+                    Options = CUSTOMER_SURVEYS.GetQuestionOptions(QuestionId, _context).ToList();
+                    RelationEntry = CUSTOMER_SURVEYS.GetRelationEntries(_context).Where(x => x.QUESTION_ID == QuestionId).Single();
+                }
+
+                GenericData.Delete<CUSTOMER_SURVEY_OPTIONS>(Options);
+                GenericData.Delete<CUSTOMER_SURVEY_RELATION>(RelationEntry);
+                GenericData.Delete<CUSTOMER_SURVEY_QUESTIONS>(Question);
+            }
+
+            uxQuestionsStore.Reload();
+        }
+
+        protected void deDeleteOption(object sender, DirectEventArgs e)
+        {
+            decimal OptionId = decimal.Parse(e.ExtraParams["OptionId"]);
+            CUSTOMER_SURVEY_OPTIONS Option;
+            using (Entities _context = new Entities())
+            {
+                Option = CUSTOMER_SURVEYS.GetQuestionOption(OptionId, _context);
+            }
+            GenericData.Delete<CUSTOMER_SURVEY_OPTIONS>(Option);
+        }
+
+        protected void deCopyForm(object sender, DirectEventArgs e)
+        {
+            decimal FormId = decimal.Parse(e.ExtraParams["FormId"]);
+            List<CUSTOMER_SURVEY_FIELDSETS> ExistingFieldsets;
+            List<CUSTOMER_SURVEY_QUESTIONS> ExistingQuestions;
+            List<CUSTOMER_SURVEY_OPTIONS> ExistingOptions;
+
+            CUSTOMER_SURVEY_FORMS Form = new CUSTOMER_SURVEY_FORMS();
+            Form.FORMS_NAME = uxCopyFormName.Text;
+            Form.ORG_ID = decimal.Parse(uxCopyFormOrg.Value.ToString());
+            Form.CATEGORY_ID = decimal.Parse(uxCopyFormCategory.Value.ToString());
+            Form.CREATE_DATE = DateTime.Now;
+            Form.MODIFY_DATE = DateTime.Now;
+            Form.MODIFIED_BY = User.Identity.Name;
+            Form.CREATED_BY = User.Identity.Name;
+            GenericData.Insert<CUSTOMER_SURVEY_FORMS>(Form);
+
+            using (Entities _context = new Entities())
+            {
+                ExistingFieldsets = CUSTOMER_SURVEYS.GetFieldsets(_context).Where(x => x.FORM_ID == FormId).ToList();
+            }
+
+            foreach (CUSTOMER_SURVEY_FIELDSETS ExistingFieldset in ExistingFieldsets)
+            {
+                CUSTOMER_SURVEY_FIELDSETS Fieldset = new CUSTOMER_SURVEY_FIELDSETS();
+                Fieldset.CREATE_DATE = DateTime.Now;
+                Fieldset.MODIFY_DATE = DateTime.Now;
+                Fieldset.CREATED_BY = User.Identity.Name;
+                Fieldset.MODIFIED_BY = User.Identity.Name;
+                Fieldset.FORM_ID = Form.FORM_ID;
+                Fieldset.IS_ACTIVE = ExistingFieldset.IS_ACTIVE;
+                Fieldset.SORT_ORDER = ExistingFieldset.SORT_ORDER;
+                Fieldset.TITLE = ExistingFieldset.TITLE;
+
+                GenericData.Insert<CUSTOMER_SURVEY_FIELDSETS>(Fieldset);
+
+                using (Entities _context = new Entities())
+                {
+                    ExistingQuestions = CUSTOMER_SURVEYS.GetFieldsetQuestions(ExistingFieldset.FIELDSET_ID, _context).ToList();
+                }
+
+                foreach (CUSTOMER_SURVEY_QUESTIONS ExistingQuestion in ExistingQuestions)
+                {
+                    CUSTOMER_SURVEY_QUESTIONS Question = new CUSTOMER_SURVEY_QUESTIONS();
+                    Question.CREATE_DATE = DateTime.Now;
+                    Question.MODIFY_DATE = DateTime.Now;
+                    Question.CREATED_BY = User.Identity.Name;
+                    Question.MODIFIED_BY = User.Identity.Name;
+                    Question.IS_ACTIVE = ExistingQuestion.IS_ACTIVE;
+                    Question.IS_REQUIRED = ExistingQuestion.IS_REQUIRED;
+                    Question.SORT_ORDER = ExistingQuestion.SORT_ORDER;
+                    Question.TEXT = ExistingQuestion.TEXT;
+                    Question.TYPE_ID = ExistingQuestion.TYPE_ID;
+                    Question.SORT_ORDER = ExistingQuestion.SORT_ORDER;
+
+                    GenericData.Insert<CUSTOMER_SURVEY_QUESTIONS>(Question);
+
+                    CUSTOMER_SURVEY_RELATION Relation = new CUSTOMER_SURVEY_RELATION();
+                    Relation.FIELDSET_ID = Fieldset.FIELDSET_ID;
+                    Relation.QUESTION_ID = Question.QUESTION_ID;
+                    Relation.CREATE_DATE = DateTime.Now;
+                    Relation.MODIFY_DATE = DateTime.Now;
+                    Relation.CREATED_BY = User.Identity.Name;
+                    Relation.MODIFIED_BY = User.Identity.Name;
+
+                    GenericData.Insert<CUSTOMER_SURVEY_RELATION>(Relation);
+
+                    using (Entities _context = new Entities())
+                    {
+                        ExistingOptions = CUSTOMER_SURVEYS.GetQuestionOptions(ExistingQuestion.QUESTION_ID, _context).ToList();
+                    }
+                    foreach (CUSTOMER_SURVEY_OPTIONS ExistingOption in ExistingOptions)
+                    {
+                        CUSTOMER_SURVEY_OPTIONS Option = new CUSTOMER_SURVEY_OPTIONS();
+                        Option.CREATE_DATE = DateTime.Now;
+                        Option.MODIFY_DATE = DateTime.Now;
+                        Option.CREATED_BY = User.Identity.Name;
+                        Option.MODIFIED_BY = User.Identity.Name;
+                        Option.IS_ACTIVE = ExistingOption.IS_ACTIVE;
+                        Option.QUESTION_ID = Question.QUESTION_ID;
+                        Option.OPTION_NAME = ExistingOption.OPTION_NAME;
+                        Option.SORT_ORDER = ExistingOption.SORT_ORDER;
+
+                        GenericData.Insert<CUSTOMER_SURVEY_OPTIONS>(Option);
+                    }
+                }
+            }
+
+            uxCopyFormWindow.Hide();
+            uxCopyForm.Reset();
+        }
+
+        protected void CreateWindow(string LoaderUrl)
+        {
+            Window win = new Window()
+            {
+                ID = "uxPlaceholderWindow",
+                Title = "View Survey",
+                Width = 600,
+                Modal = true,
+                Resizable = false,
+                AutoRender = false,
+                Y = 15,
+                Constrain = false,
+                CloseAction = CloseAction.Destroy,
+                Loader = new ComponentLoader
+                {
+                    Url = LoaderUrl,
+                    DisableCaching = true,
+                    Mode = LoadMode.Frame,
+                    AutoLoad = true,
+                    LoadMask =
+                    {
+                        ShowMask = true
+                    }
+                }
+            };
+
+            this.Form.Controls.Add(win);
+            win.Render(this.Form);
+            win.Show();
+        }
+
+        protected void deReadQuestionCategories(object sender, StoreReadDataEventArgs e)
+        {
+            using (Entities _context = new Entities())
+            {
+                uxQuestionCategoryStore.DataSource = _context.CUSTOMER_SURVEY_QUES_CAT.ToList();
+            }
+        }
+
+        protected void deReadFormTypes(object sender, StoreReadDataEventArgs e)
+        {
+            using (Entities _context = new Entities())
+            {
+                uxFormTypeStore.DataSource = _context.CUSTOMER_SURVEY_FORM_TYPES.ToList();
+            }
+        }
     }
 }

@@ -19,9 +19,17 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
         
         protected void Page_Load(object sender, EventArgs e)
         {
-            
-            
+            if (!X.IsAjaxRequest) ;
+
+            if (uxToggleApproved.Checked)
+            { uxApproveButton.Disabled = true; }
+            else
+            { uxApproveButton.Disabled = false; }
+  
+
         }
+            
+        
 
         protected void deGetEmployeeHoursData(object sender, StoreReadDataEventArgs e)
         {
@@ -30,30 +38,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
             
             using (Entities _context = new Entities())
             {   //Manager Query
-                if (validateComponentSecurity("SYS.TimeClock.Manager"))
-                {
-
-                    var data = TIMECLOCK.EmployeeTimeCompletedUnapproved(person_id);
-
-
-                    foreach (var item in data)
-                    {
-                        TimeSpan ts = (DateTime)item.TIME_OUT - (DateTime)item.TIME_IN;
-                        DateTime dow = (DateTime)item.TIME_IN;
-
-                        TimeSpan adjustedhours = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_HOURS.Value));
-                        item.ADJUSTED_HOURS_GRID = adjustedhours.ToString("hh\\:mm");
-
-                        TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
-                        item.ACTUAL_HOURS_GRID = actualhours.ToString("hh\\:mm");                      
-                            
-
-                    }
-                    uxEmployeeHoursStore.DataSource = data;
-
-                }
-
-                else if (validateComponentSecurity("SYS.TimeClock.Payroll"))
+                if ((uxToggleApproved.Checked == false) && (validateComponentSecurity("SYS.TimeClock.Payroll")))
                 {   //Payroll query
 
                     var data = TIMECLOCK.EmployeeTimeCompletedUnapprovedPayroll();
@@ -65,38 +50,28 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
 
                         TimeSpan adjustedhours = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_HOURS.Value));
-                        item.ADJUSTED_HOURS_GRID = adjustedhours.ToString("hh\\:mm");
-
-
-                        TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
-                        item.ACTUAL_HOURS_GRID = actualhours.ToString("hh\\:mm");
-                       
-
-
-                    }
-                    uxEmployeeHoursStore.DataSource = data;
-                }
-
-                if ((uxToggleApproved.Checked) && (validateComponentSecurity("SYS.TimeClock.Manager")))
-                {
-                    var data = TIMECLOCK.EmployeeTimeCompleted(person_id);
-
-
-                    foreach (var item in data)
-                    {
-                        TimeSpan ts = (DateTime)item.TIME_OUT - (DateTime)item.TIME_IN;
-                        DateTime dow = (DateTime)item.TIME_IN;
-
-                        TimeSpan adjustedhours = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_HOURS.Value));
-                        item.ADJUSTED_HOURS_GRID = adjustedhours.ToString("hh\\:mm");
-
-                        TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
-                        item.ACTUAL_HOURS_GRID = actualhours.ToString("hh\\:mm");
                         
+                        item.ADJUSTED_HOURS_GRID = adjustedhours.ToString("dd\\.hh\\:mm");
+
+
+                        TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
+                        item.ACTUAL_HOURS_GRID = actualhours.ToString("dd\\.hh\\:mm");
+
+                        
+                        if (item.ADJUSTED_LUNCH != null)
+                        {
+                            TimeSpan adjustedlunch = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_LUNCH.Value));
+                            item.ADJUSTED_LUNCH_GRID = adjustedlunch.ToString("dd\\.hh\\:mm");
+                        }
+                        else
+                        {
+                            item.ADJUSTED_LUNCH_GRID = "0.00:00";
+                        }
+                        
+                 
 
                     }
                     uxEmployeeHoursStore.DataSource = data;
-                
                 }
 
                 else if ((uxToggleApproved.Checked) && (validateComponentSecurity("SYS.TimeClock.Payroll")))
@@ -110,18 +85,130 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                         DateTime dow = (DateTime)item.TIME_IN;
 
                         TimeSpan adjustedhours = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_HOURS.Value));
-                        item.ADJUSTED_HOURS_GRID = adjustedhours.ToString("hh\\:mm");
+                        item.ADJUSTED_HOURS_GRID = adjustedhours.ToString("dd\\.hh\\:mm");
 
                         TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
-                        item.ACTUAL_HOURS_GRID = actualhours.ToString("hh\\:mm");
-                        
+                        item.ACTUAL_HOURS_GRID = actualhours.ToString("dd\\.hh\\:mm");
+
+                        if (item.ADJUSTED_LUNCH != null)
+                        {
+                            TimeSpan adjustedlunch = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_LUNCH.Value));
+                            item.ADJUSTED_LUNCH_GRID = adjustedlunch.ToString("dd\\.hh\\:mm");
+                        }
+                        else
+                        {
+                            item.ADJUSTED_LUNCH_GRID = "0.00:00";
+                        }
+                       
+
 
 
                     }
                     uxEmployeeHoursStore.DataSource = data;
                 }
 
+                else if ((uxToggleApproved.Checked == false) && validateComponentSecurity("SYS.TimeClock.Manager"))
+                {
+
+                    var data = TIMECLOCK.EmployeeTimeCompletedUnapproved(person_id);
+
+
+                    foreach (var item in data)
+                    {
+                        TimeSpan ts = (DateTime)item.TIME_OUT - (DateTime)item.TIME_IN;
+                        DateTime dow = (DateTime)item.TIME_IN;
+
+                        TimeSpan adjustedhours = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_HOURS.Value));
+                        item.ADJUSTED_HOURS_GRID = adjustedhours.ToString("dd\\.hh\\:mm");
+
+                        TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
+                        item.ACTUAL_HOURS_GRID = actualhours.ToString("dd\\.hh\\:mm");
+
+                        if (item.ADJUSTED_LUNCH != null)
+                        {
+                            TimeSpan adjustedlunch = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_LUNCH.Value));
+                            item.ADJUSTED_LUNCH_GRID = adjustedlunch.ToString("dd\\.hh\\:mm");
+                        }
+                        else
+                        {
+                            item.ADJUSTED_LUNCH_GRID = "0.00:00";
+                        }
+                       
+
+
+                    }
+                    uxEmployeeHoursStore.DataSource = data;
+
+                }
+
+                else if ((uxToggleApproved.Checked) && (validateComponentSecurity("SYS.TimeClock.Manager")))
+                {
+                    var data = TIMECLOCK.EmployeeTimeCompleted(person_id);
+
+
+                    foreach (var item in data)
+                    {
+                        TimeSpan ts = (DateTime)item.TIME_OUT - (DateTime)item.TIME_IN;
+                        DateTime dow = (DateTime)item.TIME_IN;
+
+                        TimeSpan adjustedhours = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_HOURS.Value));
+                        item.ADJUSTED_HOURS_GRID = adjustedhours.ToString("dd\\.hh\\:mm");
+
+                        TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
+                        item.ACTUAL_HOURS_GRID = actualhours.ToString("dd\\.hh\\:mm");
+
+                        if (item.ADJUSTED_LUNCH != null)
+                        {
+                            TimeSpan adjustedlunch = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_LUNCH.Value));
+                            item.ADJUSTED_LUNCH_GRID = adjustedlunch.ToString("dd\\.hh\\:mm");
+                        }
+                        else
+                        {
+                            item.ADJUSTED_LUNCH_GRID = "0.00:00";
+                        }
+                       
+                        
+
+                    }
+                    uxEmployeeHoursStore.DataSource = data;
+                
+                }
+
+               
+
             }
+
+        }
+        protected void deAddTime(object sender, DirectEventArgs e)
+        {
+            string url = "/Views/Modules/TimeClock/Edit/umAddTime.aspx";
+            Window win = new Window
+            {
+                ID = "uxAddTimeWin",
+                Title = "Add Time",
+                Height = 350,
+                Width = 500,
+                Modal = true,
+                Resizable = false,
+                CloseAction = CloseAction.Destroy,
+                Loader = new ComponentLoader
+                {
+                    Mode = LoadMode.Frame,
+                    DisableCaching = true,
+                    Url = url,
+                    AutoLoad = true,
+                    LoadMask =
+                    {
+                        ShowMask = true
+                    }
+                }
+
+
+            };
+
+            win.Listeners.Close.Handler = "#{uxEmployeeHoursGrid}.getStore().load();";
+            win.Render(this.Form);
+            win.Show();
 
         }
 
@@ -276,6 +363,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
         public DateTime TIME_IN { get; set; }
         public DateTime TIME_OUT { get; set; }
         public string ADJUSTED_HOURS_GRID { get; set; }
+        public string ADJUSTED_LUNCH_GRID { get; set; }
         public string DAY_OF_WEEK { get; set; }
         public string ACTUAL_HOURS_GRID { get; set; }
         public decimal? ACTUAL_HOURS { get; set; }

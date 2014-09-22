@@ -113,6 +113,7 @@
 											<ExtraParams>
 												<ext:Parameter Name="ProjectId" Value="#{uxFormProjectGrid}.getSelectionModel().getSelection()[0].data.PROJECT_ID" Mode="Raw" />
 												<ext:Parameter Name="LongName" Value="#{uxFormProjectGrid}.getSelectionModel().getSelection()[0].data.LONG_NAME" Mode="Raw" />
+                                                <ext:Parameter Name="ProjectNumber" Value="#{uxFormProjectGrid}.getSelectionModel().getSelection()[0].data.SEGMENT1" Mode="Raw" />
 											</ExtraParams>
 										</SelectionChange>
 									</DirectEvents>
@@ -331,6 +332,7 @@
 										<ext:ModelField Name="TIME_OUT" Type="Date" />
 										<ext:ModelField Name="TRAVEL_TIME_FORMATTED" />
 										<ext:ModelField Name="DRIVE_TIME_FORMATTED" />
+                                        <ext:ModelField Name="TOTAL_HOURS" />
 										<ext:ModelField Name="PER_DIEM" />
 										<ext:ModelField Name="FOREMAN_LICENSE" />
 										<ext:ModelField Name="COMMENTS" />
@@ -342,16 +344,16 @@
 					</Store>
 					<ColumnModel>
 						<Columns>
+                            <ext:Column ID="Column10" runat="server" DataIndex="NAME" Text="Equipment Name" Flex="13" />
 							<ext:Column ID="Column9" runat="server" DataIndex="EMPLOYEE_NAME" Text="Employee Name" Flex="13" />
-							<ext:Column ID="Column10" runat="server" DataIndex="NAME" Text="Equipment Name" Flex="13" />
+                            <ext:Column ID="Column5" runat="server" DataIndex="FOREMAN_LICENSE" Text="License" Flex="7" />
 							<ext:DateColumn ID="DateColumn2" runat="server" DataIndex="TIME_IN" Text="Time In" Flex="10" Format="M/d/yyyy h:mm tt" />
 							<ext:DateColumn ID="DateColumn3" runat="server" DataIndex="TIME_OUT" Text="Time Out" Flex="10" Format="M/d/yyyy h:mm tt" />
-							<ext:Column ID="Column11" runat="server" DataIndex="TRAVEL_TIME_FORMATTED" Text="Travel Time" Flex="7" />
-							<ext:Column ID="Column12" runat="server" DataIndex="DRIVE_TIME_FORMATTED" Text="Drive Time" Flex="7" />
+                            <ext:Column ID="Column4" runat="server" DataIndex="TOTAL_HOURS" Text="Total Hours" Flex="7" />
+							<ext:Column ID="Column11" runat="server" DataIndex="TRAVEL_TIME_FORMATTED" Text="Travel Time" Flex="6" />
 							<ext:Column ID="Column13" runat="server" DataIndex="PER_DIEM" Text="Per Diem" Flex="6" />
-							<ext:Column runat="server" DataIndex="FOREMAN_LICENSE" Text="License" Flex="7" />
-							<ext:Column ID="Column1" runat="server" DataIndex="LUNCH_LENGTH" Text="Lunch Length" Flex="9" />
-							<ext:Column ID="Column14" runat="server" DataIndex="COMMENTS" Text="Comments" Flex="18" />
+							<ext:Column ID="Column1" runat="server" DataIndex="LUNCH_LENGTH" Text="Lunch Length" Flex="7" />
+							<ext:Column ID="Column14" runat="server" DataIndex="COMMENTS" Text="Comments" Flex="14" />
 						</Columns>
 					</ColumnModel>
 					<TopBar>

@@ -114,7 +114,7 @@
                                     <LoadMask ShowMask="true" />
                                 </Loader>
                             </ext:Panel>                     
-                             <ext:Panel runat="server"
+                            <%-- <ext:Panel runat="server"
                                 Title="Review Invoices"
                                 ID="uxInvoiceReview"
                                 Disabled="false">
@@ -122,7 +122,7 @@
                                     ID="Loader1" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umInvoiceReview.aspx">
                                     <LoadMask ShowMask="true" />
                                 </Loader>
-                            </ext:Panel>                     
+                            </ext:Panel>                 --%>    
                         </Items>
                     </ext:TabPanel>
 

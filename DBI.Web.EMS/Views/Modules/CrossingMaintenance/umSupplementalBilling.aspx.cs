@@ -18,7 +18,8 @@ using Ext.Net;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using DBI.Data.DataFactory;
-
+using System.Xml.Xsl;
+using System.Xml;
 
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 {
@@ -26,40 +27,24 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue") != string.Empty)
+            {
+                deGetRRType("Add");
 
+            }
         }
 
         protected void deInvoiceSupplementalGrid(object sender, StoreReadDataEventArgs e)
         {
             DateTime StartDate = uxStartDate.SelectedDate;
             DateTime EndDate = uxEndDate.SelectedDate;
-
+            string ServiceUnit = uxAddServiceUnit.SelectedItem.Value;
+            string SubDiv = uxAddSubDiv.SelectedItem.Value;
             using (Entities _context = new Entities())
             {
-
-                //Get List of all incidents open and closed 
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
-                var allData = (from a in _context.CROSSING_SUPPLEMENTAL
-                               join d in _context.CROSSINGS on a.CROSSING_ID equals d.CROSSING_ID
-                               where d.RAILROAD_ID == RailroadId
-                               select new
-                               {
-                                   d.CROSSING_ID,
-                                   a.SUPPLEMENTAL_ID,
-                                   a.APPROVED_DATE,
-                                   d.CROSSING_NUMBER,
-                                   d.SUB_DIVISION,
-                                   d.SERVICE_UNIT,
-                                   d.STATE,
-                                   a.SERVICE_TYPE,
-                                   d.MILE_POST,
-                                   a.TRUCK_NUMBER,
-                                   a.SQUARE_FEET,
-                                   a.REMARKS,
-                               });
-
-                //filter down specific information to show the incidents needed for report
-
+                IQueryable<CROSSING_MAINTENANCE.CompletedCrossingsSupplemental> allData = CROSSING_MAINTENANCE.GetCompletedCrossingsSupplemental(RailroadId,  _context);
+              
                 if (StartDate != DateTime.MinValue)
                 {
                     allData = allData.Where(x => x.APPROVED_DATE >= StartDate);
@@ -74,7 +59,14 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 {
                     allData = allData.Where(x => x.APPROVED_DATE >= StartDate && x.APPROVED_DATE <= EndDate);
                 }
-
+                if (ServiceUnit != null)
+                {
+                    allData = allData.Where(x => x.SERVICE_UNIT == ServiceUnit);
+                }
+                if (SubDiv != null)
+                {
+                    allData = allData.Where(x => x.SUB_DIVISION == SubDiv);
+                }
                 List<object> _data = allData.ToList<object>();
 
 
@@ -133,32 +125,32 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         }
         protected void deResetInvoice(object sender, DirectEventArgs e)
         {
-            uxInvoiceSupplementalStore.Reload();
+            uxInvoiceSupplementalStore.RemoveAll();
         }
         protected void deInvoiceReportGrid(object sender, StoreReadDataEventArgs e)
         {
             List<object> allData;
-
+           
             string json = (e.Parameters["selectedSupp"]);
             List<SupplementalDetails> suppList = JSON.Deserialize<List<SupplementalDetails>>(json);
             List<decimal> ReportList = new List<decimal>();
             foreach (SupplementalDetails supp in suppList)
             {
                 ReportList.Add(supp.SUPPLEMENTAL_ID);
-            }
-            using (Entities _context = new Entities())
-            {
 
-                //Get List of all incidents open and closed 
-
+                using (Entities _context = new Entities())
+                {
+                //IQueryable<CROSSING_MAINTENANCE.InvoicedCrossingsSupplemental> allData = CROSSING_MAINTENANCE.GetInvoicedCrossings(_context).Where(s => ReportList.Contains(s.SUPPLEMENTAL_ID));
                 allData = (from a in _context.CROSSING_SUPPLEMENTAL
                            join d in _context.CROSSINGS on a.CROSSING_ID equals d.CROSSING_ID
-                           join v in _context.CROSSING_INVOICE on a.INVOICE_SUPP_ID equals v.INVOICE_ID
+                           join v in _context.CROSSING_SUPP_INVOICE on a.INVOICE_SUPP_ID equals v.INVOICE_SUPP_ID
                            where ReportList.Contains(a.SUPPLEMENTAL_ID)
                            select new
                            {
-                               v.INVOICE_NUMBER,
-                               v.INVOICE_DATE,
+                             
+                               a.INVOICE_SUPP_ID,
+                               v.INVOICE_SUPP_NUMBER,
+                               v.INVOICE_SUPP_DATE,
                                d.CROSSING_ID,
                                a.SUPPLEMENTAL_ID,
                                a.APPROVED_DATE,
@@ -170,25 +162,135 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                                d.MILE_POST,
                                a.TRUCK_NUMBER,
                                a.SQUARE_FEET,
-                             
+                               a.PROJECT_ID,
+
+
 
                            }).ToList<object>();
+                uxInvoiceReportStore.DataSource = allData;
 
+                }
 
+              
                
+                //int count;
+                //uxInvoiceReportStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], allData, out count);
+                //e.Total = count;
             }
-            uxInvoiceReportStore.DataSource = allData;
-        
+            
+        }
+        protected void deGetRRType(string rrLoad)
+        {
 
+            using (Entities _context = new Entities())
+            {
+                long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
+                var RRdata = (from r in _context.CROSSING_RAILROAD
+                              where r.RAILROAD_ID == RailroadId
+                              select new
+                              {
+                                  r
+
+                              }).SingleOrDefault();
+
+                uxRRCI.SetValue(RRdata.r.RAILROAD);
+
+                string rrType = RRdata.r.RAILROAD;
+                if (rrLoad == "Add")
+                {
+                    List<ServiceUnitResponse> units = ServiceUnitData.ServiceUnitUnits(rrType).ToList();
+                    //uxAddServiceUnit.Clear();
+                    //uxAddSubDiv.Clear();
+                    uxAddServiceUnitStore.DataSource = units;
+                    uxAddServiceUnitStore.DataBind();
+                }
+
+            }
+        }
+        protected void deLoadSubDiv(object sender, DirectEventArgs e)
+        {
+
+
+            if (e.ExtraParams["Type"] == "Add")
+            {
+                List<ServiceUnitResponse> divisions = ServiceUnitData.ServiceUnitDivisions(uxAddServiceUnit.SelectedItem.Value).ToList();
+                uxAddSubDiv.Clear();
+                uxAddSubDivStore.DataSource = divisions;
+                uxAddSubDivStore.DataBind();
+            }
+        }
+        protected void deValidationInvoiceButton(object sender, DirectEventArgs e)
+        {
+            CheckboxSelectionModel sm = CheckboxSelectionModel2;
+
+            if (sm.SelectedRows.Count() != 0)
+            {
+                Button1.Enable();
+                Button2.Enable();
+            }
+            else
+            {
+                Button1.Disable();
+                Button2.Disable();
+            }
         }
         protected void deCloseInvoice(object sender, DirectEventArgs e)
         {
             uxBillingReportWindow.Hide();
            
         }
+        protected void ToXml(object sender, EventArgs e)
+        {
+            string json = this.Hidden1.Value.ToString();
+            StoreSubmitDataEventArgs eSubmit = new StoreSubmitDataEventArgs(json, null);
+            XmlNode xml = eSubmit.Xml;
+
+            string strXml = xml.OuterXml;
+
+            this.Response.Clear();
+            this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.xml");
+            this.Response.AddHeader("Content-Length", strXml.Length.ToString());
+            this.Response.ContentType = "application/xml";
+            this.Response.Write(strXml);
+            this.Response.End();
+        }
+
+        protected void ToExcel(object sender, EventArgs e)
+        {
+            string json = this.Hidden1.Value.ToString();
+            StoreSubmitDataEventArgs eSubmit = new StoreSubmitDataEventArgs(json, null);
+            XmlNode xml = eSubmit.Xml;
+
+            this.Response.Clear();
+            this.Response.ContentType = "application/vnd.ms-excel";
+            this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.xls");
+
+            XslCompiledTransform xtExcel = new XslCompiledTransform();
+
+            xtExcel.Load(Server.MapPath("Excel.xsl"));
+            xtExcel.Transform(xml, null, this.Response.OutputStream);
+            this.Response.End();
+        }
+
+        protected void ToCsv(object sender, EventArgs e)
+        {
+            string json = this.Hidden1.Value.ToString();
+            StoreSubmitDataEventArgs eSubmit = new StoreSubmitDataEventArgs(json, null);
+            XmlNode xml = eSubmit.Xml;
+
+            this.Response.Clear();
+            this.Response.ContentType = "application/octet-stream";
+            this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.csv");
+
+            XslCompiledTransform xtCsv = new XslCompiledTransform();
+
+            xtCsv.Load(Server.MapPath("Csv.xsl"));
+            xtCsv.Transform(xml, null, this.Response.OutputStream);
+            this.Response.End();
+        }
         public class SupplementalDetails
         {
-            public decimal INVOICE_SUPP_ID { get; set; }
+            public decimal? INVOICE_SUPP_ID { get; set; }
             public decimal SUPPLEMENTAL_ID { get; set; }
             public long CROSSING_ID { get; set; }
             public DateTime APPROVED_DATE { get; set; }          

@@ -145,9 +145,21 @@
                                  <BeforeActivate Handler="#{Toolbar1}.show()" />                            
                                 </Listeners>
                             </ext:Panel>
-
+                             <ext:Panel runat="server"
+                                Title="Pricing Management"
+                                ID="uxPricing"
+                                Disabled="false">   
+                                                               
+                                <Loader runat="server"
+                                    ID="Loader1" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umPricing.aspx">
+                                    <LoadMask ShowMask="true" />                                
+                                </Loader>
+                             <Listeners>
+                                 <BeforeActivate Handler="#{Toolbar1}.hide()" />                            
+                             </Listeners>
+                            </ext:Panel>
                            
-                            <ext:Panel runat="server"
+                         <%--   <ext:Panel runat="server"
                                 Title="Contacts"
                                 ID="uxContactsTab"
                                 Disabled="false">
@@ -158,7 +170,7 @@
                                  <Listeners>
                                  <BeforeActivate Handler="#{Toolbar1}.show()" />                            
                                 </Listeners>
-                            </ext:Panel>
+                            </ext:Panel>--%>
                              <ext:Panel runat="server"
                                 Title="Manage KCS"
                                 ID="uxManageKCS"

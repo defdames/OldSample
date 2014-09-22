@@ -17,7 +17,7 @@ namespace DBI.Data
         public long APPLICATION_ID { get; set; }
         public decimal APPLICATION_NUMBER { get; set; }
         public long CROSSING_ID { get; set; }
-        public string APPLICATION_REQUESTED { get; set; }
+        public Nullable<decimal> APPLICATION_REQUESTED { get; set; }
         public Nullable<System.DateTime> APPLICATION_DATE { get; set; }
         public string RAILROAD { get; set; }
         public string SERVICE_UNIT { get; set; }
@@ -33,6 +33,7 @@ namespace DBI.Data
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public Nullable<System.DateTime> FISCAL_YEAR { get; set; }
         public Nullable<decimal> INVOICE_ID { get; set; }
+        public Nullable<long> PROJECT_ID { get; set; }
     
         public virtual CROSSING_INVOICE CROSSING_INVOICE { get; set; }
     }

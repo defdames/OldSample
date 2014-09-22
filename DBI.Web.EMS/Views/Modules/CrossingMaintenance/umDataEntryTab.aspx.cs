@@ -12,7 +12,7 @@ using DBI.Data.GMS;
 using DBI.Data.DataFactory;
 using DBI.Core.Security;
 using System.Security.Claims;
-
+using System.Data.Objects.SqlClient;
 
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 {
@@ -27,39 +27,74 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
             if (!X.IsAjaxRequest)
             {
-                uxAddAppRequestedStore.Data = StaticLists.ApplicationRequested;
-                //ReadInTruckNumberForApplication("Add");
-
+                //uxAddAppRequestedStore.Data = StaticLists.ApplicationRequested;
+                Store1.Data = StaticLists.ApplicationRequested;
+                CheckboxSelectionModel sm = CheckboxSelectionModel1;
+                sm.ClearSelection();
             }
           
         }
-        protected void deApplicationGridData(object sender, StoreReadDataEventArgs e)
+        protected void deSelectYear(object sender, DirectEventArgs e)
         {
-
-            using (Entities _context = new Entities())
-            {
-                List<CrossingData> data;
-
-                if (validateComponentSecurity("SYS.CrossingMaintenance.DataEntryView"))
-                {
-                    long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
-
-                    List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
-                    data = (from d in _context.CROSSINGS
-                            join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID
-                            join p in _context.PROJECTS_V on r.PROJECT_ID equals p.PROJECT_ID
-                            where p.PROJECT_TYPE == "CUSTOMER BILLING" && p.TEMPLATE_FLAG == "N" && p.PROJECT_STATUS_CODE == "APPROVED" && OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID) && d.RAILROAD_ID == RailroadId
-                            select new CrossingData{ RAILROAD_ID = d.RAILROAD_ID, CONTACT_ID = d.CONTACT_ID,CROSSING_ID = d.CROSSING_ID,
-                            CROSSING_NUMBER = d.CROSSING_NUMBER, SERVICE_UNIT = d.SERVICE_UNIT,SUB_DIVISION = d.SUB_DIVISION, CONTACT_NAME = d.CROSSING_CONTACTS.CONTACT_NAME }).Distinct().ToList();
-
-
-                    int count;
-                    uxAppEntryCrossingStore.DataSource = GenericData.EnumerableFilterHeader<CrossingData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
-                    e.Total = count;
-                }
-            }
+            uxHidYearOK.Text = "Y";
+            uxAppEntryCrossingStore.Reload();
         }
 
+        protected void deSelectVersion(object sender, DirectEventArgs e)
+        {
+          
+            uxHidVerOK.Text = "Y";
+            uxAppEntryCrossingStore.Reload();
+        }
+
+       
+        protected void deApplicationGridData(object sender, StoreReadDataEventArgs e)
+        {
+            string App = uxHidYearOK.Text;
+            string Project = uxHidVerOK.Text;
+
+            if (App == "Y" && Project == "Y")
+            {
+                
+                CheckboxSelectionModel csm = CheckboxSelectionModel1;
+                decimal Application = Convert.ToDecimal(ComboBox1.SelectedItem.Value);
+                long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
+                uxAddApp.SetValue(Application);
+                decimal UserId = SYS_USER_INFORMATION.UserID(User.Identity.Name);
+
+                List<CROSSING_MAINTENANCE.CrossingData1> dataSource = CROSSING_MAINTENANCE.GetAppCrossingList(RailroadId, UserId).ToList();
+
+                int count;
+
+                if (Application == 1)
+                {
+                    dataSource = dataSource.Where(x => x.APPLICATION_REQUESTED == null).ToList();
+                    csm.ClearSelection();
+                }
+
+                if (Application == 2)
+                {
+                    dataSource = dataSource.Where(x => x.APPLICATION_REQUESTED == 1).ToList();
+                    csm.ClearSelection();
+                }
+
+                if (Application == 3)
+                {
+                    dataSource = dataSource.Where(x => x.APPLICATION_REQUESTED == 2).ToList();
+                    csm.ClearSelection();
+                }
+                List<object> _data = dataSource.ToList<object>();
+                uxAppEntryCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
+                e.Total = count; 
+               
+            }
+            else
+            {
+                return;
+            }
+        
+        }
+      
         protected void deLoadData(object sender, DirectEventArgs e)
         {
             uxApplicationStore.Reload();
@@ -71,32 +106,22 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             //Get application data and set datasource
             CheckboxSelectionModel sm = CheckboxSelectionModel1;
-            List<object> data;
-
-      
+           
             List<long> crossingIdList = new List<long>();
           
             foreach (SelectedRow sr in sm.SelectedRows)
             {
-                {
-                    crossingIdList.Add(long.Parse(sr.RecordID));
-                }
+              crossingIdList.Add(long.Parse(sr.RecordID));
+            }
                 using (Entities _context = new Entities())
                 {
-
-                    data = (from a in _context.CROSSING_APPLICATION
-                            join c in _context.CROSSINGS on a.CROSSING_ID equals c.CROSSING_ID
-                            where crossingIdList.Contains(a.CROSSING_ID)
-                            select new { c.CROSSING_NUMBER, a.CROSSING_ID, a.APPLICATION_ID, a.APPLICATION_NUMBER, a.APPLICATION_REQUESTED, a.APPLICATION_DATE, a.TRUCK_NUMBER, a.SPRAY, a.CUT, a.INSPECT, a.REMARKS }).ToList<object>();
-
-
+                    IQueryable<CROSSING_MAINTENANCE.ApplicationList> data = CROSSING_MAINTENANCE.GetApplications(_context).Where(s => crossingIdList.Contains(s.CROSSING_ID));
+                   
                     int count;
-                    uxApplicationStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
-                    e.Total = count;
+                    uxApplicationStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.ApplicationList>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                    e.Total = count;               
 
-                }
-
-            }
+                 }
         }
         protected void deReadGrid(object sender, StoreReadDataEventArgs e)
         {
@@ -116,10 +141,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     dataIn = WEB_EQUIPMENT_V.ListEquipment(CurrentOrg);
                 }
 
-
-
                 int count;
-
                 //Get paged, filterable list of Equipment
                 List<WEB_EQUIPMENT_V> data = GenericData.EnumerableFilterHeader<WEB_EQUIPMENT_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataIn, out count).ToList();
 
@@ -139,13 +161,14 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 CROSSING_APPLICATION data;
 
                 //do type conversions
+                
                 DateTime Date = (DateTime)uxAddEntryDate.Value;
-                string AppRequested = uxAddAppReqeusted.Value.ToString();
+                decimal AppRequested = Convert.ToDecimal(uxAddApp.Value);
                 string TruckNumber = uxAddEquipmentDropDown.Value.ToString();
                 string Spray = uxAddEntrySprayBox.Value.ToString();
                 string Cut = uxAddEntryCutBox.Value.ToString();
                 string Inspect = uxAddEntryInspectBox.Value.ToString();
-            
+                uxAddApp.SetValue(ComboBox1.SelectedItem.Value);
                 if (uxAddEntrySprayBox.Checked)
                 {
                     Spray = "Y";
@@ -173,9 +196,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     Inspect = "N";
                 }
 
-                //string json = (e.ExtraParams["selectedCrossings"]);
-                //List<CrossingForApplicationDetails> crossingList = JSON.Deserialize<List<CrossingForApplicationDetails>>(json);
-                //foreach (CrossingForApplicationDetails crossing in crossingList)
                 foreach (SelectedRow sr in sm.SelectedRows)
                 {   
                     //check for if application requested has been duplicated in the same fiscal year.
@@ -204,7 +224,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
                         else
                         {
-
                             data = new CROSSING_APPLICATION();
                             data.APPLICATION_DATE = Date;
                             data.APPLICATION_REQUESTED = AppRequested;
@@ -213,7 +232,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                             data.CUT = Cut;
                             data.INSPECT = Inspect;
                             data.CROSSING_ID = long.Parse(sr.RecordID);
-                            //data.CROSSING_ID = crossing.CROSSING_ID;
                             data.CREATE_DATE = DateTime.Now;
                             data.MODIFY_DATE = DateTime.Now;
                             data.CREATED_BY = User.Identity.Name;
@@ -231,6 +249,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                             GenericData.Insert<CROSSING_APPLICATION>(data);
 
                             uxAddNewApplicationEntryWindow.Hide();
+                            uxAppEntryCrossingStore.Reload();
+                            sm.ClearSelection();
                             uxApplicationStore.Reload();
                             uxAddApplicationForm.Reset();
 
@@ -250,8 +270,36 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     }
                 }
             }
+
+        protected void deAddProjectValue(object sender, DirectEventArgs e)
+        {
+          
+            switch (e.ExtraParams["Type"])
+            {
+                case "Add":
+                    uxAddProjectDropDownField.SetValue(e.ExtraParams["ProjectId"], e.ExtraParams["ProjectName"]);
+                    //uxAddProjectFilter.ClearFilter();
+                    break;
+
+            }
             
-        
+        }
+        protected void deAddProjectGrid(object sender, StoreReadDataEventArgs e)
+        {
+
+            //long CrossingId = long.Parse(e.Parameters["CrossingId"]);
+            //long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
+            List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
+            using (Entities _context = new Entities())
+            {
+                List<CROSSING_MAINTENANCE.ProjectList> data = CROSSING_MAINTENANCE.ApplicationProjectList().Where(v => v.PROJECT_TYPE == "CUSTOMER BILLING" && v.TEMPLATE_FLAG == "N" && v.PROJECT_STATUS_CODE == "APPROVED" && v.ORGANIZATION_NAME.Contains(" RR") && OrgsList.Contains(v.CARRYING_OUT_ORGANIZATION_ID)).ToList();
+
+                int count;
+                uxApplicationProjectStore.DataSource = GenericData.EnumerableFilterHeader<CROSSING_MAINTENANCE.ProjectList>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                e.Total = count;
+
+            }
+        }
         protected void deStoreGridValue(object sender, DirectEventArgs e)
         {
             if (e.ExtraParams["Form"] == "Add")
@@ -279,71 +327,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
             }
         }
-        public class AppNumber
-        {
-            public string APPLICATION_REQUESTED { get; set; }
-        }
-       
-        public class ApplicationDetails
-        {
-            public long APPLICATION_ID { get; set; }
-            public long CROSSING_ID { get; set; }
-            public Int64 APPLICATION_NUMBER { get; set; }
-            public string APPLICATION_REQUESTED { get; set; }
-            public DateTime APPLICATION_DATE { get; set; }
-            public string TRUCK_NUMBER { get; set; }
-            public long FISCAL_YEAR { get; set; }
-            public string SPRAY { get; set; }
-            public string CUT { get; set; }
-            public string INSPECT { get; set; }
-            public string REMARKS { get; set; }
-
-        }
-        //protected void ReadInTruckNumberForApplication(string truckType)
-        //{
-
-        //    using (Entities _context = new Entities())
-        //    {
-        //        List<object> data;
-
-        //        //Get List of all new headers
-
-        //        data = (from p in _context.PROJECTS_V
-        //                where p.PROJECT_TYPE == "TRUCK & EQUIPMENT"
-        //                select new { p.PROJECT_ID, p.PROJECT_TYPE, p.NAME }).ToList<object>();
-
-
-        //        if (truckType == "Add")
-        //        {
-        //            uxAddApplicationTruckStore.DataSource = data;
-        //        }
-
-        //    }
-        //}
-        public class CrossingForApplicationDetails
-        {
-            public long CROSSING_ID { get; set; }
-            public string CROSSING_NUMBER { get; set; }
-            public string SERVICE_UNIT { get; set; }
-            public string SUB_DIVISION { get; set; }
-            public string DOT { get; set; }
-            public string MILE_POST { get; set; }
-            public string STATE { get; set; }
-            public string CONTACT_ID { get; set; }
-        }
-        public class CrossingData
-        {
-            public long CROSSING_ID { get; set; }
-            public string CROSSING_NUMBER { get; set; }
-            public string SERVICE_UNIT { get; set; }
-            public string SUB_DIVISION { get; set; }
-            public string DOT { get; set; }
-            public long? PROJECT_ID { get; set; }
-            public string STATE { get; set; }
-            public decimal? CONTACT_ID { get; set; }
-            public string CONTACT_NAME { get; set; }
-            public decimal? RAILROAD_ID { get; set; }
-        }
+      
         protected void deRemoveApplicationEntry(object sender, DirectEventArgs e)
         {
             CROSSING_APPLICATION data;
@@ -378,6 +362,51 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             }
 
+        }
+        public class AppNumber
+        {
+            public decimal? APPLICATION_REQUESTED { get; set; }
+        }
+
+        public class ApplicationDetails
+        {
+            public long APPLICATION_ID { get; set; }
+            public long CROSSING_ID { get; set; }
+            public Int64 APPLICATION_NUMBER { get; set; }
+            public decimal? APPLICATION_REQUESTED { get; set; }
+            public DateTime APPLICATION_DATE { get; set; }
+            public string TRUCK_NUMBER { get; set; }
+            public long FISCAL_YEAR { get; set; }
+            public string SPRAY { get; set; }
+            public string CUT { get; set; }
+            public string INSPECT { get; set; }
+            public string REMARKS { get; set; }
+
+        }
+
+        public class CrossingForApplicationDetails
+        {
+            public long CROSSING_ID { get; set; }
+            public string CROSSING_NUMBER { get; set; }
+            public string SERVICE_UNIT { get; set; }
+            public string SUB_DIVISION { get; set; }
+            public string DOT { get; set; }
+            public string MILE_POST { get; set; }
+            public string STATE { get; set; }
+            public string CONTACT_ID { get; set; }
+        }
+        public class CrossingData
+        {
+            public long CROSSING_ID { get; set; }
+            public string CROSSING_NUMBER { get; set; }
+            public string SERVICE_UNIT { get; set; }
+            public string SUB_DIVISION { get; set; }
+            public string DOT { get; set; }
+            public long? PROJECT_ID { get; set; }
+            public string STATE { get; set; }
+            public decimal? CONTACT_ID { get; set; }
+            public string CONTACT_NAME { get; set; }
+            public decimal? RAILROAD_ID { get; set; }
         }
     }
 }

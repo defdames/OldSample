@@ -18,6 +18,8 @@ using Ext.Net;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using DBI.Data.DataFactory;
+using System.Xml.Xsl;
+using System.Xml;
 
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 {
@@ -45,34 +47,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string State = uxAddStateComboBox.SelectedItem.Value;
             using (Entities _context = new Entities())
             {
-                
-
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
-                var allData = (from d in _context.CROSSINGS
-                        where d.RAILROAD_ID == RailroadId && d.PROPERTY_TYPE == "Private"
-                        select new
-                        {
-                            d.CROSSING_ID,
-                            d.CROSSING_NUMBER,
-                            d.SUB_DIVISION,
-                            d.STATE,
-                            d.SERVICE_UNIT,
-                            d.COUNTY,
-                            d.CITY,
-                            d.MILE_POST,
-                            d.DOT,
-                            d.ROWNE,
-                            d.ROWNW,
-                            d.ROWSE,
-                            d.ROWSW,
-                            d.STREET,
-                            d.SUB_CONTRACTED,
-                            d.LONGITUDE,
-                            d.LATITUDE,
-                            d.SPECIAL_INSTRUCTIONS,
-                        
-                        });
 
+                IQueryable<CROSSING_MAINTENANCE.StateCrossingList> allData = CROSSING_MAINTENANCE.GetPrivateCrossings(RailroadId, _context);
+              
                 if (ServiceUnit != null)
                 {
                     allData = allData.Where(x => x.SERVICE_UNIT == ServiceUnit);
@@ -92,7 +70,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 uxPrivateCrossingListStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
                 e.Total = count;
               
-                //uxStateCrossingListStore.Reload();
 
             }
 
@@ -141,18 +118,60 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 uxAddSubDivStore.DataBind();
             }
         }
-        //protected void GetAdditionalData(object sender, DirectEventArgs e)
-        //{
-        //    List<object> data;
+        protected void deLaunchGrid(object sender, DirectEventArgs e)
+        {
+                 
+            GridPanel1.Show();
+            
+        }
+        protected void ToXml(object sender, EventArgs e)
+        {
+            string json = this.Hidden1.Value.ToString();
+            StoreSubmitDataEventArgs eSubmit = new StoreSubmitDataEventArgs(json, null);
+            XmlNode xml = eSubmit.Xml;
 
+            string strXml = xml.OuterXml;
 
-        //    using (Entities _context = new Entities())
-        //    {
-        //        data = (from d in _context.CROSSINGS
+            this.Response.Clear();
+            this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.xml");
+            this.Response.AddHeader("Content-Length", strXml.Length.ToString());
+            this.Response.ContentType = "application/xml";
+            this.Response.Write(strXml);
+            this.Response.End();
+        }
 
-        //                select new { d.SPECIAL_INSTRUCTIONS }).ToList<object>();
-        //    }
+        protected void ToExcel(object sender, EventArgs e)
+        {
+            string json = this.Hidden1.Value.ToString();
+            StoreSubmitDataEventArgs eSubmit = new StoreSubmitDataEventArgs(json, null);
+            XmlNode xml = eSubmit.Xml;
 
-        //}
+            this.Response.Clear();
+            this.Response.ContentType = "application/vnd.ms-excel";
+            this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.xls");
+
+            XslCompiledTransform xtExcel = new XslCompiledTransform();
+
+            xtExcel.Load(Server.MapPath("Excel.xsl"));
+            xtExcel.Transform(xml, null, this.Response.OutputStream);
+            this.Response.End();
+        }
+
+        protected void ToCsv(object sender, EventArgs e)
+        {
+            string json = this.Hidden1.Value.ToString();
+            StoreSubmitDataEventArgs eSubmit = new StoreSubmitDataEventArgs(json, null);
+            XmlNode xml = eSubmit.Xml;
+
+            this.Response.Clear();
+            this.Response.ContentType = "application/octet-stream";
+            this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.csv");
+
+            XslCompiledTransform xtCsv = new XslCompiledTransform();
+
+            xtCsv.Load(Server.MapPath("Csv.xsl"));
+            xtCsv.Transform(xml, null, this.Response.OutputStream);
+            this.Response.End();
+        }
     }
 }

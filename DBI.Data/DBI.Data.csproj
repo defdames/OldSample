@@ -54,6 +54,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\EXT\Ext.Net.Utilities.dll</HintPath>
     </Reference>
+    <Reference Include="iTextSharp">
+      <HintPath>..\lib\iTextSharp.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\EXT\Newtonsoft.Json.dll</HintPath>
@@ -76,6 +79,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Transactions" />
@@ -112,12 +116,6 @@
     <Compile Include="BUD_BID_LINES.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
-    <Compile Include="BUD_BID_LOCKED.cs">
-      <DependentUpon>Oracle.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BUD_BID_ORGS.cs">
-      <DependentUpon>Oracle.tt</DependentUpon>
-    </Compile>
     <Compile Include="BUD_BID_PROJECTS.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
@@ -146,6 +144,9 @@
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="CROSSING_INVOICE.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CROSSING_PRICING.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="CROSSING_PROJECT.cs">
@@ -184,10 +185,16 @@
     <Compile Include="CUSTOMER_SURVEY_FORMS_COMP.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="CUSTOMER_SURVEY_FORM_TYPES.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="CUSTOMER_SURVEY_OPTIONS.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="CUSTOMER_SURVEY_QUESTIONS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CUSTOMER_SURVEY_QUES_CAT.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="CUSTOMER_SURVEY_QUES_TYPES.cs">
@@ -303,6 +310,8 @@
     <Compile Include="MTL_TRANSACTION_INT_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="Oracle\OVERHEAD.cs" />
+    <Compile Include="Oracle\CROSSING_MAINTENANCE.cs" />
     <Compile Include="Oracle\TIMECLOCK.cs" />
     <Compile Include="Oracle\CUSTOMER_SURVEYS.cs" />
     <Compile Include="Oracle\BUDGETBIDDING.cs" />
@@ -346,23 +355,34 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Oracle.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Oracle\OVERHEAD_BUDGET.cs" />
     <Compile Include="Oracle\XXDBI_DW.cs" />
     <Compile Include="Oracle\PA.cs" />
     <Compile Include="Oracle\XXEMS.cs" />
     <Compile Include="ORG_HIER_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="OVERHEAD_ACCOUNT_CATEGORY.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OVERHEAD_ACCOUNT_COMMENT.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OVERHEAD_BUDGET_DETAIL.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="OVERHEAD_BUDGET_TYPE.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
-    <Compile Include="OVERHEAD_BUDGET_VERSION.cs">
+    <Compile Include="OVERHEAD_CATEGORY.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="OVERHEAD_GL_ACCOUNT.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="OVERHEAD_GL_RANGE.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OVERHEAD_ORG_BUDGETS.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="PA_LOCATIONS_V.cs">
@@ -381,6 +401,9 @@
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="PROJECTS_V.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PROJECT_CONTACTS_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -483,6 +506,7 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

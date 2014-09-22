@@ -25,47 +25,94 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //uxInvoiceChoiceStore.Data = StaticLists.InvoiceChoice;
+            uxInvoiceChoiceStore.Data = StaticLists.InvoiceChoice;
         }
 
-        //protected void deStateCrossingListGrid(object sender, StoreReadDataEventArgs e)
-        //{
-        //    string Invoice = uxInvoiceChoice.SelectedItem.Value;
+        protected void deApplicationReviewGrid(object sender, StoreReadDataEventArgs e)
+        {
+            string Invoice = uxInvoiceChoice.SelectedItem.Value;
+            decimal Application = Convert.ToDecimal(uxInvoiceChoice.SelectedItem.Value);
 
-        //    List<object> appData;
+            List<object> appData;
 
-        //    if(Invoice != "Supplemental")
-        //    {
-        //        using (Entities _context = new Entities())
-        //        {
-        //            long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
-
-                    
-        //             appData = (from i in _context.CROSSING_INVOICE
-        //                       join a in _context.CROSSING_APPLICATION on i.INVOICE_ID equals a.INVOICE_ID
-                               
-        //                       //where d.RAILROAD_ID == RailroadId 
-        //                       select new
-        //                       {
-        //                           //d.CROSSING_ID,
-        //                           a.APPLICATION_ID,
-        //                           a.APPLICATION_DATE,
-        //                           a.APPLICATION_REQUESTED,
-        //                           //d.CROSSING_NUMBER,
-        //                           //d.SUB_DIVISION,
-        //                           //d.SERVICE_UNIT,
-        //                           //d.STATE,
-        //                           //d.MILE_POST,
-        //                           //a.REMARKS,
-        //                           }).ToList<object>;
+            
+                using (Entities _context = new Entities())
+                {
+                    long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
 
 
-        //            int count;
-        //            uxInvoiceApplicationStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], appData, out count);
-        //            e.Total = count;
-        //        }
-               
-        //    }
+                    appData = (from i in _context.CROSSING_INVOICE
+                               join a in _context.CROSSING_APPLICATION on i.INVOICE_ID equals a.INVOICE_ID
+                               join d in _context.CROSSINGS on a.CROSSING_ID equals d.CROSSING_ID
+                               where a.APPLICATION_REQUESTED == Application && d.RAILROAD_ID == RailroadId
+                             
+                               select new
+                               {
+                                  
+                                   i.INVOICE_ID,
+                                   i.INVOICE_NUMBER,
+                                   i.INVOICE_DATE,
+                                
+                               }).ToList<object>();
 
+
+                    int count;
+                    uxInvoiceApplicationStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], appData, out count);
+                    e.Total = count;
+                }
+
+            
         }
+        protected void deSupplementalReviewGrid(object sender, StoreReadDataEventArgs e)
+        {
+            string Invoice = uxInvoiceChoice.SelectedItem.Value;
+   
+            List<object> suppData;
+
+           
+                using (Entities _context = new Entities())
+                {
+                    long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
+
+
+                    suppData = (from i in _context.CROSSING_SUPP_INVOICE
+                               //join a in _context.CROSSING_SUPPLEMENTAL on i.INVOICE_SUPP_ID equals a.INVOICE_SUPP_ID
+                               //join d in _context.CROSSINGS on a.CROSSING_ID equals d.CROSSING_ID
+                               //where d.RAILROAD_ID == RailroadId 
+                               select new
+                               {
+                                   
+                                   i.INVOICE_SUPP_ID,
+                                   i.INVOICE_SUPP_NUMBER,
+                                   i.INVOICE_SUPP_DATE,
+                               }).ToList<object>();
+
+
+                    int count;
+                    uxInvoiceSupplementalStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"],suppData, out count);
+                    e.Total = count;
+                }
+
+            
+        }
+        protected void deChooseType(object sender, DirectEventArgs e)
+        {
+            string InvoiceChoice = uxInvoiceChoice.SelectedItem.Value;
+            if (InvoiceChoice != "Supplemental")
+            {
+                uxInvoiceApplicationGrid.Show();
+                uxSupplementalInvoiceGrid.Hide();
+                uxInvoiceApplicationStore.Reload();
+
+            }
+            else 
+            {
+                uxSupplementalInvoiceGrid.Show();
+                uxInvoiceApplicationGrid.Hide();
+                uxInvoiceSupplementalStore.Reload();            
+            }
+        
+        }       
+      }
     }
+

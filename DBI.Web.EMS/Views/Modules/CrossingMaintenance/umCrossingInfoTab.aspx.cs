@@ -13,6 +13,7 @@ using DBI.Data.DataFactory;
 using DBI.Core.Security;
 using System.Security.Claims;
 using System.IO;
+using System.Data.Entity;
 
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 {
@@ -39,33 +40,25 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
         protected void deCrossingGridData(object sender, StoreReadDataEventArgs e)
         {
-
-            using (Entities _context = new Entities())
-            {
-                List<object> data;
-                
+            
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
+                using (Entities _context = new Entities())
+                {
                 //Get List of all new crossings
+                     IQueryable<CROSSING_MAINTENANCE.CrossingList> data;
                 if (uxToggleClosed.Checked)
                 {
-                    data = (from d in _context.CROSSINGS 
-                            //join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID
-                              where !(from r in _context.CROSSING_RELATIONSHIP 
-                                where d.CROSSING_ID == r.CROSSING_ID
-                                 select r.CROSSING_ID)
-                                 .Contains(d.CROSSING_ID)
-                                 where d.RAILROAD_ID == RailroadId
-                            select new { d.RAILROAD_ID, d.RAILROAD, d.CONTACT_ID, d.STATUS, d.STATE, d.CROSSING_ID, d.CROSSING_NUMBER, d.SERVICE_UNIT, d.SUB_DIVISION, d.CROSSING_CONTACTS.CONTACT_NAME }).ToList<object>();  
+
+                   data = CROSSING_MAINTENANCE.GetCrossingProjectList(RailroadId, _context);
                 }
                 else
                 {
-                    data = (from d in _context.CROSSINGS
-                            where d.RAILROAD_ID == RailroadId
-                            select new { d.RAILROAD_ID, d.RAILROAD, d.CONTACT_ID, d.STATE, d.STATUS, d.CROSSING_ID, d.CROSSING_NUMBER, d.SERVICE_UNIT, d.SUB_DIVISION, d.CROSSING_CONTACTS.CONTACT_NAME }).ToList<object>();
+                    
+                    data = CROSSING_MAINTENANCE.GetCrossingNoProjectList(RailroadId, _context);
                 }
-
+               
                 int count;
-                uxCurrentCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                uxCurrentCrossingStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.CrossingList>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                 e.Total = count;
             
             }
@@ -198,7 +191,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 
             }
         }
-        
         /// <summary>
         /// Add Crossing to Database
         /// </summary>
@@ -206,7 +198,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         /// <param name="e"></param>
         protected void deAddCrossings(object sender, DirectEventArgs e)
         {
-           
+            CheckboxSelectionModel sm = CheckboxSelectionModel2;
             //Do type conversions
             //string CrossingNum = uxAddCrossingNumCI.Value.ToString();
            
@@ -314,15 +306,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
              {
                  data.STREET = null;
              }
-            try
-            {
-                long ContactName = Convert.ToInt64(uxAddManagerCIDropDownField.Value);
-                data.CONTACT_ID = ContactName;
-            }
-            catch (FormatException)
-            {
-                data.CONTACT_ID = null;
-            }
+            //try
+            //{
+            //    long ContactName = Convert.ToInt64(uxAddManagerCIDropDownField.Value);
+            //    data.CONTACT_ID = ContactName;
+            //}
+            //catch (FormatException)
+            //{
+            //    data.CONTACT_ID = null;
+            //}
             try
             {
                 decimal Latitude = Convert.ToDecimal(uxAddLatCINumberField.Value);
@@ -492,17 +484,27 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 data.STATUS = "ACTIVE";
             }
-            //if (Session["rrType"] != null)
+
+            //if (SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue") != null)
             //{
-            //    Session["rrType"] = data.RAILROAD_ID;
-            ////}
-            //if(SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue") != null)
-            //{
-            //    (SYS_USER_PROFILE_OPTIONS.userProfileOption("UserCrossingSelectedValue")) = data.RAILROAD_ID;
+            //    data.RAILROAD_ID.ToString() = (SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
             //}
             //Write to DB
             GenericData.Insert<CROSSING>(data);
+           
+            long CrossingId = data.CROSSING_ID;
+            //do type conversions
 
+            foreach (SelectedRow sr in sm.SelectedRows)
+            {
+                CROSSING_RELATIONSHIP ProjectToAdd = new CROSSING_RELATIONSHIP
+                {
+                    PROJECT_ID = long.Parse(sr.RecordID),
+                    CROSSING_ID = CrossingId,
+                };
+
+                GenericData.Insert<CROSSING_RELATIONSHIP>(ProjectToAdd);
+            }
             uxAddCrossingWindow.Hide();
             uxAddCrossingForm.Reset();
             uxCurrentCrossingStore.Reload();
@@ -519,7 +521,37 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
             });
         }
+        protected void deValidateCancelButton(object sender, DirectEventArgs e)
+        {
+            CheckboxSelectionModel sm = CheckboxSelectionModel2;
+            sm.ClearSelection();
+        }
+        protected void deAddProject(object sender, DirectEventArgs e)
+        {
+            uxCurrentSecurityProjectStore.Reload();
+        //    CheckboxSelectionModel sm = CheckboxSelectionModel2;
 
+        //    //do type conversions
+        //     long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
+        //    foreach (SelectedRow sr in sm.SelectedRows)
+        //    {
+
+                 
+        //            CROSSING_RELATIONSHIP ProjectToAdd = new CROSSING_RELATIONSHIP
+        //            {
+        //                PROJECT_ID = long.Parse(sr.RecordID),
+        //                CROSSING_ID = CrossingId,
+        //            };
+
+        //            GenericData.Insert<CROSSING_RELATIONSHIP>(ProjectToAdd);
+        //        }
+
+
+        }
+        
+                
+            
+        
         /// <summary>
         /// Load current values into Edit Crossing Form
         /// </summary>
@@ -539,19 +571,19 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                                  d, r
                               
                             }).SingleOrDefault();
-                try
-                {
-                    long ContactId = long.Parse(data.d.CONTACT_ID.ToString());
-                    var contactdata = (from c in _context.CROSSING_CONTACTS
-                                       where c.CONTACT_ID == ContactId
+                //try
+                //{
+                //    long ContactId = long.Parse(data.d.CONTACT_ID.ToString());
+                //    var contactdata = (from c in _context.CROSSING_CONTACTS
+                //                       where c.CONTACT_ID == ContactId
 
-                                       select c.CONTACT_NAME).Single();
-                    uxEditManagerCI.SetValue(data.d.CONTACT_ID.ToString(), contactdata);
-                }
-                catch (Exception) 
-                {
-                    uxEditManagerCI.Value = string.Empty;
-                }
+                //                       select c.CONTACT_NAME).Single();
+                //    uxEditManagerCI.SetValue(data.d.CONTACT_ID.ToString(), contactdata);
+                //}
+                //catch (Exception) 
+                //{
+                //    uxEditManagerCI.Value = string.Empty;
+                //}
                
                 //uxEditCrossingNumCI.SetValue(data.d.CROSSING_NUMBER);
                 uxEditRouteCI.SetValue(data.d.ROUTE);
@@ -674,16 +706,16 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                                      
                
             }
-            if (uxEditManagerCI.Text != "")
-            {
-                long ContactName = Convert.ToInt64(uxEditManagerCI.Value.ToString());
-                data.CONTACT_ID = ContactName;
+            //if (uxEditManagerCI.Text != "")
+            //{
+            //    long ContactName = Convert.ToInt64(uxEditManagerCI.Value.ToString());
+            //    data.CONTACT_ID = ContactName;
               
-            }
-            else
-            {
-                data.CONTACT_ID = null;
-            }    
+            //}
+            //else
+            //{
+            //    data.CONTACT_ID = null;
+            //}    
 
                 //data.CROSSING_NUMBER = CrossingNum;
                 data.MILE_POST = MP;
@@ -1048,79 +1080,111 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
        }
         
            
-        protected void deAddManagerGrid(object sender, StoreReadDataEventArgs e)
-        {
+        //protected void deAddManagerGrid(object sender, StoreReadDataEventArgs e)
+        //{
 
-            //Get Contacts
-            using (Entities _context = new Entities())
+        //    //Get Contacts
+        //    using (Entities _context = new Entities())
+        //    {
+        //        long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
+        //        List<object> data;
+        //        data = (from d in _context.CROSSING_CONTACTS
+        //                where d.RAILROAD_ID == RailroadId
+        //                select new { d.CONTACT_ID, d.CONTACT_NAME, d.CELL_NUMBER, d.WORK_NUMBER }).ToList<object>();
+        //        int count;
+        //        uxAddManagerStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+        //        e.Total = count;
+        //    }
+        //}
+        //protected void deEditManagerGrid(object sender, StoreReadDataEventArgs e)
+        //{
+
+        //    //Get Contacts
+        //    using (Entities _context = new Entities())
+        //    {
+        //        long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
+        //        List<object> data;
+        //        data = (from d in _context.CROSSING_CONTACTS
+        //                where d.RAILROAD_ID == RailroadId
+        //                select new { d.CONTACT_ID, d.CONTACT_NAME, d.CELL_NUMBER, d.WORK_NUMBER }).ToList<object>();
+        //        int count;
+        //        uxEditManagerStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+        //        e.Total = count;
+        //    }
+        //}
+        protected void deAddProjectGrid(object sender, StoreReadDataEventArgs e)
+        {
             {
-                long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
-                List<object> data;
-                data = (from d in _context.CROSSING_CONTACTS
-                        where d.RAILROAD_ID == RailroadId
-                        select new { d.CONTACT_ID, d.CONTACT_NAME, d.CELL_NUMBER, d.WORK_NUMBER }).ToList<object>();
-                int count;
-                uxAddManagerStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
-                e.Total = count;
+                    long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
+                    List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
+                    using (Entities _context = new Entities())
+                    {
+                        IQueryable<CROSSING_MAINTENANCE.ProjectList> data = CROSSING_MAINTENANCE.GetCrossingSecurityProjectList(RailroadId, _context).Where(v => v.PROJECT_TYPE == "CUSTOMER BILLING" && v.TEMPLATE_FLAG == "N" && v.PROJECT_STATUS_CODE == "APPROVED" && v.ORGANIZATION_NAME.Contains(" RR") && OrgsList.Contains(v.CARRYING_OUT_ORGANIZATION_ID) && RailroadId != null);
+
+                        int count;
+                        uxCurrentSecurityProjectStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.ProjectList>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                        e.Total = count;
+
+                    }
             }
         }
-        protected void deEditManagerGrid(object sender, StoreReadDataEventArgs e)
-        {
+        //protected void deStoreAddManagerValue(object sender, DirectEventArgs e)
+        //{
+        //    switch (e.ExtraParams["Type"])
+        //    {
+        //        case "AddManager":
+        //            uxAddManagerCIDropDownField.SetValue(e.ExtraParams["ContactId"], e.ExtraParams["ContactName"]);
+        //            uxAddManagerFilter.ClearFilter();
+        //            break;
 
-            //Get Contacts
-            using (Entities _context = new Entities())
-            {
-                long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
-                List<object> data;
-                data = (from d in _context.CROSSING_CONTACTS
-                        where d.RAILROAD_ID == RailroadId
-                        select new { d.CONTACT_ID, d.CONTACT_NAME, d.CELL_NUMBER, d.WORK_NUMBER }).ToList<object>();
-                int count;
-                uxEditManagerStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
-                e.Total = count;
-            }
-        }
-        protected void deStoreAddManagerValue(object sender, DirectEventArgs e)
-        {
-            switch (e.ExtraParams["Type"])
-            {
-                case "AddManager":
-                    uxAddManagerCIDropDownField.SetValue(e.ExtraParams["ContactId"], e.ExtraParams["ContactName"]);
-                    uxAddManagerFilter.ClearFilter();
-                    break;
+        //    }
+        //}
+        //protected void deStoreEditManagerValue(object sender, DirectEventArgs e)
+        //{
+        //    switch (e.ExtraParams["Type"])
+        //    {
+        //        case "EditManager":
+        //            uxEditManagerCI.SetValue(e.ExtraParams["ContactId"], e.ExtraParams["ContactName"]);
+        //            uxEditManagerFilter.ClearFilter();
+        //            break;
 
-            }
-        }
-        protected void deStoreEditManagerValue(object sender, DirectEventArgs e)
-        {
-            switch (e.ExtraParams["Type"])
-            {
-                case "EditManager":
-                    uxEditManagerCI.SetValue(e.ExtraParams["ContactId"], e.ExtraParams["ContactName"]);
-                    uxEditManagerFilter.ClearFilter();
-                    break;
+        //    }
+        //}
+        //protected void deStoreAddProjectValue(object sender, DirectEventArgs e)
+        //{
+        //    switch (e.ExtraParams["Type"])
+        //    {
+        //        case "AddProject":
+        //            uxAddProjectCIDropDownField.SetValue(e.ExtraParams["ProjectId"], e.ExtraParams["ProjectName"]);
+        //            uxAddProjectFilter.ClearFilter();
+        //            break;
 
-            }
-        }
+        //    }
+        //}
+        //protected void deStoreEditProjectValue(object sender, DirectEventArgs e)
+        //{
+        //    switch (e.ExtraParams["Type"])
+        //    {
+        //        case "EditProject":
+        //            uxEditProjectCI.SetValue(e.ExtraParams["ProjectId"], e.ExtraParams["ProjectName"]);
+        //            uxEditProjectFilter.ClearFilter();
+        //            break;
+
+        //    }
+        //}
         
         protected void deGetProjectList(object sender, DirectEventArgs e)
         {
-            long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
-            List<object> data;
-            using (Entities _context = new Entities())
-            {
-                data = (from r in _context.CROSSING_RELATIONSHIP
-                        join p in _context.PROJECTS_V on r.PROJECT_ID equals p.PROJECT_ID
-                        where r.CROSSING_ID == CrossingId
-                        select new { r.PROJECT_ID, p.LONG_NAME, p.SEGMENT1, p.ORGANIZATION_NAME }).ToList<object>();
+                long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
+
+                var data = CROSSING_MAINTENANCE.CrossingsProjectList(CrossingId);
+
                 uxProjectListStore.DataSource = data;
                 uxProjectListStore.DataBind();
-
-
-            }
         }
     }
 }
+
     
 
             

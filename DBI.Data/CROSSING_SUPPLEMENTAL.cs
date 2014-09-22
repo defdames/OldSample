@@ -37,6 +37,8 @@ namespace DBI.Data
         public string MODIFIED_BY { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public Nullable<decimal> INVOICE_SUPP_ID { get; set; }
+        public Nullable<System.DateTime> CUT_TIME { get; set; }
+        public Nullable<long> PROJECT_ID { get; set; }
     
         public virtual CROSSING CROSSING { get; set; }
     }

@@ -98,29 +98,24 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         }
         protected void deCurrentServiceUnitGrid(object sender, StoreReadDataEventArgs e)
         {
-
-            //Get Contacts
+            //Get ServiceUnit List
             using (Entities _context = new Entities())
-            {             
-                List<object> data;
-                data = (from d in _context.CROSSING_SERVICE_UNIT
-                        select new { d.SERVICE_UNIT_ID, d.SERVICE_UNIT_NAME, }).ToList<object>();
+            {
+                IQueryable<CROSSING_MAINTENANCE.ServiceUnitList> data = CROSSING_MAINTENANCE.GetKCSServiceUnit(_context);
+               
                 int count;
-                uxCurrentServiceUnitStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                uxCurrentServiceUnitStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.ServiceUnitList>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                 e.Total = count;
             }
         }
         protected void deNewServiceUnitGrid(object sender, StoreReadDataEventArgs e)
         {
-
-            //Get Contacts
+            //Get Service Unit
             using (Entities _context = new Entities())
-            {   
-                List<object> data;
-                data = (from d in _context.CROSSING_SERVICE_UNIT
-                        select new { d.SERVICE_UNIT_ID, d.SERVICE_UNIT_NAME }).ToList<object>();
+            {                 
+                IQueryable<CROSSING_MAINTENANCE.ServiceUnitList> data = CROSSING_MAINTENANCE.GetKCSServiceUnit(_context);
                 int count;
-                uxNewServiceUnitStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                uxNewServiceUnitStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.ServiceUnitList>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                 e.Total = count;
             }
         }

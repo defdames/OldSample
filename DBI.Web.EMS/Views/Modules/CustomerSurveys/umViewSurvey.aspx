@@ -3,44 +3,73 @@
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
+<head id="Head1" runat="server">
     <title></title>
+   
+    <style type="text/css">
+        .test {
+            background-color: grey;
+        }
+        .allowBlank-field {
+            background-color: #EFF7FF !important;
+            background-image: none;
+        }
+        .testing {
+            background-color: #EFF7FF !important;
+            background-image: none;
+        }
+    </style>
 </head>
-<body>
+<body style="overflow:visible">
     <form id="form1" runat="server">
-        <ext:ResourceManager runat="server" IsDynamic="false" />
-        <ext:Viewport runat="server">
+        <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="false" />
+        <ext:Viewport ID="Viewport1" runat="server" Cls="test" Layout="FitLayout" >
             <Items>
-                <ext:FormPanel runat="server" ID="uxSurveyDisplay" Width="1000" Layout="FormLayout" BodyPadding="10">
+                <ext:Container runat="server" AutoScroll="true" ID="uxSurveyContainer" Hidden="true">
                     <Items>
-                        <ext:FieldSet runat="server" Title="Form Code Entry" Margin="5">
+                        <ext:Container runat="server" Width="1000" StyleSpec="background-color: white" Padding="10" Border="false" Layout="FormLayout" ID="uxLogoContainer">
                             <Items>
-                                <ext:TextField runat="server" ID="uxFormCode" FieldLabel="Form Entry Code" LabelWidth="150" />
+                                <ext:Image ID="uxLogoImage" runat="server" ImageUrl="/Resources/Images/dbis_black_logo.png" Width="250" MaxWidth="250" MaxHeight="154" StyleSpec="text-align: center" />
                             </Items>
-                        </ext:FieldSet>
-                    </Items>
-                    <Buttons>
-                        <ext:Button runat="server" ID="uxSubmitSurveyButton" Text="Submit" Icon="Add" Disabled="true">
-                        </ext:Button>
-                        <ext:Button runat="server" ID="uxCancelSurveyButton" Text="Cancel" Icon="Delete">
+                        </ext:Container>
+                        <ext:FormPanel runat="server" ID="uxSurveyDisplay" Layout="VBoxLayout" MaxWidth="1000" BodyPadding="10" Flex="500" ManageHeight="true" Border="false" >
+                            <Items>
+                                <ext:FieldSet runat="server" Title="Form Code" Margin="5" ID="uxCodeFieldset">
+                                    <Items>
+                                        <ext:TextField runat="server" ID="uxFormCode" FieldLabel="Enter Form Code" AllowBlank="false" InvalidCls="allowBlank" LabelWidth="150" MsgTarget="Side" IndicatorIcon="BulletRed" >
+                                            <DirectEvents>
+                                                <Blur OnEvent="deLoadCustomer" />
+                                            </DirectEvents>
+                                        </ext:TextField>
+                                        <ext:DisplayField runat="server" ID="uxCustomerField" />
+                                    </Items>
+                                </ext:FieldSet>
+                            </Items>
+                            <Buttons>
+                                <ext:Button runat="server" ID="uxSubmitSurveyButton" Text="Submit" Icon="Add" Disabled="true">
+                                    <DirectEvents>
+                                        <Click OnEvent="deSaveSurvey" />
+                                    </DirectEvents>
+                                </ext:Button>
+                                <ext:Button runat="server" ID="uxCancelSurveyButton" Text="Cancel" Icon="Delete">
+                                    <Listeners>
+                                        <Click Handler="#{uxSurveyDisplay}.reset()" />
+                                    </Listeners>
+                                </ext:Button>
+                            </Buttons>
                             <Listeners>
-                                <Click Handler="parentAutoLoadControl.close()" />
+                                <ValidityChange Handler="#{uxSubmitSurveyButton}.setDisabled(!valid)" />
                             </Listeners>
-                        </ext:Button>
-                    </Buttons>
-                    <Listeners>
-                        <AfterRender
-                            Handler="var win = parentAutoLoadControl.target || parentAutoLoadControl, //you can use just 'parentAutoLoadControl' after update to Ext.NET v2 beta.
-									size = this.getSize();
- 
-								size.height += 34;
-								size.width += 12;
-								win.setSize(size);"
-                            Delay="100" />
-                        <ValidityChange Handler="#{uxSubmitSurveyButton}.setDisabled(!valid)" />
-                    </Listeners>
-                </ext:FormPanel>
+                            <LayoutConfig>
+                                <ext:VBoxLayoutConfig Align="Stretch" />
+                            </LayoutConfig>
+                        </ext:FormPanel>
+                    </Items>
+                </ext:Container>
             </Items>
+            <LayoutConfig>
+                <ext:FitLayoutConfig ReserveScrollbar="true" />
+            </LayoutConfig>
         </ext:Viewport>
     </form>
 </body>

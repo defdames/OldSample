@@ -28,15 +28,22 @@ namespace DBI.Data
             return (from f in _context.CUSTOMER_SURVEY_FIELDSETS
                     orderby f.SORT_ORDER ascending
                     where f.FORM_ID == FormId
-                    select new CustomerSurveyFieldsets { FIELDSET_ID = f.FIELDSET_ID, FORM_ID = f.FORM_ID, IS_ACTIVE = (f.IS_ACTIVE == "Y" ? true : false), SORT_ORDER = f.SORT_ORDER, TITLE = f.TITLE });
+                    select new CustomerSurveyFieldsets { FIELDSET_ID = f.FIELDSET_ID, FORM_ID = f.FORM_ID, IS_ACTIVE = (f.IS_ACTIVE == "Y" ? true : false), SORT_ORDER = f.SORT_ORDER, TITLE = f.TITLE, CATEGORY_ID = f.CATEGORY_ID });
         }
 
-        public static IQueryable<CustomerSurveyQuestions> GetFieldsetQuestions(decimal FieldSetId, Entities _context)
+        public static IQueryable<CustomerSurveyQuestions> GetFieldsetQuestionsForGrid(decimal FieldSetId, Entities _context)
         {
             return (from q in _context.CUSTOMER_SURVEY_RELATION
                     orderby q.SORT_ORDER ascending
                     where q.FIELDSET_ID == FieldSetId
-                    select new CustomerSurveyQuestions { QUESTION_ID = q.CUSTOMER_SURVEY_QUESTIONS.QUESTION_ID, TEXT = q.CUSTOMER_SURVEY_QUESTIONS.TEXT, IS_ACTIVE = (q.CUSTOMER_SURVEY_QUESTIONS.IS_ACTIVE == "Y" ? true : false), IS_REQUIRED = (q.CUSTOMER_SURVEY_QUESTIONS.IS_REQUIRED == "Y" ? true : false), TYPE_ID = q.CUSTOMER_SURVEY_QUESTIONS.TYPE_ID, SORT_ORDER = q.CUSTOMER_SURVEY_QUESTIONS.SORT_ORDER });
+                    select new CustomerSurveyQuestions { QUESTION_ID = q.CUSTOMER_SURVEY_QUESTIONS.QUESTION_ID, TEXT = q.CUSTOMER_SURVEY_QUESTIONS.TEXT, IS_ACTIVE = (q.CUSTOMER_SURVEY_QUESTIONS.IS_ACTIVE == "Y" ? true : false), IS_REQUIRED = (q.CUSTOMER_SURVEY_QUESTIONS.IS_REQUIRED == "Y" ? true : false), TYPE_ID = q.CUSTOMER_SURVEY_QUESTIONS.TYPE_ID, SORT_ORDER = q.CUSTOMER_SURVEY_QUESTIONS.SORT_ORDER, QUESTION_TYPE_NAME = q.CUSTOMER_SURVEY_QUESTIONS.CUSTOMER_SURVEY_QUES_TYPES.QUESTION_TYPE_NAME });
+        }
+
+        public static IQueryable<CUSTOMER_SURVEY_QUESTIONS> GetFieldsetQuestions(decimal FieldsetId, Entities _context)
+        {
+            return (from q in _context.CUSTOMER_SURVEY_RELATION
+                    where q.FIELDSET_ID == FieldsetId
+                    select q.CUSTOMER_SURVEY_QUESTIONS);
         }
 
         public static IQueryable<CUSTOMER_SURVEY_OPTIONS> GetQuestionOptions(decimal QuestionId, Entities _context)
@@ -52,6 +59,16 @@ namespace DBI.Data
                     join qt in _context.CUSTOMER_SURVEY_QUES_TYPES on q.TYPE_ID equals qt.TYPE_ID
                     where fs.FORM_ID == FormId
                     select new CustomerSurveyQuestions { QUESTION_ID = q.QUESTION_ID, TEXT = q.TEXT, TYPE_ID = qt.TYPE_ID, QUESTION_TYPE_NAME = qt.QUESTION_TYPE_NAME, IS_REQUIRED = (q.IS_REQUIRED == "Y" ? true : false), FIELDSET_ID = fs.FIELDSET_ID, TITLE = fs.TITLE, SORT_ORDER = q.SORT_ORDER, IS_ACTIVE = (q.IS_ACTIVE == "Y" ? true: false) });
+        }
+
+        public static IQueryable<CUSTOMER_SURVEY_QUESTIONS> GetFormQuestion2(decimal FormId, Entities _context)
+        {
+            return (from f in _context.CUSTOMER_SURVEY_FORMS
+                    join fs in _context.CUSTOMER_SURVEY_FIELDSETS on f.FORM_ID equals fs.FORM_ID
+                    join fsr in _context.CUSTOMER_SURVEY_RELATION on fs.FIELDSET_ID equals fsr.FIELDSET_ID
+                    join q in _context.CUSTOMER_SURVEY_QUESTIONS on fsr.QUESTION_ID equals q.QUESTION_ID
+                    where fs.FORM_ID == FormId
+                    select q);
         }
 
         public static IQueryable<CUSTOMER_SURVEY_QUES_TYPES> GetQuestionTypes(Entities _context)
@@ -83,14 +100,16 @@ namespace DBI.Data
         {
             return (from c in _context.CUSTOMER_SURVEY_THRESH_AMT
                     join o in _context.ORG_HIER_V on c.ORG_ID equals o.ORG_ID
+                    join f in _context.CUSTOMER_SURVEY_FORM_TYPES on c.TYPE_ID equals f.TYPE_ID
                     where c.ORG_ID == OrgID
-                    select new CustomerSurveyThresholdStore { AMOUNT_ID = c.AMOUNT_ID, HIGH_DOLLAR_AMT = c.HIGH_DOLLAR_AMT, LOW_DOLLAR_AMT = c.LOW_DOLLAR_AMT, ORG_HIER = o.ORG_HIER }).Distinct();
+                    select new CustomerSurveyThresholdStore { AMOUNT_ID = c.AMOUNT_ID, HIGH_DOLLAR_AMT = c.HIGH_DOLLAR_AMT, LOW_DOLLAR_AMT = c.LOW_DOLLAR_AMT, ORG_HIER = o.ORG_HIER, TYPE_NAME = f.TYPE_NAME, TYPE_ID = f.TYPE_ID }).Distinct();
         }
 
         public static CUSTOMER_SURVEY_THRESH_AMT GetOrganizationThresholdAmount(decimal AmountId, Entities _context)
         {
             return _context.CUSTOMER_SURVEY_THRESH_AMT.Where(x => x.AMOUNT_ID == AmountId).Single();
         }
+
         public static IQueryable<CUSTOMER_SURVEY_THRESHOLDS> GetThresholdPercentages(decimal AmountID, Entities _context)
         {
             return _context.CUSTOMER_SURVEY_THRESHOLDS.Where(x => x.AMOUNT_ID == AmountID);
@@ -116,6 +135,68 @@ namespace DBI.Data
             return _context.CUSTOMER_SURVEY_FORMS.Where(x => x.ORG_ID == OrgId).Select(x => x.FORM_ID).SingleOrDefault();
         }
 
+        public static IQueryable<PROJECT_CONTACTS_V> GetProjectContacts(long ProjectId, Entities _context)
+        {
+            return _context.PROJECT_CONTACTS_V.Where(x => x.CUST_SURVEY_PROJECT_ID == ProjectId && x.CUST_SURVEY == "Y");
+        }
+
+        public static IQueryable<CUSTOMER_SURVEY_FORMS_COMP> GetFormCompletion(Entities _context)
+        {
+            return _context.CUSTOMER_SURVEY_FORMS_COMP;
+        }
+
+        public static IQueryable<CUSTOMER_SURVEY_FORMS_ANS> GetFormAnswersByCompletion(decimal CompletionId, Entities _context)
+        {
+            return _context.CUSTOMER_SURVEY_FORMS_ANS.Where(x => x.COMPLETION_ID == CompletionId);
+        }
+
+        public static IQueryable<CUSTOMER_SURVEY_FORMS_ANS> GetFormAnswerByQuestion(decimal QuestionId, Entities _context)
+        {
+            return _context.CUSTOMER_SURVEY_FORMS_ANS.Where(x => x.QUESTION_ID == QuestionId);
+        }
+
+        public static IQueryable<CUSTOMER_SURVEY_RELATION> GetRelationEntries(Entities _context)
+        {
+            return _context.CUSTOMER_SURVEY_RELATION;
+        }
+
+        public static bool HasQuestionBeenFilledOut(decimal QuestionId, Entities _context)
+        {
+            List<CUSTOMER_SURVEY_FORMS_ANS> Answers = _context.CUSTOMER_SURVEY_FORMS_ANS.Where(x => x.QUESTION_ID == QuestionId).ToList();
+            if (Answers.Count > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public static IQueryable<CustomerSurveyCompletions> GetCompletionStore(long ProjectId, Entities _context)
+        {
+            return (from d in _context.CUSTOMER_SURVEY_FORMS_COMP
+                    join f in _context.CUSTOMER_SURVEY_FORMS on d.FORM_ID equals f.FORM_ID
+                    join a in _context.CUSTOMER_SURVEY_FORMS_ANS on d.COMPLETION_ID equals a.COMPLETION_ID
+                    join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                    where d.PROJECT_ID == ProjectId
+                    select new CustomerSurveyCompletions { COMPLETION_ID = d.COMPLETION_ID, FORM_ID = f.FORM_ID, LONG_NAME = p.LONG_NAME, FILLED_BY = d.FILLED_BY, FILLED_ON = d.FILLED_ON, FORMS_NAME = f.FORMS_NAME }).Distinct();
+        }
+
+        public static IQueryable<CustomerSurveyQuestionCategoryStore> GetQuestionCategories(Entities _context)
+        {
+            return(from c in _context.CUSTOMER_SURVEY_QUES_CAT
+                   join f in _context.CUSTOMER_SURVEY_FIELDSETS on c.CATEGORY_ID equals f.CATEGORY_ID into cf
+                   from subdata in cf.DefaultIfEmpty()
+                   join r in _context.CUSTOMER_SURVEY_RELATION on subdata.FIELDSET_ID equals r.FIELDSET_ID into fr
+                   from secondsub in fr.DefaultIfEmpty()
+                   join q in _context.CUSTOMER_SURVEY_QUESTIONS on secondsub.QUESTION_ID equals q.QUESTION_ID into rq
+                   from thirdsub in rq.DefaultIfEmpty()
+                   group new {c, thirdsub} by new{c.CATEGORY_ID, c.CATEGORY_NAME, thirdsub.QUESTION_ID} into qc
+                   select new CustomerSurveyQuestionCategoryStore{CATEGORY_ID = qc.Key.CATEGORY_ID, CATEGORY_NAME = qc.Key.CATEGORY_NAME, NUM_QUESTIONS = qc.Count(x => x.thirdsub.QUESTION_ID != null)});
+        }
+
+        public static CUSTOMER_SURVEY_QUES_CAT GetQuestionCategory(decimal CategoryId, Entities _context)
+        {
+            return _context.CUSTOMER_SURVEY_QUES_CAT.Where(x => x.CATEGORY_ID == CategoryId).Single();
+        }
         public class CustomerSurveyForms
         {
             public decimal FORM_ID { get; set; }
@@ -123,7 +204,8 @@ namespace DBI.Data
             public int NUM_QUESTIONS { get; set; }
             public decimal CATEGORY_ID { get; set; }
             public decimal ORG_ID { get; set; }
-            public int PhantomId { get; set; }
+            public decimal? TYPE_ID { get; set; }
+            public string PhantomId { get; set; }
         }
 
         public class CustomerSurveyQuestions
@@ -147,6 +229,7 @@ namespace DBI.Data
             public string TITLE { get; set; }
             public decimal SORT_ORDER { get; set; }
             public bool IS_ACTIVE { get; set; }
+            public decimal? CATEGORY_ID { get; set; }
             public int PhantomId { get; set; }
         }
 
@@ -167,6 +250,8 @@ namespace DBI.Data
             public decimal? LOW_DOLLAR_AMT { get; set; }
             public decimal? HIGH_DOLLAR_AMT { get; set; }
             public string ORG_HIER { get; set; }
+            public string TYPE_NAME { get; set; }
+            public decimal TYPE_ID { get; set; }
         }
 
         public class CustomerSurveyCategoryStore
@@ -175,6 +260,23 @@ namespace DBI.Data
             public string NAME { get; set; }
             public string DESCRIPTION { get; set; }
             public int NUM_FORMS { get; set; }
+        }
+
+        public class CustomerSurveyCompletions
+        {
+            public decimal COMPLETION_ID { get; set; }
+            public DateTime? FILLED_ON { get; set; }
+            public decimal FORM_ID { get; set; }
+            public string FORMS_NAME { get; set; }
+            public string FILLED_BY { get; set; }
+            public string LONG_NAME { get; set; }
+        }
+
+        public class CustomerSurveyQuestionCategoryStore
+        {
+            public decimal CATEGORY_ID { get; set; }
+            public string CATEGORY_NAME { get; set; }
+            public int NUM_QUESTIONS { get; set; }
         }
     }
 }

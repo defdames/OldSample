@@ -65,41 +65,41 @@ namespace DBI.Data.Test
         #endregion
 
 
-        /// <summary>
-        ///A test for EmployeeTime
-        ///</summary>
-        [TestMethod()]
-        public void EmployeeTimeTest()
-        {
-            List<TIME_CLOCK.Employee> actual;
-            actual = TIME_CLOCK.EmployeeTime();
-            Assert.IsTrue(actual.Count > 0);
-        }
+        ///// <summary>
+        /////A test for EmployeeTime
+        /////</summary>
+        //[TestMethod()]
+        //public void EmployeeTimeTest()
+        //{
+        //    List<TIME_CLOCK.Employee> actual;
+        //    actual = TIME_CLOCK.EmployeeTime();
+        //    Assert.IsTrue(actual.Count > 0);
+        //}
 
-        /// <summary>
-        ///A test for EmployeeTimeCompletedUnapproved
-        ///</summary>
-        [TestMethod()]
-        public void EmployeeTimeCompletedUnapprovedTest()
-        {
-            Decimal supervisorId = new Decimal(301); // TODO: Initialize to an appropriate value
+        ///// <summary>
+        /////A test for EmployeeTimeCompletedUnapproved
+        /////</summary>
+        //[TestMethod()]
+        //public void EmployeeTimeCompletedUnapprovedTest()
+        //{
+        //    Decimal supervisorId = new Decimal(301); // TODO: Initialize to an appropriate value
            
-            List<TIME_CLOCK.Employee> actual;
-            actual = TIME_CLOCK.EmployeeTimeCompletedUnapproved(supervisorId);
-            Assert.IsTrue(actual.Count > 0);
-        }
+        //    List<TIME_CLOCK.Employee> actual;
+        //    actual = TIME_CLOCK.EmployeeTimeCompletedUnapproved(supervisorId);
+        //    Assert.IsTrue(actual.Count > 0);
+        //}
 
-        /// <summary>
-        ///A test for EmployeeTimeCompletedUnapprovedPayroll
-        ///</summary>
-        [TestMethod()]
-        public void EmployeeTimeCompletedUnapprovedPayrollTest()
-        {
+        ///// <summary>
+        /////A test for EmployeeTimeCompletedUnapprovedPayroll
+        /////</summary>
+        //[TestMethod()]
+        //public void EmployeeTimeCompletedUnapprovedPayrollTest()
+        //{
         
-            List<TIME_CLOCK.Employee> actual;
-            actual = TIME_CLOCK.EmployeeTimeCompletedUnapprovedPayroll();
-            Assert.IsTrue(actual.Count > 0);
+        //    List<TIME_CLOCK.Employee> actual;
+        //    actual = TIME_CLOCK.EmployeeTimeCompletedUnapprovedPayroll();
+        //    Assert.IsTrue(actual.Count > 0);
             
-        }
+        //}
     }
 }

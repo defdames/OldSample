@@ -48,15 +48,27 @@
     <Reference Include="Antlr3.Runtime">
       <HintPath>..\packages\WebGrease.1.3.0\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="Ext.Net, Version=2.3.1.16379, Culture=neutral, PublicKeyToken=2e12ce3d0176cd87, processorArchitecture=MSIL">
+    <Reference Include="EPPlus">
+      <HintPath>..\..\EMS_DLLs\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="Ext.Net, Version=2.5.2.15671, Culture=neutral, PublicKeyToken=2e12ce3d0176cd87, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\EXT\Ext.Net.dll</HintPath>
     </Reference>
-    <Reference Include="Ext.Net.Utilities, Version=2.3.0.0, Culture=neutral, PublicKeyToken=2c34ac34702a3c23, processorArchitecture=MSIL">
+    <Reference Include="Ext.Net.Utilities, Version=2.4.0.0, Culture=neutral, PublicKeyToken=2c34ac34702a3c23, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\EXT\Ext.Net.Utilities.dll</HintPath>
     </Reference>
@@ -74,15 +86,16 @@
       <HintPath>..\packages\NinjaNye.SearchExtensions.0.6.5193.24776\lib\net40\NinjaNye.SearchExtensions.dll</HintPath>
     </Reference>
     <Reference Include="Oracle.ManagedDataAccess, Version=4.121.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\odp.net.managed.121.1.1\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Oracle.ManagedDataAccessDTC">
+    <Reference Include="Oracle.ManagedDataAccessDTC, Version=4.121.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=x86">
       <HintPath>..\..\My Received Files\Oracle.ManagedDataAccessDTC.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Entity">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.identitymodel.services" />
@@ -92,7 +105,9 @@
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
-    <Reference Include="System.Data" />
+    <Reference Include="System.Data">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
@@ -113,6 +128,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\EMSDEV.pubxml" />
     <None Include="Properties\PublishProfiles\EMSV2 - Test.pubxml" />
     <None Include="Properties\PublishProfiles\EMSV2 - Development.pubxml" />
     <None Include="Properties\PublishProfiles\EMSV2 - Production.pubxml" />
@@ -122,7 +138,9 @@
     <Content Include="QRCodeGenerator.aspx" />
     <Content Include="Resources\Images\1pixel.jpg" />
     <Content Include="Resources\Images\bgimage.jpg" />
+    <Content Include="Resources\Images\dbis_black_logo.png" />
     <Content Include="Resources\Scripts\functions.js" />
+    <Content Include="Public\umViewSurvey.aspx" />
     <Content Include="uxLogin.aspx" />
     <Content Include="Resources\Images\background.jpg" />
     <Content Include="Resources\Images\dbis_logo.png" />
@@ -135,7 +153,13 @@
     <Content Include="Resources\Scripts\jquery-2.0.1.min.js" />
     <Content Include="Views\Modules\BudgetBidding\umBlankBudget.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umBudgetBiddingMain.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\umDetailSheet.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\umReorderDetailSheets.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\umUpdateAllActuals.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umYearBudget.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\umYearRollupSummary.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\Csv.xsl" />
+    <Content Include="Views\Modules\CrossingMaintenance\Excel.xsl" />
     <Content Include="Views\Modules\CrossingMaintenance\ManageKCS.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umAppDate.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umBillingInvoice.aspx" />
@@ -153,6 +177,7 @@
     <Content Include="Views\Modules\CrossingMaintenance\umInspectionReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umInvoiceReview.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umMissingROW.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umPricing.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umPrivateCrossingReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umRailRoadProject.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umRailroadToolbar.aspx" />
@@ -161,11 +186,15 @@
     <Content Include="Views\Modules\CrossingMaintenance\umSuppBillingReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umSupplemental.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umSupplementalBilling.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umViewCrossings.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umWeeklyWorkActivity.aspx" />
+    <Content Include="Views\Modules\CustomerSurveys\umCopyExisting.aspx" />
     <Content Include="Views\Modules\CustomerSurveys\umManageForms.aspx" />
     <Content Include="Views\Modules\CustomerSurveys\umManageOrgs.aspx" />
+    <Content Include="Views\Modules\CustomerSurveys\umQuestionCategories.aspx" />
     <Content Include="Views\Modules\CustomerSurveys\umSurveyCategories.aspx" />
     <Content Include="Views\Modules\CustomerSurveys\umSurveyDashboard.aspx" />
+    <Content Include="Views\Modules\CustomerSurveys\umViewCompleted.aspx" />
     <Content Include="Views\Modules\CustomerSurveys\umViewSurvey.aspx" />
     <Content Include="Views\Modules\DailyActivity\ImageLoader\ImageLoader.aspx" />
     <Content Include="Views\Modules\DailyActivity\umAddEditChemical.aspx" />
@@ -195,11 +224,23 @@
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_DBI.aspx" />
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_IRM.aspx" />
     <Content Include="Views\Modules\DailyActivity\umWeatherTab.aspx" />
-    <Content Include="Views\Modules\Overhead\Views\umAddGLAccountRange.aspx" />
-    <Content Include="Views\Modules\Overhead\Views\umAddRemoveBudgetType.aspx" />
-    <Content Include="Views\Modules\Overhead\Views\umBudgetTypesByLegalEntity.aspx" />
-    <Content Include="Views\Modules\Overhead\Views\umGeneralLedgerAccounts.aspx" />
-    <Content Include="Views\Modules\Overhead\Views\umOrganizationSecurity.aspx" />
+    <Content Include="Views\Modules\Overhead\umAddGLAccountForCategory.aspx" />
+    <Content Include="Views\Modules\Overhead\umAddOverheadDetailLine.aspx" />
+    <Content Include="Views\Modules\Overhead\umBudgetMain.aspx" />
+    <Content Include="Views\Modules\Overhead\umEditBudgetVersion.aspx" />
+    <Content Include="Views\Modules\Overhead\umImportActualsWindow.aspx" />
+    <Content Include="Views\Modules\Overhead\umMassUpdateForecast.aspx" />
+    <Content Include="Views\Modules\Overhead\umOpenBudgetType.aspx" />
+    <Content Include="Views\Modules\Overhead\umOverheadBudgetPeriods.aspx" />
+    <Content Include="Views\Modules\Overhead\umOverheadGeneralLedger.aspx" />
+    <Content Include="Views\Modules\Overhead\umOverheadBudgetTypes.aspx" />
+    <Content Include="Views\Modules\Overhead\umBudgetVersions.aspx" />
+    <Content Include="Views\Modules\Overhead\umOverheadOrganizationSecurity.aspx" />
+    <Content Include="Views\Modules\Overhead\umOverheadSecurity.aspx" />
+    <Content Include="Views\Modules\Overhead\umAddGLAccountRange.aspx" />
+    <Content Include="Views\Modules\Overhead\umAddRemoveBudgetType.aspx" />
+    <Content Include="Views\Modules\Overhead\umCategoryMaint.aspx" />
+    <Content Include="Views\Modules\Overhead\umViewActualsWindow.aspx" />
     <Content Include="Views\Modules\Security\Options\AddEdit\umAddEditProfileOptions.aspx" />
     <Content Include="Views\Modules\Security\umEditGroups.aspx" />
     <Content Include="Views\Modules\Security\umEditModules.aspx" />
@@ -212,6 +253,7 @@
     <Content Include="Views\Modules\Security\umSecurityUsersList.aspx" />
     <Content Include="Views\Modules\TimeClock\Edit\umDeleteTime.aspx" />
     <Content Include="Views\Modules\TimeClock\Edit\umEditTime.aspx" />
+    <Content Include="Views\Modules\TimeClock\Edit\umAddTime.aspx" />
     <Content Include="Views\Modules\TimeClock\umNoLunchReport.aspx" />
     <Content Include="Views\Modules\TimeClock\um12HourDayReport.aspx" />
     <Content Include="Views\Modules\TimeClock\umAdjustedverseActualHoursReport.aspx" />
@@ -248,6 +290,13 @@
     <Compile Include="QRCodeGenerator.aspx.designer.cs">
       <DependentUpon>QRCodeGenerator.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Public\umViewSurvey.aspx.cs">
+      <DependentUpon>umViewSurvey.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Public\umViewSurvey.aspx.designer.cs">
+      <DependentUpon>umViewSurvey.aspx</DependentUpon>
+    </Compile>
     <Compile Include="uxLogin.aspx.cs">
       <DependentUpon>uxLogin.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -276,6 +325,27 @@
     <Compile Include="Views\Modules\BudgetBidding\umBudgetBiddingMain.aspx.designer.cs">
       <DependentUpon>umBudgetBiddingMain.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umDetailSheet.aspx.cs">
+      <DependentUpon>umDetailSheet.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umDetailSheet.aspx.designer.cs">
+      <DependentUpon>umDetailSheet.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umReorderDetailSheets.aspx.cs">
+      <DependentUpon>umReorderDetailSheets.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umReorderDetailSheets.aspx.designer.cs">
+      <DependentUpon>umReorderDetailSheets.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umUpdateAllActuals.aspx.cs">
+      <DependentUpon>umUpdateAllActuals.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umUpdateAllActuals.aspx.designer.cs">
+      <DependentUpon>umUpdateAllActuals.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\BudgetBidding\umYearBudget.aspx.cs">
       <DependentUpon>umYearBudget.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -283,12 +353,24 @@
     <Compile Include="Views\Modules\BudgetBidding\umYearBudget.aspx.designer.cs">
       <DependentUpon>umYearBudget.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umYearRollupSummary.aspx.cs">
+      <DependentUpon>umYearRollupSummary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umYearRollupSummary.aspx.designer.cs">
+      <DependentUpon>umYearRollupSummary.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\ManageKCS.aspx.cs">
       <DependentUpon>ManageKCS.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\ManageKCS.aspx.designer.cs">
       <DependentUpon>ManageKCS.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\StateCrossingList.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StateCrossingList.rpt</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umAppDate.aspx.cs">
       <DependentUpon>umAppDate.aspx</DependentUpon>
@@ -402,6 +484,13 @@
     <Compile Include="Views\Modules\CrossingMaintenance\umMissingROW.aspx.designer.cs">
       <DependentUpon>umMissingROW.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umPricing.aspx.cs">
+      <DependentUpon>umPricing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umPricing.aspx.designer.cs">
+      <DependentUpon>umPricing.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umPrivateCrossingReport.aspx.cs">
       <DependentUpon>umPrivateCrossingReport.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -458,12 +547,26 @@
     <Compile Include="Views\Modules\CrossingMaintenance\umSupplementalBilling.aspx.designer.cs">
       <DependentUpon>umSupplementalBilling.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umViewCrossings.aspx.cs">
+      <DependentUpon>umViewCrossings.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umViewCrossings.aspx.designer.cs">
+      <DependentUpon>umViewCrossings.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umWeeklyWorkActivity.aspx.cs">
       <DependentUpon>umWeeklyWorkActivity.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umWeeklyWorkActivity.aspx.designer.cs">
       <DependentUpon>umWeeklyWorkActivity.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CustomerSurveys\umCopyExisting.aspx.cs">
+      <DependentUpon>umCopyExisting.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CustomerSurveys\umCopyExisting.aspx.designer.cs">
+      <DependentUpon>umCopyExisting.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CustomerSurveys\umManageForms.aspx.cs">
       <DependentUpon>umManageForms.aspx</DependentUpon>
@@ -479,6 +582,13 @@
     <Compile Include="Views\Modules\CustomerSurveys\umManageOrgs.aspx.designer.cs">
       <DependentUpon>umManageOrgs.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\CustomerSurveys\umQuestionCategories.aspx.cs">
+      <DependentUpon>umQuestionCategories.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CustomerSurveys\umQuestionCategories.aspx.designer.cs">
+      <DependentUpon>umQuestionCategories.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\CustomerSurveys\umSurveyCategories.aspx.cs">
       <DependentUpon>umSurveyCategories.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -492,6 +602,13 @@
     </Compile>
     <Compile Include="Views\Modules\CustomerSurveys\umSurveyDashboard.aspx.designer.cs">
       <DependentUpon>umSurveyDashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CustomerSurveys\umViewCompleted.aspx.cs">
+      <DependentUpon>umViewCompleted.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CustomerSurveys\umViewCompleted.aspx.designer.cs">
+      <DependentUpon>umViewCompleted.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CustomerSurveys\umViewSurvey.aspx.cs">
       <DependentUpon>umViewSurvey.aspx</DependentUpon>
@@ -697,40 +814,124 @@
       <DependentUpon>umWeatherTab.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\ValidationChecks.cs" />
-    <Compile Include="Views\Modules\Overhead\Views\umAddGLAccountRange.aspx.cs">
+    <Compile Include="Views\Modules\Overhead\umAddGLAccountForCategory.aspx.cs">
+      <DependentUpon>umAddGLAccountForCategory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umAddGLAccountForCategory.aspx.designer.cs">
+      <DependentUpon>umAddGLAccountForCategory.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umAddOverheadDetailLine.aspx.cs">
+      <DependentUpon>umAddOverheadDetailLine.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umAddOverheadDetailLine.aspx.designer.cs">
+      <DependentUpon>umAddOverheadDetailLine.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umBudgetMain.aspx.cs">
+      <DependentUpon>umBudgetMain.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umBudgetMain.aspx.designer.cs">
+      <DependentUpon>umBudgetMain.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umEditBudgetVersion.aspx.cs">
+      <DependentUpon>umEditBudgetVersion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umEditBudgetVersion.aspx.designer.cs">
+      <DependentUpon>umEditBudgetVersion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umImportActualsWindow.aspx.cs">
+      <DependentUpon>umImportActualsWindow.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umImportActualsWindow.aspx.designer.cs">
+      <DependentUpon>umImportActualsWindow.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umMassUpdateForecast.aspx.cs">
+      <DependentUpon>umMassUpdateForecast.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umMassUpdateForecast.aspx.designer.cs">
+      <DependentUpon>umMassUpdateForecast.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umOpenBudgetType.aspx.cs">
+      <DependentUpon>umOpenBudgetType.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umOpenBudgetType.aspx.designer.cs">
+      <DependentUpon>umOpenBudgetType.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umOverheadBudgetPeriods.aspx.cs">
+      <DependentUpon>umOverheadBudgetPeriods.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umOverheadBudgetPeriods.aspx.designer.cs">
+      <DependentUpon>umOverheadBudgetPeriods.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umOverheadGeneralLedger.aspx.cs">
+      <DependentUpon>umOverheadGeneralLedger.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umOverheadGeneralLedger.aspx.designer.cs">
+      <DependentUpon>umOverheadGeneralLedger.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umOverheadBudgetTypes.aspx.cs">
+      <DependentUpon>umOverheadBudgetTypes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umOverheadBudgetTypes.aspx.designer.cs">
+      <DependentUpon>umOverheadBudgetTypes.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umBudgetVersions.aspx.cs">
+      <DependentUpon>umBudgetVersions.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umBudgetVersions.aspx.designer.cs">
+      <DependentUpon>umBudgetVersions.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umOverheadOrganizationSecurity.aspx.cs">
+      <DependentUpon>umOverheadOrganizationSecurity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umOverheadOrganizationSecurity.aspx.designer.cs">
+      <DependentUpon>umOverheadOrganizationSecurity.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umOverheadSecurity.aspx.cs">
+      <DependentUpon>umOverheadSecurity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umOverheadSecurity.aspx.designer.cs">
+      <DependentUpon>umOverheadSecurity.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umAddGLAccountRange.aspx.cs">
       <DependentUpon>umAddGLAccountRange.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\Overhead\Views\umAddGLAccountRange.aspx.designer.cs">
+    <Compile Include="Views\Modules\Overhead\umAddGLAccountRange.aspx.designer.cs">
       <DependentUpon>umAddGLAccountRange.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\Overhead\Views\umAddRemoveBudgetType.aspx.cs">
+    <Compile Include="Views\Modules\Overhead\umAddRemoveBudgetType.aspx.cs">
       <DependentUpon>umAddRemoveBudgetType.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\Overhead\Views\umAddRemoveBudgetType.aspx.designer.cs">
+    <Compile Include="Views\Modules\Overhead\umAddRemoveBudgetType.aspx.designer.cs">
       <DependentUpon>umAddRemoveBudgetType.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\Overhead\Views\umBudgetTypesByLegalEntity.aspx.cs">
-      <DependentUpon>umBudgetTypesByLegalEntity.aspx</DependentUpon>
+    <Compile Include="Views\Modules\Overhead\umCategoryMaint.aspx.cs">
+      <DependentUpon>umCategoryMaint.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\Overhead\Views\umBudgetTypesByLegalEntity.aspx.designer.cs">
-      <DependentUpon>umBudgetTypesByLegalEntity.aspx</DependentUpon>
+    <Compile Include="Views\Modules\Overhead\umCategoryMaint.aspx.designer.cs">
+      <DependentUpon>umCategoryMaint.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\Overhead\Views\umGeneralLedgerAccounts.aspx.cs">
-      <DependentUpon>umGeneralLedgerAccounts.aspx</DependentUpon>
+    <Compile Include="Views\Modules\Overhead\umViewActualsWindow.aspx.cs">
+      <DependentUpon>umViewActualsWindow.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\Overhead\Views\umGeneralLedgerAccounts.aspx.designer.cs">
-      <DependentUpon>umGeneralLedgerAccounts.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\Overhead\Views\umOrganizationSecurity.aspx.cs">
-      <DependentUpon>umOrganizationSecurity.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Modules\Overhead\Views\umOrganizationSecurity.aspx.designer.cs">
-      <DependentUpon>umOrganizationSecurity.aspx</DependentUpon>
+    <Compile Include="Views\Modules\Overhead\umViewActualsWindow.aspx.designer.cs">
+      <DependentUpon>umViewActualsWindow.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\Security\Options\AddEdit\umAddEditProfileOptions.aspx.cs">
       <DependentUpon>umAddEditProfileOptions.aspx</DependentUpon>
@@ -815,6 +1016,13 @@
     </Compile>
     <Compile Include="Views\Modules\TimeClock\Edit\umEditTime.aspx.designer.cs">
       <DependentUpon>umEditTime.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\TimeClock\Edit\umAddTime.aspx.cs">
+      <DependentUpon>umAddTime.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\TimeClock\Edit\umAddTime.aspx.designer.cs">
+      <DependentUpon>umAddTime.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\TimeClock\umNoLunchReport.aspx.cs">
       <DependentUpon>umNoLunchReport.aspx</DependentUpon>
@@ -913,7 +1121,19 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Report1.rdlc" />
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\StateCrossingList.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>StateCrossingList.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

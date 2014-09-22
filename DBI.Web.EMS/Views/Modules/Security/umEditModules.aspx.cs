@@ -25,10 +25,30 @@ namespace DBI.Web.EMS.Views.Modules.Security
                 var data = _context.SYS_MODULES.ToList();
                 int count;
                 uxModuleStore.DataSource = GenericData.EnumerableFilterHeader<SYS_MODULES>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
-                e.Total = count;
-
-            
+                e.Total = count;   
         }
+
+
+        protected void saveModuleSortOrder(object sender, DirectEventArgs e)
+        {
+            string json = e.ExtraParams["Values"];
+
+            List<SYS_MODULES> _gridValues = JSON.Deserialize<List<SYS_MODULES>>(json);
+            int sort = 0;
+
+            foreach (SYS_MODULES _detail in _gridValues)
+            {
+                _detail.MODIFIED_BY = User.Identity.Name;
+                _detail.MODIFY_DATE = DateTime.Now;
+                _detail.SORT_ORDER = sort + 1;
+                sort = (int)_detail.SORT_ORDER;
+            }
+
+            GenericData.Update<SYS_MODULES>(_gridValues);
+            uxModuleStore.Sync();
+            uxModuleStore.Reload();
+        }
+
 
         protected void deLoadMenuItems(object sender, DirectEventArgs e)
         {
@@ -49,6 +69,26 @@ namespace DBI.Web.EMS.Views.Modules.Security
                 uxMenuItemsStore.DataSource = GenericData.EnumerableFilterHeader<SYS_MENU>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                 e.Total = count;
             }
+        }
+
+        protected void saveMenuSortOrder(object sender, DirectEventArgs e)
+        {
+            string json = e.ExtraParams["Values"];
+
+            List<SYS_MENU> _gridValues = JSON.Deserialize<List<SYS_MENU>>(json);
+            int sort = 0;
+
+            foreach (SYS_MENU _detail in _gridValues)
+            {
+                _detail.MODIFIED_BY = User.Identity.Name;
+                _detail.MODIFY_DATE = DateTime.Now;
+                _detail.SORT_ORDER = sort + 1;
+                sort = (int)_detail.SORT_ORDER;
+            }
+
+            GenericData.Update<SYS_MENU>(_gridValues);
+            uxMenuItemsStore.Sync();
+            uxMenuItemsStore.Reload();
         }
 
         protected void deLoadAddModuleWindow(object sender, DirectEventArgs e)

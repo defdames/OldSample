@@ -18,6 +18,8 @@ using Ext.Net;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using DBI.Data.DataFactory;
+using System.Xml.Xsl;
+using System.Xml;
 
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 {
@@ -46,31 +48,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
+
+                IQueryable<CROSSING_MAINTENANCE.StateCrossingList> allData = CROSSING_MAINTENANCE.GetMissingROW(RailroadId, _context);
               
-                var allData = (from d in _context.CROSSINGS
-                        where  d.RAILROAD_ID == RailroadId && d.ROWNE == 0 && d.ROWNW == 0 && d.ROWSE == 0 && d.ROWSW == 0
-                        select new
-                        {
-                            d.CROSSING_ID,
-                            d.CROSSING_NUMBER,
-                            d.SUB_DIVISION,
-                            d.STATE,
-                            d.COUNTY,
-                            d.CITY,
-                            d.MILE_POST,
-                            d.DOT,
-                            d.SERVICE_UNIT,
-                            d.ROWNE,
-                            d.ROWNW,
-                            d.ROWSE,
-                            d.ROWSW,
-                            d.STREET,
-                            d.SUB_CONTRACTED,
-                            d.LONGITUDE,
-                            d.LATITUDE,
-                            d.SPECIAL_INSTRUCTIONS,
-                         
-                        });
                 if (ServiceUnit != null)
                 {
                     allData = allData.Where(x => x.SERVICE_UNIT == ServiceUnit);
@@ -136,6 +116,59 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 uxAddSubDivStore.DataSource = divisions;
                 uxAddSubDivStore.DataBind();
             }
+        }
+        protected void deLaunchGrid(object sender, DirectEventArgs e)
+        {
+            GridPanel1.Show();
+        }
+        protected void ToXml(object sender, EventArgs e)
+        {
+            string json = this.Hidden1.Value.ToString();
+            StoreSubmitDataEventArgs eSubmit = new StoreSubmitDataEventArgs(json, null);
+            XmlNode xml = eSubmit.Xml;
+
+            string strXml = xml.OuterXml;
+
+            this.Response.Clear();
+            this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.xml");
+            this.Response.AddHeader("Content-Length", strXml.Length.ToString());
+            this.Response.ContentType = "application/xml";
+            this.Response.Write(strXml);
+            this.Response.End();
+        }
+
+        protected void ToExcel(object sender, EventArgs e)
+        {
+            string json = this.Hidden1.Value.ToString();
+            StoreSubmitDataEventArgs eSubmit = new StoreSubmitDataEventArgs(json, null);
+            XmlNode xml = eSubmit.Xml;
+
+            this.Response.Clear();
+            this.Response.ContentType = "application/vnd.ms-excel";
+            this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.xls");
+
+            XslCompiledTransform xtExcel = new XslCompiledTransform();
+
+            xtExcel.Load(Server.MapPath("Excel.xsl"));
+            xtExcel.Transform(xml, null, this.Response.OutputStream);
+            this.Response.End();
+        }
+
+        protected void ToCsv(object sender, EventArgs e)
+        {
+            string json = this.Hidden1.Value.ToString();
+            StoreSubmitDataEventArgs eSubmit = new StoreSubmitDataEventArgs(json, null);
+            XmlNode xml = eSubmit.Xml;
+
+            this.Response.Clear();
+            this.Response.ContentType = "application/octet-stream";
+            this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.csv");
+
+            XslCompiledTransform xtCsv = new XslCompiledTransform();
+
+            xtCsv.Load(Server.MapPath("Csv.xsl"));
+            xtCsv.Transform(xml, null, this.Response.OutputStream);
+            this.Response.End();
         }
     }
 }

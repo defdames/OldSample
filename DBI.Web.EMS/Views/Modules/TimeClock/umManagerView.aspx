@@ -26,6 +26,30 @@
 		        firstButton.setTooltip("Disabled");
 		    }
 		};
+		var colorErrors = function (value, metadata, record) {
+		    if (record.data.ACTUAL_HOURS >= 12) {
+		        metadata.style = "background-color: red;";
+		    }
+		    return value;
+		};
+
+		
+
+		var onShow = function (toolTip, grid) {
+		        var view = grid.getView(),
+                store = grid.getStore(),
+                record = view.getRecord(view.findItemByChild(toolTip.triggerElement)),
+                data = record.data.ACTUAL_HOURS;
+                
+		    if (data >= 12) {
+
+		        toolTip.update("OVER 12 HOURS");
+		    } else {
+
+		        return false;
+		    }
+		    
+		};
 	</script>
 </head>
 <body>
@@ -51,6 +75,8 @@
 								<ext:ModelField Name="ADJUSTED_HOURS_GRID" />
 								<ext:ModelField Name="ACTUAL_HOURS" />
 								<ext:ModelField Name="ACTUAL_HOURS_GRID" />
+                                <ext:ModelField Name ="ADJUSTED_LUNCH" />
+                                <ext:ModelField Name ="ADJUSTED_LUNCH_GRID" />
 								<ext:ModelField Name="APPROVED" />
 								<ext:ModelField Name="SUBMITTED" />
 							</Fields>
@@ -69,8 +95,15 @@
 				<Columns>
 					<ext:DateColumn runat="server" Text="Time In" DataIndex="TIME_IN" Flex="1" Format="M/d/yyyy h:mm tt"/>
 					<ext:DateColumn runat="server" Text="Time Out" DataIndex="TIME_OUT" Flex="1" Format="M/d/yyyy h:mm tt"/>
-					<ext:Column ID="ActualTime" runat="server" Text="Actual Time" Flex="1" DataIndex="ACTUAL_HOURS_GRID"/>
-					<ext:Column ID="AdjustedTime" runat="server" Text="Adjusted Time" Flex="1" DataIndex="ADJUSTED_HOURS_GRID"/>
+					<ext:Column ID="ActualTime" runat="server" Text="Actual Time" Flex="1" DataIndex="ACTUAL_HOURS_GRID">
+                        <Renderer Fn="colorErrors" />
+                    </ext:Column>
+					<ext:Column ID="AdjustedTime" runat="server" Text="Adjusted Time" Flex="1" DataIndex="ADJUSTED_HOURS_GRID">
+                        <Renderer Fn="colorErrors" />
+                    </ext:Column>
+                    <ext:Column ID="AdjustedLunch" runat="server" Text="Adjusted Lunch" Flex="1" DataIndex="ADJUSTED_LUNCH_GRID">
+                        <Renderer Fn="colorErrors" />
+                    </ext:Column>
 					<ext:Column ID="Approved" runat="server" Text="Approved" Flex="1" DataIndex="APPROVED" />
 					<ext:Column ID="Submitted" runat="server" Text="Submitted" Flex="1" DataIndex="SUBMITTED" />
 					<ext:CommandColumn ID="ccEditTime" runat="server">
@@ -131,10 +164,18 @@
 											<ext:Parameter Name="ApprovedTime" Value="Ext.encode(#{uxEmployeeHoursGrid}.getRowsValues({selectedOnly : true}))" Mode="Raw" />
 											<ext:Parameter Name="NewTime" Value="#{uxEmployeeHoursStore}.getChangedData()" Mode="Raw" Encode="true" />
 										</ExtraParams>
-							   </Click> 
-						</DirectEvents>
-					</ext:Button>
-					<ext:ToolbarSpacer runat="server" />
+							         </Click> 
+						    </DirectEvents>
+					    </ext:Button>
+                        <ext:ToolbarSpacer ID="ToolbarSpacer1" runat="server" />
+                        <%--<ext:Button runat="server" ID="uxAddTime" Text="Add Date" Icon="Add">
+                            <DirectEvents>
+                                <Click OnEvent="deAddTime">
+                                    <EventMask ShowMask="true" />
+                                </Click>    
+                            </DirectEvents>
+                        </ext:Button>--%>
+					<%--<ext:ToolbarSpacer runat="server" />--%>
 					<ext:Checkbox runat="server" ID="uxToggleApproved" BoxLabel="Show Approved" BoxLabelAlign="After" >
 						<Listeners>
 							<Change Handler="#{uxEmployeeHoursStore}.reload()" />
@@ -143,6 +184,7 @@
 						</Items>
 				</ext:Toolbar>
 			</TopBar>
+            
 			<Features>
 				<ext:Grouping
 					runat="server"
@@ -153,7 +195,20 @@
 			<SelectionModel>
 				<ext:CheckboxSelectionModel ID="uxTimeClockSelectionModel" runat="server" Mode="Multi"/>
 			</SelectionModel>
+            <View>
+                <ext:GridView ID="GridView1" runat="server" StripeRows="true" TrackOver="true" />
+            </View>
 		</ext:GridPanel>
+           <ext:ToolTip
+               ID="ToolTip1" 
+            runat="server" 
+            Target="={#{uxEmployeeHoursGrid}.getView().el}"
+            Delegate=".x-grid-cell"
+            TrackMouse="true">
+            <Listeners>
+                <BeforeShow Handler="return onShow(this, #{uxEmployeeHoursGrid});" />
+            </Listeners>
+        </ext:ToolTip>
 		   </Items>
 		</ext:viewport>
 		</form>

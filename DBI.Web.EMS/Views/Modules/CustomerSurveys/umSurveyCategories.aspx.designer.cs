@@ -67,6 +67,51 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.Button uxDeleteCategoryButton;
         
         /// <summary>
+        /// uxQuestionCategoryGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.GridPanel uxQuestionCategoryGrid;
+        
+        /// <summary>
+        /// uxQuestionCategoryStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxQuestionCategoryStore;
+        
+        /// <summary>
+        /// uxAddQuestionCategoryButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxAddQuestionCategoryButton;
+        
+        /// <summary>
+        /// uxEditQuestionCategoryButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxEditQuestionCategoryButton;
+        
+        /// <summary>
+        /// uxDeleteQuestionCategoryButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxDeleteQuestionCategoryButton;
+        
+        /// <summary>
         /// uxAddEditCategoryWindow control.
         /// </summary>
         /// <remarks>
@@ -137,5 +182,68 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Button uxCancelCategoryButton;
+        
+        /// <summary>
+        /// uxAddEditQuestionCategoryWindow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Window uxAddEditQuestionCategoryWindow;
+        
+        /// <summary>
+        /// uxQuestionCategoryForm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FormPanel uxQuestionCategoryForm;
+        
+        /// <summary>
+        /// uxQuestionCategoryFormType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Hidden uxQuestionCategoryFormType;
+        
+        /// <summary>
+        /// uxQuestionCategoryId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Hidden uxQuestionCategoryId;
+        
+        /// <summary>
+        /// uxQuestionCategoryName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxQuestionCategoryName;
+        
+        /// <summary>
+        /// uxSaveQuestionCategoryButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxSaveQuestionCategoryButton;
+        
+        /// <summary>
+        /// uxCancelQuestionCategoryButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxCancelQuestionCategoryButton;
     }
 }

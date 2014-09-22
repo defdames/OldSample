@@ -26,7 +26,9 @@ namespace DBI.Data
                                  TIME_CLOCK_ID = tc.TIME_CLOCK_ID,
                                  ADJUSTED_HOURS = tc.ADJUSTED_HOURS,
                                  ACTUAL_HOURS = tc.ACTUAL_HOURS,
+                                 ADJUSTED_LUNCH = tc.ADJUSTED_LUNCH,
                                  SUBMITTED = tc.SUBMITTED,
+                                 PERSON_ID = tc.PERSON_ID,
                                  APPROVED = tc.APPROVED,
                                  COMPLETED = tc.COMPLETED,
                                  SUPERVISOR_ID = (int)tc.SUPERVISOR_ID,
@@ -100,20 +102,31 @@ namespace DBI.Data
             return _data;
 
         }
-
+        /// <summary>
+        /// Shows all records from the TIME CLOCK table under the Payroll Manager screen
+        /// </summary>
+        /// <returns></returns>
         public static List<Employee> EmployeeTimeCompletedApprovedSubmittedPayroll()
         {
             var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.APPROVED == "Y" && x.DELETED == "N").ToList();
             return _data;
         }
-
+        /// <summary>
+        /// Returns data for Edit screen popup on both the manager and payroll screen
+        /// </summary>
+        /// <param name="tcID"></param>
+        /// <returns></returns>
         public static DateTime ManagerDateInEditScreen(decimal tcID)
         {
 
             DateTime? _data = EmployeeTime().Where(x => x.TIME_CLOCK_ID == tcID).SingleOrDefault().TIME_IN;
             return (DateTime)_data;
         }
-
+        /// <summary>
+        /// Returns data for Edit screen popup on both the manager and payroll screen
+        /// </summary>
+        /// <param name="tcID"></param>
+        /// <returns></returns>
         public static TimeSpan ManagerTimeInEditScreen(decimal tcID)
         {
 
@@ -122,14 +135,22 @@ namespace DBI.Data
 
             return ts;
         }
-
+        /// <summary>
+        /// Returns data for Edit screen popup on both the manager and payroll screen
+        /// </summary>
+        /// <param name="tcID"></param>
+        /// <returns></returns>
         public static DateTime ManagerDateOutEditScreen(decimal tcID)
         {
 
             DateTime? _data = EmployeeTime().Where(x => x.TIME_CLOCK_ID == tcID).SingleOrDefault().TIME_OUT;
             return (DateTime)_data;
         }
-
+        /// <summary>
+        /// Returns data for Edit screen popup on both the manager and payroll screen
+        /// </summary>
+        /// <param name="tcID"></param>
+        /// <returns></returns>
         public static TimeSpan ManagerTimeOutEditScreen(decimal tcID)
         {
 
@@ -155,19 +176,38 @@ namespace DBI.Data
             {
                 TimeSpan ts = newTimeOut - newTimeIn;
                 decimal adjts = ConvertTimeToOraclePayrollFormat(ts);
+                decimal lcts = GetLunchTime(adjts);
+                
 
 
                 _data = _context.TIME_CLOCK.Where(x => x.TIME_CLOCK_ID == tcID).SingleOrDefault();
                 _data.ACTUAL_HOURS = (decimal)ts.TotalHours;
                 _data.ADJUSTED_HOURS = adjts;
+                _data.ADJUSTED_LUNCH = lcts;
                 _data.MODIFIED_TIME_IN = newTimeIn;
                 _data.MODIFIED_TIME_OUT = newTimeOut;
                 _data.MODIFIED_BY = personName;
                 _data.MODIFY_DATE = DateTime.Now;
+                
 
             }
 
             DBI.Data.GenericData.Update<TIME_CLOCK>(_data);
+        }
+        public static void InsertAddedEmployeeTime(DateTime newTimeIn, DateTime newTimeOut, string personName)
+        {
+
+            
+            TimeSpan ts = newTimeOut - newTimeIn;
+            decimal adjts = ConvertTimeToOraclePayrollFormat(ts);
+            decimal lcts = GetLunchTime(adjts);
+            TIME_CLOCK _data = new TIME_CLOCK
+            {
+
+
+
+            };
+            
         }
 
         /// <summary>
@@ -212,7 +252,10 @@ namespace DBI.Data
             }
 
         }
-
+        /// <summary>
+        /// Submit selected time for payroll
+        /// </summary>
+        /// <param name="selection"></param>
         public static void EmployeeTimeSelectionSubmitted(List<TIME_CLOCK> selection)
         {
             foreach (TIME_CLOCK selected in selection)
@@ -242,9 +285,59 @@ namespace DBI.Data
                          : (adjts.Minutes > 53 && adjts.Minutes <= 60) ? 1
                          : 0;
 
-            decimal fixedtime = adjts.Hours + (decimal)adjtime;
+            decimal fixedtime = Math.Floor((decimal)adjts.TotalHours)  + (decimal)adjtime;
+
+            
+
+
             return fixedtime;
         }
+
+        protected static decimal GetLunchTime(decimal lcts)
+        {
+
+            if (lcts >= 5 && lcts < 12)
+            {
+                decimal lunchded = lcts - .5m;
+                //decimal lunchtime = (decimal)lunchded / 60;
+                return lunchded;
+            }
+            else if (lcts < 5)
+            {
+                decimal lunchded = lcts;
+                //decimal lunchtime = (decimal)lunchded / 60;
+                return lunchded;
+            }
+            else
+            {
+                decimal lunchded = lcts - 1m;
+                //decimal lunchtime = (decimal)lunchded / 60;
+                return lunchded;
+            }
+        }
+        //protected static decimal GetLunchTime(TimeSpan lcts)
+        //{
+        //    if  (lcts.TotalMinutes >=300 && lcts.TotalMinutes < 790)
+        //    {
+        //        double lunchded = lcts.TotalMinutes - 30;
+        //        decimal lunchtime = (decimal)lunchded / 60;
+        //        return lunchtime;
+        //    }
+        //    else if (lcts.TotalMinutes < 300)
+        //    {
+        //        double lunchded = lcts.TotalMinutes;
+        //        decimal lunchtime = (decimal)lunchded / 60;
+        //        return lunchtime;
+        //    }
+        //    else
+        //    {
+        //        double lunchded = lcts.TotalMinutes - 60;
+        //        decimal lunchtime = (decimal)lunchded / 60;
+        //        return lunchtime;
+        //    }
+        //}
+            
+        
 
         public class Employee : TIME_CLOCK
         {
@@ -253,10 +346,12 @@ namespace DBI.Data
             public DateTime? TIME_IN { get; set; }
             public DateTime? TIME_OUT { get; set; }
             public string ADJUSTED_HOURS_GRID { get; set; }
+            public string ADJUSTED_LUNCH_GRID { get; set; }
             public string DAY_OF_WEEK { get; set; }
             public string ACTUAL_HOURS_GRID { get; set; }
             public decimal? ACTUAL_HOURS { get; set; }
             public decimal? ADJUSTED_HOURS { get; set; }
+            public decimal? ADJUSTED_LUNCH { get; set; }
             public string APPROVED { get; set; }
             public string SUBMITTED { get; set; }
             public int SUPERVISOR_ID { get; set; }

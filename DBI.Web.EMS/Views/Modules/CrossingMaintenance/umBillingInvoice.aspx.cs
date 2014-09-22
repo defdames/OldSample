@@ -28,37 +28,37 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             if (!X.IsAjaxRequest)
             {
                 uxAddAppRequestedStore.Data = StaticLists.ApplicationRequested;
+                if (SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue") != string.Empty)
+                {
+                    deGetRRType("Add");
 
+                }
             }
         }
         protected void deInvoiceGrid(object sender, StoreReadDataEventArgs e)
         {
+           
             DateTime StartDate = uxStartDate.SelectedDate;
             DateTime EndDate = uxEndDate.SelectedDate;
-            string Application = uxAddAppReqeusted.SelectedItem.Value;
+            decimal Application = Convert.ToDecimal(uxAddAppReqeusted.SelectedItem.Value);
+            string ServiceUnit = uxAddServiceUnit.SelectedItem.Value;
+            string SubDiv = uxAddSubDiv.SelectedItem.Value;
             using (Entities _context = new Entities())
             {
 
                 //Get List of all incidents open and closed 
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
-                var allData = (from a in _context.CROSSING_APPLICATION
-                               join d in _context.CROSSINGS on a.CROSSING_ID equals d.CROSSING_ID
-                               where d.RAILROAD_ID == RailroadId && a.APPLICATION_REQUESTED == Application
-                               select new
-                               {
-                                   d.CROSSING_ID,
-                                   a.APPLICATION_ID,
-                                   a.APPLICATION_DATE,
-                                   a.APPLICATION_REQUESTED,
-                                   d.CROSSING_NUMBER,
-                                   d.SUB_DIVISION,
-                                   d.SERVICE_UNIT,
-                                   d.STATE,
-                                   d.MILE_POST,
-                                   //a.REMARKS,
-                               });
-
-                //filter down specific information to show the incidents needed for report
+                IQueryable<CROSSING_MAINTENANCE.CompletedCrossings> allData = CROSSING_MAINTENANCE.GetCompletedCrossings(RailroadId, Application, _context);
+                
+                //filter down specific information to show the crossings needed for report
+                if (ServiceUnit != null)
+                {
+                    allData = allData.Where(x => x.SERVICE_UNIT == ServiceUnit);
+                }
+                if (SubDiv != null)
+                {
+                    allData = allData.Where(x => x.SUB_DIVISION == SubDiv);
+                }
                 if (StartDate != DateTime.MinValue)
                 {
                     allData = allData.Where(x => x.APPLICATION_DATE >= StartDate);
@@ -73,7 +73,11 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 {
                     allData = allData.Where(x => x.APPLICATION_DATE >= StartDate && x.APPLICATION_DATE <= EndDate);
                 }
-
+                if (uxToggleNonSub.Checked)
+                {
+                    allData = allData.Where(x => x.SUB_CONTRACTED == "N");
+                }
+            
                 List<object> _data = allData.ToList<object>();
 
 
@@ -83,18 +87,39 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                
             }
         }
+        protected void deValidationInvoiceButton(object sender, DirectEventArgs e)
+        {
+            CheckboxSelectionModel sm = CheckboxSelectionModel2;
+
+            if (sm.SelectedRows.Count() != 0)
+            {
+                Button1.Enable();
+                Button2.Enable();
+            }
+            else
+            {
+                Button1.Disable();
+                Button2.Disable();
+            }
+        }
         protected void deClearFilters(object sender, DirectEventArgs e)
         {
             uxFilterForm.Reset();
         }
         protected void deResetInvoice(object sender, DirectEventArgs e)
         {
-            uxInvoiceFormStore.Reload();
+            uxInvoiceFormStore.RemoveAll();
+            
         }
         protected void deAddInvoice(object sender, DirectEventArgs e)
         {
+          
             string InvoiceNum = uxInvoiceNumber.Value.ToString();
             DateTime InvoiceDate = (DateTime)uxInvoiceDate.Value;
+
+
+          
+
 
             CROSSING_INVOICE data = new CROSSING_INVOICE()
             {
@@ -140,22 +165,20 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
           
             string json = (e.Parameters["selectedApps"]);
             List<ApplicationDetails> appList = JSON.Deserialize<List<ApplicationDetails>>(json);
-            List<long> ReportList = new List<long>();
+            List<decimal> ReportList = new List<decimal>();
             foreach (ApplicationDetails app in appList)
             {
                 ReportList.Add(app.APPLICATION_ID);
-            }
+
                 using (Entities _context = new Entities())
                 {
-
-                    //Get List of all incidents open and closed 
-
                     allData = (from a in _context.CROSSING_APPLICATION
                                join d in _context.CROSSINGS on a.CROSSING_ID equals d.CROSSING_ID
                                join v in _context.CROSSING_INVOICE on a.INVOICE_ID equals v.INVOICE_ID
                                where ReportList.Contains(a.APPLICATION_ID)
                                select new
                                {
+                                   a.INVOICE_ID,
                                    v.INVOICE_NUMBER,
                                    v.INVOICE_DATE,
                                    d.CROSSING_ID,
@@ -168,13 +191,56 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                                    d.SERVICE_UNIT,
 
                                }).ToList<object>();
-
-                  
-                    //uxInvoiceNumber.Text = allData.INVOICE_NUMBER;
-            }
                     uxInvoiceReportStore.DataSource = allData;
-                   
+
+                }
+                
+
+
+            }
+
+               
             
+        }
+        protected void deGetRRType(string rrLoad)
+        {
+
+            using (Entities _context = new Entities())
+            {
+                long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
+                var RRdata = (from r in _context.CROSSING_RAILROAD
+                              where r.RAILROAD_ID == RailroadId
+                              select new
+                              {
+                                  r
+
+                              }).SingleOrDefault();
+
+                uxRRCI.SetValue(RRdata.r.RAILROAD);
+
+                string rrType = RRdata.r.RAILROAD;
+                if (rrLoad == "Add")
+                {
+                    List<ServiceUnitResponse> units = ServiceUnitData.ServiceUnitUnits(rrType).ToList();
+                    uxAddServiceUnit.Clear();
+                    uxAddSubDiv.Clear();
+                    uxAddServiceUnitStore.DataSource = units;
+                    uxAddServiceUnitStore.DataBind();
+                }
+
+            }
+        }
+        protected void deLoadSubDiv(object sender, DirectEventArgs e)
+        {
+
+
+            if (e.ExtraParams["Type"] == "Add")
+            {
+                List<ServiceUnitResponse> divisions = ServiceUnitData.ServiceUnitDivisions(uxAddServiceUnit.SelectedItem.Value).ToList();
+                uxAddSubDiv.Clear();
+                uxAddSubDivStore.DataSource = divisions;
+                uxAddSubDivStore.DataBind();
+            }
         }
         protected void deCloseInvoice(object sender, DirectEventArgs e)
         {
@@ -183,7 +249,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         }
         public class ApplicationDetails
         {
-            public decimal INVOICE_ID { get; set; }
+            public decimal? INVOICE_ID { get; set; }
             public long APPLICATION_ID { get; set; }
             public long CROSSING_ID { get; set; }
             public string APPLICATION_REQUESTED { get; set; }

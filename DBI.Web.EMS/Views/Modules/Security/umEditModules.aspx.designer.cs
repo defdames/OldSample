@@ -58,6 +58,24 @@ namespace DBI.Web.EMS.Views.Modules.Security {
         protected global::Ext.Net.Button uxDeleteModuleButton;
         
         /// <summary>
+        /// uxAccountCategoryGridView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.GridView uxAccountCategoryGridView;
+        
+        /// <summary>
+        /// GridDragDrop1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.GridDragDrop GridDragDrop1;
+        
+        /// <summary>
         /// uxMenuItemsGrid control.
         /// </summary>
         /// <remarks>
@@ -92,6 +110,24 @@ namespace DBI.Web.EMS.Views.Modules.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Button uxDeleteMenuItemButton;
+        
+        /// <summary>
+        /// GridView12 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.GridView GridView12;
+        
+        /// <summary>
+        /// GridDragDrop2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.GridDragDrop GridDragDrop2;
         
         /// <summary>
         /// uxModulesWindow control.

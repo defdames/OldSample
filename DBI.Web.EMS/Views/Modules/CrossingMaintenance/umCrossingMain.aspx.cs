@@ -77,7 +77,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                         uxManageKCS.Disable();
                     }
                     uxCrossingInfoTab.Reload();
-                    uxContactsTab.Reload();
+                    //uxContactsTab.Reload();
                     uxCrossingSecurity.Reload();
                     uxManageKCS.Reload();
                 }
@@ -143,7 +143,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 
                 uxChangeRailroadWindow.Close();
                 uxCrossingInfoTab.Reload();
-                uxContactsTab.Reload();
+                //uxContactsTab.Reload();
                 uxCrossingSecurity.Reload();
                 uxManageKCS.Reload();
             }
@@ -158,7 +158,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             SYS_USER_PROFILE_OPTIONS.SetProfileOption("UserCrossingSelectedValue", uxRailRoadCI.SelectedItem.Value);
             
             uxCrossingInfoTab.Reload();
-            uxContactsTab.Reload();
+            //uxContactsTab.Reload();
             uxCrossingSecurity.Reload();
             uxManageKCS.Reload();
 

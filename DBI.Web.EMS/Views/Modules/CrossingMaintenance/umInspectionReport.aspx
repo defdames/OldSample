@@ -40,13 +40,21 @@
             };
         };
     </script>
+    <script>
+        var saveData = function () {
+            App.Hidden1.setValue(Ext.encode(App.GridPanel1.getRowsValues({ selectedOnly: false })));
+        };
+    </script>
 </head>
 <body>
     <form id="form1" runat="server">
     
       <div>
             <ext:ResourceManager ID="ResourceManager1" runat="server" />
-            <ext:FormPanel ID="uxFilterForm" runat="server" Margin="5" Title="Filter Inspection Date">
+           <ext:Hidden ID="Hidden1" runat="server" Hidden="true" />
+           <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
+                <Items>
+            <ext:FormPanel ID="uxFilterForm" runat="server" Region="North" Margin="5" Title="Filter Inspection Date">
                 <Items>
                     <ext:FieldSet ID="FieldSet1" runat="server" Title="Filter">
                         <Items>
@@ -145,7 +153,7 @@
                                 TypeAhead="true"
                                 ForceSelection="true" TabIndex="4" EmptyText="ALL">
                                 <Store>
-                                    <ext:Store ID="uxAddStateList" runat="server" AutoDataBind="true" >
+                                    <ext:Store ID="uxAddStateList" runat="server" AutoDataBind="true" PageSize="10" >
                                         <Model>
                                             <ext:Model ID="Model10" runat="server">
                                                 <Fields>
@@ -171,6 +179,11 @@
                                 ID="Button4"
                                 Text="Run"
                                 Icon="PlayGreen" Disabled="true">
+                                <DirectEvents>
+                                    <Click OnEvent="deLaunchGrid" >
+                                        <EventMask ShowMask="true" Msg="Loading..." />
+                                        </Click>
+                                </DirectEvents>
                              <Listeners>
                                 <Click Handler="#{uxInspectDateStore}.load()" />
                             </Listeners>
@@ -198,7 +211,8 @@
                 Icon="Report"
                 Frame="false"
                 Resizable="false"
-                Collapsible="false">
+                Region="Center"
+                Collapsible="false" Hidden="true">
                 <Store>
                     <ext:Store ID="uxInspectDateStore"
                         runat="server"
@@ -210,7 +224,6 @@
                                     <ext:ModelField Name="CROSSING_NUMBER" Type="String" />
                                     <ext:ModelField Name="APPLICATION_DATE" Type="Date" />
                                     <ext:ModelField Name="MILE_POST" />
-                                    <ext:ModelField Name="DOT" />
                                     <ext:ModelField Name="STATE" />
                                     <ext:ModelField Name="TRUCK_NUMBER" />
                                     <ext:ModelField Name="CITY" />
@@ -236,10 +249,9 @@
                 <ColumnModel ID="ColumnModel1" runat="server">
                     <Columns>
                         <ext:Column ID="uxSubDiv" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="1" />
-                        <ext:Column ID="uxMainCrossingNum" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing #" Flex="1" />
+                        <ext:Column ID="uxMainCrossingNum" runat="server" DataIndex="CROSSING_NUMBER" Text="DOT #" Flex="1" />
                         <ext:Column ID="Column2" runat="server" Text="State" Flex="1" DataIndex="STATE" />
                         <ext:Column ID="Column1" runat="server" Text="MP" Flex="1" DataIndex="MILE_POST" />
-                        <ext:Column ID="Column3" runat="server" Text="DOT" Flex="1" DataIndex="DOT" />
                         <ext:DateColumn ID="DateColumn1" runat="server" Text="Date" DataIndex="APPLICATION_DATE" Flex="1" Format="MM/dd/yyyy" />
                         <ext:Column ID="Column4" runat="server" DataIndex="TRUCK_NUMBER" Text="Truck #" Flex="1" />
                         <%--<ext:Column ID="Column8" runat="server" DataIndex="REMARKS" Text="Remarks" Flex="3" />--%>
@@ -262,37 +274,23 @@
                     <ext:Toolbar ID="Toolbar2" runat="server">
                         <Items>
                           
-                            <ext:Button ID="Button2"
-                                runat="server"
-                                Text="Print"
-                                Icon="Printer"
-                                OnClientClick="window.print();" />
-
-                            <ext:Button runat="server"
-                                ID="uxExportToPDF"
-                                Text="Export to PDF"
-                                Icon="PageWhiteAcrobat">
-                                <%--<DirectEvents>
-                        <Click OnEvent="deExportToPDF" IsUpload="true">
-                            <ExtraParams>
-                                <ext:Parameter Name="CrossingId" Value="#{GridPanel1}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
-                            </ExtraParams>
-                        </Click>
-                    </DirectEvents>--%>
-                            </ext:Button>
-                            <ext:Button runat="server"
-                                ID="uxEmailPdf"
-                                Text="Email Copy"
-                                Icon="EmailAttach"
-                                Disabled="false">
-                                <%--<DirectEvents>
-										<Click OnEvent="deSendPDF" IsUpload="true">
-											<ExtraParams>
-												<ext:Parameter Name="CrossingId" Value="#{GridPanel1}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
-											</ExtraParams>
-										</Click>
-									</DirectEvents>--%>
-                            </ext:Button>
+                             <ext:Button ID="Button6" runat="server" Text="To XML" AutoPostBack="true" OnClick="ToXml" Icon="PageCode">
+                            <Listeners>
+                                <Click Fn="saveData" />
+                            </Listeners>
+                        </ext:Button>
+                        
+                        <ext:Button ID="Button7" runat="server" Text="To Excel" AutoPostBack="true" OnClick="ToExcel" Icon="PageExcel">
+                            <Listeners>
+                                <Click Fn="saveData" />
+                            </Listeners>
+                        </ext:Button>
+                        
+                        <ext:Button ID="Button8" runat="server" Text="To CSV" AutoPostBack="true" OnClick="ToCsv" Icon="PageAttach">
+                            <Listeners>
+                                <Click Fn="saveData" />
+                            </Listeners>
+                        </ext:Button>
                         </Items>
                     </ext:Toolbar>
                 </TopBar>
@@ -300,6 +298,8 @@
                     <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
                 </BottomBar>
                 </ext:GridPanel>
+                    </Items>
+               </ext:Viewport>
     </div>
     </form>
 </body>
