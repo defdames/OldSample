@@ -198,11 +198,14 @@ namespace DBI.Data
             return _context.CUSTOMER_SURVEY_QUES_CAT.Where(x => x.CATEGORY_ID == CategoryId).Single();
         }
 
-        public static IQueryable<CUSTOMER_SURVEY_FORMS_COMP> GetCompletionsByDate(DateTime StartDate, DateTime EndDate, List<long>OrgsList, Entities _context)
+        public static IQueryable<CUSTOMER_SURVEY_FORMS_COMP> GetCompletionsByDate(DateTime StartDate, DateTime EndDate, decimal FormId, Entities _context)
         {
+            EndDate = EndDate.AddHours(23).AddMinutes(59).AddSeconds(59);
             return (from c in _context.CUSTOMER_SURVEY_FORMS_COMP
                     join f in _context.CUSTOMER_SURVEY_FORMS on c.FORM_ID equals f.FORM_ID
-                    where c.FILLED_ON >= StartDate && c.FILLED_ON <= EndDate && OrgsList.Contains((long)f.ORG_ID));
+                    where c.FORM_ID == FormId && c.FILLED_ON >= StartDate && c.FILLED_ON <= EndDate
+                    select c);
+                        
         }
         public class CustomerSurveyForms
         {

@@ -192,9 +192,9 @@
                     <Buttons>
                         <ext:Button runat="server" ID="uxSubmitDates" Text="Submit" Icon="Add" Disabled="true">
                             <DirectEvents>
-                               <%-- <Click OnEvent="deExportDates" IsUpload="true">
+                                <Click OnEvent="deExportSurveys" IsUpload="true">
                                     <EventMask ShowMask="true" />
-                                </Click>--%>
+                                </Click>
                             </DirectEvents>
                         </ext:Button>
                         <ext:Button runat="server" ID="uxCancelDates" Text="Cancel" Icon="Delete">
