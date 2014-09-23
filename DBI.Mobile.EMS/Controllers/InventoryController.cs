@@ -34,6 +34,7 @@ namespace DBI.Mobile.EMS.Controllers
                     rItem.ITEM_COST = item.ITEM_COST;
                     rItem.LAST_UPDATE_DATE = item.LAST_UPDATE_DATE;
                     rItem.LE = item.LE;
+                    rItem.EPA_DESCRIPTION = item.EPA_DESCRIPTION;
                     returnList.Add(rItem);
                  }
             return returnList;
@@ -66,6 +67,7 @@ namespace DBI.Mobile.EMS.Controllers
                     rItem.ITEM_COST = item.ITEM_COST;
                     rItem.LAST_UPDATE_DATE = item.LAST_UPDATE_DATE;
                     rItem.LE = item.LE;
+                    rItem.EPA_DESCRIPTION = item.EPA_DESCRIPTION;
                     returnList.Add(rItem);
                 }
             }
