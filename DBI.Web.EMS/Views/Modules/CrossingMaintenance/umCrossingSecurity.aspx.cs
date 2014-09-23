@@ -124,10 +124,11 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
             });
             uxAssignCrossingWindow.Close();
-            uxCurrentSecurityProjectStore.Reload();
-            uxCurrentSecurityCrossingStore.Reload();
+            //uxCurrentSecurityProjectStore.Reload();
+            uxCurrentSecurityCrossingStore.RemoveAll();
+            uxSubDivStore.Reload();
             uxAssignedCrossingStore.Reload();
-          
+            
            
         }
         protected void deLoadStore(object sender, DirectEventArgs e)

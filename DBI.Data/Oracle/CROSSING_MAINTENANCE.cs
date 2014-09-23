@@ -57,10 +57,10 @@ namespace DBI.Data
         {
 
             return (from d in _context.CROSSINGS
-                    where !(from r in _context.CROSSING_RELATIONSHIP
-                            where d.CROSSING_ID == r.CROSSING_ID
-                            select r.CROSSING_ID)
-                       .Contains(d.CROSSING_ID)
+                    //where !(from r in _context.CROSSING_RELATIONSHIP
+                    //        where d.CROSSING_ID == r.CROSSING_ID
+                    //        select r.CROSSING_ID)
+                    //   .Contains(d.CROSSING_ID)
                     where d.RAILROAD_ID == RailroadId
                     select new CrossingList { RAILROAD_ID = d.RAILROAD, CONTACT_ID = d.CONTACT_ID, STATUS = d.STATUS, STATE = d.STATE, CROSSING_ID = d.CROSSING_ID, CROSSING_NUMBER = d.CROSSING_NUMBER, SERVICE_UNIT = d.SERVICE_UNIT, SUB_DIVISION = d.SUB_DIVISION, CONTACT_NAME = d.CROSSING_CONTACTS.CONTACT_NAME });
 

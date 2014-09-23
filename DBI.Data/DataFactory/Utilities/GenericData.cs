@@ -31,7 +31,7 @@ namespace DBI.Data
             {
                 using (Entities _context = new Entities())
                 {
-                    isValid = _context.SYS_ACTIVITY.Any();
+                    isValid = _context.SYS_MENU.Any();
                 }
             }
             catch
