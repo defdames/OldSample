@@ -640,6 +640,23 @@
                                         </ext:Store>
                                     </Store>
                                 </ext:ComboBox>
+                                <ext:ComboBox runat="server" ID="uxCopyFormType" Editable="true" ForceSelection="false" TypeAhead="true" QueryMode="Local" ValueField="TYPE_ID" DisplayField="TYPE_NAME" AllowBlank="false" EmptyText="Choose Target Type" InvalidCls="allowBlank" FieldLabel="Form Type">
+                                    <Store>
+                                        <ext:Store runat="server" ID="uxCopyFormTypeStore" OnReadData="deReadFormTypes" AutoDataBind="true">
+                                            <Model>
+                                                <ext:Model ID="Model7" runat="server" IDProperty="TYPE_ID">
+                                                    <Fields>
+                                                        <ext:ModelField Name="TYPE_ID" />
+                                                        <ext:ModelField Name="TYPE_NAME" />
+                                                    </Fields>
+                                                </ext:Model>
+                                            </Model>
+                                            <Proxy>
+                                                <ext:PageProxy />
+                                            </Proxy>
+                                        </ext:Store>
+                                    </Store>
+                                </ext:ComboBox>
                             </Items>
                             <Buttons>
                                 <ext:Button runat="server" ID="uxCopyFormSubmit" Text="Submit" Icon="Add">

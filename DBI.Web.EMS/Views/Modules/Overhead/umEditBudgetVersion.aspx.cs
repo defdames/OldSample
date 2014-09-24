@@ -307,6 +307,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             string _AccountSelectedID = uxOrganizationAccountSelectionModel.SelectedRow.RecordID;
             string _fiscal_year = Request.QueryString["fiscalyear"];
             string _accountDescription = e.ExtraParams["ACCOUNT_DESCRIPTION"];
+            string _grouped = e.ExtraParams["GROUPED"];
 
             long _budgetID = long.Parse(_budgetSelectedID);
 
@@ -320,6 +321,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 {
                     return;
                 }
+
+                if (_grouped == "Y")
+                {
+                    X.Msg.Alert("Account Grouped Error", "This account has been grouped and can not be modified. Please ungroup the accounts by checking the checkbox above to edit your ungrouped accounts.").Show();
+                    return;
+                }
+                
 
             }
             string url = "umAddOverheadDetailLine.aspx?budgetID=" + _budgetSelectedID + "&accountID=" + _AccountSelectedID + "&fiscalyear=" + _fiscal_year;

@@ -337,31 +337,13 @@ namespace DBI.Data
 
             foreach (OVERHEAD_ORG_BUDGETS _budget in _budgetlist)
             {
-                //Get Organization Information
-                HR.ORGANIZATION _orgInformation = HR.Organization(_budget.ORGANIZATION_ID);
+                string _status = SYS_ORG_PROFILE_OPTIONS.OrganizationProfileOption("OverheadBudgetOrganization", _budget.ORGANIZATION_ID);
 
-                    BUDGET_VERSION _data = new BUDGET_VERSION();
-                    _data.ORGANIZATION_ID = _orgInformation.ORGANIZATION_ID;
-                    _data.ORGANIZATION_NAME = _orgInformation.ORGANIZATION_NAME;
-                    _data.BUDGET_STATUS = (_budget.STATUS == "O") ? "Open" : "Closed" ;
-                    _data.FISCAL_YEAR = _budget.FISCAL_YEAR;
-                    _data.BUDGET_DESCRIPTION = BudgetVersionDescriptionByTypeID(context, _budget.OVERHEAD_BUDGET_TYPE_ID);
-                    _data.ACCOUNT_RANGE = AccountRangeByOrganizationID(context, _data.ORGANIZATION_ID);
-                    _data.ORG_BUDGET_ID = _budget.ORG_BUDGET_ID;
-                    _data.OVERHEAD_BUDGET_TYPE_ID = _budget.OVERHEAD_BUDGET_TYPE_ID;
-                    _budgetOrgList.Add(_data);
-            }
-
-            // Return budget version for current org if they exist (which they should)
-            if (withEMSSecurity)
-            {
-                IEnumerable<OVERHEAD_ORG_BUDGETS> _currentbudgetlist = BudgetOrganizations(context).Where(x => x.ORGANIZATION_ID == leOrganizationID).ToList();
-
-
-                foreach (OVERHEAD_ORG_BUDGETS _budget in _currentbudgetlist)
+                if (_status == "Y")
                 {
+
                     //Get Organization Information
-                    HR.ORGANIZATION _orgInformation = HR.Organization(leOrganizationID);
+                    HR.ORGANIZATION _orgInformation = HR.Organization(_budget.ORGANIZATION_ID);
 
                     BUDGET_VERSION _data = new BUDGET_VERSION();
                     _data.ORGANIZATION_ID = _orgInformation.ORGANIZATION_ID;
@@ -373,6 +355,37 @@ namespace DBI.Data
                     _data.ORG_BUDGET_ID = _budget.ORG_BUDGET_ID;
                     _data.OVERHEAD_BUDGET_TYPE_ID = _budget.OVERHEAD_BUDGET_TYPE_ID;
                     _budgetOrgList.Add(_data);
+                }
+            }
+
+            // Return budget version for current org if they exist (which they should)
+            if (withEMSSecurity)
+            {
+                IEnumerable<OVERHEAD_ORG_BUDGETS> _currentbudgetlist = BudgetOrganizations(context).Where(x => x.ORGANIZATION_ID == leOrganizationID).ToList();
+
+
+                foreach (OVERHEAD_ORG_BUDGETS _budget in _currentbudgetlist)
+                {
+
+                    string _status = SYS_ORG_PROFILE_OPTIONS.OrganizationProfileOption("OverheadBudgetOrganization", _budget.ORGANIZATION_ID);
+
+                    if (_status == "Y")
+                    {
+
+                        //Get Organization Information
+                        HR.ORGANIZATION _orgInformation = HR.Organization(leOrganizationID);
+
+                        BUDGET_VERSION _data = new BUDGET_VERSION();
+                        _data.ORGANIZATION_ID = _orgInformation.ORGANIZATION_ID;
+                        _data.ORGANIZATION_NAME = _orgInformation.ORGANIZATION_NAME;
+                        _data.BUDGET_STATUS = (_budget.STATUS == "O") ? "Open" : "Closed";
+                        _data.FISCAL_YEAR = _budget.FISCAL_YEAR;
+                        _data.BUDGET_DESCRIPTION = BudgetVersionDescriptionByTypeID(context, _budget.OVERHEAD_BUDGET_TYPE_ID);
+                        _data.ACCOUNT_RANGE = AccountRangeByOrganizationID(context, _data.ORGANIZATION_ID);
+                        _data.ORG_BUDGET_ID = _budget.ORG_BUDGET_ID;
+                        _data.OVERHEAD_BUDGET_TYPE_ID = _budget.OVERHEAD_BUDGET_TYPE_ID;
+                        _budgetOrgList.Add(_data);
+                    }
                 }
 
             }
@@ -508,95 +521,6 @@ namespace DBI.Data
 
             List<OVERHEAD_BUDGET_VIEW> _data = new List<OVERHEAD_BUDGET_VIEW>();
 
-            // If this is a rollup we need additional information
-            if (rollup)
-            {
-                //Now get a list of budgets I have access to view in EMS using hierarchy security
-                List<BUDGET_VERSION> _mySystemOrganizations = OVERHEAD_BUDGET_FORECAST.OrganizationBudgetsByHierarchy(context, long.Parse(SYS_ORG_PROFILE_OPTIONS.OrganizationProfileOption("OverheadBudgetHierarchy", leorganizationID)), organizationID, true, true)
-                    .Where(x => x.OVERHEAD_BUDGET_TYPE_ID == budgetTypeID & x.FISCAL_YEAR == fiscalYear).ToList();
-
-                //We have all the budgets we now have to get the details from these budgets for all accounts
-                List<OVERHEAD_BUDGET_VIEW> _rollUpBudgetView = new List<OVERHEAD_BUDGET_VIEW>();
-
-                foreach (BUDGET_VERSION _version in _mySystemOrganizations)
-                {
-                    var _detail = BudgetDetailByBudgetID(context, _version.ORG_BUDGET_ID);
-                    var _accounts = AccountListValidByOrganizationID(context, _version.ORGANIZATION_ID);
-
-
-                    foreach (GL_ACCOUNTS_V _account in _accounts)
-                    {
-                        OVERHEAD_CATEGORY _category = new OVERHEAD_CATEGORY();
-                        OVERHEAD_BUDGET_VIEW _record = new OVERHEAD_BUDGET_VIEW();
-
-                          //Return the data for the year
-                List<OVERHEAD_BUDGET_DETAIL> _condensedBudgetDetail = _detail.Where(x => x.CODE_COMBINATION_ID == _account.CODE_COMBINATION_ID).ToList();
-
-                if (_condensedBudgetDetail.Any())
-                {
-
-                    var _accountCategory = _accountCategoryList.Where(x => x.ACCOUNT_SEGMENT == _account.SEGMENT5).OrderBy(x => x.ACCOUNT_SEGMENT).SingleOrDefault();
-
-                    if (_accountCategory != null)
-                    {
-                        _category = _categoryList.Where(x => x.CATEGORY_ID == _accountCategory.CATEGORY_ID).SingleOrDefault();
-                        _record.CATEGORY_ID = _accountCategory.CATEGORY_ID;
-                        _record.CATEGORY_NAME = _category.NAME;
-                        _record.SORT_ORDER = _accountCategory.SORT_ORDER;
-                        _record.CATEGORY_SORT_ORDER = (long)_category.SORT_ORDER;
-                    }
-                    else
-                    {
-                        _record.CATEGORY_NAME = "Other";
-                        _record.CATEGORY_SORT_ORDER = 99999;
-                        _record.SORT_ORDER = 0;
-
-                    }
-
-
-                    _record.ACCOUNT_SEGMENT = _account.SEGMENT5;
-                    _record.CODE_COMBINATION_ID = _account.CODE_COMBINATION_ID;
-
-                    if (printView)
-                    {
-                        _record.ACCOUNT_DESCRIPTION = _account.SEGMENT5_DESC;
-                        _record.ACCOUNT_DESCRIPTION2 = "(" + _account.SEGMENT5 + ")";
-                    }
-                    else
-                    {
-                        _record.ACCOUNT_DESCRIPTION = _account.SEGMENT5_DESC + " (" + _account.SEGMENT4 + "." + _account.SEGMENT5 + ")";
-                    }
-                    _record.AMOUNT1 = GetAccountTotalByPeriod(_condensedBudgetDetail, 1);
-                    _record.AMOUNT2 = GetAccountTotalByPeriod(_condensedBudgetDetail, 2);
-                    _record.AMOUNT3 = GetAccountTotalByPeriod(_condensedBudgetDetail, 3);
-                    _record.AMOUNT4 = GetAccountTotalByPeriod(_condensedBudgetDetail, 4);
-                    _record.AMOUNT5 = GetAccountTotalByPeriod(_condensedBudgetDetail, 5);
-                    _record.AMOUNT6 = GetAccountTotalByPeriod(_condensedBudgetDetail, 6);
-                    _record.AMOUNT7 = GetAccountTotalByPeriod(_condensedBudgetDetail, 7);
-                    _record.AMOUNT8 = GetAccountTotalByPeriod(_condensedBudgetDetail, 8);
-                    _record.AMOUNT9 = GetAccountTotalByPeriod(_condensedBudgetDetail, 9);
-                    _record.AMOUNT10 = GetAccountTotalByPeriod(_condensedBudgetDetail, 10);
-                    _record.AMOUNT11 = GetAccountTotalByPeriod(_condensedBudgetDetail, 11);
-                    _record.AMOUNT12 = GetAccountTotalByPeriod(_condensedBudgetDetail, 12);
-                    _record.TOTAL = (_record.AMOUNT1 + _record.AMOUNT2 + _record.AMOUNT3 + _record.AMOUNT4 + _record.AMOUNT5 + _record.AMOUNT6 + _record.AMOUNT7 + _record.AMOUNT8 + _record.AMOUNT9 + _record.AMOUNT10 + _record.AMOUNT11 + _record.AMOUNT12);
-                    _record.BUDGET_ID = _version.ORG_BUDGET_ID;
-
-                    if (hideBlankLines)
-                    {
-                        if (_record.TOTAL > 0 || _record.TOTAL < 0)
-                            _data.Add(_record);
-                    }
-                    else
-                    {
-                        _data.Add(_record);
-                    }
-                }
-
-                    }
-
-                }
-            }
-
             var _budgetHeader = BudgetByID(context, budgetID);
 
             var _budgetDetail = BudgetDetailByBudgetID(context, budgetID);
@@ -635,8 +559,12 @@ namespace DBI.Data
 
                     if (printView)
                     {
-                        _record.ACCOUNT_DESCRIPTION = _account.SEGMENT5_DESC;
+                         _record.ACCOUNT_DESCRIPTION = _account.SEGMENT5_DESC;
+                         _record.ACCOUNT_DESCRIPTION2 = "(" + _account.SEGMENT4 + "." + _account.SEGMENT5 + ")";
+                        if(collapseAccountLines)
+                         _record.ACCOUNT_DESCRIPTION3 = _account.SEGMENT5_DESC;
                         _record.ACCOUNT_DESCRIPTION2 = "(" + _account.SEGMENT5 + ")";
+
                     }
                     else
                     {
@@ -682,7 +610,7 @@ namespace DBI.Data
                     ACCOUNT_SEGMENT = s.Key,
                     CATEGORY_NAME = s.Min(i => i.CATEGORY_NAME),
                     CODE_COMBINATION_ID = s.Min(i => i.CODE_COMBINATION_ID),
-                    ACCOUNT_DESCRIPTION = _data.Where(g => g.ACCOUNT_SEGMENT == s.Key).Count() > 1 ? s.Min(i => i.ACCOUNT_DESCRIPTION2) : s.Min(i => i.ACCOUNT_DESCRIPTION),
+                    ACCOUNT_DESCRIPTION = _data.Where(g => g.ACCOUNT_SEGMENT == s.Key).Count() > 1 ? ((printView == true) ? s.Min(i => i.ACCOUNT_DESCRIPTION3) : s.Min(i => i.ACCOUNT_DESCRIPTION2)) : s.Min(i => i.ACCOUNT_DESCRIPTION),
                     ACCOUNT_DESCRIPTION2 = s.Min(i => i.ACCOUNT_DESCRIPTION2),
                     TOTAL = s.Sum(i => i.TOTAL),
                     AMOUNT1 = s.Sum(i => i.AMOUNT1),
@@ -804,6 +732,7 @@ namespace DBI.Data
             public long CODE_COMBINATION_ID { get; set; }
             public string ACCOUNT_DESCRIPTION { get; set; }
             public string ACCOUNT_DESCRIPTION2 { get; set; }
+            public string ACCOUNT_DESCRIPTION3 { get; set; }
             public decimal TOTAL { get; set; }
             public decimal AMOUNT1 { get; set; }
             public decimal AMOUNT2 { get; set; }
@@ -1065,7 +994,7 @@ namespace DBI.Data
 
                 //Details Row
                 //Return budget detail information
-                IEnumerable<OVERHEAD_BUDGET_VIEW> _budgetView = BudgetDetailsViewByBudgetID(context, budgetID,true,hideBlankLines:printOptions.HIDE_BLANK_LINES);
+                IEnumerable<OVERHEAD_BUDGET_VIEW> _budgetView = BudgetDetailsViewByBudgetID(context, budgetID,printView:true, hideBlankLines:printOptions.HIDE_BLANK_LINES,collapseAccountLines:printOptions.GROUP_ACCOUNTS);
 
                 NumberFormatInfo nfi = CultureInfo.CurrentCulture.NumberFormat;
                 nfi = (NumberFormatInfo)nfi.Clone();
@@ -1162,10 +1091,22 @@ namespace DBI.Data
                     {
                         if (rowcount == 1)
                         {
-                            _cell.BackgroundColor = new Color(230, 230, 230);
+                            if (_row.GROUPED == "Y")
+                            {
+                                _cell.BackgroundColor = new Color(224, 255, 255);
+                            }
+                            else
+                            {
+                                _cell.BackgroundColor = new Color(230, 230, 230);
+                            }
+                            
                         }
                         else
                         {
+                            if (_row.GROUPED == "Y")
+                            {
+                                _cell.BackgroundColor = new Color(224, 255, 255);
+                            }
                             _cell.HorizontalAlignment = PdfCell.ALIGN_RIGHT;
                         }
 
