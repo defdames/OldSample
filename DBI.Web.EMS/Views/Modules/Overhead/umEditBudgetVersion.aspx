@@ -93,6 +93,8 @@
 
         <ext:Hidden ID="FormatType" runat="server" />
 
+        
+
         <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
             <Items>
                 <ext:GridPanel ID="uxOrganizationAccountGridPanel" runat="server" Flex="1" Title="General Ledger Accounts by Budget" Header="false" Margin="5" Region="Center" Scroll="Both">
@@ -123,10 +125,8 @@
                                 <ext:ToolbarFill ID="ToolbarFill1" runat="server"></ext:ToolbarFill>
                                
                                 <ext:Button ID="uxPrintReport" runat="server" Text="Print" Icon="Printer" Disabled="false">
-                                  <DirectEvents>
-                                    <Click OnEvent="printOverheadBudget" Timeout="500000">
-                                    <EventMask ShowMask="true" Msg="Generating Report, Please Wait..." />
-                                        </Click>
+                                    <DirectEvents>
+                                        <Click OnEvent="showPrintWindow" />
                                     </DirectEvents>
                                 </ext:Button>
                                 <ext:ToolbarSeparator ID="ToolbarSeparator3" runat="server"></ext:ToolbarSeparator>
@@ -319,6 +319,71 @@
                 <ext:Button runat="server" ID="uxCancelSaveBudgetNote" Icon="Cancel" Text="Cancel">
                     <Listeners>
                         <Click Handler="#{uxBudgetNotesWindow}.close();"></Click>
+                    </Listeners>
+                </ext:Button>
+            </Buttons>
+        </ext:Window>
+
+
+        <ext:Window ID="uxPrintWindow"
+            runat="server"
+            Title="Print Budget"
+            Width="275"
+            Height="200"
+            BodyPadding="10"
+            AutoScroll="true"
+            Hidden="true"
+            Layout="FormLayout"
+            Modal="true"
+            CloseAction="Hide"
+            Closable="true"
+            Resizable ="false"
+            Frame="true">
+            <Items>
+                  <ext:FieldContainer ID="FieldContainer1" 
+                        runat="server"
+                        LabelStyle="font-weight:bold;padding:0;"
+                        Layout="FitLayout">
+                        <Items>
+                         <ext:Checkbox ID="uxPrintBlank" runat="server" BoxLabel="Hide Blank Lines" HideLabel="true"></ext:Checkbox>
+                        </Items>
+                    </ext:FieldContainer> 
+                 <ext:FieldContainer ID="FieldContainer3" 
+                        runat="server"
+                        LabelStyle="font-weight:bold;padding:0;"
+                        Layout="FitLayout">
+                        <Items>
+                         <ext:Checkbox ID="uxPrintGroup" runat="server" BoxLabel="Group Account Lines" HideLabel="true"></ext:Checkbox>
+                        </Items>
+                    </ext:FieldContainer> 
+                 <ext:FieldContainer ID="FieldContainer4" 
+                        runat="server"
+                        LabelStyle="font-weight:bold;padding:0;"
+                        Layout="FitLayout">
+                        <Items>
+                         <ext:Checkbox ID="uxPrintNote" runat="server" BoxLabel="Print Notes" HideLabel="true"></ext:Checkbox>
+                        </Items>
+                    </ext:FieldContainer> 
+                 <ext:FieldContainer ID="FieldContainer5" 
+                        runat="server"
+                        LabelStyle="font-weight:bold;padding:0;"
+                        Layout="FitLayout">
+                        <Items>
+                         <ext:Checkbox ID="uxPrintRollup" runat="server" BoxLabel="Print Rolled Up" HideLabel="true"></ext:Checkbox>
+                        </Items>
+                    </ext:FieldContainer> 
+            </Items>
+            <Buttons>
+                <ext:Button ID="Button1" runat="server" Text="Print" Icon="Printer" Disabled="false">
+                    <DirectEvents>
+                        <Click OnEvent="printOverheadBudget" Timeout="500000" Success="#{uxPrintWindow}.close();">
+                            <EventMask ShowMask="true" Msg="Generating Report, Please Wait..." />
+                        </Click>
+                    </DirectEvents>
+                </ext:Button>
+                 <ext:Button ID="Button2" runat="server" Text="Cancel" Icon="Cancel" Disabled="false">
+                    <Listeners>
+                        <Click Handler="#{uxPrintWindow}.close();"></Click>
                     </Listeners>
                 </ext:Button>
             </Buttons>

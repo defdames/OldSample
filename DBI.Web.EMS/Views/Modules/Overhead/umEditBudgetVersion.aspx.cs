@@ -518,10 +518,17 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             }
         }
 
+        public void showPrintWindow(object sender, DirectEventArgs e)
+        {
+            uxPrintBlank.Checked = uxHideBlankLinesCheckbox.Checked;
+            uxPrintGroup.Checked = uxCollapseAccountTotals.Checked;
+            uxPrintWindow.Show();
+
+        }
+
 
         public void printOverheadBudget(object sender, DirectEventArgs e)
         {
-
             short _fiscal_year = short.Parse(Request.QueryString["fiscalyear"]);
             long _organizationID = long.Parse(Request.QueryString["orgid"]);
             long _budgetid = long.Parse(Request.QueryString["budget_id"]);
@@ -531,8 +538,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             {
 
                 OVERHEAD_BUDGET_FORECAST.PRINT_OPTIONS _printOptions = new OVERHEAD_BUDGET_FORECAST.PRINT_OPTIONS();
-                _printOptions.HIDE_BLANK_LINES = uxHideBlankLinesCheckbox.Checked;
-                _printOptions.GROUP_ACCOUNTS = uxCollapseAccountTotals.Checked;
+                _printOptions.HIDE_BLANK_LINES = uxPrintBlank.Checked;
+                _printOptions.GROUP_ACCOUNTS = uxPrintGroup.Checked;
+                _printOptions.SHOW_NOTES = uxPrintNote.Checked;
+                _printOptions.ROLLUP = uxPrintRollup.Checked;
 
 
                 MemoryStream PdfStream = OVERHEAD_BUDGET_FORECAST.GenerateReport(_context, _organizationID, _fiscal_year, _budgetid, _description, _printOptions);

@@ -525,6 +525,7 @@ namespace DBI.Data
 
             var _budgetDetail = BudgetDetailByBudgetID(context, budgetID);
             var _validAccounts = AccountListValidByOrganizationID(context, _budgetHeader.ORGANIZATION_ID);
+            List<OVERHEAD_ACCOUNT_COMMENT> _accountComments = context.OVERHEAD_ACCOUNT_COMMENT.Where(x => x.ORG_BUDGET_ID == budgetID).ToList();
 
             foreach (GL_ACCOUNTS_V _account in _validAccounts)
             {
@@ -565,9 +566,28 @@ namespace DBI.Data
                          _record.ACCOUNT_DESCRIPTION3 = _account.SEGMENT5_DESC;
                         _record.ACCOUNT_DESCRIPTION2 = "(" + _account.SEGMENT5 + ")";
 
+                        if (_accountComments.Any())
+                        {
+                            OVERHEAD_ACCOUNT_COMMENT _comments = _accountComments.Where(x => x.CODE_COMBINATION_ID == _account.CODE_COMBINATION_ID).SingleOrDefault();
+                            if (_comments != null)
+                            {
+                                _record.ACCOUNT_NOTES = _comments.COMMENTS;
+                            }
+                            else
+                            {
+                                _record.ACCOUNT_NOTES = "";
+                            }
+                        }
+                        else
+                        {
+                            _record.ACCOUNT_NOTES = "";
+                        }
+
+
                     }
                     else
                     {
+                        _record.ACCOUNT_NOTES = "";
                         _record.ACCOUNT_DESCRIPTION = _account.SEGMENT5_DESC + " (" + _account.SEGMENT4 + "." + _account.SEGMENT5 + ")";
                         _record.ACCOUNT_DESCRIPTION2 = _account.SEGMENT5_DESC + " (" + _account.SEGMENT5 + ")";
                     }
@@ -586,6 +606,8 @@ namespace DBI.Data
                     _record.TOTAL = (_record.AMOUNT1 + _record.AMOUNT2 + _record.AMOUNT3 + _record.AMOUNT4 + _record.AMOUNT5 + _record.AMOUNT6 + _record.AMOUNT7 + _record.AMOUNT8 + _record.AMOUNT9 + _record.AMOUNT10 + _record.AMOUNT11 + _record.AMOUNT12);
                     _record.BUDGET_ID = budgetID;
 
+                   
+
                     if (hideBlankLines)
                     {
                         if (_record.TOTAL > 0 || _record.TOTAL < 0)
@@ -600,6 +622,7 @@ namespace DBI.Data
 
             if (collapseAccountLines)
             {
+
                 //Group By Account Segment
                 List<OVERHEAD_BUDGET_VIEW> _collapsedView = _data.GroupBy(x => x.ACCOUNT_SEGMENT).Select(s => new OVERHEAD_BUDGET_VIEW
                 {
@@ -626,6 +649,7 @@ namespace DBI.Data
                     AMOUNT11 = s.Sum(i => i.AMOUNT11),
                     AMOUNT12 = s.Sum(i => i.AMOUNT12),
                     GROUPED = _data.Where(g => g.ACCOUNT_SEGMENT == s.Key).Count() > 1 ? "Y" : "N",
+                    ACCOUNT_NOTES = AccountsGroupedNotesBySegment(s.Key, _data)
                 }).ToList();
 
                if (printView)
@@ -644,6 +668,29 @@ namespace DBI.Data
             }
 
                 return _data;
+
+        }
+
+
+        public static string AccountsGroupedNotesBySegment(string AccountSegment, List<OVERHEAD_BUDGET_VIEW> InData)
+        {
+            string _accountNotes = string.Empty;
+
+            InData = InData.Where(x => x.ACCOUNT_SEGMENT == AccountSegment).ToList();
+
+            foreach (OVERHEAD_BUDGET_VIEW _row in InData)
+            {
+                if (_accountNotes.Length > 0)
+                {
+                    _accountNotes = _accountNotes + "\n\n" + _row.ACCOUNT_NOTES;
+                }
+                else
+                {
+                    _accountNotes = _row.ACCOUNT_NOTES;
+                }
+            }
+
+            return _accountNotes;
 
         }
 
@@ -669,7 +716,7 @@ namespace DBI.Data
                         AMOUNT11 = g.Sum(i => i.AMOUNT11),
                         AMOUNT12 = g.Sum(i => i.AMOUNT12),
                         TOTAL = g.Sum(i => i.TOTAL),
-                        CATEGORY_NAME = g.Max(i => i.CATEGORY_NAME),
+                        CATEGORY_NAME = g.Max(i => i.CATEGORY_NAME)
                     }).Where(x => x.CATEGORY_ID == categoryID).Single();
 
                 return _summaryData;
@@ -747,6 +794,7 @@ namespace DBI.Data
             public decimal AMOUNT11 { get; set; }
             public decimal AMOUNT12 { get; set; }
             public string GROUPED { get; set; }
+            public string ACCOUNT_NOTES { get; set; }
         }
 
 
@@ -898,6 +946,7 @@ namespace DBI.Data
 
         #region Misc functions
 
+
         public static MemoryStream GenerateReport(Entities context, long organizationID, short fiscalYear, long budgetID, string description, PRINT_OPTIONS printOptions)
         {
 
@@ -909,11 +958,11 @@ namespace DBI.Data
                 PdfWriter ExportWriter = PdfWriter.GetInstance(_document, _pdfMemoryStream);
                
                 Paragraph NewLine = new Paragraph("\n");
-                Font HeaderFont = FontFactory.GetFont("Verdana", 9);
-                Font HeadFootTitleFont = FontFactory.GetFont("Verdana", 9);
-                Font HeadFootCellFont = FontFactory.GetFont("Verdana", 9);
-                Font CellFont = FontFactory.GetFont("Verdana", 8);
-                Font TotalCellFont = FontFactory.GetFont("Verdana", 8, Font.BOLD);
+                Font HeaderFont = FontFactory.GetFont("Helvetica", 9);
+                Font HeadFootTitleFont = FontFactory.GetFont("Helvetica", 9);
+                Font HeadFootCellFont = FontFactory.GetFont("Helvetica", 9);
+                Font CellFont = FontFactory.GetFont("Helvetica", 8);
+                Font TotalCellFont = FontFactory.GetFont("Helvetica", 8, Font.BOLD);
 
                 //Open Document
                 _document.Open();
@@ -1219,8 +1268,125 @@ namespace DBI.Data
                 _headerPdfTable.Rows.Add(Row);
 
 
+               _document.Add(_headerPdfTable);
 
-                _document.Add(_headerPdfTable);
+               if (printOptions.SHOW_NOTES)
+               {
+                   try
+                   {
+
+                     _document.NewPage();
+
+
+                       //Header Table with Columns
+                       PdfPTable _commentsPDFTable = new PdfPTable(2);
+                       _commentsPDFTable.WidthPercentage = 100;
+                       int[] intWidth = { 25, 75 };
+                       _commentsPDFTable.SetWidths(intWidth);
+                       _commentsPDFTable.HeaderRows = 2;
+
+                       Cells = new PdfPCell[]{
+                     new PdfPCell(new Phrase("Overhead Budget / " + _title[0], TotalCellFont )),
+                     new PdfPCell(new Phrase("Account Notes",TotalCellFont))
+                   };
+
+                       foreach (PdfPCell _cell in Cells)
+                       {
+                           _cell.BackgroundColor = new Color(230, 230, 230);
+                           _cell.HorizontalAlignment = PdfCell.ALIGN_CENTER;
+                       }
+
+                       Row = new PdfPRow(Cells);
+                       _commentsPDFTable.Rows.Add(Row);
+
+                       Cells = new PdfPCell[]{
+                     new PdfPCell(new Phrase(_title[1] + " / " + _title[2], TotalCellFont )),
+                     new PdfPCell(new Phrase(""))
+                 };
+
+                       foreach (PdfPCell _cell in Cells)
+                       {
+                           _cell.BackgroundColor = new Color(230, 230, 230);
+                           _cell.HorizontalAlignment = PdfCell.ALIGN_CENTER;
+                       }
+
+
+                       Row = new PdfPRow(Cells);
+                       _commentsPDFTable.Rows.Add(Row);
+
+
+                       foreach (OVERHEAD_BUDGET_VIEW _row in _budgetView)
+                       {
+                           if (_row.ACCOUNT_NOTES.Length > 0)
+                           {
+                               Phrase _accountPhase = new Phrase();
+                               _accountPhase.Add(new Chunk(_row.ACCOUNT_DESCRIPTION, CellFont));
+                               _accountPhase.Add(new Chunk(" " + _row.ACCOUNT_DESCRIPTION2, CellFont));
+
+
+                               Cells = new PdfPCell[]{
+                                new PdfPCell(_accountPhase),
+                                new PdfPCell(new Phrase(_row.ACCOUNT_NOTES,TotalCellFont))
+                                            };
+                               Row = new PdfPRow(Cells);
+                               _commentsPDFTable.Rows.Add(Row);
+                           }
+           
+                       }
+
+
+                       _document.Add(_commentsPDFTable);
+
+                       _document.Add(NewLine);
+                       _document.Add(NewLine);
+
+                       OVERHEAD_ORG_BUDGETS _budgetDetail = OVERHEAD_BUDGET_FORECAST.BudgetByID(context, budgetID);
+
+
+                       if (_budgetDetail.COMMENTS.Length > 0)
+                       {
+
+                           //Overall Budget Notes
+                           PdfPTable _budgetNotes = new PdfPTable(1);
+                           _budgetNotes.WidthPercentage = 100;
+                           int[] _budgetNotesWidth = { 100 };
+                           _budgetNotes.SetWidths(_budgetNotesWidth);
+                           _budgetNotes.HeaderRows = 1;
+
+                           Cells = new PdfPCell[]{
+                     new PdfPCell(new Phrase("Overhead Budget Notes / " + _title[0] + " / " + _title[1] + " / " + _title[2], TotalCellFont ))
+                   };
+
+                           foreach (PdfPCell _cell in Cells)
+                           {
+                               _cell.BackgroundColor = new Color(230, 230, 230);
+                               _cell.HorizontalAlignment = PdfCell.ALIGN_LEFT;
+                           }
+
+                           Row = new PdfPRow(Cells);
+                           _budgetNotes.Rows.Add(Row);
+
+
+                           Cells = new PdfPCell[]{
+                     new PdfPCell(new Phrase(_budgetDetail.COMMENTS,TotalCellFont))
+                                        };
+
+                           Row = new PdfPRow(Cells);
+                           _budgetNotes.Rows.Add(Row);
+
+
+                           _document.Add(_budgetNotes);
+
+                       }
+
+                   }
+                   catch (Exception ex)
+                   {
+                       System.Diagnostics.Debug.WriteLine(ex.InnerException);
+                   }
+                      
+
+               }
 
                 ExportWriter.CloseStream = false;
                 _document.Close();
@@ -1232,8 +1398,7 @@ namespace DBI.Data
 
         public class PRINT_OPTIONS
         {
-            public Boolean SHOW_ACCOUNT_NOTES {get; set;}
-            public Boolean SHOW_BUDGET_NOTES {get; set;}
+            public Boolean SHOW_NOTES {get; set;}
             public Boolean ROLLUP {get; set;}
             public Boolean HIDE_BLANK_LINES {get; set;}
             public Boolean GROUP_ACCOUNTS { get; set; }
