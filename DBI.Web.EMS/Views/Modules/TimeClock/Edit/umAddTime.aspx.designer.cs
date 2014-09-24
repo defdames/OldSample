@@ -49,6 +49,33 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock.Edit {
         protected global::Ext.Net.FormPanel frmPanelIn;
         
         /// <summary>
+        /// uxEmployees control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ComboBox uxEmployees;
+        
+        /// <summary>
+        /// uxEmployeesStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxEmployeesStore;
+        
+        /// <summary>
+        /// EmployeesModel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Model EmployeesModel;
+        
+        /// <summary>
         /// uxDateInField control.
         /// </summary>
         /// <remarks>

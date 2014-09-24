@@ -194,7 +194,7 @@ namespace DBI.Data
 
             DBI.Data.GenericData.Update<TIME_CLOCK>(_data);
         }
-        public static void InsertAddedEmployeeTime(DateTime newTimeIn, DateTime newTimeOut, string personName)
+        public static void InsertAddedEmployeeTime(DateTime newTimeIn, DateTime newTimeOut, string personName, decimal personid, decimal supervisorid, string supervisorname)
         {
 
             
@@ -203,11 +203,24 @@ namespace DBI.Data
             decimal lcts = GetLunchTime(adjts);
             TIME_CLOCK _data = new TIME_CLOCK
             {
-
-
-
+                PERSON_ID = personid,
+                TIME_IN = newTimeIn,
+                TIME_OUT =newTimeOut,
+                MODIFIED_TIME_IN = newTimeIn,
+                MODIFIED_TIME_OUT = newTimeOut,
+                MODIFIED_BY = supervisorname,
+                APPROVED = "N",
+                COMPLETED = "Y",
+                SUBMITTED = "N",
+                DELETED = "N",
+                ACTUAL_HOURS = (decimal)ts.TotalHours,
+                ADJUSTED_HOURS = adjts,
+                ADJUSTED_LUNCH = lcts,
+                DAY_OF_WEEK = newTimeIn.DayOfWeek.ToString(),
+                SUPERVISOR_ID = (int)supervisorid,
             };
-            
+
+            GenericData.Insert<TIME_CLOCK>(_data);
         }
 
         /// <summary>
