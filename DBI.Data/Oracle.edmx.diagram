@@ -114,10 +114,6 @@
         <AssociationConnector Association="OracleModel.FK_ACTUAL_NUM_DETAIL_TASK_ID" />
         <AssociationConnector Association="OracleModel.FK_BUDGET_NUM_DETAIL_TASK_ID" />
         <EntityTypeShape EntityType="OracleModel.SYS_ORG_PROFILE_OPTIONS" Width="1.5" PointX="19.125" PointY="20.25" />
-        <EntityTypeShape EntityType="OracleModel.CROSSING" Width="1.5" PointX="26.875" PointY="0.625" />
-        <AssociationConnector Association="OracleModel.FK_CROSSINGS_CONTACT_ID" />
-        <AssociationConnector Association="OracleModel.FK_DATA_ENTRY_CROSSING_ID" />
-        <AssociationConnector Association="OracleModel.FK_CROSSINGS_RAILROAD_ID" />
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" Width="1.5" PointX="15.625" PointY="0.875" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_INVOICE" Width="1.5" PointX="32.5" PointY="2.25" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_SUPP_INVOICE" Width="1.5" PointX="35.5" PointY="3.75" />
@@ -131,7 +127,6 @@
         <AssociationConnector Association="OracleModel.FK_FORMS_COMP_THRESH_ID" />
         <EntityTypeShape EntityType="OracleModel.PROJECT_CONTACTS_V" Width="1.5" PointX="0.75444998068476554" PointY="22.724045793863034" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_SUPPLEMENTAL" Width="1.5" PointX="28.75" PointY="13.25" />
-        <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
         <EntityTypeShape EntityType="OracleModel.EMPLOYEES_V" Width="1.5" PointX="5.0377610218887039" PointY="11.013042469980681" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_PRICING" Width="1.5" PointX="8.875" PointY="145" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_DETAIL_SHEET" Width="1.5" PointX="18.25" PointY="87.5" />
@@ -160,7 +155,12 @@
         <EntityTypeShape EntityType="OracleModel.CROSSING_APPLICATION" Width="1.5" PointX="29.875" PointY="2.375" />
         <AssociationConnector Association="OracleModel.FK_APPLICATION_INVOICE_ID" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_INCIDENT" Width="1.5" PointX="26.5" PointY="14.875" />
+        <EntityTypeShape EntityType="OracleModel.CROSSING" Width="1.5" PointX="27.25" PointY="0.5" />
+        <AssociationConnector Association="OracleModel.FK_CROSSINGS_CONTACT_ID" />
+        <AssociationConnector Association="OracleModel.FK_DATA_ENTRY_CROSSING_ID" />
         <AssociationConnector Association="OracleModel.FK_INCIDENT_CROSSING_ID" />
+        <AssociationConnector Association="OracleModel.FK_CROSSINGS_RAILROAD_ID" />
+        <AssociationConnector Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" />
         </Diagram>
       <Diagram DiagramId="e84dee89c5a844eb84c350f94a998eb6" Name="OVERHEAD" >
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" Width="4.25" PointX="2.75" PointY="0.75" />

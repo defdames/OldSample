@@ -37,7 +37,26 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             if (Request.QueryString["orgID"] != "" && Request.QueryString["orgID"] != null)
                 _orgID = long.Parse(Request.QueryString["orgID"]);
 
-            var _data = OVERHEAD_BUDGET_TYPES.NextAvailBudgetTypeByOrganization(_orgID,_leID, long.Parse(uxFiscalYear.SelectedItem.Value));
+           
+            List<OVERHEAD_BUDGET_TYPE> _data = new List<OVERHEAD_BUDGET_TYPE>();
+
+            if (_orgID != 0)
+            {
+                _data = OVERHEAD_BUDGET_TYPES.NextAvailBudgetTypeByOrganization(_orgID, _leID, long.Parse(uxFiscalYear.SelectedItem.Value));
+            }
+            else
+            {
+                string _selectedRecordID = Request.QueryString["combinedLEORGID"];
+                if (_selectedRecordID != null)
+                {
+                    char[] _delimiterChars = { ':' };
+                    string[] _selectedID = _selectedRecordID.Split(_delimiterChars);
+                    long _hierarchyID = long.Parse(_selectedID[1].ToString());
+                    long _organizationID = long.Parse(_selectedID[0].ToString());
+
+                    _data = OVERHEAD_BUDGET_TYPE.BudgetTypes(_organizationID).ToList();
+                }
+            }
 
             if (_data.Count() > 0)
             {

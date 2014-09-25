@@ -400,7 +400,8 @@
       "INVENTORY_V"."ATTRIBUTE2" AS "ATTRIBUTE2", 
       "INVENTORY_V"."INV_NAME" AS "INV_NAME", 
       "INVENTORY_V"."INV_LOCATION" AS "INV_LOCATION", 
-      "INVENTORY_V"."ORGANIZATION_ID" AS "ORGANIZATION_ID"
+      "INVENTORY_V"."ORGANIZATION_ID" AS "ORGANIZATION_ID", 
+      "INVENTORY_V"."EPA_DESCRIPTION" AS "EPA_DESCRIPTION"
       FROM "XXEMS"."INVENTORY_V" "INVENTORY_V"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="JOB_TITLE_V" EntityType="OracleModel.Store.JOB_TITLE_V" store:Type="Views" store:Schema="XXEMS" store:Name="JOB_TITLE_V">
@@ -1637,6 +1638,7 @@
           <Property Name="SPECIAL_INSTRUCTIONS" Type="clob" />
           <Property Name="STATUS" Type="varchar2" MaxLength="30" />
           <Property Name="RAILROAD_ID" Type="number" />
+          <Property Name="CUT_ONLY" Type="char" MaxLength="1" />
         </EntityType>
         <EntityType Name="CUSTOMER_SURVEY_CAT">
           <Key>
@@ -2827,6 +2829,7 @@
           <Property Name="INV_NAME" Type="varchar2" Nullable="false" MaxLength="240" />
           <Property Name="INV_LOCATION" Type="number" Precision="15" />
           <Property Name="ORGANIZATION_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="EPA_DESCRIPTION" Type="varchar2" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'XXEMS.JOB_TITLE_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -4629,19 +4632,6 @@
             <End Role="BUD_BID_BUDGET_NUM" EntitySet="BUD_BID_BUDGET_NUM" />
           </AssociationSet>
           <EntitySet Name="SYS_ORG_PROFILE_OPTIONS" EntityType="OracleModel.SYS_ORG_PROFILE_OPTIONS" />
-          <EntitySet Name="CROSSINGS" EntityType="OracleModel.CROSSING" />
-          <AssociationSet Name="FK_CROSSINGS_CONTACT_ID" Association="OracleModel.FK_CROSSINGS_CONTACT_ID">
-            <End Role="CROSSING_CONTACTS" EntitySet="CROSSING_CONTACTS" />
-            <End Role="CROSSING" EntitySet="CROSSINGS" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DATA_ENTRY_CROSSING_ID" Association="OracleModel.FK_DATA_ENTRY_CROSSING_ID">
-            <End Role="CROSSING" EntitySet="CROSSINGS" />
-            <End Role="CROSSING_DATA_ENTRY" EntitySet="CROSSING_DATA_ENTRY" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CROSSINGS_RAILROAD_ID" Association="OracleModel.FK_CROSSINGS_RAILROAD_ID">
-            <End Role="CROSSING_RAILROAD" EntitySet="CROSSING_RAILROAD" />
-            <End Role="CROSSING" EntitySet="CROSSINGS" />
-          </AssociationSet>
           <EntitySet Name="OVERHEAD_BUDGET_TYPE" EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" />
           <EntitySet Name="CROSSING_INVOICE" EntityType="OracleModel.CROSSING_INVOICE" />
           <EntitySet Name="CROSSING_SUPP_INVOICE" EntityType="OracleModel.CROSSING_SUPP_INVOICE" />
@@ -4665,10 +4655,6 @@
           <EntitySet Name="OVERHEAD_ORG_BUDGETS" EntityType="OracleModel.OVERHEAD_ORG_BUDGETS" />
           <EntitySet Name="OVERHEAD_ACCOUNT_COMMENT" EntityType="OracleModel.OVERHEAD_ACCOUNT_COMMENT" />
           <EntitySet Name="CROSSING_SUPPLEMENTAL" EntityType="OracleModel.CROSSING_SUPPLEMENTAL" />
-          <AssociationSet Name="FK_SUPPLEMENTAL_CROSSING_ID" Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID">
-            <End Role="CROSSING" EntitySet="CROSSINGS" />
-            <End Role="CROSSING_SUPPLEMENTAL" EntitySet="CROSSING_SUPPLEMENTAL" />
-          </AssociationSet>
           <EntitySet Name="OVERHEAD_ACCOUNT_CATEGORY" EntityType="OracleModel.OVERHEAD_ACCOUNT_CATEGORY" />
           <EntitySet Name="OVERHEAD_CATEGORY" EntityType="OracleModel.OVERHEAD_CATEGORY" />
           <EntitySet Name="OVERHEAD_BUDGET_DETAIL" EntityType="OracleModel.OVERHEAD_BUDGET_DETAIL" />
@@ -4745,9 +4731,26 @@
             <End Role="CROSSING_APPLICATION" EntitySet="CROSSING_APPLICATION" />
           </AssociationSet>
           <EntitySet Name="CROSSING_INCIDENT" EntityType="OracleModel.CROSSING_INCIDENT" />
+          <EntitySet Name="CROSSINGS" EntityType="OracleModel.CROSSING" />
+          <AssociationSet Name="FK_CROSSINGS_CONTACT_ID" Association="OracleModel.FK_CROSSINGS_CONTACT_ID">
+            <End Role="CROSSING_CONTACTS" EntitySet="CROSSING_CONTACTS" />
+            <End Role="CROSSING" EntitySet="CROSSINGS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DATA_ENTRY_CROSSING_ID" Association="OracleModel.FK_DATA_ENTRY_CROSSING_ID">
+            <End Role="CROSSING" EntitySet="CROSSINGS" />
+            <End Role="CROSSING_DATA_ENTRY" EntitySet="CROSSING_DATA_ENTRY" />
+          </AssociationSet>
           <AssociationSet Name="FK_INCIDENT_CROSSING_ID" Association="OracleModel.FK_INCIDENT_CROSSING_ID">
             <End Role="CROSSING" EntitySet="CROSSINGS" />
             <End Role="CROSSING_INCIDENT" EntitySet="CROSSING_INCIDENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CROSSINGS_RAILROAD_ID" Association="OracleModel.FK_CROSSINGS_RAILROAD_ID">
+            <End Role="CROSSING_RAILROAD" EntitySet="CROSSING_RAILROAD" />
+            <End Role="CROSSING" EntitySet="CROSSINGS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SUPPLEMENTAL_CROSSING_ID" Association="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID">
+            <End Role="CROSSING" EntitySet="CROSSINGS" />
+            <End Role="CROSSING_SUPPLEMENTAL" EntitySet="CROSSING_SUPPLEMENTAL" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="SYS_USERS">
@@ -4984,6 +4987,7 @@
           <Property Type="String" Name="INV_NAME" Nullable="false" MaxLength="240" FixedLength="false" Unicode="false" />
           <Property Type="Int64" Name="INV_LOCATION" />
           <Property Type="Int64" Name="ORGANIZATION_ID" Nullable="false" />
+          <Property Type="String" Name="EPA_DESCRIPTION" MaxLength="4000" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="SUBINVENTORY_V">
           <Key>
@@ -7373,107 +7377,6 @@
           <Property Type="DateTime" Name="MODIFY_DATE" />
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="CROSSING">
-          <Key>
-            <PropertyRef Name="CROSSING_ID" />
-          </Key>
-          <Property Type="Int64" Name="CROSSING_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="String" Name="DOT" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="PREF" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="MILE_POST" Precision="15" Scale="2" />
-          <Property Type="String" Name="DIVISION" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SUB_DIVISION" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="CITY" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STREET" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STATE" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="COUNTY" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="RESTRICTED_COUNTY" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="REMARKS" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="ROUTE" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="THIRD_APP_REQUIRED" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="PRICE_CATEGORY" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="Int64" Name="MAIN_TRACKS" />
-          <Property Type="Int64" Name="OTHER_TRACKS" />
-          <Property Type="String" Name="ON_SPUR" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="Int64" Name="MAX_SPEED" />
-          <Property Type="String" Name="SUB_CONTRACTED" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="FENCE_ENCROACHMENT" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="Decimal" Name="LATITUDE" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="LONGITUDE" Precision="38" Scale="0" />
-          <Property Type="String" Name="PROPERTY_TYPE" MaxLength="15" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="WARNING_DEVICE" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SURFACE" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="ROWNE" Precision="15" Scale="2" />
-          <Property Type="Decimal" Name="ROWNW" Precision="15" Scale="2" />
-          <Property Type="Decimal" Name="ROWSE" Precision="15" Scale="2" />
-          <Property Type="Decimal" Name="ROWSW" Precision="15" Scale="2" />
-          <Property Type="String" Name="ROW_WIDTH" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="EXTENSION_REQUIRED" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="Decimal" Name="EXTNE" Precision="15" Scale="2" />
-          <Property Type="Decimal" Name="EXTNW" Precision="15" Scale="2" />
-          <Property Type="Decimal" Name="EXTSE" Precision="15" Scale="2" />
-          <Property Type="Decimal" Name="EXTSW" Precision="15" Scale="2" />
-          <Property Type="String" Name="TEMP_ACTIVTY" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="DELETED_CROSSING" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="DELETED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="DELETED_DATE" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="CREATED_DATE" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="MODIFIED_DATE" />
-          <Property Type="String" Name="MTM" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MTM_PHONE_NUMBER" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MTM_OFFICE_NUMBER" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="CROSSING_NUMBER" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Type="Int64" Name="CONTACT_ID" />
-          <Property Type="String" Name="RAILROAD" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SERVICE_UNIT" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Type="Int64" Name="PROJECT_ID" />
-          <Property Type="String" Name="SPECIAL_INSTRUCTIONS" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STATUS" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="RAILROAD_ID" Precision="38" Scale="0" />
-          <NavigationProperty Name="CROSSING_CONTACTS" Relationship="OracleModel.FK_CROSSINGS_CONTACT_ID" FromRole="CROSSING" ToRole="CROSSING_CONTACTS" />
-          <NavigationProperty Name="CROSSING_DATA_ENTRY" Relationship="OracleModel.FK_DATA_ENTRY_CROSSING_ID" FromRole="CROSSING" ToRole="CROSSING_DATA_ENTRY" />
-          <NavigationProperty Name="CROSSING_RAILROAD" Relationship="OracleModel.FK_CROSSINGS_RAILROAD_ID" FromRole="CROSSING" ToRole="CROSSING_RAILROAD" />
-          <NavigationProperty Name="CROSSING_SUPPLEMENTAL" Relationship="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" FromRole="CROSSING" ToRole="CROSSING_SUPPLEMENTAL" />
-          <NavigationProperty Name="CROSSING_INCIDENT" Relationship="OracleModel.FK_INCIDENT_CROSSING_ID" FromRole="CROSSING" ToRole="CROSSING_INCIDENT" />
-        </EntityType>
-        <Association Name="FK_CROSSINGS_CONTACT_ID">
-          <End Type="OracleModel.CROSSING_CONTACTS" Role="CROSSING_CONTACTS" Multiplicity="0..1" />
-          <End Type="OracleModel.CROSSING" Role="CROSSING" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CROSSING_CONTACTS">
-              <PropertyRef Name="CONTACT_ID" />
-            </Principal>
-            <Dependent Role="CROSSING">
-              <PropertyRef Name="CONTACT_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DATA_ENTRY_CROSSING_ID">
-          <End Type="OracleModel.CROSSING" Role="CROSSING" Multiplicity="1" />
-          <End Type="OracleModel.CROSSING_DATA_ENTRY" Role="CROSSING_DATA_ENTRY" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CROSSING">
-              <PropertyRef Name="CROSSING_ID" />
-            </Principal>
-            <Dependent Role="CROSSING_DATA_ENTRY">
-              <PropertyRef Name="CROSSING_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CROSSINGS_RAILROAD_ID">
-          <End Type="OracleModel.CROSSING_RAILROAD" Role="CROSSING_RAILROAD" Multiplicity="0..1" />
-          <End Type="OracleModel.CROSSING" Role="CROSSING" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CROSSING_RAILROAD">
-              <PropertyRef Name="RAILROAD_ID" />
-            </Principal>
-            <Dependent Role="CROSSING">
-              <PropertyRef Name="RAILROAD_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="OVERHEAD_BUDGET_TYPE">
           <Key>
             <PropertyRef Name="OVERHEAD_BUDGET_TYPE_ID" />
@@ -7940,18 +7843,6 @@
           <Property Type="Int64" Name="PROJECT_ID" />
           <NavigationProperty Name="CROSSING" Relationship="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" FromRole="CROSSING_SUPPLEMENTAL" ToRole="CROSSING" />
         </EntityType>
-        <Association Name="FK_SUPPLEMENTAL_CROSSING_ID">
-          <End Type="OracleModel.CROSSING" Role="CROSSING" Multiplicity="1" />
-          <End Type="OracleModel.CROSSING_SUPPLEMENTAL" Role="CROSSING_SUPPLEMENTAL" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CROSSING">
-              <PropertyRef Name="CROSSING_ID" />
-            </Principal>
-            <Dependent Role="CROSSING_SUPPLEMENTAL">
-              <PropertyRef Name="CROSSING_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="OVERHEAD_ACCOUNT_CATEGORY">
           <Key>
             <PropertyRef Name="ACCOUNT_CATEGORY_ID" />
@@ -8415,6 +8306,96 @@
           <Property Type="DateTime" Name="MODIFY_DATE" />
           <NavigationProperty Name="CROSSING" Relationship="OracleModel.FK_INCIDENT_CROSSING_ID" FromRole="CROSSING_INCIDENT" ToRole="CROSSING" />
         </EntityType>
+        <EntityType Name="CROSSING">
+          <Key>
+            <PropertyRef Name="CROSSING_ID" />
+          </Key>
+          <Property Type="Int64" Name="CROSSING_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="DOT" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PREF" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="MILE_POST" Precision="15" Scale="2" />
+          <Property Type="String" Name="DIVISION" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SUB_DIVISION" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CITY" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STREET" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STATE" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="COUNTY" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="RESTRICTED_COUNTY" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="REMARKS" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ROUTE" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="THIRD_APP_REQUIRED" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="PRICE_CATEGORY" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="Int64" Name="MAIN_TRACKS" />
+          <Property Type="Int64" Name="OTHER_TRACKS" />
+          <Property Type="String" Name="ON_SPUR" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="Int64" Name="MAX_SPEED" />
+          <Property Type="String" Name="SUB_CONTRACTED" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="FENCE_ENCROACHMENT" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="Decimal" Name="LATITUDE" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="LONGITUDE" Precision="38" Scale="0" />
+          <Property Type="String" Name="PROPERTY_TYPE" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="WARNING_DEVICE" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SURFACE" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="ROWNE" Precision="15" Scale="2" />
+          <Property Type="Decimal" Name="ROWNW" Precision="15" Scale="2" />
+          <Property Type="Decimal" Name="ROWSE" Precision="15" Scale="2" />
+          <Property Type="Decimal" Name="ROWSW" Precision="15" Scale="2" />
+          <Property Type="String" Name="ROW_WIDTH" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="EXTENSION_REQUIRED" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="Decimal" Name="EXTNE" Precision="15" Scale="2" />
+          <Property Type="Decimal" Name="EXTNW" Precision="15" Scale="2" />
+          <Property Type="Decimal" Name="EXTSE" Precision="15" Scale="2" />
+          <Property Type="Decimal" Name="EXTSW" Precision="15" Scale="2" />
+          <Property Type="String" Name="TEMP_ACTIVTY" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="DELETED_CROSSING" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="DELETED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="DELETED_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATED_DATE" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="MODIFIED_DATE" />
+          <Property Type="String" Name="MTM" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MTM_PHONE_NUMBER" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MTM_OFFICE_NUMBER" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CROSSING_NUMBER" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="CONTACT_ID" />
+          <Property Type="String" Name="RAILROAD" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SERVICE_UNIT" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="PROJECT_ID" />
+          <Property Type="String" Name="SPECIAL_INSTRUCTIONS" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STATUS" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="RAILROAD_ID" Precision="38" Scale="0" />
+          <Property Type="String" Name="CUT_ONLY" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="CROSSING_CONTACTS" Relationship="OracleModel.FK_CROSSINGS_CONTACT_ID" FromRole="CROSSING" ToRole="CROSSING_CONTACTS" />
+          <NavigationProperty Name="CROSSING_DATA_ENTRY" Relationship="OracleModel.FK_DATA_ENTRY_CROSSING_ID" FromRole="CROSSING" ToRole="CROSSING_DATA_ENTRY" />
+          <NavigationProperty Name="CROSSING_INCIDENT" Relationship="OracleModel.FK_INCIDENT_CROSSING_ID" FromRole="CROSSING" ToRole="CROSSING_INCIDENT" />
+          <NavigationProperty Name="CROSSING_RAILROAD" Relationship="OracleModel.FK_CROSSINGS_RAILROAD_ID" FromRole="CROSSING" ToRole="CROSSING_RAILROAD" />
+          <NavigationProperty Name="CROSSING_SUPPLEMENTAL" Relationship="OracleModel.FK_SUPPLEMENTAL_CROSSING_ID" FromRole="CROSSING" ToRole="CROSSING_SUPPLEMENTAL" />
+        </EntityType>
+        <Association Name="FK_CROSSINGS_CONTACT_ID">
+          <End Type="OracleModel.CROSSING_CONTACTS" Role="CROSSING_CONTACTS" Multiplicity="0..1" />
+          <End Type="OracleModel.CROSSING" Role="CROSSING" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CROSSING_CONTACTS">
+              <PropertyRef Name="CONTACT_ID" />
+            </Principal>
+            <Dependent Role="CROSSING">
+              <PropertyRef Name="CONTACT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DATA_ENTRY_CROSSING_ID">
+          <End Type="OracleModel.CROSSING" Role="CROSSING" Multiplicity="1" />
+          <End Type="OracleModel.CROSSING_DATA_ENTRY" Role="CROSSING_DATA_ENTRY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CROSSING">
+              <PropertyRef Name="CROSSING_ID" />
+            </Principal>
+            <Dependent Role="CROSSING_DATA_ENTRY">
+              <PropertyRef Name="CROSSING_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_INCIDENT_CROSSING_ID">
           <End Type="OracleModel.CROSSING" Role="CROSSING" Multiplicity="1" />
           <End Type="OracleModel.CROSSING_INCIDENT" Role="CROSSING_INCIDENT" Multiplicity="*" />
@@ -8423,6 +8404,30 @@
               <PropertyRef Name="CROSSING_ID" />
             </Principal>
             <Dependent Role="CROSSING_INCIDENT">
+              <PropertyRef Name="CROSSING_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CROSSINGS_RAILROAD_ID">
+          <End Type="OracleModel.CROSSING_RAILROAD" Role="CROSSING_RAILROAD" Multiplicity="0..1" />
+          <End Type="OracleModel.CROSSING" Role="CROSSING" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CROSSING_RAILROAD">
+              <PropertyRef Name="RAILROAD_ID" />
+            </Principal>
+            <Dependent Role="CROSSING">
+              <PropertyRef Name="RAILROAD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SUPPLEMENTAL_CROSSING_ID">
+          <End Type="OracleModel.CROSSING" Role="CROSSING" Multiplicity="1" />
+          <End Type="OracleModel.CROSSING_SUPPLEMENTAL" Role="CROSSING_SUPPLEMENTAL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CROSSING">
+              <PropertyRef Name="CROSSING_ID" />
+            </Principal>
+            <Dependent Role="CROSSING_SUPPLEMENTAL">
               <PropertyRef Name="CROSSING_ID" />
             </Dependent>
           </ReferentialConstraint>
@@ -8536,6 +8541,7 @@
           <EntitySetMapping Name="INVENTORY_V">
             <EntityTypeMapping TypeName="OracleModel.INVENTORY_V">
               <MappingFragment StoreEntitySet="INVENTORY_V">
+                <ScalarProperty Name="EPA_DESCRIPTION" ColumnName="EPA_DESCRIPTION" />
                 <ScalarProperty Name="ORGANIZATION_ID" ColumnName="ORGANIZATION_ID" />
                 <ScalarProperty Name="INV_LOCATION" ColumnName="INV_LOCATION" />
                 <ScalarProperty Name="INV_NAME" ColumnName="INV_NAME" />
@@ -10439,67 +10445,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CROSSINGS">
-            <EntityTypeMapping TypeName="OracleModel.CROSSING">
-              <MappingFragment StoreEntitySet="CROSSINGS">
-                <ScalarProperty Name="RAILROAD_ID" ColumnName="RAILROAD_ID" />
-                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
-                <ScalarProperty Name="SPECIAL_INSTRUCTIONS" ColumnName="SPECIAL_INSTRUCTIONS" />
-                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
-                <ScalarProperty Name="SERVICE_UNIT" ColumnName="SERVICE_UNIT" />
-                <ScalarProperty Name="RAILROAD" ColumnName="RAILROAD" />
-                <ScalarProperty Name="CONTACT_ID" ColumnName="CONTACT_ID" />
-                <ScalarProperty Name="CROSSING_NUMBER" ColumnName="CROSSING_NUMBER" />
-                <ScalarProperty Name="MTM_OFFICE_NUMBER" ColumnName="MTM_OFFICE_NUMBER" />
-                <ScalarProperty Name="MTM_PHONE_NUMBER" ColumnName="MTM_PHONE_NUMBER" />
-                <ScalarProperty Name="MTM" ColumnName="MTM" />
-                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="DELETED_DATE" ColumnName="DELETED_DATE" />
-                <ScalarProperty Name="DELETED_BY" ColumnName="DELETED_BY" />
-                <ScalarProperty Name="DELETED_CROSSING" ColumnName="DELETED_CROSSING" />
-                <ScalarProperty Name="TEMP_ACTIVTY" ColumnName="TEMP_ACTIVTY" />
-                <ScalarProperty Name="EXTSW" ColumnName="EXTSW" />
-                <ScalarProperty Name="EXTSE" ColumnName="EXTSE" />
-                <ScalarProperty Name="EXTNW" ColumnName="EXTNW" />
-                <ScalarProperty Name="EXTNE" ColumnName="EXTNE" />
-                <ScalarProperty Name="EXTENSION_REQUIRED" ColumnName="EXTENSION_REQUIRED" />
-                <ScalarProperty Name="ROW_WIDTH" ColumnName="ROW_WIDTH" />
-                <ScalarProperty Name="ROWSW" ColumnName="ROWSW" />
-                <ScalarProperty Name="ROWSE" ColumnName="ROWSE" />
-                <ScalarProperty Name="ROWNW" ColumnName="ROWNW" />
-                <ScalarProperty Name="ROWNE" ColumnName="ROWNE" />
-                <ScalarProperty Name="SURFACE" ColumnName="SURFACE" />
-                <ScalarProperty Name="WARNING_DEVICE" ColumnName="WARNING_DEVICE" />
-                <ScalarProperty Name="PROPERTY_TYPE" ColumnName="PROPERTY_TYPE" />
-                <ScalarProperty Name="LONGITUDE" ColumnName="LONGITUDE" />
-                <ScalarProperty Name="LATITUDE" ColumnName="LATITUDE" />
-                <ScalarProperty Name="FENCE_ENCROACHMENT" ColumnName="FENCE_ENCROACHMENT" />
-                <ScalarProperty Name="SUB_CONTRACTED" ColumnName="SUB_CONTRACTED" />
-                <ScalarProperty Name="MAX_SPEED" ColumnName="MAX_SPEED" />
-                <ScalarProperty Name="ON_SPUR" ColumnName="ON_SPUR" />
-                <ScalarProperty Name="OTHER_TRACKS" ColumnName="OTHER_TRACKS" />
-                <ScalarProperty Name="MAIN_TRACKS" ColumnName="MAIN_TRACKS" />
-                <ScalarProperty Name="PRICE_CATEGORY" ColumnName="PRICE_CATEGORY" />
-                <ScalarProperty Name="THIRD_APP_REQUIRED" ColumnName="THIRD_APP_REQUIRED" />
-                <ScalarProperty Name="ROUTE" ColumnName="ROUTE" />
-                <ScalarProperty Name="REMARKS" ColumnName="REMARKS" />
-                <ScalarProperty Name="RESTRICTED_COUNTY" ColumnName="RESTRICTED_COUNTY" />
-                <ScalarProperty Name="COUNTY" ColumnName="COUNTY" />
-                <ScalarProperty Name="STATE" ColumnName="STATE" />
-                <ScalarProperty Name="STREET" ColumnName="STREET" />
-                <ScalarProperty Name="CITY" ColumnName="CITY" />
-                <ScalarProperty Name="SUB_DIVISION" ColumnName="SUB_DIVISION" />
-                <ScalarProperty Name="DIVISION" ColumnName="DIVISION" />
-                <ScalarProperty Name="MILE_POST" ColumnName="MILE_POST" />
-                <ScalarProperty Name="PREF" ColumnName="PREF" />
-                <ScalarProperty Name="DOT" ColumnName="DOT" />
-                <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="OVERHEAD_BUDGET_TYPE">
             <EntityTypeMapping TypeName="OracleModel.OVERHEAD_BUDGET_TYPE">
               <MappingFragment StoreEntitySet="OVERHEAD_BUDGET_TYPE">
@@ -11217,6 +11162,68 @@
                 <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
                 <ScalarProperty Name="INCIDENT_NUMBER" ColumnName="INCIDENT_NUMBER" />
                 <ScalarProperty Name="INCIDENT_ID" ColumnName="INCIDENT_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CROSSINGS">
+            <EntityTypeMapping TypeName="OracleModel.CROSSING">
+              <MappingFragment StoreEntitySet="CROSSINGS">
+                <ScalarProperty Name="CUT_ONLY" ColumnName="CUT_ONLY" />
+                <ScalarProperty Name="RAILROAD_ID" ColumnName="RAILROAD_ID" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="SPECIAL_INSTRUCTIONS" ColumnName="SPECIAL_INSTRUCTIONS" />
+                <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
+                <ScalarProperty Name="SERVICE_UNIT" ColumnName="SERVICE_UNIT" />
+                <ScalarProperty Name="RAILROAD" ColumnName="RAILROAD" />
+                <ScalarProperty Name="CONTACT_ID" ColumnName="CONTACT_ID" />
+                <ScalarProperty Name="CROSSING_NUMBER" ColumnName="CROSSING_NUMBER" />
+                <ScalarProperty Name="MTM_OFFICE_NUMBER" ColumnName="MTM_OFFICE_NUMBER" />
+                <ScalarProperty Name="MTM_PHONE_NUMBER" ColumnName="MTM_PHONE_NUMBER" />
+                <ScalarProperty Name="MTM" ColumnName="MTM" />
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="DELETED_DATE" ColumnName="DELETED_DATE" />
+                <ScalarProperty Name="DELETED_BY" ColumnName="DELETED_BY" />
+                <ScalarProperty Name="DELETED_CROSSING" ColumnName="DELETED_CROSSING" />
+                <ScalarProperty Name="TEMP_ACTIVTY" ColumnName="TEMP_ACTIVTY" />
+                <ScalarProperty Name="EXTSW" ColumnName="EXTSW" />
+                <ScalarProperty Name="EXTSE" ColumnName="EXTSE" />
+                <ScalarProperty Name="EXTNW" ColumnName="EXTNW" />
+                <ScalarProperty Name="EXTNE" ColumnName="EXTNE" />
+                <ScalarProperty Name="EXTENSION_REQUIRED" ColumnName="EXTENSION_REQUIRED" />
+                <ScalarProperty Name="ROW_WIDTH" ColumnName="ROW_WIDTH" />
+                <ScalarProperty Name="ROWSW" ColumnName="ROWSW" />
+                <ScalarProperty Name="ROWSE" ColumnName="ROWSE" />
+                <ScalarProperty Name="ROWNW" ColumnName="ROWNW" />
+                <ScalarProperty Name="ROWNE" ColumnName="ROWNE" />
+                <ScalarProperty Name="SURFACE" ColumnName="SURFACE" />
+                <ScalarProperty Name="WARNING_DEVICE" ColumnName="WARNING_DEVICE" />
+                <ScalarProperty Name="PROPERTY_TYPE" ColumnName="PROPERTY_TYPE" />
+                <ScalarProperty Name="LONGITUDE" ColumnName="LONGITUDE" />
+                <ScalarProperty Name="LATITUDE" ColumnName="LATITUDE" />
+                <ScalarProperty Name="FENCE_ENCROACHMENT" ColumnName="FENCE_ENCROACHMENT" />
+                <ScalarProperty Name="SUB_CONTRACTED" ColumnName="SUB_CONTRACTED" />
+                <ScalarProperty Name="MAX_SPEED" ColumnName="MAX_SPEED" />
+                <ScalarProperty Name="ON_SPUR" ColumnName="ON_SPUR" />
+                <ScalarProperty Name="OTHER_TRACKS" ColumnName="OTHER_TRACKS" />
+                <ScalarProperty Name="MAIN_TRACKS" ColumnName="MAIN_TRACKS" />
+                <ScalarProperty Name="PRICE_CATEGORY" ColumnName="PRICE_CATEGORY" />
+                <ScalarProperty Name="THIRD_APP_REQUIRED" ColumnName="THIRD_APP_REQUIRED" />
+                <ScalarProperty Name="ROUTE" ColumnName="ROUTE" />
+                <ScalarProperty Name="REMARKS" ColumnName="REMARKS" />
+                <ScalarProperty Name="RESTRICTED_COUNTY" ColumnName="RESTRICTED_COUNTY" />
+                <ScalarProperty Name="COUNTY" ColumnName="COUNTY" />
+                <ScalarProperty Name="STATE" ColumnName="STATE" />
+                <ScalarProperty Name="STREET" ColumnName="STREET" />
+                <ScalarProperty Name="CITY" ColumnName="CITY" />
+                <ScalarProperty Name="SUB_DIVISION" ColumnName="SUB_DIVISION" />
+                <ScalarProperty Name="DIVISION" ColumnName="DIVISION" />
+                <ScalarProperty Name="MILE_POST" ColumnName="MILE_POST" />
+                <ScalarProperty Name="PREF" ColumnName="PREF" />
+                <ScalarProperty Name="DOT" ColumnName="DOT" />
+                <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

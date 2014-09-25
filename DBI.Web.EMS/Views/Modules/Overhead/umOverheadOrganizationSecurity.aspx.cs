@@ -27,6 +27,41 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             }
         }
 
+        protected void dePeriodMaintenance(object sender, DirectEventArgs e)
+        {
+
+            string _selectedRecordID = Request.QueryString["orgid"];
+            string _selectedLeID = Request.QueryString["leID"];
+
+            string url = "umOpenBudgetType.aspx?leID=" + _selectedLeID + "&combinedLEORGID=" + _selectedRecordID;
+
+            Window win = new Window
+            {
+                ID = "uxOpenBudgetTypeWindow",
+                Title = "Open Budget Type",
+                Height = 250,
+                Width = 550,
+                Modal = true,
+                Resizable = false,
+                CloseAction = CloseAction.Destroy,
+                Loader = new ComponentLoader
+                {
+                    Mode = LoadMode.Frame,
+                    DisableCaching = true,
+                    Url = url,
+                    AutoLoad = true,
+                    LoadMask =
+                    {
+                        ShowMask = true
+                    }
+                }
+            };
+
+            win.Render(this.Form);
+            win.Show();
+
+        }
+        
         protected void deEnableOrganization(object sender, DirectEventArgs e)
         {
             RowSelectionModel model = uxOrganizationsGridSelectionModel;
