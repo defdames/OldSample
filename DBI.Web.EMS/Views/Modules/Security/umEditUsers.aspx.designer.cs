@@ -94,15 +94,6 @@ namespace DBI.Web.EMS.Views.Modules.Security {
         protected global::Ext.Net.Window uxEditUserWindow;
         
         /// <summary>
-        /// uxEditUserForm control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FormPanel uxEditUserForm;
-        
-        /// <summary>
         /// uxEditUserGrid control.
         /// </summary>
         /// <remarks>
@@ -119,6 +110,24 @@ namespace DBI.Web.EMS.Views.Modules.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Store uxEditUserStore;
+        
+        /// <summary>
+        /// Button1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button Button1;
+        
+        /// <summary>
+        /// Button6 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button Button6;
         
         /// <summary>
         /// uxTwoGridWindow control.

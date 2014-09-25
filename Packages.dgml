@@ -39,6 +39,7 @@
     <Node Id="Thinktecture.IdentityModel 3.6.1" Label="Thinktecture.IdentityModel 3.6.1" Category="Package" />
     <Node Id="WebGrease 1.3.0" Label="WebGrease 1.3.0" Category="Package" />
     <Node Id="DBI.Web.EMS" Label="DBI.Web.EMS" Category="Project" />
+    <Node Id="EPPlus 3.1.3.3" Label="EPPlus 3.1.3.3" Category="Package" />
     <Node Id="iTextSharp-LGPL 4.1.6" Label="iTextSharp-LGPL 4.1.6" Category="Package" />
     <Node Id="NinjaNye.SearchExtensions 0.6.5193.24776" Label="NinjaNye.SearchExtensions 0.6.5193.24776" Category="Package" />
     <Node Id="odp.net.managed 121.1.1" Label="odp.net.managed 121.1.1" Category="Package" />
@@ -104,6 +105,7 @@
     <Link Source="DBI.Mobile.EMS" Target="Microsoft.jQuery.Unobtrusive.Validation 2.0.30116.0" Category="Installed Package" />
     <Link Source="DBI.Mobile.EMS" Target="Modernizr 2.6.2" Category="Installed Package" />
     <Link Source="DBI.Mobile.EMS" Target="Thinktecture.IdentityModel 3.6.1" Category="Installed Package" />
+    <Link Source="DBI.Web.EMS" Target="EPPlus 3.1.3.3" Category="Installed Package" />
     <Link Source="DBI.Web.EMS" Target="iTextSharp-LGPL 4.1.6" Category="Installed Package" />
     <Link Source="DBI.Web.EMS" Target="NinjaNye.SearchExtensions 0.6.5193.24776" Category="Installed Package" />
     <Link Source="DBI.Web.EMS" Target="odp.net.managed 121.1.1" Category="Installed Package" />

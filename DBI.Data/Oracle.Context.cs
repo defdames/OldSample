@@ -67,7 +67,6 @@ namespace DBI.Data
         public DbSet<SYS_MOBILE_NOTIFICATIONS> SYS_MOBILE_NOTIFICATIONS { get; set; }
         public DbSet<SYS_USER_PERMS> SYS_USER_PERMS { get; set; }
         public DbSet<SYS_MENU> SYS_MENU { get; set; }
-        public DbSet<CROSSING_INCIDENT> CROSSING_INCIDENT { get; set; }
         public DbSet<SYS_GROUPS> SYS_GROUPS { get; set; }
         public DbSet<JOB_TITLE_V> JOB_TITLE_V { get; set; }
         public DbSet<CROSSING_RELATIONSHIP> CROSSING_RELATIONSHIP { get; set; }
@@ -100,7 +99,6 @@ namespace DBI.Data
         public DbSet<BUD_BID_BUDGET_NUM> BUD_BID_BUDGET_NUM { get; set; }
         public DbSet<BUD_BID_DETAIL_TASK> BUD_BID_DETAIL_TASK { get; set; }
         public DbSet<SYS_ORG_PROFILE_OPTIONS> SYS_ORG_PROFILE_OPTIONS { get; set; }
-        public DbSet<CROSSING> CROSSINGS { get; set; }
         public DbSet<OVERHEAD_BUDGET_TYPE> OVERHEAD_BUDGET_TYPE { get; set; }
         public DbSet<CROSSING_INVOICE> CROSSING_INVOICE { get; set; }
         public DbSet<CROSSING_SUPP_INVOICE> CROSSING_SUPP_INVOICE { get; set; }
@@ -121,7 +119,6 @@ namespace DBI.Data
         public DbSet<OVERHEAD_BUDGET_DETAIL> OVERHEAD_BUDGET_DETAIL { get; set; }
         public DbSet<EMPLOYEES_V> EMPLOYEES_V { get; set; }
         public DbSet<CROSSING_PRICING> CROSSING_PRICING { get; set; }
-        public DbSet<CROSSING_APPLICATION> CROSSING_APPLICATION { get; set; }
         public DbSet<BUD_BID_DETAIL_SHEET> BUD_BID_DETAIL_SHEET { get; set; }
         public DbSet<BUD_BID_PROJECTS> BUD_BID_PROJECTS { get; set; }
         public DbSet<CUSTOMER_SURVEY_QUES_CAT> CUSTOMER_SURVEY_QUES_CAT { get; set; }
@@ -131,5 +128,8 @@ namespace DBI.Data
         public DbSet<CUSTOMER_SURVEY_FORMS> CUSTOMER_SURVEY_FORMS { get; set; }
         public DbSet<CUSTOMER_SURVEY_QUESTIONS> CUSTOMER_SURVEY_QUESTIONS { get; set; }
         public DbSet<CUSTOMER_SURVEY_THRESH_AMT> CUSTOMER_SURVEY_THRESH_AMT { get; set; }
+        public DbSet<CROSSING_APPLICATION> CROSSING_APPLICATION { get; set; }
+        public DbSet<CROSSING_INCIDENT> CROSSING_INCIDENT { get; set; }
+        public DbSet<CROSSING> CROSSINGS { get; set; }
     }
 }

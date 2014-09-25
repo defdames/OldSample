@@ -303,7 +303,8 @@
                                     <ext:ModelField Name="MILE_POST" />
                                     <ext:ModelField Name="SERVICE_UNIT" />
                                     <ext:ModelField Name="SUB_DIVISION" />
-                                  
+                                    <ext:ModelField Name="PRICE" />
+                                
 
                                 </Fields>
                             </ext:Model>
@@ -325,7 +326,7 @@
                         <ext:DateColumn ID="DateColumn2" runat="server" DataIndex="APPROVED_DATE" Text="Application Date" Flex="1" Format="MM/dd/yyyy" />
                         <ext:Column ID="Column10" runat="server" DataIndex="SUB_DIVISION" Text="Sub Division" Flex="1" />     
                         <ext:Column ID="Column11" runat="server" DataIndex="SERVICE_TYPE" Text="Service Type" Flex="1" />                 
-                       
+                        <ext:Column ID="Column4" runat="server" DataIndex="PRICE" Text="Price" Flex="1" /> 
 
                     </Columns>
                 </ColumnModel> 

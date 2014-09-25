@@ -60,7 +60,19 @@
             hiddenFormat.setValue(format);
             grid.submitData(false, { isUpload: true });
         };
-    </script>
+
+        function printWindow(url) {
+            window.open(url, "PrintWindow", "menubar=0,resizable=1");
+        }
+
+
+              var getRowClass = function (record, rowIndex, rowParams, store) {
+                  if (record.data.GROUPED == "Y") {
+                      return "blue-row";
+                  };
+              }
+      </script>
+
 
     <style>
         .x-grid-row-summary .x-grid-cell-inner
@@ -68,6 +80,10 @@
             font-weight: bold;
             font-size: 11px;
             background-color: #E0E0D1;
+        }
+
+           .blue-row .x-grid-cell, .blue-row .x-grid-rowwrap-div .blue-row .myBoldClass.x-grid3-row td  {
+            background-color: #E0FFFF;
         }
     </style>
 </head>
@@ -83,7 +99,7 @@
                     <TopBar>
                         <ext:Toolbar ID="Toolbar1" runat="server">
                             <Items>
-                                <ext:Button runat="server" Icon="MagnifierZoomIn" Text="Account Inquery" ID="uxViewActuals" Disabled="true">
+                                <ext:Button runat="server" Icon="MagnifierZoomIn" Text="Account Inquiry" ID="uxViewActuals" Disabled="true">
                                     <DirectEvents>
                                         <Click OnEvent="viewActuals">
                                             <ExtraParams>
@@ -105,12 +121,29 @@
                                     </DirectEvents>
                                 </ext:Button>
                                 <ext:ToolbarFill ID="ToolbarFill1" runat="server"></ext:ToolbarFill>
+                               
                                 <ext:Button ID="uxPrintReport" runat="server" Text="Print" Icon="Printer" Disabled="false">
-                                   <DirectEvents>
-                                       <Click OnEvent="printOverheadBudget" IsUpload="true"></Click>
-                                   </DirectEvents>
+                                  <DirectEvents>
+                                    <Click OnEvent="printOverheadBudget" Timeout="500000">
+                                    <EventMask ShowMask="true" Msg="Generating Report, Please Wait..." />
+                                        </Click>
+                                    </DirectEvents>
                                 </ext:Button>
                                 <ext:ToolbarSeparator ID="ToolbarSeparator3" runat="server"></ext:ToolbarSeparator>
+                                <ext:Button runat="server" Text="Export" Icon="PageExcel">
+                                    <DirectEvents>
+                                        <Click OnEvent="ExportToExcel" IsUpload="true"><EventMask ShowMask="true" Msg="Generating Export, Please Wait..." /></Click>
+                                    </DirectEvents>
+                                </ext:Button>
+                                <ext:ToolbarSeparator ID="ToolbarSeparator2" runat="server"></ext:ToolbarSeparator>
+                                 <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Group Account Lines" ID="uxCollapseAccountTotals">
+                                    <DirectEvents>
+                                        <Change OnEvent="deCollapseAccounts">
+                                            <EventMask ShowMask="true"></EventMask>
+                                        </Change>
+                                    </DirectEvents>
+                                </ext:Checkbox>
+                                 <ext:ToolbarSeparator ID="ToolbarSeparator5" runat="server"></ext:ToolbarSeparator>
                                 <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Hide Blank Lines" ID="uxHideBlankLinesCheckbox">
                                     <DirectEvents>
                                         <Change OnEvent="deHideBlankLines">
@@ -149,6 +182,7 @@
                                         <ext:ModelField Name="AMOUNT10" />
                                         <ext:ModelField Name="AMOUNT11" />
                                         <ext:ModelField Name="AMOUNT12" />
+                                        <ext:ModelField Name="GROUPED" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -223,7 +257,7 @@
                         </Columns>
                     </ColumnModel>
                     <Features>
-                        <ext:Summary ID="uxSummary" runat="server" Dock="Bottom" ShowSummaryRow="true" />
+                        <ext:Summary ID="uxSummary" runat="server" ShowSummaryRow="true" />
                         <ext:GroupingSummary
                             ID="GroupingSummary1"
                             runat="server"
@@ -243,11 +277,13 @@
                         <ItemDblClick OnEvent="deItemMaintenance">
                             <ExtraParams>
                                 <ext:Parameter Value="#{uxOrganizationAccountGridPanel}.getView().getSelectionModel().getSelection()[0].data.ACCOUNT_DESCRIPTION" Mode="Raw" Name="ACCOUNT_DESCRIPTION"></ext:Parameter>
+                                <ext:Parameter Value="#{uxOrganizationAccountGridPanel}.getView().getSelectionModel().getSelection()[0].data.GROUPED" Mode="Raw" Name="GROUPED"></ext:Parameter>
                             </ExtraParams>
                         </ItemDblClick>
                     </DirectEvents>
                     <View>
                         <ext:GridView ID="GridView2" StripeRows="true" runat="server" TrackOver="true">
+                            <GetRowClass Fn="getRowClass"></GetRowClass>
                         </ext:GridView>
                     </View>
 

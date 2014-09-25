@@ -13,7 +13,7 @@
         <div></div>
          <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
                 <Items>
-        <ext:GridPanel ID="uxProjectGrid" runat="server" Region="North" Title="Select Project" Margins="0 2 0 0">
+        <ext:GridPanel ID="uxProjectGrid" runat="server" Region="North" Title="Select Project" SelectionMemory="true" Margins="0 2 0 0">
             <Store>
                 <ext:Store runat="server"
                     ID="uxCurrentSecurityProjectStore"
@@ -258,6 +258,7 @@
                                 <ext:Parameter Name="selectedCrossings" Value="Ext.encode(#{uxCrossingGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
 
                             </ExtraParams>
+                             <EventMask ShowMask="true" Msg="Loading..." />  
                         </Click>
 
 

@@ -148,6 +148,24 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock {
         protected global::Ext.Net.Button uxApproveButton;
         
         /// <summary>
+        /// ToolbarSpacer1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer1;
+        
+        /// <summary>
+        /// uxAddTime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxAddTime;
+        
+        /// <summary>
         /// uxToggleApproved control.
         /// </summary>
         /// <remarks>

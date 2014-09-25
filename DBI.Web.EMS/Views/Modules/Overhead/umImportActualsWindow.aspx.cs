@@ -20,15 +20,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 {
                     X.Redirect("~/Views/uxDefault.aspx");
                 }
-
-                if (Request.QueryString["AdminImport"] != null)
-                {
-                    uxInformationPanel.Html = "This will allow you to import actuals into a budget version. Once the data has been imported it will lock those imported columns for that budget version. It will also override all their data with actuals. There is no way to go roll this back. You can import actuals as many times as you need.";
-                }
-                else
-                {
-                    uxInformationPanel.Html = "This will allow you to import actuals into a budget version. This process will overwrite all period data for which you are importing and you will not be able to go back after this step. You can import actuals as many times as you need.";
-                }
             }
         }
 
@@ -69,15 +60,11 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
             using(Entities _context = new Entities())
             {
-
-                CheckboxSelectionModel _csm = uxPeriodSelectionModel;
-
-                List<string> _periodsToImport = _csm.SelectedRows.Select(x => x.RecordID).ToList();
-                OVERHEAD_BUDGET_FORECAST.ImportActualForBudgetVersion(_context, _periodsToImport, _budgetid, User.Identity.Name, _lockImported);
+                OVERHEAD_BUDGET_FORECAST.ImportActualForBudgetVersion(_context, long.Parse(uxPeriodName.SelectedItem.Value.ToString()), _budgetid, User.Identity.Name, _lockImported);
             }
         }
 
-        protected void uxDetailStore_ReadData(object sender, StoreReadDataEventArgs e)
+        protected void deLoadPeriodNames(object sender, StoreReadDataEventArgs e)
         {
             using (Entities _context = new Entities())
             {
@@ -90,29 +77,40 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 string sqlLocked = string.Format("select PERIOD_NAME,PERIOD_NUM,ACTUALS_IMPORTED_FLAG, 'N' as ADMIN from xxems.overhead_budget_detail where org_budget_id = {0} and ACTUALS_IMPORTED_FLAG = 'Y' group by PERIOD_NAME,PERIOD_NUM,ACTUALS_IMPORTED_FLAG order by period_num", _budgetid);
                 List<GL_LOCKED_PERIODS> _periodsLocked = _context.Database.SqlQuery<GL_LOCKED_PERIODS>(sqlLocked).ToList();
 
+                List<DBI.Data.Generic.DoubleComboLongID> _periodList = new List<DBI.Data.Generic.DoubleComboLongID>();
+
                 foreach (GL_PERIODS _period in _periodMonthList)
                 {
                     var _data = _periodsLocked.Where(x => x.PERIOD_NUM == _period.PERIOD_NUM).SingleOrDefault();
-                    if (_data != null)
-                    {
-                        _period.ACTUALS_IMPORTED_FLAG = _data.ACTUALS_IMPORTED_FLAG;
 
-                        if (Request.QueryString["AdminImport"] != null)
-                        {
-                            _period.ADMIN = "Y";
-                        }
-                        else
-                        {
-                            _period.ADMIN = "N";
-                        }
+                    if (Request.QueryString["AdminImport"] != null)
+                    {
+                        DBI.Data.Generic.DoubleComboLongID _item = new DBI.Data.Generic.DoubleComboLongID();
+                        _item.ID = _period.PERIOD_NUM;
+                        _item.ID_NAME = _period.ENTERED_PERIOD_NAME;
+                        _periodList.Add(_item);
                     }
+                    else
+                    {
+                        if (_data == null)
+                        {
+                            DBI.Data.Generic.DoubleComboLongID _item = new DBI.Data.Generic.DoubleComboLongID();
+                            _item.ID = _period.PERIOD_NUM;
+                            _item.ID_NAME = _period.ENTERED_PERIOD_NAME;
+                            _periodList.Add(_item);
+                        }
+
+
+                    }
+
+
                 }
 
-                int count;
-                uxDetailStore.DataSource = GenericData.EnumerableFilterHeader<GL_PERIODS>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _periodMonthList, out count);
-                e.Total = count;
+                uxPeriodNameStore.DataSource = _periodList;
             }
+
         }
+
 
         public class GL_LOCKED_PERIODS
         {

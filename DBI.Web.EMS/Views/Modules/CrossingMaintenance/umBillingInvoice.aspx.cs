@@ -73,7 +73,11 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 {
                     allData = allData.Where(x => x.APPLICATION_DATE >= StartDate && x.APPLICATION_DATE <= EndDate);
                 }
-
+                if (uxToggleNonSub.Checked)
+                {
+                    allData = allData.Where(x => x.SUB_CONTRACTED == "N");
+                }
+            
                 List<object> _data = allData.ToList<object>();
 
 

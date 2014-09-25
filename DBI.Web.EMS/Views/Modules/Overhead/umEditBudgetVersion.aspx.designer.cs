@@ -148,6 +148,33 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.ToolbarSeparator ToolbarSeparator3;
         
         /// <summary>
+        /// ToolbarSeparator2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ToolbarSeparator ToolbarSeparator2;
+        
+        /// <summary>
+        /// uxCollapseAccountTotals control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Checkbox uxCollapseAccountTotals;
+        
+        /// <summary>
+        /// ToolbarSeparator5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ToolbarSeparator ToolbarSeparator5;
+        
+        /// <summary>
         /// uxHideBlankLinesCheckbox control.
         /// </summary>
         /// <remarks>

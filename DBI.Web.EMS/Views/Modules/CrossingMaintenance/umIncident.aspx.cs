@@ -66,7 +66,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
 
             //do type conversions
-            long IncidentNumber = Convert.ToInt64(uxIncidentNumber.Value);
+            string IncidentNumber = uxIncidentNumber.Value.ToString();
             DateTime DateReported = (DateTime)uxIncidentDateReported.Value;
 
             string SlowOrder = uxIncidentSlowOrder.Value.ToString();
@@ -204,7 +204,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             public long INCIDENT_ID { get; set; }
             public DateTime DATE_CLOSED { get; set; }
             public string REMARKS {get; set; }
-            public long INCIDENT_NUMBER { get; set; }
+            public string INCIDENT_NUMBER { get; set; }
             public DateTime DATE_REPORTED { get; set; }
             public string SLOW_ORDER { get; set; }
 

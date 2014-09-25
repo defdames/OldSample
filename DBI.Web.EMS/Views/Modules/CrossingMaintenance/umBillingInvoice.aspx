@@ -131,6 +131,11 @@
                             </Store>
 
                         </ext:ComboBox>
+                                        <ext:Label ID="Label1" runat="server" Text="" Width="25" />
+
+                    <ext:Checkbox runat="server" ID="uxToggleNonSub" BoxLabel="Non-Sub" BoxLabelAlign="After">
+                        
+                    </ext:Checkbox>
                                  </Items>
                             </ext:FieldContainer>
                                    

@@ -57,16 +57,16 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                         long _hierarchyID = long.Parse(_selectedID[1].ToString());
                         long _organizationID = long.Parse(_selectedID[0].ToString());
 
-                        _data = OVERHEAD_BUDGET_FORECAST.OrganizationsByHierarchy(_context, _hierarchyID, _organizationID, true);
+                        _data = OVERHEAD_BUDGET_FORECAST.OrganizationBudgetsByHierarchy(_context, _hierarchyID, _organizationID, true);
                     }
                     else
                     {
-                        _data = OVERHEAD_BUDGET_FORECAST.OrganizationsByHierarchy(_context);
+                        _data = OVERHEAD_BUDGET_FORECAST.OrganizationBudgetsByHierarchy(_context);
                     }
                 }
                 else
                 {
-                    _data = OVERHEAD_BUDGET_FORECAST.OrganizationsByHierarchy(_context);
+                    _data = OVERHEAD_BUDGET_FORECAST.OrganizationBudgetsByHierarchy(_context);
                 }
 
             if (uxHideClosedBudgetsCheckbox.Checked)
@@ -77,7 +77,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 long _baseOrganizationID = SYS_USER_INFORMATION.UserByUserName(User.Identity.Name).CURRENT_ORG_ID;
                 _data = _data.Where(x => x.ORGANIZATION_ID == _baseOrganizationID).ToList();
             }
-
 
             int count;
             uxBudgetVersionByOrganizationStore.DataSource = GenericData.EnumerableFilterHeader<OVERHEAD_BUDGET_FORECAST.BUDGET_VERSION>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
