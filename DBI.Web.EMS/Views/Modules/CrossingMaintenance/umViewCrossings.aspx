@@ -80,13 +80,44 @@
                     <ext:PagingToolbar ID="PagingToolbar1" runat="server" HideRefresh="True">
                     </ext:PagingToolbar>
                 </BottomBar>
-                
+                  <Listeners>
+                        <Select Handler=" #{uxDeleteCrossingButton}.enable(); #{uxReactivateCrossingButton}.enable()" />
+
+                    </Listeners>
             </ext:GridPanel>
 
             <%-- -----------------------------------------------------------------------------------------------------------------------  --%>
             <ext:FormPanel runat="server" ID="uxCrossingForm" Region="Center" Layout="FormLayout" AutoScroll="true">
                 <Items>
-                    
+                     <ext:Toolbar ID="Toolbar1" runat="server">
+                            <Items>
+                              
+                                <ext:Button ID="uxDeleteCrossingButton" runat="server" Text="Delete Crossing" Icon="ApplicationDelete" Disabled="true">
+                                    <DirectEvents>
+                                        <Click OnEvent="deDeleteCrossing">
+                                            <Confirmation ConfirmRequest="true" Title="Delete?" Message="Are you sure you want to delete the selected crossing?" />
+
+                                            <ExtraParams>
+                                                <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
+                                            </ExtraParams>
+                                        </Click>
+                                    </DirectEvents>
+                                </ext:Button>
+                                <ext:Button ID="uxReactivateCrossingButton" runat="server" Text="Reactivate Crossing" Icon="Add" Disabled="true">
+                                    <DirectEvents>
+                                        <Click OnEvent="deReactivateCrossing">
+                                            <Confirmation ConfirmRequest="true" Title="Reactivate?" Message="Are you sure you want to reactivate the selected crossing?" />
+
+                                            <ExtraParams>
+                                                <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
+                                            </ExtraParams>
+                                        </Click>
+                                    </DirectEvents>
+                                </ext:Button>
+                               
+
+                            </Items>
+                        </ext:Toolbar>
 
                     <ext:FieldSet ID="FieldSet1" runat="server" Title="Crossing Details">
                         <Items>
@@ -214,6 +245,7 @@
 
                 </Items>
             </ext:FormPanel>
+                     
                     </Items>
              </ext:Viewport>
     </form>

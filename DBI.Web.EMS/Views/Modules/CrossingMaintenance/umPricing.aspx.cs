@@ -30,8 +30,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             using (Entities _context = new Entities())
             {
                 List<CROSSING_PRICING> PRIData = _context.CROSSING_PRICING.ToList();
-
-                uxPriceStore.DataSource = PRIData;
+                int count;
+                uxPriceStore.DataSource = GenericData.EnumerableFilterHeader<CROSSING_PRICING>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], PRIData, out count);
+                e.Total = count; 
+               
 
             }
 

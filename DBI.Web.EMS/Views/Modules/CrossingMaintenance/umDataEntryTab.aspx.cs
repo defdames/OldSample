@@ -55,6 +55,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             if (App == "Y" && Project == "Y")
             {
+                 //long ProjectId = Convert.ToInt64(uxAddProjectDropDownField.Value);
                 
                 CheckboxSelectionModel csm = CheckboxSelectionModel1;
                 decimal Application = Convert.ToDecimal(ComboBox1.SelectedItem.Value);
@@ -63,7 +64,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 decimal UserId = SYS_USER_INFORMATION.UserID(User.Identity.Name);
 
                 List<CROSSING_MAINTENANCE.CrossingData1> dataSource = CROSSING_MAINTENANCE.GetAppCrossingList(RailroadId, UserId).ToList();
-
+                //decimal ProjectId = Convert.ToDecimal(uxAddProjectDropDownField.Value);
                 int count;
 
                 if (Application == 1)
@@ -83,6 +84,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     dataSource = dataSource.Where(x => x.APPLICATION_REQUESTED == 2).ToList();
                     csm.ClearSelection();
                 }
+                //if (ProjectId != null)
+                //{
+                //    dataSource = dataSource.Where(x => x.PROJECT_ID == ProjectId).ToList();
+                //}
                 List<object> _data = dataSource.ToList<object>();
                 uxAppEntryCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
                 e.Total = count; 
@@ -330,22 +335,21 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
       
         protected void deRemoveApplicationEntry(object sender, DirectEventArgs e)
         {
-            CROSSING_APPLICATION data;
+          
             string json = e.ExtraParams["ApplicationInfo"];
-
+           
             List<ApplicationDetails> ApplicationList = JSON.Deserialize<List<ApplicationDetails>>(json);
             foreach (ApplicationDetails Application in ApplicationList)
             {
+                CROSSING_APPLICATION data = new CROSSING_APPLICATION();
+
                 using (Entities _context = new Entities())
                 {
-                    data = (from d in _context.CROSSING_APPLICATION
-                            where d.APPLICATION_ID == Application.APPLICATION_ID
-                            select d).Single();
-
-
-                    GenericData.Delete<CROSSING_APPLICATION>(data);
+                    data = _context.CROSSING_APPLICATION.Where(x => x.APPLICATION_ID == Application.APPLICATION_ID).SingleOrDefault();
                     uxApplicationStore.Reload();
+                    uxAppEntryCrossingStore.Reload();
                 }
+                GenericData.Delete<CROSSING_APPLICATION>(data);
 
                 Notification.Show(new NotificationConfig()
                 {

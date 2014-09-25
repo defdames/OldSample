@@ -19,7 +19,7 @@
                     <ext:Store runat="server"
                         ID="uxPriceStore"
                         OnReadData="deReadPricing"
-                        AutoDataBind="true" WarningOnDirty="false" PageSize="25">
+                        AutoDataBind="true" WarningOnDirty="false" PageSize="30">
                         <Model>
                             <ext:Model ID="Model1" runat="server" Name="Pricing" IDProperty="PRICING_ID">
                                 <Fields>
@@ -36,6 +36,9 @@
                         <Proxy>
                             <ext:PageProxy />
                         </Proxy>
+                          <Sorters>
+                                <ext:DataSorter Direction="ASC" Property="STATE" />
+                            </Sorters>
                     </ext:Store>
                 </Store>
                 <ColumnModel>

@@ -98,7 +98,8 @@ namespace DBI.Data
         {
             using (Entities _context = new Entities())
             {
-                var data = (from r in _context.CROSSING_PRICING                                                 
+                var data = (from r in _context.CROSSING_PRICING
+                            where !r.SERVICE_CATEGORY.StartsWith("Application")                     
                             select new CrossingPricing { PRICING_ID = r.PRICING_ID, SERVICE_CATEGORY = r.SERVICE_CATEGORY, PRICE = r.PRICE}).ToList();
                 return data;
             }
@@ -194,7 +195,7 @@ ALLOWED_RECORDS AS (
   INNER JOIN CROSSING_RELATIONSHIP b ON a.CROSSING_ID = b.CROSSING_ID
   INNER JOIN PROJECTS_V c ON b.PROJECT_ID = c.PROJECT_ID
   INNER JOIN SYS_USER_ORGS d ON c.CARRYING_OUT_ORGANIZATION_ID = d.ORG_ID
-  WHERE d.USER_ID = {1}
+  WHERE d.USER_ID = {1} 
 )
 SELECT 
                       ALLOWED_RECORDS.RAILROAD_ID,
@@ -210,7 +211,7 @@ SELECT
                     LEFT JOIN CROSSING_SUPPLEMENTAL ON ALLOWED_RECORDS.CROSSING_ID = CROSSING_SUPPLEMENTAL.CROSSING_ID
                     LEFT JOIN CROSSING_RELATIONSHIP ON ALLOWED_RECORDS.CROSSING_ID = CROSSING_RELATIONSHIP.CROSSING_ID)
                     LEFT JOIN PROJECTS_V ON CROSSING_RELATIONSHIP.PROJECT_ID = PROJECTS_V.PROJECT_ID
-                    WHERE ALLOWED_RECORDS.RAILROAD_ID = {0} AND PROJECTS_V.PROJECT_TYPE = 'CUSTOMER BILLING' AND PROJECTS_V.TEMPLATE_FLAG = 'N' AND PROJECTS_V.PROJECT_STATUS_CODE = 'APPROVED'
+                    WHERE ALLOWED_RECORDS.RAILROAD_ID = {0} AND PROJECTS_V.PROJECT_TYPE = 'CUSTOMER BILLING' AND PROJECTS_V.TEMPLATE_FLAG = 'N' AND PROJECTS_V.PROJECT_STATUS_CODE = 'APPROVED' AND ALLOWED_RECORDS.STATUS = 'ACTIVE'
                     GROUP BY ALLOWED_RECORDS.RAILROAD_ID,
                       ALLOWED_RECORDS.CONTACT_ID,
                       ALLOWED_RECORDS.CROSSING_ID,
@@ -329,11 +330,11 @@ SELECT
                       });
 
           }
-          public static IQueryable<StateCrossingList> GetStateCrossingList(decimal RailroadId, decimal Application, Entities _context)
+          public static IQueryable<StateCrossingList> GetStateCrossingList(decimal RailroadId, Entities _context)
           {
               return (from d in _context.CROSSINGS
-                      join a in _context.CROSSING_APPLICATION on d.CROSSING_ID equals a.CROSSING_ID
-                      where d.RAILROAD_ID == RailroadId && a.APPLICATION_REQUESTED == Application && d.STATUS != "DELETED"
+                      //join a in _context.CROSSING_APPLICATION on d.CROSSING_ID equals a.CROSSING_ID
+                      where d.RAILROAD_ID == RailroadId && d.STATUS != "DELETED" && d.PROPERTY_TYPE == "PUB"
                       select new StateCrossingList
                             {
                                 CROSSING_ID = d.CROSSING_ID,
@@ -354,11 +355,11 @@ SELECT
                                 LONGITUDE = d.LONGITUDE,
                                 LATITUDE = d.LATITUDE,
                                 SPECIAL_INSTRUCTIONS = d.SPECIAL_INSTRUCTIONS,
-                                SPRAY = a.SPRAY,
-                                CUT = a.CUT,
-                                INSPECT = a.INSPECT,
-                                APPLICATION_ID = a.APPLICATION_ID,
-                                APPLICATION_REQUESTED = a.APPLICATION_REQUESTED
+                                //SPRAY = a.SPRAY,
+                                //CUT = a.CUT,
+                                //INSPECT = a.INSPECT,
+                                //APPLICATION_ID = a.APPLICATION_ID,
+                                //APPLICATION_REQUESTED = a.APPLICATION_REQUESTED
                             });
           }
           public static IQueryable<ApplicationDateList> GetAppDate(decimal RailroadId, decimal Application, Entities _context)
