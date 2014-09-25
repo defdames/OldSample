@@ -22,7 +22,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     X.Redirect("~/Views/uxDefault.aspx");
                 }
 
-                uxOrganizationsGrid.GetStore().Reload();
+                //uxOrganizationsGrid.GetStore().Reload();
 
             }
         }
@@ -98,7 +98,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
             HR.ORGANIZATION _organizationDetails = HR.Organization(_organizationID);
 
-            X.Js.Call("parent.App.direct.AddTabPanel", "bt", _organizationDetails.ORGANIZATION_NAME + " - Budget Types", "umOverheadBudgetTypes.aspx?leid=" + _selectedRecordID);
+            X.Js.Call("parent.App.direct.AddTabPanel", "bt", _organizationDetails.ORGANIZATION_NAME + " - Budget Types", "umOverheadBudgetTypes.aspx?leid=" + _selectedRecordID + "&bulevel=Y");
         }
 
 

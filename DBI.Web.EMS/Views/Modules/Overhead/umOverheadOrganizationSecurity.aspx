@@ -79,6 +79,12 @@
                                 <ext:ToolbarFill runat="server">
 
                                 </ext:ToolbarFill>
+                                 <ext:Button runat="server" ID="Button2" Text="Close Fiscal Year" Icon="BinClosed">
+                                    <DirectEvents>
+                                        <Click OnEvent="deCloseFiscal"></Click>
+                                    </DirectEvents>
+                                </ext:Button>
+                                <ext:ToolbarSeparator ID="ToolbarSeparator4" runat="server"></ext:ToolbarSeparator>
                                  <ext:Button runat="server" ID="Button1" Text="Period Maintenance" Icon="DatabaseLink">
                                     <DirectEvents>
                                         <Click OnEvent="dePeriodMaintenance"></Click>
@@ -102,7 +108,7 @@
                     <Store>
                         <ext:Store runat="server"
                             ID="uxOrganizationSecurityStore"
-                            AutoDataBind="true" RemoteSort="true" PageSize="25" OnReadData="deLoadOrganizationsByHierarchy" AutoLoad="false">
+                            AutoDataBind="true" RemoteSort="true" PageSize="25" OnReadData="deLoadOrganizationsByHierarchy" AutoLoad="true">
                             <Model>
                                 <ext:Model ID="Model2" runat="server" IDProperty="ORGANIZATION_ID">
                                     <Fields>

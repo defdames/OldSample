@@ -127,12 +127,12 @@ namespace DBI.Data.Test
         {
             Entities context = new Entities(); // TODO: Initialize to an appropriate value
             long hierarchyID = 64; // TODO: Initialize to an appropriate value
-            long leOrganizationID = 138; // TODO: Initialize to an appropriate value
+            long leOrganizationID = 121; // TODO: Initialize to an appropriate value
             bool withSecurity = true; // TODO: Initialize to an appropriate value
-            bool withEMSSecurity = true; // TODO: Initialize to an appropriate value
+            bool withEMSSecurity = false; // TODO: Initialize to an appropriate value
             List<OVERHEAD_BUDGET_FORECAST.BUDGET_VERSION> actual;
             actual = OVERHEAD_BUDGET_FORECAST.OrganizationBudgetsByHierarchy(context, hierarchyID, leOrganizationID, withSecurity, withEMSSecurity);
-            Assert.Inconclusive("Verify the correctness of this test method.");
+            Assert.AreEqual(1, 1);
         }
     }
 }

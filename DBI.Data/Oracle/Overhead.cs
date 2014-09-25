@@ -107,7 +107,7 @@ namespace DBI.Data
     public partial class OVERHEAD_BUDGET_TYPES
     {
 
-        public static List<OVERHEAD_BUDGET_TYPE> NextAvailBudgetTypeByOrganization(long organizationID, long legalEntityID, long fiscalYear)
+        public static OVERHEAD_BUDGET_TYPE NextAvailBudgetTypeByOrganization(long organizationID, long legalEntityID, long fiscalYear)
         {
             using (Entities _context = new Entities())
             {
@@ -117,7 +117,7 @@ namespace DBI.Data
                          where !_context.OVERHEAD_ORG_BUDGETS.Any(x => x.OVERHEAD_BUDGET_TYPE_ID == dups.OVERHEAD_BUDGET_TYPE_ID && x.FISCAL_YEAR == fiscalYear && x.ORGANIZATION_ID == organizationID)
                          select dups);
 
-                var _rdata = _data.OrderBy(x => x.LE_ORG_ID).Take(1).ToList();
+                var _rdata = _data.OrderBy(x => x.LE_ORG_ID).Take(1).SingleOrDefault();
                 return _rdata;
             }
         }
@@ -1327,7 +1327,9 @@ namespace DBI.Data
                                Cells = new PdfPCell[]{
                                 new PdfPCell(_accountPhase),
                                 new PdfPCell(new Phrase(_row.ACCOUNT_NOTES,TotalCellFont))
-                                            };
+                                                     };
+
+
                                Row = new PdfPRow(Cells);
                                _commentsPDFTable.Rows.Add(Row);
                            }
