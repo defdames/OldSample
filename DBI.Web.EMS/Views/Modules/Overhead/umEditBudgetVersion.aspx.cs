@@ -29,6 +29,17 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 using (Entities _context = new Entities())
                 {
 
+                 long _budgetid = long.Parse(Request.QueryString["budget_id"]);
+
+                //Return the budget 
+                 OVERHEAD_ORG_BUDGETS _budget = OVERHEAD_BUDGET_FORECAST.BudgetByID(_context, _budgetid);
+                 var _budgetType = OVERHEAD_BUDGET_TYPE.BudgetType(_budget.OVERHEAD_BUDGET_TYPE_ID);
+
+                 if (_budgetType.IMPORT_ACTUALS_ALLOWED == "N")
+                 {
+                     uxImportActualsButton.Disable();
+                 }
+
                     long _organizationID;
                     bool checkOrgId = long.TryParse(Request.QueryString["orgid"], out _organizationID);
                     short _fiscal_year = short.Parse(Request.QueryString["fiscalyear"]);

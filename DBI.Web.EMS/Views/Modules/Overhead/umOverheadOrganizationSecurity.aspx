@@ -34,7 +34,7 @@
                     <TopBar>
                         <ext:Toolbar ID="Toolbar1" runat="server">
                             <Items>
-                                <ext:Button runat="server" Text="Enable Organization" icon="Add" ID="uxEnableOrganizationButton" Disabled="true" >
+                                <ext:Button runat="server" Text="Enable" icon="Add" ID="uxEnableOrganizationButton" Disabled="true" >
                                     <ToolTips>
                                         <ext:ToolTip ID="ToolTip1" runat="server" UI="Info" Html="Enables an organization so it can be used for the budget overhead system."></ext:ToolTip>
                                     </ToolTips>
@@ -43,7 +43,7 @@
                                     </DirectEvents>
                                 </ext:Button>              
                                 <ext:ToolbarSeparator ID="ToolbarSeparator1" runat="server"></ext:ToolbarSeparator>
-                                  <ext:Button runat="server" Text="Disable Organization" icon="Decline" ID="uxDisableOrganizationButton" Disabled="true" >
+                                  <ext:Button runat="server" Text="Disable" icon="Decline" ID="uxDisableOrganizationButton" Disabled="true" >
                                     <ToolTips>
                                         <ext:ToolTip ID="ToolTip2" runat="server" UI="Info" Html="Disables an organization so that it can't be used for the budget overhead system."></ext:ToolTip>
                                     </ToolTips>
@@ -53,7 +53,7 @@
                                 </ext:Button>
                                 <ext:ToolbarSeparator runat="server">
                                 </ext:ToolbarSeparator>
-                                <ext:Button runat="server" Text="General Ledger Accounts" Icon="CalculatorEdit" Disabled="true" ID="uxGeneralLedger">
+                                <ext:Button runat="server" Text="General Ledger" Icon="CalculatorEdit" Disabled="true" ID="uxGeneralLedger">
                                     <DirectEvents>
                                         <Click OnEvent="deViewAccounts">
                                             <ExtraParams>
@@ -64,7 +64,7 @@
                                     </DirectEvents>
                                 </ext:Button>
                                 <ext:ToolbarSeparator ID="ToolbarSeparator2" runat="server"></ext:ToolbarSeparator>
-                                <ext:Button runat="server" Text="Budget Versions" Icon="BookEdit" Disabled="true" ID="uxOpenPeriod">
+                                <ext:Button runat="server" Text="Budgets" Icon="BookEdit" Disabled="true" ID="uxOpenPeriod">
                                     <DirectEvents>
                                     <Click OnEvent="deViewPeriods">
                                         <ExtraParams>
@@ -79,13 +79,19 @@
                                 <ext:ToolbarFill runat="server">
 
                                 </ext:ToolbarFill>
-                                 <ext:Button runat="server" ID="Button2" Text="Close Fiscal Year" Icon="BinClosed">
+                                 <ext:Button runat="server" ID="Button3" Text="Import Actuals" Icon="CalculatorAdd">
+                                    <DirectEvents>
+                                        <Click OnEvent="deImportActuals"></Click>
+                                    </DirectEvents>
+                                </ext:Button>
+                                <ext:ToolbarSeparator ID="ToolbarSeparator5" runat="server"></ext:ToolbarSeparator>
+                                 <ext:Button runat="server" ID="Button2" Text="Close Fiscal" Icon="BinClosed">
                                     <DirectEvents>
                                         <Click OnEvent="deCloseFiscal"></Click>
                                     </DirectEvents>
                                 </ext:Button>
                                 <ext:ToolbarSeparator ID="ToolbarSeparator4" runat="server"></ext:ToolbarSeparator>
-                                 <ext:Button runat="server" ID="Button1" Text="Period Maintenance" Icon="DatabaseLink">
+                                 <ext:Button runat="server" ID="Button1" Text="Create Forecast" Icon="DatabaseLink">
                                     <DirectEvents>
                                         <Click OnEvent="dePeriodMaintenance"></Click>
                                     </DirectEvents>
@@ -97,7 +103,7 @@
                                     </DirectEvents>
                                 </ext:Button>
                                 <ext:ToolbarSeparator runat="server"></ext:ToolbarSeparator>
-                                <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Show All Organizations" ID="uxShowAllOrganizationsCheckBox" >
+                                <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Show All" ID="uxShowAllOrganizationsCheckBox" >
                                     <DirectEvents>
                                         <Change OnEvent="deShowAllOrganizations" />
                                     </DirectEvents>

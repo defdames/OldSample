@@ -22,6 +22,15 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     X.Redirect("~/Views/uxDefault.aspx");
                 }
 
+                string _closeFiscal = string.Empty;
+                if (Request.QueryString["closefiscal"] != "" && Request.QueryString["closefiscal"] != null)
+                    _closeFiscal = Request.QueryString["closefiscal"];
+
+                if (_closeFiscal == "Y")
+                {
+                    uxOpenPeriod.Text = "Close Fiscal Year";
+                }
+
             }
         }
 
@@ -50,12 +59,14 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             if (Request.QueryString["bulevel"] != "" && Request.QueryString["bulevel"] != null)
                 _adminInsert = Request.QueryString["bulevel"];
 
+            string _closeFiscal = string.Empty;
+            if (Request.QueryString["closefiscal"] != "" && Request.QueryString["closefiscal"] != null)
+                _closeFiscal = Request.QueryString["closefiscal"];
+
 
             using (Entities _context = new Entities())
             {
 
-                if (_adminInsert == "Y")
-                {
                     ///We have to open all organizations
                     string _selectedRecordID = Request.QueryString["combinedLEORGID"];
                     if (_selectedRecordID != null)
@@ -70,6 +81,23 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                         foreach (HR.ORGANIZATION_V1 _version in _data)
                         {
+
+                            if (_closeFiscal == "Y")
+                            {
+                                //find all budgets for the same year and organization and close them
+                                List<OVERHEAD_ORG_BUDGETS> _organizationBudgets = _context.OVERHEAD_ORG_BUDGETS.Where(x => x.ORGANIZATION_ID == _version.ORGANIZATION_ID & x.FISCAL_YEAR == _fiscalYear & x.STATUS != "C").ToList();
+
+                                foreach (OVERHEAD_ORG_BUDGETS _budget in _organizationBudgets)
+                                {
+                                    _budget.STATUS = "C";
+                                    _budget.MODIFY_DATE = DateTime.Now;
+                                    _budget.MODIFIED_BY = User.Identity.Name;
+                                    GenericData.Update<OVERHEAD_ORG_BUDGETS>(_budget);
+                                }
+                                return;
+                            }
+
+
                             //Return the next budget type id
                             OVERHEAD_BUDGET_TYPE _nextBudgetType = OVERHEAD_BUDGET_TYPES.NextAvailBudgetTypeByOrganization(_version.ORGANIZATION_ID, _organizationID, _fiscalYear);
 
@@ -160,8 +188,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                             }
 
                         }
-
-                    }
 
                 }
 

@@ -110,7 +110,11 @@
                     </Plugins>
                      <SelectionModel><ext:RowSelectionModel ID="uxForecastPeriodsByOrganizationSelectionModel" runat="server" Mode="Single" AllowDeselect="true">
                          <DirectEvents>
-                             <Select OnEvent="deSelectForecast"></Select>
+                             <Select OnEvent="deSelectForecast">
+                                          <ExtraParams>
+                                                 <ext:Parameter Mode="Raw" Name="ORG_BUDGET_ID" Value="#{uxForecastPeriodsByOrganizationGridPanel}.getView().getSelectionModel().getSelection()[0].data.ORG_BUDGET_ID"></ext:Parameter>
+                                          </ExtraParams>
+                             </Select>
                              <Deselect OnEvent="deDeSelectForecast" />
                          </DirectEvents>
                      </ext:RowSelectionModel>
