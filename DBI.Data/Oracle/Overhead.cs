@@ -316,14 +316,14 @@ namespace DBI.Data
             if (withSecurity)
             {
                 _budgetlist = (from b in _budgetlist
-                                   where HR.OverheadOrganizationStatusByHierarchy(hierarchyID, leOrganizationID).Any(x => x.ORGANIZATION_ID == b.ORGANIZATION_ID)
-                                   select b);
+                               where HR.OverheadOrganizationStatusByHierarchy(hierarchyID, leOrganizationID).Any(x => x.ORGANIZATION_ID == b.ORGANIZATION_ID)
+                               select b);
             }
             else
             {
                 _budgetlist = (from b in _budgetlist
-                                   where SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.LoggedInUser().USER_ID).Any(x => x.ORG_ID == b.ORGANIZATION_ID)
-                                   select b);
+                               where SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.LoggedInUser().USER_ID).Any(x => x.ORG_ID == b.ORGANIZATION_ID)
+                               select b);
             }
 
             //Limit list to organizations in hierarchy and that I have access to view in EMS
@@ -331,8 +331,8 @@ namespace DBI.Data
             {
                 //List of All organiztions in hierarchy and must be in organizations I have access to view
                 _budgetlist = (from b in _budgetlist
-                               where SYS_USER_ORGS.GetUserOrgs(1154).Any(x => x.ORG_ID == b.ORGANIZATION_ID)
-                               select b);                
+                               where SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.LoggedInUser().USER_ID).Any(x => x.ORG_ID == b.ORGANIZATION_ID)
+                               select b);
             }
 
             foreach (OVERHEAD_ORG_BUDGETS _budget in _budgetlist)
@@ -452,19 +452,30 @@ namespace DBI.Data
         /// <param name="context"></param>
         /// <param name="organizationID"></param>
         /// <returns></returns>
-        public static List<GL_ACCOUNTS_V> AccountListByOrganizationID(Entities context, long organizationID)
+        public static List<GL_ACCOUNT> AccountListByOrganizationID(Entities context, long organizationID)
         {
             var _rangeList = RangeOfAccountsByOrganizationID(context, organizationID).ToList();
-            List<GL_ACCOUNTS_V> _accountList = new List<GL_ACCOUNTS_V>();
+            List<GL_ACCOUNT> _accountList = new List<GL_ACCOUNT>();
 
             foreach (OVERHEAD_GL_RANGE _range in _rangeList)
             {
-                var _adata = context.GL_ACCOUNTS_V.Where(x => string.Compare(x.SEGMENT1 + x.SEGMENT2 + x.SEGMENT3 + x.SEGMENT4 + x.SEGMENT5 + x.SEGMENT6 + x.SEGMENT7, _range.SRSEGMENT1 + _range.SRSEGMENT2 + _range.SRSEGMENT3 + _range.SRSEGMENT4 + _range.SRSEGMENT5 + _range.SRSEGMENT6 + _range.SRSEGMENT7) >= 0).Where(x => string.Compare(x.SEGMENT1 + x.SEGMENT2 + x.SEGMENT3 + x.SEGMENT4 + x.SEGMENT5 + x.SEGMENT6 + x.SEGMENT7, _range.ERSEGMENT1 + _range.ERSEGMENT2 + _range.ERSEGMENT3 + _range.ERSEGMENT4 + _range.ERSEGMENT5 + _range.ERSEGMENT6 + _range.ERSEGMENT7) <= 0);
-                List<GL_ACCOUNTS_V> _accountRange = _adata.ToList();
+                var _adata = AccountList(context).Where(x => string.Compare(x.SEGMENT1 + x.SEGMENT2 + x.SEGMENT3 + x.SEGMENT4 + x.SEGMENT5 + x.SEGMENT6 + x.SEGMENT7, _range.SRSEGMENT1 + _range.SRSEGMENT2 + _range.SRSEGMENT3 + _range.SRSEGMENT4 + _range.SRSEGMENT5 + _range.SRSEGMENT6 + _range.SRSEGMENT7) >= 0).Where(x => string.Compare(x.SEGMENT1 + x.SEGMENT2 + x.SEGMENT3 + x.SEGMENT4 + x.SEGMENT5 + x.SEGMENT6 + x.SEGMENT7, _range.ERSEGMENT1 + _range.ERSEGMENT2 + _range.ERSEGMENT3 + _range.ERSEGMENT4 + _range.ERSEGMENT5 + _range.ERSEGMENT6 + _range.ERSEGMENT7) <= 0);
+                List<GL_ACCOUNT> _accountRange = _adata.ToList();
                 _accountList.AddRange(_accountRange);
             }
 
             return _accountList;
+        }
+
+        /// <summary>
+        /// Returns a list of GL Accounts
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public static IQueryable<GL_ACCOUNT> AccountList(Entities context)
+        {
+            string sql = "SELECT code_combination_id,segment1,segment2,segment3,segment4,segment5,segment6,segment7 FROM apps.gl_code_combinations gccl";
+            return context.Database.SqlQuery<GL_ACCOUNT>(sql).AsQueryable();
         }
 
         /// <summary>
@@ -474,9 +485,9 @@ namespace DBI.Data
         /// <param name="organizationID"></param>
         /// <param name="excludedAccounts"></param>
         /// <returns></returns>
-        public static List<GL_ACCOUNTS_V> AccountListValidByOrganizationID(Entities context, long organizationID)
+        public static List<GL_ACCOUNT> AccountListValidByOrganizationID(Entities context, long organizationID)
         {
-            List<GL_ACCOUNTS_V> _data = AccountListByOrganizationID(context, organizationID);
+            List<GL_ACCOUNT> _data = AccountListByOrganizationID(context, organizationID);
             _data.Where(x => !AccountListExcludedByOrganizationID(context, organizationID).Any(y => y.CODE_COMBINATION_ID == x.CODE_COMBINATION_ID));
             return _data;
         }
@@ -505,6 +516,40 @@ namespace DBI.Data
             return _data;
         }
 
+        /// <summary>
+        /// Returns a le id for an organization id
+        /// </summary>
+        /// <param name="organizationID"></param>
+        /// <returns></returns>
+        public static long ReturnLEIDforOrganizationID(long organizationID)
+        {
+            using (Entities _context = new Entities())
+            {
+                string sql = @"    select BU
+                        from
+                            (SELECT             c.organization_id_parent BU,
+                                                haou.name ORG_Name
+                            FROM                per_organization_structures_v a
+                            INNER JOIN          per_org_structure_versions_v b on a.organization_structure_id = b.organization_structure_id
+                            INNER JOIN          per_org_structure_elements_v c on b.org_structure_version_id = c.org_structure_version_id
+                            INNER JOIN          hr.hr_all_organization_units haou on haou.organization_id = c.organization_id_parent
+                            WHERE               SYSDATE BETWEEN b.date_from and nvl(b.date_to,'31-DEC-4712') 
+                            START WITH          c.organization_id_child = '" + organizationID + @"' 
+                            CONNECT BY PRIOR    c.organization_id_parent = c.organization_id_child
+                            UNION
+                            SELECT  organization_id,
+                                    name
+                            FROM    hr.hr_all_organization_units
+                            WHERE   organization_id = '" + organizationID + @"')
+                        where rownum = 1
+                        and BU in (select organization_id from apps.hr_operating_units)";
+
+                long OrgId = _context.Database.SqlQuery<long>(sql).Single<long>();
+
+                return OrgId;
+            }
+        }
+
 
         /// <summary>
         /// Returns the budget detail by organization id and budget id
@@ -516,18 +561,81 @@ namespace DBI.Data
         public static List<OVERHEAD_BUDGET_VIEW> BudgetDetailsViewByBudgetID(Entities context, long budgetID, Boolean printView = false, Boolean hideBlankLines = false, Boolean rollup = false, long leorganizationID = 0, long organizationID = 0, short fiscalYear = 0, long budgetTypeID = 0, Boolean collapseAccountLines = false)
         {
 
+            List<OVERHEAD_BUDGET_VIEW> _data = new List<OVERHEAD_BUDGET_VIEW>();
             var _categoryList = CategoryAsQueryable(context);
             var _accountCategoryList = AccountCategoryAsQueryable(context);
 
-            List<OVERHEAD_BUDGET_VIEW> _data = new List<OVERHEAD_BUDGET_VIEW>();
 
-            var _budgetHeader = BudgetByID(context, budgetID);
+            OVERHEAD_ORG_BUDGETS _budgetHeader = BudgetByID(context, budgetID);
 
-            var _budgetDetail = BudgetDetailByBudgetID(context, budgetID);
-            var _validAccounts = AccountListValidByOrganizationID(context, _budgetHeader.ORGANIZATION_ID);
+            List<OVERHEAD_BUDGET_DETAIL> _budgetDetail = new List<OVERHEAD_BUDGET_DETAIL>();
+            List<GL_ACCOUNT> _validAccounts = new List<GL_ACCOUNT>();
+
+            if (rollup)
+            {
+                long leID = 0;
+                if (_budgetHeader == null)
+                {
+                    leID = leorganizationID;
+                }
+                else
+                {
+                    leID = ReturnLEIDforOrganizationID(_budgetHeader.ORGANIZATION_ID);
+                }
+
+
+                long _hierarchyID = long.Parse(SYS_ORG_PROFILE_OPTIONS.OrganizationProfileOption("OverheadBudgetHierarchy", leID));
+                List<HR.ORGANIZATION_V1> data = new List<HR.ORGANIZATION_V1>();
+
+                if (_budgetHeader == null)
+                {
+                    data = HR.OverheadOrganizationStatusByHierarchy(_hierarchyID, leorganizationID).Where(x => x.ORGANIZATION_STATUS == "Active").ToList();
+
+                    data = (from b in data
+                            where SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.LoggedInUser().USER_ID).Any(x => x.ORG_ID == b.ORGANIZATION_ID)
+                            select b).ToList();
+                }
+                else
+                {
+                    _budgetDetail.AddRange(BudgetDetailByBudgetID(context, budgetID).ToList());
+                    _validAccounts.AddRange(AccountListValidByOrganizationID(context, _budgetHeader.ORGANIZATION_ID));
+                    data = HR.OverheadOrganizationStatusByHierarchy(_hierarchyID, _budgetHeader.ORGANIZATION_ID).Where(x => x.ORGANIZATION_STATUS == "Active").ToList();
+
+                    data = (from b in data
+                            where SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.LoggedInUser().USER_ID).Any(x => x.ORG_ID == b.ORGANIZATION_ID)
+                            select b).ToList();
+                }
+
+                foreach (HR.ORGANIZATION_V1 _organization in data)
+                {
+                    OVERHEAD_ORG_BUDGETS _budget;
+                    if (_budgetHeader != null)
+                    {
+                        _budget = OVERHEAD_BUDGET_FORECAST.BudgetsByOrganizationID(context, _organization.ORGANIZATION_ID).Where(x => x.FISCAL_YEAR == _budgetHeader.FISCAL_YEAR & x.OVERHEAD_BUDGET_TYPE_ID == _budgetHeader.OVERHEAD_BUDGET_TYPE_ID).SingleOrDefault();
+                    }
+                    else
+                    {
+                        _budget = OVERHEAD_BUDGET_FORECAST.BudgetsByOrganizationID(context, _organization.ORGANIZATION_ID).Where(x => x.FISCAL_YEAR == fiscalYear & x.OVERHEAD_BUDGET_TYPE_ID == budgetTypeID).SingleOrDefault();
+                    }
+
+                    if (_budget != null)
+                    {
+                        _validAccounts.AddRange(AccountListValidByOrganizationID(context, _budget.ORGANIZATION_ID));
+                        _budgetDetail.AddRange(BudgetDetailByBudgetID(context, _budget.ORG_BUDGET_ID).ToList());
+                    }
+                }
+
+            }
+
+            else
+            {
+                _budgetDetail.AddRange(BudgetDetailByBudgetID(context, budgetID).ToList());
+                _validAccounts.AddRange(AccountListValidByOrganizationID(context, _budgetHeader.ORGANIZATION_ID));
+            }
+
             List<OVERHEAD_ACCOUNT_COMMENT> _accountComments = context.OVERHEAD_ACCOUNT_COMMENT.Where(x => x.ORG_BUDGET_ID == budgetID).ToList();
 
-            foreach (GL_ACCOUNTS_V _account in _validAccounts)
+            foreach (GL_ACCOUNT _account in _validAccounts)
             {
                 OVERHEAD_CATEGORY _category = new OVERHEAD_CATEGORY();
                 OVERHEAD_BUDGET_VIEW _record = new OVERHEAD_BUDGET_VIEW();
@@ -536,88 +644,90 @@ namespace DBI.Data
                 //Return the data for the year
                 List<OVERHEAD_BUDGET_DETAIL> _condensedBudgetDetail = _budgetDetail.Where(x => x.CODE_COMBINATION_ID == _account.CODE_COMBINATION_ID).ToList();
 
-                    var _accountCategory = _accountCategoryList.Where(x => x.ACCOUNT_SEGMENT == _account.SEGMENT5).OrderBy(x => x.ACCOUNT_SEGMENT).SingleOrDefault();
+                var _accountCategory = _accountCategoryList.Where(x => x.ACCOUNT_SEGMENT == _account.SEGMENT5).OrderBy(x => x.ACCOUNT_SEGMENT).SingleOrDefault();
 
-                    if (_accountCategory != null)
+                if (_accountCategory != null)
+                {
+                    _category = _categoryList.Where(x => x.CATEGORY_ID == _accountCategory.CATEGORY_ID).SingleOrDefault();
+                    _record.CATEGORY_ID = _accountCategory.CATEGORY_ID;
+                    _record.CATEGORY_NAME = _category.NAME;
+                    _record.SORT_ORDER = _accountCategory.SORT_ORDER;
+                    _record.CATEGORY_SORT_ORDER = (long)_category.SORT_ORDER;
+                }
+                else
+                {
+                    _record.CATEGORY_NAME = "Other";
+                    _record.CATEGORY_SORT_ORDER = 99999;
+                    _record.SORT_ORDER = 0;
+
+                }
+
+
+                _record.ACCOUNT_SEGMENT = _account.SEGMENT5;
+                _record.CODE_COMBINATION_ID = _account.CODE_COMBINATION_ID;
+
+                string SEGMENT5DESC = OVERHEAD_BUDGET_FORECAST.AccountDescriptionBySegment(context, 5, _account.SEGMENT5);
+
+                if (printView)
+                {
+                    _record.ACCOUNT_DESCRIPTION = SEGMENT5DESC;
+                    _record.ACCOUNT_DESCRIPTION2 = "(" + _account.SEGMENT4 + "." + _account.SEGMENT5 + ")";
+                    if (collapseAccountLines)
+                        _record.ACCOUNT_DESCRIPTION3 = SEGMENT5DESC;
+                    _record.ACCOUNT_DESCRIPTION2 = "(" + _account.SEGMENT5 + ")";
+
+                    if (_accountComments.Any())
                     {
-                        _category = _categoryList.Where(x => x.CATEGORY_ID == _accountCategory.CATEGORY_ID).SingleOrDefault();
-                        _record.CATEGORY_ID = _accountCategory.CATEGORY_ID;
-                        _record.CATEGORY_NAME = _category.NAME;
-                        _record.SORT_ORDER = _accountCategory.SORT_ORDER;
-                        _record.CATEGORY_SORT_ORDER = (long)_category.SORT_ORDER;
-                    }
-                    else
-                    {
-                        _record.CATEGORY_NAME = "Other";
-                        _record.CATEGORY_SORT_ORDER = 99999;
-                        _record.SORT_ORDER = 0;
-
-                    }
-
-
-                    _record.ACCOUNT_SEGMENT = _account.SEGMENT5;
-                    _record.CODE_COMBINATION_ID = _account.CODE_COMBINATION_ID;
-
-                    if (printView)
-                    {
-                         _record.ACCOUNT_DESCRIPTION = _account.SEGMENT5_DESC;
-                         _record.ACCOUNT_DESCRIPTION2 = "(" + _account.SEGMENT4 + "." + _account.SEGMENT5 + ")";
-                        if(collapseAccountLines)
-                         _record.ACCOUNT_DESCRIPTION3 = _account.SEGMENT5_DESC;
-                        _record.ACCOUNT_DESCRIPTION2 = "(" + _account.SEGMENT5 + ")";
-
-                        if (_accountComments.Any())
+                        OVERHEAD_ACCOUNT_COMMENT _comments = _accountComments.Where(x => x.CODE_COMBINATION_ID == _account.CODE_COMBINATION_ID).SingleOrDefault();
+                        if (_comments != null)
                         {
-                            OVERHEAD_ACCOUNT_COMMENT _comments = _accountComments.Where(x => x.CODE_COMBINATION_ID == _account.CODE_COMBINATION_ID).SingleOrDefault();
-                            if (_comments != null)
-                            {
-                                _record.ACCOUNT_NOTES = _comments.COMMENTS;
-                            }
-                            else
-                            {
-                                _record.ACCOUNT_NOTES = "";
-                            }
+                            _record.ACCOUNT_NOTES = _comments.COMMENTS;
                         }
                         else
                         {
                             _record.ACCOUNT_NOTES = "";
                         }
-
-
                     }
                     else
                     {
                         _record.ACCOUNT_NOTES = "";
-                        _record.ACCOUNT_DESCRIPTION = _account.SEGMENT5_DESC + " (" + _account.SEGMENT4 + "." + _account.SEGMENT5 + ")";
-                        _record.ACCOUNT_DESCRIPTION2 = _account.SEGMENT5_DESC + " (" + _account.SEGMENT5 + ")";
                     }
-                    _record.AMOUNT1 = GetAccountTotalByPeriod(_condensedBudgetDetail, 1);
-                    _record.AMOUNT2 = GetAccountTotalByPeriod(_condensedBudgetDetail, 2);
-                    _record.AMOUNT3 = GetAccountTotalByPeriod(_condensedBudgetDetail, 3);
-                    _record.AMOUNT4 = GetAccountTotalByPeriod(_condensedBudgetDetail, 4);
-                    _record.AMOUNT5 = GetAccountTotalByPeriod(_condensedBudgetDetail, 5);
-                    _record.AMOUNT6 = GetAccountTotalByPeriod(_condensedBudgetDetail, 6);
-                    _record.AMOUNT7 = GetAccountTotalByPeriod(_condensedBudgetDetail, 7);
-                    _record.AMOUNT8 = GetAccountTotalByPeriod(_condensedBudgetDetail, 8);
-                    _record.AMOUNT9 = GetAccountTotalByPeriod(_condensedBudgetDetail, 9);
-                    _record.AMOUNT10 = GetAccountTotalByPeriod(_condensedBudgetDetail, 10);
-                    _record.AMOUNT11 = GetAccountTotalByPeriod(_condensedBudgetDetail, 11);
-                    _record.AMOUNT12 = GetAccountTotalByPeriod(_condensedBudgetDetail, 12);
-                    _record.TOTAL = (_record.AMOUNT1 + _record.AMOUNT2 + _record.AMOUNT3 + _record.AMOUNT4 + _record.AMOUNT5 + _record.AMOUNT6 + _record.AMOUNT7 + _record.AMOUNT8 + _record.AMOUNT9 + _record.AMOUNT10 + _record.AMOUNT11 + _record.AMOUNT12);
-                    _record.BUDGET_ID = budgetID;
 
-                   
 
-                    if (hideBlankLines)
-                    {
-                        if (_record.TOTAL > 0 || _record.TOTAL < 0)
-                            _data.Add(_record);
-                    }
-                    else
-                    {
-                        _data.Add(_record);
-                    }
                 }
+                else
+                {
+                    _record.ACCOUNT_NOTES = "";
+                    _record.ACCOUNT_DESCRIPTION = SEGMENT5DESC + " (" + _account.SEGMENT4 + "." + _account.SEGMENT5 + ")";
+                    _record.ACCOUNT_DESCRIPTION2 = SEGMENT5DESC + " (" + _account.SEGMENT5 + ")";
+                }
+                _record.AMOUNT1 = GetAccountTotalByPeriod(_condensedBudgetDetail, 1);
+                _record.AMOUNT2 = GetAccountTotalByPeriod(_condensedBudgetDetail, 2);
+                _record.AMOUNT3 = GetAccountTotalByPeriod(_condensedBudgetDetail, 3);
+                _record.AMOUNT4 = GetAccountTotalByPeriod(_condensedBudgetDetail, 4);
+                _record.AMOUNT5 = GetAccountTotalByPeriod(_condensedBudgetDetail, 5);
+                _record.AMOUNT6 = GetAccountTotalByPeriod(_condensedBudgetDetail, 6);
+                _record.AMOUNT7 = GetAccountTotalByPeriod(_condensedBudgetDetail, 7);
+                _record.AMOUNT8 = GetAccountTotalByPeriod(_condensedBudgetDetail, 8);
+                _record.AMOUNT9 = GetAccountTotalByPeriod(_condensedBudgetDetail, 9);
+                _record.AMOUNT10 = GetAccountTotalByPeriod(_condensedBudgetDetail, 10);
+                _record.AMOUNT11 = GetAccountTotalByPeriod(_condensedBudgetDetail, 11);
+                _record.AMOUNT12 = GetAccountTotalByPeriod(_condensedBudgetDetail, 12);
+                _record.TOTAL = (_record.AMOUNT1 + _record.AMOUNT2 + _record.AMOUNT3 + _record.AMOUNT4 + _record.AMOUNT5 + _record.AMOUNT6 + _record.AMOUNT7 + _record.AMOUNT8 + _record.AMOUNT9 + _record.AMOUNT10 + _record.AMOUNT11 + _record.AMOUNT12);
+                _record.BUDGET_ID = budgetID;
+
+
+
+                if (hideBlankLines)
+                {
+                    if (_record.TOTAL > 0 || _record.TOTAL < 0)
+                        _data.Add(_record);
+                }
+                else
+                {
+                    _data.Add(_record);
+                }
+            }
 
 
             if (collapseAccountLines)
@@ -652,11 +762,11 @@ namespace DBI.Data
                     ACCOUNT_NOTES = AccountsGroupedNotesBySegment(s.Key, _data)
                 }).ToList();
 
-               if (printView)
-               {
-                   var _orderedPrint = _collapsedView.OrderBy(x => x.CATEGORY_SORT_ORDER).ThenBy(x => x.SORT_ORDER).ThenBy(x => x.ACCOUNT_SEGMENT);
-                   return _orderedPrint.ToList();
-               }
+                if (printView)
+                {
+                    var _orderedPrint = _collapsedView.OrderBy(x => x.CATEGORY_SORT_ORDER).ThenBy(x => x.SORT_ORDER).ThenBy(x => x.ACCOUNT_SEGMENT);
+                    return _orderedPrint.ToList();
+                }
 
                 return _collapsedView;
             }
@@ -667,7 +777,7 @@ namespace DBI.Data
                 return _orderedPrint.ToList();
             }
 
-                return _data;
+            return _data;
 
         }
 
@@ -698,28 +808,28 @@ namespace DBI.Data
         public static OVERHEAD_BUDGET_VIEW SummaryViewByCategoryID(IEnumerable<OVERHEAD_BUDGET_VIEW> reportList, long categoryID)
         {
 
-                //Cacluate summary
-                var _summaryData = reportList.Where(x => x.CATEGORY_ID == categoryID).GroupBy(I => I.CATEGORY_ID)
-                    .Select(g => new OVERHEAD_BUDGET_VIEW
-                    {
-                        CATEGORY_ID = g.Key,
-                        AMOUNT1 = g.Sum(i => i.AMOUNT1),
-                        AMOUNT2 = g.Sum(i => i.AMOUNT2),
-                        AMOUNT3 = g.Sum(i => i.AMOUNT3),
-                        AMOUNT4 = g.Sum(i => i.AMOUNT4),
-                        AMOUNT5 = g.Sum(i => i.AMOUNT5),
-                        AMOUNT6 = g.Sum(i => i.AMOUNT6),
-                        AMOUNT7 = g.Sum(i => i.AMOUNT7),
-                        AMOUNT8 = g.Sum(i => i.AMOUNT8),
-                        AMOUNT9 = g.Sum(i => i.AMOUNT9),
-                        AMOUNT10 = g.Sum(i => i.AMOUNT10),
-                        AMOUNT11 = g.Sum(i => i.AMOUNT11),
-                        AMOUNT12 = g.Sum(i => i.AMOUNT12),
-                        TOTAL = g.Sum(i => i.TOTAL),
-                        CATEGORY_NAME = g.Max(i => i.CATEGORY_NAME)
-                    }).Where(x => x.CATEGORY_ID == categoryID).Single();
+            //Cacluate summary
+            var _summaryData = reportList.Where(x => x.CATEGORY_ID == categoryID).GroupBy(I => I.CATEGORY_ID)
+                .Select(g => new OVERHEAD_BUDGET_VIEW
+                {
+                    CATEGORY_ID = g.Key,
+                    AMOUNT1 = g.Sum(i => i.AMOUNT1),
+                    AMOUNT2 = g.Sum(i => i.AMOUNT2),
+                    AMOUNT3 = g.Sum(i => i.AMOUNT3),
+                    AMOUNT4 = g.Sum(i => i.AMOUNT4),
+                    AMOUNT5 = g.Sum(i => i.AMOUNT5),
+                    AMOUNT6 = g.Sum(i => i.AMOUNT6),
+                    AMOUNT7 = g.Sum(i => i.AMOUNT7),
+                    AMOUNT8 = g.Sum(i => i.AMOUNT8),
+                    AMOUNT9 = g.Sum(i => i.AMOUNT9),
+                    AMOUNT10 = g.Sum(i => i.AMOUNT10),
+                    AMOUNT11 = g.Sum(i => i.AMOUNT11),
+                    AMOUNT12 = g.Sum(i => i.AMOUNT12),
+                    TOTAL = g.Sum(i => i.TOTAL),
+                    CATEGORY_NAME = g.Max(i => i.CATEGORY_NAME)
+                }).Where(x => x.CATEGORY_ID == categoryID).Single();
 
-                return _summaryData;
+            return _summaryData;
         }
 
         public static OVERHEAD_BUDGET_VIEW SummaryViewByBudgetID(IEnumerable<OVERHEAD_BUDGET_VIEW> reportList, long budgetID)
@@ -748,7 +858,7 @@ namespace DBI.Data
             return _summaryData;
         }
 
-       
+
         /// <summary>
         /// Returns the total needed for the details view
         /// </summary>
@@ -800,7 +910,7 @@ namespace DBI.Data
 
         public class GL_ACCOUNT
         {
-            public long CODE_COMBINATION_ID { get; set; }    
+            public long CODE_COMBINATION_ID { get; set; }
             public string SEGMENT1 { get; set; }
             public string SEGMENT1_DESC { get; set; }
             public string SEGMENT2 { get; set; }
@@ -815,6 +925,18 @@ namespace DBI.Data
             public string SEGMENT6_DESC { get; set; }
             public string SEGMENT7 { get; set; }
             public string SEGMENT7_DESC { get; set; }
+        }
+
+        public class GL_ACCOUNT_NO_DESC
+        {
+            public long CODE_COMBINATION_ID { get; set; }
+            public string SEGMENT1 { get; set; }
+            public string SEGMENT2 { get; set; }
+            public string SEGMENT3 { get; set; }
+            public string SEGMENT4 { get; set; }
+            public string SEGMENT5 { get; set; }
+            public string SEGMENT6 { get; set; }
+            public string SEGMENT7 { get; set; }
         }
 
         public class GL_PERIOD
@@ -846,6 +968,20 @@ namespace DBI.Data
             return _data;
         }
 
+        /// <summary>
+        /// Returns actual balance from gl system by code combination id and period year. 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="periodYear"></param>
+        /// <param name="codeCombinationID"></param>
+        /// <returns></returns>
+        public static IQueryable<GL_ACTUALS> ActualsByYearAndPeriodNumber(Entities context, short periodYear, long periodNum)
+        {
+            string sql = string.Format("select period_net_dr, period_net_cr,period_year,code_combination_id,period_num from gl.gl_balances where actual_flag = 'A' and period_year = {0} and period_num = {2} and (Period_net_dr <> 0 or period_net_cr <> 0) and set_of_books_id in (select set_of_books_id from apps.hr_operating_units group by set_of_books_id)", periodYear, periodNum);
+            IQueryable<GL_ACTUALS> _data = context.Database.SqlQuery<GL_ACTUALS>(sql).AsQueryable();
+            return _data;
+        }
+
         public static Boolean ImportActualForBudgetVersion(Entities context, long periodToImport, long budgetid, string loggedInUser, string lockImportData = "N")
         {
             OVERHEAD_ORG_BUDGETS _budgetHeader = BudgetByID(context, budgetid);
@@ -857,49 +993,49 @@ namespace DBI.Data
 
             foreach (var _account in _accountList)
             {
-                 foreach (OVERHEAD_BUDGET_FORECAST.GL_PERIOD _period in _periodList)
-                        {
-                          OVERHEAD_BUDGET_DETAIL _line = _budgetDetail.Where(x => x.CODE_COMBINATION_ID == _account.CODE_COMBINATION_ID & x.PERIOD_NUM == _period.PERIOD_NUM).SingleOrDefault();
-                          GL_ACTUALS _actualTotalLine = OVERHEAD_BUDGET_FORECAST.ActualsByYearAndAccountCodeAndPeriodNumber(context, _budgetHeader.FISCAL_YEAR, _account.CODE_COMBINATION_ID, _period.PERIOD_NUM).SingleOrDefault();
-                            
-                            decimal _aTotal = 0;
+                foreach (OVERHEAD_BUDGET_FORECAST.GL_PERIOD _period in _periodList)
+                {
+                    OVERHEAD_BUDGET_DETAIL _line = _budgetDetail.Where(x => x.CODE_COMBINATION_ID == _account.CODE_COMBINATION_ID & x.PERIOD_NUM == _period.PERIOD_NUM).SingleOrDefault();
+                    GL_ACTUALS _actualTotalLine = OVERHEAD_BUDGET_FORECAST.ActualsByYearAndAccountCodeAndPeriodNumber(context, _budgetHeader.FISCAL_YEAR, _account.CODE_COMBINATION_ID, _period.PERIOD_NUM).SingleOrDefault();
 
-                            if (_actualTotalLine != null)
-                            {
-                                _aTotal = _actualTotalLine.PERIOD_NET_DR + Decimal.Negate(_actualTotalLine.PERIOD_NET_CR);
-                            }
-                            else
-                            {
-                                _aTotal = 0;
-                            }
+                    decimal _aTotal = 0;
 
-                                    if (_line == null)
-                                    {
-                                        //No data, create it
-                                        OVERHEAD_BUDGET_DETAIL _record = new OVERHEAD_BUDGET_DETAIL();
-                                        _record.ORG_BUDGET_ID = budgetid;
-                                        _record.PERIOD_NAME = _period.ENTERED_PERIOD_NAME;
-                                        _record.PERIOD_NUM = _period.PERIOD_NUM;
-                                        _record.CODE_COMBINATION_ID = _account.CODE_COMBINATION_ID;
-                                        _record.AMOUNT = _aTotal;
-                                        _record.CREATE_DATE = DateTime.Now;
-                                        _record.MODIFY_DATE = DateTime.Now;
-                                        _record.CREATED_BY = loggedInUser;
-                                        _record.MODIFIED_BY = loggedInUser;
-                                        _record.ACTUALS_IMPORTED_FLAG = lockImportData;
-                                        _insertData.Add(_record);
-                                    }
-                                    else if(_line != null)
-                                    {
-                                        //Data update it
-                                        _line.AMOUNT = _aTotal;
-                                        _line.MODIFY_DATE = DateTime.Now;
-                                        _line.MODIFIED_BY = loggedInUser;
-                                        _line.ACTUALS_IMPORTED_FLAG = lockImportData;
-                                        _updateData.Add(_line);
-                                    }
+                    if (_actualTotalLine != null)
+                    {
+                        _aTotal = _actualTotalLine.PERIOD_NET_DR + Decimal.Negate(_actualTotalLine.PERIOD_NET_CR);
+                    }
+                    else
+                    {
+                        _aTotal = 0;
+                    }
+
+                    if (_line == null)
+                    {
+                        //No data, create it
+                        OVERHEAD_BUDGET_DETAIL _record = new OVERHEAD_BUDGET_DETAIL();
+                        _record.ORG_BUDGET_ID = budgetid;
+                        _record.PERIOD_NAME = _period.ENTERED_PERIOD_NAME;
+                        _record.PERIOD_NUM = _period.PERIOD_NUM;
+                        _record.CODE_COMBINATION_ID = _account.CODE_COMBINATION_ID;
+                        _record.AMOUNT = _aTotal;
+                        _record.CREATE_DATE = DateTime.Now;
+                        _record.MODIFY_DATE = DateTime.Now;
+                        _record.CREATED_BY = loggedInUser;
+                        _record.MODIFIED_BY = loggedInUser;
+                        _record.ACTUALS_IMPORTED_FLAG = lockImportData;
+                        _insertData.Add(_record);
+                    }
+                    else if (_line != null)
+                    {
+                        //Data update it
+                        _line.AMOUNT = _aTotal;
+                        _line.MODIFY_DATE = DateTime.Now;
+                        _line.MODIFIED_BY = loggedInUser;
+                        _line.ACTUALS_IMPORTED_FLAG = lockImportData;
+                        _updateData.Add(_line);
                     }
                 }
+            }
 
             GenericData.Insert<OVERHEAD_BUDGET_DETAIL>(_insertData);
             GenericData.Update<OVERHEAD_BUDGET_DETAIL>(_updateData);
@@ -929,7 +1065,7 @@ namespace DBI.Data
             return _data;
         }
 
-            
+
         public class GL_ACCOUNT_LIST
         {
             public long CODE_COMBINATION_ID { get; set; }
@@ -956,7 +1092,7 @@ namespace DBI.Data
                 Document _document = new Document(new Rectangle(288f, 144f), 10, 10, 10, 10);
                 _document.SetPageSize(iTextSharp.text.PageSize.A4.Rotate());
                 PdfWriter ExportWriter = PdfWriter.GetInstance(_document, _pdfMemoryStream);
-               
+
                 Paragraph NewLine = new Paragraph("\n");
                 Font HeaderFont = FontFactory.GetFont("Helvetica", 9);
                 Font HeadFootTitleFont = FontFactory.GetFont("Helvetica", 9);
@@ -967,7 +1103,7 @@ namespace DBI.Data
                 //Open Document
                 _document.Open();
 
-                HeaderFooter _footer = new HeaderFooter(new Phrase(""),true);
+                HeaderFooter _footer = new HeaderFooter(new Phrase(""), true);
                 _document.Footer = _footer;
 
                 //Header Table with Columns
@@ -985,7 +1121,7 @@ namespace DBI.Data
                 var _glMonthPeriods = OVERHEAD_BUDGET_FORECAST.GeneralLedgerPeriods(context).Where(x => x.PERIOD_YEAR == fiscalYear & x.PERIOD_TYPE == "Month");
                 var _glWeekPeriods = OVERHEAD_BUDGET_FORECAST.GeneralLedgerPeriods(context).Where(x => x.PERIOD_YEAR == fiscalYear & x.PERIOD_TYPE == "Week");
 
-                 Cells = new PdfPCell[]{
+                Cells = new PdfPCell[]{
                      new PdfPCell(new Phrase("Overhead Budget / " + _title[0], TotalCellFont )),
                      new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 1).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),
                      new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 2).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),
@@ -1002,11 +1138,11 @@ namespace DBI.Data
                      new PdfPCell(new Phrase("Total", HeadFootTitleFont)),
                  };
 
-                 foreach (PdfPCell _cell in Cells)
-                 {
-                     _cell.BackgroundColor = new Color(230, 230, 230);
-                     _cell.HorizontalAlignment = PdfCell.ALIGN_CENTER;
-                 }
+                foreach (PdfPCell _cell in Cells)
+                {
+                    _cell.BackgroundColor = new Color(230, 230, 230);
+                    _cell.HorizontalAlignment = PdfCell.ALIGN_CENTER;
+                }
 
                 Row = new PdfPRow(Cells);
                 _headerPdfTable.Rows.Add(Row);
@@ -1028,22 +1164,22 @@ namespace DBI.Data
                      new PdfPCell(new Phrase("", HeadFootTitleFont)),
                  };
 
-                 foreach (PdfPCell _cell in Cells)
-                 {
-                     _cell.BackgroundColor = new Color(230, 230, 230);
-                     _cell.HorizontalAlignment = PdfCell.ALIGN_CENTER;
-                 }
+                foreach (PdfPCell _cell in Cells)
+                {
+                    _cell.BackgroundColor = new Color(230, 230, 230);
+                    _cell.HorizontalAlignment = PdfCell.ALIGN_CENTER;
+                }
 
 
                 Row = new PdfPRow(Cells);
                 _headerPdfTable.Rows.Add(Row);
 
 
-                 
-
+                OVERHEAD_ORG_BUDGETS _budgetDetail = OVERHEAD_BUDGET_FORECAST.BudgetByID(context, budgetID);
                 //Details Row
                 //Return budget detail information
-                IEnumerable<OVERHEAD_BUDGET_VIEW> _budgetView = BudgetDetailsViewByBudgetID(context, budgetID,printView:true, hideBlankLines:printOptions.HIDE_BLANK_LINES,collapseAccountLines:printOptions.GROUP_ACCOUNTS);
+                IEnumerable<OVERHEAD_BUDGET_VIEW> _budgetView = BudgetDetailsViewByBudgetID(context, budgetID, true, printOptions.HIDE_BLANK_LINES, printOptions.ROLLUP, 0, organizationID, fiscalYear, _budgetDetail.OVERHEAD_BUDGET_TYPE_ID, printOptions.GROUP_ACCOUNTS);
+
 
                 NumberFormatInfo nfi = CultureInfo.CurrentCulture.NumberFormat;
                 nfi = (NumberFormatInfo)nfi.Clone();
@@ -1065,7 +1201,7 @@ namespace DBI.Data
                             _totalPhase.Add(new Chunk(_summaryView.CATEGORY_NAME + " - Total", TotalCellFont));
                             _totalPhase.Add(new Chunk("\n"));
 
-                            
+
 
                             Cells = new PdfPCell[]{
                             new PdfPCell(_totalPhase),
@@ -1095,7 +1231,7 @@ namespace DBI.Data
                                 {
                                     _cell.BackgroundColor = new Color(224, 224, 209);
                                     _cell.HorizontalAlignment = PdfCell.ALIGN_RIGHT;
-                                  }
+                                }
 
                                 cellCount = cellCount + 1;
                             }
@@ -1111,7 +1247,7 @@ namespace DBI.Data
                     Phrase _accountPhase = new Phrase();
                     _accountPhase.Add(new Chunk(_row.ACCOUNT_DESCRIPTION, CellFont));
                     _accountPhase.Add(new Chunk("\n"));
-                    _accountPhase.Add(new Chunk("     " +_row.ACCOUNT_DESCRIPTION2, CellFont));
+                    _accountPhase.Add(new Chunk("     " + _row.ACCOUNT_DESCRIPTION2, CellFont));
 
                     Phrase _detailRow = new Phrase();
                     _detailRow.Add(new Chunk(_row.ACCOUNT_DESCRIPTION, CellFont));
@@ -1148,7 +1284,7 @@ namespace DBI.Data
                             {
                                 _cell.BackgroundColor = new Color(230, 230, 230);
                             }
-                            
+
                         }
                         else
                         {
@@ -1268,145 +1404,143 @@ namespace DBI.Data
                 _headerPdfTable.Rows.Add(Row);
 
 
-               _document.Add(_headerPdfTable);
+                _document.Add(_headerPdfTable);
 
-               if (printOptions.SHOW_NOTES)
-               {
-                   try
-                   {
+                if (printOptions.SHOW_NOTES)
+                {
+                    try
+                    {
 
-                     _document.NewPage();
+                        _document.NewPage();
 
 
-                       //Header Table with Columns
-                       PdfPTable _commentsPDFTable = new PdfPTable(2);
-                       _commentsPDFTable.WidthPercentage = 100;
-                       int[] intWidth = { 25, 75 };
-                       _commentsPDFTable.SetWidths(intWidth);
-                       _commentsPDFTable.HeaderRows = 2;
+                        //Header Table with Columns
+                        PdfPTable _commentsPDFTable = new PdfPTable(2);
+                        _commentsPDFTable.WidthPercentage = 100;
+                        int[] intWidth = { 25, 75 };
+                        _commentsPDFTable.SetWidths(intWidth);
+                        _commentsPDFTable.HeaderRows = 2;
 
-                       Cells = new PdfPCell[]{
+                        Cells = new PdfPCell[]{
                      new PdfPCell(new Phrase("Overhead Budget / " + _title[0], TotalCellFont )),
                      new PdfPCell(new Phrase("Account Notes",TotalCellFont))
                    };
 
-                       foreach (PdfPCell _cell in Cells)
-                       {
-                           _cell.BackgroundColor = new Color(230, 230, 230);
-                           _cell.HorizontalAlignment = PdfCell.ALIGN_CENTER;
-                       }
+                        foreach (PdfPCell _cell in Cells)
+                        {
+                            _cell.BackgroundColor = new Color(230, 230, 230);
+                            _cell.HorizontalAlignment = PdfCell.ALIGN_CENTER;
+                        }
 
-                       Row = new PdfPRow(Cells);
-                       _commentsPDFTable.Rows.Add(Row);
+                        Row = new PdfPRow(Cells);
+                        _commentsPDFTable.Rows.Add(Row);
 
-                       Cells = new PdfPCell[]{
+                        Cells = new PdfPCell[]{
                      new PdfPCell(new Phrase(_title[1] + " / " + _title[2], TotalCellFont )),
                      new PdfPCell(new Phrase(""))
                  };
 
-                       foreach (PdfPCell _cell in Cells)
-                       {
-                           _cell.BackgroundColor = new Color(230, 230, 230);
-                           _cell.HorizontalAlignment = PdfCell.ALIGN_CENTER;
-                       }
+                        foreach (PdfPCell _cell in Cells)
+                        {
+                            _cell.BackgroundColor = new Color(230, 230, 230);
+                            _cell.HorizontalAlignment = PdfCell.ALIGN_CENTER;
+                        }
 
 
-                       Row = new PdfPRow(Cells);
-                       _commentsPDFTable.Rows.Add(Row);
+                        Row = new PdfPRow(Cells);
+                        _commentsPDFTable.Rows.Add(Row);
 
 
-                       foreach (OVERHEAD_BUDGET_VIEW _row in _budgetView)
-                       {
-                           if (_row.ACCOUNT_NOTES.Length > 0)
-                           {
-                               Phrase _accountPhase = new Phrase();
-                               _accountPhase.Add(new Chunk(_row.ACCOUNT_DESCRIPTION, CellFont));
-                               _accountPhase.Add(new Chunk(" " + _row.ACCOUNT_DESCRIPTION2, CellFont));
+                        foreach (OVERHEAD_BUDGET_VIEW _row in _budgetView)
+                        {
+                            if (_row.ACCOUNT_NOTES.Length > 0)
+                            {
+                                Phrase _accountPhase = new Phrase();
+                                _accountPhase.Add(new Chunk(_row.ACCOUNT_DESCRIPTION, CellFont));
+                                _accountPhase.Add(new Chunk(" " + _row.ACCOUNT_DESCRIPTION2, CellFont));
 
 
-                               Cells = new PdfPCell[]{
+                                Cells = new PdfPCell[]{
                                 new PdfPCell(_accountPhase),
                                 new PdfPCell(new Phrase(_row.ACCOUNT_NOTES,TotalCellFont))
                                                      };
 
 
-                               Row = new PdfPRow(Cells);
-                               _commentsPDFTable.Rows.Add(Row);
-                           }
-           
-                       }
+                                Row = new PdfPRow(Cells);
+                                _commentsPDFTable.Rows.Add(Row);
+                            }
+
+                        }
 
 
-                       _document.Add(_commentsPDFTable);
+                        _document.Add(_commentsPDFTable);
 
-                       _document.Add(NewLine);
-                       _document.Add(NewLine);
-
-                       OVERHEAD_ORG_BUDGETS _budgetDetail = OVERHEAD_BUDGET_FORECAST.BudgetByID(context, budgetID);
+                        _document.Add(NewLine);
+                        _document.Add(NewLine);
 
 
-                       if (_budgetDetail.COMMENTS.Length > 0)
-                       {
+                        if (_budgetDetail.COMMENTS.Length > 0)
+                        {
 
-                           //Overall Budget Notes
-                           PdfPTable _budgetNotes = new PdfPTable(1);
-                           _budgetNotes.WidthPercentage = 100;
-                           int[] _budgetNotesWidth = { 100 };
-                           _budgetNotes.SetWidths(_budgetNotesWidth);
-                           _budgetNotes.HeaderRows = 1;
+                            //Overall Budget Notes
+                            PdfPTable _budgetNotes = new PdfPTable(1);
+                            _budgetNotes.WidthPercentage = 100;
+                            int[] _budgetNotesWidth = { 100 };
+                            _budgetNotes.SetWidths(_budgetNotesWidth);
+                            _budgetNotes.HeaderRows = 1;
 
-                           Cells = new PdfPCell[]{
+                            Cells = new PdfPCell[]{
                      new PdfPCell(new Phrase("Overhead Budget Notes / " + _title[0] + " / " + _title[1] + " / " + _title[2], TotalCellFont ))
                    };
 
-                           foreach (PdfPCell _cell in Cells)
-                           {
-                               _cell.BackgroundColor = new Color(230, 230, 230);
-                               _cell.HorizontalAlignment = PdfCell.ALIGN_LEFT;
-                           }
+                            foreach (PdfPCell _cell in Cells)
+                            {
+                                _cell.BackgroundColor = new Color(230, 230, 230);
+                                _cell.HorizontalAlignment = PdfCell.ALIGN_LEFT;
+                            }
 
-                           Row = new PdfPRow(Cells);
-                           _budgetNotes.Rows.Add(Row);
+                            Row = new PdfPRow(Cells);
+                            _budgetNotes.Rows.Add(Row);
 
 
-                           Cells = new PdfPCell[]{
+                            Cells = new PdfPCell[]{
                      new PdfPCell(new Phrase(_budgetDetail.COMMENTS,TotalCellFont))
                                         };
 
-                           Row = new PdfPRow(Cells);
-                           _budgetNotes.Rows.Add(Row);
+                            Row = new PdfPRow(Cells);
+                            _budgetNotes.Rows.Add(Row);
 
 
-                           _document.Add(_budgetNotes);
+                            _document.Add(_budgetNotes);
 
-                       }
+                        }
 
-                   }
-                   catch (Exception ex)
-                   {
-                       System.Diagnostics.Debug.WriteLine(ex.InnerException);
-                   }
-                      
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex.InnerException);
+                    }
 
-               }
+
+                }
 
                 ExportWriter.CloseStream = false;
                 _document.Close();
                 return _pdfMemoryStream;
             }
-       
+
         }
 
 
         public class PRINT_OPTIONS
         {
-            public Boolean SHOW_NOTES {get; set;}
-            public Boolean ROLLUP {get; set;}
-            public Boolean HIDE_BLANK_LINES {get; set;}
+            public Boolean SHOW_NOTES { get; set; }
+            public Boolean ROLLUP { get; set; }
+            public Boolean HIDE_BLANK_LINES { get; set; }
             public Boolean GROUP_ACCOUNTS { get; set; }
         }
 
-        
+
         #endregion
     }
 }

@@ -72,10 +72,8 @@ namespace DBI.Data.Test
         public void BudgetDetailsViewByBudgetIDTest()
         {
             Entities context = new Entities(); // TODO: Initialize to an appropriate value
-            long budgetID = 187; // TODO: Initialize to an appropriate value
-            long organizationID = 138; // TODO: Initialize to an appropriate value
             List<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW> actual;
-            actual = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByBudgetID(context, budgetID, false, false, true, 121, 121, 2015, 35);
+            actual = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByBudgetID(context, 0, false, false, true, 121, 0, 2012, 169, false);
         }
 
         /// <summary>
