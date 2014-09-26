@@ -22,9 +22,43 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     X.Redirect("~/Views/uxDefault.aspx");
                 }
 
-                uxOrganizationsGrid.GetStore().Reload();
+                //uxOrganizationsGrid.GetStore().Reload();
 
             }
+        }
+
+        protected void deCloseFiscal(object sender, DirectEventArgs e)
+        {
+
+            string _selectedRecordID = Request.QueryString["orgid"];
+            string _selectedLeID = Request.QueryString["leID"];
+
+            string url = "umOpenBudgetType.aspx?leID=" + _selectedLeID + "&combinedLEORGID=" + _selectedRecordID + "&closefiscal=Y";
+
+            Window win = new Window
+            {
+                ID = "uxOpenBudgetTypeWindow",
+                Title = "Close Fiscal Year",
+                Height = 350,
+                Width = 350,
+                Modal = true,
+                Resizable = false,
+                CloseAction = CloseAction.Destroy,
+                Loader = new ComponentLoader
+                {
+                    Mode = LoadMode.Frame,
+                    DisableCaching = true,
+                    Url = url,
+                    AutoLoad = true,
+                    LoadMask =
+                    {
+                        ShowMask = true
+                    }
+                }
+            };
+
+            win.Render(this.Form);
+            win.Show();
         }
 
         protected void dePeriodMaintenance(object sender, DirectEventArgs e)
@@ -38,9 +72,44 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             Window win = new Window
             {
                 ID = "uxOpenBudgetTypeWindow",
-                Title = "Open Budget Type",
+                Title = "Create Next Budget Type",
                 Height = 250,
-                Width = 550,
+                Width = 350,
+                Modal = true,
+                Resizable = false,
+                CloseAction = CloseAction.Destroy,
+                Loader = new ComponentLoader
+                {
+                    Mode = LoadMode.Frame,
+                    DisableCaching = true,
+                    Url = url,
+                    AutoLoad = true,
+                    LoadMask =
+                    {
+                        ShowMask = true
+                    }
+                }
+            };
+
+            win.Render(this.Form);
+            win.Show();
+
+        }
+
+        protected void deImportActuals(object sender, DirectEventArgs e)
+        {
+            string _selectedRecordID = Request.QueryString["orgid"];
+            string _selectedLeID = Request.QueryString["leID"];
+
+
+            string url = "umImportActualsWindow.aspx?AdminImport=Y" + "&combinedLEORGID=" + _selectedRecordID;
+
+            Window win = new Window
+            {
+                ID = "uxImportActualsWn",
+                Title = "Import Actuals from General Ledger",
+                Height = 250,
+                Width = 400,
                 Modal = true,
                 Resizable = false,
                 CloseAction = CloseAction.Destroy,
@@ -98,7 +167,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
             HR.ORGANIZATION _organizationDetails = HR.Organization(_organizationID);
 
-            X.Js.Call("parent.App.direct.AddTabPanel", "bt", _organizationDetails.ORGANIZATION_NAME + " - Budget Types", "umOverheadBudgetTypes.aspx?leid=" + _selectedRecordID);
+            X.Js.Call("parent.App.direct.AddTabPanel", "bt", _organizationDetails.ORGANIZATION_NAME + " - Budget Types", "umOverheadBudgetTypes.aspx?leid=" + _selectedRecordID + "&bulevel=Y");
         }
 
 
