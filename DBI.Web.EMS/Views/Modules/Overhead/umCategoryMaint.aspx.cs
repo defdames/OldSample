@@ -80,7 +80,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             {
                 var _data = OVERHEAD_BUDGET_FORECAST.CategoryAsQueryable(_context);
                 int count;
-                uxAccountCategoryStore.DataSource = GenericData.ListFilterHeader<OVERHEAD_CATEGORY>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
+                uxAccountCategoryStore.DataSource = GenericData.ListFilterHeader<OVERHEAD_CATEGORY>(e.Start, 1000, e.Sort, e.Parameters["filterheader"], _data, out count);
                 e.Total = count;
                 uxAddCategory.Enable();
             }
@@ -180,7 +180,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 }
                 
                 int count;
-                uxAccountListStore.DataSource = GenericData.EnumerableFilterHeader<OVERHEAD_BUDGET_FORECAST.ACCOUNT_CATEGORY_LIST>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
+                uxAccountListStore.DataSource = GenericData.EnumerableFilterHeader<OVERHEAD_BUDGET_FORECAST.ACCOUNT_CATEGORY_LIST>(e.Start, 1000, e.Sort, e.Parameters["filterheader"], _data, out count);
                 e.Total = count;
 
             }
