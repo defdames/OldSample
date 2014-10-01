@@ -42,7 +42,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
         protected void deSelectVersion(object sender, DirectEventArgs e)
         {
-          
+
             uxHidVerOK.Text = "Y";
             uxAppEntryCrossingStore.Reload();
         }
@@ -55,16 +55,16 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             if (App == "Y" && Project == "Y")
             {
-                 //long ProjectId = Convert.ToInt64(uxAddProjectDropDownField.Value);
+                 long ProjectId = Convert.ToInt64(uxAddProjectDropDownField.Value);
                 
                 CheckboxSelectionModel csm = CheckboxSelectionModel1;
                 decimal Application = Convert.ToDecimal(ComboBox1.SelectedItem.Value);
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
                 uxAddApp.SetValue(Application);
                 decimal UserId = SYS_USER_INFORMATION.UserID(User.Identity.Name);
+               
+                List<CROSSING_MAINTENANCE.CrossingData1> dataSource = CROSSING_MAINTENANCE.GetAppCrossingList(RailroadId, UserId, ProjectId).ToList();
 
-                List<CROSSING_MAINTENANCE.CrossingData1> dataSource = CROSSING_MAINTENANCE.GetAppCrossingList(RailroadId, UserId).ToList();
-                //decimal ProjectId = Convert.ToDecimal(uxAddProjectDropDownField.Value);
                 int count;
 
                 if (Application == 1)
@@ -84,11 +84,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     dataSource = dataSource.Where(x => x.APPLICATION_REQUESTED == 2).ToList();
                     csm.ClearSelection();
                 }
-                //if (ProjectId != null)
-                //{
-                //    dataSource = dataSource.Where(x => x.PROJECT_ID == ProjectId).ToList();
-                //}
+              
                 List<object> _data = dataSource.ToList<object>();
+                
                 uxAppEntryCrossingStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
                 e.Total = count; 
                
@@ -166,7 +164,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 CROSSING_APPLICATION data;
 
                 //do type conversions
-                
+
+                long ProjectId = Convert.ToInt64(uxAddProjectDropDownField.Value);                
                 DateTime Date = (DateTime)uxAddEntryDate.Value;
                 decimal AppRequested = Convert.ToDecimal(uxAddApp.Value);
                 string TruckNumber = uxAddEquipmentDropDown.Value.ToString();
@@ -241,7 +240,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                             data.MODIFY_DATE = DateTime.Now;
                             data.CREATED_BY = User.Identity.Name;
                             data.MODIFIED_BY = User.Identity.Name;
-
+                            data.PROJECT_ID = ProjectId;
                             try
                             {
                                 string Remarks = uxAddEntryRemarks.Value.ToString();
@@ -283,11 +282,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 case "Add":
                     uxAddProjectDropDownField.SetValue(e.ExtraParams["ProjectId"], e.ExtraParams["ProjectName"]);
-                    //uxAddProjectFilter.ClearFilter();
+                    uxAddProjectFilter.ClearFilter();
                     break;
 
             }
-            
+            uxHidVerOK.Text = "Y";
+            uxAppEntryCrossingStore.Reload();
+           
         }
         protected void deAddProjectGrid(object sender, StoreReadDataEventArgs e)
         {

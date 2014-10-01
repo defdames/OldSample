@@ -85,8 +85,9 @@
 
                     </Listeners>
             </ext:GridPanel>
-
-            <%-- -----------------------------------------------------------------------------------------------------------------------  --%>
+            
+          
+                                        <%-- -----------------------------------------------------------------------------------------------------------------------  --%>
             <ext:FormPanel runat="server" ID="uxCrossingForm" Region="Center" Layout="FormLayout" AutoScroll="true">
                 <Items>
                      <ext:Toolbar ID="Toolbar1" runat="server">
@@ -96,23 +97,19 @@
                                     <DirectEvents>
                                         <Click OnEvent="deDeleteCrossing">
                                             <Confirmation ConfirmRequest="true" Title="Delete?" Message="Are you sure you want to delete the selected crossing?" />
-
+                                       
                                             <ExtraParams>
                                                 <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
                                             </ExtraParams>
                                         </Click>
                                     </DirectEvents>
+                                  
                                 </ext:Button>
                                 <ext:Button ID="uxReactivateCrossingButton" runat="server" Text="Reactivate Crossing" Icon="Add" Disabled="true">
-                                    <DirectEvents>
-                                        <Click OnEvent="deReactivateCrossing">
-                                            <Confirmation ConfirmRequest="true" Title="Reactivate?" Message="Are you sure you want to reactivate the selected crossing?" />
-
-                                            <ExtraParams>
-                                                <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
-                                            </ExtraParams>
-                                        </Click>
-                                    </DirectEvents>
+                                  
+                                      <Listeners>
+                                        <Click Handler="#{uxCutOnlyWindow}.show()" />
+                                    </Listeners>
                                 </ext:Button>
                                
 
@@ -121,11 +118,11 @@
 
                     <ext:FieldSet ID="FieldSet1" runat="server" Title="Crossing Details">
                         <Items>
-                             <ext:FieldContainer ID="FieldContainer39" runat="server">
+                            <%-- <ext:FieldContainer ID="FieldContainer39" runat="server">
                             <Items>
-                             <%--<ext:TextField ID="uxCrossingNumCI" runat="server" FieldLabel="Crossing #" LabelAlign="Right" AnchorHorizontal="100%" DisableKeyFilter="False" Width="300" ReadOnly="true" />--%>
+                             <ext:TextField ID="uxCrossingNumCI" runat="server" FieldLabel="Crossing #" LabelAlign="Right" AnchorHorizontal="100%" DisableKeyFilter="False" Width="300" ReadOnly="true" />
                             </Items>
-                                 </ext:FieldContainer>
+                                 </ext:FieldContainer>--%>
                                  <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
                                 <Items>
                                     <ext:TextField ID="uxRRCI" runat="server" FieldLabel="Railroad" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true"/>
@@ -245,6 +242,50 @@
 
                 </Items>
             </ext:FormPanel>
+                      <ext:Window runat="server"
+                    ID="uxCutOnlyWindow"
+                    Layout="FormLayout"
+                    Hidden="true"
+                    Title="Reactivate Crossing?" Height="150" AutoScroll="true"
+                    Width="410" Closable="false" Modal="true">
+                    <Items>
+                        <ext:FormPanel runat="server" ID="uxReactivateForm" Height="110" Layout="FormLayout" >                       
+                            <Items>
+                                <ext:FieldSet runat="server">
+                                    <Items>
+                                <ext:Label ID="Label1" runat="server" Text="Please check the box if you would like this crossing to be cut only." />
+                               
+
+                                       </Items>                     
+                                </ext:FieldSet>
+                               <ext:Checkbox ID="uxCutOnly" runat="server" BoxLabel="Cut Only" BoxLabelAlign="After" Width="110" TabIndex="32" />
+
+                                 </Items>
+                                  <BottomBar>
+                                      <ext:Toolbar runat="server" >
+                                          <Items>
+                                <ext:Button runat="server" ID="deReactivate" Text="Yes" Icon="Add">
+                                     <DirectEvents>
+                                        <Click OnEvent="deReactivateCrossing">
+                                             
+                                            <ExtraParams>
+                                                <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
+                                            </ExtraParams>
+                                        </Click>
+                                    </DirectEvents>
+                                </ext:Button>
+                                <ext:Button runat="server" ID="deCancelReactivation" Text="No" Icon="Delete">
+                                   <Listeners>
+                                       <Click Handler="#{uxCutOnlyWindow}.hide(); #{uxCutOnlyWindow}.reset()" />
+                                   </Listeners>
+                                </ext:Button>
+                                     </Items>
+                                    </ext:Toolbar>
+                                  </BottomBar>
+                               
+                            </ext:FormPanel>
+                        </Items>
+                        </ext:Window>
                      
                     </Items>
              </ext:Viewport>

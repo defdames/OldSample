@@ -55,6 +55,38 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 NewPricing.MODIFIED_BY = User.Identity.Name;
                 GenericData.Insert<CROSSING_PRICING>(NewPricing);
                 uxPriceStore.Reload();
+            }
+
+                foreach (AddPricing UpdatedPrice in data.Updated)
+                {
+                    CROSSING_PRICING ToBeUpdated;
+                    using (Entities _context = new Entities())
+                    {
+                        ToBeUpdated = _context.CROSSING_PRICING.Where(x => x.PRICING_ID == UpdatedPrice.PRICING_ID).Single();
+                    }
+
+                    //if (UpdatedForm.TYPE_ID == null)
+                    //{
+                    //    CUSTOMER_SURVEY_FORM_TYPES FormTypes = new CUSTOMER_SURVEY_FORM_TYPES();
+                    //    FormTypes.TYPE_NAME = e.ExtraParams["TypeName"];
+                    //    GenericData.Insert<CUSTOMER_SURVEY_FORM_TYPES>(FormTypes);
+                    //    ToBeUpdated.TYPE_ID = FormTypes.TYPE_ID;
+                    //}
+                    //else
+                    //{
+                    //    ToBeUpdated.TYPE_ID = (decimal)UpdatedForm.TYPE_ID;
+                    //}
+                    ToBeUpdated.SERVICE_CATEGORY = UpdatedPrice.SERVICE_CATEGORY;
+                    ToBeUpdated.STATE = UpdatedPrice.STATE;
+                    ToBeUpdated.RAILROAD = UpdatedPrice.RAILROAD;
+                    ToBeUpdated.PRICE = UpdatedPrice.PRICE;
+                    ToBeUpdated.MODIFIED_BY = User.Identity.Name;
+                    ToBeUpdated.MODIFY_DATE = DateTime.Now;
+
+                    GenericData.Update<CROSSING_PRICING>(ToBeUpdated);
+                    //uxPriceStore.GetById(ToBeUpdated.FORM_ID).Commit();
+                }
+                uxPriceStore.CommitChanges();
 
                 Notification.Show(new NotificationConfig()
                 {
@@ -68,7 +100,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     }
                 });
             }
-        }
+        
         protected void deRemovePricing(object sender, DirectEventArgs e)
         {
 

@@ -181,6 +181,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         {
             CROSSING data;
             long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
+            string CutOnly = uxCutOnly.Value.ToString();
             using (Entities _context = new Entities())
             {
                 data = (from d in _context.CROSSINGS
@@ -188,9 +189,20 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                         select d).Single();
 
                 data.STATUS = "ACTIVE";
+                if (uxCutOnly.Checked)
+                {
+                    CutOnly = "Y";
+                }
+                else
+                {
+                    CutOnly = "N";
+                }
+                data.CUT_ONLY = CutOnly;
             }
             GenericData.Update<CROSSING>(data);
 
+            uxCutOnlyWindow.Hide();
+            uxReactivateForm.Reset();
             uxCrossingForm.Reset();
             uxCurrentCrossingStore.Reload();
             uxReactivateCrossingButton.Disable();

@@ -68,6 +68,7 @@
                                         </ext:Store>
                                     </Store>
                                 </ext:ComboBox>
+                             
                             <ext:FieldContainer runat="server" Layout="HBoxLayout">
                                 <Items>
                                   <ext:DateField ID="uxStartDate" runat="server" AnchorHorizontal="100%" FieldLabel="Start Date" LabelAlign="Right" Editable="false" TabIndex="2" EmptyText="ALL" />
@@ -195,6 +196,7 @@
                                     <ext:ModelField Name="MILE_POST" />
                                     <ext:ModelField Name="SERVICE_UNIT" />
                                     <ext:ModelField Name="SUB_DIVISION" />
+                                    <ext:ModelField Name="SEGMENT1" />
                                   
 
                                 </Fields>
@@ -214,7 +216,7 @@
                         <ext:Column ID="Column4" runat="server" DataIndex="SERVICE_UNIT" Text="Service Unit" Flex="1" />
                         <ext:DateColumn ID="DateColumn1" runat="server" DataIndex="APPLICATION_DATE" Text="Application Date" Flex="1" Format="MM/dd/yyyy" />
                         <ext:Column ID="Column3" runat="server" DataIndex="SUB_DIVISION" Text="Sub Division" Flex="1" />                     
-                       
+                        <ext:Column ID="Column13" runat="server" DataIndex="SEGMENT1" Text="Project #" Flex="1" />
 
                     </Columns>
                 </ColumnModel> 
@@ -289,7 +291,8 @@
                                     <ext:ModelField Name="MILE_POST" />
                                     <ext:ModelField Name="SERVICE_UNIT" />
                                     <ext:ModelField Name="SUB_DIVISION" />
-                                  
+                                    <ext:ModelField Name="SEGMENT1" />
+                                    
 
                                 </Fields>
                             </ext:Model>
@@ -308,6 +311,7 @@
                         <ext:Column ID="Column7" runat="server" DataIndex="SERVICE_UNIT" Text="Service Unit" Flex="1" />
                         <ext:DateColumn ID="DateColumn2" runat="server" DataIndex="APPLICATION_DATE" Text="Application Date" Flex="1" Format="MM/dd/yyyy" />
                         <ext:Column ID="Column8" runat="server" DataIndex="SUB_DIVISION" Text="Sub Division" Flex="1" />                     
+                        <ext:Column ID="Column9" runat="server" DataIndex="SEGMENT1" Text="Project #" Flex="1" />
                        
 
                     </Columns>

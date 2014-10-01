@@ -87,6 +87,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                
             }
         }
+       
+      
         protected void deValidationInvoiceButton(object sender, DirectEventArgs e)
         {
             CheckboxSelectionModel sm = CheckboxSelectionModel2;
@@ -116,10 +118,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
           
             string InvoiceNum = uxInvoiceNumber.Value.ToString();
             DateTime InvoiceDate = (DateTime)uxInvoiceDate.Value;
-
-
-          
-
 
             CROSSING_INVOICE data = new CROSSING_INVOICE()
             {
@@ -175,6 +173,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     allData = (from a in _context.CROSSING_APPLICATION
                                join d in _context.CROSSINGS on a.CROSSING_ID equals d.CROSSING_ID
                                join v in _context.CROSSING_INVOICE on a.INVOICE_ID equals v.INVOICE_ID
+                               join p in _context.PROJECTS_V on a.PROJECT_ID equals p.PROJECT_ID
                                where ReportList.Contains(a.APPLICATION_ID)
                                select new
                                {
@@ -189,7 +188,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                                    d.SUB_DIVISION,
                                    d.MILE_POST,
                                    d.SERVICE_UNIT,
-
+                                   p.PROJECT_ID,
+                                   p.SEGMENT1,
                                }).ToList<object>();
                     uxInvoiceReportStore.DataSource = allData;
 

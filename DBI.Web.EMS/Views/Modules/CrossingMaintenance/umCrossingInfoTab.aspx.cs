@@ -148,7 +148,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                         {
                             uxOnSpurCI.Checked = true;
                         }
-                       
+                        if (data.d.CUT_ONLY == "Y")
+                        {
+                            uxOnSpurCI.Checked = true;
+                        }
               
             }  
         
@@ -210,6 +213,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string Restricted = uxAddRestrictedCI.Value.ToString();
             string FenceEncroach = uxAddFenceEnchroachCI.Value.ToString();
             string OnSpur = uxAddOnSpurCI.Value.ToString();
+            string CutOnly = uxAddCutOnlyCI.Value.ToString();
             string RailRoad = uxAddRailRoadCITextField.Value.ToString();
             string ServiceUnit = uxAddServiceUnitCI.Value.ToString();
             string SubDiv = uxAddSubDivCI.Value.ToString();
@@ -248,7 +252,14 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 OnSpur = "N";
             }
-
+            if (uxAddCutOnlyCI.Checked)
+            {
+                CutOnly = "Y";
+            }
+            else
+            {
+                CutOnly = "N";
+            }
             CROSSING data = new CROSSING()
             {
                 
@@ -268,7 +279,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 MODIFIED_DATE = DateTime.Now,
                 CREATED_BY = User.Identity.Name,
                 MODIFIED_BY = User.Identity.Name,
-
+                CUT_ONLY = CutOnly,
             };
              try
             {
@@ -636,7 +647,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 {
                     uxEditOnSpurCI.Checked = true;
                 }
-               
+                if (data.d.CUT_ONLY == "Y")
+                {
+                    uxEditCutOnlyCI.Checked = true;
+                }
             }
         }
 
@@ -660,6 +674,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string Restricted = uxEditRestrictedCI.Value.ToString();
             string FenceEncroach = uxEditFenceEnchroachCI.Value.ToString();
             string OnSpur = uxEditSubConCI.Value.ToString();
+            string CutOnly = uxEditCutOnlyCI.Value.ToString();
             string RailRoad = uxEditRRCI.Value.ToString();
             string ServiceUnit = uxEditServiceUnitCI.Value.ToString();
             long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
@@ -695,7 +710,14 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 OnSpur = "N";
             }
-
+            if (uxEditCutOnlyCI.Checked)
+            {
+                CutOnly = "Y";
+            }
+            else
+            {
+               CutOnly = "N";
+            }
             //Get record to be edited
             using (Entities _context = new Entities())
             {

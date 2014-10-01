@@ -5,6 +5,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+     <style type="text/css">
+        .allowBlank-field {
+            background-color: #EFF7FF !important;
+            background-image: none;
+        }
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -45,12 +51,12 @@
                     <Columns>
                         <ext:Column ID="uxNameCON" runat="server" DataIndex="SERVICE_CATEGORY" Text="Service Category" Flex="1" >
                         <Editor>
-                          <ext:TextField ID="TextField1" EmptyText="Service Category" runat="server" />
+                          <ext:TextField ID="TextField1" EmptyText="Service Category" runat="server" AllowBlank="false" InvalidCls="allowBlank" />
                         </Editor>
                         </ext:Column>
                         <ext:Column runat="server" ID="uxWorkNumCON" Text="Price" DataIndex="PRICE" Flex="1" >
                         <Editor>
-                          <ext:TextField ID="TextField2" EmptyText="Price" runat="server" />
+                          <ext:TextField ID="TextField2" EmptyText="Price" runat="server" AllowBlank="false" InvalidCls="allowBlank" />
                         </Editor>
                         </ext:Column>
                         <ext:Column runat="server" ID="uxCellNumCON" Text="Railroad" DataIndex="RAILROAD" Flex="1" >
@@ -61,7 +67,7 @@
                                                 DisplayField="RAILROAD"
                                                 ValueField="RAILROAD"
                                                 QueryMode="Local"
-                                                TypeAhead="true" Editable="false" >
+                                                TypeAhead="true" Editable="false" AllowBlank="false"  InvalidCls="allowBlank">
                                                 <Store>
                                                     <ext:Store runat="server"
                                                         ID="uxSelectRailRoadStore">
@@ -87,7 +93,6 @@
                                                     ValueField="name"
                                                     QueryMode="Local"
                                                     TypeAhead="true"
-                                                    AllowBlank="false"
                                                     ForceSelection="true" TabIndex="5">
                                                     <Store>
                                                         <ext:Store ID="uxAddStateList" runat="server" AutoDataBind="true">
@@ -111,7 +116,18 @@
                 </ColumnModel>
                   <Plugins>
                      <ext:FilterHeader ID="FilterHeader1" runat="server" Remote="true" />
-                        <ext:CellEditing ID="CellEditing1" runat="server" ClicksToEdit="2" />
+                       
+                       <ext:RowEditing ID="RowEditing1" runat="server" ClicksToMoveEditor="1" AutoCancel="false">
+                                            <DirectEvents>
+                                                <Edit OnEvent="deSavePricing" Before="return #{uxPriceStore}.isDirty();">
+                                                    <ExtraParams>
+                                                        <ext:Parameter Name="PRIdata" Value="#{uxPriceStore}.getChangedData({skipIdForPhantomRecords : false})" Mode="Raw" Encode="true" />
+                                                    
+                                                    </ExtraParams>
+                                                    <EventMask ShowMask="true" />
+                                                </Edit>
+                                            </DirectEvents>
+                                        </ext:RowEditing>
                   </Plugins>
              
                    <TopBar>
@@ -123,7 +139,7 @@
                                         <Click Handler="#{uxPriceStore}.insert(0, new Pricing());" />
                                     </Listeners>
                                 </ext:Button>
-                               <ext:Button ID="uxSavePricingButton" runat="server" Text="Save Pricing" Icon="Add" >
+                             <%--  <ext:Button ID="uxSavePricingButton" runat="server" Text="Save Pricing" Icon="Add" >
 
                                     <DirectEvents>
                                         <Click OnEvent="deSavePricing" Before="#{uxPriceStore}.isDirty()">
@@ -132,7 +148,7 @@
                                             </ExtraParams>
                                         </Click>
                                     </DirectEvents>
-                                </ext:Button>
+                                </ext:Button>--%>
                               <ext:Button ID="uxRemoveSDButton" runat="server" Text="Remove Pricing" Icon="Delete" Disabled="false" >
 
                                     <DirectEvents>

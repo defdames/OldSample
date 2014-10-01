@@ -302,6 +302,9 @@
                                 <ext:FieldContainer runat="server" Layout="HBoxLayout">
                                     <Items>
                                         <ext:TextField ID="uxMaxSpeedCI" runat="server" FieldLabel="Max Speed" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
+                                        <ext:Label ID="Label16" runat="server" Text="" Width="25" />
+                                        <ext:Checkbox ID="uxCutOnlyCI" runat="server" BoxLabelAlign="After" BoxLabel="Cut Only" Width="110" ReadOnly="true" />
+
                                     </Items>
                                 </ext:FieldContainer>
                                 <ext:TextArea ID="uxSpecialInstructCI" runat="server" FieldLabel="Special Instructions" AnchorHorizontal="92%" LabelAlign="Right" ReadOnly="true" />
@@ -661,10 +664,14 @@
                                         <ext:FieldContainer runat="server" Layout="HBoxLayout">
                                             <Items>
                                                 <ext:NumberField ID="uxAddMaxSpeedCINumberField" runat="server" FieldLabel="Max Speed" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="29" />
+                                                <ext:Label ID="Label17" runat="server" Text="" Width="25" />
+                                                
+                                                <ext:Checkbox ID="uxAddCutOnlyCI" runat="server" BoxLabel="Cut Only" BoxLabelAlign="After" Width="110" TabIndex="34" />
+                                            
                                             </Items>
                                         </ext:FieldContainer>
 
-                                        <ext:TextArea ID="uxAddSpecialInstructCI" runat="server" FieldLabel="Special Instructions" AnchorHorizontal="92%" LabelAlign="Right" TabIndex="34" />
+                                        <ext:TextArea ID="uxAddSpecialInstructCI" runat="server" FieldLabel="Special Instructions" AnchorHorizontal="92%" LabelAlign="Right" TabIndex="35" />
                                     </Items>
                                 </ext:FieldSet>
                             </Items>
@@ -983,10 +990,14 @@
                                         <ext:FieldContainer runat="server" Layout="HBoxLayout">
                                             <Items>
                                                 <ext:NumberField ID="uxEditMaxSpeedCINumberField" runat="server" FieldLabel="Max Speed" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="28" />
-                                            </Items>
+                                                <ext:Label ID="Label18" runat="server" Text="" Width="25" />
+                                                
+                                                <ext:Checkbox ID="uxEditCutOnlyCI" runat="server" BoxLabel="Cut Only" BoxLabelAlign="After" Width="110" TabIndex="34" />
+                                           
+                                                 </Items>
                                         </ext:FieldContainer>
 
-                                        <ext:TextArea ID="uxEditSpecialInstructCI" runat="server" FieldLabel="Special Instructions" AnchorHorizontal="92%" LabelAlign="Right" TabIndex="34" />
+                                        <ext:TextArea ID="uxEditSpecialInstructCI" runat="server" FieldLabel="Special Instructions" AnchorHorizontal="92%" LabelAlign="Right" TabIndex="35" />
                                     </Items>
                                 </ext:FieldSet>
                             </Items>
