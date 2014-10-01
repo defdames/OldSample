@@ -294,8 +294,7 @@
                             </Items>
                         </ext:FieldContainer> 
                         
-
-                        
+                       
                            <ext:DropDownField ID="uxAddProjectDropDownField" runat="server" FieldLabel="Choose Project" AnchorHorizontal="100%" LabelAlign="Right" Width="755" TabIndex="6" Mode="ValueText" Editable="false" AllowBlank="false"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side">
                                                     <Component>
                                                         <ext:GridPanel runat="server"

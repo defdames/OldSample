@@ -98,7 +98,8 @@ namespace DBI.Data
         {
             using (Entities _context = new Entities())
             {
-                var data = (from r in _context.CROSSING_PRICING                                                 
+                var data = (from r in _context.CROSSING_PRICING
+                            where !r.SERVICE_CATEGORY.StartsWith("Application")                     
                             select new CrossingPricing { PRICING_ID = r.PRICING_ID, SERVICE_CATEGORY = r.SERVICE_CATEGORY, PRICE = r.PRICE}).ToList();
                 return data;
             }
@@ -125,7 +126,7 @@ namespace DBI.Data
             return (from d in _context.CROSSING_SERVICE_UNIT
                     select new ServiceUnitList { SERVICE_UNIT_ID = d.SERVICE_UNIT_ID, SERVICE_UNIT_NAME = d.SERVICE_UNIT_NAME });
         }
-        public static List<CrossingData1> GetAppCrossingList(decimal RailroadId, decimal UserId)
+        public static List<CrossingData1> GetAppCrossingList(decimal RailroadId, decimal UserId, decimal ProjectId)
         {            
             string sql = string.Format(@"                           
                WITH
@@ -142,7 +143,7 @@ ALLOWED_RECORDS AS (
   INNER JOIN CROSSING_RELATIONSHIP b ON a.CROSSING_ID = b.CROSSING_ID
   INNER JOIN PROJECTS_V c ON b.PROJECT_ID = c.PROJECT_ID
   INNER JOIN SYS_USER_ORGS d ON c.CARRYING_OUT_ORGANIZATION_ID = d.ORG_ID
-  WHERE d.USER_ID = {1}
+  WHERE d.USER_ID = {1} AND b.PROJECT_ID = {2}
 )
 SELECT MAX(CROSSING_APPLICATION.APPLICATION_REQUESTED) APPLICATION_REQUESTED,
                       ALLOWED_RECORDS.RAILROAD_ID,
@@ -169,7 +170,7 @@ SELECT MAX(CROSSING_APPLICATION.APPLICATION_REQUESTED) APPLICATION_REQUESTED,
                       ALLOWED_RECORDS.SUB_DIVISION,
                       PROJECTS_V.PROJECT_TYPE    
 
-                   ", RailroadId, UserId);
+                   ", RailroadId, UserId, ProjectId);
 
             using (Entities context = new Entities())
             {
@@ -194,7 +195,7 @@ ALLOWED_RECORDS AS (
   INNER JOIN CROSSING_RELATIONSHIP b ON a.CROSSING_ID = b.CROSSING_ID
   INNER JOIN PROJECTS_V c ON b.PROJECT_ID = c.PROJECT_ID
   INNER JOIN SYS_USER_ORGS d ON c.CARRYING_OUT_ORGANIZATION_ID = d.ORG_ID
-  WHERE d.USER_ID = {1}
+  WHERE d.USER_ID = {1} 
 )
 SELECT 
                       ALLOWED_RECORDS.RAILROAD_ID,
@@ -210,7 +211,7 @@ SELECT
                     LEFT JOIN CROSSING_SUPPLEMENTAL ON ALLOWED_RECORDS.CROSSING_ID = CROSSING_SUPPLEMENTAL.CROSSING_ID
                     LEFT JOIN CROSSING_RELATIONSHIP ON ALLOWED_RECORDS.CROSSING_ID = CROSSING_RELATIONSHIP.CROSSING_ID)
                     LEFT JOIN PROJECTS_V ON CROSSING_RELATIONSHIP.PROJECT_ID = PROJECTS_V.PROJECT_ID
-                    WHERE ALLOWED_RECORDS.RAILROAD_ID = {0} AND PROJECTS_V.PROJECT_TYPE = 'CUSTOMER BILLING' AND PROJECTS_V.TEMPLATE_FLAG = 'N' AND PROJECTS_V.PROJECT_STATUS_CODE = 'APPROVED'
+                    WHERE ALLOWED_RECORDS.RAILROAD_ID = {0} AND PROJECTS_V.PROJECT_TYPE = 'CUSTOMER BILLING' AND PROJECTS_V.TEMPLATE_FLAG = 'N' AND PROJECTS_V.PROJECT_STATUS_CODE = 'APPROVED' AND ALLOWED_RECORDS.STATUS = 'ACTIVE'
                     GROUP BY ALLOWED_RECORDS.RAILROAD_ID,
                       ALLOWED_RECORDS.CONTACT_ID,
                       ALLOWED_RECORDS.CROSSING_ID,
@@ -288,6 +289,7 @@ SELECT
           {
               return (from a in _context.CROSSING_APPLICATION
                       join d in _context.CROSSINGS on a.CROSSING_ID equals d.CROSSING_ID
+                      join v in _context.PROJECTS_V on a.PROJECT_ID equals v.PROJECT_ID
                       where d.RAILROAD_ID == RailroadId && a.APPLICATION_REQUESTED == Application
                       select new CompletedCrossings
                       {
@@ -301,10 +303,32 @@ SELECT
                          STATE = d.STATE,
                          MILE_POST = d.MILE_POST,
                          SUB_CONTRACTED = d.SUB_CONTRACTED,
+                         SEGMENT1 = v.SEGMENT1
                       });
 
           }
-         
+          public static IQueryable<CompletedCrossings> GetCompletedCrossingsBilling(decimal RailroadId, decimal Application, long? ProjectId, Entities _context)
+          {
+              return (from a in _context.CROSSING_APPLICATION
+                      join d in _context.CROSSINGS on a.CROSSING_ID equals d.CROSSING_ID
+                      join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID
+                      where d.RAILROAD_ID == RailroadId && a.APPLICATION_REQUESTED == Application && r.PROJECT_ID == ProjectId
+                      select new CompletedCrossings
+                      {
+                          PROJECT_ID = r.PROJECT_ID,
+                          CROSSING_ID = d.CROSSING_ID,
+                          APPLICATION_ID = a.APPLICATION_ID,
+                          APPLICATION_DATE = a.APPLICATION_DATE,
+                          APPLICATION_REQUESTED = a.APPLICATION_REQUESTED,
+                          CROSSING_NUMBER = d.CROSSING_NUMBER,
+                          SUB_DIVISION = d.SUB_DIVISION,
+                          SERVICE_UNIT = d.SERVICE_UNIT,
+                          STATE = d.STATE,
+                          MILE_POST = d.MILE_POST,
+                          SUB_CONTRACTED = d.SUB_CONTRACTED,
+                      });
+
+          }
           public static IQueryable<CompletedCrossingsSupplemental> GetCompletedCrossingsSupplemental(decimal RailroadId, Entities _context)
           {
               return (from a in _context.CROSSING_SUPPLEMENTAL
@@ -329,11 +353,11 @@ SELECT
                       });
 
           }
-          public static IQueryable<StateCrossingList> GetStateCrossingList(decimal RailroadId, decimal Application, Entities _context)
+          public static IQueryable<StateCrossingList> GetStateCrossingList(decimal RailroadId, Entities _context)
           {
               return (from d in _context.CROSSINGS
-                      join a in _context.CROSSING_APPLICATION on d.CROSSING_ID equals a.CROSSING_ID
-                      where d.RAILROAD_ID == RailroadId && a.APPLICATION_REQUESTED == Application && d.STATUS != "DELETED"
+                      //join a in _context.CROSSING_APPLICATION on d.CROSSING_ID equals a.CROSSING_ID
+                      where d.RAILROAD_ID == RailroadId && d.STATUS != "DELETED" && d.PROPERTY_TYPE == "PUB" && d.CUT_ONLY != "Y"
                       select new StateCrossingList
                             {
                                 CROSSING_ID = d.CROSSING_ID,
@@ -354,11 +378,11 @@ SELECT
                                 LONGITUDE = d.LONGITUDE,
                                 LATITUDE = d.LATITUDE,
                                 SPECIAL_INSTRUCTIONS = d.SPECIAL_INSTRUCTIONS,
-                                SPRAY = a.SPRAY,
-                                CUT = a.CUT,
-                                INSPECT = a.INSPECT,
-                                APPLICATION_ID = a.APPLICATION_ID,
-                                APPLICATION_REQUESTED = a.APPLICATION_REQUESTED
+                                //SPRAY = a.SPRAY,
+                                //CUT = a.CUT,
+                                //INSPECT = a.INSPECT,
+                                //APPLICATION_ID = a.APPLICATION_ID,
+                                //APPLICATION_REQUESTED = a.APPLICATION_REQUESTED
                             });
           }
           public static IQueryable<ApplicationDateList> GetAppDate(decimal RailroadId, decimal Application, Entities _context)
@@ -632,6 +656,8 @@ SELECT
           }
           public class CompletedCrossings
           {
+              public string SEGMENT1 { get; set; }
+              public long? PROJECT_ID { get; set; }
               public string CROSSING_NUMBER { get; set; }
               public long APPLICATION_ID { get; set; }
               public long CROSSING_ID { get; set; }

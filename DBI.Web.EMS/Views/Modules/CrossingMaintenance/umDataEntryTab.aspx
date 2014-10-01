@@ -68,80 +68,76 @@
                                 <Select OnEvent="deSelectYear" />
                             </DirectEvents>
                         </ext:ComboBox>
-                        <ext:DropDownField ID="uxAddProjectDropDownField" runat="server" FieldLabel="Choose Project" AnchorHorizontal="100%" LabelAlign="Right" Width="755" TabIndex="6" Mode="ValueText" Editable="false">
-                            <Component>
-                                <ext:GridPanel runat="server"
-                                    ID="uxAddProject"
-                                    Layout="HBoxLayout">
-                                    <Store>
-                                        <ext:Store runat="server"
-                                            ID="uxApplicationProjectStore"
-                                            PageSize="10"
-                                            RemoteSort="true"
-                                            OnReadData="deAddProjectGrid">
-                                            <%-- <Parameters>
-                                                                         <ext:StoreParameter Name="CrossingId" Value="#{uxSupplementalCrossingGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
-                                                                     </Parameters>--%>
-                                            <Model>
-                                                <ext:Model ID="Model6" runat="server">
-                                                    <Fields>
-                                                        <ext:ModelField Name="PROJECT_ID" />
-                                                        <ext:ModelField Name="LONG_NAME" />
-                                                        <ext:ModelField Name="SEGMENT1" />
-                                                        <ext:ModelField Name="ORGANIZATION_NAME" />
-                                                        <ext:ModelField Name="CARRYING_OUT_ORGANIZATION_ID" />
-                                                        <ext:ModelField Name="PROJECT_TYPE" />
-                                                        <ext:ModelField Name="PROJECT_STATUS_CODE" />
-                                                        <ext:ModelField Name="TEMPLATE_FLAG" />
-                                                        <ext:ModelField Name="RAILROAD_ID" />
-                                                        <ext:ModelField Name="CROSSING_ID" />
+                        <ext:DropDownField ID="uxAddProjectDropDownField" runat="server" FieldLabel="Choose Project" AnchorHorizontal="100%" LabelAlign="Right" Width="755" Mode="ValueText" Editable="false">
+                                                    <Component>
+                                                        <ext:GridPanel runat="server"
+                                                            ID="uxAddProject"
+                                                            Layout="HBoxLayout">
+                                                            <Store>
+                                                                <ext:Store runat="server"
+                                                                    ID="uxApplicationProjectStore"
+                                                                    PageSize="10"
+                                                                    RemoteSort="true"
+                                                                    OnReadData="deAddProjectGrid">
+                                                                 
+                                                                    <Model>
+                                                                        <ext:Model ID="Model6" runat="server">
+                                                                            <Fields>
+                                                                                <ext:ModelField Name="PROJECT_ID" />
+                                                                                <ext:ModelField Name="LONG_NAME" />
+                                                                                <ext:ModelField Name="SEGMENT1" />
+                                                                                <ext:ModelField Name="ORGANIZATION_NAME" />
+                                                                                <ext:ModelField Name="CARRYING_OUT_ORGANIZATION_ID" />
+                                                                                <ext:ModelField Name="PROJECT_TYPE" />
+                                                                                <ext:ModelField Name="PROJECT_STATUS_CODE" />
+                                                                                <ext:ModelField Name="TEMPLATE_FLAG" />
+                                                                                <ext:ModelField Name="RAILROAD_ID" />
+                                                                                <ext:ModelField Name="CROSSING_ID" />
 
-                                                    </Fields>
-                                                </ext:Model>
-                                            </Model>
-                                            <Proxy>
-                                                <ext:PageProxy />
-                                            </Proxy>
-                                            <Sorters>
-                                                <ext:DataSorter Property="ORGANIZATION_NAME" Direction="ASC" />
-                                            </Sorters>
-                                        </ext:Store>
-                                    </Store>
-                                    <ColumnModel>
-                                        <Columns>
-                                            <ext:Column ID="Column11" runat="server" DataIndex="SEGMENT1" Text="Project" Flex="1" />
-                                            <ext:Column ID="Column6" runat="server" DataIndex="LONG_NAME" Text="Project Name" Flex="2" />
-                                            <ext:Column ID="Column14" runat="server" DataIndex="ORGANIZATION_NAME" Text="Organization Name" Flex="1" />
-                                        </Columns>
-                                    </ColumnModel>
-                                    <BottomBar>
-                                        <ext:PagingToolbar ID="PagingToolbar3" runat="server" />
-                                    </BottomBar>
-                                    <SelectionModel>
-                                        <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" Mode="Single" />
-                                    </SelectionModel>
-                                    <DirectEvents>
-                                        <SelectionChange OnEvent="deAddProjectValue">
-                                            <ExtraParams>
-                                                <ext:Parameter Name="ProjectId" Value="#{uxAddProject}.getSelectionModel().getSelection()[0].data.PROJECT_ID" Mode="Raw" />
-                                                <ext:Parameter Name="ProjectName" Value="#{uxAddProject}.getSelectionModel().getSelection()[0].data.LONG_NAME" Mode="Raw" />
-                                                <ext:Parameter Name="Type" Value="Add" />
-                                            </ExtraParams>
-                                        </SelectionChange>
-                                    </DirectEvents>
-                                    <DirectEvents>
-                                        <Select OnEvent="deSelectVersion" />
-                                    </DirectEvents>
-                                    <%--  <Listeners>
-                                                                <Select Handler="#{uxAppEntryCrossingStore}.reload()" />
-                                                            </Listeners>--%>
-                                    <Plugins>
-                                        <ext:FilterHeader runat="server" ID="uxAddProjectFilter" Remote="true" />
-                                    </Plugins>
-                                </ext:GridPanel>
-                            </Component>
-                        </ext:DropDownField>
-
+                                                                            </Fields>
+                                                                        </ext:Model>
+                                                                    </Model>
+                                                                    <Proxy>
+                                                                        <ext:PageProxy />
+                                                                    </Proxy>
+                                                       <Sorters>
+                                                             <ext:DataSorter Property="ORGANIZATION_NAME" Direction="ASC" />
+                                                       </Sorters>
+                                                                </ext:Store>
+                                                            </Store>
+                                                            <ColumnModel>
+                                                                <Columns>
+                                                                    <ext:Column ID="Column11" runat="server" DataIndex="SEGMENT1" Text="Project" Flex="1" />
+                                                                    <ext:Column ID="Column6" runat="server" DataIndex="LONG_NAME" Text="Project Name" Flex="2" />
+                                                                    <ext:Column ID="Column14" runat="server" DataIndex="ORGANIZATION_NAME" Text="Organization Name" Flex="1" />
+                                                                </Columns>
+                                                            </ColumnModel>
+                                                            <BottomBar>
+                                                                <ext:PagingToolbar ID="PagingToolbar3" runat="server" />
+                                                            </BottomBar>
+                                                            <SelectionModel>
+                                                                <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" Mode="Single" />
+                                                            </SelectionModel>
+                                                             
+                                                            <DirectEvents>
+                                                                <SelectionChange OnEvent="deAddProjectValue">
+                                                                    <ExtraParams>
+                                                                        <ext:Parameter Name="ProjectId" Value="#{uxAddProject}.getSelectionModel().getSelection()[0].data.PROJECT_ID" Mode="Raw" />
+                                                                        <ext:Parameter Name="ProjectName" Value="#{uxAddProject}.getSelectionModel().getSelection()[0].data.LONG_NAME" Mode="Raw" />
+                                                                        <ext:Parameter Name="Type" Value="Add" />
+                                                                    </ExtraParams>
+                                                                </SelectionChange>
+                                                               
+                                                            </DirectEvents>
+                                                           <%--<DirectEvents>
+                                                                 <Select OnEvent="deSelectVersion" />
+                                                            </DirectEvents>--%>
+                                                            <Plugins>
+                                                                <ext:FilterHeader runat="server" ID="uxAddProjectFilter" Remote="true" />
+                                                            </Plugins>
+                                                        </ext:GridPanel>
+                                                    </Component>
+                                                </ext:DropDownField>
                     </Items>
                 </ext:Toolbar>
                 <ext:GridPanel ID="uxApplicationCrossingGrid" Title="CROSSING LIST FOR APPLICATION ENTRY" runat="server" Region="North" Layout="HBoxLayout" Collapsible="true" SelectionMemory="true">
@@ -167,8 +163,7 @@
                                         <ext:ModelField Name="SUB_DIVISION" />
                                         <ext:ModelField Name="CARRYING_OUT_ORGANIZATION_ID" />
                                         <ext:ModelField Name="PROJECT_TYPE" />
-
-
+                                        
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -213,9 +208,7 @@
                     <Store>
                         <ext:Store runat="server"
                             ID="uxApplicationStore" OnReadData="GetApplicationGridData" AutoDataBind="true" AutoLoad="false" GroupField="CROSSING_NUMBER">
-                            <%--<Parameters>
-                              <ext:StoreParameter Name="crossingId" Value="Ext.encode(#{uxApplicationCrossingGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
-                        </Parameters>--%>
+                         
                             <Model>
                                 <ext:Model ID="Model1" runat="server" IDProperty="APPLICATION_ID">
                                     <Fields>

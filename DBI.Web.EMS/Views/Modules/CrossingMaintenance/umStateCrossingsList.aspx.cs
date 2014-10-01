@@ -30,7 +30,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             if (!X.IsAjaxRequest)
             {
              
-               uxAddStateList.Data = StaticLists.StateList;
+               uxAddStateList.Data = StaticLists.CrossingStateList;
                uxAddAppRequestedStore.Data = StaticLists.ApplicationRequested;
                if (SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue") != string.Empty)
                {
@@ -53,7 +53,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
 
                 //var allData = _context.CROSSINGS.Join(_context.CROSSING_APPLICATION, d => d.CROSSING_ID, a => a.CROSSING_ID, (d, a) => new { d, a }).Where(r => r.d.RAILROAD_ID == RailroadId);//.CROSSING_ID, d.CROSSING_NUMBER,
-                IQueryable<CROSSING_MAINTENANCE.StateCrossingList> allData = CROSSING_MAINTENANCE.GetStateCrossingList(RailroadId, Application, _context);
+                IQueryable<CROSSING_MAINTENANCE.StateCrossingList> allData = CROSSING_MAINTENANCE.GetStateCrossingList(RailroadId, _context);
 
                 if (ServiceUnit != null)
                 {
