@@ -21,12 +21,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         protected List<WarningData>WarningList = new List<WarningData>();
         protected void Page_Load(object sender, EventArgs e)
         {
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
             if (!validateComponentSecurity("SYS.DailyActivity.View") && !validateComponentSecurity("SYS.DailyActivity.EmployeeView"))
             {
                 X.Redirect("~/Views/uxDefault.aspx");
             }
             if (!X.IsAjaxRequest)
             {
+                
                 GetHeaderData();
                 GetEmployeeData();
                 GetEquipmentData();
@@ -41,8 +43,17 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxStateStore.Data = StaticLists.StateList;
                 this.uxRedWarning.Value = ResourceManager.GetInstance().GetIconUrl(Ext.Net.Icon.Exclamation);
                 this.uxYellowWarning.Value = ResourceManager.GetInstance().GetIconUrl(Ext.Net.Icon.Error);
+
+                using (Entities _context = new Entities())
+                {
+                    DateTime HeaderDate = _context.DAILY_ACTIVITY_HEADER.Where(x => x.HEADER_ID == HeaderId).Select(x => (DateTime)x.DA_DATE).Single();
+                    uxEmployeeTimeInDate.Value = HeaderDate.Date.ToString("MM/dd/yyyy");
+                    uxEmployeeTimeOutDate.MinDate = HeaderDate;
+                    uxEmployeeTimeOutDate.MaxDate = HeaderDate.AddDays(1);
+                }
+                uxEmployeeTimeOutDate.SelectedDate = DateTime.Now.Date;
             }
-            if (GetStatus(long.Parse(Request.QueryString["HeaderId"])) != 2)
+            if (GetStatus(HeaderId) != 2)
             {
                 uxEmployeeToolbar.Hidden = true;
                 uxEquipmentToolbar.Hidden = true;
@@ -73,6 +84,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxContractNameField.ReadOnly = true;
                 uxContractImageField.Hide();
             }
+            
         }
 
         protected int GetStatus(long HeaderId)
@@ -174,7 +186,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             join p in _context.PROJECTS_V on equip.PROJECT_ID equals p.PROJECT_ID into proj
                             from projects in proj.DefaultIfEmpty()
                             where d.HEADER_ID == HeaderId
-                            select new EmployeeDetails { EMPLOYEE_ID = d.EMPLOYEE_ID, PERSON_ID = e.PERSON_ID, DA_DATE = d.DAILY_ACTIVITY_HEADER.DA_DATE, EMPLOYEE_NAME = e.EMPLOYEE_NAME, FOREMAN_LICENSE = d.FOREMAN_LICENSE, NAME = projects.NAME, TIME_IN = (DateTime)d.TIME_IN, TIME_OUT = (DateTime)d.TIME_OUT, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), PER_DIEM = d.PER_DIEM, COMMENTS = d.COMMENTS, LUNCH_LENGTH = d.LUNCH_LENGTH, STATUS = d.DAILY_ACTIVITY_HEADER.STATUS }).ToList();
+                            select new EmployeeDetails { EMPLOYEE_ID = d.EMPLOYEE_ID, PERSON_ID = e.PERSON_ID, DA_DATE = d.DAILY_ACTIVITY_HEADER.DA_DATE, EMPLOYEE_NAME = e.EMPLOYEE_NAME, FOREMAN_LICENSE = d.FOREMAN_LICENSE, NAME = projects.NAME, TIME_IN = (DateTime)d.TIME_IN, TIME_OUT = (DateTime)d.TIME_OUT, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), PER_DIEM = d.PER_DIEM, COMMENTS = d.COMMENTS, LUNCH_LENGTH = d.LUNCH_LENGTH, STATUS = d.DAILY_ACTIVITY_HEADER.STATUS, EQUIPMENT_ID = d.EQUIPMENT_ID }).ToList();
                 foreach (var item in data)
                 {
                     double Hours = Math.Truncate((double)item.TRAVEL_TIME);
@@ -836,6 +848,140 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             BinaryReader b = new BinaryReader(ImageFile.InputStream);
             ImageArray = b.ReadBytes(ImageFile.ContentLength);
             return ImageArray;
-        } 
+        }
+
+        /// <summary>
+        /// Get List of employees from DB
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void deReadEmployeeData(object sender, StoreReadDataEventArgs e)
+        {
+            List<EMPLOYEES_V> dataIn;
+
+            if (uxAddEmployeeRegion.Pressed)
+            {
+                //Get All Projects
+                dataIn = EMPLOYEES_V.EmployeeDropDown();
+            }
+            else
+            {
+                int CurrentOrg = Convert.ToInt32(Authentication.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
+                //Get projects for my org only
+                dataIn = EMPLOYEES_V.EmployeeDropDown(CurrentOrg);
+            }
+            int count;
+
+            //Get paged,filterable list of Employees
+            List<EMPLOYEES_V> data = GenericData.EnumerableFilterHeader<EMPLOYEES_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataIn, out count).ToList();
+
+            e.Total = count;
+            uxAddEmployeeEmpStore.DataSource = data;
+            uxAddEmployeeEmpStore.DataBind();
+        }
+
+        /// <summary>
+        /// Update selected item of what's chosen from Gridpanel 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void deStoreGridValue(object sender, DirectEventArgs e)
+        {
+            if (e.ExtraParams["Type"] == "EmployeeAdd")
+            {
+                uxAddEmployeeEmpDropDown.SetValue(e.ExtraParams["PersonId"]);
+                uxAddEmployeeEmpDropDown.SetRawValue(e.ExtraParams["Name"]);
+                uxAddEmployeeEmpFilter.ClearFilter();
+            }
+            else
+            {
+                uxAddEmployeeEqDropDown.SetValue(e.ExtraParams["EquipmentId"], e.ExtraParams["Name"]);
+            }
+        }
+
+        /// <summary>
+        /// Checks for a project with an existing per diem on the current date
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void deCheckExistingPerDiem(object sender, DirectEventArgs e)
+        {
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+            long PersonId = long.Parse(e.ExtraParams["PersonId"]);
+
+            //Get the date from this header record
+            using (Entities _context = new Entities())
+            {
+                var HeaderDate = (from d in _context.DAILY_ACTIVITY_HEADER
+                                  where d.HEADER_ID == HeaderId
+                                  select d.DA_DATE).Single();
+
+                //Get all headerIds on this date for this person
+                var HeaderList = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                  where d.PERSON_ID == PersonId && d.DAILY_ACTIVITY_HEADER.DA_DATE == HeaderDate
+                                  select d.PER_DIEM).ToList();
+                bool Disable = false;
+
+                foreach (var Header in HeaderList)
+                {
+                    if (Header == "Y")
+                    {
+                        Disable = true;
+                    }
+                }
+
+                if (Disable)
+                {
+                    uxPerDiemColumn.Editable = false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get Equipment entered on equipment page
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void deReadEquipmentData(object sender, StoreReadDataEventArgs e)
+        {
+            //Query for list of equipment
+            using (Entities _context = new Entities())
+            {
+                long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+                var data = (from d in _context.DAILY_ACTIVITY_EQUIPMENT
+                            join p in _context.CLASS_CODES_V on d.PROJECT_ID equals p.PROJECT_ID
+                            where d.HEADER_ID == HeaderId
+                            select new { d.EQUIPMENT_ID, p.NAME, d.PROJECT_ID, p.ORGANIZATION_NAME, p.CLASS_CODE, p.SEGMENT1, d.ODOMETER_START, d.ODOMETER_END }).ToList();
+                //Set add store
+                uxAddEmployeeEqStore.DataSource = data;
+                uxAddEmployeeEqStore.DataBind();
+
+            }
+
+        }
+
+        /// <summary>
+        /// Toggle Region text
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void deRegionToggle(object sender, DirectEventArgs e)
+        {
+            if (uxAddEmployeeRegion.Pressed)
+            {
+                uxAddEmployeeRegion.Text = "My Region";
+                uxAddEmployeeEmpStore.Reload();
+            }
+            else
+            {
+                uxAddEmployeeRegion.Text = "All Regions";
+                uxAddEmployeeEmpStore.Reload();
+            }
+        }
+
+        protected void deSaveEmployee(object sender, DirectEventArgs e)
+        {
+            ChangeRecords<EmployeeDetails> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<EmployeeDetails>();
+        }
     }
 }
