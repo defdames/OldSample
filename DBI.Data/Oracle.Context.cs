@@ -26,7 +26,6 @@ namespace DBI.Data
         }
     
         public DbSet<SYS_USERS> SYS_USERS { get; set; }
-        public DbSet<SYS_USER_INFORMATION> SYS_USER_INFORMATION { get; set; }
         public DbSet<SYS_USER_ACTIVITY> SYS_USER_ACTIVITY { get; set; }
         public DbSet<SYS_LOG> SYS_LOG { get; set; }
         public DbSet<DAILY_ACTIVITY_WEATHER> DAILY_ACTIVITY_WEATHER { get; set; }
@@ -131,5 +130,7 @@ namespace DBI.Data
         public DbSet<CROSSING_APPLICATION> CROSSING_APPLICATION { get; set; }
         public DbSet<CROSSING_INCIDENT> CROSSING_INCIDENT { get; set; }
         public DbSet<CROSSING> CROSSINGS { get; set; }
+        public DbSet<SYS_USER_INFORMATION> SYS_USER_INFORMATION { get; set; }
+        public DbSet<SYS_USER_ACTIVITY_LOG> SYS_USER_ACTIVITY_LOG { get; set; }
     }
 }
