@@ -701,8 +701,8 @@ warning 6002: The table/view 'XXDBI.XXPJ_PREV_WAGE_RATES' does not have a primar
           <Property Name="PROJECT_ID" Type="number" Precision="15" Scale="0" />
           <Property Name="SPECIAL_INSTRUCTIONS" Type="clob" />
           <Property Name="STATUS" Type="varchar2" MaxLength="30" />
-          <Property Name="CUT_ONLY" Type="char" MaxLength="1" />
           <Property Name="RAILROAD_ID" Type="number" Precision="38" Scale="0" />
+          <Property Name="CUT_ONLY" Type="char" MaxLength="1" />
         </EntityType>
         <EntityType Name="CUSTOMER_SURVEY_CAT">
           <Key>
@@ -1478,6 +1478,14 @@ warning 6002: The table/view 'XXDBI.XXPJ_PREV_WAGE_RATES' does not have a primar
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="500" />
           <Property Name="LAST_UPDATED" Type="date" />
           <Property Name="LAST_UPDATED_BY" Type="varchar2" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="SYS_USER_ACTIVITY_LOG">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="number" Precision="15" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="USER_ID" Type="number" Precision="15" Scale="0" Nullable="false" />
+          <Property Name="LAST_ACTIVITY_DATE" Type="date" />
         </EntityType>
         <EntityType Name="SYS_USER_ORGS">
           <Key>
@@ -2648,20 +2656,18 @@ warning 6002: The table/view 'XXEMS.SYS_USER_INFORMATION' does not have a primar
           <Key>
             <PropertyRef Name="USER_ID" />
             <PropertyRef Name="USER_NAME" />
-            <PropertyRef Name="PERSON_ID" />
             <PropertyRef Name="CURRENT_ORGANIZATION" />
             <PropertyRef Name="CURRENT_ORG_ID" />
             <PropertyRef Name="LOCATION_NAME" />
-            <PropertyRef Name="JOB_ID" />
           </Key>
           <Property Name="USER_ID" Type="number" Precision="15" Scale="0" Nullable="false" />
           <Property Name="USER_NAME" Type="varchar2" MaxLength="100" Nullable="false" />
           <Property Name="EMPLOYEE_NAME" Type="varchar2" MaxLength="362" />
           <Property Name="EMPLOYEE_NUMBER" Type="varchar2" MaxLength="30" />
-          <Property Name="PERSON_ID" Type="number" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="PERSON_ID" Type="number" Precision="10" Scale="0" />
           <Property Name="EMAIL_ADDRESS" Type="varchar2" MaxLength="240" />
           <Property Name="JOB_NAME" Type="varchar2" MaxLength="700" />
-          <Property Name="JOB_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="JOB_ID" Type="number" Precision="38" Scale="0" />
           <Property Name="CURRENT_ORGANIZATION" Type="varchar2" MaxLength="240" Nullable="false" />
           <Property Name="CURRENT_ORG_ID" Type="number" Precision="15" Scale="0" Nullable="false" />
           <Property Name="ORACLE_ACCOUNT_STATUS" Type="char" MaxLength="1" />
@@ -3538,6 +3544,7 @@ warning 6002: The table/view 'XXEMS.UNIT_OF_MEASURE_V' does not have a primary k
           <EntitySet Name="SYS_PROFILE_OPTIONS" EntityType="Self.SYS_PROFILE_OPTIONS" Schema="XXEMS" store:Type="Tables" />
           <EntitySet Name="SYS_SECURITY_AUDIT" EntityType="Self.SYS_SECURITY_AUDIT" Schema="XXEMS" store:Type="Tables" />
           <EntitySet Name="SYS_USER_ACTIVITY" EntityType="Self.SYS_USER_ACTIVITY" Schema="XXEMS" store:Type="Tables" />
+          <EntitySet Name="SYS_USER_ACTIVITY_LOG" EntityType="Self.SYS_USER_ACTIVITY_LOG" Schema="XXEMS" store:Type="Tables" />
           <EntitySet Name="SYS_USER_ORGS" EntityType="Self.SYS_USER_ORGS" Schema="XXEMS" store:Type="Tables" />
           <EntitySet Name="SYS_USER_PERMS" EntityType="Self.SYS_USER_PERMS" Schema="XXEMS" store:Type="Tables" />
           <EntitySet Name="SYS_USER_PROFILE_OPTIONS" EntityType="Self.SYS_USER_PROFILE_OPTIONS" Schema="XXEMS" store:Type="Tables" />
@@ -4401,11 +4408,6 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
       <Schema Namespace="OracleModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="Entities" p1:LazyLoadingEnabled="true">
           <EntitySet Name="SYS_USERS" EntityType="OracleModel.SYS_USERS" />
-          <EntitySet Name="SYS_USER_INFORMATION" EntityType="OracleModel.SYS_USER_INFORMATION" />
-          <AssociationSet Name="SYS_USERSSYS_USER_INFORMATION" Association="OracleModel.SYS_USERSSYS_USER_INFORMATION">
-            <End Role="SYS_USERS" EntitySet="SYS_USERS" />
-            <End Role="SYS_USER_INFORMATION" EntitySet="SYS_USER_INFORMATION" />
-          </AssociationSet>
           <EntitySet Name="SYS_USER_ACTIVITY" EntityType="OracleModel.SYS_USER_ACTIVITY" />
           <AssociationSet Name="SYS_USERSSYS_USER_ACTIVITY" Association="OracleModel.SYS_USERSSYS_USER_ACTIVITY">
             <End Role="SYS_USERS" EntitySet="SYS_USERS" />
@@ -4734,6 +4736,8 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
             <End Role="CROSSING" EntitySet="CROSSINGS" />
             <End Role="CROSSING_SUPPLEMENTAL" EntitySet="CROSSING_SUPPLEMENTAL" />
           </AssociationSet>
+          <EntitySet Name="SYS_USER_INFORMATION" EntityType="OracleModel.SYS_USER_INFORMATION" />
+          <EntitySet Name="SYS_USER_ACTIVITY_LOG" EntityType="OracleModel.SYS_USER_ACTIVITY_LOG" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -4741,7 +4745,6 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           </Key>
           <Property Type="Int64" Name="USER_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="DateTime" Name="LAST_ACTIVITY_DATE" />
-          <NavigationProperty Name="SYS_USER_INFORMATION" Relationship="OracleModel.SYS_USERSSYS_USER_INFORMATION" FromRole="SYS_USERS" ToRole="SYS_USER_INFORMATION" />
           <NavigationProperty Name="SYS_USER_ACTIVITY" Relationship="OracleModel.SYS_USERSSYS_USER_ACTIVITY" FromRole="SYS_USERS" ToRole="SYS_USER_ACTIVITY" />
           <NavigationProperty Name="SYS_LOG" Relationship="OracleModel.SYS_USERSSYS_LOG" FromRole="SYS_USERS" ToRole="SYS_LOG" />
           <Property Type="DateTime" Name="CREATE_DATE" />
@@ -4754,46 +4757,6 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           <Property Type="String" Name="NAME" Nullable="false" />
           <Property Type="String" Name="DESCRIPTION" Nullable="false" />
         </ComplexType>
-        <EntityType Name="SYS_USER_INFORMATION">
-          <Key>
-            <PropertyRef Name="USER_ID" />
-            <PropertyRef Name="USER_NAME" />
-            <PropertyRef Name="CURRENT_ORGANIZATION" />
-            <PropertyRef Name="CURRENT_ORG_ID" />
-            <PropertyRef Name="LOCATION_NAME" />
-            <PropertyRef Name="JOB_ID" />
-            <PropertyRef Name="PERSON_ID" />
-          </Key>
-          <Property Type="Int64" Name="USER_ID" Nullable="false" />
-          <Property Type="String" Name="USER_NAME" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="EMPLOYEE_NAME" MaxLength="362" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="EMPLOYEE_NUMBER" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="EMAIL_ADDRESS" MaxLength="240" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="JOB_NAME" MaxLength="700" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="CURRENT_ORGANIZATION" Nullable="false" MaxLength="240" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="ORACLE_ACCOUNT_STATUS" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="SUPERVISOR_NAME" MaxLength="362" FixedLength="false" Unicode="false" />
-          <Property Type="Int32" Name="SUPERVISOR_ID" />
-          <Property Type="String" Name="SUPERVISOR_EMAIL_ADDRESS" MaxLength="240" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SUPERVISOR_USER_NAME" MaxLength="100" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="SYS_USERS" Relationship="OracleModel.SYS_USERSSYS_USER_INFORMATION" FromRole="SYS_USER_INFORMATION" ToRole="SYS_USERS" />
-          <Property Type="Int64" Name="CURRENT_ORG_ID" Nullable="false" />
-          <Property Type="String" Name="LOCATION_NAME" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
-          <Property Type="Int64" Name="JOB_ID" Nullable="false" />
-          <Property Type="Int32" Name="PERSON_ID" Nullable="false" />
-        </EntityType>
-        <Association Name="SYS_USERSSYS_USER_INFORMATION">
-          <End Type="OracleModel.SYS_USERS" Role="SYS_USERS" Multiplicity="1" />
-          <End Type="OracleModel.SYS_USER_INFORMATION" Role="SYS_USER_INFORMATION" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SYS_USERS">
-              <PropertyRef Name="USER_ID" />
-            </Principal>
-            <Dependent Role="SYS_USER_INFORMATION">
-              <PropertyRef Name="USER_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="SYS_USER_ACTIVITY">
           <Key>
             <PropertyRef Name="USER_ACTIVITY_ID" />
@@ -8415,6 +8378,39 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="SYS_USER_INFORMATION">
+          <Key>
+            <PropertyRef Name="USER_ID" />
+            <PropertyRef Name="USER_NAME" />
+            <PropertyRef Name="CURRENT_ORGANIZATION" />
+            <PropertyRef Name="CURRENT_ORG_ID" />
+            <PropertyRef Name="LOCATION_NAME" />
+          </Key>
+          <Property Name="USER_ID" Type="Int64" Nullable="false" />
+          <Property Name="USER_NAME" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="EMPLOYEE_NAME" Type="String" MaxLength="362" FixedLength="false" Unicode="false" />
+          <Property Name="EMPLOYEE_NUMBER" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="PERSON_ID" Type="Int32" Nullable="false" />
+          <Property Name="EMAIL_ADDRESS" Type="String" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Name="JOB_NAME" Type="String" MaxLength="700" FixedLength="false" Unicode="false" />
+          <Property Name="JOB_ID" Type="Int64" Nullable="false" />
+          <Property Name="CURRENT_ORGANIZATION" Type="String" Nullable="false" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Name="CURRENT_ORG_ID" Type="Int64" Nullable="false" />
+          <Property Name="ORACLE_ACCOUNT_STATUS" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="SUPERVISOR_NAME" Type="String" MaxLength="362" FixedLength="false" Unicode="false" />
+          <Property Name="SUPERVISOR_ID" Type="Int32" />
+          <Property Name="SUPERVISOR_EMAIL_ADDRESS" Type="String" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Name="SUPERVISOR_USER_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="LOCATION_NAME" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SYS_USER_ACTIVITY_LOG">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="USER_ID" Type="Int64" Nullable="false" />
+          <Property Name="LAST_ACTIVITY_DATE" Type="DateTime" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -8429,28 +8425,6 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
                 <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
                 <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
                 <ScalarProperty Name="LAST_ACTIVITY_DATE" ColumnName="LAST_ACTIVITY_DATE" />
-                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SYS_USER_INFORMATION">
-            <EntityTypeMapping TypeName="OracleModel.SYS_USER_INFORMATION">
-              <MappingFragment StoreEntitySet="SYS_USER_INFORMATION">
-                <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
-                <ScalarProperty Name="JOB_ID" ColumnName="JOB_ID" />
-                <ScalarProperty Name="LOCATION_NAME" ColumnName="LOCATION_NAME" />
-                <ScalarProperty Name="CURRENT_ORG_ID" ColumnName="CURRENT_ORG_ID" />
-                <ScalarProperty Name="SUPERVISOR_USER_NAME" ColumnName="SUPERVISOR_USER_NAME" />
-                <ScalarProperty Name="SUPERVISOR_EMAIL_ADDRESS" ColumnName="SUPERVISOR_EMAIL_ADDRESS" />
-                <ScalarProperty Name="SUPERVISOR_ID" ColumnName="SUPERVISOR_ID" />
-                <ScalarProperty Name="SUPERVISOR_NAME" ColumnName="SUPERVISOR_NAME" />
-                <ScalarProperty Name="ORACLE_ACCOUNT_STATUS" ColumnName="ORACLE_ACCOUNT_STATUS" />
-                <ScalarProperty Name="CURRENT_ORGANIZATION" ColumnName="CURRENT_ORGANIZATION" />
-                <ScalarProperty Name="JOB_NAME" ColumnName="JOB_NAME" />
-                <ScalarProperty Name="EMAIL_ADDRESS" ColumnName="EMAIL_ADDRESS" />
-                <ScalarProperty Name="EMPLOYEE_NUMBER" ColumnName="EMPLOYEE_NUMBER" />
-                <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
-                <ScalarProperty Name="USER_NAME" ColumnName="USER_NAME" />
                 <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -11207,6 +11181,37 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
                 <ScalarProperty Name="PREF" ColumnName="PREF" />
                 <ScalarProperty Name="DOT" ColumnName="DOT" />
                 <ScalarProperty Name="CROSSING_ID" ColumnName="CROSSING_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYS_USER_INFORMATION">
+            <EntityTypeMapping TypeName="OracleModel.SYS_USER_INFORMATION">
+              <MappingFragment StoreEntitySet="SYS_USER_INFORMATION">
+                <ScalarProperty Name="LOCATION_NAME" ColumnName="LOCATION_NAME" />
+                <ScalarProperty Name="SUPERVISOR_USER_NAME" ColumnName="SUPERVISOR_USER_NAME" />
+                <ScalarProperty Name="SUPERVISOR_EMAIL_ADDRESS" ColumnName="SUPERVISOR_EMAIL_ADDRESS" />
+                <ScalarProperty Name="SUPERVISOR_ID" ColumnName="SUPERVISOR_ID" />
+                <ScalarProperty Name="SUPERVISOR_NAME" ColumnName="SUPERVISOR_NAME" />
+                <ScalarProperty Name="ORACLE_ACCOUNT_STATUS" ColumnName="ORACLE_ACCOUNT_STATUS" />
+                <ScalarProperty Name="CURRENT_ORG_ID" ColumnName="CURRENT_ORG_ID" />
+                <ScalarProperty Name="CURRENT_ORGANIZATION" ColumnName="CURRENT_ORGANIZATION" />
+                <ScalarProperty Name="JOB_ID" ColumnName="JOB_ID" />
+                <ScalarProperty Name="JOB_NAME" ColumnName="JOB_NAME" />
+                <ScalarProperty Name="EMAIL_ADDRESS" ColumnName="EMAIL_ADDRESS" />
+                <ScalarProperty Name="PERSON_ID" ColumnName="PERSON_ID" />
+                <ScalarProperty Name="EMPLOYEE_NUMBER" ColumnName="EMPLOYEE_NUMBER" />
+                <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
+                <ScalarProperty Name="USER_NAME" ColumnName="USER_NAME" />
+                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYS_USER_ACTIVITY_LOG">
+            <EntityTypeMapping TypeName="OracleModel.SYS_USER_ACTIVITY_LOG">
+              <MappingFragment StoreEntitySet="SYS_USER_ACTIVITY_LOG">
+                <ScalarProperty Name="LAST_ACTIVITY_DATE" ColumnName="LAST_ACTIVITY_DATE" />
+                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
