@@ -20,6 +20,14 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 {
                     X.Redirect("~/Views/uxDefault.aspx");
                 }
+
+                if (Request.QueryString["fiscalyear"] != null)
+                {
+                    uxFiscalYear.SelectedItem.Value = Request.QueryString["fiscalyear"];
+                    uxFiscalYear.Text = Request.QueryString["fiscalyear"];
+                    uxFiscalYear.ReadOnly = true;
+                    uxPeriodName.Enable();
+                }
             }
         }
 
@@ -47,9 +55,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
         protected void deImportActuals(object sender, DirectEventArgs e)
         {
             
-            short _fiscal_year = short.Parse(Request.QueryString["fiscalyear"]);
-            long _organizationID = long.Parse(Request.QueryString["orgid"]);
-            long _budgetid = long.Parse(Request.QueryString["budget_id"]);
 
             string _lockImported = "N";
 
@@ -58,30 +63,90 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 _lockImported = "Y";
             }
 
-            using(Entities _context = new Entities())
-            {
-                OVERHEAD_BUDGET_FORECAST.ImportActualForBudgetVersion(_context, long.Parse(uxPeriodName.SelectedItem.Value.ToString()), _budgetid, User.Identity.Name, _lockImported);
-            }
+                using (Entities _context = new Entities())
+                {
+                    long _periodToImport = 0;
+                    _periodToImport = long.Parse(uxPeriodName.SelectedItem.Value);
+
+                    short _fiscalYear = 0;
+                    _fiscalYear = short.Parse(uxFiscalYear.SelectedItem.Value);
+
+                    if (Request.QueryString["budget_id"] == null)
+                    {
+
+                        ///We have to open all organizations
+                        string _selectedRecordID = Request.QueryString["combinedLEORGID"];
+                        if (_selectedRecordID != null)
+                        {
+                            char[] _delimiterChars = { ':' };
+                            string[] _selectedID = _selectedRecordID.Split(_delimiterChars);
+                            long _hierarchyID = long.Parse(_selectedID[1].ToString());
+                            long _organizationID = long.Parse(_selectedID[0].ToString());
+
+                            //Get a list of all active organizations for the current legal entity
+                            var _data = HR.OverheadOrganizationStatusByHierarchy(_hierarchyID, _organizationID).Where(x => x.ORGANIZATION_STATUS == "Active").ToList();
+
+                            foreach (HR.ORGANIZATION_V1 _version in _data)
+                            {
+                                List<OVERHEAD_ORG_BUDGETS> _budgets = OVERHEAD_BUDGET_FORECAST.BudgetsByOrganizationID(_context, _version.ORGANIZATION_ID).Where(x => x.FISCAL_YEAR == _fiscalYear & x.STATUS == "O").ToList();
+
+                                foreach (var _budget in _budgets)
+                                {
+                                    var _budgetType = OVERHEAD_BUDGET_TYPE.BudgetType(_budget.OVERHEAD_BUDGET_TYPE_ID);
+
+                                    if (_budgetType.IMPORT_ACTUALS_ALLOWED == "Y")
+                                    {
+                                        OVERHEAD_BUDGET_FORECAST.ImportActualForBudgetVersion(_context, _periodToImport, _budget.ORG_BUDGET_ID, User.Identity.Name, _lockImported);
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+
+                    else
+                    {
+                        //Import as admin just one period and one budget that was selected.
+                        long _budgetID = 0;
+                        _budgetID = long.Parse(Request.QueryString["budget_id"]);
+
+                        OVERHEAD_BUDGET_FORECAST.ImportActualForBudgetVersion(_context, _periodToImport, _budgetID, User.Identity.Name, _lockImported);
+                    }
+
+                }
+
+        }
+
+        protected void deLoadFiscalYears(object sender, StoreReadDataEventArgs e)
+        {
+            uxFiscalYearsStore.DataSource = PA.FiscalYearsGL().OrderByDescending(x => x.ID_NAME);
         }
 
         protected void deLoadPeriodNames(object sender, StoreReadDataEventArgs e)
         {
             using (Entities _context = new Entities())
             {
-                short _fiscal_year = short.Parse(Request.QueryString["fiscalyear"]);
-                long _budgetid = long.Parse(Request.QueryString["budget_id"]);
+                short _fiscal_year = short.Parse(uxFiscalYear.SelectedItem.Value);
 
                 string sql2 = "select entered_period_name,period_year,period_num,period_type,start_date,end_date,'N' as ACTUALS_IMPORTED_FLAG from gl.gl_periods where period_set_name = 'DBI Calendar' order by period_num";
                 List<GL_PERIODS> _periodMonthList = _context.Database.SqlQuery<GL_PERIODS>(sql2).Where(x => x.PERIOD_YEAR == _fiscal_year & x.PERIOD_TYPE == "Month").ToList();
 
-                string sqlLocked = string.Format("select PERIOD_NAME,PERIOD_NUM,ACTUALS_IMPORTED_FLAG, 'N' as ADMIN from xxems.overhead_budget_detail where org_budget_id = {0} and ACTUALS_IMPORTED_FLAG = 'Y' group by PERIOD_NAME,PERIOD_NUM,ACTUALS_IMPORTED_FLAG order by period_num", _budgetid);
-                List<GL_LOCKED_PERIODS> _periodsLocked = _context.Database.SqlQuery<GL_LOCKED_PERIODS>(sqlLocked).ToList();
-
+                List<GL_LOCKED_PERIODS> _periodsLocked = new List<GL_LOCKED_PERIODS>();
                 List<DBI.Data.Generic.DoubleComboLongID> _periodList = new List<DBI.Data.Generic.DoubleComboLongID>();
+
+                if (Request.QueryString["AdminImport"] == null)
+                {
+                    long _budgetID = long.Parse(Request.QueryString["budget_id"]);
+
+                    string sqlLocked = string.Format("select PERIOD_NAME,PERIOD_NUM,ACTUALS_IMPORTED_FLAG, 'N' as ADMIN from xxems.overhead_budget_detail where org_budget_id = {0} and ACTUALS_IMPORTED_FLAG = 'Y' group by PERIOD_NAME,PERIOD_NUM,ACTUALS_IMPORTED_FLAG order by period_num", _budgetID);
+                    _periodsLocked = _context.Database.SqlQuery<GL_LOCKED_PERIODS>(sqlLocked).ToList();
+                }
+
 
                 foreach (GL_PERIODS _period in _periodMonthList)
                 {
                     var _data = _periodsLocked.Where(x => x.PERIOD_NUM == _period.PERIOD_NUM).SingleOrDefault();
+
 
                     if (Request.QueryString["AdminImport"] != null)
                     {
@@ -100,10 +165,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                             _periodList.Add(_item);
                         }
 
-
                     }
-
-
                 }
 
                 uxPeriodNameStore.DataSource = _periodList;
