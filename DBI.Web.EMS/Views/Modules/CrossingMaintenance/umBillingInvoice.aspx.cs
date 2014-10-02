@@ -18,6 +18,7 @@ using Ext.Net;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using DBI.Data.DataFactory;
+using OfficeOpenXml;
 
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 {
@@ -202,6 +203,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                
             
         }
+          
+    
         protected void deGetRRType(string rrLoad)
         {
 
@@ -265,5 +268,152 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             public DateTime APPLICATION_DATE { get; set; }
 
         }
+        //  protected void deExportSurveys(object sender, DirectEventArgs e)
+        //{
+        //    DateTime StartDate = uxStartDate.SelectedDate;
+        //    DateTime EndDate = uxEndDate.SelectedDate;
+        //    //string _selectedRecordID = uxCompanySelectionModel.SelectedRecordID;
+        //    List<long> OrgsList;
+        //    if (_selectedRecordID != string.Empty)
+        //    {
+        //       // long SelectedOrgId = GetOrgFromTree(_selectedRecordID);
+        //       // long HierId = GetHierarchyFromTree(_selectedRecordID);
+                
+        //        string _filename = "SurveyExport.xlsx";
+        //        string _filePath = Request.PhysicalApplicationPath + _filename;
+
+        //        using (Entities _context = new Entities())
+        //        {
+        //            FileInfo newFile = new FileInfo(_filePath + _filename);
+
+        //            ExcelPackage pck = new ExcelPackage(newFile);
+
+        //            OrgsList = HR.ActiveOrganizationsByHierarchy(HierId, SelectedOrgId, _context).Select(x => x.ORGANIZATION_ID).ToList();
+
+        //            List<CUSTOMER_SURVEY_FORMS> FormsList = CUSTOMER_SURVEYS.GetForms(_context).Where(x => OrgsList.Contains((long)x.ORG_ID)).ToList();
+                    
+                    
+        //            foreach (CUSTOMER_SURVEY_FORMS FormEntry in FormsList)
+        //            {
+        //                string OrgName = _context.ORG_HIER_V.Where(x => x.ORG_ID == FormEntry.ORG_ID).Select(x => x.ORG_HIER).Distinct().Single();
+                        
+        //                List<CUSTOMER_SURVEY_QUESTIONS> FormQuestions = CUSTOMER_SURVEYS.GetFormQuestion2(FormEntry.FORM_ID, _context).OrderBy(x => x.QUESTION_ID).ToList();
+        //                List<CUSTOMER_SURVEY_FORMS_COMP> Completions = CUSTOMER_SURVEYS.GetCompletionsByDate(StartDate, EndDate, FormEntry.FORM_ID, _context).ToList();
+        //                ExcelWorksheet ws;
+        //                if (Completions.Count > 0)
+        //                {
+        //                    ws = pck.Workbook.Worksheets.Add(OrgName);
+        //                    char letter = 'B';
+        //                    int rownumber = 2;
+        //                    ws.Cells["A1"].Value = "DOT #";
+        //                      ws.Cells["B1"].Value = "MP";
+        //                      ws.Cells["C1"].Value = "State";
+        //                      ws.Cells["D1"].Value = "Application Date";
+        //                      ws.Cells["E1"].Value = "Project #";
+
+        //                    foreach (CUSTOMER_SURVEY_QUESTIONS FormQuestion in FormQuestions)
+        //                    {
+        //                        ws.Cells[letter + "1"].Value = FormQuestion.TEXT;
+        //                        ws.Cells[letter + "1"].Style.Font.Size = 12f;
+        //                        letter = GetNextLetter(letter);
+        //                    }
+
+
+        //                    foreach (CUSTOMER_SURVEY_FORMS_COMP Completion in Completions)
+        //                    {
+        //                        letter = 'B';
+        //                        string ProjectName = _context.PROJECTS_V.Where(x => x.PROJECT_ID == Completion.PROJECT_ID).Select(x => x.LONG_NAME).Single();
+
+        //                        //Get Answers
+        //                        List<CUSTOMER_SURVEY_FORMS_ANS> Answers = CUSTOMER_SURVEYS.GetFormAnswersByCompletion(Completion.COMPLETION_ID, _context).OrderBy(x => x.QUESTION_ID).ToList();
+        //                        if (Answers.Count > 0)
+        //                        {
+        //                            ws.Cells["A" + rownumber].Value = ProjectName;
+        //                        }
+        //                        foreach (CUSTOMER_SURVEY_FORMS_ANS Answer in Answers)
+        //                        {
+        //                            ws.Cells[letter + rownumber.ToString()].Value = Answer.ANSWER;
+        //                            letter = GetNextLetter(letter);
+        //                        }
+        //                        rownumber++;
+        //                    }
+        //                    ws.Column(1).AutoFit(0);
+        //                }
+                        
+        //            }
+        //            Byte[] bin = pck.GetAsByteArray();
+        //            File.WriteAllBytes(_filePath, bin);
+                   
+
+        //            X.Msg.Confirm("File Download", "Your exported file is now ready to download.", new MessageBoxButtonsConfig
+        //            {
+        //                No = new MessageBoxButtonConfig
+        //                {
+        //                    Handler = "App.direct.Download('" + _filename + "','" + Server.UrlEncode(_filePath) + "', { isUpload : true })",
+        //                    Text = "Download " + _filename
+        //                }
+        //            }).Show();
+        //            //using (FileStream fileStream = File.OpenRead(Server.UrlDecode(_filePath)))
+        //            //{
+
+        //            //    //create new MemoryStream object
+        //            //    MemoryStream memStream = new MemoryStream();
+        //            //    memStream.SetLength(fileStream.Length);
+        //            //    //read file to MemoryStream
+        //            //    fileStream.Read(memStream.GetBuffer(), 0, (int)fileStream.Length);
+
+        //            //    Response.Clear();
+        //            //    Response.ClearContent();
+        //            //    Response.ClearHeaders();
+        //            //    Response.ContentType = "application/octet-stream";
+        //            //    Response.AppendHeader("Content-Disposition", "attachment;filename=" + _filename);
+        //            //    Response.BinaryWrite(memStream.ToArray());
+        //            //    Response.End();
+        //            //}
+        //        }
+                
+        //    }
+
+        //}
+
+        //[DirectMethod]
+        //public void Download(string filename, string filePath)
+        //{
+        //    using (FileStream fileStream = File.OpenRead(Server.UrlDecode(filePath)))
+        //    {
+
+        //        //create new MemoryStream object
+        //        MemoryStream memStream = new MemoryStream();
+        //        memStream.SetLength(fileStream.Length);
+        //        //read file to MemoryStream
+        //        fileStream.Read(memStream.GetBuffer(), 0, (int)fileStream.Length);
+
+        //        Response.Clear();
+        //        Response.ClearContent();
+        //        Response.ClearHeaders();
+        //        Response.ContentType = "application/octet-stream";
+        //        Response.AppendHeader("Content-Disposition", "attachment;filename=" + filename);
+        //        Response.BinaryWrite(memStream.ToArray());
+        //        Response.End();
+        //    }
+        //}
+        //protected char GetNextLetter(char letter)
+        //{
+        //    char nextChar;
+        //    if (letter == 'z')
+        //    {
+        //        nextChar = 'a';
+        //    }
+        //    else if (letter == 'Z')
+        //    {
+        //        nextChar = 'A';
+        //    }
+        //    else
+        //    {
+        //        nextChar = (char)(((int)letter) + 1);
+        //    }
+        //    return nextChar;
+        //}
     }
-}
+    }
+
