@@ -324,7 +324,18 @@
                <BottomBar>
                     <ext:Toolbar ID="Toolbar3" runat="server">
                         <Items>
-                          
+                          <ext:Button runat="server" ID="uxSubmitDates" Text="Submit" Icon="Add" Disabled="true">
+                            <DirectEvents>
+                                <Click OnEvent="deExportSurveys" IsUpload="true">
+                                    <EventMask ShowMask="true" />
+                                </Click>
+                            </DirectEvents>
+                        </ext:Button>
+                              <ext:Button runat="server" ID="uxCancelDates" Text="Cancel" Icon="Delete">
+                            <Listeners>
+                                <Click Handler="#{uxDatesForm}.reset(); #{uxExportWindow}.hide()" />
+                            </Listeners>
+                        </ext:Button>
                            <ext:Button runat="server"
                                 ID="Button5"
                                 Text="Close Invoice Report"

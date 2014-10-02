@@ -357,7 +357,7 @@ SELECT
           {
               return (from d in _context.CROSSINGS
                       //join a in _context.CROSSING_APPLICATION on d.CROSSING_ID equals a.CROSSING_ID
-                      where d.RAILROAD_ID == RailroadId && d.STATUS != "DELETED" && d.PROPERTY_TYPE == "PUB" && d.CUT_ONLY != "Y"
+                      where d.RAILROAD_ID == RailroadId && d.STATUS != "DELETED" && d.PROPERTY_TYPE == "PUB"
                       select new StateCrossingList
                             {
                                 CROSSING_ID = d.CROSSING_ID,
