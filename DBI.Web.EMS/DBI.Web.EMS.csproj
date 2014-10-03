@@ -236,6 +236,7 @@
     <Content Include="Views\Modules\Overhead\umOverheadBudgetTypes.aspx" />
     <Content Include="Views\Modules\Overhead\umBudgetVersions.aspx" />
     <Content Include="Views\Modules\Overhead\umOverheadOrganizationSecurity.aspx" />
+    <Content Include="Views\Modules\Overhead\umOverheadRollUpReport.aspx" />
     <Content Include="Views\Modules\Overhead\umOverheadSecurity.aspx" />
     <Content Include="Views\Modules\Overhead\umAddGLAccountRange.aspx" />
     <Content Include="Views\Modules\Overhead\umAddRemoveBudgetType.aspx" />
@@ -897,6 +898,13 @@
     </Compile>
     <Compile Include="Views\Modules\Overhead\umOverheadOrganizationSecurity.aspx.designer.cs">
       <DependentUpon>umOverheadOrganizationSecurity.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umOverheadRollUpReport.aspx.cs">
+      <DependentUpon>umOverheadRollUpReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umOverheadRollUpReport.aspx.designer.cs">
+      <DependentUpon>umOverheadRollUpReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\Overhead\umOverheadSecurity.aspx.cs">
       <DependentUpon>umOverheadSecurity.aspx</DependentUpon>
