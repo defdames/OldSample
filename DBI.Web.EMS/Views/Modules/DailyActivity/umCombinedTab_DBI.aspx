@@ -60,20 +60,14 @@
             parent.App.uxApproveActivityButton.disable();
         };
 
-        var EmployeeRenderer = function (value) {
-            var r = App.uxEmployeeEmpStore.getById(value);
-            if (Ext.isEmpty(r)) {
-                return ;
-            }
-            return r.data.EMPLOYEE_NAME;
+        var EmployeeRenderer = function (value, record) {
+            
+            return record.record.data.EMPLOYEE_NAME;
         };
 
-        var EquipmentRenderer = function (value) {
-            var r = App.uxEmployeeEqStore.getById(value);
-            if (Ext.isEmpty(r)) {
-                return ;
-            }
-            return r.data.NAME;
+        var EquipmentRenderer = function (value, record) {
+            
+            return record.record.data.NAME;
         };
 
         var syncEmployeeValue = function (value) {
@@ -122,14 +116,11 @@
         <Proxy>
             <ext:PageProxy />
         </Proxy>
-        <Listeners>
-            <Load Handler="#{uxEmployeeGrid}.getView().refresh()" />
-        </Listeners>
     </ext:Store>
     <ext:Store runat="server"
         ID="uxEmployeeEqStore"
         OnReadData="deReadEquipmentData"
-        AutoDataBind="true" AutoLoad="true">
+        AutoDataBind="true" AutoLoad="true" ClearOnPageLoad="false">
         <Model>
             <ext:Model ID="Model9" runat="server" IDProperty="EQUIPMENT_ID">
                 <Fields>
@@ -146,9 +137,6 @@
         <Proxy>
             <ext:PageProxy />
         </Proxy>
-        <Listeners>
-            <Load Handler="#{uxEmployeeGrid}.getView().refresh()" />
-        </Listeners>
     </ext:Store>
     <form id="form1" runat="server">
         <ext:Panel runat="server" ID="uxMainContainer" Layout="AutoLayout">
@@ -557,6 +545,9 @@
                                                 <Plugins>
                                                     <ext:FilterHeader runat="server" ID="uxEmployeeEmpFilter" Remote="true" />
                                                 </Plugins>
+                                                <View>
+                                                    <ext:GridView runat="server" ID="uxEmployeeView" />
+                                                </View>
                                             </ext:GridPanel>
                                         </Component>
                                         <Listeners>

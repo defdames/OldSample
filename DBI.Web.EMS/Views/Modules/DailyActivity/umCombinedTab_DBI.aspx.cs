@@ -21,14 +21,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         protected List<WarningData>WarningList = new List<WarningData>();
         protected void Page_Load(object sender, EventArgs e)
         {
+
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
             if (!validateComponentSecurity("SYS.DailyActivity.View") && !validateComponentSecurity("SYS.DailyActivity.EmployeeView"))
             {
                 X.Redirect("~/Views/uxDefault.aspx");
             }
+            
             if (!X.IsAjaxRequest)
-            {
-                
+            {   
                 GetHeaderData();
                 GetEmployeeData();
                 GetEquipmentData();
@@ -1002,9 +1003,23 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 NewEmployee.TRAVEL_TIME = (decimal)item.TRAVEL_TIME_FORMATTED.TimeOfDay.TotalMinutes / 60;
                 GenericData.Insert<DAILY_ACTIVITY_EMPLOYEE>(NewEmployee);
 
+                string EmployeeName;
+                string EquipmentName;
+                using(Entities _context = new Entities()){
+                    EmployeeName = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == item.PERSON_ID).Select(x => x.EMPLOYEE_NAME).Single();
+                    EquipmentName = (from d in _context.DAILY_ACTIVITY_EQUIPMENT
+                                     join eq in _context.CLASS_CODES_V on d.PROJECT_ID equals eq.PROJECT_ID
+                                     where d.EQUIPMENT_ID == item.EQUIPMENT_ID
+                                     select eq.NAME).SingleOrDefault();
+                }
                 ModelProxy Record = uxEmployeeStore.GetByInternalId(item.PhantomID);
                 Record.CreateVariable = true;
                 Record.SetId(NewEmployee.EMPLOYEE_ID);
+                Record.Set("EMPLOYEE_NAME", EmployeeName);
+                if (EquipmentName != null)
+                {
+                    Record.Set("NAME", EquipmentName);
+                }
                 Record.Commit();
             }
 

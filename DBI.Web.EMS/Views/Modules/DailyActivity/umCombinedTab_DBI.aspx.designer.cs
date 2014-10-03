@@ -652,6 +652,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.FilterHeader uxEmployeeEmpFilter;
         
         /// <summary>
+        /// uxEmployeeView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.GridView uxEmployeeView;
+        
+        /// <summary>
         /// Column5 control.
         /// </summary>
         /// <remarks>
