@@ -17,7 +17,11 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!validateComponentSecurity("SYS.CustomerSurveys.ManageOrgs"))
+            {
+                X.Redirect("~/Views/uxDefault.aspx");
 
+            }
         }
 
         protected void deReadDollars(object sender, StoreReadDataEventArgs e)

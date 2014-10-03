@@ -11,10 +11,15 @@ using Ext.Net;
 
 namespace DBI.Web.EMS.Views.Modules.DailyActivity
 {
-    public partial class umAddEditProduction_IRM : System.Web.UI.Page
+    public partial class umAddEditProduction_IRM : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!validateComponentSecurity("SYS.DailyActivity.View") && !validateComponentSecurity("SYS.DailyActivity.EmployeeView"))
+            {
+                X.Redirect("~/Views/uxDefault.aspx");
+
+            }
             if (!X.IsAjaxRequest)
             {
                 uxAddProductionSurfaceTypeStore.Data = StaticLists.SurfaceTypes;

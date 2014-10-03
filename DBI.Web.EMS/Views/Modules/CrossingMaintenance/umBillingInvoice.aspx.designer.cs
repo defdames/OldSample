@@ -499,6 +499,24 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Toolbar Toolbar3;
         
         /// <summary>
+        /// uxSubmitDates control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxSubmitDates;
+        
+        /// <summary>
+        /// uxCancelDates control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxCancelDates;
+        
+        /// <summary>
         /// Button5 control.
         /// </summary>
         /// <remarks>
