@@ -38,7 +38,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             }
 
             int count;
-            uxForecastPeriodsByOrganization.DataSource = GenericData.EnumerableFilterHeader<OVERHEAD_ORG_BUDGETS_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _budgetsByOrganizationIDList, out count);
+            uxForecastPeriodsByOrganization.DataSource = GenericData.EnumerableFilterHeader<OVERHEAD_ORG_BUDGETS_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _budgetsByOrganizationIDList.OrderByDescending(x => x.ORG_BUDGET_ID).ToList(), out count);
             e.Total = count;
 
         }
@@ -85,13 +85,17 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                     OVERHEAD_ORG_BUDGETS _budget = _context.OVERHEAD_ORG_BUDGETS.Where(x => x.ORG_BUDGET_ID == _budgetID).SingleOrDefault();
 
+                    List<OVERHEAD_ACCOUNT_COMMENT> _accountComments = _context.OVERHEAD_ACCOUNT_COMMENT.Where(x => x.ORG_BUDGET_ID == _budgetID).ToList();
+
                     if (_budget != null)
                     {
                         //First get all the details and remove them, then delete the actual budget
                         List<OVERHEAD_BUDGET_DETAIL> _detail = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _budgetID).ToList();
                         GenericData.Delete<OVERHEAD_BUDGET_DETAIL>(_detail);
                         GenericData.Delete<OVERHEAD_ORG_BUDGETS>(_budget);
+                        GenericData.Delete<OVERHEAD_ACCOUNT_COMMENT>(_accountComments);
                     }
+
                 }
             }
 
@@ -188,7 +192,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 ID = "uxOpenBudgetTypeWindow",
                 Title = "Open Budget Type",
                 Height = 250,
-                Width = 550,
+                Width = 350,
                 Modal = true,
                 Resizable = false,
                 CloseAction = CloseAction.Destroy,
@@ -214,13 +218,29 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         protected void deSelectForecast(object sender, DirectEventArgs e)
         {
+            long _budgetid = long.Parse(e.ExtraParams["ORG_BUDGET_ID"]);
 
             if (uxForecastPeriodsByOrganizationSelectionModel.SelectedRows.Count() > 0)
             {
+                using (Entities _context = new Entities())
+                {
+                    //Return the budget 
+                    OVERHEAD_ORG_BUDGETS _budget = OVERHEAD_BUDGET_FORECAST.BudgetByID(_context, _budgetid);
+                    var _budgetType = OVERHEAD_BUDGET_TYPE.BudgetType(_budget.OVERHEAD_BUDGET_TYPE_ID);
+
+                    if (_budgetType.IMPORT_ACTUALS_ALLOWED == "N")
+                    {
+                        uxImportActuals.Disable();
+                    }
+                    else
+                    {
+                        uxImportActuals.Enable();
+                    }
+                }
+
                 uxOpenPeriod.Enable();
                 uxClosePeriod.Enable();
                 uxDelete.Enable();
-                uxImportActuals.Enable();
                 uxEditBudget.Enable();
             }
             else

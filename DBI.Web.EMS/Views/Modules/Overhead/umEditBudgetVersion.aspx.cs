@@ -29,6 +29,17 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 using (Entities _context = new Entities())
                 {
 
+                 long _budgetid = long.Parse(Request.QueryString["budget_id"]);
+
+                //Return the budget 
+                 OVERHEAD_ORG_BUDGETS _budget = OVERHEAD_BUDGET_FORECAST.BudgetByID(_context, _budgetid);
+                 var _budgetType = OVERHEAD_BUDGET_TYPE.BudgetType(_budget.OVERHEAD_BUDGET_TYPE_ID);
+
+                 if (_budgetType.IMPORT_ACTUALS_ALLOWED == "N")
+                 {
+                     uxImportActualsButton.Disable();
+                 }
+
                     long _organizationID;
                     bool checkOrgId = long.TryParse(Request.QueryString["orgid"], out _organizationID);
                     short _fiscal_year = short.Parse(Request.QueryString["fiscalyear"]);
@@ -518,10 +529,17 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             }
         }
 
+        public void showPrintWindow(object sender, DirectEventArgs e)
+        {
+            uxPrintBlank.Checked = uxHideBlankLinesCheckbox.Checked;
+            uxPrintGroup.Checked = uxCollapseAccountTotals.Checked;
+            uxPrintWindow.Show();
+
+        }
+
 
         public void printOverheadBudget(object sender, DirectEventArgs e)
         {
-
             short _fiscal_year = short.Parse(Request.QueryString["fiscalyear"]);
             long _organizationID = long.Parse(Request.QueryString["orgid"]);
             long _budgetid = long.Parse(Request.QueryString["budget_id"]);
@@ -531,8 +549,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             {
 
                 OVERHEAD_BUDGET_FORECAST.PRINT_OPTIONS _printOptions = new OVERHEAD_BUDGET_FORECAST.PRINT_OPTIONS();
-                _printOptions.HIDE_BLANK_LINES = uxHideBlankLinesCheckbox.Checked;
-                _printOptions.GROUP_ACCOUNTS = uxCollapseAccountTotals.Checked;
+                _printOptions.HIDE_BLANK_LINES = uxPrintBlank.Checked;
+                _printOptions.GROUP_ACCOUNTS = uxPrintGroup.Checked;
+                _printOptions.SHOW_NOTES = uxPrintNote.Checked;
+                _printOptions.ROLLUP = uxPrintRollup.Checked;
 
 
                 MemoryStream PdfStream = OVERHEAD_BUDGET_FORECAST.GenerateReport(_context, _organizationID, _fiscal_year, _budgetid, _description, _printOptions);

@@ -19,10 +19,10 @@ namespace DBI.Mobile.EMS.Controllers
             if (id == "production")
             {
                 Version ver = new Version();
-                ver.number = "1.0.R140718";
+                ver.number = "1.0.T140923";
                 ver.mandatory = true;
-                ver.install_url = "itms-services://?action=download-manifest&url=https://emsmobile.dbiservices.com/iems/iEMS.plist";
-                ver.descriptionText = "Changed wording on inventory screen to Customer Material for DBI Projects";
+                ver.install_url = "itms-services://?action=download-manifest&url=https://emsmobiletest.dbiservices.com/iems/iEMS.plist";
+                ver.descriptionText = "Testing for EPA Number, EPA Number for Items 40001,40007 and 40012 should show the correct EPA number.";
 
                 RootObject root = new RootObject();
                 root.version = ver;

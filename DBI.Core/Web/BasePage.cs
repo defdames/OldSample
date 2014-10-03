@@ -45,7 +45,6 @@ namespace DBI.Core.Web
         }
 
 
-
         /// <summary>
         /// Returns the system time as Invariant, needed to store all data in tables that require datetimes.
         /// </summary>

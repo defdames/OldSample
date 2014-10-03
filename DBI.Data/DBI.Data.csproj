@@ -464,6 +464,9 @@
     <Compile Include="SYS_USER_ACTIVITY_CT.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="SYS_USER_ACTIVITY_LOG.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="SYS_USER_INFORMATION.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>

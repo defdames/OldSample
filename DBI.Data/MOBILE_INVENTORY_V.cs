@@ -26,5 +26,6 @@ namespace DBI.Data
         public string INV_NAME { get; set; }
         public Nullable<long> INV_LOCATION { get; set; }
         public long ORGANIZATION_ID { get; set; }
+        public string EPA_DESCRIPTION { get; set; }
     }
 }

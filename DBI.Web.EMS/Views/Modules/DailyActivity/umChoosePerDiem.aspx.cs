@@ -15,6 +15,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!validateComponentSecurity("SYS.DailyActivity.View") && !validateComponentSecurity("SYS.DailyActivity.EmployeeView"))
+            {
+                X.Redirect("~/Views/uxDefault.aspx");
+
+            }
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
             long EmployeeId = long.Parse(Request.QueryString["EmployeeId"]);
             FillComboBox(HeaderId, EmployeeId);

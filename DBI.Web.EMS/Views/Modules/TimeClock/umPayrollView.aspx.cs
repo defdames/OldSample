@@ -18,7 +18,14 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!X.IsAjaxRequest) ;
+            if (!X.IsAjaxRequest)
+            {
+                if (!validateComponentSecurity("SYS.TimeClock.Payroll"))
+                {
+                    X.Redirect("~/Views/uxDefault.aspx");
+                }
+            }
+
 
             if (uxToggleSubmitted.Checked)
             { uxSubmitButton.Disabled = true; }

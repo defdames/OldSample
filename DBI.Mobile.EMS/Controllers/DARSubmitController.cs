@@ -45,12 +45,14 @@ namespace DBI.Mobile.EMS.Controllers
 
 
             import.DEVICE_ID = requestHeaderByValue("DeviceID", req);
+
+            if (import.DEVICE_ID.Length == 0)
+                import.DEVICE_ID = "0000";
+
             import.RESPONSE = jsonString;
             import.MODEL = requestHeaderByValue("Model", req);
             import.SYSTEM_VERSION = requestHeaderByValue("SystemVersion", req);
             import.APP_VERSION = requestHeaderByValue("AppVersion", req);
-            //import.LATITUDE = decimal.Parse(req.Headers.Single(k => k.Key == "Latitude").Value.ToString());
-            //import.LONGITUDE = decimal.Parse(req.Headers.Single(k => k.Key == "Longitude").Value.ToString());
             import.CREATE_DATE = DateTime.Now;
 
             try
@@ -237,6 +239,10 @@ namespace DBI.Mobile.EMS.Controllers
                     }
                     transaction.Complete();
                 }
+
+                System.IO.StreamWriter file2 = new System.IO.StreamWriter("c:\\temp\\json.txt");
+                file2.Write(jsonString.ToString());
+                file2.Close();
 
             }
             catch (DbEntityValidationException dbeve)

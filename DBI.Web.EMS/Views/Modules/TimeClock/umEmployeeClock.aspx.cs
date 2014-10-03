@@ -18,6 +18,15 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
         protected void Page_Load(object sender, EventArgs e)
         {   //Load loggeed in user info as well check for unfinisehd records and load the users gridpanel with exsisting records and user name
             string person_name = Authentication.GetClaimValue("EmployeeName", User as ClaimsPrincipal);
+            if (!X.IsAjaxRequest)
+            {
+                if (!validateComponentSecurity("SYS.TimeClock.Employee"))
+                {
+                    X.Redirect("~/Views/uxDefault.aspx");
+                }
+            }
+
+
             GetTimeRecord();
             FillGridPanel();
             uxUser_NameTextBox.Text = person_name;

@@ -16,6 +16,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!validateComponentSecurity("SYS.DailyActivity.View") && !validateComponentSecurity("SYS.DailyActivity.EmployeeView"))
+            {
+                X.Redirect("~/Views/uxDefault.aspx");
+
+            }
             if (!X.IsAjaxRequest)
             {
                 if (Request.QueryString["type"] == "Edit")

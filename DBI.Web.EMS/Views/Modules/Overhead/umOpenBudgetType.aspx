@@ -5,6 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+    
 </head>
 <body>
     <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
@@ -38,47 +39,18 @@
                                     </ext:Store>
                                 </Store>
                                 <Listeners>
-                                    <Select Handler="#{uxBudgetName}.clearValue();
-                                        #{uxBudgetNameStore}.removeAll(true);
-                                        #{uxBudgetName}.enable();
-                                        #{uxBudgetNameStore}.reload();" />
+                                    <Select Handler="#{uxOpenPeriod}.enable();" />
                                 </Listeners>
                             </ext:ComboBox>
 
                         </Items>
                     </ext:FieldContainer>
-                        <ext:FieldContainer ID="FieldContainer3" 
-                        runat="server"
-                        LabelStyle="font-weight:bold;padding:0;"
-                        Layout="HBoxLayout">
-                        <Items>
-                           <ext:ComboBox runat="server" ID="uxBudgetName" Editable="true" TypeAhead="true" Disabled="true"
-                                FieldLabel="Budget Name" AnchorHorizontal="55%" DisplayField="BUDGET_DESCRIPTION"
-                                ValueField="OVERHEAD_BUDGET_TYPE_ID" TriggerAction="All" 
-                                MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" >
-                                <Store>
-                                    <ext:Store runat="server" ID="uxBudgetNameStore" OnReadData="deLoadBudgetNames" AutoLoad="false" AutoDataBind="true" >
-                                        <Proxy>
-                                            <ext:PageProxy />
-                                        </Proxy>
-                                        <Model>
-                                            <ext:Model ID="Model1" runat="server" IDProperty="OVERHEAD_BUDGET_TYPE_ID">
-                                                <Fields>
-                                                    <ext:ModelField Name="BUDGET_NAME" />
-                                                    <ext:ModelField Name="BUDGET_DESCRIPTION" />
-                                                </Fields>
-                                            </ext:Model>
-                                        </Model>
-                                    </ext:Store>
-                                </Store>
-                            </ext:ComboBox>
-                        </Items>
-                    </ext:FieldContainer>  
+                          
                     </Items>
                     <Buttons>
-                        <ext:Button runat="server" ID="uxOpenPeriod" Text="Create Period" Disabled="true" icon="ApplicationAdd">
+                        <ext:Button runat="server" ID="uxOpenPeriod" Text="Open Next Period" Disabled="true" icon="ApplicationAdd">
                           <DirectEvents>
-                              <Click OnEvent="deOpenPeriod" Success="parent.Ext.getCmp('uxOpenBudgetTypeWindow').close();" ><Confirmation ConfirmRequest="true" Message="Are you sure you want to create this budget period?"></Confirmation><EventMask ShowMask="true"></EventMask></Click>
+                              <Click OnEvent="deOpenPeriod" Timeout="5000000" Success="parent.Ext.getCmp('uxOpenBudgetTypeWindow').close();" ><Confirmation ConfirmRequest="true"></Confirmation><EventMask ShowMask="true"></EventMask></Click>
                           </DirectEvents>
                         </ext:Button>
                         <ext:Button ID="uxCloseButton" runat="server" Text="Close Form"><Listeners><Click Handler="parent.Ext.getCmp('uxOpenBudgetTypeWindow').close();"></Click></Listeners></ext:Button>
