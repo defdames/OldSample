@@ -14,7 +14,7 @@
                 <rsweb:ReportViewer ID="ReportViewer1" runat="server" Width="100%" Font-Names="Verdana" Font-Size="8pt" WaitMessageFont-Names="Verdana" WaitMessageFont-Size="14pt">
                     <LocalReport ReportEmbeddedResource="DBI.Web.EMS.Views.Modules.BudgetBidding.Reports.Report1.rdlc" ReportPath="Views\Modules\BudgetBidding\Reports\Report1.rdlc">
                         <DataSources>
-                            <rsweb:ReportDataSource DataSourceId="ObjectDataSource1" Name="DataSet1" />
+                            <rsweb:ReportDataSource DataSourceId="ObjectDataSource1" Name="Org_Summary" />
                         </DataSources>
                     </LocalReport>
         </rsweb:ReportViewer>

@@ -381,13 +381,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 long prevVerID = Convert.ToInt64(uxHidPrevVer.Text);
                 
 
-                string url = "/Views/Modules/BudgetBidding/Reports/umReport2.aspx?orgName=" + strorgName + "&orgID=" + orgID + "&yearID=" + yearID + "&verID=" + verID + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID;
+                string url = "/Views/Modules/BudgetBidding/Reports/umReport1.aspx?orgName=" + strorgName + "&orgID=" + orgID + "&yearID=" + yearID + "&verID=" + verID + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID;
 
                 Window win = new Window
                 {
                     ID = "uxReport",
                     Title = "Report",
-                    Height = 600,
+                    Height = 800,
                     Width = 800,
                     Modal = true,
                     Resizable = true,
