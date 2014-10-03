@@ -167,7 +167,7 @@ namespace DBI.Web.EMS.Views.Modules.Security
 
             using (Entities _context = new Entities())
             {
-                var AllOrgs = _context.ORG_HIER_V.Select(x => new { x.ORG_HIER, x.ORG_ID }).Distinct().ToList();
+                var AllOrgs = _context.ORG_HIER_V.Select(x => new { x.ORG_HIER, x.ORG_ID }).ToList();
                 long UserId = long.Parse(e.ExtraParams["UserId"]);
 
                 var SelectedOrgs = (from s in _context.SYS_USER_ORGS
