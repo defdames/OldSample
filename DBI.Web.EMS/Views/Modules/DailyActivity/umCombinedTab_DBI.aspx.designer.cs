@@ -22,13 +22,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.ResourceManager ResourceManager1;
         
         /// <summary>
-        /// uxAddEmployeeEmpStore control.
+        /// uxEmployeeEmpStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store uxAddEmployeeEmpStore;
+        protected global::Ext.Net.Store uxEmployeeEmpStore;
         
         /// <summary>
         /// Model1 control.
@@ -40,13 +40,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Model Model1;
         
         /// <summary>
-        /// uxAddEmployeeEqStore control.
+        /// uxEmployeeEqStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store uxAddEmployeeEqStore;
+        protected global::Ext.Net.Store uxEmployeeEqStore;
         
         /// <summary>
         /// Model9 control.
@@ -490,22 +490,22 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Column Column10;
         
         /// <summary>
-        /// uxAddEmployeeEqDropDown control.
+        /// uxEmployeeEqDropDown control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DropDownField uxAddEmployeeEqDropDown;
+        protected global::Ext.Net.DropDownField uxEmployeeEqDropDown;
         
         /// <summary>
-        /// uxAddEmployeeEqGrid control.
+        /// uxEmployeeEqGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel uxAddEmployeeEqGrid;
+        protected global::Ext.Net.GridPanel uxEmployeeEqGrid;
         
         /// <summary>
         /// Column12 control.
@@ -562,22 +562,22 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Column Column9;
         
         /// <summary>
-        /// uxAddEmployeeEmpDropDown control.
+        /// uxEmployeeEmpDropDown control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DropDownField uxAddEmployeeEmpDropDown;
+        protected global::Ext.Net.DropDownField uxEmployeeEmpDropDown;
         
         /// <summary>
-        /// uxAddEmployeeEmpGrid control.
+        /// uxEmployeeEmpGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel uxAddEmployeeEmpGrid;
+        protected global::Ext.Net.GridPanel uxEmployeeEmpGrid;
         
         /// <summary>
         /// Column6 control.
@@ -643,13 +643,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.RowSelectionModel RowSelectionModel1;
         
         /// <summary>
-        /// uxAddEmployeeEmpFilter control.
+        /// uxEmployeeEmpFilter control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FilterHeader uxAddEmployeeEmpFilter;
+        protected global::Ext.Net.FilterHeader uxEmployeeEmpFilter;
         
         /// <summary>
         /// Column5 control.
@@ -733,15 +733,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Column Column4;
         
         /// <summary>
-        /// Column11 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Column Column11;
-        
-        /// <summary>
         /// uxPerDiemColumn control.
         /// </summary>
         /// <remarks>
@@ -794,15 +785,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Button uxAddEmployeeButton;
-        
-        /// <summary>
-        /// uxEditEmployeeButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxEditEmployeeButton;
         
         /// <summary>
         /// uxDeleteEmployeeButton control.

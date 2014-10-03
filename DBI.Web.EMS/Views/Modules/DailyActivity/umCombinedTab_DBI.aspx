@@ -29,6 +29,22 @@
             toolTip.update(data);
         };
 
+        var mySetValue = function (value, text) {
+            if (!text && !!value) {
+                text = EmployeeRenderer(value);
+            }
+
+            Ext.net.DropDownField.prototype.setValue.call(this, value, text);
+        };
+
+        var SetEquipmentValue = function (value, text) {
+            if (!text && !!value) {
+                text = EquipmentRenderer(value);
+            }
+
+            Ext.net.DropDownField.prototype.setValue.call(this, value, text);
+        };
+
         var showButtons = function () {
             App.uxSaveFooterButton.show();
             App.uxSaveHeaderButton.show();
@@ -45,42 +61,52 @@
         };
 
         var EmployeeRenderer = function (value) {
-            var r = App.uxEmployeeStore.getById(value);
+            var r = App.uxEmployeeEmpStore.getById(value);
             if (Ext.isEmpty(r)) {
-                return "";
+                return ;
             }
             return r.data.EMPLOYEE_NAME;
         };
 
-        var EmpEquipRenderer = function (value) {
-            var r = App.uxAddEmployeeEqStore.getById(value);
+        var EquipmentRenderer = function (value) {
+            var r = App.uxEmployeeEqStore.getById(value);
             if (Ext.isEmpty(r)) {
-                return "";
+                return ;
             }
             return r.data.NAME;
         };
 
-        var test = function () {
-            var data = App.uxEmployeeGrid.getSelectionModel().getSelection()[0].data;
-            App.uxAddEmployeeEmpDropDown.setValue(data.EMPLOYEE_NAME);
-            App.uxAddEmployeeEmpDropDown.setRawValue(data.EMPLOYEE_NAME);
+        var syncEmployeeValue = function (value) {
+            var grid = this.component;
 
+            var ids = value.split(",");
+            grid.getSelectionModel().deselectAll();
+            Ext.each(ids, function (id) {
+                var node = grid.store.getById(id);
+
+                if (node) {
+                    grid.getSelectionModel().select(node, true);
+                }
+            }, this);
         };
 
-        var fillDropDowns = function () {
-            var EQUIPMENT_ID = App.uxEmployeeGrid.getSelectionModel().getSelection()[0].data.EQUIPMENT_ID;
-            alert(EQUIPMENT_ID);
-            var r = App.uxAddEmployeeEqStore.getById(EQUIPMENT_ID);
-            App.uxAddEmployeeEqDropDown.setValue(EQUIPMENT_ID, r.data.NAME);
-            App.uxAddEmployeeEqDropDown.setRawValue(r.data.NAME);
-
+        var deleteEmployee = function () {
+            var EmployeeRecord = App.uxEmployeeGrid.getSelectionModel().getSelection()
+            
+            Ext.Msg.confirm('Really Delete?', 'Do you really want to delete this employee?', function (e) {
+                if (e == 'yes') {
+                    App.uxEmployeeStore.remove(EmployeeRecord);
+                    App.direct.dmDeleteEmployee(EmployeeRecord[0].data.EMPLOYEE_ID);
+                }
+            });
         };
+           
     </script>
 </head>
 <body>
     <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
     <ext:Store runat="server"
-        ID="uxAddEmployeeEmpStore"
+        ID="uxEmployeeEmpStore"
         PageSize="10"
         RemoteSort="true"
         OnReadData="deReadEmployeeData" AutoLoad="true">
@@ -101,7 +127,7 @@
         </Listeners>
     </ext:Store>
     <ext:Store runat="server"
-        ID="uxAddEmployeeEqStore"
+        ID="uxEmployeeEqStore"
         OnReadData="deReadEquipmentData"
         AutoDataBind="true" AutoLoad="true">
         <Model>
@@ -400,18 +426,18 @@
                         <ext:Store runat="server"
                             ID="uxEmployeeStore">
                             <Model>
-                                <ext:Model ID="Model2" runat="server" Name="Employee" IDProperty="PERSON_ID">
+                                <ext:Model ID="Model2" runat="server" Name="Employee" IDProperty="EMPLOYEE_ID" ClientIdProperty="PhantomId">
                                     <Fields>
                                         <ext:ModelField Name="EMPLOYEE_ID" />
                                         <ext:ModelField Name="PERSON_ID" />
                                         <ext:ModelField Name="EMPLOYEE_NAME" />
                                         <ext:ModelField Name="NAME" />
                                         <ext:ModelField Name="EQUIPMENT_ID" />
-                                        <ext:ModelField Name="TIME_IN_DATE" Type="Date" ServerMapping="TIME_IN" />
-                                        <ext:ModelField Name="TIME_IN_TIME" Type="Date" ServerMapping="TIME_IN" />
-                                        <ext:ModelField Name="TIME_OUT_DATE" Type="Date" ServerMapping="TIME_OUT" />
-                                        <ext:ModelField Name="TIME_OUT_TIME" Type="Date" ServerMapping="TIME_OUT" />
-                                        <ext:ModelField Name="TRAVEL_TIME_FORMATTED" />
+                                        <ext:ModelField Name="TIME_IN" Type="Date" />
+                                        <ext:ModelField Name="TIME_IN_TIME" Type="Date" />
+                                        <ext:ModelField Name="TIME_OUT" Type="Date" />
+                                        <ext:ModelField Name="TIME_OUT_TIME" Type="Date" />
+                                        <ext:ModelField Name="TRAVEL_TIME_FORMATTED" Type="Date" />
                                         <ext:ModelField Name="DRIVE_TIME_FORMATTED" />
                                         <ext:ModelField Name="TOTAL_HOURS" />
                                         <ext:ModelField Name="PER_DIEM" />
@@ -428,13 +454,16 @@
                             <ext:Column ID="Column10" runat="server" DataIndex="EQUIPMENT_ID" Text="Equipment Name" Flex="13">
                                 <Editor>
                                     <ext:DropDownField runat="server" Editable="false"
-                                        ID="uxAddEmployeeEqDropDown"
+                                        ID="uxEmployeeEqDropDown"
                                         Mode="ValueText"
                                         AllowBlank="true" Width="500">
+                                        <CustomConfig>
+                                            <ext:ConfigItem Name="setValue" Value="SetEquipmentValue" Mode="Raw" />
+                                        </CustomConfig>
                                         <Component>
                                             <ext:GridPanel runat="server"
-                                                ID="uxAddEmployeeEqGrid"
-                                                Layout="HBoxLayout" StoreID="uxAddEmployeeEqStore">
+                                                ID="uxEmployeeEqGrid"
+                                                Layout="HBoxLayout" StoreID="uxEmployeeEqStore">
                                                 <ColumnModel>
                                                     <Columns>
                                                         <ext:Column ID="Column12" runat="server" Text="Name" DataIndex="NAME" Flex="15" />
@@ -450,9 +479,9 @@
                                                 <DirectEvents>
                                                     <SelectionChange OnEvent="deStoreGridValue">
                                                         <ExtraParams>
-                                                            <ext:Parameter Name="EquipmentId" Value="#{uxAddEmployeeEqGrid}.getSelectionModel().getSelection()[0].data.EQUIPMENT_ID" Mode="Raw" />
-                                                            <ext:Parameter Name="Name" Value="#{uxAddEmployeeEqGrid}.getSelectionModel().getSelection()[0].data.NAME" Mode="Raw" />
-                                                            <ext:Parameter Name="Type" Value="EquipmentAdd" />
+                                                            <ext:Parameter Name="EquipmentId" Value="#{uxEmployeeEqGrid}.getSelectionModel().getSelection()[0].data.EQUIPMENT_ID" Mode="Raw" />
+                                                            <ext:Parameter Name="Name" Value="#{uxEmployeeEqGrid}.getSelectionModel().getSelection()[0].data.NAME" Mode="Raw" />
+                                                            <ext:Parameter Name="Type" Value="Equipment" />
                                                         </ExtraParams>
                                                     </SelectionChange>
                                                 </DirectEvents>
@@ -463,21 +492,21 @@
                                         </Listeners>
                                     </ext:DropDownField>
                                 </Editor>
-                                <Renderer Fn="EmpEquipRenderer" />
+                                <Renderer Fn="EquipmentRenderer" />
                             </ext:Column>
                             <ext:Column ID="Column9" runat="server" DataIndex="PERSON_ID" Text="Employee Name" Flex="13">
                                 <Renderer Fn="EmployeeRenderer" />
                                 <Editor>
                                     <ext:DropDownField runat="server"
-                                        ID="uxAddEmployeeEmpDropDown"
+                                        ID="uxEmployeeEmpDropDown"
                                         Mode="ValueText"
                                         AllowBlank="false"
                                         Editable="false" Width="500" InvalidCls="allowBlank">
                                         <Component>
                                             <ext:GridPanel runat="server"
-                                                ID="uxAddEmployeeEmpGrid"
+                                                ID="uxEmployeeEmpGrid"
                                                 Layout="HBoxLayout"
-                                                StoreID="uxAddEmployeeEmpStore">
+                                                StoreID="uxEmployeeEmpStore">
                                                 <ColumnModel>
                                                     <Columns>
                                                         <ext:Column ID="Column6" runat="server" Text="Person ID" DataIndex="PERSON_ID" Flex="20" />
@@ -496,7 +525,7 @@
                                                                 <DirectEvents>
                                                                     <Click OnEvent="deRegionToggle">
                                                                         <ExtraParams>
-                                                                            <ext:Parameter Name="Type" Value="EmployeeAdd" />
+                                                                            <ext:Parameter Name="Type" Value="Employee" />
                                                                         </ExtraParams>
                                                                     </Click>
                                                                 </DirectEvents>
@@ -513,33 +542,32 @@
                                                 <DirectEvents>
                                                     <SelectionChange OnEvent="deStoreGridValue">
                                                         <ExtraParams>
-                                                            <ext:Parameter Name="PersonId" Value="#{uxAddEmployeeEmpGrid}.getSelectionModel().getSelection()[0].data.PERSON_ID" Mode="Raw" />
-                                                            <ext:Parameter Name="Name" Value="#{uxAddEmployeeEmpGrid}.getSelectionModel().getSelection()[0].data.EMPLOYEE_NAME" Mode="Raw" />
-                                                            <ext:Parameter Name="Type" Value="EmployeeAdd" />
+                                                            <ext:Parameter Name="PersonId" Value="#{uxEmployeeEmpGrid}.getSelectionModel().getSelection()[0].data.PERSON_ID" Mode="Raw" />
+                                                            <ext:Parameter Name="Name" Value="#{uxEmployeeEmpGrid}.getSelectionModel().getSelection()[0].data.EMPLOYEE_NAME" Mode="Raw" />
+                                                            <ext:Parameter Name="Type" Value="Employee" />
                                                         </ExtraParams>
                                                     </SelectionChange>
                                                     <SelectionChange OnEvent="deCheckExistingPerDiem">
                                                         <ExtraParams>
-                                                            <ext:Parameter Name="PersonId" Value="#{uxAddEmployeeEmpGrid}.getSelectionModel().getSelection()[0].data.PERSON_ID" Mode="Raw" />
+                                                            <ext:Parameter Name="PersonId" Value="#{uxEmployeeEmpGrid}.getSelectionModel().getSelection()[0].data.PERSON_ID" Mode="Raw" />
                                                             <ext:Parameter Name="Form" Value="Add" />
                                                         </ExtraParams>
                                                     </SelectionChange>
                                                 </DirectEvents>
                                                 <Plugins>
-                                                    <ext:FilterHeader runat="server" ID="uxAddEmployeeEmpFilter" Remote="true" />
+                                                    <ext:FilterHeader runat="server" ID="uxEmployeeEmpFilter" Remote="true" />
                                                 </Plugins>
                                             </ext:GridPanel>
                                         </Component>
                                         <Listeners>
                                             <Expand Handler="this.picker.setWidth(500);" />
                                         </Listeners>
+                                        <CustomConfig>
+                                            <ext:ConfigItem Name="setValue" Value="mySetValue" Mode="Raw" />
+                                        </CustomConfig>
+                                        <SyncValue Fn="syncEmployeeValue" />
                                     </ext:DropDownField>
                                 </Editor>
-                                <EditorOptions>
-                                    <Listeners>
-                                        <StartEdit Fn="test" />
-                                    </Listeners>
-                                </EditorOptions>
                             </ext:Column>
                             <ext:Column ID="Column5" runat="server" DataIndex="FOREMAN_LICENSE" Text="License" Flex="7">
                                 <Editor>
@@ -547,7 +575,7 @@
                                         ID="uxAddEmployeeLicense" Width="500" />
                                 </Editor>
                             </ext:Column>
-                            <ext:DateColumn ID="DateColumn2" runat="server" DataIndex="TIME_IN_DATE" Text="Time In" Flex="8" Format="M/d/yyyy">
+                            <ext:DateColumn ID="DateColumn2" runat="server" DataIndex="TIME_IN" Text="Time In" Flex="8" Format="M/d/yyyy">
                                 <Editor>
                                     <ext:DateField runat="server" ID="uxEmployeeTimeInDate" AllowBlank="false" InvalidCls="allowBlank" />
                                 </Editor>
@@ -557,22 +585,22 @@
                                     <ext:TimeField runat="server" AllowBlank="false" InvalidCls="allowBlank" />
                                 </Editor>
                             </ext:DateColumn>
-                            <ext:DateColumn ID="DateColumn3" runat="server" DataIndex="TIME_OUT_DATE" Text="Time Out" Flex="8" Format="M/d/yyyy">
+                            <ext:DateColumn ID="DateColumn3" runat="server" DataIndex="TIME_OUT" Text="Time Out" Flex="8" Format="M/d/yyyy">
                                 <Editor>
                                     <ext:DateField ID="uxEmployeeTimeOutDate" runat="server" AllowBlank="false" InvalidCls="allowBlank" />
                                 </Editor>
                             </ext:DateColumn>
-                            <ext:DateColumn ID="DateColumn4" runat="server" DataIndex="TIME_OUT_TIME" Text="Time In" Flex="8" Format="h:mm">
+                            <ext:DateColumn ID="DateColumn4" runat="server" DataIndex="TIME_OUT_TIME" Text="Time Out" Flex="8" Format="h:mm">
                                 <Editor>
                                     <ext:TimeField runat="server" AllowBlank="false" InvalidCls="allowBlank" />
                                 </Editor>
                             </ext:DateColumn>
                             <ext:Column ID="Column4" runat="server" DataIndex="TOTAL_HOURS" Text="Total Hours" Flex="7" />
-                            <ext:Column ID="Column11" runat="server" DataIndex="TRAVEL_TIME_FORMATTED" Text="Travel Time" Flex="6">
+                            <ext:DateColumn runat="server" DataIndex="TRAVEL_TIME_FORMATTED" Text="Travel Time" Flex="6" Format="H:mm">
                                 <Editor>
                                     <ext:TimeField runat="server" MinTime="00:00" MaxTime="23:59" Format="H:mm" />
                                 </Editor>
-                            </ext:Column>
+                            </ext:DateColumn>
                             <ext:CheckColumn ID="uxPerDiemColumn" runat="server" DataIndex="PER_DIEM" Text="Per Diem" Flex="6" Editable="true" />
                             <ext:Column ID="Column1" runat="server" DataIndex="LUNCH_LENGTH" Text="Lunch Length" Flex="7" />
                             <ext:Column ID="Column14" runat="server" DataIndex="COMMENTS" Text="Comments" Flex="14">
@@ -593,20 +621,10 @@
                                         <Click Handler="#{uxEmployeeStore}.insert(0, new Employee())" />
                                     </Listeners>
                                 </ext:Button>
-                                <ext:Button ID="uxEditEmployeeButton" runat="server" Text="Edit" Icon="ApplicationEdit" Disabled="true">
-                                    <Listeners>
-                                        <Click Handler="parent.App.direct.dmLoadEmployeeWindow('Edit', App.uxHeaderField.value, App.uxEmployeeGrid.getSelectionModel().getSelection()[0].data.EMPLOYEE_ID)" />
-                                    </Listeners>
-                                </ext:Button>
                                 <ext:Button ID="uxDeleteEmployeeButton" runat="server" Text="Delete" Icon="ApplicationDelete" Disabled="true">
-                                    <DirectEvents>
-                                        <Click OnEvent="deRemoveEmployee">
-                                            <Confirmation Title="Remove?" ConfirmRequest="true" Message="Do you really want to remove the Employee?" />
-                                            <ExtraParams>
-                                                <ext:Parameter Name="EmployeeID" Value="#{uxEmployeeGrid}.getSelectionModel().getSelection()[0].data.EMPLOYEE_ID" Mode="Raw" />
-                                            </ExtraParams>
-                                        </Click>
-                                    </DirectEvents>
+                                    <Listeners>
+                                        <Click Fn="deleteEmployee" />
+                                    </Listeners>
                                 </ext:Button>
                                 <ext:ToolbarSeparator runat="server" />
                                 <ext:Button runat="server"
@@ -631,22 +649,22 @@
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
-                    <Listeners>
-                        <Select Handler="#{uxEditEmployeeButton}.enable(); #{uxDeleteEmployeeButton}.enable(); #{uxChooseLunchHeaderButton}.enable(); #{uxChoosePerDiemButton}.enable()" />
-                    </Listeners>
                     <Plugins>
                         <ext:RowEditing runat="server" ClicksToMoveEditor="1" AutoCancel="false" ID="test">
                             <DirectEvents>
                                 <Edit OnEvent="deSaveEmployee" Before="return #{uxEmployeeStore}.isDirty();">
                                     <ExtraParams>
                                         <ext:Parameter Name="data" Value="#{uxEmployeeStore}.getChangedData({skipIdForPhantomRecords : false})" Mode="Raw" Encode="true" />
-                                        <ext:Parameter Name="TypeName" Value="#{uxAddEmployeeEmpDropDown}.Value" Mode="Raw" />
+                                        <ext:Parameter Name="TypeName" Value="#{uxEmployeeEmpDropDown}.Value" Mode="Raw" />
                                     </ExtraParams>
                                     <EventMask ShowMask="true" />
                                 </Edit>
                             </DirectEvents>
                         </ext:RowEditing>
                     </Plugins>
+                    <Listeners>
+                        <Select Handler="#{uxDeleteEmployeeButton}.enable(); #{uxChooseLunchHeaderButton}.enable(); #{uxChoosePerDiemButton}.enable()" />
+                    </Listeners>
                 </ext:GridPanel>
                 <ext:GridPanel runat="server" ID="uxEquipmentGrid"
                     Title="Equipment"

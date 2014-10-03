@@ -192,18 +192,20 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     double Hours = Math.Truncate((double)item.TRAVEL_TIME);
                     double Minutes = Math.Round(((double)item.TRAVEL_TIME - Hours) * 60);
                     item.TOTAL_HOURS = (item.TIME_OUT - item.TIME_IN).ToString("hh\\:mm");
+                    item.TIME_IN_TIME = item.TIME_IN;
+                    item.TIME_OUT_TIME = item.TIME_OUT;
                     TimeSpan TotalTimeSpan = new TimeSpan(Convert.ToInt32(Hours), Convert.ToInt32(Minutes), 0);
-                    item.TRAVEL_TIME_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
+                    item.TRAVEL_TIME_FORMATTED = DateTime.Now.Date + TotalTimeSpan;
                     Hours = Math.Truncate((double)item.DRIVE_TIME);
                     Minutes = Math.Round(((double)item.DRIVE_TIME - Hours) * 60);
                     TotalTimeSpan = new TimeSpan(Convert.ToInt32(Hours), Convert.ToInt32(Minutes), 0);
-                    item.DRIVE_TIME_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
+                    item.DRIVE_TIME_FORMATTED = DateTime.Now.Date + TotalTimeSpan;
                     List<WarningData>Overlaps = ValidationChecks.employeeTimeOverlapCheck(item.PERSON_ID, (DateTime)item.DA_DATE, HeaderId);
                     if(Overlaps.Count > 0){
                         WarningList.AddRange(Overlaps);
                     }
 
-                    WarningData EmployeeBusinessUnitFailures = ValidationChecks.EmployeeBusinessUnitCheck(item.EMPLOYEE_ID);
+                    WarningData EmployeeBusinessUnitFailures = ValidationChecks.EmployeeBusinessUnitCheck((long)item.EMPLOYEE_ID);
                     if (EmployeeBusinessUnitFailures != null)
                     {
                         WarningList.Add(EmployeeBusinessUnitFailures);
@@ -252,7 +254,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             X.Js.Call("disableOnError");
                         }
                     }
-                    List<WarningData> DuplicatePerDiems = ValidationChecks.checkPerDiem(item.EMPLOYEE_ID, item.HEADER_ID);
+                    List<WarningData> DuplicatePerDiems = ValidationChecks.checkPerDiem((long)item.EMPLOYEE_ID, item.HEADER_ID);
                     if (DuplicatePerDiems.Count > 0)
                     {
                         WarningList.AddRange(DuplicatePerDiems);
@@ -876,8 +878,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             List<EMPLOYEES_V> data = GenericData.EnumerableFilterHeader<EMPLOYEES_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataIn, out count).ToList();
 
             e.Total = count;
-            uxAddEmployeeEmpStore.DataSource = data;
-            uxAddEmployeeEmpStore.DataBind();
+            uxEmployeeEmpStore.DataSource = data;
+            uxEmployeeEmpStore.DataBind();
         }
 
         /// <summary>
@@ -887,15 +889,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deStoreGridValue(object sender, DirectEventArgs e)
         {
-            if (e.ExtraParams["Type"] == "EmployeeAdd")
+            if (e.ExtraParams["Type"] == "Equipment")
             {
-                uxAddEmployeeEmpDropDown.SetValue(e.ExtraParams["PersonId"]);
-                uxAddEmployeeEmpDropDown.SetRawValue(e.ExtraParams["Name"]);
-                uxAddEmployeeEmpFilter.ClearFilter();
+                uxEmployeeEqDropDown.SetValue(e.ExtraParams["EquipmentId"], e.ExtraParams["Name"]);
             }
             else
             {
-                uxAddEmployeeEqDropDown.SetValue(e.ExtraParams["EquipmentId"], e.ExtraParams["Name"]);
+                uxEmployeeEmpDropDown.SetValue(e.ExtraParams["PersonId"], e.ExtraParams["Name"]);
+                uxEmployeeEmpFilter.ClearFilter();
             }
         }
 
@@ -953,8 +954,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             where d.HEADER_ID == HeaderId
                             select new { d.EQUIPMENT_ID, p.NAME, d.PROJECT_ID, p.ORGANIZATION_NAME, p.CLASS_CODE, p.SEGMENT1, d.ODOMETER_START, d.ODOMETER_END }).ToList();
                 //Set add store
-                uxAddEmployeeEqStore.DataSource = data;
-                uxAddEmployeeEqStore.DataBind();
+                uxEmployeeEqStore.DataSource = data;
+                uxEmployeeEqStore.DataBind();
 
             }
 
@@ -970,18 +971,83 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             if (uxAddEmployeeRegion.Pressed)
             {
                 uxAddEmployeeRegion.Text = "My Region";
-                uxAddEmployeeEmpStore.Reload();
+                uxEmployeeEmpStore.Reload();
             }
             else
             {
                 uxAddEmployeeRegion.Text = "All Regions";
-                uxAddEmployeeEmpStore.Reload();
+                uxEmployeeEmpStore.Reload();
             }
         }
 
         protected void deSaveEmployee(object sender, DirectEventArgs e)
         {
             ChangeRecords<EmployeeDetails> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<EmployeeDetails>();
+
+            foreach (EmployeeDetails item in data.Created)
+            {
+                DAILY_ACTIVITY_EMPLOYEE NewEmployee = new DAILY_ACTIVITY_EMPLOYEE();
+                NewEmployee.COMMENTS = item.COMMENTS;
+                NewEmployee.CREATE_DATE = DateTime.Now;
+                NewEmployee.CREATED_BY = User.Identity.Name;
+                NewEmployee.EQUIPMENT_ID = item.EQUIPMENT_ID;
+                NewEmployee.FOREMAN_LICENSE = item.FOREMAN_LICENSE;
+                NewEmployee.HEADER_ID = long.Parse(Request.QueryString["HeaderId"]);
+                NewEmployee.MODIFIED_BY = User.Identity.Name;
+                NewEmployee.MODIFY_DATE = DateTime.Now;
+                NewEmployee.PER_DIEM = item.PER_DIEM;
+                NewEmployee.PERSON_ID = item.PERSON_ID;
+                NewEmployee.TIME_IN = item.TIME_IN.Date + item.TIME_IN_TIME.TimeOfDay;
+                NewEmployee.TIME_OUT = item.TIME_OUT.Date + item.TIME_OUT_TIME.TimeOfDay;
+                NewEmployee.TRAVEL_TIME = (decimal)item.TRAVEL_TIME_FORMATTED.TimeOfDay.TotalMinutes / 60;
+                GenericData.Insert<DAILY_ACTIVITY_EMPLOYEE>(NewEmployee);
+
+                ModelProxy Record = uxEmployeeStore.GetByInternalId(item.PhantomID);
+                Record.CreateVariable = true;
+                Record.SetId(NewEmployee.EMPLOYEE_ID);
+                Record.Commit();
+            }
+
+            foreach (EmployeeDetails item in data.Updated)
+            {
+                DAILY_ACTIVITY_EMPLOYEE UpdatedEmployee;
+
+                using (Entities _context = new Entities())
+                {
+                    UpdatedEmployee = _context.DAILY_ACTIVITY_EMPLOYEE.Where(x => x.EMPLOYEE_ID == item.EMPLOYEE_ID).Single();
+                }
+
+                UpdatedEmployee.COMMENTS = item.COMMENTS;
+                UpdatedEmployee.EQUIPMENT_ID = item.EQUIPMENT_ID;
+                UpdatedEmployee.FOREMAN_LICENSE = item.FOREMAN_LICENSE;
+                UpdatedEmployee.MODIFIED_BY = User.Identity.Name;
+                UpdatedEmployee.MODIFY_DATE = DateTime.Now;
+                UpdatedEmployee.PER_DIEM = item.PER_DIEM;
+                UpdatedEmployee.PERSON_ID = item.PERSON_ID;
+                UpdatedEmployee.TIME_IN = item.TIME_IN.Date + item.TIME_IN_TIME.TimeOfDay;
+                UpdatedEmployee.TIME_OUT = item.TIME_OUT.Date + item.TIME_OUT_TIME.TimeOfDay;
+
+                UpdatedEmployee.TRAVEL_TIME = (decimal)item.TRAVEL_TIME_FORMATTED.TimeOfDay.TotalMinutes / 60;
+
+                GenericData.Update<DAILY_ACTIVITY_EMPLOYEE>(UpdatedEmployee);
+            }
+
+            uxEmployeeStore.CommitChanges();
+        }
+
+        [DirectMethod]
+        public void dmDeleteEmployee(string EmployeeId)
+        {
+            DAILY_ACTIVITY_EMPLOYEE DeletedEmployee;
+            long EmpId = long.Parse(EmployeeId);
+            using (Entities _context = new Entities())
+            {
+                DeletedEmployee = _context.DAILY_ACTIVITY_EMPLOYEE.Where(x => x.EMPLOYEE_ID == EmpId).Single();
+            }
+
+            GenericData.Delete<DAILY_ACTIVITY_EMPLOYEE>(DeletedEmployee);
+            uxEmployeeGrid.GetView();
+            
         }
     }
 }

@@ -578,10 +578,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     double Hours = Math.Truncate((double)item.TRAVEL_TIME);
                     double Minutes = Math.Round(((double)item.TRAVEL_TIME - Hours) * 60);
                     TimeSpan TotalTimeSpan = new TimeSpan(Convert.ToInt32(Hours), Convert.ToInt32(Minutes), 0);
-                    item.TRAVEL_TIME_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
+                    item.TRAVEL_TIME_FORMATTED = DateTime.Now.Date + TotalTimeSpan;
                     Hours = Math.Truncate((double)item.DRIVE_TIME);
                     Minutes = Math.Round(((double)item.DRIVE_TIME - Hours) * 60);
-                    item.DRIVE_TIME_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
+                    item.DRIVE_TIME_FORMATTED = DateTime.Now.Date + TotalTimeSpan;
                     Hours = Math.Truncate((double)item.SHOPTIME_AM);
                     Minutes = Math.Round(((double)item.SHOPTIME_AM - Hours) * 60);
                     item.SHOPTIME_AM_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
@@ -1085,8 +1085,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						new PdfPCell(new Phrase(Data.TIME_IN.ToString("hh\\:mm"), CellFont)),
 						new PdfPCell(new Phrase(Data.TIME_OUT.ToString("hh\\:mm"), CellFont)),
 						new PdfPCell(new Phrase(TotalHours.ToString("hh\\:mm"), CellFont)),
-						new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED, CellFont)),
-						new PdfPCell(new Phrase(Data.DRIVE_TIME_FORMATTED, CellFont)),
+						new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED.ToString(), CellFont)),
+						new PdfPCell(new Phrase(Data.DRIVE_TIME_FORMATTED.ToString(), CellFont)),
 						new PdfPCell(new Phrase(Data.SHOPTIME_AM_FORMATTED, CellFont)),
 						new PdfPCell(new Phrase(Data.SHOPTIME_PM_FORMATTED, CellFont)),
 						new PdfPCell(new Phrase(Data.PER_DIEM.ToString(), CellFont)),
@@ -1102,8 +1102,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						new PdfPCell(new Phrase(Data.TIME_IN.ToString("hh\\:mm"), CellFont)),
 						new PdfPCell(new Phrase(Data.TIME_OUT.ToString("hh\\:mm"), CellFont)),
 						new PdfPCell(new Phrase(TotalHours.ToString("hh\\:mm"), CellFont)),
-						new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED, CellFont)),
-						new PdfPCell(new Phrase(Data.DRIVE_TIME_FORMATTED, CellFont)),
+						new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED.ToString(), CellFont)),
+						new PdfPCell(new Phrase(Data.DRIVE_TIME_FORMATTED.ToString(), CellFont)),
 						new PdfPCell(new Phrase(Data.SHOPTIME_AM_FORMATTED, CellFont)),
 						new PdfPCell(new Phrase(Data.SHOPTIME_PM_FORMATTED, CellFont)),
 						new PdfPCell(new Phrase(Data.PER_DIEM.ToString(), CellFont)),
@@ -1181,7 +1181,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						new PdfPCell(new Phrase(Data.TIME_IN.ToString("hh\\:mm tt"), CellFont)),
 						new PdfPCell(new Phrase(Data.TIME_OUT.ToString("hh\\:mm tt"), CellFont)),
 						new PdfPCell(new Phrase(TotalHours.ToString("hh\\:mm"), CellFont)),
-						new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED, CellFont)),
+						new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED.ToString(), CellFont)),
 						new PdfPCell(new Phrase(Data.PER_DIEM.ToString(), CellFont)),
                         new PdfPCell(new Phrase(Data.LUNCH_LENGTH.ToString(), CellFont)),
 						new PdfPCell(new Phrase(Comments, CellFont))
