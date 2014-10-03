@@ -20,7 +20,11 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!validateComponentSecurity("SYS.CustomerSurveys.Dashboard"))
+            {
+                X.Redirect("~/Views/uxDefault.aspx");
 
+            }
         }
 
         protected long GetOrgFromTree(string _selectedRecordID)
