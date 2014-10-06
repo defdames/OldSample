@@ -104,7 +104,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 AddTab(sm.SelectedRecordID + "OS", _nodeText + " - Organization Security", "umOverheadOrganizationSecurity.aspx?orgid=" + sm.SelectedRecordID, false, false);
                 //AddTab(sm.SelectedRecordID + "BT", _nodeText + " - Budget Types", "umOverheadBudgetTypes.aspx?leid=" + sm.SelectedRecordID, false, false);
                 uxAccordingPanel.Collapse();
-
         }
 
         /// <summary>

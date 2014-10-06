@@ -67,58 +67,86 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 string[] selID = e.NodeID.Split(delimChars);
                 long hierarchyID = long.Parse(selID[0].ToString());
                 long orgID = long.Parse(selID[1].ToString());
+                long leID = 0;
 
-                var data = HR.ActiveOrganizationsByHierarchy(hierarchyID, orgID);
+                if (selID.Count() == 2)
+                {
+                    leID = orgID;
+                }
+                else
+                {
+                    leID = long.Parse(selID[2].ToString());
+                }
 
-                bool addNode;
-                bool leafNode;
-                bool colorNode;
+
+                var data = HR.OverheadOrganizationStatusByHierarchy(hierarchyID, orgID);
 
                 foreach (var view in data)
                 {
                     if (view.HIER_LEVEL == 1)
                     {
-                        addNode = false;
-                        leafNode = true;
-                        colorNode = false;
                         var nextData = HR.ActiveOrganizationsByHierarchy(hierarchyID, view.ORGANIZATION_ID);
-                        addNode = true;
-                        colorNode = true;
-              
 
-                        if (addNode == true)
-                        {
                             Node node = new Node();
-                            node.NodeID = string.Format("{0}:{1}", hierarchyID.ToString(), view.ORGANIZATION_ID.ToString());
+                            node.NodeID = string.Format("{0}:{1}:{2}", hierarchyID.ToString(), view.ORGANIZATION_ID.ToString(), leID.ToString());
                             node.Text = view.ORGANIZATION_NAME;
-                            node.Leaf = leafNode;
-                            if (colorNode == true)
+                            if (nextData.Count() == 0)
                             {
-                                if (BB.IsRollup(view.ORGANIZATION_ID) == true)
-                                {
-                                    node.Icon = Icon.PackageGreen;
-                                }
-                                else
-                                {
-                                    node.Icon = Icon.Accept;
-                                }
+                                node.Leaf = true;
                             }
                             else
                             {
-                                if (BB.IsRollup(view.ORGANIZATION_ID) == true)
-                                {
-                                    node.Icon = Icon.PackageGreen;
-                                }
-                                else
-                                {
-                                    node.Icon = Icon.TagsGrey;
-                                }
+                                node.Leaf = false;
                             }
+
+                            if (view.ORGANIZATION_STATUS == "Active")
+                            {
+                                node.Icon = Icon.BulletGreen;
+                            }
+                            else
+                            {
+                                node.Icon = Icon.BulletBlack;
+                            }
+
                             e.Nodes.Add(node);
                         }
-                    }
                 }
             }
+        }
+
+        protected void deSelectNode(object sender, DirectEventArgs e)
+        {
+            TreeSelectionModel sm = uxOrgPanel.GetSelectionModel() as TreeSelectionModel;
+
+            if (sm.SelectedRecordID != "0")
+            {
+                string _nodeText = e.ExtraParams["ORGANIZATION_NAME"];
+                uxCenterTabPanel.RemoveAll();
+                AddTab(sm.SelectedRecordID + "OS", _nodeText + " - Budget Rollup", "umViewBudget.aspx?fiscalyear=2014&orgid=" + sm.SelectedRecordID + "&desc='" +  _nodeText + " - Budget Rollup", false, false);
+            }
+        }
+
+        protected void AddTab(string id, string title, string url, Boolean loadContent = false, Boolean setActive = false)
+        {
+
+            Ext.Net.Panel pan = new Ext.Net.Panel();
+
+            pan.ID = "Tab" + id.Replace(":", "_");
+            pan.Title = title;
+            pan.CloseAction = CloseAction.Destroy;
+            pan.Loader = new ComponentLoader();
+            pan.Loader.ID = "loader" + id.Replace(":", "_");
+            pan.Loader.Url = url;
+            pan.Loader.Mode = LoadMode.Frame;
+            pan.Loader.LoadMask.ShowMask = true;
+            pan.Loader.DisableCaching = true;
+            pan.AddTo(uxCenterTabPanel);
+
+            if (setActive)
+                uxCenterTabPanel.SetActiveTab("Tab" + id.Replace(":", "_"));
+
+            if (loadContent)
+                pan.LoadContent();
         }
     }
 }

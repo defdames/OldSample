@@ -589,7 +589,40 @@ namespace DBI.Data
 
                 if (_budgetHeader == null)
                 {
-                    data = HR.OverheadOrganizationStatusByHierarchy(_hierarchyID, leorganizationID).Where(x => x.ORGANIZATION_STATUS == "Active").ToList();
+                    data = HR.OverheadOrganizationStatusByHierarchy(_hierarchyID, organizationID).Where(x => x.ORGANIZATION_STATUS == "Active").ToList();
+
+                    if (data.Count() == 0)
+                    {
+                        //We are at the lowest level of the hierarchy so we need to manually add in the organization they are running it for to display it's data
+                        var _orgData = HR.Organizations().Where(x => x.ORGANIZATION_ID == organizationID).SingleOrDefault();
+
+                        if (_orgData != null)
+                        {
+
+                            HR.ORGANIZATION_V1 _addOrg = new HR.ORGANIZATION_V1();
+                            _addOrg.ORGANIZATION_ID = _orgData.ORGANIZATION_ID;
+                            _addOrg.ORGANIZATION_NAME = _orgData.ORGANIZATION_NAME;
+                            _addOrg.HIER_LEVEL = 1;
+                            _addOrg.DATE_TO = _orgData.DATE_TO;
+                            _addOrg.DATE_FROM = _orgData.DATE_FROM;
+
+                            SYS_PROFILE_OPTIONS _pOption = SYS_PROFILE_OPTIONS.ProfileOption("OverheadBudgetOrganization");
+                            List<SYS_ORG_PROFILE_OPTIONS> _odata = context.SYS_ORG_PROFILE_OPTIONS.Where(x => x.PROFILE_OPTION_ID == _pOption.PROFILE_OPTION_ID).ToList();
+
+                            SYS_ORG_PROFILE_OPTIONS _option = _odata.Where(x => x.ORGANIZATION_ID == organizationID).SingleOrDefault();
+                            if (_option != null)
+                            {
+                                _addOrg.ORGANIZATION_STATUS = (_option.PROFILE_VALUE == "Y") ? "Active" : "InActive";
+                            }
+                            else
+                            {
+                                _addOrg.ORGANIZATION_STATUS = "InActive";
+                            }
+
+                            if (_addOrg.ORGANIZATION_STATUS == "Active")
+                                data.Add(_addOrg);
+                        }
+                    }
 
                     data = (from b in data
                             where SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.LoggedInUser().USER_ID).Any(x => x.ORG_ID == b.ORGANIZATION_ID)
@@ -1083,7 +1116,7 @@ namespace DBI.Data
         #region Misc functions
 
 
-        public static MemoryStream GenerateReport(Entities context, long organizationID, short fiscalYear, long budgetID, string description, PRINT_OPTIONS printOptions)
+        public static MemoryStream GenerateReport(Entities context, long organizationID, short fiscalYear, long budgetID, string description, PRINT_OPTIONS printOptions, long leID = 0, long budgetTypeID = 0)
         {
 
             using (MemoryStream _pdfMemoryStream = new MemoryStream())
@@ -1174,12 +1207,22 @@ namespace DBI.Data
                 Row = new PdfPRow(Cells);
                 _headerPdfTable.Rows.Add(Row);
 
+                List<OVERHEAD_BUDGET_VIEW> _budgetView = new List<OVERHEAD_BUDGET_VIEW>();
 
-                OVERHEAD_ORG_BUDGETS _budgetDetail = OVERHEAD_BUDGET_FORECAST.BudgetByID(context, budgetID);
-                //Details Row
-                //Return budget detail information
-                IEnumerable<OVERHEAD_BUDGET_VIEW> _budgetView = BudgetDetailsViewByBudgetID(context, budgetID, true, printOptions.HIDE_BLANK_LINES, printOptions.ROLLUP, 0, organizationID, fiscalYear, _budgetDetail.OVERHEAD_BUDGET_TYPE_ID, printOptions.GROUP_ACCOUNTS);
+                OVERHEAD_ORG_BUDGETS _budgetDetail = new OVERHEAD_ORG_BUDGETS();
 
+                if (budgetID != null)
+                {
+
+                    _budgetDetail = OVERHEAD_BUDGET_FORECAST.BudgetByID(context, budgetID);
+                    //Details Row
+                    //Return budget detail information
+                    _budgetView = BudgetDetailsViewByBudgetID(context, budgetID, true, printOptions.HIDE_BLANK_LINES, printOptions.ROLLUP, 0, organizationID, fiscalYear, _budgetDetail.OVERHEAD_BUDGET_TYPE_ID, printOptions.GROUP_ACCOUNTS).ToList();
+                }
+                else
+                {
+                    _budgetView = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByBudgetID(context, 0, false, true, true, leID, organizationID, fiscalYear, budgetTypeID, true);
+                }
 
                 NumberFormatInfo nfi = CultureInfo.CurrentCulture.NumberFormat;
                 nfi = (NumberFormatInfo)nfi.Clone();
