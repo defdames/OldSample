@@ -176,7 +176,10 @@ namespace DBI.Data
             //Lunch calculation 
             if (lunchFlag == "Y")
             {
-                returnValue = returnValue - (decimal)((lunchAmount == 30) ? .50 : 1);
+                if (lunchAmount != null)
+                {
+                    returnValue = returnValue - (decimal)((lunchAmount == 30) ? .50 : 1);
+                }
             }
 
             return returnValue;
