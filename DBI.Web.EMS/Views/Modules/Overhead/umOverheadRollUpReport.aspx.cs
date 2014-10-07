@@ -23,6 +23,26 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             }
         }
 
+        [DirectMethod]
+        public void AddTabPanel(string id, string title, string url)
+        {
+
+            Ext.Net.Panel pan = new Ext.Net.Panel();
+
+            pan.ID = "Tab" + id.Replace(":", "_");
+            pan.Title = title;
+            pan.CloseAction = CloseAction.Destroy;
+            pan.Closable = true;
+            pan.Loader = new ComponentLoader();
+            pan.Loader.ID = "loader" + id.Replace(":", "_");
+            pan.Loader.Url = url;
+            pan.Loader.Mode = LoadMode.Frame;
+            pan.Loader.LoadMask.ShowMask = true;
+            pan.Loader.DisableCaching = true;
+            pan.AddTo(uxCenterTabPanel);
+
+            uxCenterTabPanel.SetActiveTab("Tab" + id.Replace(":", "_"));
+        }
      
 
         protected void deLoadOrgTree(object sender, NodeLoadEventArgs e)
@@ -134,7 +154,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             if (sm.SelectedRecordID != "0")
             {
                 string _nodeText = e.ExtraParams["ORGANIZATION_NAME"];
-                AddTab(sm.SelectedRecordID + "OS", _nodeText + " - Budget Rollup", "umViewBudget.aspx?fiscalyear=2014&orgid=" + sm.SelectedRecordID + "&desc='" +  _nodeText + " - Budget Rollup",false,true);
+                AddTab(sm.SelectedRecordID + "OS", _nodeText + " - Budget Rollup", "umViewBudget.aspx?fiscalyear=2014&orgid=" + sm.SelectedRecordID + "&desc=" +  _nodeText + " - Budget Rollup",false,true);
             }
         }
 

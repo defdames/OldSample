@@ -953,7 +953,7 @@ namespace DBI.Data
                           AMOUNT11 = s.Sum(i => i.AMOUNT11),
                           AMOUNT12 = s.Sum(i => i.AMOUNT12),
                           GROUPED = _data.Where(g => g.ACCOUNT_SEGMENT == s.Key).Count() > 1 ? "Y" : "N",
-                          ACCOUNT_NOTES = AccountsGroupedNotesBySegment(s.Key, _data)
+                          //ACCOUNT_NOTES = AccountsGroupedNotesBySegment(s.Key, _data)
                       }).ToList();
 
                       if (PrintView)
@@ -1778,7 +1778,7 @@ namespace DBI.Data
                 var _glWeekPeriods = OVERHEAD_BUDGET_FORECAST.GeneralLedgerPeriods(context).Where(x => x.PERIOD_YEAR == fiscalYear & x.PERIOD_TYPE == "Week");
 
                 Cells = new PdfPCell[]{
-                     new PdfPCell(new Phrase("Overhead Budget / " + _title[0], TotalCellFont )),
+                     new PdfPCell(new Phrase(_title[0], TotalCellFont )),
                      new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 1).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),
                      new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 2).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),
                      new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 3).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),

@@ -357,9 +357,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 _printOptions.HIDE_BLANK_LINES = true;
                 _printOptions.SHOW_NOTES = false;
 
-                try
-                {
-                    _data = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByOrganizationID(_context, _leID, _organizationID, _fiscalYear, long.Parse(uxBudgetName.SelectedItem.Value.ToString()), _printOptions, false, false);
+                _data = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByOrganizationID(_context, _leID, _organizationID, _fiscalYear, long.Parse(uxBudgetName.SelectedItem.Value.ToString()), _printOptions, false, true);
                     MemoryStream PdfStream = OVERHEAD_BUDGET_FORECAST.GenerateReportByOrganization(_context, _description, _fiscalYear, _data);
 
                     string _filename = _organizationID + "_" + _fiscalYear + "_budget.pdf";
@@ -371,12 +369,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     string baseUrl = Request.Url.GetLeftPart(UriPartial.Authority);
 
                     X.Js.Call("parent.App.direct.AddTabPanel", "p" + _organizationID + _fiscalYear, _description, "~/" + _filename);
-                }
-                catch (Exception ex)
-                {
-                    e.Success = false;
-                    e.ErrorMessage = ex.InnerException.ToString();
-                }
+             
             }
 
         }
