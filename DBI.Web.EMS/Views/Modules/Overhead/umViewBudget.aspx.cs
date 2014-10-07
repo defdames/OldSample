@@ -201,12 +201,34 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
         protected void ExportToExcel(object sender, DirectEventArgs e)
         {
 
-            short _fiscal_year = short.Parse(Request.QueryString["fiscalyear"]);
-            long _organizationID = long.Parse(Request.QueryString["orgid"]);
-            long _budgetid = long.Parse(Request.QueryString["budget_id"]);
-            string _description = Request.QueryString["description"];
+            short _fiscalYear = short.Parse(uxFiscalYear.SelectedItem.Value);
+            string _selectedRecordID = Request.QueryString["orgid"];
 
-            string _filename = _organizationID + "_" + _fiscal_year + "_budget.xlsx";
+            OVERHEAD_BUDGET_TYPE _budgetType = OVERHEAD_BUDGET_TYPE.BudgetType(long.Parse(uxBudgetName.SelectedItem.Value.ToString()));
+
+            string _description = Request.QueryString["desc"] + " / " + _fiscalYear + " / " + _budgetType.BUDGET_DESCRIPTION;
+
+            char[] _delimiterChars = { ':' };
+            string[] _selectedID = _selectedRecordID.Split(_delimiterChars);
+            long _hierarchyID = long.Parse(_selectedID[0].ToString());
+            long _organizationID = long.Parse(_selectedID[1].ToString());
+            long _leID = 0;
+
+            if (_selectedID.Count() == 2)
+            {
+
+                _leID = _organizationID;
+
+            }
+            else
+            {
+
+                _leID = long.Parse(_selectedID[2].ToString());
+            }
+
+
+
+            string _filename = _organizationID + "_" + _fiscalYear + "_budget.xlsx";
             string _filePath = Request.PhysicalApplicationPath + _filename;
 
             FileInfo newFile = new FileInfo(_filePath + _filename);
@@ -217,8 +239,8 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
             using (Entities _context = new Entities())
             {
-                var _glMonthPeriods = OVERHEAD_BUDGET_FORECAST.GeneralLedgerPeriods(_context).Where(x => x.PERIOD_YEAR == _fiscal_year & x.PERIOD_TYPE == "Month");
-                var _glWeekPeriods = OVERHEAD_BUDGET_FORECAST.GeneralLedgerPeriods(_context).Where(x => x.PERIOD_YEAR == _fiscal_year & x.PERIOD_TYPE == "Week");
+                var _glMonthPeriods = OVERHEAD_BUDGET_FORECAST.GeneralLedgerPeriods(_context).Where(x => x.PERIOD_YEAR == _fiscalYear & x.PERIOD_TYPE == "Month");
+                var _glWeekPeriods = OVERHEAD_BUDGET_FORECAST.GeneralLedgerPeriods(_context).Where(x => x.PERIOD_YEAR == _fiscalYear & x.PERIOD_TYPE == "Week");
 
                 ws.Cells["A1"].Value = "Account Name";
                 ws.Cells["B1"].Value = string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 1).Single().ENTERED_PERIOD_NAME);
@@ -237,10 +259,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 //ws.Cells["E2"].Value = new decimal(98222.50);
                 //ws.Cells["E2"].Style.Numberformat.Format = "#,##0.00";
 
+                List<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW> _data = new List<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW>();
                 OVERHEAD_BUDGET_FORECAST.PRINT_OPTIONS _printOptions = new OVERHEAD_BUDGET_FORECAST.PRINT_OPTIONS();
+                _printOptions.GROUP_ACCOUNTS = uxCollapseAccountTotals.Checked;
                 _printOptions.HIDE_BLANK_LINES = true;
+                _printOptions.SHOW_NOTES = false;
 
-                IEnumerable<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW> _budgetView = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByBudgetID(_context, _budgetid, true, _printOptions.HIDE_BLANK_LINES);
+                IEnumerable<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW> _budgetView = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByOrganizationID(_context, _leID, _organizationID, _fiscalYear, long.Parse(uxBudgetName.SelectedItem.Value.ToString()), _printOptions, false, false);
 
                 int _cellCount = 2;
                 foreach (OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW _row in _budgetView)
