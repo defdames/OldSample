@@ -815,6 +815,104 @@ namespace DBI.Data
         }
 
 
+        public static List<OVERHEAD_BUDGET_VIEW> BudgetDetailsViewByOrganizationID(Entities context, long LeOrganizationID, long OrganizationID, short FiscalYear, long BudgetTypeID, PRINT_OPTIONS PrintOptions, Boolean LimitToMySecurity = false)
+        {
+
+            List<OVERHEAD_BUDGET_VIEW> _data = new List<OVERHEAD_BUDGET_VIEW>();
+            var _categoryList = CategoryAsQueryable(context);
+            var _accountCategoryList = AccountCategoryAsQueryable(context);
+
+
+            List<OVERHEAD_BUDGET_DETAIL> _budgetDetail = new List<OVERHEAD_BUDGET_DETAIL>();
+            List<GL_ACCOUNT> _validAccounts = new List<GL_ACCOUNT>();
+            long _hierarchyID = long.Parse(SYS_ORG_PROFILE_OPTIONS.OrganizationProfileOption("OverheadBudgetHierarchy", LeOrganizationID));
+
+            //Get a list of active organizations in the overhead budget system
+            List<HR.ORGANIZATION_V1> _organizationData = HR.OverheadOrganizationStatusByHierarchy(_hierarchyID, OrganizationID).Where(x => x.ORGANIZATION_STATUS == "Active").ToList();
+
+            //Check for the organization count and if zero it means we are at the lowest level or no data for organization, check for organization info
+            if (_organizationData.Count() == 0)
+            {
+                //Get a list of active organizations in the overhead budget system
+                _organizationData = HR.OverheadOrganizationStatusByHierarchy(_hierarchyID, LeOrganizationID).Where(x => x.ORGANIZATION_STATUS == "Active" & x.ORGANIZATION_ID == OrganizationID).ToList();
+            }
+
+            //Check it again only process it if data was returned.
+            if (_organizationData.Count() > 0)
+            {
+               
+                  foreach (HR.ORGANIZATION_V1 _organization in _organizationData)
+                  {
+                       OVERHEAD_ORG_BUDGETS _budget = OVERHEAD_BUDGET_FORECAST.BudgetsByOrganizationID(context, _organization.ORGANIZATION_ID).Where(x => x.FISCAL_YEAR == FiscalYear & x.OVERHEAD_BUDGET_TYPE_ID == BudgetTypeID).SingleOrDefault();
+                      if (_budget != null)
+                        {
+                            _validAccounts.AddRange(AccountListValidByOrganizationID(context, _budget.ORGANIZATION_ID));
+                            _budgetDetail.AddRange(BudgetDetailByBudgetID(context, _budget.ORG_BUDGET_ID).ToList());
+                        }
+                  }
+
+                  foreach (GL_ACCOUNT _account in _validAccounts)
+                  {
+                      OVERHEAD_CATEGORY _category = new OVERHEAD_CATEGORY();
+                      OVERHEAD_BUDGET_VIEW _record = new OVERHEAD_BUDGET_VIEW();
+
+
+                      //Return the data for the year
+                      List<OVERHEAD_BUDGET_DETAIL> _OverheadBudgetDetailList = _budgetDetail.Where(x => x.CODE_COMBINATION_ID == _account.CODE_COMBINATION_ID).ToList();
+
+                      var _accountCategory = _accountCategoryList.Where(x => x.ACCOUNT_SEGMENT == _account.SEGMENT5).OrderBy(x => x.ACCOUNT_SEGMENT).SingleOrDefault();
+
+                      if (_accountCategory != null)
+                      {
+                          _category = _categoryList.Where(x => x.CATEGORY_ID == _accountCategory.CATEGORY_ID).SingleOrDefault();
+                          _record.CATEGORY_ID = _accountCategory.CATEGORY_ID;
+                          _record.CATEGORY_NAME = _category.NAME;
+                          _record.SORT_ORDER = _accountCategory.SORT_ORDER;
+                          _record.CATEGORY_SORT_ORDER = (long)_category.SORT_ORDER;
+                      }
+                      else
+                      {
+                          _record.CATEGORY_NAME = "Other";
+                          _record.CATEGORY_SORT_ORDER = 99999;
+                          _record.SORT_ORDER = 0;
+                      }
+
+
+                      _record.ACCOUNT_SEGMENT = _account.SEGMENT5;
+                      _record.CODE_COMBINATION_ID = _account.CODE_COMBINATION_ID;
+                      string SEGMENT5DESC = OVERHEAD_BUDGET_FORECAST.AccountDescriptionBySegment(context, 5, _account.SEGMENT5);
+
+                      if (PrintOptions.ROLLUP)
+                      {
+                          _record.ACCOUNT_DESCRIPTION = SEGMENT5DESC;
+                         
+                          if (PrintOptions.GROUP_ACCOUNTS)
+                          {
+                              _record.ACCOUNT_DESCRIPTION3 = SEGMENT5DESC;
+                          }
+                          
+                          _record.ACCOUNT_DESCRIPTION2 = "(" + _account.SEGMENT5 + ")";
+
+
+                      }
+
+
+
+
+
+                  }
+
+               
+            }
+
+                
+
+
+
+            return _data;
+
+        }
+
         public static string AccountsGroupedNotesBySegment(string AccountSegment, List<OVERHEAD_BUDGET_VIEW> InData)
         {
             string _accountNotes = string.Empty;

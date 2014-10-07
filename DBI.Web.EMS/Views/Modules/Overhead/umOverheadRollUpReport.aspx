@@ -48,11 +48,8 @@
                     </SelectionModel>   
                 </ext:TreePanel>
 
-
                 <ext:TabPanel runat="server" DeferredRender="true" Region="Center" ID="uxCenterTabPanel" Padding="5" >
                     <Items>
-                        <ext:Panel ID="Panel1" runat="server" Title="Dashboard">
-                        </ext:Panel>
                     </Items>
                 </ext:TabPanel>
             </Items>

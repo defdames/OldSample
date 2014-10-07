@@ -23,6 +23,8 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             }
         }
 
+     
+
         protected void deLoadOrgTree(object sender, NodeLoadEventArgs e)
         {
 
@@ -54,6 +56,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                         node.Text = view.ORGANIZATION_NAME;
                         node.NodeID = string.Format("{0}:{1}", _profileValue.ToString(), view.ORGANIZATION_ID.ToString());
                         node.Leaf = false;
+                        node.Icon = Icon.Building;
                         e.Nodes.Add(node);
                     }
                 }
@@ -78,34 +81,44 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     leID = long.Parse(selID[2].ToString());
                 }
 
-
                 var data = HR.OverheadOrganizationStatusByHierarchy(hierarchyID, orgID);
 
                 foreach (var view in data)
                 {
                     if (view.HIER_LEVEL == 1)
                     {
-                        var nextData = HR.ActiveOrganizationsByHierarchy(hierarchyID, view.ORGANIZATION_ID);
-
                             Node node = new Node();
                             node.NodeID = string.Format("{0}:{1}:{2}", hierarchyID.ToString(), view.ORGANIZATION_ID.ToString(), leID.ToString());
                             node.Text = view.ORGANIZATION_NAME;
-                            if (nextData.Count() == 0)
+
+                            var nextData = HR.OverheadOrganizationStatusByHierarchy(hierarchyID, view.ORGANIZATION_ID);
+
+                            Boolean _ActiveOrganizationsListed = nextData.Where(x => x.ORGANIZATION_STATUS == "Active").Count() > 0 ? true : false;
+                        
+                        if (nextData.Count() == 0)
                             {
                                 node.Leaf = true;
+                                if (view.ORGANIZATION_STATUS == "Active")
+                                {
+                                    node.Icon = Icon.Accept;
+                                }
+                                else
+                                {
+                                    node.Icon = Icon.ControlBlank;
+                                }
                             }
                             else
                             {
                                 node.Leaf = false;
-                            }
 
-                            if (view.ORGANIZATION_STATUS == "Active")
-                            {
-                                node.Icon = Icon.BulletGreen;
-                            }
-                            else
-                            {
-                                node.Icon = Icon.BulletBlack;
+                                if (_ActiveOrganizationsListed)
+                                {
+                                    node.Icon = Icon.Accept;
+                                }
+                                else
+                                {
+                                    node.Icon = Icon.ControlBlank;
+                                }
                             }
 
                             e.Nodes.Add(node);
