@@ -115,6 +115,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     {
                         ExistingLunch.LUNCH_LENGTH = null;
                         ExistingLunch.LUNCH = null;
+                        EmployeeToUpdate.LUNCH_LENGTH = GetLunchLength(PersonId, HeaderDate);
                     }
                     else
                     {
