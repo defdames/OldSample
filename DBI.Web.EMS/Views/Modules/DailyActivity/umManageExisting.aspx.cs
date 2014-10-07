@@ -803,14 +803,24 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
 
-            //try
-            //{
+            try
+            {
                 Interface.PostToOracle(HeaderId, User.Identity.Name);
-            //}
-            //catch (Exception)
-            //{
-            //    throw;
-            //}
+            }
+            catch (Exception ex)
+            {
+                Notification.Show(new NotificationConfig()
+                {
+                    Title = "Success",
+                    Html = "Daily Activity did not post successfully, Error: " + ex.InnerException.ToString(),
+                    HideDelay = 1000,
+                    AlignCfg = new NotificationAlignConfig
+                    {
+                        ElementAnchor = AnchorPoint.Center,
+                        TargetAnchor = AnchorPoint.Center
+                    }
+                });
+            }
 
             Notification.Show(new NotificationConfig()
             {
