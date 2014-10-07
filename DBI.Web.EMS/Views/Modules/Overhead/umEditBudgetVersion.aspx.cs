@@ -552,7 +552,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 _printOptions.HIDE_BLANK_LINES = uxPrintBlank.Checked;
                 _printOptions.GROUP_ACCOUNTS = uxPrintGroup.Checked;
                 _printOptions.SHOW_NOTES = uxPrintNote.Checked;
-                _printOptions.ROLLUP = uxPrintRollup.Checked;
 
 
                 MemoryStream PdfStream = OVERHEAD_BUDGET_FORECAST.GenerateReport(_context, _organizationID, _fiscal_year, _budgetid, _description, _printOptions);

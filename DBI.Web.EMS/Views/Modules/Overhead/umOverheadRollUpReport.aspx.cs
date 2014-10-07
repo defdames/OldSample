@@ -134,8 +134,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             if (sm.SelectedRecordID != "0")
             {
                 string _nodeText = e.ExtraParams["ORGANIZATION_NAME"];
-                uxCenterTabPanel.RemoveAll();
-                AddTab(sm.SelectedRecordID + "OS", _nodeText + " - Budget Rollup", "umViewBudget.aspx?fiscalyear=2014&orgid=" + sm.SelectedRecordID + "&desc='" +  _nodeText + " - Budget Rollup", false, false);
+                AddTab(sm.SelectedRecordID + "OS", _nodeText + " - Budget Rollup", "umViewBudget.aspx?fiscalyear=2014&orgid=" + sm.SelectedRecordID + "&desc='" +  _nodeText + " - Budget Rollup",false,true);
             }
         }
 
@@ -151,6 +150,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             pan.Loader.ID = "loader" + id.Replace(":", "_");
             pan.Loader.Url = url;
             pan.Loader.Mode = LoadMode.Frame;
+            pan.Closable = true;
             pan.Loader.LoadMask.ShowMask = true;
             pan.Loader.DisableCaching = true;
             pan.AddTo(uxCenterTabPanel);

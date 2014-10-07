@@ -141,7 +141,14 @@
                               </DirectEvents>
                             </ext:ComboBox>
                                 <ext:ToolbarFill ID="ToolbarFill1" runat="server"></ext:ToolbarFill>
-                               
+                                 <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Group Account Lines" ID="uxCollapseAccountTotals" Checked="true">
+                                    <DirectEvents>
+                                        <Change OnEvent="deLoadData">
+                                            <EventMask ShowMask="true"></EventMask>
+                                        </Change>
+                                    </DirectEvents>
+                                </ext:Checkbox>
+                                <ext:ToolbarSpacer runat="server"></ext:ToolbarSpacer>
                                 <ext:Button ID="uxPrintReport" runat="server" Text="Print" Icon="Printer" Disabled="false">
                                     <DirectEvents>
                                         <Click OnEvent="showPrintWindow" />

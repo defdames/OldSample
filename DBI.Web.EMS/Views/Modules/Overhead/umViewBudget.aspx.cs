@@ -169,8 +169,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     long _budget_type_id = long.Parse(uxBudgetName.SelectedItem.Value);
 
                 List<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW> _data = new List<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW>();
-                _data = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByBudgetID(_context, 0, false, true, true, _leID, _organizationID, _fiscal_year, _budget_type_id, true);
+                OVERHEAD_BUDGET_FORECAST.PRINT_OPTIONS _printOptions = new OVERHEAD_BUDGET_FORECAST.PRINT_OPTIONS();
+                _printOptions.GROUP_ACCOUNTS = uxCollapseAccountTotals.Checked;
+                _printOptions.HIDE_BLANK_LINES = true;
+                _printOptions.SHOW_NOTES = false;
 
+                _data = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByOrganizationID(_context,_leID,_organizationID,_fiscal_year,_budget_type_id,_printOptions,false,false);
+                    
                 int count;
                 uxOrganizationAccountStore.DataSource = GenericData.ListFilterHeader<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW>(e.Start, 5000, e.Sort, e.Parameters["filterheader"], _data.AsQueryable(), e.Parameters["group"], out count);
                 e.Total = count;
@@ -320,7 +325,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
         {
             short _fiscalYear = short.Parse(uxFiscalYear.SelectedItem.Value);
             string _selectedRecordID = Request.QueryString["orgid"];
-            string _description = Request.QueryString["desc"];
+
+            OVERHEAD_BUDGET_TYPE _budgetType = OVERHEAD_BUDGET_TYPE.BudgetType(long.Parse(uxBudgetName.SelectedItem.Value.ToString()));
+
+            string _description = Request.QueryString["desc"] + " / " + _fiscalYear + " / " + _budgetType.BUDGET_DESCRIPTION;
 
             char[] _delimiterChars = { ':' };
             string[] _selectedID = _selectedRecordID.Split(_delimiterChars);
@@ -343,25 +351,32 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             using (Entities _context = new Entities())
             {
 
+                List<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW> _data = new List<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW>();
                 OVERHEAD_BUDGET_FORECAST.PRINT_OPTIONS _printOptions = new OVERHEAD_BUDGET_FORECAST.PRINT_OPTIONS();
-                _printOptions.SHOW_NOTES = uxPrintNote.Checked;
-                _printOptions.GROUP_ACCOUNTS = true;
+                _printOptions.GROUP_ACCOUNTS = uxCollapseAccountTotals.Checked;
                 _printOptions.HIDE_BLANK_LINES = true;
-                _printOptions.ROLLUP = true;
+                _printOptions.SHOW_NOTES = false;
 
+                try
+                {
+                    _data = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByOrganizationID(_context, _leID, _organizationID, _fiscalYear, long.Parse(uxBudgetName.SelectedItem.Value.ToString()), _printOptions, false, false);
+                    MemoryStream PdfStream = OVERHEAD_BUDGET_FORECAST.GenerateReportByOrganization(_context, _description, _fiscalYear, _data);
 
-                MemoryStream PdfStream = OVERHEAD_BUDGET_FORECAST.GenerateReport(_context, _organizationID, _fiscalYear, 0, _description, _printOptions, _leID, long.Parse(uxBudgetName.SelectedItem.Value));
+                    string _filename = _organizationID + "_" + _fiscalYear + "_budget.pdf";
+                    string _filePath = Request.PhysicalApplicationPath + _filename;
+                    FileStream fs = new FileStream(_filePath, FileMode.Create);
+                    fs.Write(PdfStream.GetBuffer(), 0, PdfStream.GetBuffer().Length);
+                    fs.Close();
 
+                    string baseUrl = Request.Url.GetLeftPart(UriPartial.Authority);
 
-                string _filename = _organizationID + "_" + _fiscalYear + "_budget.pdf";
-                string _filePath = Request.PhysicalApplicationPath + _filename;
-                FileStream fs = new FileStream(_filePath, FileMode.Create);
-                fs.Write(PdfStream.GetBuffer(), 0, PdfStream.GetBuffer().Length);
-                fs.Close();
-
-                string baseUrl = Request.Url.GetLeftPart(UriPartial.Authority);
-
-                X.Js.Call("parent.App.direct.AddTabPanel", "p" + _organizationID + _fiscalYear, _description, "~/" + _filename);
+                    X.Js.Call("parent.App.direct.AddTabPanel", "p" + _organizationID + _fiscalYear, _description, "~/" + _filename);
+                }
+                catch (Exception ex)
+                {
+                    e.Success = false;
+                    e.ErrorMessage = ex.InnerException.ToString();
+                }
             }
 
         }
