@@ -42,6 +42,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                 uxAddWeatherWindStore.Data = StaticLists.WindDirection;
                 uxStateList.Data = StaticLists.StateList;
+                uxAddStateList.Data = StaticLists.StateList;
                 uxStateStore.Data = StaticLists.StateList;
                 this.uxRedWarning.Value = ResourceManager.GetInstance().GetIconUrl(Ext.Net.Icon.Exclamation);
                 this.uxYellowWarning.Value = ResourceManager.GetInstance().GetIconUrl(Ext.Net.Icon.Error);

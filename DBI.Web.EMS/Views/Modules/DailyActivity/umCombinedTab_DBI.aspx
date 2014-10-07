@@ -1281,11 +1281,6 @@
                                         <Click Handler="#{uxChemicalStore}.insert(0, new Chemical())" />
                                     </Listeners>
                                 </ext:Button>
-                                <ext:Button ID="uxEditChemicalButton" runat="server" Text="Edit" Icon="ApplicationEdit" Disabled="true">
-                                    <Listeners>
-                                        <Click Handler="parent.App.direct.dmLoadChemicalWindow('Edit', App.uxHeaderField.value, App.uxChemicalGrid.getSelectionModel().getSelection()[0].data.CHEMICAL_MIX_ID)" />
-                                    </Listeners>
-                                </ext:Button>
                                 <ext:Button ID="uxDeleteChemicalButton" runat="server" Text="Delete" Icon="ApplicationDelete" Disabled="true">
                                     <DirectEvents>
                                         <Click OnEvent="deRemoveChemical">
@@ -1300,7 +1295,7 @@
                         </ext:Toolbar>
                     </TopBar>
                     <Listeners>
-                        <Select Handler="#{uxEditChemicalButton}.enable(); #{uxDeleteChemicalButton}.enable()" />
+                        <Select Handler="#{uxDeleteChemicalButton}.enable()" />
                     </Listeners>
                     <Plugins>
                         <ext:RowEditing runat="server" AutoCancel="false" ClicksToEdit="1" />
