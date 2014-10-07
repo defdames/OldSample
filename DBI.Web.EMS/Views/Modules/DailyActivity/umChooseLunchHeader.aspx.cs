@@ -90,8 +90,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
             long EmployeeId = long.Parse(Request.QueryString["EmployeeId"]);
             long ChosenLunch = long.Parse(uxLunchDRS.Value.ToString());
+            IQueryable<DAILY_ACTIVITY_EMPLOYEE> ExistingLunchQuery;
             DAILY_ACTIVITY_EMPLOYEE ExistingLunch;
             DAILY_ACTIVITY_EMPLOYEE EmployeeToUpdate;
+            DAILY_ACTIVITY_EMPLOYEE PostedLunch = null;
 
             using (Entities _context = new Entities())
             {
@@ -101,25 +103,40 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 //Get Lunch date
                 DateTime HeaderDate = _context.DAILY_ACTIVITY_HEADER.Where(x => x.HEADER_ID == HeaderId).Select(x => (DateTime)x.DA_DATE).Single();
                 //Check for existing lunch
-                ExistingLunch = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                ExistingLunchQuery = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                  join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
                                  where d.PERSON_ID == PersonId && EntityFunctions.TruncateTime(h.DA_DATE) == EntityFunctions.TruncateTime(HeaderDate) && d.LUNCH == "Y"
-                                 select d).SingleOrDefault();
+                                 select d);
                 EmployeeToUpdate = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                     where d.HEADER_ID == ChosenLunch && d.PERSON_ID == PersonId
                                     select d).Single();
-
+                if (ExistingLunchQuery.Count() > 1)
+                {
+                    PostedLunch = ExistingLunchQuery.Where(x => x.DAILY_ACTIVITY_HEADER.STATUS == 4).SingleOrDefault();
+                    ExistingLunch = ExistingLunchQuery.Where(x => x.DAILY_ACTIVITY_HEADER.STATUS != 4).SingleOrDefault();
+                }
+                else
+                {
+                    ExistingLunch = ExistingLunchQuery.SingleOrDefault();
+                }
                 if (ExistingLunch != null)
                 {
-                    if (ExistingLunch.DAILY_ACTIVITY_HEADER.STATUS != 4)
+                    if (ExistingLunch.DAILY_ACTIVITY_HEADER.STATUS != 4 && PostedLunch == null)
                     {
                         ExistingLunch.LUNCH_LENGTH = null;
                         ExistingLunch.LUNCH = null;
                         EmployeeToUpdate.LUNCH_LENGTH = GetLunchLength(PersonId, HeaderDate);
                     }
-                    else
+                    else if (ExistingLunch.DAILY_ACTIVITY_HEADER.STATUS == 4 && PostedLunch == null)
                     {
                         if (ExistingLunch.LUNCH_LENGTH == 30)
+                        {
+                            EmployeeToUpdate.LUNCH_LENGTH = 30;
+                        }
+                    }
+                    else
+                    {
+                        if (PostedLunch.LUNCH_LENGTH == 30)
                         {
                             EmployeeToUpdate.LUNCH_LENGTH = 30;
                         }
