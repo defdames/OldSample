@@ -697,7 +697,7 @@
                         </ext:Toolbar>
                     </TopBar>
                     <Plugins>
-                        <ext:RowEditing runat="server" ClicksToMoveEditor="1" AutoCancel="false" ID="test">
+                        <ext:RowEditing runat="server" ClicksToEdit="1" AutoCancel="false" ID="test">
                             <DirectEvents>
                                 <Edit OnEvent="deSaveEmployee" Before="return #{uxEmployeeStore}.isDirty();">
                                     <ExtraParams>
@@ -910,7 +910,7 @@
                         <ext:GridView runat="server" ID="uxEquipmentView" />
                     </View>
                     <Listeners>
-                        <Select Handler="#{uxEditEquipmentButton}.enable(); #{uxDeleteEquipmentButton}.enable()" />
+                        <Select Handler="#{uxDeleteEquipmentButton}.enable()" />
                     </Listeners>
                 </ext:GridPanel>
                 <ext:GridPanel runat="server"
@@ -1073,8 +1073,8 @@
                                 <ext:Model ID="Model4" runat="server" Name="Weather">
                                     <Fields>
                                         <ext:ModelField Name="WEATHER_ID" />
-                                        <ext:ModelField Name="WEATHER_DATE" Type="Date" ServerMapping="WEATHER_DATE_TIME" />
-                                        <ext:ModelField Name="WEATHER_TIME" Type="Date" ServerMapping="WEATHER_DATE_TIME" />
+                                        <ext:ModelField Name="WEATHER_DATE" Type="Date" />
+                                        <ext:ModelField Name="WEATHER_TIME" Type="Date" />
                                         <ext:ModelField Name="WIND_DIRECTION" />
                                         <ext:ModelField Name="WIND_VELOCITY" />
                                         <ext:ModelField Name="TEMP" />
@@ -1089,12 +1089,12 @@
                         <Columns>
                             <ext:DateColumn ID="DateColumn6" runat="server" DataIndex="WEATHER_DATE" Text="Date" Format="M/d/yyyy" Flex="8">
                                 <Editor>
-                                    <ext:DateField runat="server" />
+                                    <ext:DateField runat="server" AllowBlank="false" InvalidCls="allowBlank" />
                                 </Editor>
                             </ext:DateColumn>
                             <ext:DateColumn runat="server" DataIndex="WEATHER_TIME" Text="Time" Format="h:mm" Flex="7">
                                 <Editor>
-                                    <ext:TimeField runat="server" />
+                                    <ext:TimeField runat="server" AllowBlank="false" InvalidCls="allowBlank" />
                                 </Editor>
                             </ext:DateColumn>
                             <ext:Column ID="Column21" runat="server" DataIndex="WIND_DIRECTION" Text="Wind Direction" Flex="10">
@@ -1155,29 +1155,27 @@
                                         <Click Handler="#{uxWeatherStore}.insert(0, new Weather())" />
                                     </Listeners>
                                 </ext:Button>
-                                <ext:Button ID="uxEditWeatherButton" runat="server" Text="Edit" Icon="ApplicationEdit" Disabled="true">
-                                    <Listeners>
-                                        <Click Handler="parent.App.direct.dmLoadWeatherWindow('Edit', App.uxHeaderField.value, App.uxWeatherGrid.getSelectionModel().getSelection()[0].data.WEATHER_ID)" />
-                                    </Listeners>
-                                </ext:Button>
                                 <ext:Button ID="uxDeleteWeatherButton" runat="server" Text="Delete" Icon="ApplicationDelete" Disabled="true">
-                                    <DirectEvents>
-                                        <Click OnEvent="deRemoveWeather">
-                                            <Confirmation ConfirmRequest="true" Title="Remove?" Message="Do you really want to remove the weather?" />
-                                            <ExtraParams>
-                                                <ext:Parameter Name="WeatherId" Value="#{uxWeatherGrid}.getSelectionModel().getSelection()[0].data.WEATHER_ID" Mode="Raw" />
-                                            </ExtraParams>
-                                        </Click>
-                                    </DirectEvents>
+                                    <Listeners>
+                                        <Click Fn="deleteWeather" />
+                                    </Listeners>
                                 </ext:Button>
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
                     <Listeners>
-                        <Select Handler="#{uxEditWeatherButton}.enable(); #{uxDeleteWeatherButton}.enable()" />
+                        <Select Handler="#{uxDeleteWeatherButton}.enable()" />
                     </Listeners>
                     <Plugins>
-                        <ext:RowEditing runat="server" ClicksToEdit="1" AutoCancel="false" />
+                        <ext:RowEditing ID="RowEditing1" runat="server" ClicksToEdit="1" AutoCancel="false">
+                            <DirectEvents>
+                                <Edit OnEvent="deSaveWeather" Before="return #{uxWeatherStore}.isDirty();">
+                                    <ExtraParams>
+                                        <ext:Parameter Name="data" Value="#{uxWeatherStore}.getChangedData({skipIdForPhantomRecords : false})" Mode="Raw" Encode="true" />
+                                    </ExtraParams>
+                                </Edit>
+                            </DirectEvents>
+                        </ext:RowEditing>
                     </Plugins>
                 </ext:GridPanel>
                 <ext:GridPanel runat="server"

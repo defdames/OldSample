@@ -1381,15 +1381,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Button uxAddWeatherButton;
         
         /// <summary>
-        /// uxEditWeatherButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxEditWeatherButton;
-        
-        /// <summary>
         /// uxDeleteWeatherButton control.
         /// </summary>
         /// <remarks>
@@ -1397,6 +1388,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Button uxDeleteWeatherButton;
+        
+        /// <summary>
+        /// RowEditing1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowEditing RowEditing1;
         
         /// <summary>
         /// uxChemicalGrid control.

@@ -1938,7 +1938,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         public long? ODOMETER_START { get; set; }
         public long? ODOMETER_END { get; set; }
         public long? PROJECT_ID { get; set; }
-        public long EQUIPMENT_ID { get; set; }
+        public long? EQUIPMENT_ID { get; set; }
         public string NAME { get; set; }
         public long? HEADER_ID { get; set; }
         public string PhantomID { get; set; }
@@ -1962,4 +1962,17 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         public string PhantomID { get; set; }
     }
 
+    public class WeatherDetails
+    {
+        public long? WEATHER_ID { get; set; }
+        public long HEADER_ID { get; set; }
+        public DateTime WEATHER_DATE { get; set; }
+        public DateTime WEATHER_TIME { get; set; }
+        public string WIND_DIRECTION { get; set; }
+        public string WIND_VELOCITY { get; set; }
+        public string HUMIDITY { get; set; }
+        public string COMMENTS { get; set; }
+        public string TEMP { get; set; }
+        public string PhantomID { get; set; }
+    }
 }

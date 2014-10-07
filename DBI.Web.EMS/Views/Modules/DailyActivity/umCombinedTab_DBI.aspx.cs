@@ -29,7 +29,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             
             if (!X.IsAjaxRequest)
-            {   
+            {
                 GetHeaderData();
                 GetEmployeeData();
                 GetEquipmentData();
@@ -40,6 +40,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 GetFooterData();
                 GetWarnings();
 
+                uxAddWeatherWindStore.Data = StaticLists.WindDirection;
                 uxStateList.Data = StaticLists.StateList;
                 uxStateStore.Data = StaticLists.StateList;
                 this.uxRedWarning.Value = ResourceManager.GetInstance().GetIconUrl(Ext.Net.Icon.Exclamation);
@@ -344,7 +345,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
                 var data = (from w in _context.DAILY_ACTIVITY_WEATHER
                             where w.HEADER_ID == HeaderId
-                            select w).ToList();
+                            select new WeatherDetails { WEATHER_ID = w.WEATHER_ID, HEADER_ID = w.HEADER_ID, COMMENTS = w.COMMENTS, HUMIDITY = w.HUMIDITY, TEMP = w.TEMP, WEATHER_DATE = (DateTime)w.WEATHER_DATE_TIME, WEATHER_TIME = (DateTime)w.WEATHER_DATE_TIME, WIND_DIRECTION = w.WIND_DIRECTION, WIND_VELOCITY = w.WIND_VELOCITY }).ToList();
                 uxWeatherStore.DataSource = data;
                 uxWeatherStore.DataBind();
             }
@@ -430,52 +431,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Remove equipment from db
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void deRemoveEquipment(object sender, DirectEventArgs e)
-        {
-            //Convert EquipmentId to long
-            long EquipmentId = long.Parse(e.ExtraParams["EquipmentId"]);
-            DAILY_ACTIVITY_EQUIPMENT data;
-
-            //Get record to be deleted
-            using (Entities _context = new Entities())
-            {
-                data = (from d in _context.DAILY_ACTIVITY_EQUIPMENT
-                        where d.EQUIPMENT_ID == EquipmentId
-                        select d).Single();
-            }
-
-            GenericData.Delete<DAILY_ACTIVITY_EQUIPMENT>(data);
-            X.Js.Call("parent.App.uxDetailsPanel.reload()");
-        }
-
-        /// <summary>
-        /// Remove production item from db
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void deRemoveProduction(object sender, DirectEventArgs e)
-        {
-            long ProductionId = long.Parse(e.ExtraParams["ProductionId"]);
-            DAILY_ACTIVITY_PRODUCTION data;
-
-            //Get record to be deleted
-            using (Entities _context = new Entities())
-            {
-                data = (from d in _context.DAILY_ACTIVITY_PRODUCTION
-                        where d.PRODUCTION_ID == ProductionId
-                        select d).Single();
-            }
-
-            //Process deletion
-            GenericData.Delete<DAILY_ACTIVITY_PRODUCTION>(data);
-            X.Js.Call("parent.App.uxDetailsPanel.reload()");
         }
 
         /// <summary>
@@ -1044,7 +999,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                 ModelProxy Record = uxEmployeeStore.GetById(item.EMPLOYEE_ID);
                 Record.CreateVariable = true;
-                Record.SetId(UpdatedEmployee.EMPLOYEE_ID);
                 Record.Set("EMPLOYEE_NAME", EmployeeName);
                 if (EquipmentName != null)
                 {
@@ -1216,16 +1170,51 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
         protected void deSaveWeather(object sender, DirectEventArgs e)
         {
-            ChangeRecords<DAILY_ACTIVITY_WEATHER> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<DAILY_ACTIVITY_WEATHER>();
+            ChangeRecords<WeatherDetails> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<WeatherDetails>();
 
-            foreach (DAILY_ACTIVITY_WEATHER item in data.Created)
+            foreach (WeatherDetails item in data.Created)
             {
+                DAILY_ACTIVITY_WEATHER NewWeather = new DAILY_ACTIVITY_WEATHER();
 
+                NewWeather.HEADER_ID = long.Parse(Request.QueryString["HeaderId"]);
+                NewWeather.WEATHER_DATE_TIME = item.WEATHER_DATE.Date + item.WEATHER_TIME.TimeOfDay;
+                NewWeather.HUMIDITY = item.HUMIDITY;
+                NewWeather.TEMP = item.TEMP;
+                NewWeather.WIND_DIRECTION = item.WIND_DIRECTION;
+                NewWeather.WIND_VELOCITY = item.WIND_VELOCITY;
+                NewWeather.COMMENTS = item.COMMENTS;
+                NewWeather.CREATE_DATE = DateTime.Now;
+                NewWeather.MODIFY_DATE = DateTime.Now;
+                NewWeather.CREATED_BY = User.Identity.Name;
+                NewWeather.MODIFIED_BY = User.Identity.Name;
+
+                GenericData.Insert(NewWeather);
+
+                ModelProxy Record = uxWeatherStore.GetByInternalId(item.PhantomID);
+                Record.CreateVariable = true;
+                Record.SetId(NewWeather.WEATHER_ID);
+                Record.Commit();
             }
 
-            foreach (DAILY_ACTIVITY_WEATHER item in data.Updated)
+            foreach (WeatherDetails item in data.Updated)
             {
+                DAILY_ACTIVITY_WEATHER UpdatedWeather;
 
+                using (Entities _context = new Entities())
+                {
+                    UpdatedWeather = _context.DAILY_ACTIVITY_WEATHER.Where(x => x.WEATHER_ID == item.WEATHER_ID).Single();
+                }
+
+                UpdatedWeather.HUMIDITY = item.HUMIDITY;
+                UpdatedWeather.COMMENTS = item.COMMENTS;
+                UpdatedWeather.TEMP = item.TEMP;
+                UpdatedWeather.WEATHER_DATE_TIME = item.WEATHER_DATE.Date + item.WEATHER_TIME.TimeOfDay;
+                UpdatedWeather.WIND_DIRECTION = item.WIND_DIRECTION;
+                UpdatedWeather.WIND_VELOCITY = item.WIND_VELOCITY;
+                UpdatedWeather.MODIFIED_BY = User.Identity.Name;
+                UpdatedWeather.MODIFY_DATE = DateTime.Now;
+
+                GenericData.Update(UpdatedWeather);
             }
 
             uxWeatherStore.CommitChanges();
