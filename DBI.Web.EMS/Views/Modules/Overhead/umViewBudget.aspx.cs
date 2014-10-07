@@ -188,10 +188,8 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         protected void deLoadData(object sender, DirectEventArgs e)
         {
-            string _budget = uxBudgetName.SelectedItem.Value.ToString();
-            string _fiscal = uxFiscalYear.SelectedItem.Value.ToString();
 
-            if (_budget.Length > 0 & _fiscal.Length > 0)
+            if (uxFiscalYear.SelectedItem.Value != null & uxBudgetName.SelectedItem.Value != null)
             {
                 uxOrganizationAccountStore.Reload();
             }
@@ -271,7 +269,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 foreach (OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW _row in _budgetView)
                 {
 
-                    ws.Cells["A" + _cellCount].Value = _row.ACCOUNT_DESCRIPTION + " - " + _row.ACCOUNT_DESCRIPTION2;
+                    ws.Cells["A" + _cellCount].Value = _row.ACCOUNT_DESCRIPTION;
                     ws.Cells["B" + _cellCount].Value = _row.AMOUNT1;
                     ws.Cells["B" + _cellCount].Style.Numberformat.Format = "#,##0.00";
                     ws.Cells["C" + _cellCount].Value = _row.AMOUNT2;

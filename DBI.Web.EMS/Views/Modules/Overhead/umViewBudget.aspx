@@ -116,6 +116,9 @@
                                         </Model>
                                     </ext:Store>
                                 </Store>
+                                   <DirectEvents>
+                                  <Select OnEvent="deLoadData"></Select>
+                              </DirectEvents>
                             </ext:ComboBox>
                                <ext:ToolbarSpacer runat="server"></ext:ToolbarSpacer>
                                  <ext:ComboBox runat="server" ID="uxFiscalYear" Editable="true" TypeAhead="true" LabelWidth="75"

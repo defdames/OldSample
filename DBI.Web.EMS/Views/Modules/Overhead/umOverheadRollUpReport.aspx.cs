@@ -43,7 +43,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
             uxCenterTabPanel.SetActiveTab("Tab" + id.Replace(":", "_"));
         }
-     
+
 
         protected void deLoadOrgTree(object sender, NodeLoadEventArgs e)
         {
@@ -107,42 +107,42 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 {
                     if (view.HIER_LEVEL == 1)
                     {
-                            Node node = new Node();
-                            node.NodeID = string.Format("{0}:{1}:{2}", hierarchyID.ToString(), view.ORGANIZATION_ID.ToString(), leID.ToString());
-                            node.Text = view.ORGANIZATION_NAME;
+                        Node node = new Node();
+                        node.NodeID = string.Format("{0}:{1}:{2}", hierarchyID.ToString(), view.ORGANIZATION_ID.ToString(), leID.ToString());
+                        node.Text = view.ORGANIZATION_NAME;
 
-                            var nextData = HR.OverheadOrganizationStatusByHierarchy(hierarchyID, view.ORGANIZATION_ID);
+                        var nextData = HR.OverheadOrganizationStatusByHierarchy(hierarchyID, view.ORGANIZATION_ID);
 
-                            Boolean _ActiveOrganizationsListed = nextData.Where(x => x.ORGANIZATION_STATUS == "Active").Count() > 0 ? true : false;
-                        
+                        Boolean _ActiveOrganizationsListed = nextData.Where(x => x.ORGANIZATION_STATUS == "Active").Count() > 0 ? true : false;
+
                         if (nextData.Count() == 0)
+                        {
+                            node.Leaf = true;
+                            if (view.ORGANIZATION_STATUS == "Active")
                             {
-                                node.Leaf = true;
-                                if (view.ORGANIZATION_STATUS == "Active")
-                                {
-                                    node.Icon = Icon.Accept;
-                                }
-                                else
-                                {
-                                    node.Icon = Icon.ControlBlank;
-                                }
+                                node.Icon = Icon.Accept;
                             }
                             else
                             {
-                                node.Leaf = false;
-
-                                if (_ActiveOrganizationsListed)
-                                {
-                                    node.Icon = Icon.Accept;
-                                }
-                                else
-                                {
-                                    node.Icon = Icon.ControlBlank;
-                                }
+                                node.Icon = Icon.ControlBlank;
                             }
-
-                            e.Nodes.Add(node);
                         }
+                        else
+                        {
+                            node.Leaf = false;
+
+                            if (_ActiveOrganizationsListed)
+                            {
+                                node.Icon = Icon.Accept;
+                            }
+                            else
+                            {
+                                node.Icon = Icon.ControlBlank;
+                            }
+                        }
+
+                        e.Nodes.Add(node);
+                    }
                 }
             }
         }
@@ -153,9 +153,35 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
             if (sm.SelectedRecordID != "0")
             {
-                string _nodeText = e.ExtraParams["ORGANIZATION_NAME"];
-                AddTab(sm.SelectedRecordID + "OS", _nodeText + " - Budget Rollup", "umViewBudget.aspx?fiscalyear=2014&orgid=" + sm.SelectedRecordID + "&desc=" +  _nodeText + " - Budget Rollup",false,true);
-            }
+                char[] delimChars = { ':' };
+                string[] selID = sm.SelectedRecordID.Split(delimChars);
+                long hierarchyID = long.Parse(selID[0].ToString());
+                long orgID = long.Parse(selID[1].ToString());
+
+                var data = HR.OverheadOrganizationStatusByHierarchy(hierarchyID, orgID);
+
+                if (data.Count() == 0)
+                {
+                    long _leID = OVERHEAD_BUDGET_FORECAST.ReturnLEIDforOrganizationID(orgID);
+                    HR.ORGANIZATION_V1 _orgData = HR.OverheadOrganizationStatusByHierarchy(hierarchyID, _leID).Where(x => x.ORGANIZATION_ID == orgID).SingleOrDefault();
+                    if (_orgData.ORGANIZATION_STATUS == "Active")
+                    {
+                        string _nodeText = e.ExtraParams["ORGANIZATION_NAME"];
+                        AddTab(sm.SelectedRecordID + "OS", _nodeText + " - Budget Rollup", "umViewBudget.aspx?orgid=" + sm.SelectedRecordID + "&desc=" + _nodeText + " - Budget Rollup", false, true);
+
+                    }
+                       
+                }
+
+                Boolean _ActiveOrganizationsListed = data.Where(x => x.ORGANIZATION_STATUS == "Active").Count() > 0 ? true : false;
+
+                    if (_ActiveOrganizationsListed)
+                    {
+                        string _nodeText = e.ExtraParams["ORGANIZATION_NAME"];
+                        AddTab(sm.SelectedRecordID + "OS", _nodeText + " - Budget Rollup", "umViewBudget.aspx?orgid=" + sm.SelectedRecordID + "&desc=" +  _nodeText + " - Budget Rollup",false,true);
+                    }
+
+             }
         }
 
         protected void AddTab(string id, string title, string url, Boolean loadContent = false, Boolean setActive = false)
