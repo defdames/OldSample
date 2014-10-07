@@ -803,14 +803,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
 
-            try
-            {
+            //try
+            //{
                 Interface.PostToOracle(HeaderId, User.Identity.Name);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            //}
+            //catch (Exception)
+            //{
+            //    throw;
+            //}
 
             Notification.Show(new NotificationConfig()
             {
