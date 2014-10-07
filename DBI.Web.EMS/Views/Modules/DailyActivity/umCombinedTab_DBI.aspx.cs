@@ -327,7 +327,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             join t in _context.PA_TASKS_V on d.TASK_ID equals t.TASK_ID
                             join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                             where d.HEADER_ID == HeaderId
-                            select new { d.PRODUCTION_ID, h.PROJECT_ID, p.LONG_NAME, t.TASK_NUMBER, t.TASK_ID, t.DESCRIPTION, d.TIME_IN, d.TIME_OUT, d.WORK_AREA, d.POLE_FROM, d.POLE_TO, d.ACRES_MILE, d.QUANTITY }).ToList();
+                            select new ProductionDetails { PRODUCTION_ID = d.PRODUCTION_ID, PROJECT_ID = h.PROJECT_ID, LONG_NAME = p.LONG_NAME, TASK_NUMBER = t.TASK_NUMBER, TASK_ID = t.TASK_ID, DESCRIPTION = t.DESCRIPTION, TIME_IN = d.TIME_IN, TIME_OUT = d.TIME_OUT, WORK_AREA = d.WORK_AREA, POLE_FROM = d.POLE_FROM, POLE_TO = d.POLE_TO, ACRES_MILE = d.ACRES_MILE, QUANTITY = d.QUANTITY }).ToList();
                 uxProductionStore.DataSource = data;
                 uxProductionStore.DataBind();
             }
@@ -430,27 +430,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Remove Employee entry from db
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void deRemoveEmployee(object sender, DirectEventArgs e)
-        {
-
-            long EmployeeId = long.Parse(e.ExtraParams["EmployeeID"]);
-            //Get Record to Remove
-            DAILY_ACTIVITY_EMPLOYEE data;
-            using (Entities _context = new Entities())
-            {
-                data = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-                        where d.EMPLOYEE_ID == EmployeeId
-                        select d).Single();
-            }
-            GenericData.Delete<DAILY_ACTIVITY_EMPLOYEE>(data);
-            X.Js.Call("parent.App.uxDetailsPanel.reload()");
         }
 
         /// <summary>
@@ -901,6 +880,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        protected void deStoreTask(object sender, DirectEventArgs e)
+        {
+            uxAddProductionTask.SetValue(e.ExtraParams["TaskId"], e.ExtraParams["Description"]);
+            uxAddProductionTaskStore.ClearFilter();
+        }
+
         /// <summary>
         /// Checks for a project with an existing per diem on the current date
         /// </summary>
@@ -1045,9 +1030,252 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 UpdatedEmployee.TRAVEL_TIME = (decimal)item.TRAVEL_TIME_FORMATTED.TimeOfDay.TotalMinutes / 60;
 
                 GenericData.Update<DAILY_ACTIVITY_EMPLOYEE>(UpdatedEmployee);
+
+                string EmployeeName;
+                string EquipmentName;
+                using (Entities _context = new Entities())
+                {
+                    EmployeeName = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == item.PERSON_ID).Select(x => x.EMPLOYEE_NAME).Single();
+                    EquipmentName = (from d in _context.DAILY_ACTIVITY_EQUIPMENT
+                                     join eq in _context.CLASS_CODES_V on d.PROJECT_ID equals eq.PROJECT_ID
+                                     where d.EQUIPMENT_ID == item.EQUIPMENT_ID
+                                     select eq.NAME).SingleOrDefault();
+                }
+
+                ModelProxy Record = uxEmployeeStore.GetById(item.EMPLOYEE_ID);
+                Record.CreateVariable = true;
+                Record.SetId(UpdatedEmployee.EMPLOYEE_ID);
+                Record.Set("EMPLOYEE_NAME", EmployeeName);
+                if (EquipmentName != null)
+                {
+                    Record.Set("NAME", EquipmentName);
+                }
+                Record.Commit();
             }
 
             uxEmployeeStore.CommitChanges();
+        }
+
+        protected void deSaveEquipment(object sender, DirectEventArgs e)
+        {
+            ChangeRecords<EquipmentDetails> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<EquipmentDetails>();
+
+            foreach (EquipmentDetails item in data.Created)
+            {
+
+                DAILY_ACTIVITY_EQUIPMENT NewEquipment =  new DAILY_ACTIVITY_EQUIPMENT();
+                CLASS_CODES_V EquipmentItem;
+
+                NewEquipment.PROJECT_ID = item.PROJECT_ID;
+                NewEquipment.ODOMETER_START = item.ODOMETER_START;
+                NewEquipment.ODOMETER_END = item.ODOMETER_END;
+                NewEquipment.HEADER_ID = long.Parse(Request.QueryString["HeaderId"]);
+                NewEquipment.CREATE_DATE = DateTime.Now;
+                NewEquipment.MODIFY_DATE = DateTime.Now;
+                NewEquipment.CREATED_BY = User.Identity.Name;
+                NewEquipment.MODIFIED_BY = User.Identity.Name;
+
+                GenericData.Insert(NewEquipment);
+
+                using (Entities _context = new Entities())
+                {
+                    EquipmentItem = _context.CLASS_CODES_V.Where(x => x.PROJECT_ID == item.PROJECT_ID).Single();
+                }
+                ModelProxy Record = uxEquipmentStore.GetByInternalId(item.PhantomID);
+                Record.CreateVariable = true;
+                Record.SetId(NewEquipment.EQUIPMENT_ID);
+                Record.Set("CLASS_CODE", EquipmentItem.CLASS_CODE);
+                Record.Set("NAME", EquipmentItem.NAME);
+                Record.Set("ORGANIZATION_NAME", EquipmentItem.ORGANIZATION_NAME);
+                Record.Set("SEGMENT1", EquipmentItem.SEGMENT1);
+                Record.Commit();
+            }
+
+            foreach (EquipmentDetails item in data.Updated)
+            {
+                DAILY_ACTIVITY_EQUIPMENT UpdatedEquipment;
+                CLASS_CODES_V EquipmentItem;
+
+                using (Entities _context = new Entities())
+                {
+                    UpdatedEquipment = _context.DAILY_ACTIVITY_EQUIPMENT.Where(x => x.EQUIPMENT_ID == item.EQUIPMENT_ID).Single();
+                }
+                UpdatedEquipment.PROJECT_ID = item.PROJECT_ID;
+                UpdatedEquipment.ODOMETER_END = item.ODOMETER_END;
+                UpdatedEquipment.ODOMETER_START = item.ODOMETER_START;
+                UpdatedEquipment.MODIFIED_BY = User.Identity.Name;
+                UpdatedEquipment.MODIFY_DATE = DateTime.Now;
+
+                GenericData.Update(UpdatedEquipment);
+
+                using (Entities _context = new Entities())
+                {
+                    EquipmentItem = _context.CLASS_CODES_V.Where(x => x.PROJECT_ID == item.PROJECT_ID).Single();
+                }
+
+                ModelProxy Record = uxEquipmentStore.GetById(item.EQUIPMENT_ID);
+                Record.CreateVariable = true;
+                Record.Set("CLASS_CODE", EquipmentItem.CLASS_CODE);
+                Record.Set("NAME", EquipmentItem.NAME);
+                Record.Set("ORGANIZATION_NAME", EquipmentItem.ORGANIZATION_NAME);
+                Record.Set("SEGMENT1", EquipmentItem.SEGMENT1);
+                Record.Commit();
+            }
+
+            uxEquipmentStore.CommitChanges();
+        }
+
+        protected void deReadTaskData(object sender, StoreReadDataEventArgs e)
+        {
+            using (Entities _context = new Entities())
+            {
+                long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+                var ProjectId = (from d in _context.DAILY_ACTIVITY_HEADER
+                                 where d.HEADER_ID == HeaderId
+                                 select d.PROJECT_ID).Single();
+                var data = (from t in _context.PA_TASKS_V
+                            where t.PROJECT_ID == ProjectId && t.START_DATE <= DateTime.Now && (t.COMPLETION_DATE >= DateTime.Now || t.COMPLETION_DATE == null)
+                            select t).ToList();
+
+                //Set datasource for Add/Edit store
+                int count;
+                var pagedData = GenericData.EnumerableFilterHeader(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                uxAddProductionTaskStore.DataSource = pagedData;
+                e.Total = count;
+                uxAddProductionTaskStore.DataBind();
+            }
+        }
+        protected void deSaveProduction(object sender, DirectEventArgs e)
+        {
+            ChangeRecords<ProductionDetails> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<ProductionDetails>();
+
+            foreach (ProductionDetails item in data.Created)
+            {
+                DAILY_ACTIVITY_PRODUCTION NewProduction = new DAILY_ACTIVITY_PRODUCTION();
+
+                NewProduction.HEADER_ID = long.Parse(Request.QueryString["HeaderId"]);
+                NewProduction.POLE_FROM = item.POLE_FROM;
+                NewProduction.POLE_TO = item.POLE_TO;
+                NewProduction.QUANTITY = item.QUANTITY;
+                NewProduction.ACRES_MILE = item.ACRES_MILE;
+                NewProduction.TASK_ID = item.TASK_ID;
+                NewProduction.WORK_AREA = item.WORK_AREA;
+                NewProduction.CREATE_DATE = DateTime.Now;
+                NewProduction.MODIFY_DATE = DateTime.Now;
+                NewProduction.CREATED_BY = User.Identity.Name;
+                NewProduction.MODIFIED_BY = User.Identity.Name;
+
+                GenericData.Insert(NewProduction);
+
+                PA_TASKS_V TaskItem;
+                using (Entities _context = new Entities())
+                {
+                    TaskItem = _context.PA_TASKS_V.Where(x => x.TASK_ID == item.TASK_ID).Single();
+                }
+                ModelProxy Record = uxProductionStore.GetByInternalId(item.PhantomID);
+                Record.CreateVariable = true;
+                Record.SetId(NewProduction.PRODUCTION_ID);
+                Record.Set("DESCRIPTION", TaskItem.DESCRIPTION);
+                Record.Set("TASK_NUMBER", TaskItem.TASK_NUMBER);
+                Record.Commit();
+            }
+
+            foreach (ProductionDetails item in data.Updated)
+            {
+                DAILY_ACTIVITY_PRODUCTION UpdatedProduction;
+
+                using (Entities _context = new Entities())
+                {
+                    UpdatedProduction = _context.DAILY_ACTIVITY_PRODUCTION.Where(x => x.PRODUCTION_ID == item.PRODUCTION_ID).Single();
+                }
+                UpdatedProduction.POLE_FROM = item.POLE_TO;
+                UpdatedProduction.POLE_TO = item.POLE_TO;
+                UpdatedProduction.QUANTITY = item.QUANTITY;
+                UpdatedProduction.ACRES_MILE = item.ACRES_MILE;
+                UpdatedProduction.TASK_ID = item.TASK_ID;
+                UpdatedProduction.WORK_AREA = item.WORK_AREA;
+                UpdatedProduction.MODIFIED_BY = User.Identity.Name;
+                UpdatedProduction.MODIFY_DATE = DateTime.Now;
+
+                GenericData.Update(UpdatedProduction);
+
+                PA_TASKS_V TaskItem;
+                using (Entities _context = new Entities())
+                {
+                    TaskItem = _context.PA_TASKS_V.Where(x => x.TASK_ID == item.TASK_ID).Single();
+                }
+                ModelProxy Record = uxProductionStore.GetById(item.PRODUCTION_ID);
+                Record.CreateVariable = true;
+                
+                Record.Set("DESCRIPTION", TaskItem.DESCRIPTION);
+                Record.Set("TASK_NUMBER", TaskItem.TASK_NUMBER);
+                Record.Commit();
+            }
+            uxProductionStore.CommitChanges();
+        }
+
+        protected void deSaveWeather(object sender, DirectEventArgs e)
+        {
+            ChangeRecords<DAILY_ACTIVITY_WEATHER> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<DAILY_ACTIVITY_WEATHER>();
+
+            foreach (DAILY_ACTIVITY_WEATHER item in data.Created)
+            {
+
+            }
+
+            foreach (DAILY_ACTIVITY_WEATHER item in data.Updated)
+            {
+
+            }
+
+            uxWeatherStore.CommitChanges();
+        }
+
+        protected void deStoreEquipmentGridValue(object sender, DirectEventArgs e)
+        {
+            //Set value and text for equipment
+            uxAddEquipmentDropDown.SetValue(e.ExtraParams["ProjectId"], e.ExtraParams["EquipmentName"]);
+
+            //Clear existing filters
+            uxAddEquipmentFilter.ClearFilter();
+        }
+
+        protected void deReloadEquipmentStore(object sender, DirectEventArgs e)
+        {
+            uxAddEquipmentDropDownStore.Reload();
+            if (uxAddEquipmentToggleOrg.Pressed)
+            {
+                uxAddEquipmentToggleOrg.Text = "My Region";
+            }
+            else
+            {
+                uxAddEquipmentToggleOrg.Text = "All Regions";
+            }
+        }
+
+        protected void deReadEquipmentGrid(object sender, StoreReadDataEventArgs e)
+        {
+            List<WEB_EQUIPMENT_V> dataIn;
+
+            if (uxAddEquipmentToggleOrg.Pressed)
+            {
+                //Get All Projects
+                dataIn = WEB_EQUIPMENT_V.ListEquipment();
+            }
+            else
+            {
+                int CurrentOrg = Convert.ToInt32(Authentication.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
+                //Get projects for my org only
+                dataIn = WEB_EQUIPMENT_V.ListEquipment(CurrentOrg);
+            }
+
+            int count;
+
+            //Get paged, filterable list of Equipment
+            List<WEB_EQUIPMENT_V> data = GenericData.EnumerableFilterHeader<WEB_EQUIPMENT_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataIn, out count).ToList();
+
+            e.Total = count;
+            uxAddEquipmentDropDownStore.DataSource = data;
         }
 
         [DirectMethod]
@@ -1063,6 +1291,57 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             GenericData.Delete<DAILY_ACTIVITY_EMPLOYEE>(DeletedEmployee);
             uxEmployeeGrid.GetView();
             
+        }
+
+        [DirectMethod]
+        public void dmDeleteEquipment(string EquipmentId)
+        {
+            List<DAILY_ACTIVITY_EMPLOYEE> EmployeeCheck;
+            DAILY_ACTIVITY_EQUIPMENT DeletedEquipment;
+            long EqId = long.Parse(EquipmentId);
+            using (Entities _context = new Entities())
+            {
+                EmployeeCheck = _context.DAILY_ACTIVITY_EMPLOYEE.Where(x => x.EQUIPMENT_ID == EqId).ToList();
+                DeletedEquipment = _context.DAILY_ACTIVITY_EQUIPMENT.Where(x => x.EQUIPMENT_ID == EqId).Single();
+            }
+
+            if (EmployeeCheck.Count == 0)
+            {
+                GenericData.Delete(DeletedEquipment);
+                uxEquipmentGrid.GetView();
+            }
+            else
+            {
+                X.Msg.Alert("Error", "Cannot delete Equipment entry as there's currently an Employee entry using the equipment").Show();
+            }
+            
+        }
+
+        [DirectMethod]
+        public void dmDeleteProduction(string ProductionId)
+        {
+            DAILY_ACTIVITY_PRODUCTION DeletedProduction;
+            long ProdId = long.Parse(ProductionId);
+            using (Entities _context = new Entities())
+            {
+                DeletedProduction = _context.DAILY_ACTIVITY_PRODUCTION.Where(x => x.PRODUCTION_ID == ProdId).Single();
+            }
+
+            GenericData.Delete(DeletedProduction);
+            uxProductionGrid.GetView();
+        }
+
+        [DirectMethod]
+        public void dmDeleteWeather(string WeatherId)
+        {
+            DAILY_ACTIVITY_WEATHER DeletedWeather;
+            long Weather = long.Parse(WeatherId);
+            using (Entities _context = new Entities())
+            {
+                DeletedWeather = _context.DAILY_ACTIVITY_WEATHER.Where(x => x.WEATHER_ID == Weather).Single();
+            }
+            GenericData.Delete(DeletedWeather);
+            uxWeatherGrid.GetView();
         }
     }
 }

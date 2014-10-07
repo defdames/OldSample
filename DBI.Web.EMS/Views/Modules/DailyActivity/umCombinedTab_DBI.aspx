@@ -29,9 +29,17 @@
             toolTip.update(data);
         };
 
-        var mySetValue = function (value, text) {
+        var SetEmployeeValue = function (value, text) {
             if (!text && !!value) {
                 text = EmployeeRenderer(value);
+            }
+
+            Ext.net.DropDownField.prototype.setValue.call(this, value, text);
+        };
+
+        var SetEmployeeEqValue = function (value, text) {
+            if (!text && !!value) {
+                text = EmployeeEqRenderer(value);
             }
 
             Ext.net.DropDownField.prototype.setValue.call(this, value, text);
@@ -40,6 +48,14 @@
         var SetEquipmentValue = function (value, text) {
             if (!text && !!value) {
                 text = EquipmentRenderer(value);
+            }
+
+            Ext.net.DropDownField.prototype.setValue.call(this, value, text);
+        };
+
+        var SetTaskValue = function (value, text) {
+            if (!text && !!value) {
+                text = ProductionTaskRenderer(value);
             }
 
             Ext.net.DropDownField.prototype.setValue.call(this, value, text);
@@ -61,32 +77,36 @@
         };
 
         var EmployeeRenderer = function (value, record) {
-            
+            if (!record) {
+                return App.uxEmployeeGrid.getSelectionModel().getSelection()[0].data.EMPLOYEE_NAME;
+            }
             return record.record.data.EMPLOYEE_NAME;
         };
 
-        var EquipmentRenderer = function (value, record) {
-            
+        var EmployeeEqRenderer = function (value, record) {
+            if (!record) {
+                return App.uxEmployeeGrid.getSelectionModel().getSelection()[0].data.NAME;
+            }
             return record.record.data.NAME;
         };
 
-        var syncEmployeeValue = function (value) {
-            var grid = this.component;
+        var EquipmentRenderer = function (value, record) {
+            if (!record) {
+                return App.uxEquipmentGrid.getSelectionModel().getSelection()[0].data.NAME;
+            }
+            return record.record.data.NAME;
+        };
 
-            var ids = value.split(",");
-            grid.getSelectionModel().deselectAll();
-            Ext.each(ids, function (id) {
-                var node = grid.store.getById(id);
-
-                if (node) {
-                    grid.getSelectionModel().select(node, true);
-                }
-            }, this);
+        var ProductionTaskRenderer = function (value, record) {
+            if (!record) {
+                return App.uxProductionGrid.getSelectionModel().getSelection()[0].data.DESCRIPTION;
+            }
+            return record.record.data.DESCRIPTION;
         };
 
         var deleteEmployee = function () {
-            var EmployeeRecord = App.uxEmployeeGrid.getSelectionModel().getSelection()
-            
+            var EmployeeRecord = App.uxEmployeeGrid.getSelectionModel().getSelection();
+
             Ext.Msg.confirm('Really Delete?', 'Do you really want to delete this employee?', function (e) {
                 if (e == 'yes') {
                     App.uxEmployeeStore.remove(EmployeeRecord);
@@ -94,50 +114,46 @@
                 }
             });
         };
-           
+
+        var deleteEquipment = function () {
+            var EquipmentRecord = App.uxEquipmentGrid.getSelectionModel().getSelection();
+
+            Ext.Msg.confirm('Really Delete?', 'Do you really want to delete this equipment entry?', function (e) {
+                if (e == 'yes') {
+                    App.uxEquipmentStore.remove(EquipmentRecord);
+                    App.direct.dmDeleteEquipment(EquipmentRecord[0].data.EQUIPMENT_ID);
+                }
+            });
+        };
+
+        var deleteProduction = function () {
+            var ProductionRecord = App.uxProductionGrid.getSelectionModel().getSelection();
+
+            Ext.Msg.confirm('Really Delete?', 'Do you really want to delete this production entry?', function (e) {
+                if (e == 'yes') {
+                    App.uxProductionStore.remove(ProductionRecord);
+                    App.direct.dmDeleteProduction(ProductionRecord[0].data.PRODUCTION_ID);
+                }
+            });
+        };
+
+        var deleteWeather = function () {
+            var WeatherRecord = App.uxWeatherGrid.getSelectionModel().getSelection();
+
+            Ext.Msg.confirm('Really Delete?', 'Do you really want to delete this weather entry?', function (e) {
+                if (e == 'yes') {
+                    App.uxWeatherStore.remove(WeatherRecord);
+                    App.direct.dmDeleteWeather(WeatherRecord[0].data.WEATHER_ID);
+                }
+            });
+        };
+
     </script>
 </head>
 <body>
     <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
-    <ext:Store runat="server"
-        ID="uxEmployeeEmpStore"
-        PageSize="10"
-        RemoteSort="true"
-        OnReadData="deReadEmployeeData" AutoLoad="true">
-        <Model>
-            <ext:Model ID="Model1" runat="server" IDProperty="PERSON_ID">
-                <Fields>
-                    <ext:ModelField Name="PERSON_ID" Type="Int" />
-                    <ext:ModelField Name="EMPLOYEE_NAME" Type="String" />
-                    <ext:ModelField Name="JOB_NAME" Type="String" />
-                </Fields>
-            </ext:Model>
-        </Model>
-        <Proxy>
-            <ext:PageProxy />
-        </Proxy>
-    </ext:Store>
-    <ext:Store runat="server"
-        ID="uxEmployeeEqStore"
-        OnReadData="deReadEquipmentData"
-        AutoDataBind="true" AutoLoad="true" ClearOnPageLoad="false">
-        <Model>
-            <ext:Model ID="Model9" runat="server" IDProperty="EQUIPMENT_ID">
-                <Fields>
-                    <ext:ModelField Name="EQUIPMENT_ID" Type="Int" />
-                    <ext:ModelField Name="NAME" Type="String" />
-                    <ext:ModelField Name="SEGMENT1" Type="String" />
-                    <ext:ModelField Name="ORGANIZATION_NAME" />
-                    <ext:ModelField Name="CLASS_CODE" />
-                    <ext:ModelField Name="ODOMETER_START" />
-                    <ext:ModelField Name="ODOMETER_END" />
-                </Fields>
-            </ext:Model>
-        </Model>
-        <Proxy>
-            <ext:PageProxy />
-        </Proxy>
-    </ext:Store>
+
+
     <form id="form1" runat="server">
         <ext:Panel runat="server" ID="uxMainContainer" Layout="AutoLayout">
             <Items>
@@ -403,7 +419,6 @@
                             <ext:Column runat="server" DataIndex="AdditionalInformation" Text="Additional Information" Flex="55" />
                         </Columns>
                     </ColumnModel>
-
                 </ext:GridPanel>
                 <ext:GridPanel runat="server"
                     ID="uxEmployeeGrid"
@@ -446,12 +461,35 @@
                                         Mode="ValueText"
                                         AllowBlank="true" Width="500">
                                         <CustomConfig>
-                                            <ext:ConfigItem Name="setValue" Value="SetEquipmentValue" Mode="Raw" />
+                                            <ext:ConfigItem Name="setValue" Value="SetEmployeeEqValue" Mode="Raw" />
                                         </CustomConfig>
                                         <Component>
                                             <ext:GridPanel runat="server"
                                                 ID="uxEmployeeEqGrid"
-                                                Layout="HBoxLayout" StoreID="uxEmployeeEqStore">
+                                                Layout="HBoxLayout">
+                                                <Store>
+                                                    <ext:Store runat="server"
+                                                        ID="uxEmployeeEqStore"
+                                                        OnReadData="deReadEquipmentData"
+                                                        AutoDataBind="true" AutoLoad="true" ClearOnPageLoad="false">
+                                                        <Model>
+                                                            <ext:Model ID="Model9" runat="server" IDProperty="EQUIPMENT_ID">
+                                                                <Fields>
+                                                                    <ext:ModelField Name="EQUIPMENT_ID" Type="Int" />
+                                                                    <ext:ModelField Name="NAME" Type="String" />
+                                                                    <ext:ModelField Name="SEGMENT1" Type="String" />
+                                                                    <ext:ModelField Name="ORGANIZATION_NAME" />
+                                                                    <ext:ModelField Name="CLASS_CODE" />
+                                                                    <ext:ModelField Name="ODOMETER_START" />
+                                                                    <ext:ModelField Name="ODOMETER_END" />
+                                                                </Fields>
+                                                            </ext:Model>
+                                                        </Model>
+                                                        <Proxy>
+                                                            <ext:PageProxy />
+                                                        </Proxy>
+                                                    </ext:Store>
+                                                </Store>
                                                 <ColumnModel>
                                                     <Columns>
                                                         <ext:Column ID="Column12" runat="server" Text="Name" DataIndex="NAME" Flex="15" />
@@ -480,7 +518,7 @@
                                         </Listeners>
                                     </ext:DropDownField>
                                 </Editor>
-                                <Renderer Fn="EquipmentRenderer" />
+                                <Renderer Fn="EmployeeEqRenderer" />
                             </ext:Column>
                             <ext:Column ID="Column9" runat="server" DataIndex="PERSON_ID" Text="Employee Name" Flex="13">
                                 <Renderer Fn="EmployeeRenderer" />
@@ -493,8 +531,27 @@
                                         <Component>
                                             <ext:GridPanel runat="server"
                                                 ID="uxEmployeeEmpGrid"
-                                                Layout="HBoxLayout"
-                                                StoreID="uxEmployeeEmpStore">
+                                                Layout="HBoxLayout">
+                                                <Store>
+                                                    <ext:Store runat="server"
+                                                        ID="uxEmployeeEmpStore"
+                                                        PageSize="10"
+                                                        RemoteSort="true"
+                                                        OnReadData="deReadEmployeeData" AutoLoad="true">
+                                                        <Model>
+                                                            <ext:Model ID="Model1" runat="server" IDProperty="PERSON_ID">
+                                                                <Fields>
+                                                                    <ext:ModelField Name="PERSON_ID" Type="Int" />
+                                                                    <ext:ModelField Name="EMPLOYEE_NAME" Type="String" />
+                                                                    <ext:ModelField Name="JOB_NAME" Type="String" />
+                                                                </Fields>
+                                                            </ext:Model>
+                                                        </Model>
+                                                        <Proxy>
+                                                            <ext:PageProxy />
+                                                        </Proxy>
+                                                    </ext:Store>
+                                                </Store>
                                                 <ColumnModel>
                                                     <Columns>
                                                         <ext:Column ID="Column6" runat="server" Text="Person ID" DataIndex="PERSON_ID" Flex="20" />
@@ -554,9 +611,8 @@
                                             <Expand Handler="this.picker.setWidth(500);" />
                                         </Listeners>
                                         <CustomConfig>
-                                            <ext:ConfigItem Name="setValue" Value="mySetValue" Mode="Raw" />
+                                            <ext:ConfigItem Name="setValue" Value="SetEmployeeValue" Mode="Raw" />
                                         </CustomConfig>
-                                        <SyncValue Fn="syncEmployeeValue" />
                                     </ext:DropDownField>
                                 </Editor>
                             </ext:Column>
@@ -665,7 +721,7 @@
                         <ext:Store runat="server"
                             ID="uxEquipmentStore">
                             <Model>
-                                <ext:Model runat="server" Name="Equipment">
+                                <ext:Model runat="server" Name="Equipment" IDProperty="EQUIPMENT_ID" ClientIdProperty="PhantomID">
                                     <Fields>
                                         <ext:ModelField Name="EQUIPMENT_ID" />
                                         <ext:ModelField Name="CLASS_CODE" />
@@ -685,10 +741,119 @@
                         <Columns>
                             <ext:Column ID="Column47" runat="server"
                                 DataIndex="SEGMENT1"
-                                Text="Project Number" Flex="10" />
+                                Text="Project Number" Flex="10">
+                            </ext:Column>
                             <ext:Column ID="Column48" runat="server"
-                                DataIndex="NAME"
-                                Text="Name" Flex="10" />
+                                DataIndex="PROJECT_ID"
+                                Text="Name" Flex="10">
+                                <Editor>
+                                    <ext:DropDownField runat="server" Editable="false"
+                                        ID="uxAddEquipmentDropDown"
+                                        Mode="ValueText"
+                                        AllowBlank="false" InvalidCls="allowBlank">
+                                        <Component>
+                                            <ext:GridPanel runat="server"
+                                                ID="uxAddEquipmentGrid"
+                                                Layout="HBoxLayout" Floatable="true" Floating="true">
+                                                <Store>
+                                                    <ext:Store runat="server"
+                                                        ID="uxAddEquipmentDropDownStore"
+                                                        OnReadData="deReadEquipmentGrid"
+                                                        PageSize="10"
+                                                        RemoteSort="true"
+                                                        AutoDataBind="true">
+                                                        <Model>
+                                                            <ext:Model ID="Model11" runat="server">
+                                                                <Fields>
+                                                                    <ext:ModelField Name="CLASS_CODE" Type="String" />
+                                                                    <ext:ModelField Name="NAME" Type="String" />
+                                                                    <ext:ModelField Name="ORG_ID" />
+                                                                    <ext:ModelField Name="ORGANIZATION_ID" Type="Int" />
+                                                                    <ext:ModelField Name="ORGANIZATION_NAME" Type="String" />
+                                                                    <ext:ModelField Name="PROJECT_ID" Type="Int" />
+                                                                    <ext:ModelField Name="PROJECT_STATUS_CODE" />
+                                                                    <ext:ModelField Name="SEGMENT1" Type="Int" />
+                                                                </Fields>
+                                                            </ext:Model>
+                                                        </Model>
+                                                        <Proxy>
+                                                            <ext:PageProxy />
+                                                        </Proxy>
+                                                    </ext:Store>
+                                                </Store>
+                                                <ColumnModel>
+                                                    <Columns>
+                                                        <ext:Column runat="server"
+                                                            ID="uxEquipmentClassCode"
+                                                            DataIndex="CLASS_CODE"
+                                                            Text="Class Code" />
+                                                        <ext:Column runat="server"
+                                                            ID="uxEquipmentName"
+                                                            DataIndex="NAME"
+                                                            Text="Equipment Name" />
+                                                        <ext:Column runat="server"
+                                                            ID="uxEquipmentOrgName"
+                                                            DataIndex="ORGANIZATION_NAME"
+                                                            Text="Organization Name" />
+                                                        <ext:Column runat="server"
+                                                            ID="uxEquipmentSegment"
+                                                            DataIndex="SEGMENT1"
+                                                            Text="Project Number" />
+                                                    </Columns>
+                                                </ColumnModel>
+                                                <Plugins>
+                                                    <ext:FilterHeader ID="uxAddEquipmentFilter" runat="server" Remote="true" />
+                                                </Plugins>
+                                                <TopBar>
+                                                    <ext:Toolbar runat="server"
+                                                        ID="uxEquipmentBar">
+                                                        <Items>
+                                                            <ext:Button runat="server"
+                                                                ID="uxAddEquipmentToggleOrg"
+                                                                EnableToggle="true"
+                                                                Text="All Regions"
+                                                                Icon="Group">
+                                                                <DirectEvents>
+                                                                    <Toggle OnEvent="deReloadEquipmentStore">
+                                                                        <ExtraParams>
+                                                                            <ext:Parameter Name="Type" Value="Equipment" />
+                                                                        </ExtraParams>
+                                                                    </Toggle>
+                                                                </DirectEvents>
+                                                            </ext:Button>
+                                                        </Items>
+                                                    </ext:Toolbar>
+                                                </TopBar>
+                                                <BottomBar>
+                                                    <ext:PagingToolbar runat="server"
+                                                        ID="uxAddEquipmentPaging" />
+                                                </BottomBar>
+                                                <SelectionModel>
+                                                    <ext:RowSelectionModel ID="RowSelectionModel2" runat="server" Mode="Single" />
+                                                </SelectionModel>
+                                                <DirectEvents>
+                                                    <SelectionChange OnEvent="deStoreEquipmentGridValue">
+                                                        <ExtraParams>
+                                                            <ext:Parameter Name="ProjectId" Value="#{uxAddEquipmentGrid}.getSelectionModel().getSelection()[0].data.PROJECT_ID" Mode="Raw" />
+                                                            <ext:Parameter Name="EquipmentName" Value="#{uxAddEquipmentGrid}.getSelectionModel().getSelection()[0].data.NAME" Mode="Raw" />
+                                                            <ext:Parameter Name="SEGMENT1" Value="#{uxAddEquipmentGrid}.getSelectionModel().getSelection()[0].data.SEGMENT1" Mode="Raw" />
+                                                            <ext:Parameter Name="CLASS_CODE" Value="#{uxAddEquipmentGrid}.getSelectionModel().getSelection()[0].data.CLASS_CODE" Mode="Raw" />
+                                                            <ext:Parameter Name="ORGANIZATION_NAME" Value="#{uxAddEquipmentGrid}.getSelectionModel().getSelection()[0].data.ORGANIZATION_NAME" Mode="Raw" />
+                                                        </ExtraParams>
+                                                    </SelectionChange>
+                                                </DirectEvents>
+                                            </ext:GridPanel>
+                                        </Component>
+                                        <Listeners>
+                                            <Expand Handler="this.picker.setWidth(500);" />
+                                        </Listeners>
+                                        <CustomConfig>
+                                            <ext:ConfigItem Name="setValue" Value="SetEquipmentValue" Mode="Raw" />
+                                        </CustomConfig>
+                                    </ext:DropDownField>
+                                </Editor>
+                                <Renderer Fn="EquipmentRenderer" />
+                            </ext:Column>
                             <ext:Column ID="Column49" runat="server"
                                 DataIndex="CLASS_CODE"
                                 Text="Class Code" Flex="35" />
@@ -719,27 +884,31 @@
                                         <Click Handler="#{uxEquipmentStore}.insert(0, new Equipment())" />
                                     </Listeners>
                                 </ext:Button>
-                                <ext:Button ID="uxEditEquipmentButton" runat="server" Text="Edit" Icon="ApplicationEdit" Disabled="true">
-                                    <Listeners>
-                                        <Click Handler="parent.App.direct.dmLoadEquipmentWindow('Edit',App.uxHeaderField.value, App.uxEquipmentGrid.getSelectionModel().getSelection()[0].data.EQUIPMENT_ID)" />
-                                    </Listeners>
-                                </ext:Button>
                                 <ext:Button ID="uxDeleteEquipmentButton" runat="server" Text="Delete" Icon="ApplicationDelete" Disabled="true">
-                                    <DirectEvents>
-                                        <Click OnEvent="deRemoveEquipment">
-                                            <Confirmation ConfirmRequest="true" Title="Remove?" Message="Do you really want to remove?" />
-                                            <ExtraParams>
-                                                <ext:Parameter Name="EquipmentId" Value="#{uxEquipmentGrid}.getSelectionModel().getSelection()[0].data.EQUIPMENT_ID" Mode="Raw" />
-                                            </ExtraParams>
-                                        </Click>
-                                    </DirectEvents>
+                                    <Listeners>
+                                        <Click Fn="deleteEquipment" />
+                                    </Listeners>
                                 </ext:Button>
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
                     <Plugins>
-                        <ext:RowEditing runat="server" AutoCancel="false" ClicksToEdit="1" />
+                        <ext:RowEditing runat="server" AutoCancel="false" ClicksToEdit="1">
+                            <DirectEvents>
+                                <Edit OnEvent="deSaveEquipment" Before="return #{uxEquipmentStore}.isDirty();">
+                                    <ExtraParams>
+                                        <ext:Parameter Name="data" Value="#{uxEquipmentStore}.getChangedData({skipIdForPhantomRecords : false})" Mode="Raw" Encode="true" />
+                                    </ExtraParams>
+                                </Edit>
+                            </DirectEvents>
+                        </ext:RowEditing>
                     </Plugins>
+                    <SelectionModel>
+                        <ext:RowSelectionModel ID="uxEquipmentSM" runat="server" Mode="Single" />
+                    </SelectionModel>
+                    <View>
+                        <ext:GridView runat="server" ID="uxEquipmentView" />
+                    </View>
                     <Listeners>
                         <Select Handler="#{uxEditEquipmentButton}.enable(); #{uxDeleteEquipmentButton}.enable()" />
                     </Listeners>
@@ -753,7 +922,7 @@
                         <ext:Store runat="server"
                             ID="uxProductionStore">
                             <Model>
-                                <ext:Model ID="Model3" runat="server" Name="Production">
+                                <ext:Model ID="Model3" runat="server" Name="Production" IDProperty="PRODUCTION_ID" ClientIdProperty="PhantomID">
                                     <Fields>
                                         <ext:ModelField Name="PRODUCTION_ID" />
                                         <ext:ModelField Name="TASK_NUMBER" />
@@ -763,6 +932,7 @@
                                         <ext:ModelField Name="POLE_TO" />
                                         <ext:ModelField Name="ACRES_MILE" />
                                         <ext:ModelField Name="QUANTITY" />
+                                        <ext:ModelField Name="TASK_ID" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -771,10 +941,71 @@
                     <ColumnModel>
                         <Columns>
                             <ext:Column runat="server" DataIndex="TASK_NUMBER" Text="Task Number" Flex="10" />
-                            <ext:Column ID="Column15" runat="server" DataIndex="DESCRIPTION" Text="Task Name" Flex="15" />
+                            <ext:Column ID="Column15" runat="server" DataIndex="TASK_ID" Text="Task Name" Flex="15">
+                                <Editor>
+                                    <ext:DropDownField runat="server" Editable="false"
+                                        ID="uxAddProductionTask"
+                                        Mode="ValueText"
+                                        AllowBlank="false" InvalidCls="allowBlank">
+                                        <Component>
+                                            <ext:GridPanel runat="server"
+                                                ID="uxAddProductionTaskGrid"
+                                                Layout="HBoxLayout">
+                                                <Store>
+                                                    <ext:Store runat="server"
+                                                        ID="uxAddProductionTaskStore" OnReadData="deReadTaskData" AutoDataBind="true" AutoLoad="true" RemoteSort="true" PageSize="10">
+                                                        <Model>
+                                                            <ext:Model ID="Model12" runat="server">
+                                                                <Fields>
+                                                                    <ext:ModelField Name="TASK_ID" />
+                                                                    <ext:ModelField Name="TASK_NUMBER" />
+                                                                    <ext:ModelField Name="DESCRIPTION" />
+                                                                </Fields>
+                                                            </ext:Model>
+                                                        </Model>
+                                                        <Proxy>
+                                                            <ext:PageProxy />
+                                                        </Proxy>
+                                                    </ext:Store>
+                                                </Store>
+                                                <ColumnModel>
+                                                    <Columns>
+                                                        <ext:Column ID="Column11" runat="server" DataIndex="TASK_NUMBER" Text="Task Number" Flex="25" />
+                                                        <ext:Column ID="Column13" runat="server" DataIndex="DESCRIPTION" Text="Name" Flex="75" />
+                                                    </Columns>
+                                                </ColumnModel>
+                                                <DirectEvents>
+                                                    <SelectionChange OnEvent="deStoreTask">
+                                                        <ExtraParams>
+                                                            <ext:Parameter Name="TaskId" Value="#{uxAddProductionTaskGrid}.getSelectionModel().getSelection()[0].data.TASK_ID" Mode="Raw" />
+                                                            <ext:Parameter Name="Description" Value="#{uxAddProductionTaskGrid}.getSelectionModel().getSelection()[0].data.DESCRIPTION" Mode="Raw" />
+                                                        </ExtraParams>
+                                                    </SelectionChange>
+                                                </DirectEvents>
+                                                <SelectionModel>
+                                                    <ext:RowSelectionModel ID="RowSelectionModel3" runat="server" Mode="Single" />
+                                                </SelectionModel>
+                                                <Plugins>
+                                                    <ext:FilterHeader ID="FilterHeader3" runat="server" Remote="true" />
+                                                </Plugins>
+                                                <BottomBar>
+                                                    <ext:PagingToolbar ID="PagingToolbar3" runat="server" />
+                                                </BottomBar>
+                                            </ext:GridPanel>
+                                        </Component>
+                                        <CustomConfig>
+                                            <ext:ConfigItem Name="setValue" Value="SetTaskValue" Mode="Raw" />
+                                        </CustomConfig>
+                                        <Listeners>
+                                            <Expand Handler="this.picker.setWidth(500)" />
+                                        </Listeners>
+                                    </ext:DropDownField>
+                                </Editor>
+                                <Renderer Fn="ProductionTaskRenderer" />
+                            </ext:Column>
                             <ext:Column ID="Column16" runat="server" DataIndex="WORK_AREA" Text="Spray/Work Area" Flex="40">
                                 <Editor>
-                                    <ext:TextField runat="server" />
+                                    <ext:TextField runat="server" AllowBlank="false" InvalidCls="allowBlank" />
                                 </Editor>
                             </ext:Column>
                             <ext:Column ID="Column17" runat="server" DataIndex="POLE_FROM" Text="Pole/MP From" Flex="9">
@@ -789,12 +1020,12 @@
                             </ext:Column>
                             <ext:Column ID="Column19" runat="server" DataIndex="ACRES_MILE" Text="Acres/Mile" Flex="9">
                                 <Editor>
-                                    <ext:NumberField runat="server" MinValue="0" />
+                                    <ext:NumberField runat="server" MinValue="0" AllowBlank="false" InvalidCls="allowBlank" />
                                 </Editor>
                             </ext:Column>
                             <ext:Column ID="Column20" runat="server" DataIndex="QUANTITY" Text="Gallons" Flex="8">
                                 <Editor>
-                                    <ext:NumberField runat="server" MinValue="0" />
+                                    <ext:NumberField runat="server" MinValue="0" AllowBlank="false" InvalidCls="allowBlank" />
                                 </Editor>
                             </ext:Column>
                         </Columns>
@@ -807,29 +1038,27 @@
                                         <Click Handler="#{uxProductionStore}.insert(0, new Production())" />
                                     </Listeners>
                                 </ext:Button>
-                                <ext:Button ID="uxEditProductionButton" runat="server" Text="Edit" Icon="ApplicationEdit" Disabled="true">
-                                    <Listeners>
-                                        <Click Handler="parent.App.direct.dmLoadProductionWindow_DBI('Edit',App.uxHeaderField.value, App.uxProductionGrid.getSelectionModel().getSelection()[0].data.PRODUCTION_ID)" />
-                                    </Listeners>
-                                </ext:Button>
                                 <ext:Button ID="uxDeleteProductionButton" runat="server" Text="Delete" Icon="ApplicationDelete" Disabled="true">
-                                    <DirectEvents>
-                                        <Click OnEvent="deRemoveProduction">
-                                            <Confirmation ConfirmRequest="true" Title="Really?" Message="Do you really want to remove?" />
-                                            <ExtraParams>
-                                                <ext:Parameter Name="ProductionId" Value="#{uxProductionGrid}.getSelectionModel().getSelection()[0].data.PRODUCTION_ID" Mode="Raw" />
-                                            </ExtraParams>
-                                        </Click>
-                                    </DirectEvents>
+                                    <Listeners>
+                                        <Click Fn="deleteProduction" />
+                                    </Listeners>
                                 </ext:Button>
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
                     <Listeners>
-                        <Select Handler="#{uxEditProductionButton}.enable(); #{uxDeleteProductionButton}.enable()" />
+                        <Select Handler="#{uxDeleteProductionButton}.enable()" />
                     </Listeners>
                     <Plugins>
-                        <ext:RowEditing runat="server" ClicksToEdit="1" AutoCancel="false" />
+                        <ext:RowEditing runat="server" ClicksToEdit="1" AutoCancel="false">
+                            <DirectEvents>
+                                <Edit OnEvent="deSaveProduction" Before="return #{uxProductionStore}.isDirty();">
+                                    <ExtraParams>
+                                        <ext:Parameter Name="data" Value="#{uxProductionStore}.getChangedData({skipIdForPhantomRecords : false})" Mode="Raw" Encode="true" />
+                                    </ExtraParams>
+                                </Edit>
+                            </DirectEvents>
+                        </ext:RowEditing>
                     </Plugins>
                 </ext:GridPanel>
                 <ext:GridPanel runat="server"
@@ -876,8 +1105,7 @@
                                         ValueField="abbr"
                                         QueryMode="Local"
                                         TypeAhead="true"
-                                        AllowBlank="false"
-                                        ForceSelection="true" Width="500">
+                                        ForceSelection="true" Width="500" AllowBlank="false" InvalidCls="allowBlank">
                                         <Store>
                                             <ext:Store runat="server"
                                                 ID="uxAddWeatherWindStore">
@@ -899,17 +1127,17 @@
                             </ext:Column>
                             <ext:Column ID="Column22" runat="server" DataIndex="WIND_VELOCITY" Text="Wind Velocity" Flex="10">
                                 <Editor>
-                                    <ext:NumberField runat="server" MinValue="0" />
+                                    <ext:NumberField runat="server" MinValue="0" AllowBlank="false" InvalidCls="allowBlank" />
                                 </Editor>
                             </ext:Column>
                             <ext:Column ID="Column23" runat="server" DataIndex="TEMP" Text="Temperature" Flex="10">
                                 <Editor>
-                                    <ext:NumberField runat="server" MinValue="-50" MaxValue="150" />
+                                    <ext:NumberField runat="server" MinValue="-50" MaxValue="150" AllowBlank="false" InvalidCls="allowBlank" />
                                 </Editor>
                             </ext:Column>
                             <ext:Column ID="Column24" runat="server" DataIndex="HUMIDITY" Text="Humidity" Flex="10">
                                 <Editor>
-                                    <ext:NumberField runat="server" MinValue="0" MaxValue="100" />
+                                    <ext:NumberField runat="server" MinValue="0" MaxValue="100" AllowBlank="false" InvalidCls="allowBlank" />
                                 </Editor>
                             </ext:Column>
                             <ext:Column ID="Column25" runat="server" DataIndex="COMMENTS" Text="Comments" Flex="45">

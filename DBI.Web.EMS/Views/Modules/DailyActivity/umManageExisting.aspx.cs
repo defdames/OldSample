@@ -1940,7 +1940,26 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         public long? PROJECT_ID { get; set; }
         public long EQUIPMENT_ID { get; set; }
         public string NAME { get; set; }
-        public long HEADER_ID { get; set; }
+        public long? HEADER_ID { get; set; }
+        public string PhantomID { get; set; }
+    }
+
+    public class ProductionDetails
+    {
+        public long? PRODUCTION_ID { get; set; }
+        public long? PROJECT_ID { get; set; }
+        public string LONG_NAME { get; set; }
+        public string TASK_NUMBER { get; set; }
+        public long TASK_ID { get; set; }
+        public string DESCRIPTION { get; set; }
+        public DateTime? TIME_IN { get; set; }
+        public DateTime? TIME_OUT { get; set; }
+        public string WORK_AREA { get; set; }
+        public string POLE_FROM { get; set; }
+        public string POLE_TO { get; set; }
+        public decimal? ACRES_MILE { get; set; }
+        public decimal? QUANTITY { get; set; }
+        public string PhantomID { get; set; }
     }
 
 }
