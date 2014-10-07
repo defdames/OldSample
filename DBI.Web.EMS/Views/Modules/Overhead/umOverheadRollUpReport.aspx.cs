@@ -23,6 +23,28 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             }
         }
 
+        [DirectMethod]
+        public void AddTabPanel(string id, string title, string url)
+        {
+
+            Ext.Net.Panel pan = new Ext.Net.Panel();
+
+            pan.ID = "Tab" + id.Replace(":", "_");
+            pan.Title = title;
+            pan.CloseAction = CloseAction.Destroy;
+            pan.Closable = true;
+            pan.Loader = new ComponentLoader();
+            pan.Loader.ID = "loader" + id.Replace(":", "_");
+            pan.Loader.Url = url;
+            pan.Loader.Mode = LoadMode.Frame;
+            pan.Loader.LoadMask.ShowMask = true;
+            pan.Loader.DisableCaching = true;
+            pan.AddTo(uxCenterTabPanel);
+
+            uxCenterTabPanel.SetActiveTab("Tab" + id.Replace(":", "_"));
+        }
+
+
         protected void deLoadOrgTree(object sender, NodeLoadEventArgs e)
         {
 
@@ -54,6 +76,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                         node.Text = view.ORGANIZATION_NAME;
                         node.NodeID = string.Format("{0}:{1}", _profileValue.ToString(), view.ORGANIZATION_ID.ToString());
                         node.Leaf = false;
+                        node.Icon = Icon.Building;
                         e.Nodes.Add(node);
                     }
                 }
@@ -67,58 +90,122 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 string[] selID = e.NodeID.Split(delimChars);
                 long hierarchyID = long.Parse(selID[0].ToString());
                 long orgID = long.Parse(selID[1].ToString());
+                long leID = 0;
 
-                var data = HR.ActiveOrganizationsByHierarchy(hierarchyID, orgID);
+                if (selID.Count() == 2)
+                {
+                    leID = orgID;
+                }
+                else
+                {
+                    leID = long.Parse(selID[2].ToString());
+                }
 
-                bool addNode;
-                bool leafNode;
-                bool colorNode;
+                var data = HR.OverheadOrganizationStatusByHierarchy(hierarchyID, orgID);
 
                 foreach (var view in data)
                 {
                     if (view.HIER_LEVEL == 1)
                     {
-                        addNode = false;
-                        leafNode = true;
-                        colorNode = false;
-                        var nextData = HR.ActiveOrganizationsByHierarchy(hierarchyID, view.ORGANIZATION_ID);
-                        addNode = true;
-                        colorNode = true;
-              
+                        Node node = new Node();
+                        node.NodeID = string.Format("{0}:{1}:{2}", hierarchyID.ToString(), view.ORGANIZATION_ID.ToString(), leID.ToString());
+                        node.Text = view.ORGANIZATION_NAME;
 
-                        if (addNode == true)
+                        var nextData = HR.OverheadOrganizationStatusByHierarchy(hierarchyID, view.ORGANIZATION_ID);
+
+                        Boolean _ActiveOrganizationsListed = nextData.Where(x => x.ORGANIZATION_STATUS == "Active").Count() > 0 ? true : false;
+
+                        if (nextData.Count() == 0)
                         {
-                            Node node = new Node();
-                            node.NodeID = string.Format("{0}:{1}", hierarchyID.ToString(), view.ORGANIZATION_ID.ToString());
-                            node.Text = view.ORGANIZATION_NAME;
-                            node.Leaf = leafNode;
-                            if (colorNode == true)
+                            node.Leaf = true;
+                            if (view.ORGANIZATION_STATUS == "Active")
                             {
-                                if (BB.IsRollup(view.ORGANIZATION_ID) == true)
-                                {
-                                    node.Icon = Icon.PackageGreen;
-                                }
-                                else
-                                {
-                                    node.Icon = Icon.Accept;
-                                }
+                                node.Icon = Icon.Accept;
                             }
                             else
                             {
-                                if (BB.IsRollup(view.ORGANIZATION_ID) == true)
-                                {
-                                    node.Icon = Icon.PackageGreen;
-                                }
-                                else
-                                {
-                                    node.Icon = Icon.TagsGrey;
-                                }
+                                node.Icon = Icon.ControlBlank;
                             }
-                            e.Nodes.Add(node);
                         }
+                        else
+                        {
+                            node.Leaf = false;
+
+                            if (_ActiveOrganizationsListed)
+                            {
+                                node.Icon = Icon.Accept;
+                            }
+                            else
+                            {
+                                node.Icon = Icon.ControlBlank;
+                            }
+                        }
+
+                        e.Nodes.Add(node);
                     }
                 }
             }
+        }
+
+        protected void deSelectNode(object sender, DirectEventArgs e)
+        {
+            TreeSelectionModel sm = uxOrgPanel.GetSelectionModel() as TreeSelectionModel;
+
+            if (sm.SelectedRecordID != "0")
+            {
+                char[] delimChars = { ':' };
+                string[] selID = sm.SelectedRecordID.Split(delimChars);
+                long hierarchyID = long.Parse(selID[0].ToString());
+                long orgID = long.Parse(selID[1].ToString());
+
+                var data = HR.OverheadOrganizationStatusByHierarchy(hierarchyID, orgID);
+
+                if (data.Count() == 0)
+                {
+                    long _leID = OVERHEAD_BUDGET_FORECAST.ReturnLEIDforOrganizationID(orgID);
+                    HR.ORGANIZATION_V1 _orgData = HR.OverheadOrganizationStatusByHierarchy(hierarchyID, _leID).Where(x => x.ORGANIZATION_ID == orgID).SingleOrDefault();
+                    if (_orgData.ORGANIZATION_STATUS == "Active")
+                    {
+                        string _nodeText = e.ExtraParams["ORGANIZATION_NAME"];
+                        AddTab(sm.SelectedRecordID + "OS", _nodeText + " - Budget Rollup", "umViewBudget.aspx?orgid=" + sm.SelectedRecordID + "&desc=" + _nodeText + " - Budget Rollup", false, true);
+
+                    }
+                       
+                }
+
+                Boolean _ActiveOrganizationsListed = data.Where(x => x.ORGANIZATION_STATUS == "Active").Count() > 0 ? true : false;
+
+                    if (_ActiveOrganizationsListed)
+                    {
+                        string _nodeText = e.ExtraParams["ORGANIZATION_NAME"];
+                        AddTab(sm.SelectedRecordID + "OS", _nodeText + " - Budget Rollup", "umViewBudget.aspx?orgid=" + sm.SelectedRecordID + "&desc=" +  _nodeText + " - Budget Rollup",false,true);
+                    }
+
+             }
+        }
+
+        protected void AddTab(string id, string title, string url, Boolean loadContent = false, Boolean setActive = false)
+        {
+
+            Ext.Net.Panel pan = new Ext.Net.Panel();
+
+            pan.ID = "Tab" + id.Replace(":", "_");
+            pan.Title = title;
+            pan.CloseAction = CloseAction.Destroy;
+            pan.Loader = new ComponentLoader();
+            pan.Loader.ID = "loader" + id.Replace(":", "_");
+            pan.Loader.Url = url;
+            pan.Loader.Mode = LoadMode.Frame;
+            pan.Closable = true;
+            pan.Loader.LoadMask.ShowMask = true;
+            pan.Loader.DisableCaching = true;
+            pan.AddTo(uxCenterTabPanel);
+
+            if (setActive)
+                uxCenterTabPanel.SetActiveTab("Tab" + id.Replace(":", "_"));
+
+            if (loadContent)
+                pan.LoadContent();
         }
     }
 }

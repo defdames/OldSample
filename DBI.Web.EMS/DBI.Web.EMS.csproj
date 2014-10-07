@@ -242,6 +242,7 @@
     <Content Include="Views\Modules\Overhead\umAddRemoveBudgetType.aspx" />
     <Content Include="Views\Modules\Overhead\umCategoryMaint.aspx" />
     <Content Include="Views\Modules\Overhead\umViewActualsWindow.aspx" />
+    <Content Include="Views\Modules\Overhead\umViewBudget.aspx" />
     <Content Include="Views\Modules\Security\Options\AddEdit\umAddEditProfileOptions.aspx" />
     <Content Include="Views\Modules\Security\umEditGroups.aspx" />
     <Content Include="Views\Modules\Security\umEditModules.aspx" />
@@ -940,6 +941,13 @@
     </Compile>
     <Compile Include="Views\Modules\Overhead\umViewActualsWindow.aspx.designer.cs">
       <DependentUpon>umViewActualsWindow.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umViewBudget.aspx.cs">
+      <DependentUpon>umViewBudget.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umViewBudget.aspx.designer.cs">
+      <DependentUpon>umViewBudget.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\Security\Options\AddEdit\umAddEditProfileOptions.aspx.cs">
       <DependentUpon>umAddEditProfileOptions.aspx</DependentUpon>

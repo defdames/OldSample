@@ -24,7 +24,7 @@
                     SingleExpand="true"
                     Lines="false"
                     UseArrows="true"
-                    Collapsible="true">
+                    Collapsible="true" Padding="5">
                     <Store>
                         <ext:TreeStore ID="TreeStore1" runat="server" OnReadData="deLoadOrgTree">
                             <Proxy>
@@ -36,10 +36,22 @@
                         <ext:Node NodeID="0" Text="All Companies" Expanded="true" />
                     </Root>
                     <SelectionModel>
-                        <ext:TreeSelectionModel ID="uxCompanySelectionModel" runat="server" Mode="Single"></ext:TreeSelectionModel>
+                        <ext:TreeSelectionModel ID="uxCompanySelectionModel" runat="server" Mode="Single">
+                             <DirectEvents>
+                                <Select OnEvent="deSelectNode" ><EventMask ShowMask="true"></EventMask>
+                                    <ExtraParams>
+                                        <ext:Parameter Mode="Raw" Value="record.data.text" Name="ORGANIZATION_NAME"></ext:Parameter>
+                                    </ExtraParams>
+                                </Select>
+                            </DirectEvents>
+                        </ext:TreeSelectionModel>
                     </SelectionModel>   
                 </ext:TreePanel>
-                <ext:Panel runat="server" Region="Center"></ext:Panel>
+
+                <ext:TabPanel runat="server" DeferredRender="true" Region="Center" ID="uxCenterTabPanel" Padding="5" >
+                    <Items>
+                    </Items>
+                </ext:TabPanel>
             </Items>
         </ext:Viewport>
     </form>

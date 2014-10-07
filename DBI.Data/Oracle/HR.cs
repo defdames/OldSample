@@ -75,7 +75,7 @@ namespace DBI.Data
 
                 using (Entities _context = new Entities())
                 {
-                    string sql = @"SELECT              c.organization_id_child ORGANIZATION_ID,
+                    string sql = @"select    c.organization_id_child ORGANIZATION_ID,
                         c.d_child_name ORGANIZATION_NAME,
                         level as HIER_LEVEL,
                         haou.type,

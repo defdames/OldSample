@@ -24,6 +24,7 @@
                     Lines="false"
                     UseArrows="true"
                     Scroll="Vertical"
+                         Padding="5"
                     >
                     <Store>
                         <ext:TreeStore ID="uxOrganizationTreeStore" runat="server" OnReadData="deLoadLegalEntities">
