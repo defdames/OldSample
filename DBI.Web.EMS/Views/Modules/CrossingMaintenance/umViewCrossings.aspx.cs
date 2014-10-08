@@ -22,7 +22,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         protected void Page_Load(object sender, EventArgs e)
         {
 
-            if (!validateComponentSecurity("SYS.CrossingMaintenance.InformationView"))
+            if (!validateComponentSecurity("SYS.CrossingMaintenance.DataEntryView"))
             {
                 X.Redirect("~/Views/uxDefault.aspx");
 
@@ -46,7 +46,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             using (Entities _context = new Entities())
             {
                 //Get List of all new crossings
-                IQueryable<CROSSING_MAINTENANCE.CrossingList> data = CROSSING_MAINTENANCE.GetCrossingProjectList(RailroadId, _context);
+                IQueryable<CROSSING_MAINTENANCE.CrossingList> data = CROSSING_MAINTENANCE.GetCrossingProjectListIncidents(RailroadId, _context);
               
                 int count;
                 uxCurrentCrossingStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.CrossingList>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
@@ -144,5 +144,82 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
 
         }
+        protected void deDeleteCrossing(object sender, DirectEventArgs e)
+        {
+            CROSSING data;
+            long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
+            using (Entities _context = new Entities())
+            {
+                data = (from d in _context.CROSSINGS
+                        where d.CROSSING_ID == CrossingId
+                        select d).Single();
+
+                data.STATUS = "DELETED";
+                data.DELETED_BY = User.Identity.Name;
+                data.DELETED_DATE = DateTime.Now;
+            }
+            GenericData.Update<CROSSING>(data);
+
+            uxCrossingForm.Reset();
+            uxCurrentCrossingStore.Reload();
+            uxDeleteCrossingButton.Disable();
+            uxReactivateCrossingButton.Disable();
+            Notification.Show(new NotificationConfig()
+            {
+                Title = "Success",
+                Html = "Crossing Deleted Successfully",
+                HideDelay = 1000,
+                AlignCfg = new NotificationAlignConfig
+                {
+                    ElementAnchor = AnchorPoint.Center,
+                    TargetAnchor = AnchorPoint.Center
+                }
+            });
+        }
+
+        protected void deReactivateCrossing(object sender, DirectEventArgs e)
+        {
+            CROSSING data;
+            long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
+            string CutOnly = uxCutOnly.Value.ToString();
+            using (Entities _context = new Entities())
+            {
+                data = (from d in _context.CROSSINGS
+                        where d.CROSSING_ID == CrossingId
+                        select d).Single();
+
+                data.STATUS = "ACTIVE";
+                if (uxCutOnly.Checked)
+                {
+                    CutOnly = "Y";
+                }
+                else
+                {
+                    CutOnly = "N";
+                }
+                data.CUT_ONLY = CutOnly;
+            }
+            GenericData.Update<CROSSING>(data);
+
+            uxCutOnlyWindow.Hide();
+            uxReactivateForm.Reset();
+            uxCrossingForm.Reset();
+            uxCurrentCrossingStore.Reload();
+            uxReactivateCrossingButton.Disable();
+            uxDeleteCrossingButton.Disable();
+
+            Notification.Show(new NotificationConfig()
+            {
+                Title = "Success",
+                Html = "Crossing Reactivated Successfully",
+                HideDelay = 1000,
+                AlignCfg = new NotificationAlignConfig
+                {
+                    ElementAnchor = AnchorPoint.Center,
+                    TargetAnchor = AnchorPoint.Center
+                }
+            });
+        }
+       
     }
 }

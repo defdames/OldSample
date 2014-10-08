@@ -1,9 +1,9 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umEditBudgetVersion.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.Overhead.umEditBudgetVersion" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umViewBudget.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.Overhead.umViewBudget" %>
 
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head id="Head1" runat="server">
+<head runat="server">
     <title></title>
     <script type="text/javascript">
         Ext.util.Format.CurrencyFactory = function (dp, dSeparator, tSeparator, symbol) {
@@ -66,11 +66,11 @@
         }
 
 
-              var getRowClass = function (record, rowIndex, rowParams, store) {
-                  if (record.data.GROUPED == "Y") {
-                      return "blue-row";
-                  };
-              }
+        var getRowClass = function (record, rowIndex, rowParams, store) {
+            if (record.data.GROUPED == "Y") {
+                return "blue-row";
+            };
+        }
       </script>
 
 
@@ -89,68 +89,80 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
-
-        <ext:Hidden ID="FormatType" runat="server" />
-
-        
-
+      <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" Namespace="App" ClientIDMode="Static" />         
+       
         <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
             <Items>
                 <ext:GridPanel ID="uxOrganizationAccountGridPanel" runat="server" Flex="1" Title="General Ledger Accounts by Budget" Header="false" Margin="5" Region="Center" Scroll="Both">
                     <TopBar>
                         <ext:Toolbar ID="Toolbar1" runat="server">
                             <Items>
-                                <ext:Button runat="server" Icon="MagnifierZoomIn" Text="Account Inquiry" ID="uxViewActuals" Disabled="true">
-                                    <DirectEvents>
-                                        <Click OnEvent="viewActuals">
-                                            <ExtraParams>
-                                                <ext:Parameter Value="#{uxOrganizationAccountGridPanel}.getView().getSelectionModel().getSelection()[0].data.ACCOUNT_DESCRIPTION" Mode="Raw" Name="ACCOUNT_DESCRIPTION"></ext:Parameter>
-                                            </ExtraParams>
-                                        </Click>
-                                    </DirectEvents>
-                                </ext:Button>
-                                <ext:ToolbarSeparator ID="ToolbarSeparator1" runat="server"></ext:ToolbarSeparator>
-                                <ext:Button runat="server" Icon="DatabaseCopy" Text="Import Actuals" ID="uxImportActualsButton">
-                                    <DirectEvents>
-                                        <Click OnEvent="importActuals"></Click>
-                                    </DirectEvents>
-                                </ext:Button>
-                                <ext:ToolbarSeparator ID="ToolbarSeparator4" runat="server"></ext:ToolbarSeparator>
-                                <ext:Button runat="server" Icon="NoteEdit" Text="Budget Notes" ID="uxBudgetNotes">
-                                    <DirectEvents>
-                                        <Click OnEvent="editBudgetNotes"></Click>
-                                    </DirectEvents>
-                                </ext:Button>
+                                 <ext:ToolbarSpacer ID="ToolbarSpacer1" runat="server"></ext:ToolbarSpacer>
+                                 <ext:ComboBox runat="server" ID="uxBudgetName" Editable="true" TypeAhead="true"
+                                FieldLabel="Budget Name" DisplayField="BUDGET_DESCRIPTION"
+                                ValueField="OVERHEAD_BUDGET_TYPE_ID"  TriggerAction="All" LabelWidth="75"
+                                MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;"  >
+                                <Store>
+                                    <ext:Store runat="server" ID="uxBudgetNameStore" OnReadData="deLoadBudgetNames" AutoLoad="true" >
+                                        <Proxy>
+                                            <ext:PageProxy />
+                                        </Proxy>
+                                        <Model>
+                                            <ext:Model ID="Model5" runat="server" IDProperty="OVERHEAD_BUDGET_TYPE_ID">
+                                                <Fields>
+                                                    <ext:ModelField Name="BUDGET_DESCRIPTION" />
+                                                </Fields>
+                                            </ext:Model>
+                                        </Model>
+                                    </ext:Store>
+                                </Store>
+                                   <DirectEvents>
+                                  <Select OnEvent="deLoadData"></Select>
+                              </DirectEvents>
+                            </ext:ComboBox>
+                               <ext:ToolbarSpacer runat="server"></ext:ToolbarSpacer>
+                                 <ext:ComboBox runat="server" ID="uxFiscalYear" Editable="true" TypeAhead="true" LabelWidth="75"
+                                FieldLabel="Fiscal Year"  DisplayField="ID_NAME" 
+                                ValueField="ID_NAME" TriggerAction="All" 
+                                MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;"  >
+                                <Store>
+                                    <ext:Store runat="server" ID="uxFiscalYearsStore" OnReadData="deLoadFiscalYears" AutoLoad="true" AutoDataBind="true" >
+                                        <Proxy>
+                                            <ext:PageProxy />
+                                        </Proxy>
+                                        <Model>
+                                            <ext:Model ID="Model1" runat="server" IDProperty="ID_NAME">
+                                                <Fields>
+                                                    <ext:ModelField Name="ID_NAME" />
+                                                </Fields>
+                                            </ext:Model>
+                                        </Model>
+                                    </ext:Store>
+                                </Store>
+                              <DirectEvents>
+                                  <Select OnEvent="deLoadData"></Select>
+                              </DirectEvents>
+                            </ext:ComboBox>
                                 <ext:ToolbarFill ID="ToolbarFill1" runat="server"></ext:ToolbarFill>
-                               
+                                 <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Group Account Lines" ID="uxCollapseAccountTotals" Checked="true">
+                                    <DirectEvents>
+                                        <Change OnEvent="deLoadData">
+                                            <EventMask ShowMask="true"></EventMask>
+                                        </Change>
+                                    </DirectEvents>
+                                </ext:Checkbox>
+                                <ext:ToolbarSpacer runat="server"></ext:ToolbarSpacer>
                                 <ext:Button ID="uxPrintReport" runat="server" Text="Print" Icon="Printer" Disabled="false">
                                     <DirectEvents>
                                         <Click OnEvent="showPrintWindow" />
                                     </DirectEvents>
                                 </ext:Button>
                                 <ext:ToolbarSeparator ID="ToolbarSeparator3" runat="server"></ext:ToolbarSeparator>
-                                <ext:Button runat="server" Text="Export" Icon="PageExcel">
+                                <ext:Button ID="Button1" runat="server" Text="Export" Icon="PageExcel">
                                     <DirectEvents>
                                         <Click OnEvent="ExportToExcel" IsUpload="true"><EventMask ShowMask="true" Msg="Generating Export, Please Wait..." /></Click>
                                     </DirectEvents>
                                 </ext:Button>
-                                <ext:ToolbarSeparator ID="ToolbarSeparator2" runat="server"></ext:ToolbarSeparator>
-                                 <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Group Account Lines" ID="uxCollapseAccountTotals">
-                                    <DirectEvents>
-                                        <Change OnEvent="deCollapseAccounts">
-                                            <EventMask ShowMask="true"></EventMask>
-                                        </Change>
-                                    </DirectEvents>
-                                </ext:Checkbox>
-                                 <ext:ToolbarSeparator ID="ToolbarSeparator5" runat="server"></ext:ToolbarSeparator>
-                                <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Hide Blank Lines" ID="uxHideBlankLinesCheckbox">
-                                    <DirectEvents>
-                                        <Change OnEvent="deHideBlankLines">
-                                            <EventMask ShowMask="true"></EventMask>
-                                        </Change>
-                                    </DirectEvents>
-                                </ext:Checkbox>
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
@@ -160,7 +172,7 @@
                     <Store>
                         <ext:Store runat="server"
                             ID="uxOrganizationAccountStore"
-                            AutoDataBind="true" RemoteSort="true" OnReadData="loadBudgetDetails" AutoLoad="true" GroupField="CATEGORY_NAME" RemoteGroup="true" OnSubmitData="deExportData">
+                            AutoDataBind="true" RemoteSort="true" OnReadData="loadBudgetDetails" AutoLoad="false" GroupField="CATEGORY_NAME" RemoteGroup="true" >
                             <Model>
                                 <ext:Model ID="Model2" runat="server" IDProperty="CODE_COMBINATION_ID">
                                     <Fields>
@@ -273,14 +285,6 @@
                             </Listeners>
                         </ext:RowSelectionModel>
                     </SelectionModel>
-                    <DirectEvents>
-                        <ItemDblClick OnEvent="deItemMaintenance">
-                            <ExtraParams>
-                                <ext:Parameter Value="#{uxOrganizationAccountGridPanel}.getView().getSelectionModel().getSelection()[0].data.ACCOUNT_DESCRIPTION" Mode="Raw" Name="ACCOUNT_DESCRIPTION"></ext:Parameter>
-                                <ext:Parameter Value="#{uxOrganizationAccountGridPanel}.getView().getSelectionModel().getSelection()[0].data.GROUPED" Mode="Raw" Name="GROUPED"></ext:Parameter>
-                            </ExtraParams>
-                        </ItemDblClick>
-                    </DirectEvents>
                     <View>
                         <ext:GridView ID="GridView2" StripeRows="true" runat="server" TrackOver="true">
                             <GetRowClass Fn="getRowClass"></GetRowClass>
@@ -290,39 +294,6 @@
                 </ext:GridPanel>
             </Items>
         </ext:Viewport>
-
-        <ext:Window runat="server" Stateful="false" Width="650" Height="400" Title="Budget Notes" Layout="FitLayout" Header="true" Resizable="false" Frame="true" Hidden="true" ID="uxBudgetNotesWindow" CloseAction="Hide" Closable="true" Modal="true" DefaultButton="uxSaveBudgetNote">
-            <Items>
-                <ext:FormPanel ID="FormPanel2" runat="server" Header="false" BodyPadding="5"
-                    Margins="5 5 5 5" Region="Center" Title="Comments" Layout="FitLayout" Flex="1">
-                    <Items>
-                        <ext:FieldContainer ID="FieldContainer2"
-                            runat="server"
-                            LabelStyle="font-weight:bold;padding:0;"
-                            Layout="FitLayout">
-                            <Items>
-                                <ext:TextArea ID="uxBudgetComments" runat="server" Flex="1" Grow="true">
-                                </ext:TextArea>
-                            </Items>
-                        </ext:FieldContainer>
-                    </Items>
-                </ext:FormPanel>
-            </Items>
-            <Buttons>
-                <ext:Button runat="server" ID="uxSaveBudgetNote" Icon="Accept" Text="Save">
-                    <DirectEvents>
-                        <Click OnEvent="saveBudgetNotes">
-                            <EventMask ShowMask="true"></EventMask>
-                        </Click>
-                    </DirectEvents>
-                </ext:Button>
-                <ext:Button runat="server" ID="uxCancelSaveBudgetNote" Icon="Cancel" Text="Cancel">
-                    <Listeners>
-                        <Click Handler="#{uxBudgetNotesWindow}.close();"></Click>
-                    </Listeners>
-                </ext:Button>
-            </Buttons>
-        </ext:Window>
 
 
         <ext:Window ID="uxPrintWindow"
@@ -339,23 +310,7 @@
             Closable="true"
             Resizable ="false"
             Frame="true">
-            <Items>
-                  <ext:FieldContainer ID="FieldContainer1" 
-                        runat="server"
-                        LabelStyle="font-weight:bold;padding:0;"
-                        Layout="FitLayout">
-                        <Items>
-                         <ext:Checkbox ID="uxPrintBlank" runat="server" BoxLabel="Hide Blank Lines" HideLabel="true"></ext:Checkbox>
-                        </Items>
-                    </ext:FieldContainer> 
-                 <ext:FieldContainer ID="FieldContainer3" 
-                        runat="server"
-                        LabelStyle="font-weight:bold;padding:0;"
-                        Layout="FitLayout">
-                        <Items>
-                         <ext:Checkbox ID="uxPrintGroup" runat="server" BoxLabel="Group Account Lines" HideLabel="true"></ext:Checkbox>
-                        </Items>
-                    </ext:FieldContainer> 
+            <Items> 
                  <ext:FieldContainer ID="FieldContainer4" 
                         runat="server"
                         LabelStyle="font-weight:bold;padding:0;"
@@ -364,24 +319,16 @@
                          <ext:Checkbox ID="uxPrintNote" runat="server" BoxLabel="Print Notes" HideLabel="true"></ext:Checkbox>
                         </Items>
                     </ext:FieldContainer> 
-                 <ext:FieldContainer ID="FieldContainer5" 
-                        runat="server"
-                        LabelStyle="font-weight:bold;padding:0;"
-                        Layout="FitLayout">
-                        <Items>
-                         <ext:Checkbox ID="uxPrintRollup" runat="server" BoxLabel="Print Rolled Up" HideLabel="true"></ext:Checkbox>
-                        </Items>
-                    </ext:FieldContainer> 
             </Items>
             <Buttons>
-                <ext:Button ID="Button1" runat="server" Text="Print" Icon="Printer" Disabled="false">
+                <ext:Button ID="Button2" runat="server" Text="Print" Icon="Printer" Disabled="false">
                     <DirectEvents>
                         <Click OnEvent="printOverheadBudget" Timeout="500000" Success="#{uxPrintWindow}.close();">
                             <EventMask ShowMask="true" Msg="Generating Report, Please Wait..." />
                         </Click>
                     </DirectEvents>
                 </ext:Button>
-                 <ext:Button ID="Button2" runat="server" Text="Cancel" Icon="Cancel" Disabled="false">
+                 <ext:Button ID="Button3" runat="server" Text="Cancel" Icon="Cancel" Disabled="false">
                     <Listeners>
                         <Click Handler="#{uxPrintWindow}.close();"></Click>
                     </Listeners>

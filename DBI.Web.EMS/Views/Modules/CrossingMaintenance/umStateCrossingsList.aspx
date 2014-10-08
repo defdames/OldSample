@@ -242,7 +242,7 @@
                                 <ext:ModelField Name="CUT" />
                                 <ext:ModelField Name="INSPECT" />
                                 <ext:ModelField Name="APPLICATION_REQUESTED" />
-
+                                <ext:ModelField Name="CUT_ONLY" />
 
                             </Fields>
                         </ext:Model>

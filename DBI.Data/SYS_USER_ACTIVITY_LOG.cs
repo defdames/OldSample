@@ -12,22 +12,10 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class SYS_USERS
+    public partial class SYS_USER_ACTIVITY_LOG
     {
-        public SYS_USERS()
-        {
-            this.SYS_USER_ACTIVITY = new HashSet<SYS_USER_ACTIVITY>();
-            this.SYS_LOG = new HashSet<SYS_LOG>();
-        }
-    
+        public long ID { get; set; }
         public long USER_ID { get; set; }
         public Nullable<System.DateTime> LAST_ACTIVITY_DATE { get; set; }
-        public Nullable<System.DateTime> CREATE_DATE { get; set; }
-        public Nullable<System.DateTime> MODIFY_DATE { get; set; }
-        public string CREATED_BY { get; set; }
-        public string MODIFIED_BY { get; set; }
-    
-        public virtual ICollection<SYS_USER_ACTIVITY> SYS_USER_ACTIVITY { get; set; }
-        public virtual ICollection<SYS_LOG> SYS_LOG { get; set; }
     }
 }

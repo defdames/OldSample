@@ -16,6 +16,11 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!validateComponentSecurity("SYS.CustomerSurveys.ViewCompleted"))
+            {
+                X.Redirect("~/Views/uxDefault.aspx");
+
+            }
             if (!X.IsAjaxRequest || !IsPostBack)
             {
                 uxStartDate.MaxDate = DateTime.Now;

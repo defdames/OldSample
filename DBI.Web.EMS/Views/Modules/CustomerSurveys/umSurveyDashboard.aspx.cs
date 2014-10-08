@@ -20,7 +20,11 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!validateComponentSecurity("SYS.CustomerSurveys.Dashboard"))
+            {
+                X.Redirect("~/Views/uxDefault.aspx");
 
+            }
         }
 
         protected long GetOrgFromTree(string _selectedRecordID)
@@ -277,9 +281,9 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
                 Font TableHeaderFont = GetTahoma();
                 TableHeaderFont.Size = 12;
                 TableHeaderFont.IsBold();
-                HeaderFooter Footer = new HeaderFooter(new Phrase("ID:" + CompletionId.ToString(), TableFont), false);
-                Footer.Border = HeaderFooter.NO_BORDER;
-                ExportedPDF.Footer = Footer;
+                //HeaderFooter Footer = new HeaderFooter(new Phrase("ID:" + CompletionId.ToString(), TableFont), false);
+                //Footer.Border = HeaderFooter.NO_BORDER;
+                //ExportedPDF.Footer = Footer;
 
                 ExportedPDF.Open();
                 

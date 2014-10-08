@@ -61,7 +61,10 @@ namespace DBI.Web.EMS.Views
                 }
             }
             GenerateMenuItems(User as ClaimsPrincipal);
+            XXEMS.LogUserActivity(User.Identity.Name);
         }
+
+       
 
         /// <summary>
         /// Direct Event that loads a panel given 2 ext.net extra parameters

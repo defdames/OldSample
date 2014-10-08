@@ -19,7 +19,14 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
         
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!X.IsAjaxRequest) ;
+            if (!X.IsAjaxRequest)
+            {
+                if (!validateComponentSecurity("SYS.TimeClock.Manager"))
+                {
+                    X.Redirect("~/Views/uxDefault.aspx");
+                }
+            }
+            ;
 
             if (uxToggleApproved.Checked)
             { uxApproveButton.Disabled = true; }
