@@ -57,6 +57,7 @@
     <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
       <Private>True</Private>
     </Reference>
+    <Reference Include="CrystalDecisions.Web, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
@@ -79,6 +80,7 @@
       <HintPath>..\..\..\..\..\..\Program Files (x86)\MessagingToolkit\MessagingToolkit-Barcode\Binaries\.NET 3.5\WinForms\x86\MessagingToolkit.Barcode.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\lib\EXT\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -111,6 +113,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -151,6 +154,7 @@
     <Content Include="Resources\Images\wwbnight.png" />
     <Content Include="Resources\Scripts\jquery-2.0.1.js" />
     <Content Include="Resources\Scripts\jquery-2.0.1.min.js" />
+    <Content Include="Views\Modules\BudgetBidding\Reports\umReport1.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umBlankBudget.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umBudgetBiddingMain.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umDetailSheet.aspx" />
@@ -177,7 +181,6 @@
     <Content Include="Views\Modules\CrossingMaintenance\umInspectionReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umInvoiceReview.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umMissingROW.aspx" />
-    <Content Include="Views\Modules\CrossingMaintenance\umPricing.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umPrivateCrossingReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umRailRoadProject.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umRailroadToolbar.aspx" />
@@ -186,7 +189,6 @@
     <Content Include="Views\Modules\CrossingMaintenance\umSuppBillingReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umSupplemental.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umSupplementalBilling.aspx" />
-    <Content Include="Views\Modules\CrossingMaintenance\umViewCrossings.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umWeeklyWorkActivity.aspx" />
     <Content Include="Views\Modules\CustomerSurveys\umCopyExisting.aspx" />
     <Content Include="Views\Modules\CustomerSurveys\umManageForms.aspx" />
@@ -268,6 +270,17 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Views\Modules\BudgetBidding\Reports\DataSet1.xsc">
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </Content>
+    <None Include="Views\Modules\BudgetBidding\Reports\DataSet1.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet1.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Views\Modules\BudgetBidding\Reports\DataSet1.xss">
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </Content>
     <None Include="Web.APPDEV.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -312,6 +325,22 @@
     </Compile>
     <Compile Include="Views\Handlers\SystemUsers.ashx.cs">
       <DependentUpon>SystemUsers.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\DataSet1.cs">
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\DataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umReport1.aspx.cs">
+      <DependentUpon>umReport1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umReport1.aspx.designer.cs">
+      <DependentUpon>umReport1.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\BudgetBidding\umBlankBudget.aspx.cs">
       <DependentUpon>umBlankBudget.aspx</DependentUpon>
@@ -486,13 +515,6 @@
     <Compile Include="Views\Modules\CrossingMaintenance\umMissingROW.aspx.designer.cs">
       <DependentUpon>umMissingROW.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\CrossingMaintenance\umPricing.aspx.cs">
-      <DependentUpon>umPricing.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Modules\CrossingMaintenance\umPricing.aspx.designer.cs">
-      <DependentUpon>umPricing.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umPrivateCrossingReport.aspx.cs">
       <DependentUpon>umPrivateCrossingReport.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -548,13 +570,6 @@
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umSupplementalBilling.aspx.designer.cs">
       <DependentUpon>umSupplementalBilling.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\CrossingMaintenance\umViewCrossings.aspx.cs">
-      <DependentUpon>umViewCrossings.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Modules\CrossingMaintenance\umViewCrossings.aspx.designer.cs">
-      <DependentUpon>umViewCrossings.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umWeeklyWorkActivity.aspx.cs">
       <DependentUpon>umWeeklyWorkActivity.aspx</DependentUpon>
@@ -1138,11 +1153,7 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Report1.rdlc" />
-    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\StateCrossingList.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>StateCrossingList.cs</LastGenOutput>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Modules\BudgetBidding\Reports\Report1.rdlc" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
