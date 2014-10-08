@@ -380,5 +380,23 @@ namespace DBI.Data
 
 
         }
+
+
+        public static decimal ReturnEmployeeSalary(long personID)
+        {
+            decimal _data = 0;
+            using (Entities _context = new Entities())
+            {
+                string _sql = string.Format(@"select d.PROPOSED_SALARY_N  from apps.per_people_x a 
+                                        inner join apps.per_all_assignments_f b on b.person_id = a.person_id
+                                        inner join (select person_id,max(effective_start_date) as effective_start_date from apps.per_all_assignments_f group by person_id) c on c.person_id = b.person_id and c.effective_start_date = b.effective_start_date
+                                        inner join HR.PER_PAY_PROPOSALS d on b.assignment_id = d.assignment_id 
+                                        where a.person_id = {0}
+                                        and SYSDATE BETWEEN d.change_date AND d.date_to 
+                                        AND approved = 'Y'", personID);
+                _data = _context.Database.SqlQuery<decimal>(_sql).FirstOrDefault();
+            }
+            return _data;
+        }
     }
 }

@@ -345,6 +345,7 @@
     </Compile>
     <Compile Include="Views\Modules\BudgetBidding\Reports\umReport1.aspx.designer.cs">
       <DependentUpon>umReport1.aspx</DependentUpon>
+      </Compile>
     <Compile Include="Views\Modules\BudgetBidding\umAdminMain.aspx.cs">
       <DependentUpon>umAdminMain.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
