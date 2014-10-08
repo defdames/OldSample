@@ -16,13 +16,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         {
             if (!X.IsAjaxRequest)
             {
-               List<object> list = new List<object>
+                List<object> list = new List<object>
                 {
                         new { ACTION_ID = "reporgSum" ,ACTION_NAME =  "Org Summary" }
                 };
 
-               this.reportList.DataSource = list;
-               this.reportList.DataBind();
+                this.reportList.DataSource = list;
+                this.reportList.DataBind();
 
 
                 long leOrgID = long.Parse(Request.QueryString["leOrgID"]);
@@ -86,7 +86,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             long yearID = long.Parse(Request.QueryString["fiscalYear"]);
             long verID = long.Parse(Request.QueryString["verID"]);
 
-            uxOverheadGridStore.DataSource = BBOH.Data(orgID, yearID, verID).ToString();
+            uxOverheadGridStore.DataSource = BBOH.Data(orgID, yearID, verID);
         }
 
 
@@ -394,11 +394,11 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 long prevYearID = Convert.ToInt64(uxHidPrevYear.Text);
                 long prevVerID = Convert.ToInt64(uxHidPrevVer.Text);
 
-                //string strOH = BBOH.DataSingle(orgID, yearID, verID).ToString();
+                string strOH = BBOH.DataSingle(orgID, yearID, verID).OH.ToString();
 
 
 
-                string url = "/Views/Modules/BudgetBidding/Reports/umReport1.aspx?orgName=" + strorgName + "&orgID=" + orgID + "&yearID=" + yearID + "&verID=" + verID + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID; //+ "&oh=" + strOH;
+                string url = "/Views/Modules/BudgetBidding/Reports/umReport1.aspx?orgName=" + strorgName + "&orgID=" + orgID + "&yearID=" + yearID + "&verID=" + verID + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID + "&oh=" + strOH;
 
                 Window win = new Window
                 {

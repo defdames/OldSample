@@ -202,28 +202,28 @@
 
                         <ext:ComboBox ID="uxSummaryReports"
                             runat="server"
-                            ValueField="ACTION_NAME"
+                            ValueField="ACTION_ID"
                             DisplayField="ACTION_NAME"
                             Width="200"
                             EmptyText="-- Reports/Export --"
                             Editable="false">
                             <Store>
-                                <ext:Store ID="uxSummaryReportsStore" runat="server" OnReadData="deLoadReports" AutoLoad="false">
+                                <ext:Store ID="reportList" runat="server">
                                     <Model>
-                                        <ext:Model ID="Model6" runat="server">
+                                        <ext:Model ID="Model6" runat="server" IDProperty="ACTION_ID">
                                             <Fields>
                                                 <ext:ModelField Name="ACTION_ID" />
                                                 <ext:ModelField Name="ACTION_NAME" />
                                             </Fields>
                                         </ext:Model>
                                     </Model>
-                                    <Proxy>
+                                   <%-- <Proxy>
                                         <ext:PageProxy />
-                                    </Proxy>
+                                    </Proxy>--%>
                                 </ext:Store>
                             </Store>
                             <DirectEvents>
-                                <Select OnEvent="deChooseReport">
+                                <Select OnEvent="deLoadReports">
                                     <EventMask ShowMask="true" Msg="Processing..." />
                                 </Select>
                             </DirectEvents>
