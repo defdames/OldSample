@@ -138,7 +138,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                         var nextData = HR.OverheadOrganizationStatusByHierarchy(hierarchyID, view.ORGANIZATION_ID);
 
-                        Boolean _ActiveOrganizationsListed = nextData.Where(x => _leList.Contains(x.ORGANIZATION_ID.ToString())).Count() > 0 ? true : false;
+                        Boolean _ActiveOrganizationsListed = nextData.Where(x => _leList.Contains(x.ORGANIZATION_ID.ToString()) & x.ORGANIZATION_STATUS == "Active").Count() > 0 ? true : false;
 
                         if (_ActiveOrganizationsListed)
                         {
@@ -159,6 +159,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                             }
 
+             
                             e.Nodes.Add(node);
                         }
                         else

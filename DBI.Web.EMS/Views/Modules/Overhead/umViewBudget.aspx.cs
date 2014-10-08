@@ -270,8 +270,15 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 _printOptions.GROUP_ACCOUNTS = uxCollapseAccountTotals.Checked;
                 _printOptions.HIDE_BLANK_LINES = true;
                 _printOptions.SHOW_NOTES = false;
+                Boolean _securityView = false;
 
-                IEnumerable<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW> _budgetView = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByOrganizationID(_context, _leID, _organizationID, _fiscalYear, long.Parse(uxBudgetName.SelectedItem.Value.ToString()), _printOptions, false, false);
+                if (Request.QueryString["securityView"] != null)
+                {
+                    string _securityViewValue = Request.QueryString["securityView"].ToString();
+                    _securityView = (_securityViewValue == "Y") ? true : false;
+                }
+
+                IEnumerable<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW> _budgetView = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByOrganizationID(_context, _leID, _organizationID, _fiscalYear, long.Parse(uxBudgetName.SelectedItem.Value.ToString()), _printOptions, _securityView, false);
 
                 int _cellCount = 2;
                 foreach (OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW _row in _budgetView)
@@ -387,8 +394,15 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 _printOptions.GROUP_ACCOUNTS = uxCollapseAccountTotals.Checked;
                 _printOptions.HIDE_BLANK_LINES = true;
                 _printOptions.SHOW_NOTES = false;
+                Boolean _securityView = false;
 
-                _data = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByOrganizationID(_context, _leID, _organizationID, _fiscalYear, long.Parse(uxBudgetName.SelectedItem.Value.ToString()), _printOptions, false, true);
+                if (Request.QueryString["securityView"] != null)
+                {
+                    string _securityViewValue = Request.QueryString["securityView"].ToString();
+                    _securityView = (_securityViewValue == "Y") ? true : false;
+                }
+
+                _data = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByOrganizationID(_context, _leID, _organizationID, _fiscalYear, long.Parse(uxBudgetName.SelectedItem.Value.ToString()), _printOptions, _securityView, true);
                     MemoryStream PdfStream = OVERHEAD_BUDGET_FORECAST.GenerateReportByOrganization(_context, _description, _fiscalYear, _data);
 
                     string _filename = _organizationID + "_" + _fiscalYear + "_budget.pdf";

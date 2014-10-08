@@ -747,7 +747,7 @@ namespace DBI.Data
                 _record.AMOUNT11 = GetAccountTotalByPeriod(_condensedBudgetDetail, 11);
                 _record.AMOUNT12 = GetAccountTotalByPeriod(_condensedBudgetDetail, 12);
                 _record.TOTAL = (_record.AMOUNT1 + _record.AMOUNT2 + _record.AMOUNT3 + _record.AMOUNT4 + _record.AMOUNT5 + _record.AMOUNT6 + _record.AMOUNT7 + _record.AMOUNT8 + _record.AMOUNT9 + _record.AMOUNT10 + _record.AMOUNT11 + _record.AMOUNT12);
-                _record.BUDGET_ID = budgetID;
+                _record.BUDGET_ID = 0; // replaced to zero 
 
 
 

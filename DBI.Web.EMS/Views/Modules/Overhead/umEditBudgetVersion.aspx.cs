@@ -540,23 +540,28 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         public void printOverheadBudget(object sender, DirectEventArgs e)
         {
+            long _organizationID;
+            bool checkOrgId = long.TryParse(Request.QueryString["orgid"], out _organizationID);
             short _fiscal_year = short.Parse(Request.QueryString["fiscalyear"]);
-            long _organizationID = long.Parse(Request.QueryString["orgid"]);
             long _budgetid = long.Parse(Request.QueryString["budget_id"]);
             string _description = Request.QueryString["description"];
 
-            using(Entities _context = new Entities())
+
+            using (Entities _context = new Entities())
             {
+                //pull budget detail data
+                var _budgetDetail = OVERHEAD_BUDGET_FORECAST.BudgetByID(_context, _budgetid);
 
-                OVERHEAD_BUDGET_FORECAST.PRINT_OPTIONS _printOptions = new OVERHEAD_BUDGET_FORECAST.PRINT_OPTIONS();
-                _printOptions.HIDE_BLANK_LINES = uxPrintBlank.Checked;
-                _printOptions.GROUP_ACCOUNTS = uxPrintGroup.Checked;
-                _printOptions.SHOW_NOTES = uxPrintNote.Checked;
+                if (_budgetDetail.STATUS == "C")
+                {
+                    uxImportActualsButton.Disable();
+                }
 
+                List<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW> _data = new List<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW>();
+                _data = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByBudgetID(_context, _budgetid, hideBlankLines: uxHideBlankLinesCheckbox.Checked, collapseAccountLines: uxCollapseAccountTotals.Checked);
 
-                MemoryStream PdfStream = OVERHEAD_BUDGET_FORECAST.GenerateReport(_context, _organizationID, _fiscal_year, _budgetid, _description, _printOptions);
+                MemoryStream PdfStream = OVERHEAD_BUDGET_FORECAST.GenerateReportByOrganization(_context, _description, _fiscal_year, _data);
 
-                
                 string _filename = _organizationID + "_" + _fiscal_year + "_budget.pdf";
                 string _filePath = Request.PhysicalApplicationPath + _filename;
                 FileStream fs = new FileStream(_filePath,FileMode.Create);
