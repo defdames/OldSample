@@ -11,18 +11,13 @@
 <body>
     <form id="form1" runat="server">
        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
-                <rsweb:ReportViewer ID="ReportViewer1" runat="server" Width="100%" Font-Names="Verdana" Font-Size="8pt" WaitMessageFont-Names="Verdana" WaitMessageFont-Size="14pt">
+                <rsweb:ReportViewer ID="ReportViewer1" runat="server" Width="100%" Font-Names="Verdana" Font-Size="8pt" WaitMessageFont-Names="Verdana" WaitMessageFont-Size="14pt" Height="473px">
                     <LocalReport ReportEmbeddedResource="DBI.Web.EMS.Views.Modules.BudgetBidding.Reports.Report1.rdlc" ReportPath="Views\Modules\BudgetBidding\Reports\Report1.rdlc">
                         <DataSources>
                             <rsweb:ReportDataSource DataSourceId="ObjectDataSource1" Name="Org_Summary" />
                         </DataSources>
                     </LocalReport>
-        </rsweb:ReportViewer>
-
-        
-
-            
-    
+        </rsweb:ReportViewer>    
         <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="Data" TypeName="DBI.Data.BBSummary+Grid, DBI.Data, Version=2.2014.718.199, Culture=neutral, PublicKeyToken=null">
             <SelectParameters>
                 <asp:QueryStringParameter DefaultValue="" Name="orgName" QueryStringField="strorgName" Type="String" />
@@ -32,27 +27,7 @@
                 <asp:QueryStringParameter DefaultValue="" Name="prevYearID" QueryStringField="prevYearID" Type="Int64" />
                 <asp:QueryStringParameter DefaultValue="" Name="prevVerID" QueryStringField="prevVerID" Type="Int64" />
             </SelectParameters>
-        </asp:ObjectDataSource>
-
-        
-
-            
-    
-      <%--  <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="Data" TypeName="DBI.Data.BBSummary+Grid">
-            <SelectParameters>
-                <asp:Parameter DefaultValue="" Name="orgName" Type="String"></asp:Parameter>
-                <asp:Parameter DefaultValue="1605" Name="orgID" Type="Int64"></asp:Parameter>
-                <asp:Parameter DefaultValue="2005" Name="yearID" Type="Int64"></asp:Parameter>
-                <asp:Parameter DefaultValue="2" Name="verID" Type="Int64"></asp:Parameter>
-                <asp:Parameter DefaultValue="2005" Name="prevYearID" Type="Int64"></asp:Parameter>
-                <asp:Parameter DefaultValue="2" Name="prevVerID" Type="Int64"></asp:Parameter>
-            </SelectParameters>
-        </asp:ObjectDataSource>--%>
-
-
-
-            
-    
+        </asp:ObjectDataSource>    
     </form>
 </body>
 </html>

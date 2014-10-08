@@ -1278,6 +1278,23 @@ CUR_PROJECT_INFO_WITH_STATUS.WE_OVERRIDE
             }
         }
 
+//        public static Fields DataSingle(long orgID, long yearID, long verID)
+//        {
+//            string ohVer = BB.BudBidVerToOHBudVer(verID);
+//            string sql = string.Format(@"
+//                SELECT 'Overhead' ADJUSTMENT,
+//                    NVL(SUM(AMOUNT), 0) OH
+//                FROM OVERHEAD_ORG_BUDGETS
+//                LEFT JOIN OVERHEAD_BUDGET_TYPE ON OVERHEAD_ORG_BUDGETS.OVERHEAD_BUDGET_TYPE_ID = OVERHEAD_BUDGET_TYPE.OVERHEAD_BUDGET_TYPE_ID
+//                LEFT JOIN OVERHEAD_BUDGET_DETAIL ON OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID = OVERHEAD_BUDGET_DETAIL.ORG_BUDGET_ID 
+//                WHERE OVERHEAD_ORG_BUDGETS.ORGANIZATION_ID = {0} AND OVERHEAD_ORG_BUDGETS.FISCAL_YEAR = {1} AND OVERHEAD_BUDGET_TYPE.BUDGET_NAME = '{2}'", orgID, yearID, ohVer);
+
+//            using (Entities context = new Entities())
+//            {
+//                return context.Database.SqlQuery<Fields>(sql).SingleOrDefault();
+//            }
+//        }
+
         public class Subtotal
         {
             #region Fields

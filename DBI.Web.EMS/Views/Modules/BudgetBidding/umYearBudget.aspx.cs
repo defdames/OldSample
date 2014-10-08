@@ -16,6 +16,15 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         {
             if (!X.IsAjaxRequest)
             {
+               List<object> list = new List<object>
+                {
+                        new { ACTION_ID = "reporgSum" ,ACTION_NAME =  "Org Summary" }
+                };
+
+               this.reportList.DataSource = list;
+               this.reportList.DataBind();
+
+
                 long leOrgID = long.Parse(Request.QueryString["leOrgID"]);
                 long orgID = long.Parse(Request.QueryString["orgID"]);
                 long yearID = long.Parse(Request.QueryString["fiscalYear"]);
@@ -77,7 +86,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             long yearID = long.Parse(Request.QueryString["fiscalYear"]);
             long verID = long.Parse(Request.QueryString["verID"]);
 
-            uxOverheadGridStore.DataSource = BBOH.Data(orgID, yearID, verID);
+            uxOverheadGridStore.DataSource = BBOH.Data(orgID, yearID, verID).ToString();
         }
 
 
@@ -363,15 +372,20 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
 
         // Reports
-        protected void deLoadReports(object sender, StoreReadDataEventArgs e)
+        protected void deLoadReports(object sender, DirectEventArgs e)
         {
 
-                
+            string strreportName = uxSummaryReports.Value.ToString();
+            if (strreportName == "reporgSum")
+            {
+
                 string strOrgID = Request.QueryString["OrgID"];
                 string strYearID = Request.QueryString["fiscalYear"];
                 string strVerID = Request.QueryString["verID"];
                 string strPrevYearID = uxHidPrevYear.Text;
                 string strPrevVerID = uxHidPrevVer.Text;
+
+                
 
                 string strorgName = Request.QueryString["orgName"];
                 long orgID = long.Parse(Request.QueryString["OrgID"]);
@@ -379,9 +393,12 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 long verID = long.Parse(Request.QueryString["verID"]);
                 long prevYearID = Convert.ToInt64(uxHidPrevYear.Text);
                 long prevVerID = Convert.ToInt64(uxHidPrevVer.Text);
-                
 
-                string url = "/Views/Modules/BudgetBidding/Reports/umReport1.aspx?orgName=" + strorgName + "&orgID=" + orgID + "&yearID=" + yearID + "&verID=" + verID + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID;
+                //string strOH = BBOH.DataSingle(orgID, yearID, verID).ToString();
+
+
+
+                string url = "/Views/Modules/BudgetBidding/Reports/umReport1.aspx?orgName=" + strorgName + "&orgID=" + orgID + "&yearID=" + yearID + "&verID=" + verID + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID; //+ "&oh=" + strOH;
 
                 Window win = new Window
                 {
@@ -407,11 +424,16 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
                 };
                 //win.Listeners.Close.Handler = "#{uxPayrollAuditGrid}.getStore().load();";
-
+                
                 win.Render(this.Form);
                 win.Show();
-        
-            
+                uxSummaryReports.Reset();
+
+            }
+            else
+            {
+
+            }
            
         }
         protected void deChooseReport(object sender, DirectEventArgs e)

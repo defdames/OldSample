@@ -25,6 +25,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding.Reports
                     long verID = Convert.ToInt64(Request.QueryString["verID"]);
                     long prevYearID = Convert.ToInt64(Request.QueryString["prevYearID"]);
                     long prevVerID = Convert.ToInt64(Request.QueryString["prevVerID"]);
+                    string oh   =   Request.QueryString["oh"];
 
 
                     string iyearID = yearID.ToString();
@@ -38,6 +39,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding.Reports
 
                     ReportParameter pyID = new ReportParameter("pyearID", iyearID);
                     this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { pyID });
+                    ReportParameter pohead = new ReportParameter("poh", oh);
+                    this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { pohead });
                     ReportParameter poName = new ReportParameter("porgName", orgName);
                     this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { poName });
                     if (verID == 1)
