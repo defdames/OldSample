@@ -6,8 +6,8 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Ext.Net;
 using DBI.Data;
+using DBI.Core.Web;
 using Newtonsoft.Json;
-using DBI.Core.Security;
 
 namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 {
@@ -18,6 +18,11 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         {
             if (!X.IsAjaxRequest)
             {
+                if (!BasePage.validateComponentSecurity("SYS.BudgetBidding.Security"))
+                {
+                    X.Redirect("~/Views/uxDefault.aspx");
+                }
+
                 long leOrgID = long.Parse(Request.QueryString["leOrgID"]);
                 long orgID = long.Parse(Request.QueryString["orgID"]);
                 long yearID = long.Parse(Request.QueryString["yearID"]);
@@ -679,6 +684,51 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxLumpSumDesc.ReadOnly = true;
             uxLumpSumQuantity.ReadOnly = true;
             uxLumpSumCost.ReadOnly = true;
+        }
+
+
+        protected void deAddNewBOM(object sender, DirectEventArgs e)
+        {
+            string hierID = Request.QueryString["hierID"];
+            string leOrgID = Request.QueryString["leOrgID"];
+            long orgID = Convert.ToInt64(Request.QueryString["orgID"]);
+            long yearID = Convert.ToInt64(Request.QueryString["fiscalYear"]);
+            string verName = HttpUtility.UrlEncode(Request.QueryString["verName"]);
+            string budBidProjectID = Request.QueryString["projectID"];
+            string detailSheetID = Request.QueryString["detailSheetID"];
+
+            string url = "/Views/Modules/BudgetBidding/umBOM.aspx?hierID=" + hierID + "&leOrgID=" + leOrgID + "&orgID=" + orgID + "&yearID=" + yearID + "&verName=" + verName + "&projectID=" + budBidProjectID + "&detailSheetID=" + detailSheetID;
+
+            Window win = new Window
+            {
+                ID = "uxBOMForm",
+                Height = 330,
+                Width = 600,
+                Title = "BOM",
+                Modal = true,
+                Resizable = false,
+                CloseAction = CloseAction.Destroy,
+                Closable = false,
+                Loader = new ComponentLoader
+                {
+                    Mode = LoadMode.Frame,
+                    DisableCaching = true,
+                    Url = url,
+                    AutoLoad = true,
+                    LoadMask =
+                    {
+                        ShowMask = true
+                    }
+                }
+            };
+            win.Render(this.Form);
+            win.Show();
+        }
+        [DirectMethod]
+        public void CloseBOMWindow()
+        {
+            uxMaterialGridStore.Reload();
+            //CalcSummaryTotals();
         }
     }
 }

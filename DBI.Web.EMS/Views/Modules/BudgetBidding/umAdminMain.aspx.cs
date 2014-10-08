@@ -10,7 +10,7 @@ using DBI.Core.Web;
 
 namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 {
-    public partial class umBlankBudget : System.Web.UI.Page
+    public partial class umAdminMain : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
