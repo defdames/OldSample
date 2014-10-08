@@ -140,7 +140,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                         Boolean _ActiveOrganizationsListed = nextData.Where(x => _leList.Contains(x.ORGANIZATION_ID.ToString())).Count() > 0 ? true : false;
 
-
                         if (_ActiveOrganizationsListed)
                         {
                             //Lets add that node as the top level is active
@@ -151,9 +150,12 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                             }
                             else
                             {
-                                //Add the node as an active leaf
-                                node.Leaf = true;
-                                node.Icon = Icon.Accept;
+                                if (view.ORGANIZATION_STATUS == "Active")
+                                {
+                                    //Add the node as an active leaf
+                                    node.Leaf = true;
+                                    node.Icon = Icon.Accept;
+                                }
 
                             }
 
@@ -165,10 +167,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                             if (_leList.Contains(view.ORGANIZATION_ID.ToString()))
                             {
-                                //Add the node as an active leaf
-                                node.Leaf = true;
-                                node.Icon = Icon.Accept;
-                                e.Nodes.Add(node);
+                                if (view.ORGANIZATION_STATUS == "Active")
+                                {
+                                    //Add the node as an active leaf
+                                    node.Leaf = true;
+                                    node.Icon = Icon.Accept;
+                                    e.Nodes.Add(node);
+                                }
                             }
 
                         }
@@ -190,7 +195,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                 
                 string _nodeText = e.ExtraParams["ORGANIZATION_NAME"];
-                AddTab(sm.SelectedRecordID + "OS", _nodeText + " - Budget Rollup", "umViewBudget.aspx?securityView='Y'&orgid=" + sm.SelectedRecordID + "&desc=" + _nodeText + " - Budget Rollup", false, true);
+                AddTab(sm.SelectedRecordID + "OS", _nodeText + " - Budget Rollup", "umViewBudget.aspx?securityView=Y&orgid=" + sm.SelectedRecordID + "&desc=" + _nodeText + " - Budget Rollup", false, true);
                
 
              }

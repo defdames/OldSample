@@ -174,9 +174,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 _printOptions.HIDE_BLANK_LINES = true;
                 _printOptions.SHOW_NOTES = false;
 
-                string _securityViewValue =  Request.QueryString["securityView"].ToString();                       
+                Boolean _securityView = false;
 
-                Boolean _securityView = (_securityViewValue == "Y") ? true : false;
+                if (Request.QueryString["securityView"] != null)
+                {
+                    string _securityViewValue = Request.QueryString["securityView"].ToString();
+                    _securityView = (_securityViewValue == "Y") ? true : false;
+                }
 
                 _data = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByOrganizationID(_context, _leID, _organizationID, _fiscal_year, _budget_type_id, _printOptions, _securityView, false);
                     

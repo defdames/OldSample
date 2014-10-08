@@ -837,13 +837,31 @@ namespace DBI.Data
                 _organizationData = HR.OverheadOrganizationStatusByHierarchy(_hierarchyID, LeOrganizationID).Where(x => x.ORGANIZATION_STATUS == "Active" & x.ORGANIZATION_ID == OrganizationID).ToList();
             }
 
+            List<string> _myOrgList = new List<string>();
+             // Security must be limited to my account access organizations.
+            if (LimitToMySecurity)
+            {
+                //Get a list of organizations assigned to my username.
+                List<SYS_USER_ORGS> _userOrgs = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.LoggedInUser().USER_ID);
+
+                //Return the LE's I have access to view
+                foreach (SYS_USER_ORGS _org in _userOrgs)
+                {
+                    _myOrgList.Add(_org.ORG_ID.ToString());
+                }
+
+                //Limit organization data to only data from my org list
+                _organizationData = _organizationData.Where(x => _myOrgList.Contains(x.ORGANIZATION_ID.ToString())).ToList();
+            }
+
             //Check it again only process it if data was returned.
             if (_organizationData.Count() > 0)
             {
                
                   foreach (HR.ORGANIZATION_V1 _organization in _organizationData)
                   {
-                       OVERHEAD_ORG_BUDGETS _budget = OVERHEAD_BUDGET_FORECAST.BudgetsByOrganizationID(context, _organization.ORGANIZATION_ID).Where(x => x.FISCAL_YEAR == FiscalYear & x.OVERHEAD_BUDGET_TYPE_ID == BudgetTypeID).SingleOrDefault();
+                     OVERHEAD_ORG_BUDGETS _budget = OVERHEAD_BUDGET_FORECAST.BudgetsByOrganizationID(context, _organization.ORGANIZATION_ID).Where(x => x.FISCAL_YEAR == FiscalYear & x.OVERHEAD_BUDGET_TYPE_ID == BudgetTypeID).SingleOrDefault();
+                      
                       if (_budget != null)
                         {
                             _validAccounts.AddRange(AccountListValidByOrganizationID(context, _budget.ORGANIZATION_ID));
