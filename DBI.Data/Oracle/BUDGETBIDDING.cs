@@ -543,7 +543,7 @@ namespace DBI.Data
             {
                 return Convert.ToInt64(profileValue);
             }
-        }
+        }        
     }
 
     public class BBSummaryRollup
@@ -2521,6 +2521,104 @@ CUR_PROJECT_INFO_WITH_STATUS.WE_OVERRIDE
                 }
 
                 GenericData.Delete<BUD_BID_DETAIL_SHEET>(detailSheetData);
+            }
+
+            public class BOM 
+            {
+                public static void AddItems(long projectID, long detailTaskID)
+                {
+                    BUD_BID_DETAIL_SHEET data = new BUD_BID_DETAIL_SHEET();
+
+                    data.PROJECT_ID = projectID;
+                    data.DETAIL_TASK_ID = detailTaskID;
+                    data.REC_TYPE = "MATERIAL";
+                    data.DESC_1 = "TEST";
+                    data.DESC_2 = "";
+                    data.AMT_1 = 0;
+                    data.AMT_2 = 0;
+                    data.AMT_3 = 0;
+                    data.AMT_4 = 0;
+                    data.AMT_5 = 0;
+                    data.TOTAL = 0;
+                    data.CREATE_DATE = DateTime.Now;
+                    data.CREATED_BY = HttpContext.Current.User.Identity.Name;
+                    data.MODIFY_DATE = DateTime.Now;
+                    data.MODIFIED_BY = "TEMP";
+                    GenericData.Insert<BUD_BID_DETAIL_SHEET>(data);
+                }
+
+                public class Listing
+                {
+                    #region Fields
+                    public class Fields
+                    {
+                        public long ORGANIZATION_ID { get; set; }
+                        public long BILL_SEQUENCE_ID { get; set; }
+                        public string DESCRIPTION { get; set; }
+                        public string SEGMENT1 { get; set; }
+                        public string ATTRIBUTE15 { get; set; }
+                    }
+                    #endregion
+
+                    public static List<Fields> Data(long orgID)
+                    {
+                        long invOrgID = BB.InventoryOrg(orgID);
+                        string sql = string.Format(@"
+                        SELECT APPS.MTL_SYSTEM_ITEMS.ORGANIZATION_ID,
+                            APPS.BOM_BILL_OF_MATERIALS_V.BILL_SEQUENCE_ID,
+                            APPS.BOM_BILL_OF_MATERIALS_V.DESCRIPTION,
+                            APPS.MTL_SYSTEM_ITEMS.SEGMENT1,
+                            APPS.BOM_BILL_OF_MATERIALS_V.ATTRIBUTE15
+                        FROM APPS.BOM_BILL_OF_MATERIALS_V
+                        LEFT JOIN APPS.MTL_SYSTEM_ITEMS ON APPS.BOM_BILL_OF_MATERIALS_V.ASSEMBLY_ITEM_ID = APPS.MTL_SYSTEM_ITEMS.INVENTORY_ITEM_ID
+                        WHERE APPS.MTL_SYSTEM_ITEMS.ORGANIZATION_ID = {0}
+                        ORDER BY APPS.BOM_BILL_OF_MATERIALS_V.DESCRIPTION", invOrgID);
+
+                        List<Fields> data;
+                        using (Entities context = new Entities())
+                        {
+                            data = context.Database.SqlQuery<Fields>(sql).ToList();
+                        }
+
+                        return data;
+                    }
+                }
+
+                public class MaterialItems
+                {
+                    #region Fields
+                    public class Fields
+                    {
+                        public long COMPONENT_ITEM_ID { get; set; }
+                        public string DESCRIPTION { get; set; }
+                        public string PRIMARY_UOM_CODE { get; set; }
+                        public decimal COMPONENT_QUANTITY { get; set; }
+                        public decimal ITEM_COST { get; set; }
+                    }
+                    #endregion
+
+                    public static List<Fields> Data(long orgID, long billSeqID)
+                    {
+                        long invOrgID = BB.InventoryOrg(orgID);
+                        string sql = string.Format(@"
+                            SELECT APPS.BOM_INVENTORY_COMPONENTS_V.COMPONENT_ITEM_ID,
+                                APPS.BOM_INVENTORY_COMPONENTS_V.DESCRIPTION,
+                                APPS.BOM_INVENTORY_COMPONENTS_V.PRIMARY_UOM_CODE,
+                                APPS.BOM_INVENTORY_COMPONENTS_V.COMPONENT_QUANTITY,
+                                XXEMS.INVENTORY_V.ITEM_COST
+                            FROM APPS.BOM_INVENTORY_COMPONENTS_V 
+                            LEFT JOIN XXEMS.INVENTORY_V ON APPS.BOM_INVENTORY_COMPONENTS_V.COMPONENT_ITEM_ID = XXEMS.INVENTORY_V.ITEM_ID
+                            WHERE XXEMS.INVENTORY_V.ORGANIZATION_ID = {0} AND BILL_SEQUENCE_ID = {1}", invOrgID, billSeqID);
+
+                        List<Fields> data;
+                        using (Entities context = new Entities())
+                        {
+                            data = context.Database.SqlQuery<Fields>(sql).ToList();
+                        }
+
+                        return data;
+                    }
+                }
             }
 
             public class Data

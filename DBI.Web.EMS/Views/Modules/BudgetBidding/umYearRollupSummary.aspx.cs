@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Ext.Net;
 using DBI.Data;
+using DBI.Core.Web;
 
 namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 {
@@ -15,6 +16,11 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         {
             if (!X.IsAjaxRequest)
             {
+                if (!BasePage.validateComponentSecurity("SYS.BudgetBidding.Security"))
+                {
+                    X.Redirect("~/Views/uxDefault.aspx");
+                }
+
                 long orgID = long.Parse(Request.QueryString["OrgID"]);
                 long yearID = long.Parse(Request.QueryString["fiscalYear"]);
                 long verID = long.Parse(Request.QueryString["verID"]);
