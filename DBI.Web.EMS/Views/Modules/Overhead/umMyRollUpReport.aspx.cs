@@ -10,7 +10,7 @@ using Ext.Net;
 
 namespace DBI.Web.EMS.Views.Modules.Overhead
 {
-    public partial class umOverheadRollUpReport : DBI.Core.Web.BasePage
+    public partial class umMyRollUpReport : DBI.Core.Web.BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -51,7 +51,21 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             // Add LE
             if (e.NodeID == "0")
             {
-                var data = HR.LegalEntityHierarchies().Select(a => new { a.ORGANIZATION_ID, a.ORGANIZATION_NAME }).Distinct().ToList();
+
+                //Get a list of organizations assigned to my username.
+                List<SYS_USER_ORGS> _userOrgs = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.LoggedInUser().USER_ID);
+
+                List<string> _leList = new List<string>();
+
+                //Return the LE's I have access to view
+                foreach(SYS_USER_ORGS _org in _userOrgs)
+                {
+                    string _leID = OVERHEAD_BUDGET_FORECAST.ReturnLEIDforOrganizationID(_org.ORG_ID).ToString();
+                    _leList.Add(_leID);
+                }
+
+
+                var data = HR.LegalEntityHierarchies().Select(a => new { a.ORGANIZATION_ID, a.ORGANIZATION_NAME }).Where(x => _leList.Contains(x.ORGANIZATION_ID.ToString())).GroupBy(grp => new { grp.ORGANIZATION_ID, grp.ORGANIZATION_NAME }).ToList();
 
 
                 //Build the treepanel
@@ -60,21 +74,21 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                     //Only show for the profile option OverheadBudgetHierarchy
 
-                    string _profileValue = SYS_ORG_PROFILE_OPTIONS.OrganizationProfileOption("OverheadBudgetHierarchy", view.ORGANIZATION_ID);
+                    string _profileValue = SYS_ORG_PROFILE_OPTIONS.OrganizationProfileOption("OverheadBudgetHierarchy", view.Key.ORGANIZATION_ID);
 
                     if (_profileValue.Length > 0)
                     {
                         long _profileLong = long.Parse(_profileValue);
-                        var _hierData = HR.LegalEntityHierarchies().Where(a => a.ORGANIZATION_ID == view.ORGANIZATION_ID & a.ORGANIZATION_STRUCTURE_ID == _profileLong).ToList();
+                        var _hierData = HR.LegalEntityHierarchies().Where(a => a.ORGANIZATION_ID == view.Key.ORGANIZATION_ID & a.ORGANIZATION_STRUCTURE_ID == _profileLong).ToList();
 
                         //Check for incomplete setup 
-                        int _cnt = OVERHEAD_BUDGET_TYPE.BudgetTypes(view.ORGANIZATION_ID).Count();
+                        int _cnt = OVERHEAD_BUDGET_TYPE.BudgetTypes(view.Key.ORGANIZATION_ID).Count();
 
 
                         //Create the Hierarchy Levels
                         Node node = new Node();
-                        node.Text = view.ORGANIZATION_NAME;
-                        node.NodeID = string.Format("{0}:{1}", _profileValue.ToString(), view.ORGANIZATION_ID.ToString());
+                        node.Text = view.Key.ORGANIZATION_NAME;
+                        node.NodeID = string.Format("{0}:{1}", _profileValue.ToString(), view.Key.ORGANIZATION_ID.ToString());
                         node.Leaf = false;
                         node.Icon = Icon.Building;
                         e.Nodes.Add(node);
@@ -86,6 +100,17 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             // Add orgs
             else
             {
+                List<string> _leList = new List<string>();
+
+                //Get a list of organizations assigned to my username.
+                List<SYS_USER_ORGS> _userOrgs = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.LoggedInUser().USER_ID);
+
+                //Return the LE's I have access to view
+                foreach(SYS_USER_ORGS _org in _userOrgs)
+                {
+                    _leList.Add(_org.ORG_ID.ToString());
+                }
+
                 char[] delimChars = { ':' };
                 string[] selID = e.NodeID.Split(delimChars);
                 long hierarchyID = long.Parse(selID[0].ToString());
@@ -113,34 +138,39 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                         var nextData = HR.OverheadOrganizationStatusByHierarchy(hierarchyID, view.ORGANIZATION_ID);
 
-                        Boolean _ActiveOrganizationsListed = nextData.Where(x => x.ORGANIZATION_STATUS == "Active").Count() > 0 ? true : false;
+                        Boolean _ActiveOrganizationsListed = nextData.Where(x => _leList.Contains(x.ORGANIZATION_ID.ToString())).Count() > 0 ? true : false;
 
-                        if (nextData.Count() == 0)
+
+                        if (_ActiveOrganizationsListed)
                         {
-                            node.Leaf = true;
-                            if (view.ORGANIZATION_STATUS == "Active")
+                            //Lets add that node as the top level is active
+                            if (nextData.Where(x => _leList.Contains(x.ORGANIZATION_ID.ToString())).Count() > 0)
                             {
+                                node.Leaf = false;
                                 node.Icon = Icon.Accept;
-                                e.Nodes.Add(node);
                             }
                             else
                             {
-                                node.Icon = Icon.ControlBlank;
+                                //Add the node as an active leaf
+                                node.Leaf = true;
+                                node.Icon = Icon.Accept;
+
                             }
+
+                            e.Nodes.Add(node);
                         }
                         else
                         {
-                            node.Leaf = false;
+                            //Count is zero but does the current org match
 
-                            if (_ActiveOrganizationsListed)
+                            if (_leList.Contains(view.ORGANIZATION_ID.ToString()))
                             {
+                                //Add the node as an active leaf
+                                node.Leaf = true;
                                 node.Icon = Icon.Accept;
                                 e.Nodes.Add(node);
                             }
-                            else
-                            {
-                                node.Icon = Icon.ControlBlank;
-                            }
+
                         }
                     }
                 }
@@ -159,8 +189,9 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 long orgID = long.Parse(selID[1].ToString());
 
                 
-               string _nodeText = e.ExtraParams["ORGANIZATION_NAME"];
-               AddTab(sm.SelectedRecordID + "OS", _nodeText + " - Budget Rollup", "umViewBudget.aspx?orgid=" + sm.SelectedRecordID + "&desc=" +  _nodeText + " - Budget Rollup",false,true);
+                string _nodeText = e.ExtraParams["ORGANIZATION_NAME"];
+                AddTab(sm.SelectedRecordID + "OS", _nodeText + " - Budget Rollup", "umViewBudget.aspx?securityView='Y'&orgid=" + sm.SelectedRecordID + "&desc=" + _nodeText + " - Budget Rollup", false, true);
+               
 
              }
         }

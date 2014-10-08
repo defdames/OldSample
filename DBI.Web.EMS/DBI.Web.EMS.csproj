@@ -224,6 +224,7 @@
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_DBI.aspx" />
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_IRM.aspx" />
     <Content Include="Views\Modules\DailyActivity\umWeatherTab.aspx" />
+    <Content Include="Views\Modules\Overhead\umMyRollUpReport.aspx" />
     <Content Include="Views\Modules\Overhead\umAddGLAccountForCategory.aspx" />
     <Content Include="Views\Modules\Overhead\umAddOverheadDetailLine.aspx" />
     <Content Include="Views\Modules\Overhead\umBudgetMain.aspx" />
@@ -816,6 +817,13 @@
       <DependentUpon>umWeatherTab.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\ValidationChecks.cs" />
+    <Compile Include="Views\Modules\Overhead\umMyRollUpReport.aspx.cs">
+      <DependentUpon>umMyRollUpReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Overhead\umMyRollUpReport.aspx.designer.cs">
+      <DependentUpon>umMyRollUpReport.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\Overhead\umAddGLAccountForCategory.aspx.cs">
       <DependentUpon>umAddGLAccountForCategory.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

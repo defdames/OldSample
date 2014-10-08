@@ -40,15 +40,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         protected global::Ext.Net.Viewport Viewport1;
         
         /// <summary>
-        /// uxAccordingPanel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel uxAccordingPanel;
-        
-        /// <summary>
         /// uxOrganizationTreePanel control.
         /// </summary>
         /// <remarks>
@@ -83,15 +74,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.TreeView TreeView1;
-        
-        /// <summary>
-        /// uxSystem control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.MenuPanel uxSystem;
         
         /// <summary>
         /// uxCenterTabPanel control.
