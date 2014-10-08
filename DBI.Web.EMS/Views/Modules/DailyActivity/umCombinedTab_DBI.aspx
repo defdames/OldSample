@@ -61,6 +61,14 @@
             Ext.net.DropDownField.prototype.setValue.call(this, value, text);
         };
 
+        var SetItemValue = function (value, text) {
+            if (!text && !!value) {
+                text = ItemRenderer(value);
+            }
+
+            Ext.net.DropDownField.prototype.setValue.call(this, value, text);
+        };
+
         var showButtons = function () {
             App.uxSaveFooterButton.show();
             App.uxSaveHeaderButton.show();
@@ -74,6 +82,12 @@
         var disableOnError = function () {
             parent.App.uxPostActivityButton.disable();
             parent.App.uxApproveActivityButton.disable();
+        };
+
+        var updateAddTotalAndUsed = function () {
+            App.uxAddChemicalGallonTotal.setValue(parseFloat(App.uxAddChemicalGallonStart.value) + parseFloat(App.uxAddChemicalGallonMixed.value));
+            App.uxAddChemicalGallonUsed.setValue(parseFloat(App.uxAddChemicalGallonTotal.value) - parseFloat(App.uxAddChemicalGallonRemain.value));
+            App.uxAddChemicalAcresSprayed.setValue(parseFloat(App.uxAddChemicalGallonUsed.value) / parseFloat(App.uxAddChemicalGallonAcre.value));
         };
 
         var EmployeeRenderer = function (value, record) {
@@ -100,6 +114,13 @@
         var ProductionTaskRenderer = function (value, record) {
             if (!record) {
                 return App.uxProductionGrid.getSelectionModel().getSelection()[0].data.DESCRIPTION;
+            }
+            return record.record.data.DESCRIPTION;
+        };
+
+        var ItemRenderer = function (value, record) {
+            if (!record) {
+                return App.uxInventoryGrid.getSelectionModel().getSelection()[0].data.DESCRIPTION;
             }
             return record.record.data.DESCRIPTION;
         };
@@ -148,11 +169,65 @@
             });
         };
 
+        var deleteChemical = function () {
+            var ChemicalRecord = App.uxChemicalGrid.getSelectionModel().getSelection();
+
+            Ext.Msg.confirm('Really Delete?', 'Do you really want to delete this chemical entry?', function (e) {
+                if (e == 'yes') {
+                    App.uxMainContainer.body.mask('Loading ...');
+                    App.direct.dmDeleteChemical(ChemicalRecord[0].data.CHEMICAL_MIX_ID);
+                }
+            });
+        };
+
+        var doAddMath = function () {
+            var gallonStart = parseInt(App.uxAddInventoryMixGrid.getSelectionModel().getSelection()[0].data.GALLON_STARTING);
+            var gallonMixed = parseInt(App.uxAddInventoryMixGrid.getSelectionModel().getSelection()[0].data.GALLON_MIXED);
+            var gallonRemain = parseInt(App.uxAddInventoryMixGrid.getSelectionModel().getSelection()[0].data.GALLON_REMAINING);
+            var gallonAcre = parseInt(App.uxAddInventoryMixGrid.getSelectionModel().getSelection()[0].data.GALLON_ACRE);
+
+            var gallonsUsed = gallonStart + gallonMixed - gallonRemain;
+            var acresSprayed = gallonsUsed / gallonAcre;
+            var rate = parseInt(App.uxAddInventoryRate.value);
+            App.uxAddInventoryTotal.setValue(rate * acresSprayed);
+        };
     </script>
 </head>
 <body>
     <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
-
+    <ext:Store runat="server"
+        ID="uxAddInventoryItemStore"
+        RemoteSort="true"
+        OnReadData="deReadItems"
+        PageSize="10"
+        AutoLoad="false">
+        <Model>
+            <ext:Model ID="uxAddInventoryItemModel" runat="server">
+                <Fields>
+                    <ext:ModelField Name="ITEM_ID" Type="String" />
+                    <ext:ModelField Name="SEGMENT1" Type="String" />
+                    <ext:ModelField Name="DESCRIPTION" Type="String" />
+                    <ext:ModelField Name="UOM_CODE" Type="String" />
+                    <ext:ModelField Name="ENABLED_FLAG" />
+                    <ext:ModelField Name="ACTIVE" />
+                    <ext:ModelField Name="ITEM_COST" Type="String" />
+                    <ext:ModelField Name="LAST_UPDATE_DATE" />
+                    <ext:ModelField Name="LE" />
+                    <ext:ModelField Name="ATTRIBUTE2" />
+                    <ext:ModelField Name="INV_NAME" />
+                    <ext:ModelField Name="INV_LOCATION" />
+                    <ext:ModelField Name="ORGANIZATION_ID" />
+                </Fields>
+            </ext:Model>
+        </Model>
+        <Proxy>
+            <ext:PageProxy />
+        </Proxy>
+        <Parameters>
+            <ext:StoreParameter Name="Type" Value="Add" />
+            <ext:StoreParameter Name="OrgId" Value="#{uxAddInventoryRegion}.value" Mode="Raw" />
+        </Parameters>
+    </ext:Store>
 
     <form id="form1" runat="server">
         <ext:Panel runat="server" ID="uxMainContainer" Layout="AutoLayout">
@@ -1187,7 +1262,7 @@
                         <ext:Store runat="server"
                             ID="uxChemicalStore">
                             <Model>
-                                <ext:Model ID="Model5" runat="server" Name="Chemical">
+                                <ext:Model ID="Model5" runat="server" Name="Chemical" IDProperty="CHEMICAL_MIX_ID" ClientIdProperty="PhantomID">
                                     <Fields>
                                         <ext:ModelField Name="CHEMICAL_MIX_ID" />
                                         <ext:ModelField Name="CHEMICAL_MIX_NUMBER" />
@@ -1199,7 +1274,7 @@
                                         <ext:ModelField Name="STATE" />
                                         <ext:ModelField Name="COUNTY" />
                                         <ext:ModelField Name="TOTAL" />
-                                        <ext:ModelField Name="USED" />
+                                        <ext:ModelField Name="GALLON_USED" />
                                         <ext:ModelField Name="ACRES_SPRAYED" />
                                     </Fields>
                                 </ext:Model>
@@ -1211,32 +1286,60 @@
                             <ext:Column ID="Column26" runat="server" DataIndex="CHEMICAL_MIX_NUMBER" Text="Mix #" Flex="4" />
                             <ext:Column ID="Column27" runat="server" DataIndex="TARGET_AREA" Text="Target Area" Flex="10">
                                 <Editor>
-                                    <ext:TextField runat="server" />
+                                    <ext:TextField runat="server" ID="uxAddChemicalTargetAre" AllowBlank="false" InvalidCls="allowBlank" />
                                 </Editor>
                             </ext:Column>
                             <ext:Column ID="Column28" runat="server" DataIndex="GALLON_ACRE" Text="Gallons/Acre" Flex="8">
                                 <Editor>
-                                    <ext:NumberField runat="server" MinValue="0" />
+                                    <ext:NumberField runat="server" MinValue="0" ID="uxAddChemicalGallonAcre" AllowBlank="false" InvalidCls="allowBlank">
+                                        <Listeners>
+                                            <Change Fn="updateAddTotalAndUsed" />
+                                        </Listeners>
+                                    </ext:NumberField>
                                 </Editor>
                             </ext:Column>
                             <ext:Column ID="Column29" runat="server" DataIndex="GALLON_STARTING" Text="Gallons Starting" Flex="10">
                                 <Editor>
-                                    <ext:NumberField runat="server" MinValue="0" />
+                                    <ext:NumberField runat="server" MinValue="0" AllowBlank="false" InvalidCls="allowBlank" ID="uxAddChemicalGallonStart">
+                                        <Listeners>
+                                            <Change Fn="updateAddTotalAndUsed" />
+                                        </Listeners>
+                                    </ext:NumberField>
                                 </Editor>
                             </ext:Column>
                             <ext:Column ID="Column30" runat="server" DataIndex="GALLON_MIXED" Text="Gallon Mixed" Flex="8">
                                 <Editor>
-                                    <ext:NumberField runat="server" MinValue="0" />
+                                    <ext:NumberField runat="server" ID="uxAddChemicalGallonMixed" MinValue="0" AllowBlank="false" InvalidCls="allowBlank">
+                                        <Listeners>
+                                            <Change Fn="updateAddTotalAndUsed" />
+                                        </Listeners>
+                                    </ext:NumberField>
                                 </Editor>
                             </ext:Column>
-                            <ext:Column ID="Column31" runat="server" DataIndex="TOTAL" Text="Total Gallons" Flex="10" />
+                            <ext:Column ID="Column31" runat="server" DataIndex="TOTAL" Text="Total Gallons" Flex="10">
+                                <Editor>
+                                    <ext:DisplayField runat="server" ID="uxAddChemicalGallonTotal" />
+                                </Editor>
+                            </ext:Column>
                             <ext:Column ID="Column2" runat="server" DataIndex="GALLON_REMAINING" Text="Gallon Remaining" Flex="10">
                                 <Editor>
-                                    <ext:NumberField runat="server" MinValue="0" />
+                                    <ext:NumberField runat="server" ID="uxAddChemicalGallonRemain" MinValue="0" AllowBlank="false" InvalidCls="allowBlank">
+                                        <Listeners>
+                                            <Change Fn="updateAddTotalAndUsed" />
+                                        </Listeners>
+                                    </ext:NumberField>
                                 </Editor>
                             </ext:Column>
-                            <ext:Column ID="Column32" runat="server" DataIndex="USED" Text="Gallons Used" Flex="10" />
-                            <ext:Column ID="Column33" runat="server" DataIndex="ACRES_SPRAYED" Text="Acres Sprayed" Flex="10" />
+                            <ext:Column ID="Column32" runat="server" DataIndex="GALLON_USED" Text="Gallons Used" Flex="10">
+                                <Editor>
+                                    <ext:DisplayField runat="server" ID="uxAddChemicalGallonUsed" />
+                                </Editor>
+                            </ext:Column>
+                            <ext:Column ID="Column33" runat="server" DataIndex="ACRES_SPRAYED" Text="Acres Sprayed" Flex="10">
+                                <Editor>
+                                    <ext:DisplayField runat="server" ID="uxAddChemicalAcresSprayed" />
+                                </Editor>
+                            </ext:Column>
                             <ext:Column ID="Column34" runat="server" DataIndex="STATE" Text="State" Flex="10">
                                 <Editor>
                                     <ext:ComboBox runat="server"
@@ -1246,6 +1349,7 @@
                                         QueryMode="Local"
                                         TypeAhead="true"
                                         AllowBlank="false"
+                                        InvalidCls="allowBlank"
                                         ForceSelection="true"
                                         Width="500">
                                         <Store>
@@ -1268,7 +1372,7 @@
                             </ext:Column>
                             <ext:Column ID="Column35" runat="server" DataIndex="COUNTY" Text="County" Flex="10">
                                 <Editor>
-                                    <ext:TextField runat="server" />
+                                    <ext:TextField runat="server" AllowBlank="false" InvalidCls="allowBlank" />
                                 </Editor>
                             </ext:Column>
                         </Columns>
@@ -1282,14 +1386,9 @@
                                     </Listeners>
                                 </ext:Button>
                                 <ext:Button ID="uxDeleteChemicalButton" runat="server" Text="Delete" Icon="ApplicationDelete" Disabled="true">
-                                    <DirectEvents>
-                                        <Click OnEvent="deRemoveChemical">
-                                            <Confirmation ConfirmRequest="true" Title="Remove?" Message="Do you really want to remove?" />
-                                            <ExtraParams>
-                                                <ext:Parameter Name="ChemicalId" Value="#{uxChemicalGrid}.getSelectionModel().getSelection()[0].data.CHEMICAL_MIX_ID" Mode="Raw" />
-                                            </ExtraParams>
-                                        </Click>
-                                    </DirectEvents>
+                                    <Listeners>
+                                        <Click Fn="deleteChemical" />
+                                    </Listeners>
                                 </ext:Button>
                             </Items>
                         </ext:Toolbar>
@@ -1298,7 +1397,15 @@
                         <Select Handler="#{uxDeleteChemicalButton}.enable()" />
                     </Listeners>
                     <Plugins>
-                        <ext:RowEditing runat="server" AutoCancel="false" ClicksToEdit="1" />
+                        <ext:RowEditing runat="server" AutoCancel="false" ClicksToEdit="1">
+                            <DirectEvents>
+                                <Edit OnEvent="deSaveChemical" Before="return #{uxChemicalStore}.isDirty();">
+                                    <ExtraParams>
+                                        <ext:Parameter Name="data" Value="#{uxChemicalStore}.getChangedData({skipIdForPhantomRecords : false})" Mode="Raw" Encode="true" />
+                                    </ExtraParams>
+                                </Edit>
+                            </DirectEvents>
+                        </ext:RowEditing>
                     </Plugins>
                 </ext:GridPanel>
                 <ext:GridPanel runat="server"
@@ -1330,22 +1437,244 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column ID="Column36" runat="server" DataIndex="CHEMICAL_MIX_NUMBER" Text="Mix #" Flex="4" />
-                            <ext:Column ID="Column3" runat="server" DataIndex="SEGMENT1" Text="Item ID" Flex="5" />
-                            <ext:Column runat="server" DataIndex="INV_NAME" Text="Inventory Org" Flex="13" />
-                            <ext:Column ID="Column37" runat="server" DataIndex="SUB_INVENTORY_SECONDARY_NAME" Text="Sub-Inv Name" Flex="10" />
-                            <ext:Column ID="Column38" runat="server" DataIndex="DESCRIPTION" Text="Item" Flex="23" />
+                            <ext:Column ID="Column36" runat="server" DataIndex="CHEMICAL_MIX_NUMBER" Text="Mix #" Flex="4">
+                                <Editor>
+                                    <ext:DropDownField runat="server" Editable="false"
+                                        ID="uxAddInventoryMix"
+                                        Mode="ValueText"
+                                        AllowBlank="false" Width="500">
+                                        <Component>
+                                            <ext:GridPanel runat="server"
+                                                ID="uxAddInventoryMixGrid"
+                                                Layout="HBoxLayout">
+                                                <Store>
+                                                    <ext:Store runat="server"
+                                                        ID="uxAddInventoryMixStore">
+                                                        <Model>
+                                                            <ext:Model ID="Model13" runat="server">
+                                                                <Fields>
+                                                                    <ext:ModelField Name="CHEMICAL_MIX_ID" />
+                                                                    <ext:ModelField Name="CHEMICAL_MIX_NUMBER" />
+                                                                    <ext:ModelField Name="HEADER_ID" />
+                                                                    <ext:ModelField Name="TARGET_AREA" />
+                                                                    <ext:ModelField Name="GALLON_ACRE" />
+                                                                    <ext:ModelField Name="GALLON_STARTING" />
+                                                                    <ext:ModelField Name="GALLON_MIXED" />
+                                                                    <ext:ModelField Name="GALLON_TOTAL" />
+                                                                    <ext:ModelField Name="GALLON_REMAINING" />
+                                                                    <ext:ModelField Name="GALLON_USED" />
+                                                                    <ext:ModelField Name="ACRES_SPRAYED" />
+                                                                    <ext:ModelField Name="STATE" />
+                                                                    <ext:ModelField Name="COUNTY" />
+                                                                </Fields>
+                                                            </ext:Model>
+                                                        </Model>
+                                                    </ext:Store>
+                                                </Store>
+                                                <ColumnModel>
+                                                    <Columns>
+                                                        <ext:Column ID="Column46" runat="server"
+                                                            DataIndex="CHEMICAL_MIX_NUMBER"
+                                                            Text="Mix #" Flex="20" />
+                                                        <ext:Column ID="Column53" runat="server"
+                                                            DataIndex="TARGET_AREA"
+                                                            Text="Target Area" Flex="40" />
+                                                        <ext:Column ID="Column54" runat="server"
+                                                            DataIndex="GALLON_ACRE"
+                                                            Text="Gallons / Acre" Flex="40" />
+                                                    </Columns>
+                                                </ColumnModel>
+                                                <SelectionModel>
+                                                    <ext:RowSelectionModel ID="RowSelectionModel4" runat="server" Mode="Single" />
+                                                </SelectionModel>
+                                                <DirectEvents>
+                                                    <Select OnEvent="deStoreChemicalData">
+                                                        <ExtraParams>
+                                                            <ext:Parameter Name="MixId" Value="#{uxAddInventoryMixGrid}.getSelectionModel().getSelection()[0].data.CHEMICAL_MIX_ID" Mode="Raw" />
+                                                            <ext:Parameter Name="MixNumber" Value="#{uxAddInventoryMixGrid}.getSelectionModel().getSelection()[0].data.CHEMICAL_MIX_NUMBER" Mode="Raw" />
+                                                            <ext:Parameter Name="Type" Value="Add" />
+                                                        </ExtraParams>
+                                                    </Select>
+                                                </DirectEvents>
+                                                <Listeners>
+                                                    <Select Fn="doAddMath" />
+                                                </Listeners>
+                                            </ext:GridPanel>
+                                        </Component>
+                                        <Listeners>
+                                            <Expand Handler="this.picker.setWidth(500)" />
+                                        </Listeners>
+                                    </ext:DropDownField>
+                                </Editor>
+                            </ext:Column>
+                            <ext:Column ID="Column55" runat="server" DataIndex="INV_NAME" Text="Inventory Org" Flex="13">
+                                <Editor>
+                                    <ext:ComboBox runat="server"
+                                        ID="uxAddInventoryRegion"
+                                        DisplayField="INV_NAME"
+                                        ValueField="ORGANIZATION_ID"
+                                        QueryMode="Local"
+                                        TypeAhead="true"
+                                        AllowBlank="false"
+                                        ForceSelection="true">
+                                        <Store>
+                                            <ext:Store runat="server"
+                                                ID="uxAddInventoryRegionStore">
+                                                <Model>
+                                                    <ext:Model ID="Model14" runat="server">
+                                                        <Fields>
+                                                            <ext:ModelField Name="INV_NAME" />
+                                                            <ext:ModelField Name="ORGANIZATION_ID" />
+                                                        </Fields>
+                                                    </ext:Model>
+                                                </Model>
+                                            </ext:Store>
+                                        </Store>
+                                        <DirectEvents>
+                                            <Select OnEvent="deLoadSubinventory">
+                                                <ExtraParams>
+                                                    <ext:Parameter Name="value" Value="records[0].data[this.valueField]" Mode="Raw" />
+                                                </ExtraParams>
+                                            </Select>
+                                        </DirectEvents>
+                                    </ext:ComboBox>
+                                </Editor>
+                            </ext:Column>
+                            <ext:Column ID="Column37" runat="server" DataIndex="SUB_INVENTORY_SECONDARY_NAME" Text="Sub-Inv Name" Flex="10">
+                                <Editor>
+                                    <ext:ComboBox runat="server"
+                                        ID="uxAddInventorySub"
+                                        ValueField="ORG_ID"
+                                        DisplayField="SECONDARY_INV_NAME"
+                                        QueryMode="Local"
+                                        TypeAhead="true"
+                                        AllowBlank="false"
+                                        ForceSelection="true" Width="500">
+                                        <Store>
+                                            <ext:Store runat="server"
+                                                ID="uxAddInventorySubStore">
+                                                <Model>
+                                                    <ext:Model ID="Model15" runat="server">
+                                                        <Fields>
+                                                            <ext:ModelField Name="ORG_ID" />
+                                                            <ext:ModelField Name="SECONDARY_INV_NAME" />
+                                                        </Fields>
+                                                    </ext:Model>
+                                                </Model>
+                                            </ext:Store>
+                                        </Store>
+                                    </ext:ComboBox>
+                                </Editor>
+                            </ext:Column>
+                            <ext:Column ID="Column3" runat="server" DataIndex="SEGMENT1" Text="Item ID" Flex="5">
+                                <Editor>
+                                    <ext:DisplayField runat="server" ID="uxAddInventoryItemSegment" />
+                                </Editor>
+                            </ext:Column>
+                            <ext:Column ID="Column38" runat="server" DataIndex="ITEM_ID" Text="Item" Flex="23">
+                                <Renderer Fn="ItemRenderer" />
+                                <Editor>
+                                    <ext:DropDownField runat="server" Editable="false"
+                                        ID="uxAddInventoryItem"
+                                        Mode="ValueText"
+                                        AllowBlank="false" Width="500">
+                                        <CustomConfig>
+                                            <ext:ConfigItem Name="setValue" Value="SetItemValue" Mode="Raw" />
+                                        </CustomConfig>
+                                        <Component>
+                                            <ext:GridPanel runat="server"
+                                                ID="uxAddInventoryItemGrid" StoreID="uxAddInventoryItemStore">
+                                                <ColumnModel>
+                                                    <Columns>
+                                                        <ext:Column ID="Column56" runat="server"
+                                                            DataIndex="SEGMENT1"
+                                                            Text="Item Id" Flex="20" />
+                                                        <ext:Column ID="Column57" runat="server"
+                                                            DataIndex="DESCRIPTION" Flex="50"
+                                                            Text="Name" />
+                                                        <ext:Column ID="Column58" runat="server"
+                                                            DataIndex="UOM_CODE"
+                                                            Text="Measure" Flex="30" />
+                                                    </Columns>
+                                                </ColumnModel>
+                                                <Plugins>
+                                                    <ext:FilterHeader runat="server" ID="uxAddInventoryItemHeadFilter" Remote="true" />
+                                                </Plugins>
+                                                <BottomBar>
+                                                    <ext:PagingToolbar runat="server" ID="uxAddInventoryItemPaging" />
+                                                </BottomBar>
+                                                <SelectionModel>
+                                                    <ext:RowSelectionModel ID="RowSelectionModel5" runat="server" Mode="Single" />
+                                                </SelectionModel>
+                                                <DirectEvents>
+                                                    <Select OnEvent="deStoreItemGridValue">
+                                                        <ExtraParams>
+                                                            <ext:Parameter Name="ItemId" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.ITEM_ID" Mode="Raw" />
+                                                            <ext:Parameter Name="Description" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.DESCRIPTION" Mode="Raw" />
+                                                            <ext:Parameter Name="Segment1" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.SEGMENT1" Mode="Raw" />
+                                                        </ExtraParams>
+                                                    </Select>
+                                                </DirectEvents>
+                                            </ext:GridPanel>
+                                        </Component>
+                                        <DirectEvents>
+                                            <Change OnEvent="deGetUnitOfMeasure">
+                                                <ExtraParams>
+                                                    <ext:Parameter Name="uomCode" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.UOM_CODE" Mode="Raw" />
+                                                </ExtraParams>
+                                            </Change>
+                                        </DirectEvents>
+                                        <Listeners>
+                                            <Expand Handler="#{uxAddInventoryItemStore}.reload(); this.picker.setWidth(500)" />
+                                        </Listeners>
+                                    </ext:DropDownField>
+                                </Editor>
+                            </ext:Column>
                             <ext:Column ID="Column39" runat="server" DataIndex="RATE" Text="Rate" Flex="5">
                                 <Editor>
-                                    <ext:NumberField runat="server" MinValue="0" />
+                                    <ext:NumberField runat="server"
+                                        ID="uxAddInventoryRate"
+                                        AllowBlank="false" Width="500" AllowDecimals="true">
+                                        <Listeners>
+                                            <Change Fn="doAddMath" />
+                                        </Listeners>
+                                    </ext:NumberField>
                                 </Editor>
                             </ext:Column>
                             <ext:Column runat="server" DataIndex="TOTAL" Text="Total" Flex="5">
                                 <Editor>
-                                    <ext:NumberField runat="server" MinValue="0" />
+                                    <ext:NumberField runat="server"
+                                        ID="uxAddInventoryTotal" Width="500" />
                                 </Editor>
                             </ext:Column>
-                            <ext:Column ID="Column40" runat="server" DataIndex="UNIT_OF_MEASURE" Text="Unit" Flex="10" />
+                            <ext:Column ID="Column40" runat="server" DataIndex="UNIT_OF_MEASURE" Text="Unit" Flex="10">
+                                <Editor>
+                                    <ext:ComboBox runat="server"
+                                        ID="uxAddInventoryMeasure"
+                                        ValueField="UOM_CODE"
+                                        DisplayField="UNIT_OF_MEASURE"
+                                        QueryMode="Local"
+                                        TypeAhead="true"
+                                        AllowBlank="false"
+                                        ForceSelection="true" Width="500">
+                                        <Store>
+                                            <ext:Store runat="server"
+                                                ID="uxAddInventoryMeasureStore">
+                                                <Model>
+                                                    <ext:Model ID="Model16" runat="server">
+                                                        <Fields>
+                                                            <ext:ModelField Name="UOM_CODE" />
+                                                            <ext:ModelField Name="UNIT_OF_MEASURE" />
+                                                            <ext:ModelField Name="UOM_CLASS" />
+                                                            <ext:ModelField Name="BASE_UOM_FLAG" />
+                                                        </Fields>
+                                                    </ext:Model>
+                                                </Model>
+                                            </ext:Store>
+                                        </Store>
+                                    </ext:ComboBox>
+                                </Editor>
+                            </ext:Column>
                             <ext:Column ID="Column41" runat="server" DataIndex="EPA_NUMBER" Text="EPA Number" Flex="10" />
                             <ext:CheckColumn ID="CheckColumn1" runat="server"
                                 DataIndex="CONTRACTOR_SUPPLIED"

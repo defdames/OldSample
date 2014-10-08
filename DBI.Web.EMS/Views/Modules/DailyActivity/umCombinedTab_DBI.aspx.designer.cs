@@ -22,6 +22,24 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.ResourceManager ResourceManager1;
         
         /// <summary>
+        /// uxAddInventoryItemStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxAddInventoryItemStore;
+        
+        /// <summary>
+        /// uxAddInventoryItemModel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Model uxAddInventoryItemModel;
+        
+        /// <summary>
         /// form1 control.
         /// </summary>
         /// <remarks>
@@ -1444,6 +1462,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Column Column27;
         
         /// <summary>
+        /// uxAddChemicalTargetAre control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxAddChemicalTargetAre;
+        
+        /// <summary>
         /// Column28 control.
         /// </summary>
         /// <remarks>
@@ -1451,6 +1478,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Column Column28;
+        
+        /// <summary>
+        /// uxAddChemicalGallonAcre control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberField uxAddChemicalGallonAcre;
         
         /// <summary>
         /// Column29 control.
@@ -1462,6 +1498,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Column Column29;
         
         /// <summary>
+        /// uxAddChemicalGallonStart control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberField uxAddChemicalGallonStart;
+        
+        /// <summary>
         /// Column30 control.
         /// </summary>
         /// <remarks>
@@ -1469,6 +1514,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Column Column30;
+        
+        /// <summary>
+        /// uxAddChemicalGallonMixed control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberField uxAddChemicalGallonMixed;
         
         /// <summary>
         /// Column31 control.
@@ -1480,6 +1534,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Column Column31;
         
         /// <summary>
+        /// uxAddChemicalGallonTotal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField uxAddChemicalGallonTotal;
+        
+        /// <summary>
         /// Column2 control.
         /// </summary>
         /// <remarks>
@@ -1487,6 +1550,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Column Column2;
+        
+        /// <summary>
+        /// uxAddChemicalGallonRemain control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberField uxAddChemicalGallonRemain;
         
         /// <summary>
         /// Column32 control.
@@ -1498,6 +1570,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Column Column32;
         
         /// <summary>
+        /// uxAddChemicalGallonUsed control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField uxAddChemicalGallonUsed;
+        
+        /// <summary>
         /// Column33 control.
         /// </summary>
         /// <remarks>
@@ -1505,6 +1586,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Column Column33;
+        
+        /// <summary>
+        /// uxAddChemicalAcresSprayed control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField uxAddChemicalAcresSprayed;
         
         /// <summary>
         /// Column34 control.
@@ -1570,15 +1660,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Button uxAddChemicalButton;
         
         /// <summary>
-        /// uxEditChemicalButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxEditChemicalButton;
-        
-        /// <summary>
         /// uxDeleteChemicalButton control.
         /// </summary>
         /// <remarks>
@@ -1624,13 +1705,112 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Column Column36;
         
         /// <summary>
-        /// Column3 control.
+        /// uxAddInventoryMix control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column3;
+        protected global::Ext.Net.DropDownField uxAddInventoryMix;
+        
+        /// <summary>
+        /// uxAddInventoryMixGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.GridPanel uxAddInventoryMixGrid;
+        
+        /// <summary>
+        /// uxAddInventoryMixStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxAddInventoryMixStore;
+        
+        /// <summary>
+        /// Model13 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Model Model13;
+        
+        /// <summary>
+        /// Column46 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column Column46;
+        
+        /// <summary>
+        /// Column53 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column Column53;
+        
+        /// <summary>
+        /// Column54 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column Column54;
+        
+        /// <summary>
+        /// RowSelectionModel4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel RowSelectionModel4;
+        
+        /// <summary>
+        /// Column55 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column Column55;
+        
+        /// <summary>
+        /// uxAddInventoryRegion control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ComboBox uxAddInventoryRegion;
+        
+        /// <summary>
+        /// uxAddInventoryRegionStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxAddInventoryRegionStore;
+        
+        /// <summary>
+        /// Model14 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Model Model14;
         
         /// <summary>
         /// Column37 control.
@@ -1642,6 +1822,51 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Column Column37;
         
         /// <summary>
+        /// uxAddInventorySub control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ComboBox uxAddInventorySub;
+        
+        /// <summary>
+        /// uxAddInventorySubStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxAddInventorySubStore;
+        
+        /// <summary>
+        /// Model15 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Model Model15;
+        
+        /// <summary>
+        /// Column3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column Column3;
+        
+        /// <summary>
+        /// uxAddInventoryItemSegment control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField uxAddInventoryItemSegment;
+        
+        /// <summary>
         /// Column38 control.
         /// </summary>
         /// <remarks>
@@ -1649,6 +1874,78 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Column Column38;
+        
+        /// <summary>
+        /// uxAddInventoryItem control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DropDownField uxAddInventoryItem;
+        
+        /// <summary>
+        /// uxAddInventoryItemGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.GridPanel uxAddInventoryItemGrid;
+        
+        /// <summary>
+        /// Column56 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column Column56;
+        
+        /// <summary>
+        /// Column57 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column Column57;
+        
+        /// <summary>
+        /// Column58 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column Column58;
+        
+        /// <summary>
+        /// uxAddInventoryItemHeadFilter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FilterHeader uxAddInventoryItemHeadFilter;
+        
+        /// <summary>
+        /// uxAddInventoryItemPaging control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.PagingToolbar uxAddInventoryItemPaging;
+        
+        /// <summary>
+        /// RowSelectionModel5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel RowSelectionModel5;
         
         /// <summary>
         /// Column39 control.
@@ -1660,6 +1957,24 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Column Column39;
         
         /// <summary>
+        /// uxAddInventoryRate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberField uxAddInventoryRate;
+        
+        /// <summary>
+        /// uxAddInventoryTotal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberField uxAddInventoryTotal;
+        
+        /// <summary>
         /// Column40 control.
         /// </summary>
         /// <remarks>
@@ -1667,6 +1982,33 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Column Column40;
+        
+        /// <summary>
+        /// uxAddInventoryMeasure control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ComboBox uxAddInventoryMeasure;
+        
+        /// <summary>
+        /// uxAddInventoryMeasureStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxAddInventoryMeasureStore;
+        
+        /// <summary>
+        /// Model16 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Model Model16;
         
         /// <summary>
         /// Column41 control.

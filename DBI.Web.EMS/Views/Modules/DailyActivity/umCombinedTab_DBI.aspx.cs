@@ -30,6 +30,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             
             if (!X.IsAjaxRequest)
             {
+                GetChemicalMixDropDown();
+                GetInventoryDropDown();
                 GetHeaderData();
                 GetEmployeeData();
                 GetEquipmentData();
@@ -363,7 +365,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
                 var data = (from c in _context.DAILY_ACTIVITY_CHEMICAL_MIX
                             where c.HEADER_ID == HeaderId
-                            select new { c.CHEMICAL_MIX_ID, c.CHEMICAL_MIX_NUMBER, c.COUNTY, c.STATE, c.TARGET_AREA, c.GALLON_ACRE, c.GALLON_STARTING, c.GALLON_MIXED, c.GALLON_REMAINING, c.ACRES_SPRAYED, TOTAL = c.GALLON_STARTING + c.GALLON_MIXED, USED = c.GALLON_STARTING + c.GALLON_MIXED - c.GALLON_REMAINING }).ToList();
+                            select new ChemicalDetails { CHEMICAL_MIX_ID = c.CHEMICAL_MIX_ID, CHEMICAL_MIX_NUMBER = c.CHEMICAL_MIX_NUMBER, COUNTY = c.COUNTY, STATE = c.STATE, TARGET_AREA = c.TARGET_AREA, GALLON_ACRE = c.GALLON_ACRE, GALLON_STARTING = c.GALLON_STARTING, GALLON_MIXED = c.GALLON_MIXED, GALLON_REMAINING = c.GALLON_REMAINING, ACRES_SPRAYED = c.ACRES_SPRAYED, TOTAL = c.GALLON_STARTING + c.GALLON_MIXED, GALLON_USED = c.GALLON_STARTING + c.GALLON_MIXED - c.GALLON_REMAINING, HEADER_ID = c.HEADER_ID }).OrderBy(x => x.CHEMICAL_MIX_NUMBER).ToList();
                 uxChemicalStore.DataSource = data;
                 uxChemicalStore.DataBind();
             }
@@ -385,7 +387,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             where d.HEADER_ID == HeaderId
                             from j in joined
                             where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
-                            select new InventoryDetails { INVENTORY_ID = d.INVENTORY_ID, ENABLED_FLAG = j.ENABLED_FLAG, ITEM_ID = j.ITEM_ID, ACTIVE = j.ACTIVE, LE = j.LE, SEGMENT1 = j.SEGMENT1, LAST_UPDATE_DATE = j.LAST_UPDATE_DATE, ATTRIBUTE2 = j.ATTRIBUTE2, INV_LOCATION = j.INV_LOCATION, CONTRACTOR_SUPPLIED = (d.CONTRACTOR_SUPPLIED == "Y" ? true : false), TOTAL = d.TOTAL, INV_NAME = j.INV_NAME, CHEMICAL_MIX_ID = d.CHEMICAL_MIX_ID, CHEMICAL_MIX_NUMBER = c.CHEMICAL_MIX_NUMBER, SUB_INVENTORY_SECONDARY_NAME = d.SUB_INVENTORY_SECONDARY_NAME, SUB_INVENTORY_ORG_ID = d.SUB_INVENTORY_ORG_ID, DESCRIPTION = j.DESCRIPTION, RATE = d.RATE, UOM_CODE = u.UOM_CODE, UNIT_OF_MEASURE = u.UNIT_OF_MEASURE, EPA_NUMBER = d.EPA_NUMBER }).ToList();
+                            select new InventoryDetails { INVENTORY_ID = d.INVENTORY_ID, ENABLED_FLAG = j.ENABLED_FLAG, ITEM_ID = j.ITEM_ID, ACTIVE = j.ACTIVE, LE = j.LE, SEGMENT1 = j.SEGMENT1, LAST_UPDATE_DATE = j.LAST_UPDATE_DATE, ATTRIBUTE2 = j.ATTRIBUTE2, INV_LOCATION = j.INV_LOCATION, CONTRACTOR_SUPPLIED = (d.CONTRACTOR_SUPPLIED == "Y" ? true : false), TOTAL = d.TOTAL, INV_NAME = j.INV_NAME, CHEMICAL_MIX_ID = d.CHEMICAL_MIX_ID, CHEMICAL_MIX_NUMBER = c.CHEMICAL_MIX_NUMBER, SUB_INVENTORY_SECONDARY_NAME = d.SUB_INVENTORY_SECONDARY_NAME, SUB_INVENTORY_ORG_ID = d.SUB_INVENTORY_ORG_ID, DESCRIPTION = j.DESCRIPTION, RATE = d.RATE, UOM_CODE = u.UOM_CODE, UNIT_OF_MEASURE = u.UNIT_OF_MEASURE, EPA_DESCRIPTION = d.EPA_NUMBER }).ToList();
                 uxInventoryStore.DataSource = data;
                 uxInventoryStore.DataBind();
             }
@@ -432,26 +434,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Remove weather from db
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void deRemoveWeather(object sender, DirectEventArgs e)
-        {
-            long WeatherId = long.Parse(e.ExtraParams["WeatherId"]);
-            DAILY_ACTIVITY_WEATHER data;
-            using (Entities _context = new Entities())
-            {
-                data = (from d in _context.DAILY_ACTIVITY_WEATHER
-                        where d.WEATHER_ID == WeatherId
-                        select d).Single();
-            }
-            GenericData.Delete<DAILY_ACTIVITY_WEATHER>(data);
-
-            X.Js.Call("parent.App.uxDetailsPanel.reload()");
         }
 
         /// <summary>
@@ -1100,6 +1082,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxAddProductionTaskStore.DataBind();
             }
         }
+
         protected void deSaveProduction(object sender, DirectEventArgs e)
         {
             ChangeRecords<ProductionDetails> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<ProductionDetails>();
@@ -1221,6 +1204,68 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxWeatherStore.CommitChanges();
         }
 
+        protected void deSaveChemical(object sender, DirectEventArgs e)
+        {
+            ChangeRecords<ChemicalDetails> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<ChemicalDetails>();
+
+            foreach (ChemicalDetails item in data.Created)
+            {
+                DAILY_ACTIVITY_CHEMICAL_MIX NewChemical = new DAILY_ACTIVITY_CHEMICAL_MIX();
+                long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+
+                NewChemical.ACRES_SPRAYED = item.ACRES_SPRAYED;
+                NewChemical.COUNTY = item.COUNTY;
+                NewChemical.CREATE_DATE = DateTime.Now;
+                NewChemical.CREATED_BY = User.Identity.Name;
+                NewChemical.GALLON_ACRE = item.GALLON_ACRE;
+                NewChemical.GALLON_MIXED = item.GALLON_MIXED;
+                NewChemical.GALLON_REMAINING = item.GALLON_REMAINING;
+                NewChemical.GALLON_STARTING = item.GALLON_STARTING;
+                NewChemical.HEADER_ID = HeaderId;
+                NewChemical.MODIFIED_BY = User.Identity.Name;
+                NewChemical.MODIFY_DATE = DateTime.Now;
+                NewChemical.STATE = item.STATE;
+                NewChemical.TARGET_AREA = item.TARGET_AREA;
+                using (Entities _context = new Entities())
+                {
+                    NewChemical.CHEMICAL_MIX_NUMBER = _context.DAILY_ACTIVITY_CHEMICAL_MIX.Where(x => x.HEADER_ID == HeaderId).Count() + 1;
+                }
+
+                GenericData.Insert(NewChemical);
+
+                ModelProxy Record = uxChemicalStore.GetByInternalId(item.PhantomID);
+                Record.CreateVariable = true;
+                Record.SetId(NewChemical.CHEMICAL_MIX_ID);
+                Record.Set("CHEMICAL_MIX_NUMBER", NewChemical.CHEMICAL_MIX_NUMBER);
+                Record.Commit();
+            }
+
+            foreach (ChemicalDetails item in data.Updated)
+            {
+                DAILY_ACTIVITY_CHEMICAL_MIX UpdatedChemical;
+
+                using (Entities _context = new Entities())
+                {
+                    UpdatedChemical = _context.DAILY_ACTIVITY_CHEMICAL_MIX.Where(x => x.CHEMICAL_MIX_ID == item.CHEMICAL_MIX_ID).Single();
+                }
+
+                UpdatedChemical.ACRES_SPRAYED = item.ACRES_SPRAYED;
+                UpdatedChemical.COUNTY = item.COUNTY;
+                UpdatedChemical.GALLON_ACRE = item.GALLON_ACRE;
+                UpdatedChemical.GALLON_MIXED = item.GALLON_MIXED;
+                UpdatedChemical.GALLON_REMAINING = item.GALLON_REMAINING;
+                UpdatedChemical.GALLON_STARTING = item.GALLON_STARTING;
+                UpdatedChemical.MODIFIED_BY = User.Identity.Name;
+                UpdatedChemical.MODIFY_DATE = DateTime.Now;
+                UpdatedChemical.STATE = item.STATE;
+                UpdatedChemical.TARGET_AREA = item.TARGET_AREA;
+
+                GenericData.Update(UpdatedChemical);
+            }
+
+            uxChemicalStore.CommitChanges();
+        }
+
         protected void deStoreEquipmentGridValue(object sender, DirectEventArgs e)
         {
             //Set value and text for equipment
@@ -1266,6 +1311,156 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             e.Total = count;
             uxAddEquipmentDropDownStore.DataSource = data;
+        }
+
+        protected void deStoreChemicalData(object sender, DirectEventArgs e)
+        {
+            uxAddInventoryMix.SetValue(e.ExtraParams["MixId"], e.ExtraParams["MixNumber"]);
+            uxAddInventoryMixStore.ClearFilter();
+        }
+
+        /// <summary>
+        /// Updates selection of Items from Add/Edit Forms
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void deStoreItemGridValue(object sender, DirectEventArgs e)
+        {
+            uxAddInventoryItem.SetValue(e.ExtraParams["ItemId"], e.ExtraParams["Description"]);
+            uxAddInventoryItemStore.ClearFilter();
+
+            uxAddInventoryItemSegment.Value = e.ExtraParams["Segment1"];
+        }
+
+        /// <summary>
+        /// Get Chemical Mixes entered on Chemical Mix page
+        /// </summary>
+        protected void GetChemicalMixDropDown()
+        {
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+
+            //Get Chemical mixes for current project
+            using (Entities _context = new Entities())
+            {
+                List<DAILY_ACTIVITY_CHEMICAL_MIX> data = (from d in _context.DAILY_ACTIVITY_CHEMICAL_MIX
+                                                          where d.HEADER_ID == HeaderId
+                                                          select d).ToList();
+                uxAddInventoryMixStore.DataSource = data;
+            }
+        }
+
+        protected void GetInventoryDropDown()
+        {
+            //Get inventory regions from db and set datasource for either add or edit
+            using (Entities _context = new Entities())
+            {
+                string ProjectOrg = GetProjectOrg(long.Parse(Request.QueryString["HeaderId"])).ToString();
+                var data = (from d in _context.INVENTORY_V
+                            where d.LE == ProjectOrg
+                            select new { d.ORGANIZATION_ID, d.INV_NAME }).Distinct().OrderBy(x => x.INV_NAME).ToList();
+
+                uxAddInventoryRegionStore.DataSource = data;
+                uxAddInventoryRegionStore.DataBind();
+            }
+        }
+
+        /// <summary>
+        /// Gets the project org ID of the Header's Project
+        /// </summary>
+        /// <param name="HeaderId"></param>
+        protected long? GetProjectOrg(long HeaderId)
+        {
+            using (Entities _context = new Entities())
+            {
+                long? ProjectId = (from d in _context.DAILY_ACTIVITY_HEADER
+                                   where d.HEADER_ID == HeaderId
+                                   select d.PROJECT_ID).Single();
+                long? OrgId = (from d in _context.PROJECTS_V
+                               where d.PROJECT_ID == ProjectId
+                               select d.ORG_ID).Single();
+                return OrgId;
+            }
+        }
+
+        /// <summary>
+        /// Load SubInventories for selected region
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void deLoadSubinventory(object sender, DirectEventArgs e)
+        {
+            decimal OrgId;
+            OrgId = decimal.Parse(e.ExtraParams["value"]);
+            GetSubInventory(OrgId);
+            uxAddInventoryItem.Clear();
+        }
+
+        protected void GetSubInventory(decimal OrgId)
+        {
+            //Get list of subinventories
+            using (Entities _context = new Entities())
+            {
+                var data = (from s in _context.SUBINVENTORY_V
+                            orderby s.SECONDARY_INV_NAME ascending
+                            where s.ORG_ID == OrgId
+                            select s).ToList();
+
+                //uxAddInventorySub.Clear();
+                //uxAddInventoryItem.Clear();
+                uxAddInventorySubStore.DataSource = data;
+                uxAddInventorySubStore.DataBind();
+            }
+        }
+
+        /// <summary>
+        /// Get List of Inventory Items for OrgId
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void deReadItems(object sender, StoreReadDataEventArgs e)
+        {
+            long OrgId;
+            List<INVENTORY_V> dataIn;
+            OrgId = long.Parse(e.Parameters["OrgId"]);
+            dataIn = INVENTORY_V.GetActiveInventory(OrgId);
+
+            int count;
+
+            //Get paged, filterable list of inventory
+            List<INVENTORY_V> data = GenericData.EnumerableFilterHeader<INVENTORY_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataIn, out count).ToList();
+            uxAddInventoryItemStore.DataSource = data;
+            uxAddInventoryItemStore.DataBind();
+            e.Total = count;
+        }
+
+        protected void deGetUnitOfMeasure(object sender, DirectEventArgs e)
+        {
+            GetUnitOfMeasure(e.ExtraParams["uomCode"]);
+        }
+
+        /// <summary>
+        /// Gets Units of Measure from DB
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void GetUnitOfMeasure(string uomCode)
+        {
+            //Query Db for units of measure based on uom_code
+            using (Entities _context = new Entities())
+            {
+                List<UNIT_OF_MEASURE_V> data;
+                var uomClass = (from u in _context.UNIT_OF_MEASURE_V
+                                where u.UOM_CODE == uomCode
+                                select u.UOM_CLASS).Single().ToString();
+
+                data = (from u in _context.UNIT_OF_MEASURE_V
+                        where u.UOM_CLASS == uomClass
+                        select u).ToList();
+
+                //Set datasource for store add/edit
+                uxAddInventoryMeasureStore.DataSource = data;
+                uxAddInventoryMeasureStore.DataBind();
+            }
         }
 
         [DirectMethod]
@@ -1332,6 +1527,52 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             GenericData.Delete(DeletedWeather);
             uxWeatherGrid.GetView();
+        }
+
+        [DirectMethod]
+        public void dmDeleteChemical(string ChemicalId)
+        {
+            long ChemId = long.Parse(ChemicalId);
+            //check for existing inven
+            DAILY_ACTIVITY_CHEMICAL_MIX data;
+
+
+            //Get record to be deleted.
+            using (Entities _context = new Entities())
+            {
+                data = _context.DAILY_ACTIVITY_CHEMICAL_MIX.Include("DAILY_ACTIVITY_INVENTORY").Where(x => x.CHEMICAL_MIX_ID == ChemId).Single();
+
+            }
+            if (data.DAILY_ACTIVITY_INVENTORY.Count == 0)
+            {
+                //Log Mix #
+                long DeletedMix = data.CHEMICAL_MIX_NUMBER;
+
+                //Delete from db
+                GenericData.Delete<DAILY_ACTIVITY_CHEMICAL_MIX>(data);
+
+                long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+                //Get all records from this header where mix# is greater than the one that was deleted
+                using (Entities _context = new Entities())
+                {
+                    var Updates = (from d in _context.DAILY_ACTIVITY_CHEMICAL_MIX
+                                   where d.CHEMICAL_MIX_NUMBER > DeletedMix && d.HEADER_ID == HeaderId
+                                   select d).ToList();
+
+                    //Loop through and update db
+                    foreach (var ToUpdate in Updates)
+                    {
+                        ToUpdate.CHEMICAL_MIX_NUMBER = ToUpdate.CHEMICAL_MIX_NUMBER - 1;
+                        _context.SaveChanges();
+                    }
+
+                }
+                X.Js.Call("parent.App.uxDetailsPanel.reload()");
+            }
+            else
+            {
+                X.Msg.Alert("Error", "You must first delete the associated inventory entries before deleting this item").Show();
+            }
         }
     }
 }

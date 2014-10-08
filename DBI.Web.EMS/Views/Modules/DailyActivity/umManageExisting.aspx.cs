@@ -1975,4 +1975,48 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         public string TEMP { get; set; }
         public string PhantomID { get; set; }
     }
+
+    public class ChemicalDetails
+    {
+        public long? CHEMICAL_MIX_ID { get; set; }
+        public long? CHEMICAL_MIX_NUMBER { get; set; }
+        public long? HEADER_ID { get; set; }
+        public string TARGET_AREA { get; set; }
+        public decimal? GALLON_ACRE { get; set; }
+        public decimal? GALLON_STARTING { get; set; }
+        public decimal? GALLON_MIXED { get; set; }
+        public decimal? GALLON_REMAINING { get; set; }
+        public decimal? ACRES_SPRAYED { get; set; }
+        public decimal? GALLON_USED { get; set; }
+        public decimal? TOTAL { get; set; }
+        public string STATE { get; set; }
+        public string COUNTY { get; set; }
+        public string PhantomID { get; set; }
+    }
+
+    public class InventoryDetails
+    {
+        public long? INVENTORY_ID { get; set; }
+        public string ENABLED_FLAG { get; set; }
+        public decimal ITEM_ID { get; set; }
+        public string ACTIVE { get; set; }
+        public string LE { get; set; }
+        public string SEGMENT1 { get; set; }
+        public DateTime? LAST_UPDATE_DATE { get; set; }
+        public string ATTRIBUTE2 { get; set; }
+        public long? INV_LOCATION { get; set; }
+        public bool CONTRACTOR_SUPPLIED { get; set; }
+        public decimal? TOTAL { get; set; }
+        public string INV_NAME { get; set; }
+        public long? CHEMICAL_MIX_ID { get; set; }
+        public long CHEMICAL_MIX_NUMBER { get; set; }
+        public string SUB_INVENTORY_SECONDARY_NAME { get; set; }
+        public decimal? SUB_INVENTORY_ORG_ID { get; set; }
+        public string DESCRIPTION { get; set; }
+        public decimal? RATE { get; set; }
+        public string UOM_CODE { get; set; }
+        public string UNIT_OF_MEASURE { get; set; }
+        public string EPA_DESCRIPTION { get; set; }
+        public string PhantomID { get; set; }
+    }
 }
