@@ -598,7 +598,6 @@
                                                     </ExtraParams>
                                                     <EventMask ShowMask="true" />
                                                 </SelectionChange>
-                                                <SelectionChange OnEvent="deCheckAllowSave" />
                                             </DirectEvents>
                                             <Plugins>
                                                 <ext:FilterHeader runat="server" ID="uxProjectFilter" Remote="true" />
@@ -689,7 +688,6 @@
                                     </Store>
                                     <DirectEvents>
                                         <Select OnEvent="deSelectStatus" />
-                                        <Select OnEvent="deCheckAllowSave" />
                                     </DirectEvents>
                                 </ext:ComboBox>
                                 <ext:Label ID="Label14" runat="server" Width="300" />

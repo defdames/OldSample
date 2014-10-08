@@ -6,7 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Ext.Net;
 using DBI.Data;
-using DBI.Core.Security;
+using DBI.Core.Web;
 
 namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 {
@@ -16,10 +16,20 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         {
             if (!X.IsAjaxRequest)
             {
+                if (!BasePage.validateComponentSecurity("SYS.BudgetBidding.Security"))
+                {
+                    X.Redirect("~/Views/uxDefault.aspx");
+                }
+
                 long leOrgID = long.Parse(Request.QueryString["leOrgID"]);
                 long orgID = long.Parse(Request.QueryString["orgID"]);
                 long yearID = long.Parse(Request.QueryString["fiscalYear"]);
                 long verID = long.Parse(Request.QueryString["verID"]);
+
+                if (BB.LaborBurdenRate(leOrgID, yearID) == 0)
+                {
+                    StandardMsgBox("Labor Burden", "Labor burden does not exist for this legal entity and year combination.  All calculations will be based on a labor burden of 0.00.", "INFO");
+                }
 
                 if (BB.IsReadOnly(orgID, yearID, verID) == true)
                 {
@@ -29,11 +39,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 else
                 {
                     uxUpdateAllActuals.Enable();
-                }
-
-                if (BB.LaborBurdenRate(leOrgID, yearID) == 0)
-                {
-                    StandardMsgBox("Labor Burden", "Labor burden does not exist for this legal entity and year combination.  All calculations will be based on a labor burden of 0.00.", "INFO");
                 }
 
                 uxHidPrevYear.Text = BB.CalcPrevYear(yearID, verID).ToString();
@@ -584,11 +589,15 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             LoadJCNumbers();
             UpdateCompareNums(uxCompareOverride.Checked);
             uxProjectFilter.ClearFilter();
+
+            deCheckAllowSave(sender, e);
         }
         protected void deSelectStatus(object sender, DirectEventArgs e)
         {
             long statusID = Convert.ToInt64(uxStatus.Value);
             uxHidStatusID.Text = statusID.ToString();
+
+            deCheckAllowSave(sender, e);
 
             if (statusID == 45)
             {

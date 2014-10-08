@@ -148,7 +148,9 @@
     <Content Include="Resources\Images\wwbnight.png" />
     <Content Include="Resources\Scripts\jquery-2.0.1.js" />
     <Content Include="Resources\Scripts\jquery-2.0.1.min.js" />
+    <Content Include="Views\Modules\BudgetBidding\umAdminMain.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umBlankBudget.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\umBOM.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umBudgetBiddingMain.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umDetailSheet.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umReorderDetailSheets.aspx" />
@@ -263,6 +265,7 @@
     </Content>
     <None Include="Web.APPDEV.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
     <None Include="Web.PCL05.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -270,6 +273,7 @@
     </None>
     <None Include="Web.PROD.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -306,12 +310,26 @@
     <Compile Include="Views\Handlers\SystemUsers.ashx.cs">
       <DependentUpon>SystemUsers.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umAdminMain.aspx.cs">
+      <DependentUpon>umAdminMain.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umAdminMain.aspx.designer.cs">
+      <DependentUpon>umAdminMain.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\BudgetBidding\umBlankBudget.aspx.cs">
       <DependentUpon>umBlankBudget.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Views\Modules\BudgetBidding\umBlankBudget.aspx.designer.cs">
       <DependentUpon>umBlankBudget.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umBOM.aspx.cs">
+      <DependentUpon>umBOM.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umBOM.aspx.designer.cs">
+      <DependentUpon>umBOM.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\BudgetBidding\umBudgetBiddingMain.aspx.cs">
       <DependentUpon>umBudgetBiddingMain.aspx</DependentUpon>
