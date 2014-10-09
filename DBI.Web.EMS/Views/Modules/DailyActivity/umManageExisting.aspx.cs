@@ -578,10 +578,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     double Hours = Math.Truncate((double)item.TRAVEL_TIME);
                     double Minutes = Math.Round(((double)item.TRAVEL_TIME - Hours) * 60);
                     TimeSpan TotalTimeSpan = new TimeSpan(Convert.ToInt32(Hours), Convert.ToInt32(Minutes), 0);
-                    item.TRAVEL_TIME_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
+                    item.TRAVEL_TIME_FORMATTED = DateTime.Now.Date + TotalTimeSpan;
                     Hours = Math.Truncate((double)item.DRIVE_TIME);
                     Minutes = Math.Round(((double)item.DRIVE_TIME - Hours) * 60);
-                    item.DRIVE_TIME_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
+                    item.DRIVE_TIME_FORMATTED = DateTime.Now.Date + TotalTimeSpan;
                     Hours = Math.Truncate((double)item.SHOPTIME_AM);
                     Minutes = Math.Round(((double)item.SHOPTIME_AM - Hours) * 60);
                     item.SHOPTIME_AM_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
@@ -1095,8 +1095,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						new PdfPCell(new Phrase(Data.TIME_IN.ToString("hh\\:mm"), CellFont)),
 						new PdfPCell(new Phrase(Data.TIME_OUT.ToString("hh\\:mm"), CellFont)),
 						new PdfPCell(new Phrase(TotalHours.ToString("hh\\:mm"), CellFont)),
-						new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED, CellFont)),
-						new PdfPCell(new Phrase(Data.DRIVE_TIME_FORMATTED, CellFont)),
+						new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED.ToString(), CellFont)),
+						new PdfPCell(new Phrase(Data.DRIVE_TIME_FORMATTED.ToString(), CellFont)),
 						new PdfPCell(new Phrase(Data.SHOPTIME_AM_FORMATTED, CellFont)),
 						new PdfPCell(new Phrase(Data.SHOPTIME_PM_FORMATTED, CellFont)),
 						new PdfPCell(new Phrase(Data.PER_DIEM.ToString(), CellFont)),
@@ -1112,8 +1112,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						new PdfPCell(new Phrase(Data.TIME_IN.ToString("hh\\:mm"), CellFont)),
 						new PdfPCell(new Phrase(Data.TIME_OUT.ToString("hh\\:mm"), CellFont)),
 						new PdfPCell(new Phrase(TotalHours.ToString("hh\\:mm"), CellFont)),
-						new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED, CellFont)),
-						new PdfPCell(new Phrase(Data.DRIVE_TIME_FORMATTED, CellFont)),
+						new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED.ToString(), CellFont)),
+						new PdfPCell(new Phrase(Data.DRIVE_TIME_FORMATTED.ToString(), CellFont)),
 						new PdfPCell(new Phrase(Data.SHOPTIME_AM_FORMATTED, CellFont)),
 						new PdfPCell(new Phrase(Data.SHOPTIME_PM_FORMATTED, CellFont)),
 						new PdfPCell(new Phrase(Data.PER_DIEM.ToString(), CellFont)),
@@ -1191,7 +1191,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						new PdfPCell(new Phrase(Data.TIME_IN.ToString("hh\\:mm tt"), CellFont)),
 						new PdfPCell(new Phrase(Data.TIME_OUT.ToString("hh\\:mm tt"), CellFont)),
 						new PdfPCell(new Phrase(TotalHours.ToString("hh\\:mm"), CellFont)),
-						new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED, CellFont)),
+						new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED.ToString(), CellFont)),
 						new PdfPCell(new Phrase(Data.PER_DIEM.ToString(), CellFont)),
                         new PdfPCell(new Phrase(Data.LUNCH_LENGTH.ToString(), CellFont)),
 						new PdfPCell(new Phrase(Comments, CellFont))
@@ -1948,9 +1948,85 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         public long? ODOMETER_START { get; set; }
         public long? ODOMETER_END { get; set; }
         public long? PROJECT_ID { get; set; }
-        public long EQUIPMENT_ID { get; set; }
+        public long? EQUIPMENT_ID { get; set; }
         public string NAME { get; set; }
-        public long HEADER_ID { get; set; }
+        public long? HEADER_ID { get; set; }
+        public string PhantomID { get; set; }
     }
 
+    public class ProductionDetails
+    {
+        public long? PRODUCTION_ID { get; set; }
+        public long? PROJECT_ID { get; set; }
+        public string LONG_NAME { get; set; }
+        public string TASK_NUMBER { get; set; }
+        public long TASK_ID { get; set; }
+        public string DESCRIPTION { get; set; }
+        public DateTime? TIME_IN { get; set; }
+        public DateTime? TIME_OUT { get; set; }
+        public string WORK_AREA { get; set; }
+        public string POLE_FROM { get; set; }
+        public string POLE_TO { get; set; }
+        public decimal? ACRES_MILE { get; set; }
+        public decimal? QUANTITY { get; set; }
+        public string PhantomID { get; set; }
+    }
+
+    public class WeatherDetails
+    {
+        public long? WEATHER_ID { get; set; }
+        public long HEADER_ID { get; set; }
+        public DateTime WEATHER_DATE { get; set; }
+        public DateTime WEATHER_TIME { get; set; }
+        public string WIND_DIRECTION { get; set; }
+        public string WIND_VELOCITY { get; set; }
+        public string HUMIDITY { get; set; }
+        public string COMMENTS { get; set; }
+        public string TEMP { get; set; }
+        public string PhantomID { get; set; }
+    }
+
+    public class ChemicalDetails
+    {
+        public long? CHEMICAL_MIX_ID { get; set; }
+        public long? CHEMICAL_MIX_NUMBER { get; set; }
+        public long? HEADER_ID { get; set; }
+        public string TARGET_AREA { get; set; }
+        public decimal? GALLON_ACRE { get; set; }
+        public decimal? GALLON_STARTING { get; set; }
+        public decimal? GALLON_MIXED { get; set; }
+        public decimal? GALLON_REMAINING { get; set; }
+        public decimal? ACRES_SPRAYED { get; set; }
+        public decimal? GALLON_USED { get; set; }
+        public decimal? TOTAL { get; set; }
+        public string STATE { get; set; }
+        public string COUNTY { get; set; }
+        public string PhantomID { get; set; }
+    }
+
+    public class InventoryDetails
+    {
+        public long? INVENTORY_ID { get; set; }
+        public string ENABLED_FLAG { get; set; }
+        public decimal ITEM_ID { get; set; }
+        public string ACTIVE { get; set; }
+        public string LE { get; set; }
+        public string SEGMENT1 { get; set; }
+        public DateTime? LAST_UPDATE_DATE { get; set; }
+        public string ATTRIBUTE2 { get; set; }
+        public long? INV_LOCATION { get; set; }
+        public bool CONTRACTOR_SUPPLIED { get; set; }
+        public decimal? TOTAL { get; set; }
+        public string INV_NAME { get; set; }
+        public long? CHEMICAL_MIX_ID { get; set; }
+        public long? CHEMICAL_MIX_NUMBER { get; set; }
+        public string SUB_INVENTORY_SECONDARY_NAME { get; set; }
+        public decimal? SUB_INVENTORY_ORG_ID { get; set; }
+        public string DESCRIPTION { get; set; }
+        public decimal? RATE { get; set; }
+        public string UOM_CODE { get; set; }
+        public string UNIT_OF_MEASURE { get; set; }
+        public string EPA_DESCRIPTION { get; set; }
+        public string PhantomID { get; set; }
+    }
 }

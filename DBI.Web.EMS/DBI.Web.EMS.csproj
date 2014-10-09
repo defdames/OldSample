@@ -201,6 +201,7 @@
     <Content Include="Views\Modules\CustomerSurveys\umViewCompleted.aspx" />
     <Content Include="Views\Modules\CustomerSurveys\umViewSurvey.aspx" />
     <Content Include="Views\Modules\DailyActivity\ImageLoader\ImageLoader.aspx" />
+    <Content Include="Views\Modules\DailyActivity\test.aspx" />
     <Content Include="Views\Modules\DailyActivity\umAddEditChemical.aspx" />
     <Content Include="Views\Modules\DailyActivity\umAddEditEmployee.aspx" />
     <Content Include="Views\Modules\DailyActivity\umAddEditEquipment.aspx" />
@@ -658,6 +659,13 @@
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\ImageLoader\ImageLoader.aspx.designer.cs">
       <DependentUpon>ImageLoader.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\test.aspx.cs">
+      <DependentUpon>test.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\test.aspx.designer.cs">
+      <DependentUpon>test.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umAddEditChemical.aspx.cs">
       <DependentUpon>umAddEditChemical.aspx</DependentUpon>

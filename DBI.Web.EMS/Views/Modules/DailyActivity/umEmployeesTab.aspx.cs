@@ -136,11 +136,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     double Hours = Math.Truncate((double)item.TRAVEL_TIME);
                     double Minutes = Math.Round(((double)item.TRAVEL_TIME - Hours) * 60);
                     TimeSpan TotalTimeSpan = new TimeSpan(Convert.ToInt32(Hours), Convert.ToInt32(Minutes), 0);
-                    item.TRAVEL_TIME_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
+                    item.TRAVEL_TIME_FORMATTED = DateTime.Now.Date + TotalTimeSpan;
                     Hours = Math.Truncate((double)item.DRIVE_TIME);
                     Minutes = Math.Round(((double)item.DRIVE_TIME - Hours) * 60);
                     TotalTimeSpan = new TimeSpan(Convert.ToInt32(Hours), Convert.ToInt32(Minutes), 0);
-                    item.DRIVE_TIME_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
+                    item.DRIVE_TIME_FORMATTED = DateTime.Now.Date + TotalTimeSpan;
                     Hours = Math.Truncate((double)item.SHOPTIME_AM);
                     Minutes = Math.Round(((double)item.SHOPTIME_AM - Hours) * 60);
                     TotalTimeSpan = new TimeSpan(Convert.ToInt32(Hours), Convert.ToInt32(Minutes), 0);
@@ -234,15 +234,17 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         public long? EQUIPMENT_ID { get; set; }
         public string NAME { get; set; }
         public DateTime TIME_IN { get; set; }
+        public DateTime TIME_IN_TIME { get; set; }
         public DateTime TIME_OUT { get; set; }
+        public DateTime TIME_OUT_TIME { get; set; }
         public decimal? TRAVEL_TIME { get; set; }
-        public string TRAVEL_TIME_FORMATTED { get; set; }
+        public DateTime TRAVEL_TIME_FORMATTED { get; set; }
         public decimal? SHOPTIME_AM { get; set; }
         public string SHOPTIME_AM_FORMATTED { get; set; }
         public decimal? SHOPTIME_PM { get; set; }
         public string SHOPTIME_PM_FORMATTED { get; set; }
         public decimal? DRIVE_TIME { get; set; }
-        public string DRIVE_TIME_FORMATTED { get; set; }
+        public DateTime? DRIVE_TIME_FORMATTED { get; set; }
         public string PER_DIEM { get; set; }
         public string FOREMAN_LICENSE { get; set; }
         public string COMMENTS { get; set; }
@@ -252,5 +254,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         public DateTime? DA_DATE { get; set; }
         public int? STATUS { get; set; }
         public string TOTAL_HOURS { get; set; }
+        public string PhantomID { get; set; }
     }
 }
