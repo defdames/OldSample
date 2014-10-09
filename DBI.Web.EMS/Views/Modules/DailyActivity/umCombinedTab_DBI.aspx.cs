@@ -387,7 +387,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             where d.HEADER_ID == HeaderId
                             from j in joined
                             where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
-                            select new InventoryDetails { INVENTORY_ID = d.INVENTORY_ID, ENABLED_FLAG = j.ENABLED_FLAG, ITEM_ID = j.ITEM_ID, ACTIVE = j.ACTIVE, LE = j.LE, SEGMENT1 = j.SEGMENT1, LAST_UPDATE_DATE = j.LAST_UPDATE_DATE, ATTRIBUTE2 = j.ATTRIBUTE2, INV_LOCATION = j.INV_LOCATION, CONTRACTOR_SUPPLIED = (d.CONTRACTOR_SUPPLIED == "Y" ? true : false), TOTAL = d.TOTAL, INV_NAME = j.INV_NAME, CHEMICAL_MIX_ID = d.CHEMICAL_MIX_ID, CHEMICAL_MIX_NUMBER = c.CHEMICAL_MIX_NUMBER, SUB_INVENTORY_SECONDARY_NAME = d.SUB_INVENTORY_SECONDARY_NAME, SUB_INVENTORY_ORG_ID = d.SUB_INVENTORY_ORG_ID, DESCRIPTION = j.DESCRIPTION, RATE = d.RATE, UOM_CODE = u.UOM_CODE, UNIT_OF_MEASURE = u.UNIT_OF_MEASURE, EPA_DESCRIPTION = d.EPA_NUMBER }).ToList();
+                            select new InventoryDetails { INVENTORY_ID = d.INVENTORY_ID, ENABLED_FLAG = j.ENABLED_FLAG, ITEM_ID = j.ITEM_ID, ACTIVE = j.ACTIVE, LE = j.LE, SEGMENT1 = j.SEGMENT1, LAST_UPDATE_DATE = j.LAST_UPDATE_DATE, ATTRIBUTE2 = j.ATTRIBUTE2, INV_LOCATION = j.INV_LOCATION, CONTRACTOR_SUPPLIED = (d.CONTRACTOR_SUPPLIED == "Y" ? true : false), TOTAL = d.TOTAL, INV_NAME = j.INV_NAME, CHEMICAL_MIX_ID = d.CHEMICAL_MIX_ID, CHEMICAL_MIX_NUMBER = c.CHEMICAL_MIX_NUMBER, SUB_INVENTORY_SECONDARY_NAME = d.SUB_INVENTORY_SECONDARY_NAME, SUB_INVENTORY_ORG_ID = d.SUB_INVENTORY_ORG_ID, DESCRIPTION = j.DESCRIPTION, RATE = d.RATE, UOM_CODE = u.UOM_CODE, UNIT_OF_MEASURE = u.UNIT_OF_MEASURE, EPA_DESCRIPTION = (d.EPA_NUMBER == null ? j.EPA_DESCRIPTION : d.EPA_NUMBER) }).ToList();
                 uxInventoryStore.DataSource = data;
                 uxInventoryStore.DataBind();
             }
@@ -433,75 +433,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         uxContractImage.ImageUrl = string.Format("ImageLoader/ImageLoader.aspx?headerId={0}&type=contract", HeaderId);
                     }
                 }
-            }
-        }
-
-        /// <summary>
-        /// Remove inventory entry from DB
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void deRemoveInventory(object sender, DirectEventArgs e)
-        {
-            long InventoryId = long.Parse(e.ExtraParams["InventoryId"]);
-            DAILY_ACTIVITY_INVENTORY data;
-
-            //Get record to be deleted
-            using (Entities _context = new Entities())
-            {
-                data = (from d in _context.DAILY_ACTIVITY_INVENTORY
-                        where d.INVENTORY_ID == InventoryId
-                        select d).Single();
-            }
-
-            //Delete from DB
-            GenericData.Delete<DAILY_ACTIVITY_INVENTORY>(data);
-
-            X.Js.Call("parent.App.uxDetailsPanel.reload()");
-        }
-
-        protected void deRemoveChemical(object sender, DirectEventArgs e)
-        {
-            long ChemicalId = long.Parse(e.ExtraParams["ChemicalId"]);
-            //check for existing inven
-            DAILY_ACTIVITY_CHEMICAL_MIX data;
-
-
-            //Get record to be deleted.
-            using (Entities _context = new Entities())
-            {
-                data = _context.DAILY_ACTIVITY_CHEMICAL_MIX.Include("DAILY_ACTIVITY_INVENTORY").Where(x => x.CHEMICAL_MIX_ID == ChemicalId).Single();
-
-            }
-            if (data.DAILY_ACTIVITY_INVENTORY.Count == 0)
-            {
-                //Log Mix #
-                long DeletedMix = data.CHEMICAL_MIX_NUMBER;
-
-                //Delete from db
-                GenericData.Delete<DAILY_ACTIVITY_CHEMICAL_MIX>(data);
-
-                long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
-                //Get all records from this header where mix# is greater than the one that was deleted
-                using (Entities _context = new Entities())
-                {
-                    var Updates = (from d in _context.DAILY_ACTIVITY_CHEMICAL_MIX
-                                   where d.CHEMICAL_MIX_NUMBER > DeletedMix && d.HEADER_ID == HeaderId
-                                   select d).ToList();
-
-                    //Loop through and update db
-                    foreach (var ToUpdate in Updates)
-                    {
-                        ToUpdate.CHEMICAL_MIX_NUMBER = ToUpdate.CHEMICAL_MIX_NUMBER - 1;
-                        _context.SaveChanges();
-                    }
-
-                }
-                X.Js.Call("parent.App.uxDetailPanel.reload(); parent.App.uxPlaceholderWindow.close()");
-            }
-            else
-            {
-                X.Msg.Alert("Error", "You must first delete the associated inventory entries before deleting this item").Show();
             }
         }
 
@@ -904,6 +835,19 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        protected void deSetTimeInDate(object sender, DirectEventArgs e)
+        {
+            using (Entities _context = new Entities())
+            {
+                long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+                DateTime? HeaderDate = _context.DAILY_ACTIVITY_HEADER.Where(x => x.HEADER_ID == HeaderId ).Select(x => x.DA_DATE).Single();
+                if (HeaderDate != null)
+                {
+                    uxEmployeeTimeInDate.SelectedDate = (DateTime)HeaderDate;
+                }
+            }
+        }
+
         protected void deSaveEmployee(object sender, DirectEventArgs e)
         {
             ChangeRecords<EmployeeDetails> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<EmployeeDetails>();
@@ -1266,6 +1210,103 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxChemicalStore.CommitChanges();
         }
 
+        protected void deSaveInventory(object sender, DirectEventArgs e)
+        {
+            ChangeRecords<InventoryDetails> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<InventoryDetails>();
+
+            foreach (InventoryDetails item in data.Created)
+            {
+                DAILY_ACTIVITY_INVENTORY NewInventory = new DAILY_ACTIVITY_INVENTORY();
+                NewInventory.CHEMICAL_MIX_ID = item.CHEMICAL_MIX_ID;
+                NewInventory.CONTRACTOR_SUPPLIED = "N";
+                NewInventory.CREATE_DATE = DateTime.Now;
+                NewInventory.CREATED_BY = User.Identity.Name;
+                NewInventory.EPA_NUMBER = item.EPA_DESCRIPTION;
+                NewInventory.HEADER_ID = long.Parse(Request.QueryString["HeaderId"]);
+                NewInventory.ITEM_ID = item.ITEM_ID;
+                NewInventory.MODIFIED_BY = User.Identity.Name;
+                NewInventory.MODIFY_DATE = DateTime.Now;
+                NewInventory.RATE = item.RATE;
+                NewInventory.SUB_INVENTORY_ORG_ID = item.SUB_INVENTORY_ORG_ID;
+                NewInventory.SUB_INVENTORY_SECONDARY_NAME = e.ExtraParams["SecondaryInvName"];
+                NewInventory.TOTAL = item.TOTAL;
+                NewInventory.UNIT_OF_MEASURE = item.UOM_CODE;
+
+                long ChemicalMixNumber;
+                string unit;
+                string InvName;
+                long SubOrg = long.Parse(item.SUB_INVENTORY_ORG_ID.ToString());
+                INVENTORY_V Item;
+                using (Entities _context = new Entities())
+                {
+                    ChemicalMixNumber = _context.DAILY_ACTIVITY_CHEMICAL_MIX.Where(x => x.CHEMICAL_MIX_ID == item.CHEMICAL_MIX_ID).Select(x => x.CHEMICAL_MIX_NUMBER).Single();
+                    Item = _context.INVENTORY_V.Where(x => x.ITEM_ID == item.ITEM_ID && x.ORGANIZATION_ID == item.SUB_INVENTORY_ORG_ID).Single();
+                    unit = _context.UNIT_OF_MEASURE_V.Where(x => x.UOM_CODE == item.UOM_CODE).Select(x => x.UNIT_OF_MEASURE).Single();
+                    InvName = _context.INVENTORY_V.Where(x => x.ORGANIZATION_ID == SubOrg).Select(x => x.INV_NAME).Distinct().Single();
+                }
+                GenericData.Insert<DAILY_ACTIVITY_INVENTORY>(NewInventory);
+
+                ModelProxy Record = uxInventoryStore.GetByInternalId(item.PhantomID);
+                Record.CreateVariable = true;
+                Record.SetId(NewInventory.INVENTORY_ID);
+                Record.Set("CHEMICAL_MIX_NUMBER", ChemicalMixNumber);
+                Record.Set("SEGMENT1", Item.SEGMENT1);
+                Record.Set("DESCRIPTION", Item.DESCRIPTION);
+                Record.Set("UNIT_OF_MEASURE", unit);
+                Record.Set("INV_NAME", InvName);
+                Record.Commit();
+
+            }
+
+            foreach (InventoryDetails item in data.Updated)
+            {
+                DAILY_ACTIVITY_INVENTORY UpdatedInventory;
+
+                using (Entities _context = new Entities())
+                {
+                    UpdatedInventory = _context.DAILY_ACTIVITY_INVENTORY.Where(x => x.INVENTORY_ID == item.INVENTORY_ID).Single();
+                }
+
+                UpdatedInventory.CHEMICAL_MIX_ID = item.CHEMICAL_MIX_ID;
+                UpdatedInventory.CONTRACTOR_SUPPLIED = (item.CONTRACTOR_SUPPLIED == true ? "Y" : "N");
+                UpdatedInventory.EPA_NUMBER = item.EPA_DESCRIPTION;
+                UpdatedInventory.ITEM_ID = item.ITEM_ID;
+                UpdatedInventory.MODIFIED_BY = User.Identity.Name;
+                UpdatedInventory.MODIFY_DATE = DateTime.Now;
+                UpdatedInventory.RATE = item.RATE;
+                UpdatedInventory.SUB_INVENTORY_ORG_ID = item.SUB_INVENTORY_ORG_ID;
+                UpdatedInventory.SUB_INVENTORY_SECONDARY_NAME = item.SUB_INVENTORY_SECONDARY_NAME;
+                UpdatedInventory.TOTAL = item.TOTAL;
+                UpdatedInventory.UNIT_OF_MEASURE = item.UNIT_OF_MEASURE;
+
+                long ChemicalMixNumber;
+                string uomCode;
+                INVENTORY_V Item;
+                string unit;
+                string InvName;
+                long SubOrg = long.Parse(item.SUB_INVENTORY_ORG_ID.ToString());
+                using (Entities _context = new Entities())
+                {
+                    ChemicalMixNumber = _context.DAILY_ACTIVITY_CHEMICAL_MIX.Where(x => x.CHEMICAL_MIX_ID == item.CHEMICAL_MIX_ID).Select(x => x.CHEMICAL_MIX_NUMBER).Single();
+                    Item = _context.INVENTORY_V.Where(x => x.ITEM_ID == item.ITEM_ID && x.ORGANIZATION_ID == item.SUB_INVENTORY_ORG_ID).Single();
+                    unit = _context.UNIT_OF_MEASURE_V.Where(x => x.UOM_CODE == item.UOM_CODE).Select(x => x.UNIT_OF_MEASURE).Single();
+                    InvName = _context.INVENTORY_V.Where(x => x.ORGANIZATION_ID == SubOrg).Select(x => x.INV_NAME).Distinct().Single();
+                }
+                GenericData.Update(UpdatedInventory);
+
+                ModelProxy Record = uxInventoryStore.GetById(item.INVENTORY_ID);
+                Record.CreateVariable = true;
+                Record.Set("CHEMICAL_MIX_NUMBER", ChemicalMixNumber);
+                Record.Set("SEGMENT1", Item.SEGMENT1);
+                Record.Set("DESCRIPTION", Item.DESCRIPTION);
+                Record.Set("UNIT_OF_MEASURE", unit);
+                Record.Set("INV_NAME", InvName);
+                Record.Commit();
+            }
+
+            uxInventoryStore.CommitChanges();
+        }
+
         protected void deStoreEquipmentGridValue(object sender, DirectEventArgs e)
         {
             //Set value and text for equipment
@@ -1389,10 +1430,24 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deLoadSubinventory(object sender, DirectEventArgs e)
         {
-            decimal OrgId;
-            OrgId = decimal.Parse(e.ExtraParams["value"]);
-            GetSubInventory(OrgId);
-            uxAddInventoryItem.Clear();
+            if ((sender is Ext.Net.RowEditing && int.Parse(e.ExtraParams["InventoryId"]) != 0) || sender is Ext.Net.ComboBox)
+            {
+                decimal OrgId;
+                OrgId = decimal.Parse(e.ExtraParams["value"]);
+                GetSubInventory(OrgId);
+            }
+
+            if (sender is Ext.Net.RowEditing && int.Parse(e.ExtraParams["InventoryId"]) != 0)
+            {
+                //uxAddInventorySub.SetRawValue(e.ExtraParams["SubName"]);
+                uxAddInventorySub.SelectedItems.Add(new Ext.Net.ListItem(e.ExtraParams["SubName"], e.ExtraParams["SubName"]));
+                uxAddInventorySub.UpdateSelectedItems();
+
+                GetUnitOfMeasure(e.ExtraParams["uom"]);
+
+                uxAddInventoryMeasure.SelectedItems.Add(new Ext.Net.ListItem(e.ExtraParams["uom"], e.ExtraParams["uom"]));
+                uxAddInventoryMeasure.UpdateSelectedItems();
+            }
         }
 
         protected void GetSubInventory(decimal OrgId)
@@ -1460,6 +1515,42 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 //Set datasource for store add/edit
                 uxAddInventoryMeasureStore.DataSource = data;
                 uxAddInventoryMeasureStore.DataBind();
+            }
+        }
+
+        protected void ValidateDateTime(object sender, RemoteValidationEventArgs e)
+        {
+            DateTime? StartDate = uxEmployeeTimeInDate.SelectedDate;
+            DateTime? EndDate = uxEmployeeTimeOutDate.SelectedDate;
+            DateTime? CombinedStart = null;
+            DateTime? CombinedEnd = null;
+            if (StartDate != DateTime.MinValue && EndDate != DateTime.MinValue)
+            {
+                DateTime Start = (DateTime)StartDate;
+                DateTime End = (DateTime)EndDate;
+                CombinedStart = Start.Date + uxEmployeeTimeInTime.SelectedTime;
+                CombinedEnd = End.Date + uxEmployeeTimeOutTime.SelectedTime;
+            }
+            if (CombinedStart > CombinedEnd || StartDate != DateTime.MinValue || EndDate != DateTime.MinValue)
+            {
+                e.Success = false;
+                e.ErrorMessage = "End Date and Time must be later than Start Date and Time";
+                uxEmployeeTimeInDate.MarkInvalid();
+                uxEmployeeTimeOutDate.MarkInvalid();
+                uxEmployeeTimeInTime.MarkInvalid();
+                uxEmployeeTimeOutTime.MarkInvalid();
+            }
+            else
+            {
+                e.Success = true;
+                uxEmployeeTimeInDate.ClearInvalid();
+                uxEmployeeTimeInDate.MarkAsValid();
+                uxEmployeeTimeOutDate.ClearInvalid();
+                uxEmployeeTimeOutDate.MarkAsValid();
+                uxEmployeeTimeInTime.ClearInvalid();
+                uxEmployeeTimeInTime.MarkAsValid();
+                uxEmployeeTimeOutTime.ClearInvalid();
+                uxEmployeeTimeOutTime.MarkAsValid();
             }
         }
 
@@ -1573,6 +1664,19 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 X.Msg.Alert("Error", "You must first delete the associated inventory entries before deleting this item").Show();
             }
+        }
+
+        [DirectMethod]
+        public void dmDeleteInventory(string InventoryId)
+        {
+            DAILY_ACTIVITY_INVENTORY DeletedInventory;
+            long Inventory = long.Parse(InventoryId);
+            using (Entities _context = new Entities())
+            {
+                DeletedInventory = _context.DAILY_ACTIVITY_INVENTORY.Where(x => x.INVENTORY_ID == Inventory).Single();
+            }
+            GenericData.Delete(DeletedInventory);
+            uxInventoryGrid.GetView();
         }
     }
 }

@@ -2019,7 +2019,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         public decimal? TOTAL { get; set; }
         public string INV_NAME { get; set; }
         public long? CHEMICAL_MIX_ID { get; set; }
-        public long CHEMICAL_MIX_NUMBER { get; set; }
+        public long? CHEMICAL_MIX_NUMBER { get; set; }
         public string SUB_INVENTORY_SECONDARY_NAME { get; set; }
         public decimal? SUB_INVENTORY_ORG_ID { get; set; }
         public string DESCRIPTION { get; set; }

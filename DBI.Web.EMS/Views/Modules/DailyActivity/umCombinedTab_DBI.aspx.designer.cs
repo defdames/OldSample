@@ -724,6 +724,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.DateColumn DateColumn1;
         
         /// <summary>
+        /// uxEmployeeTimeInTime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TimeField uxEmployeeTimeInTime;
+        
+        /// <summary>
         /// DateColumn3 control.
         /// </summary>
         /// <remarks>
@@ -749,6 +758,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.DateColumn DateColumn4;
+        
+        /// <summary>
+        /// uxEmployeeTimeOutTime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TimeField uxEmployeeTimeOutTime;
         
         /// <summary>
         /// Column4 control.
@@ -2045,15 +2063,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Button uxAddInventoryButton;
-        
-        /// <summary>
-        /// uxEditInventoryButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxEditInventoryButton;
         
         /// <summary>
         /// uxDeleteInventoryButton control.

@@ -69,6 +69,14 @@
             Ext.net.DropDownField.prototype.setValue.call(this, value, text);
         };
 
+        var SetInventoryMixValue = function (value, text) {
+            if (!text && !!value) {
+                text = InventoryChemicalRenderer(value);
+            }
+
+            Ext.net.DropDownField.prototype.setValue.call(this, value, text);
+        };
+
         var showButtons = function () {
             App.uxSaveFooterButton.show();
             App.uxSaveHeaderButton.show();
@@ -123,6 +131,34 @@
                 return App.uxInventoryGrid.getSelectionModel().getSelection()[0].data.DESCRIPTION;
             }
             return record.record.data.DESCRIPTION;
+        };
+
+        var InventoryChemicalRenderer = function (value, record) {
+            if (!record) {
+                return App.uxInventoryGrid.getSelectionModel().getSelection()[0].data.CHEMICAL_MIX_NUMBER;
+            }
+            return record.record.data.CHEMICAL_MIX_NUMBER;
+        };
+
+        var RegionRenderer = function (value, record) {
+            if (!record) {
+                return App.uxInventoryGrid.getSelectionModel().getSelection()[0].data.INV_NAME;
+            }
+            return record.record.data.INV_NAME;
+        };
+
+        var SubRenderer = function (value, record) {
+            if (!record) {
+                return App.uxInventoryGrid.getSelectionModel().getSelection()[0].data.SUB_INVENTORY_SECONDARY_NAME;
+            }
+            return record.record.data.SUB_INVENTORY_SECONDARY_NAME;
+        };
+
+        var UnitRenderer = function (value, record) {
+            if (!record) {
+                return App.uxInventoryGrid.getSelectionModel().getSelection()[0].data.UNIT_OF_MEASURE;
+            }
+            return record.record.data.UNIT_OF_MEASURE;
         };
 
         var deleteEmployee = function () {
@@ -180,6 +216,18 @@
             });
         };
 
+        var deleteInventory = function () {
+            var InventoryRecord = App.uxInventoryGrid.getSelectionModel().getSelection();
+
+            Ext.Msg.confirm('Really Delete?', 'Do you really want to delete this inventory entry?', function (e) {
+                if (e == 'yes') {
+                    App.uxInventoryStore.remove(InventoryRecord);
+                    App.direct.dmDeleteInventory(InventoryRecord[0].data.INVENTORY_ID);
+                }
+            });
+        };
+
+
         var doAddMath = function () {
             var gallonStart = parseInt(App.uxAddInventoryMixGrid.getSelectionModel().getSelection()[0].data.GALLON_STARTING);
             var gallonMixed = parseInt(App.uxAddInventoryMixGrid.getSelectionModel().getSelection()[0].data.GALLON_MIXED);
@@ -190,6 +238,30 @@
             var acresSprayed = gallonsUsed / gallonAcre;
             var rate = parseInt(App.uxAddInventoryRate.value);
             App.uxAddInventoryTotal.setValue(rate * acresSprayed);
+        };
+
+        var dateTimeValidator = function () {
+            var StartDate = new Date(App.uxEmployeeTimeInDate.value);
+            var StartTime = new Date(App.uxEmployeeTimeInTime.value);
+            var EndDate = new Date(App.uxEmployeeTimeOutDate.value);
+            var EndTime = new Date(App.uxEmployeeTimeOutTime.value);
+            var StartDateTime = new Date(StartDate.getFullYear(), StartDate.getMonth(), StartDate.getDate(), StartTime.getHours(), StartTime.getMinutes(), StartTime.getSeconds(), StartTime.getMilliseconds());
+            var EndDateTime = new Date(EndDate.getFullYear(), EndDate.getMonth(), EndDate.getDate(), EndTime.getHours(), EndTime.getMinutes(), EndTime.getSeconds(), EndTime.getMilliseconds());
+
+            if (StartDateTime < EndDateTime) {
+                return true;
+                App.uxEmployeeTimeInDate.clearInvalid();
+                App.uxEmployeeTimeInTime.clearInvalid();
+                App.uxEmployeeTimeOutDate.clearInvalid();
+                App.uxEmployeeTimeOutTime.clearInvalid();
+                App.uxEmployeeTimeInDate.markAsValid();
+                App.uxEmployeeTimeInTime.markAsValid();
+                App.uxEmployeeTimeOutDate.markAsValid();
+                App.uxEmployeeTimeOutTime.markAsValid();
+            }
+            else {
+                return "Start Date/Time must be earlier than End Date/Time";
+            }
         };
     </script>
 </head>
@@ -699,22 +771,30 @@
                             </ext:Column>
                             <ext:DateColumn ID="DateColumn2" runat="server" DataIndex="TIME_IN" Text="Time In" Flex="8" Format="M/d/yyyy">
                                 <Editor>
-                                    <ext:DateField runat="server" ID="uxEmployeeTimeInDate" AllowBlank="false" InvalidCls="allowBlank" />
+                                    <ext:DateField runat="server" ID="uxEmployeeTimeInDate" AllowBlank="false" InvalidCls="allowBlank" ReadOnly="true">
+                                        <Validator Fn="dateTimeValidator" />
+                                    </ext:DateField>
                                 </Editor>
                             </ext:DateColumn>
                             <ext:DateColumn ID="DateColumn1" runat="server" DataIndex="TIME_IN_TIME" Text="Time In" Flex="8" Format="h:mm">
                                 <Editor>
-                                    <ext:TimeField runat="server" AllowBlank="false" InvalidCls="allowBlank" />
+                                    <ext:TimeField ID="uxEmployeeTimeInTime" runat="server" AllowBlank="false" InvalidCls="allowBlank" SelectedTime="09:00">
+                                        <Validator Fn="dateTimeValidator" />
+                                    </ext:TimeField>
                                 </Editor>
                             </ext:DateColumn>
                             <ext:DateColumn ID="DateColumn3" runat="server" DataIndex="TIME_OUT" Text="Time Out" Flex="8" Format="M/d/yyyy">
                                 <Editor>
-                                    <ext:DateField ID="uxEmployeeTimeOutDate" runat="server" AllowBlank="false" InvalidCls="allowBlank" />
+                                    <ext:DateField ID="uxEmployeeTimeOutDate" runat="server" AllowBlank="false" InvalidCls="allowBlank">
+                                        <Validator Fn="dateTimeValidator" />
+                                    </ext:DateField>
                                 </Editor>
                             </ext:DateColumn>
                             <ext:DateColumn ID="DateColumn4" runat="server" DataIndex="TIME_OUT_TIME" Text="Time Out" Flex="8" Format="h:mm">
                                 <Editor>
-                                    <ext:TimeField runat="server" AllowBlank="false" InvalidCls="allowBlank" />
+                                    <ext:TimeField runat="server" ID="uxEmployeeTimeOutTime" AllowBlank="false" InvalidCls="allowBlank" SelectedTime="09:00">
+                                        <Validator Fn="dateTimeValidator" />
+                                    </ext:TimeField>
                                 </Editor>
                             </ext:DateColumn>
                             <ext:Column ID="Column4" runat="server" DataIndex="TOTAL_HOURS" Text="Total Hours" Flex="7" />
@@ -781,6 +861,7 @@
                                     </ExtraParams>
                                     <EventMask ShowMask="true" />
                                 </Edit>
+                                <BeforeEdit OnEvent="deSetTimeInDate" />
                             </DirectEvents>
                         </ext:RowEditing>
                     </Plugins>
@@ -1417,18 +1498,22 @@
                         <ext:Store runat="server"
                             ID="uxInventoryStore">
                             <Model>
-                                <ext:Model ID="Model6" runat="server" Name="Inventory">
+                                <ext:Model ID="Model6" runat="server" Name="Inventory" IDProperty="INVENTORY_ID" ClientIdProperty="PhantomId">
                                     <Fields>
-                                        <ext:ModelField Name="INVENTORY_ID" />
+                                        <ext:ModelField Name="INVENTORY_ID" Type="Int" />
                                         <ext:ModelField Name="CHEMICAL_MIX_NUMBER" />
+                                        <ext:ModelField Name="CHEMICAL_MIX_ID" />
                                         <ext:ModelField Name="SEGMENT1" />
                                         <ext:ModelField Name="INV_NAME" />
+                                        <ext:ModelField Name="ITEM_ID" />
                                         <ext:ModelField Name="SUB_INVENTORY_SECONDARY_NAME" />
+                                        <ext:ModelField Name="SUB_INVENTORY_ORG_ID" />
                                         <ext:ModelField Name="DESCRIPTION" />
                                         <ext:ModelField Name="RATE" />
                                         <ext:ModelField Name="TOTAL" />
                                         <ext:ModelField Name="UNIT_OF_MEASURE" />
-                                        <ext:ModelField Name="EPA_NUMBER" />
+                                        <ext:ModelField Name="UOM_CODE" />
+                                        <ext:ModelField Name="EPA_DESCRIPTION" />
                                         <ext:ModelField Name="CONTRACTOR_SUPPLIED" Type="Boolean" />
                                     </Fields>
                                 </ext:Model>
@@ -1437,12 +1522,16 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column ID="Column36" runat="server" DataIndex="CHEMICAL_MIX_NUMBER" Text="Mix #" Flex="4">
+                            <ext:Column ID="Column36" runat="server" DataIndex="CHEMICAL_MIX_ID" Text="Mix #" Flex="4">
+                                <Renderer Fn="InventoryChemicalRenderer" />
                                 <Editor>
                                     <ext:DropDownField runat="server" Editable="false"
                                         ID="uxAddInventoryMix"
                                         Mode="ValueText"
-                                        AllowBlank="false" Width="500">
+                                        AllowBlank="false" InvalidCls="allowBlank" Width="500">
+                                        <CustomConfig>
+                                            <ext:ConfigItem Name="setValue" Value="SetInventoryMixValue" Mode="Raw" />
+                                        </CustomConfig>
                                         <Component>
                                             <ext:GridPanel runat="server"
                                                 ID="uxAddInventoryMixGrid"
@@ -1507,7 +1596,8 @@
                                     </ext:DropDownField>
                                 </Editor>
                             </ext:Column>
-                            <ext:Column ID="Column55" runat="server" DataIndex="INV_NAME" Text="Inventory Org" Flex="13">
+                            <ext:Column ID="Column55" runat="server" DataIndex="SUB_INVENTORY_ORG_ID" Text="Inventory Org" Flex="13">
+                                <Renderer Fn="RegionRenderer" />
                                 <Editor>
                                     <ext:ComboBox runat="server"
                                         ID="uxAddInventoryRegion"
@@ -1515,7 +1605,7 @@
                                         ValueField="ORGANIZATION_ID"
                                         QueryMode="Local"
                                         TypeAhead="true"
-                                        AllowBlank="false"
+                                        AllowBlank="false" InvalidCls="allowBlank"
                                         ForceSelection="true">
                                         <Store>
                                             <ext:Store runat="server"
@@ -1544,11 +1634,11 @@
                                 <Editor>
                                     <ext:ComboBox runat="server"
                                         ID="uxAddInventorySub"
-                                        ValueField="ORG_ID"
+                                        ValueField="SECONDARY_INV_NAME"
                                         DisplayField="SECONDARY_INV_NAME"
                                         QueryMode="Local"
                                         TypeAhead="true"
-                                        AllowBlank="false"
+                                        AllowBlank="false" InvalidCls="allowBlank"
                                         ForceSelection="true" Width="500">
                                         <Store>
                                             <ext:Store runat="server"
@@ -1556,7 +1646,6 @@
                                                 <Model>
                                                     <ext:Model ID="Model15" runat="server">
                                                         <Fields>
-                                                            <ext:ModelField Name="ORG_ID" />
                                                             <ext:ModelField Name="SECONDARY_INV_NAME" />
                                                         </Fields>
                                                     </ext:Model>
@@ -1577,7 +1666,7 @@
                                     <ext:DropDownField runat="server" Editable="false"
                                         ID="uxAddInventoryItem"
                                         Mode="ValueText"
-                                        AllowBlank="false" Width="500">
+                                        AllowBlank="false" Width="500" InvalidCls="allowBlank">
                                         <CustomConfig>
                                             <ext:ConfigItem Name="setValue" Value="SetItemValue" Mode="Raw" />
                                         </CustomConfig>
@@ -1634,7 +1723,7 @@
                                 <Editor>
                                     <ext:NumberField runat="server"
                                         ID="uxAddInventoryRate"
-                                        AllowBlank="false" Width="500" AllowDecimals="true">
+                                        AllowBlank="false" InvalidCls="allowBlank" Width="500" AllowDecimals="true">
                                         <Listeners>
                                             <Change Fn="doAddMath" />
                                         </Listeners>
@@ -1644,10 +1733,11 @@
                             <ext:Column runat="server" DataIndex="TOTAL" Text="Total" Flex="5">
                                 <Editor>
                                     <ext:NumberField runat="server"
-                                        ID="uxAddInventoryTotal" Width="500" />
+                                        ID="uxAddInventoryTotal" AllowBlank="false" InvalidCls="allowBlank" Width="500" />
                                 </Editor>
                             </ext:Column>
-                            <ext:Column ID="Column40" runat="server" DataIndex="UNIT_OF_MEASURE" Text="Unit" Flex="10">
+                            <ext:Column ID="Column40" runat="server" DataIndex="UOM_CODE" Text="Unit" Flex="10">
+                                <Renderer Fn="UnitRenderer" />
                                 <Editor>
                                     <ext:ComboBox runat="server"
                                         ID="uxAddInventoryMeasure"
@@ -1655,7 +1745,7 @@
                                         DisplayField="UNIT_OF_MEASURE"
                                         QueryMode="Local"
                                         TypeAhead="true"
-                                        AllowBlank="false"
+                                        AllowBlank="false" InvalidCls="allowBlank"
                                         ForceSelection="true" Width="500">
                                         <Store>
                                             <ext:Store runat="server"
@@ -1675,7 +1765,11 @@
                                     </ext:ComboBox>
                                 </Editor>
                             </ext:Column>
-                            <ext:Column ID="Column41" runat="server" DataIndex="EPA_NUMBER" Text="EPA Number" Flex="10" />
+                            <ext:Column ID="Column41" runat="server" DataIndex="EPA_DESCRIPTION" Text="EPA Number" Flex="10">
+                                <Editor>
+                                    <ext:TextField runat="server" AllowBlank="false" InvalidCls="allowBlank" />
+                                </Editor>
+                            </ext:Column>
                             <ext:CheckColumn ID="CheckColumn1" runat="server"
                                 DataIndex="CONTRACTOR_SUPPLIED"
                                 Text="Customer Material" Flex="15" Editable="true" />
@@ -1689,29 +1783,36 @@
                                         <Click Handler="#{uxInventoryStore}.insert(0, new Inventory())" />
                                     </Listeners>
                                 </ext:Button>
-                                <ext:Button ID="uxEditInventoryButton" runat="server" Text="Edit" Icon="ApplicationEdit" Disabled="true">
-                                    <Listeners>
-                                        <Click Handler="parent.App.direct.dmLoadInventoryWindow_DBI('Edit', App.uxHeaderField.value, App.uxInventoryGrid.getSelectionModel().getSelection()[0].data.INVENTORY_ID)" />
-                                    </Listeners>
-                                </ext:Button>
                                 <ext:Button ID="uxDeleteInventoryButton" runat="server" Text="Delete" Icon="ApplicationDelete" Disabled="true">
-                                    <DirectEvents>
-                                        <Click OnEvent="deRemoveInventory">
-                                            <Confirmation ConfirmRequest="true" Title="Really Delete?" Message="Do you really want to delete?" />
-                                            <ExtraParams>
-                                                <ext:Parameter Name="InventoryId" Value="#{uxInventoryGrid}.getSelectionModel().getSelection()[0].data.INVENTORY_ID" Mode="Raw" />
-                                            </ExtraParams>
-                                        </Click>
-                                    </DirectEvents>
+                                    <Listeners>
+                                        <Click Fn="deleteInventory" />
+                                    </Listeners>
                                 </ext:Button>
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
                     <Listeners>
-                        <Select Handler="#{uxEditInventoryButton}.enable(); #{uxDeleteInventoryButton}.enable()" />
+                        <Select Handler="#{uxDeleteInventoryButton}.enable()" />
                     </Listeners>
                     <Plugins>
-                        <ext:RowEditing runat="server" ClicksToEdit="1" AutoCancel="false" />
+                        <ext:RowEditing runat="server" ClicksToEdit="1" AutoCancel="false">
+                            <DirectEvents>
+                                <Edit OnEvent="deSaveInventory" Before="return #{uxInventoryStore}.isDirty()">
+                                    <ExtraParams>
+                                        <ext:Parameter Name="SecondaryInvName" Value="#{uxAddInventorySub}.getRawValue()" Mode="Raw" />
+                                        <ext:Parameter Name="data" Value="#{uxInventoryStore}.getChangedData({skipIdForPhantomRecords : false})" Mode="Raw" Encode="true" />
+                                    </ExtraParams>
+                                </Edit>
+                                <BeforeEdit OnEvent="deLoadSubinventory">
+                                    <ExtraParams>
+                                        <ext:Parameter Name="value" Value="#{uxAddInventoryRegion}.value" Mode="Raw" />
+                                        <ext:Parameter Name="InventoryId" Value="#{uxInventoryGrid}.getSelectionModel().getSelection()[0].data.INVENTORY_ID" Mode="Raw" />
+                                        <ext:Parameter Name="SubName" Value="#{uxInventoryGrid}.getSelectionModel().getSelection()[0].data.SUB_INVENTORY_SECONDARY_NAME" Mode="Raw" />
+                                        <ext:Parameter Name="uom" Value="#{uxInventoryGrid}.getSelectionModel().getSelection()[0].data.UOM_CODE" Mode="Raw" />
+                                    </ExtraParams>
+                                </BeforeEdit>
+                            </DirectEvents>
+                        </ext:RowEditing>
                     </Plugins>
                 </ext:GridPanel>
                 <ext:FormPanel runat="server" ID="uxFooterPanel" Padding="10" BodyPadding="5" MaxWidth="1200">
