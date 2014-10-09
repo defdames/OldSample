@@ -6,10 +6,9 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Microsoft.Reporting.WebForms;
 
-
 namespace DBI.Web.EMS.Views.Modules.BudgetBidding.Reports
 {
-    public partial class WebForm1 : System.Web.UI.Page
+    public partial class umRepOrgSum : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -17,8 +16,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding.Reports
             {
                 if (!Page.IsPostBack)
                 {
-
-
                     string orgName = Request.QueryString["orgName"];
                     long orgID = Convert.ToInt64(Request.QueryString["orgID"]);
                     long yearID = Convert.ToInt64(Request.QueryString["yearID"]);
@@ -88,17 +85,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding.Reports
 
         protected void Page_Init(object sender, EventArgs e)
         {
-            //ReportViewer1.ProcessingMode = ProcessingMode.Local;
-
-            //LocalReport localReport = ReportViewer1.LocalReport;
-
             
-        }
-
-        
-
-        
+        }     
     }
-
-    //public static DataTable GetReportData( )
 }

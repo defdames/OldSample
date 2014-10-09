@@ -10,7 +10,7 @@
 namespace DBI.Web.EMS.Views.Modules.BudgetBidding.Reports {
     
     
-    public partial class WebForm1 {
+    public partial class umRepOrgLiab {
         
         /// <summary>
         /// form1 control.
