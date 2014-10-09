@@ -1057,6 +1057,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Column Column51;
         
         /// <summary>
+        /// uxEquipmentUnitsStart control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberField uxEquipmentUnitsStart;
+        
+        /// <summary>
         /// Column52 control.
         /// </summary>
         /// <remarks>
@@ -1064,6 +1073,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Column Column52;
+        
+        /// <summary>
+        /// uxEquipmentUnitsEnd control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberField uxEquipmentUnitsEnd;
         
         /// <summary>
         /// uxEquipmentToolbar control.

@@ -263,6 +263,34 @@
                 return "Start Date/Time must be earlier than End Date/Time";
             }
         };
+
+        Ext.apply(Ext.form.VTypes, {
+            numberrange: function (val, field) {
+                if (!val) {
+                    return;
+                }
+
+                if (field.startNumberField && (!field.numberRangeMax || (val != field.numberRangeMax))) {
+                    var start = Ext.getCmp(field.startNumberField);
+
+                    if (start) {
+                        start.setMaxValue(val);
+                        field.numberRangeMax = val;
+                        start.validate();
+                    }
+                } else if (field.endNumberField && (!field.numberRangeMin || (val != field.numberRangeMin))) {
+                    var end = Ext.getCmp(field.endNumberField);
+
+                    if (end) {
+                        end.setMinValue(val);
+                        field.numberRangeMin = val;
+                        end.validate();
+                    }
+                }
+
+                return true;
+            }
+        });
     </script>
 </head>
 <body>
@@ -1020,14 +1048,14 @@
                                 DataIndex="ODOMETER_START"
                                 Text="Starting Units" Flex="10">
                                 <Editor>
-                                    <ext:NumberField runat="server" MinValue="0" />
+                                    <ext:NumberField runat="server" MinValue="0" ID="uxEquipmentUnitsStart" InvalidCls="allowBlank" Vtype="numberrange" EndNumberField="uxEquipmentUnitsEnd" />
                                 </Editor>
                             </ext:Column>
                             <ext:Column ID="Column52" runat="server"
                                 DataIndex="ODOMETER_END"
                                 Text="Ending Units" Flex="10">
                                 <Editor>
-                                    <ext:NumberField runat="server" MinValue="0" />
+                                    <ext:NumberField runat="server" MinValue="0" ID="uxEquipmentUnitsEnd" Vtype="numberrange" StartNumberField="uxEquipmentUnitsStart" InvalidCls="allowBlank" />
                                 </Editor>
                             </ext:Column>
                         </Columns>
