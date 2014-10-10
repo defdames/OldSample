@@ -800,7 +800,7 @@ namespace DBI.Data
                         {
                             _validAccounts.AddRange(AccountListValidByOrganizationID(context, _budget.ORGANIZATION_ID));
                             _budgetDetail.AddRange(BudgetDetailByBudgetID(context, _budget.ORG_BUDGET_ID).ToList());
-                            _accountComments.AddRange(context.OVERHEAD_ACCOUNT_COMMENT.Where(x => x.ORG_BUDGET_ID == _budget.ORG_BUDGET_ID).ToList());
+                            _accountComments.AddRange(context.OVERHEAD_ACCOUNT_COMMENT.Where(x => x.ORG_BUDGET_ID == _budget.ORG_BUDGET_ID));
                             _orgBudgets.Add(_budget);
                         }
                   }
@@ -2025,115 +2025,111 @@ namespace DBI.Data
                 _headerPdfTable.Rows.Add(Row);
                 _document.Add(_headerPdfTable);
 
-                //if (printNotes)
-                //{
+                if (printNotes)
+                {
 
-                //        _document.NewPage();
+                    // Budget notes will always exist count, but it's possible they are null or have no lenght.
 
+                    HR.ORGANIZATION _organizationInfo = new HR.ORGANIZATION();
+                    string _budgetDescription = "";
 
-                //        //Header Table with Columns
-                //        PdfPTable _commentsPDFTable = new PdfPTable(2);
-                //        _commentsPDFTable.WidthPercentage = 100;
-                //        int[] intWidth = { 25, 75 };
-                //        _commentsPDFTable.SetWidths(intWidth);
-                //        _commentsPDFTable.HeaderRows = 2;
+                    foreach (OVERHEAD_ORG_BUDGETS _budget in _dataIn.OVERHEAD_ORG_BUDGETS)
+                    {
+                        //Return Org Info
+                        _organizationInfo = HR.Organization(_budget.ORGANIZATION_ID);
 
-                //        Cells = new PdfPCell[]{
-                //             new PdfPCell(new Phrase("Overhead Budget / " + _title[0], TotalCellFont )),
-                //             new PdfPCell(new Phrase("Account Notes",TotalCellFont))
-                //           };
+                        _budgetDescription = OVERHEAD_BUDGET_TYPE.GetDescriptionByTypeId(_budget.OVERHEAD_BUDGET_TYPE_ID);
 
-                //        foreach (PdfPCell _cell in Cells)
-                //        {
-                //            _cell.BackgroundColor = new Color(230, 230, 230);
-                //            _cell.HorizontalAlignment = PdfCell.ALIGN_CENTER;
-                //        }
+                        //Return a list of account comments
+                        List<OVERHEAD_ACCOUNT_COMMENT> _accountLevelComments = _dataIn.OVERHEAD_ACCOUNT_COMMENT.Where(x => x.ORG_BUDGET_ID == _budget.ORG_BUDGET_ID).ToList();
 
-                //        Row = new PdfPRow(Cells);
-                //        _commentsPDFTable.Rows.Add(Row);
+                        if (_budget.COMMENTS != null || _accountLevelComments.Count() > 0)
+                        {
 
-                //        Cells = new PdfPCell[]{
-                //             new PdfPCell(new Phrase(_title[1] + " / " + _title[2], TotalCellFont )),
-                //             new PdfPCell(new Phrase(""))
-                //         };
+                            _document.NewPage();
 
-                //        foreach (PdfPCell _cell in Cells)
-                //        {
-                //            _cell.BackgroundColor = new Color(230, 230, 230);
-                //            _cell.HorizontalAlignment = PdfCell.ALIGN_CENTER;
-                //        }
+                            //Overall Budget Notes
+                            PdfPTable _budgetNotes = new PdfPTable(1);
+                            _budgetNotes.WidthPercentage = 100;
+                            int[] _budgetNotesWidth = { 100 };
+                            _budgetNotes.SetWidths(_budgetNotesWidth);
+                            _budgetNotes.HeaderRows = 1;   
 
+                            Cells = new PdfPCell[]{
+                                                new PdfPCell(new Phrase("Overhead Budget Notes / " + _organizationInfo.ORGANIZATION_NAME + " / " + _budget.FISCAL_YEAR + " / " + _budgetDescription, TotalCellFont ))
+                                                              };
 
-                //        Row = new PdfPRow(Cells);
-                //        _commentsPDFTable.Rows.Add(Row);
+                            foreach (PdfPCell _cell in Cells)
+                            {
+                                _cell.BackgroundColor = new Color(230, 230, 230);
+                                _cell.HorizontalAlignment = PdfCell.ALIGN_LEFT;
+                            }
 
+                            Row = new PdfPRow(Cells);
+                            _budgetNotes.Rows.Add(Row);
 
-                //        foreach (OVERHEAD_ACCOUNT_COMMENT _comment in _dataIn.OVERHEAD_ACCOUNT_COMMENT)
-                //        {
-                //            if (_comment.COMMENTS.Length > 0)
-                //            {
-                //                Phrase _accountPhase = new Phrase();
-                //                _accountPhase.Add(new Chunk(_row.ACCOUNT_DESCRIPTION, CellFont));
-                //                _accountPhase.Add(new Chunk(" " + _row.ACCOUNT_DESCRIPTION2, CellFont));
+                            if (_budget.COMMENTS != null)
+                            {
+                                Cells = new PdfPCell[]{
+                                                new PdfPCell(new Phrase(_budget.COMMENTS,TotalCellFont))
+                                                              };
+                            }
+                            else
+                            {
+                                Cells = new PdfPCell[]{
+                                                new PdfPCell(new Phrase("Account Level Notes Only",TotalCellFont))
+                                                              };
+                            }
 
-
-                //                Cells = new PdfPCell[]{
-                //                        new PdfPCell(_accountPhase),
-                //                        new PdfPCell(new Phrase(_row.ACCOUNT_NOTES,TotalCellFont))
-                //                                             };
-
-
-                //                Row = new PdfPRow(Cells);
-                //                _commentsPDFTable.Rows.Add(Row);
-                //            }
-
-                //        }
+                            Row = new PdfPRow(Cells);
+                            _budgetNotes.Rows.Add(Row);
 
 
-                //        _document.Add(_commentsPDFTable);
+                            _document.Add(_budgetNotes);
 
-                //        _document.Add(NewLine);
-                //        _document.Add(NewLine);
-
-
-                //        if (_budgetDetail.COMMENTS.Length > 0)
-                //        {
-
-                //            //Overall Budget Notes
-                //            PdfPTable _budgetNotes = new PdfPTable(1);
-                //            _budgetNotes.WidthPercentage = 100;
-                //            int[] _budgetNotesWidth = { 100 };
-                //            _budgetNotes.SetWidths(_budgetNotesWidth);
-                //            _budgetNotes.HeaderRows = 1;
-
-                //            Cells = new PdfPCell[]{
-                //             new PdfPCell(new Phrase("Overhead Budget Notes / " + _title[0] + " / " + _title[1] + " / " + _title[2], TotalCellFont ))
-                //           };
-
-                //            foreach (PdfPCell _cell in Cells)
-                //            {
-                //                _cell.BackgroundColor = new Color(230, 230, 230);
-                //                _cell.HorizontalAlignment = PdfCell.ALIGN_LEFT;
-                //            }
-
-                //            Row = new PdfPRow(Cells);
-                //            _budgetNotes.Rows.Add(Row);
+                            _document.Add(NewLine);
+                        }
 
 
-                //            Cells = new PdfPCell[]{
-                //             new PdfPCell(new Phrase(_budgetDetail.COMMENTS,TotalCellFont))
-                //                                };
+                        foreach(OVERHEAD_ACCOUNT_COMMENT _comment in _accountLevelComments)
+                        {
+                            if (_comment.COMMENTS != null)
+                            {
 
-                //            Row = new PdfPRow(Cells);
-                //            _budgetNotes.Rows.Add(Row);
+                                //Header Table with Columns
+                                PdfPTable _commentsPDFTable = new PdfPTable(2);
+                                _commentsPDFTable.WidthPercentage = 100;
+                                int[] intWidth = { 25, 75 };
+                                _commentsPDFTable.SetWidths(intWidth);
+
+                                //We need the description for the account
+                                GL_ACCOUNTS_V _accountInfo = GL_ACCOUNTS_V.AccountInformation((long)_comment.CODE_COMBINATION_ID);
 
 
-                //            _document.Add(_budgetNotes);
+                                Phrase _accountPhase = new Phrase();
+                                _accountPhase.Add(new Chunk(_accountInfo.SEGMENT5_DESC, CellFont));
+                                _accountPhase.Add(new Chunk(" (" + _accountInfo.SEGMENT1 + "." + _accountInfo.SEGMENT2 + "." + _accountInfo.SEGMENT3 + "." + _accountInfo.SEGMENT4 + ")", CellFont));
 
-                //        }
+                                Cells = new PdfPCell[]{
+                                                            new PdfPCell(_accountPhase),
+                                                            new PdfPCell(new Phrase(_comment.COMMENTS,TotalCellFont))
+                                                                                 };
+
+                                Row = new PdfPRow(Cells);
+                                _commentsPDFTable.Rows.Add(Row);
 
 
-                //}
+                                _document.Add(_commentsPDFTable);
+
+                            }
+                        }
+
+
+                       
+
+                    }
+
+                }
 
 
                 ExportWriter.CloseStream = false;

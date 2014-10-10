@@ -520,7 +520,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 }
 
                 OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW_V1 _data = new OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW_V1();
-                _data = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByBudgetID(_context, _budgetid, hideBlankLines: uxHideBlankLinesCheckbox.Checked, collapseAccountLines: uxCollapseAccountTotals.Checked);
+                _data = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByBudgetID(_context, _budgetid, hideBlankLines: uxHideBlankLinesCheckbox.Checked, collapseAccountLines: uxCollapseAccountTotals.Checked,printView:true);
 
                 MemoryStream PdfStream = OVERHEAD_BUDGET_FORECAST.GenerateReport(_context, _description, _fiscal_year, _data, uxPrintNote.Checked);
 
