@@ -19,10 +19,10 @@ namespace DBI.Mobile.EMS.Controllers
             if (id == "production")
             {
                 Version ver = new Version();
-                ver.number = "1.0.R140718";
+                ver.number = "1.0.T141010";
                 ver.mandatory = true;
                 ver.install_url = "itms-services://?action=download-manifest&url=https://emsmobile.dbiservices.com/iems/iEMS.plist";
-                ver.descriptionText = "Changed wording on inventory screen to Customer Material for DBI Projects";
+                ver.descriptionText = "Added EPA numbers from inventory and support for IOS 8.0";
 
                 RootObject root = new RootObject();
                 root.version = ver;

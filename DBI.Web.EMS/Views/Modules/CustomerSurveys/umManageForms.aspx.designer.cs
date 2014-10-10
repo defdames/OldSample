@@ -427,6 +427,33 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.Model Model5;
         
         /// <summary>
+        /// uxCopyFormType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ComboBox uxCopyFormType;
+        
+        /// <summary>
+        /// uxCopyFormTypeStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxCopyFormTypeStore;
+        
+        /// <summary>
+        /// Model7 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Model Model7;
+        
+        /// <summary>
         /// uxCopyFormSubmit control.
         /// </summary>
         /// <remarks>

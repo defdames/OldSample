@@ -292,7 +292,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         uxApproveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
                         uxPostActivityButton.Disabled = true;
                         uxMarkAsPostedButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted");
-                        uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
+                        uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
                         uxDeactivate.Value = "Deactivate";
                         uxInactiveActivityButton.Text = "Set Inactive";
                         uxApproveActivityButton.Text = "Approve";
@@ -302,7 +302,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         uxInactiveActivityButton.Text = "Set Inactive";
                         uxPostActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
                         uxMarkAsPostedButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted");
-                        uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
+                        uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
                         uxDeactivate.Value = "Deactivate";
 
                         if (validateComponentSecurity("SYS.DailyActivity.Post") && validateComponentSecurity("SYS.DailyActivity.Approve"))
@@ -329,7 +329,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                         uxInactiveActivityButton.Text = "Activate";
                         uxDeactivate.Value = "Activate";
-                        uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.View");
+                        uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
                         break;
 
                 }

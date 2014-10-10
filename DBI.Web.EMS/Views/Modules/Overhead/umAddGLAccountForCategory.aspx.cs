@@ -21,7 +21,6 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 {
                     X.Redirect("~/Views/uxDefault.aspx");
                 }
-
             }
         }
 

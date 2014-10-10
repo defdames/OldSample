@@ -50,6 +50,36 @@
                 <ext:FormPanel ID="FormPanel1" runat="server" Header="false" BodyPadding="10" Flex="1" DefaultButton="uxAddBudgetType"
                     Margins="5 5 5 5" Region="Center">
                     <Items>
+                              <ext:FieldContainer ID="FieldContainer2" 
+                        runat="server"
+                        LabelStyle="font-weight:bold;padding:0;"
+                        Layout="HBoxLayout">
+                        <Items>
+                            <ext:ComboBox runat="server" ID="uxFiscalYear" Editable="true" TypeAhead="true"
+                                FieldLabel="Fiscal Year" AnchorHorizontal="55%" DisplayField="ID_NAME"
+                                ValueField="ID_NAME" TriggerAction="All" 
+                                MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1" >
+                                <Store>
+                                    <ext:Store runat="server" ID="uxFiscalYearsStore" OnReadData="deLoadFiscalYears" AutoLoad="false" AutoDataBind="true" >
+                                        <Proxy>
+                                            <ext:PageProxy />
+                                        </Proxy>
+                                        <Model>
+                                            <ext:Model ID="Model1" runat="server" IDProperty="ID_NAME">
+                                                <Fields>
+                                                    <ext:ModelField Name="ID_NAME" />
+                                                </Fields>
+                                            </ext:Model>
+                                        </Model>
+                                    </ext:Store>
+                                </Store>
+                                <Listeners>
+                                    <Select Handler="#{uxPeriodName}.enable();" />
+                                </Listeners>
+                            </ext:ComboBox>
+
+                        </Items>
+                    </ext:FieldContainer>
                         <ext:FieldContainer ID="FieldContainer1"
                             runat="server"
                             LabelStyle="font-weight:bold;padding:0;"
@@ -57,10 +87,10 @@
                             <Items>
                                 <ext:ComboBox runat="server" ID="uxPeriodName" Editable="true" TypeAhead="true"
                                     FieldLabel="Select a Period" AnchorHorizontal="55%" DisplayField="ID_NAME"
-                                    ValueField="ID" TriggerAction="All"
+                                    ValueField="ID" TriggerAction="All" Disabled="true"
                                     MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;" Flex="1">
                                     <Store>
-                                        <ext:Store runat="server" ID="uxPeriodNameStore" OnReadData="deLoadPeriodNames" AutoLoad="true" AutoDataBind="true">
+                                        <ext:Store runat="server" ID="uxPeriodNameStore" OnReadData="deLoadPeriodNames" AutoLoad="false" AutoDataBind="true">
                                             <Proxy>
                                                 <ext:PageProxy />
                                             </Proxy>

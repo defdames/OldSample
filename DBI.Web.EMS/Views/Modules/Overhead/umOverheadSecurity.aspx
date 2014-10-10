@@ -12,9 +12,7 @@
     <form id="form1" runat="server">
         <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout" Namespace="App" IDMode="Explicit">
             <Items>
-                <ext:Panel runat="server" Layout="AccordionLayout" Width="250" Region="West" Collapsible="true" ID="uxAccordingPanel">
-                    <Items>
-                        <ext:TreePanel
+                <ext:TreePanel
                     ID="uxOrganizationTreePanel"
                     runat="server"
                     Title="Bussiness Units"
@@ -23,15 +21,18 @@
                     SingleExpand="true"
                     Lines="false"
                     UseArrows="true"
-                    Scroll="Vertical"
-                    >
+                    Width="250"
+                    Scroll="Vertical" Region="West"
+                    Padding="5">
                     <Store>
                         <ext:TreeStore ID="uxOrganizationTreeStore" runat="server" OnReadData="deLoadLegalEntities">
                             <Proxy>
                                 <ext:PageProxy></ext:PageProxy>
                             </Proxy>
                             <DirectEvents>
-                                <BeforeLoad><EventMask ShowMask="true"></EventMask></BeforeLoad>
+                                <BeforeLoad>
+                                    <EventMask ShowMask="true"></EventMask>
+                                </BeforeLoad>
                             </DirectEvents>
                         </ext:TreeStore>
                     </Store>
@@ -41,7 +42,8 @@
                     <SelectionModel>
                         <ext:TreeSelectionModel ID="TreeSelectionModel1" runat="server" Mode="Single" AllowDeselect="true">
                             <DirectEvents>
-                                <Select OnEvent="deSelectNode" ><EventMask ShowMask="true"></EventMask>
+                                <Select OnEvent="deSelectNode">
+                                    <EventMask ShowMask="true"></EventMask>
                                     <ExtraParams>
                                         <ext:Parameter Mode="Raw" Value="record.data.text" Name="ORGANIZATION_NAME"></ext:Parameter>
                                     </ExtraParams>
@@ -49,42 +51,19 @@
                             </DirectEvents>
                         </ext:TreeSelectionModel>
                     </SelectionModel>
-                       <View>
+                    <View>
                         <ext:TreeView ID="TreeView1" runat="server" LoadMask="true">
                         </ext:TreeView>
                     </View>
                 </ext:TreePanel>
 
-                        <ext:MenuPanel ID="uxSystem"
-                            runat="server"
-                            Title="System Maintenance"
-                            Icon="Database" Hidden="true">
-                            <Menu ID="Menu2" runat="server">
-                                <Items>
-                                    <ext:MenuItem Text="Import Actuals" Icon="PageAttach">
-                                        <Listeners>
-                                            <Click Handler="#{uxImportActuals}.show();"></Click>
-                                        </Listeners>
-                                    </ext:MenuItem>
-                                    <ext:MenuItem Text="Export to Oracle" Disabled="true" Icon="PageCopy" />
-                                    <ext:MenuItem Text="Create Fiscal Period" Disabled="true" />
-                                </Items>
-                            </Menu>
-                        </ext:MenuPanel>
-                    </Items>
-                </ext:Panel>
-
-
-
-
-
-                <ext:TabPanel runat="server" DeferredRender="true" Region="Center" ID="uxCenterTabPanel" Padding="5" >
+                <ext:TabPanel runat="server" DeferredRender="true" Region="Center" ID="uxCenterTabPanel" Padding="5">
                     <Items>
                         <ext:Panel runat="server" Title="Dashboard" Html="This is for a future release that allows a dashboard view for the system admin. Uncompleted budgets, notifications etc.">
                         </ext:Panel>
                     </Items>
                 </ext:TabPanel>
-                
+
             </Items>
         </ext:Viewport>
 

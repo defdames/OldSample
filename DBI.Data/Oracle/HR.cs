@@ -75,7 +75,7 @@ namespace DBI.Data
 
                 using (Entities _context = new Entities())
                 {
-                    string sql = @"SELECT              c.organization_id_child ORGANIZATION_ID,
+                    string sql = @"select    c.organization_id_child ORGANIZATION_ID,
                         c.d_child_name ORGANIZATION_NAME,
                         level as HIER_LEVEL,
                         haou.type,
@@ -151,10 +151,28 @@ namespace DBI.Data
         public static List<HR.ORGANIZATION_V1> OverheadOrganizationStatusByHierarchy(long hierarchyId, long organizationId)
         {
                     List<HR.ORGANIZATION_V1> _data = ActiveOrganizationsByHierarchy(hierarchyId, organizationId);
-                    foreach (var view in _data)
+                    List<SYS_ORG_PROFILE_OPTIONS> _odata = new List<SYS_ORG_PROFILE_OPTIONS>();
+
+
+                    SYS_PROFILE_OPTIONS _pOption = SYS_PROFILE_OPTIONS.ProfileOption("OverheadBudgetOrganization");
+                     using (Entities _context = new Entities())
                     {
-                        view.ORGANIZATION_STATUS = (SYS_ORG_PROFILE_OPTIONS.OrganizationProfileOption("OverheadBudgetOrganization", view.ORGANIZATION_ID) == "Y" ? "Active" : "Inactive");
+                        _odata = _context.SYS_ORG_PROFILE_OPTIONS.Where(x => x.PROFILE_OPTION_ID == _pOption.PROFILE_OPTION_ID).ToList();
                     }
+                   
+                    foreach (HR.ORGANIZATION_V1 _item in _data)
+                    { 
+                        SYS_ORG_PROFILE_OPTIONS _option = _odata.Where(x => x.ORGANIZATION_ID == _item.ORGANIZATION_ID).SingleOrDefault();
+                        if (_option != null)
+                        {
+                            _item.ORGANIZATION_STATUS = (_option.PROFILE_VALUE == "Y") ? "Active" : "InActive";
+                        }
+                        else
+                        {
+                            _item.ORGANIZATION_STATUS = "InActive";
+                        }
+                    }
+
                     return _data;
         }
 

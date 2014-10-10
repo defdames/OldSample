@@ -16,6 +16,11 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!validateComponentSecurity("SYS.CustomerSurveys.ManageForms"))
+            {
+                X.Redirect("~/Views/uxDefault.aspx");
+
+            }
             if (!X.IsAjaxRequest || !IsPostBack)
             {
                 uxAddFormCatStore.Reload();
@@ -658,6 +663,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             Form.CATEGORY_ID = decimal.Parse(uxCopyFormCategory.Value.ToString());
             Form.CREATE_DATE = DateTime.Now;
             Form.MODIFY_DATE = DateTime.Now;
+            Form.TYPE_ID = decimal.Parse(uxCopyFormType.Value.ToString());
             Form.MODIFIED_BY = User.Identity.Name;
             Form.CREATED_BY = User.Identity.Name;
             GenericData.Insert<CUSTOMER_SURVEY_FORMS>(Form);
@@ -678,6 +684,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 Fieldset.IS_ACTIVE = ExistingFieldset.IS_ACTIVE;
                 Fieldset.SORT_ORDER = ExistingFieldset.SORT_ORDER;
                 Fieldset.TITLE = ExistingFieldset.TITLE;
+                Fieldset.CATEGORY_ID = ExistingFieldset.CATEGORY_ID;
 
                 GenericData.Insert<CUSTOMER_SURVEY_FIELDSETS>(Fieldset);
 
@@ -780,7 +787,9 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
         {
             using (Entities _context = new Entities())
             {
-                uxFormTypeStore.DataSource = _context.CUSTOMER_SURVEY_FORM_TYPES.ToList();
+                List<CUSTOMER_SURVEY_FORM_TYPES> FormTypes = _context.CUSTOMER_SURVEY_FORM_TYPES.ToList();
+                uxFormTypeStore.DataSource = FormTypes;
+                uxCopyFormTypeStore.DataSource = FormTypes;
             }
         }
     }

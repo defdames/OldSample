@@ -16,7 +16,6 @@ namespace DBI.Data
     {
         public SYS_USERS()
         {
-            this.SYS_USER_INFORMATION = new HashSet<SYS_USER_INFORMATION>();
             this.SYS_USER_ACTIVITY = new HashSet<SYS_USER_ACTIVITY>();
             this.SYS_LOG = new HashSet<SYS_LOG>();
         }
@@ -28,7 +27,6 @@ namespace DBI.Data
         public string CREATED_BY { get; set; }
         public string MODIFIED_BY { get; set; }
     
-        public virtual ICollection<SYS_USER_INFORMATION> SYS_USER_INFORMATION { get; set; }
         public virtual ICollection<SYS_USER_ACTIVITY> SYS_USER_ACTIVITY { get; set; }
         public virtual ICollection<SYS_LOG> SYS_LOG { get; set; }
     }

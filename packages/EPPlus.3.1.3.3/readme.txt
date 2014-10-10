@@ -1,17 +1,4 @@
-<?xml version="1.0"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
-  <metadata>
-    <id>EPPlus</id>
-    <version>3.1.3.3</version>
-    <title>EPPlus</title>
-    <authors>Jan Källman</authors>
-    <owners>Jan Källman</owners>
-    <licenseUrl>http://epplus.codeplex.com/license</licenseUrl>
-    <projectUrl>http://epplus.codeplex.com/</projectUrl>
-    <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <description>A library to manage Excel spreadsheets, using OOXML.</description>
-    <summary>A library to manage Excel spreadsheets, using OOXML.</summary>
-    <releaseNotes>EPPlus 3.1.3
+EPPlus 3.1.3
 
 Visit epplus.codeplex.com for the latest information
 
@@ -58,9 +45,4 @@ An a lot of bug fixes
 * Fixed issue 14823-Invalid hyperlinks when uri was encoded.
 * Fixed issue 14818-attribute createdVersion of the Pivottable was set to 1 and causing the pivottable ignore the enableDrill and showDrill attributes
 * Fixed issue 14803-Duplicate column names when creating a table caused a corrupt workbook.
-* Fixed issue 14820-Invalid sort order on header footer elements when creating from a template. Added reference to System.Web for Uri decoding</releaseNotes>
-    <copyright>Jan Källman</copyright>
-    <language />
-    <tags>Excel OOXML</tags>
-  </metadata>
-</package>
+* Fixed issue 14820-Invalid sort order on header footer elements when creating from a template. Added reference to System.Web for Uri decoding

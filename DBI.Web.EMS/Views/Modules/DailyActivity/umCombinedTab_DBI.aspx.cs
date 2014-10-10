@@ -125,13 +125,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         case 2:
                             if (validateComponentSecurity("SYS.DailyActivity.Approve"))
                             {
-                                X.Js.Call("parent.App.uxApproveActivityButton.enable()");
+                                X.Js.Call("parent.App.uxApproveActivityButton.enable();parent.App.uxInactiveActivityButton.enable()");
                             }
                             break;
                         case 3:
                             if (validateComponentSecurity("SYS.DailyActivity.Post"))
                             {
-                                X.Js.Call("parent.App.uxPostActivityButton.enable()");
+                                X.Js.Call("parent.App.uxPostActivityButton.enable();parent.App.uxInactiveActivityButton.enable()");
                             }
                             break;
                     }
@@ -144,13 +144,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     case 2:
                         if (validateComponentSecurity("SYS.DailyActivity.Approve"))
                         {
-                            X.Js.Call("parent.App.uxApproveActivityButton.enable()");
+                            X.Js.Call("parent.App.uxApproveActivityButton.enable();parent.App.uxInactiveActivityButton.enable()");
                         }
                         break;
                     case 3:
                         if (validateComponentSecurity("SYS.DailyActivity.Post"))
                         {
-                            X.Js.Call("parent.App.uxPostActivityButton.enable()");
+                            X.Js.Call("parent.App.uxPostActivityButton.enable();parent.App.uxInactiveActivityButton.enable()");
                         }
                         break;
                 }

@@ -26,6 +26,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 decimal CompletionId = decimal.Parse(Request.QueryString["CompletionId"]);
                 LoadForm(FormId, CompletionId);
                 uxCodeFieldset.Hide();
+                uxFormCode.Value = CompletionId;
                 uxLogoImage.Hide();
                 uxLogoContainer.Hide();
                 
@@ -228,6 +229,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 {
                     var QuestionQuery = CUSTOMER_SURVEYS.GetFieldsetQuestionsForGrid(Fieldset.FIELDSET_ID, _context).OrderBy(x => x.SORT_ORDER);
                     List<CUSTOMER_SURVEYS.CustomerSurveyQuestions> Questions = QuestionQuery.ToList();
+                    uxFormCode.Value = CompletionId;
                     if (Questions.Count > 0)
                     {
                         FieldSet NewFieldset = new FieldSet();
