@@ -303,6 +303,7 @@ SELECT
                          STATE = d.STATE,
                          MILE_POST = d.MILE_POST,
                          SUB_CONTRACTED = d.SUB_CONTRACTED,
+                         PROJECT_ID = a.PROJECT_ID,
                          SEGMENT1 = v.SEGMENT1
                       });
 
@@ -547,6 +548,94 @@ SELECT
                       });
 
           }
+
+          //public static IQueryable<ApplicationDetails> GetInvoiceReport(Entities _context)
+          //{
+          //    return (from a in _context.CROSSING_APPLICATION
+          //            join d in _context.CROSSINGS on a.CROSSING_ID equals d.CROSSING_ID
+          //            join v in _context.CROSSING_INVOICE on a.INVOICE_ID equals v.INVOICE_ID
+          //            join p in _context.PROJECTS_V on a.PROJECT_ID equals p.PROJECT_ID
+          //            where ReportList.Contains(a.APPLICATION_ID)
+          //            select new ApplicationDetails
+          //            {
+          //                INVOICE_ID = a.INVOICE_ID,
+          //                INVOICE_NUMBER = v.INVOICE_NUMBER,
+          //                INVOICE_DATE = v.INVOICE_DATE,
+          //                CROSSING_ID = d.CROSSING_ID,
+          //                APPLICATION_ID = a.APPLICATION_ID,
+          //                APPLICATION_DATE = a.APPLICATION_DATE,
+          //                APPLICATION_REQUESTED = a.APPLICATION_REQUESTED,
+          //                CROSSING_NUMBER = d.CROSSING_NUMBER,
+          //                SUB_DIVISION = d.SUB_DIVISION,
+          //                STATE = d.STATE,
+          //                MILE_POST = d.MILE_POST,
+          //                SERVICE_UNIT = d.SERVICE_UNIT,
+          //                PROJECT_ID = p.PROJECT_ID,
+          //                SEGMENT1 = p.SEGMENT1,
+          //            });
+          //}
+
+          public static List<ApplicationDetails> GetInvoiceReport(string selectedApp)
+          {
+              long selected = Convert.ToInt64(selectedApp);
+              //X.Js.Call("parent.App.uxApplicationEntryGrid.getRowsValues({selectedOnly: true})");
+              //List<ApplicationDetails> appList = new List<ApplicationDetails>();
+
+              //List<decimal> ReportList = new List<decimal>();
+              //foreach (ApplicationDetails app in appList)
+              //{
+              //    ReportList.Add(app.APPLICATION_ID);
+              //}
+
+              string sql = string.Format(@"                           
+
+                                SELECT
+                                   a.INVOICE_ID,
+                                   v.INVOICE_NUMBER,
+                                   v.INVOICE_DATE,
+                                   d.CROSSING_ID,
+                                   a.APPLICATION_ID,
+                                   a.APPLICATION_DATE,
+                                   a.APPLICATION_REQUESTED,
+                                   d.CROSSING_NUMBER,
+                                   d.SUB_DIVISION,
+                                   d.MILE_POST,
+                                   d.SERVICE_UNIT,
+                                   p.PROJECT_ID,
+                                   p.SEGMENT1,
+                                   d.STATE
+                FROM CROSSING_APPLICATION a
+                LEFT JOIN CROSSINGS d ON a.CROSSING_ID = d.CROSSING_ID
+                LEFT JOIN CROSSING_INVOICE v ON a.INVOICE_ID = v.INVOICE_ID
+                LEFT JOIN PROJECTS_V p ON a.PROJECT_ID = p.PROJECT_ID
+                WHERE a.INVOICE_ID = {0}
+
+                   ", selectedApp);
+
+              using (Entities context = new Entities())
+              {
+                  return context.Database.SqlQuery<ApplicationDetails>(sql).ToList();
+              }
+          }
+
+          public class ApplicationDetails
+          {
+              public decimal? INVOICE_ID { get; set; }
+              public long APPLICATION_ID { get; set; }
+              public long CROSSING_ID { get; set; }
+              public decimal? APPLICATION_REQUESTED { get; set; }
+              public DateTime? APPLICATION_DATE { get; set; }
+              public string INVOICE_NUMBER { get; set; }
+              public DateTime? INVOICE_DATE { get; set; }
+              public decimal? MILE_POST { get; set; }
+              public string SUB_DIVISION { get; set; }
+              public string SEGMENT1 { get; set; }
+              public string STATE { get; set; }
+              public string CROSSING_NUMBER { get; set; }
+              public string SERVICE_UNIT { get; set; }
+              public long? PROJECT_ID { get; set; }
+          }
+          
             public class WeeklyWorkList
           {
               public string CROSSING_NUMBER { get; set; }

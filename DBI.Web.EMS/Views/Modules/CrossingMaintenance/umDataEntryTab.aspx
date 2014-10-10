@@ -314,7 +314,7 @@
 
                                 <ext:FieldContainer ID="FieldContainer0" runat="server" Layout="HBoxLayout">
                                     <Items>
-                                        <ext:DateField ID="uxAddEntryDate" runat="server" FieldLabel="Date" LabelAlign="Right" Width="300" AllowBlank="false" Editable="false" TabIndex="2" InvalidCls="allowBlank" IndicatorIcon="BulletRed" MsgTarget="Side" />
+                                        <ext:DateField ID="uxAddEntryDate" runat="server" FieldLabel="Date" LabelAlign="Right" Width="300" AllowBlank="false" Editable="true" TabIndex="2" InvalidCls="allowBlank" IndicatorIcon="BulletRed" MsgTarget="Side" />
                                         <ext:Label ID="Label1" runat="server" Text="" Width="25" />
                                         <ext:Label ID="Label2" runat="server" Text="" Width="8" />
                                         <ext:Checkbox ID="uxAddEntryInspectBox" runat="server" BoxLabel="Inspect" BoxLabelAlign="After" Width="250" TabIndex="5" />

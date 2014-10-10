@@ -38,7 +38,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         }
         protected void deInvoiceGrid(object sender, StoreReadDataEventArgs e)
         {
-           
+
             DateTime StartDate = uxStartDate.SelectedDate;
             DateTime EndDate = uxEndDate.SelectedDate;
             decimal Application = Convert.ToDecimal(uxAddAppReqeusted.SelectedItem.Value);
@@ -50,7 +50,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 //Get List of all incidents open and closed 
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
                 IQueryable<CROSSING_MAINTENANCE.CompletedCrossings> allData = CROSSING_MAINTENANCE.GetCompletedCrossings(RailroadId, Application, _context);
-                
+
                 //filter down specific information to show the crossings needed for report
                 if (ServiceUnit != null)
                 {
@@ -78,18 +78,18 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 {
                     allData = allData.Where(x => x.SUB_CONTRACTED == "N");
                 }
-            
+
                 List<object> _data = allData.ToList<object>();
 
 
                 int count;
                 uxInvoiceFormStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
                 e.Total = count;
-               
+
             }
         }
-       
-      
+
+
         protected void deValidationInvoiceButton(object sender, DirectEventArgs e)
         {
             CheckboxSelectionModel sm = CheckboxSelectionModel2;
@@ -112,11 +112,11 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         protected void deResetInvoice(object sender, DirectEventArgs e)
         {
             uxInvoiceFormStore.RemoveAll();
-            
+
         }
         protected void deAddInvoice(object sender, DirectEventArgs e)
         {
-          
+
             string InvoiceNum = uxInvoiceNumber.Value.ToString();
             DateTime InvoiceDate = (DateTime)uxInvoiceDate.Value;
 
@@ -132,9 +132,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             };
             GenericData.Insert<CROSSING_INVOICE>(data);
-            InvoiceDateTextField.Text = DateTime.Now.ToString("MM/dd/yyyy");
-            InvoiceNumTextField.Text = (data.INVOICE_NUMBER);
-           
+            // InvoiceDateTextField.Text = DateTime.Now.ToString("MM/dd/yyyy");
+            // InvoiceNumTextField.Text = (data.INVOICE_NUMBER);
+
             decimal InvoiceId = data.INVOICE_ID;
 
             CROSSING_APPLICATION invoice;
@@ -150,61 +150,42 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
 
                 invoice.INVOICE_ID = InvoiceId;
-              
+
                 GenericData.Update<CROSSING_APPLICATION>(invoice);
             }
             //uxFilterForm.Reset();
-            //uxInvoiceFormStore.Reload();
-            uxBillingReportWindow.Show();    
-        }
-
-        protected void deInvoiceReportGrid(object sender, StoreReadDataEventArgs e)
-        {
-            List<object> allData;
+            uxInvoiceFormStore.Reload();
+        
+            string selectedApp = InvoiceId.ToString();
           
-            string json = (e.Parameters["selectedApps"]);
-            List<ApplicationDetails> appList = JSON.Deserialize<List<ApplicationDetails>>(json);
-            List<decimal> ReportList = new List<decimal>();
-            foreach (ApplicationDetails app in appList)
+            string url = "/Views/Modules/CrossingMaintenance/Reports/MaintenanceInvoiceReport.aspx?selectedApp=" + selectedApp;
+
+            Window win = new Window
             {
-                ReportList.Add(app.APPLICATION_ID);
-
-                using (Entities _context = new Entities())
+                ID = "uxMaintenanceInvoice",
+                Height = 600,
+                Width = 1120,
+                Title = "Maintenance Invoice Report",
+                Modal = true,
+                Resizable = false,
+                CloseAction = CloseAction.Destroy,
+                Closable = true,
+                Loader = new ComponentLoader
                 {
-                    allData = (from a in _context.CROSSING_APPLICATION
-                               join d in _context.CROSSINGS on a.CROSSING_ID equals d.CROSSING_ID
-                               join v in _context.CROSSING_INVOICE on a.INVOICE_ID equals v.INVOICE_ID
-                               join p in _context.PROJECTS_V on a.PROJECT_ID equals p.PROJECT_ID
-                               where ReportList.Contains(a.APPLICATION_ID)
-                               select new
-                               {
-                                   a.INVOICE_ID,
-                                   v.INVOICE_NUMBER,
-                                   v.INVOICE_DATE,
-                                   d.CROSSING_ID,
-                                   a.APPLICATION_ID,
-                                   a.APPLICATION_DATE,
-                                   a.APPLICATION_REQUESTED,
-                                   d.CROSSING_NUMBER,
-                                   d.SUB_DIVISION,
-                                   d.MILE_POST,
-                                   d.SERVICE_UNIT,
-                                   p.PROJECT_ID,
-                                   p.SEGMENT1,
-                               }).ToList<object>();
-                    uxInvoiceReportStore.DataSource = allData;
-
+                    Mode = LoadMode.Frame,
+                    DisableCaching = true,
+                    Url = url,
+                    AutoLoad = true,
+                    LoadMask =
+                    {
+                        ShowMask = true
+                    }
                 }
-                
-
-
-            }
-
-               
-            
+            };
+            win.Render(this.Form);
+            win.Show();
         }
-          
-    
+
         protected void deGetRRType(string rrLoad)
         {
 
@@ -247,9 +228,33 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         }
         protected void deCloseInvoice(object sender, DirectEventArgs e)
         {
-            uxBillingReportWindow.Hide();
-          
+            //uxBillingReportWindow.Hide();
+
         }
+
+        //protected void deInvoiceReportViewer(object sender, StoreReadDataEventArgs e)
+        //{
+        //    string json = (e.Parameters["selectedApps"]);
+        //    List<ApplicationDetails> appList = JSON.Deserialize<List<ApplicationDetails>>(json);
+
+        //    List<decimal> ReportList = new List<decimal>();
+        //    foreach (ApplicationDetails app in appList)
+        //    {
+        //        ReportList.Add(app.APPLICATION_ID);
+        //    }
+        //    using (Entities _context = new Entities())
+        //    {
+        //        IQueryable<CROSSING_MAINTENANCE.ApplicationDetails> data = CROSSING_MAINTENANCE.GetInvoiceReport(_context).Where(s => ReportList.Contains(s.APPLICATION_ID));
+
+        //        int count;
+        //        Store1.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.ApplicationDetails>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+        //        e.Total = count;
+
+        //    }
+        //}
+
+
+
         public class ApplicationDetails
         {
             public decimal? INVOICE_ID { get; set; }
@@ -257,7 +262,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             public long CROSSING_ID { get; set; }
             public string APPLICATION_REQUESTED { get; set; }
             public DateTime APPLICATION_DATE { get; set; }
-          
+
         }
         public class ReportDetails
         {
@@ -268,18 +273,18 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             public DateTime APPLICATION_DATE { get; set; }
 
         }
-        //  protected void deExportSurveys(object sender, DirectEventArgs e)
+        //protected void deExportSurveys(object sender, DirectEventArgs e)
         //{
-        //    DateTime StartDate = uxStartDate.SelectedDate;
-        //    DateTime EndDate = uxEndDate.SelectedDate;
-        //    //string _selectedRecordID = uxCompanySelectionModel.SelectedRecordID;
-        //    List<long> OrgsList;
+        //    //DateTime StartDate = uxStartDate.SelectedDate;
+        //    //DateTime EndDate = uxEndDate.SelectedDate;
+        //    string _selectedRecordID = CheckboxSelectionModel2.SelectedRecordID;
+        //    //List<long> OrgsList;
         //    if (_selectedRecordID != string.Empty)
         //    {
-        //       // long SelectedOrgId = GetOrgFromTree(_selectedRecordID);
-        //       // long HierId = GetHierarchyFromTree(_selectedRecordID);
-                
-        //        string _filename = "SurveyExport.xlsx";
+        //        // long SelectedOrgId = GetOrgFromTree(_selectedRecordID);
+        //        // long HierId = GetHierarchyFromTree(_selectedRecordID);
+
+        //        string _filename = "MaintenanceInvoiceExport.xlsx";
         //        string _filePath = Request.PhysicalApplicationPath + _filename;
 
         //        using (Entities _context = new Entities())
@@ -288,28 +293,28 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
         //            ExcelPackage pck = new ExcelPackage(newFile);
 
-        //            OrgsList = HR.ActiveOrganizationsByHierarchy(HierId, SelectedOrgId, _context).Select(x => x.ORGANIZATION_ID).ToList();
+        //           // OrgsList = HR.ActiveOrganizationsByHierarchy(HierId, SelectedOrgId, _context).Select(x => x.ORGANIZATION_ID).ToList();
 
-        //            List<CUSTOMER_SURVEY_FORMS> FormsList = CUSTOMER_SURVEYS.GetForms(_context).Where(x => OrgsList.Contains((long)x.ORG_ID)).ToList();
-                    
-                    
-        //            foreach (CUSTOMER_SURVEY_FORMS FormEntry in FormsList)
+        //            //List<CUSTOMER_SURVEY_FORMS> FormsList = CUSTOMER_SURVEYS.GetForms(_context).Where(x => OrgsList.Contains((long)x.ORG_ID)).ToList();
+        //           var appList = _context.CROSSING_APPLICATION.Select(x => x.APPLICATION_ID).ToList();
+
+        //             foreach (var Invoices in appList)
         //            {
-        //                string OrgName = _context.ORG_HIER_V.Where(x => x.ORG_ID == FormEntry.ORG_ID).Select(x => x.ORG_HIER).Distinct().Single();
-                        
-        //                List<CUSTOMER_SURVEY_QUESTIONS> FormQuestions = CUSTOMER_SURVEYS.GetFormQuestion2(FormEntry.FORM_ID, _context).OrderBy(x => x.QUESTION_ID).ToList();
-        //                List<CUSTOMER_SURVEY_FORMS_COMP> Completions = CUSTOMER_SURVEYS.GetCompletionsByDate(StartDate, EndDate, FormEntry.FORM_ID, _context).ToList();
+        //                //string OrgName = _context.ORG_HIER_V.Where(x => x.ORG_ID == FormEntry.ORG_ID).Select(x => x.ORG_HIER).Distinct().Single();
+
+        //                List<CROSSING_APPLICATION> results = _context.CROSSING_APPLICATION.OrderBy(x => x.APPLICATION_ID).ToList();
+        //                //List<CUSTOMER_SURVEY_FORMS_COMP> Completions = CUSTOMER_SURVEYS.GetCompletionsByDate(StartDate, EndDate, FormEntry.FORM_ID, _context).ToList();
         //                ExcelWorksheet ws;
-        //                if (Completions.Count > 0)
+        //                if (results.Count > 0)
         //                {
-        //                    ws = pck.Workbook.Worksheets.Add(OrgName);
+        //                   // ws = pck.Workbook.Worksheets.Add(OrgName);
         //                    char letter = 'B';
         //                    int rownumber = 2;
         //                    ws.Cells["A1"].Value = "DOT #";
-        //                      ws.Cells["B1"].Value = "MP";
-        //                      ws.Cells["C1"].Value = "State";
-        //                      ws.Cells["D1"].Value = "Application Date";
-        //                      ws.Cells["E1"].Value = "Project #";
+        //                    ws.Cells["B1"].Value = "MP";
+        //                    ws.Cells["C1"].Value = "State";
+        //                    ws.Cells["D1"].Value = "Application Date";
+        //                    ws.Cells["E1"].Value = "Project #";
 
         //                    foreach (CUSTOMER_SURVEY_QUESTIONS FormQuestion in FormQuestions)
         //                    {
@@ -319,13 +324,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         //                    }
 
 
-        //                    foreach (CUSTOMER_SURVEY_FORMS_COMP Completion in Completions)
+        //                    foreach (CROSSING_APPLICATION result in results)
         //                    {
         //                        letter = 'B';
-        //                        string ProjectName = _context.PROJECTS_V.Where(x => x.PROJECT_ID == Completion.PROJECT_ID).Select(x => x.LONG_NAME).Single();
+        //                        string ProjectName = _context.PROJECTS_V.Where(x => x.PROJECT_ID == result.PROJECT_ID).Select(x => x.LONG_NAME).Single();
 
         //                        //Get Answers
-        //                        List<CUSTOMER_SURVEY_FORMS_ANS> Answers = CUSTOMER_SURVEYS.GetFormAnswersByCompletion(Completion.COMPLETION_ID, _context).OrderBy(x => x.QUESTION_ID).ToList();
+        //                        List<CROSSING_APPLICATION> Answers = _context.CROSSING_APPLICATION(result.APPLICATION_ID, _context).OrderBy(x => x.APPLICATION_DATE).ToList();
         //                        if (Answers.Count > 0)
         //                        {
         //                            ws.Cells["A" + rownumber].Value = ProjectName;
@@ -339,11 +344,11 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         //                    }
         //                    ws.Column(1).AutoFit(0);
         //                }
-                        
+
         //            }
         //            Byte[] bin = pck.GetAsByteArray();
         //            File.WriteAllBytes(_filePath, bin);
-                   
+
 
         //            X.Msg.Confirm("File Download", "Your exported file is now ready to download.", new MessageBoxButtonsConfig
         //            {
@@ -353,25 +358,25 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         //                    Text = "Download " + _filename
         //                }
         //            }).Show();
-        //            //using (FileStream fileStream = File.OpenRead(Server.UrlDecode(_filePath)))
-        //            //{
+        //            using (FileStream fileStream = File.OpenRead(Server.UrlDecode(_filePath)))
+        //            {
 
-        //            //    //create new MemoryStream object
-        //            //    MemoryStream memStream = new MemoryStream();
-        //            //    memStream.SetLength(fileStream.Length);
-        //            //    //read file to MemoryStream
-        //            //    fileStream.Read(memStream.GetBuffer(), 0, (int)fileStream.Length);
+        //                //create new MemoryStream object
+        //                MemoryStream memStream = new MemoryStream();
+        //                memStream.SetLength(fileStream.Length);
+        //                //read file to MemoryStream
+        //                fileStream.Read(memStream.GetBuffer(), 0, (int)fileStream.Length);
 
-        //            //    Response.Clear();
-        //            //    Response.ClearContent();
-        //            //    Response.ClearHeaders();
-        //            //    Response.ContentType = "application/octet-stream";
-        //            //    Response.AppendHeader("Content-Disposition", "attachment;filename=" + _filename);
-        //            //    Response.BinaryWrite(memStream.ToArray());
-        //            //    Response.End();
-        //            //}
+        //                Response.Clear();
+        //                Response.ClearContent();
+        //                Response.ClearHeaders();
+        //                Response.ContentType = "application/octet-stream";
+        //                Response.AppendHeader("Content-Disposition", "attachment;filename=" + _filename);
+        //                Response.BinaryWrite(memStream.ToArray());
+        //                Response.End();
+        //            }
         //        }
-                
+
         //    }
 
         //}
@@ -415,5 +420,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         //    return nextChar;
         //}
     }
-    }
+}
+    
 

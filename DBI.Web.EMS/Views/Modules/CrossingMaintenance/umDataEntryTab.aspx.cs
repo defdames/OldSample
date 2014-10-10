@@ -253,9 +253,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                             GenericData.Insert<CROSSING_APPLICATION>(data);
 
                             uxAddNewApplicationEntryWindow.Hide();
-                            uxAppEntryCrossingStore.Reload();
                             sm.ClearSelection();
-                            uxApplicationStore.Reload();
+                            uxAppEntryCrossingStore.Reload();                            
+                            uxApplicationStore.RemoveAll();
                             uxAddApplicationForm.Reset();
 
 

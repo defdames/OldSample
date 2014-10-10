@@ -79,6 +79,7 @@
       <HintPath>..\..\..\..\..\..\Program Files (x86)\MessagingToolkit\MessagingToolkit-Barcode\Binaries\.NET 3.5\WinForms\x86\MessagingToolkit.Barcode.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\lib\EXT\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -161,6 +162,7 @@
     <Content Include="Views\Modules\CrossingMaintenance\Csv.xsl" />
     <Content Include="Views\Modules\CrossingMaintenance\Excel.xsl" />
     <Content Include="Views\Modules\CrossingMaintenance\ManageKCS.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\MaintenanceInvoiceReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umAppDate.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umBillingInvoice.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umBillingMain.aspx" />
@@ -366,6 +368,13 @@
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\ManageKCS.aspx.designer.cs">
       <DependentUpon>ManageKCS.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\MaintenanceInvoiceReport.aspx.cs">
+      <DependentUpon>MaintenanceInvoiceReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\MaintenanceInvoiceReport.aspx.designer.cs">
+      <DependentUpon>MaintenanceInvoiceReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\StateCrossingList.cs">
       <AutoGen>True</AutoGen>
@@ -1123,6 +1132,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Report1.rdlc" />
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\Report2.rdlc" />
     <EmbeddedResource Include="Views\Modules\CrossingMaintenance\StateCrossingList.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>StateCrossingList.cs</LastGenOutput>
