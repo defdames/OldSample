@@ -58,10 +58,10 @@ namespace DBI.Web.EMS.Views
                     uxWelcomeName.Text = string.Format("Welcome {0}", Authentication.GetClaimValue("EmployeeName", User as ClaimsPrincipal));
                     uxWelcomeName.CtCls = "header-actions-button-orange";
                     uxWelcomeName.Disabled = true;
+                    XXEMS.LogUserActivity(User.Identity.Name);
                 }
             }
             GenerateMenuItems(User as ClaimsPrincipal);
-            XXEMS.LogUserActivity(User.Identity.Name);
         }
 
        

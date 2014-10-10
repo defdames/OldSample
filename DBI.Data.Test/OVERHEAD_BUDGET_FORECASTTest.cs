@@ -65,17 +65,7 @@ namespace DBI.Data.Test
         #endregion
 
 
-        /// <summary>
-        ///A test for BudgetDetailsViewByBudgetID
-        ///</summary>
-        [TestMethod()]
-        public void BudgetDetailsViewByBudgetIDTest()
-        {
-            Entities context = new Entities(); // TODO: Initialize to an appropriate value
-            List<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW> actual;
-            actual = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByBudgetID(context, 0, false, false, true, 121, 0, 2012, 169, false);
-        }
-
+       
         /// <summary>
         ///A test for ImportActualForBudgetVersion
         ///</summary>
@@ -133,27 +123,6 @@ namespace DBI.Data.Test
             Assert.AreEqual(1, 1);
         }
 
-        /// <summary>
-        ///A test for BudgetDetailsViewByOrganizationID
-        ///</summary>
-        [TestMethod()]
-        public void BudgetDetailsViewByOrganizationIDTest()
-        {
-            Entities context = new Entities(); // TODO: Initialize to an appropriate value
-            long LeOrganizationID =121; // TODO: Initialize to an appropriate value
-            long OrganizationID = 121; // TODO: Initialize to an appropriate value
-            short FiscalYear = 2014; // TODO: Initialize to an appropriate value
-            long BudgetTypeID = 169; // TODO: Initialize to an appropriate value
-            OVERHEAD_BUDGET_FORECAST.PRINT_OPTIONS PrintOptions = new OVERHEAD_BUDGET_FORECAST.PRINT_OPTIONS(); // TODO: Initialize to an appropriate value
-            PrintOptions.GROUP_ACCOUNTS = false;
-            PrintOptions.HIDE_BLANK_LINES = false;
-            PrintOptions.SHOW_NOTES = false;
-            bool LimitToMySecurity = false; // TODO: Initialize to an appropriate value
-            bool PrintView = false; // TODO: Initialize to an appropriate value
-            List<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW> expected = null; // TODO: Initialize to an appropriate value
-            List<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW> actual;
-            actual = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByOrganizationID(context, LeOrganizationID, OrganizationID, FiscalYear, BudgetTypeID, PrintOptions, LimitToMySecurity, PrintView);
-            Assert.AreEqual(expected, actual);
-        }
+        
     }
 }

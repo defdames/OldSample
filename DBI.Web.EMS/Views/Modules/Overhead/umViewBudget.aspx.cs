@@ -168,16 +168,24 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                     long _budget_type_id = long.Parse(uxBudgetName.SelectedItem.Value);
 
-                List<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW> _data = new List<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW>();
+                OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW_V1 _data = new OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW_V1();
                 OVERHEAD_BUDGET_FORECAST.PRINT_OPTIONS _printOptions = new OVERHEAD_BUDGET_FORECAST.PRINT_OPTIONS();
                 _printOptions.GROUP_ACCOUNTS = uxCollapseAccountTotals.Checked;
                 _printOptions.HIDE_BLANK_LINES = true;
                 _printOptions.SHOW_NOTES = false;
 
-                _data = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByOrganizationID(_context,_leID,_organizationID,_fiscal_year,_budget_type_id,_printOptions,false,false);
+                Boolean _securityView = false;
+
+                if (Request.QueryString["securityView"] != null)
+                {
+                    string _securityViewValue = Request.QueryString["securityView"].ToString();
+                    _securityView = (_securityViewValue == "Y") ? true : false;
+                }
+
+                _data = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByOrganizationID(_context, _leID, _organizationID, _fiscal_year, _budget_type_id, _printOptions, _securityView, false);
                     
                 int count;
-                uxOrganizationAccountStore.DataSource = GenericData.ListFilterHeader<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW>(e.Start, 5000, e.Sort, e.Parameters["filterheader"], _data.AsQueryable(), e.Parameters["group"], out count);
+                uxOrganizationAccountStore.DataSource = GenericData.ListFilterHeader<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW>(e.Start, 5000, e.Sort, e.Parameters["filterheader"], _data.OVERHEAD_BUDGET_VIEW.AsQueryable(), e.Parameters["group"], out count);
                 e.Total = count;
 
 
@@ -262,11 +270,18 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 _printOptions.GROUP_ACCOUNTS = uxCollapseAccountTotals.Checked;
                 _printOptions.HIDE_BLANK_LINES = true;
                 _printOptions.SHOW_NOTES = false;
+                Boolean _securityView = false;
 
-                IEnumerable<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW> _budgetView = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByOrganizationID(_context, _leID, _organizationID, _fiscalYear, long.Parse(uxBudgetName.SelectedItem.Value.ToString()), _printOptions, false, false);
+                if (Request.QueryString["securityView"] != null)
+                {
+                    string _securityViewValue = Request.QueryString["securityView"].ToString();
+                    _securityView = (_securityViewValue == "Y") ? true : false;
+                }
+
+                OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW_V1 _budgetView = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByOrganizationID(_context, _leID, _organizationID, _fiscalYear, long.Parse(uxBudgetName.SelectedItem.Value.ToString()), _printOptions, _securityView, true);
 
                 int _cellCount = 2;
-                foreach (OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW _row in _budgetView)
+                foreach (OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW _row in _budgetView.OVERHEAD_BUDGET_VIEW)
                 {
 
                     ws.Cells["A" + _cellCount].Value = _row.ACCOUNT_DESCRIPTION;
@@ -374,14 +389,21 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             using (Entities _context = new Entities())
             {
 
-                List<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW> _data = new List<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW>();
+                OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW_V1 _data = new OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW_V1();
                 OVERHEAD_BUDGET_FORECAST.PRINT_OPTIONS _printOptions = new OVERHEAD_BUDGET_FORECAST.PRINT_OPTIONS();
                 _printOptions.GROUP_ACCOUNTS = uxCollapseAccountTotals.Checked;
                 _printOptions.HIDE_BLANK_LINES = true;
                 _printOptions.SHOW_NOTES = false;
+                Boolean _securityView = false;
 
-                _data = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByOrganizationID(_context, _leID, _organizationID, _fiscalYear, long.Parse(uxBudgetName.SelectedItem.Value.ToString()), _printOptions, false, true);
-                    MemoryStream PdfStream = OVERHEAD_BUDGET_FORECAST.GenerateReportByOrganization(_context, _description, _fiscalYear, _data);
+                if (Request.QueryString["securityView"] != null)
+                {
+                    string _securityViewValue = Request.QueryString["securityView"].ToString();
+                    _securityView = (_securityViewValue == "Y") ? true : false;
+                }
+
+                _data = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByOrganizationID(_context, _leID, _organizationID, _fiscalYear, long.Parse(uxBudgetName.SelectedItem.Value.ToString()), _printOptions, _securityView, true);
+                MemoryStream PdfStream = OVERHEAD_BUDGET_FORECAST.GenerateReport(_context, _description, _fiscalYear, _data, uxPrintNote.Checked);
 
                     string _filename = _organizationID + "_" + _fiscalYear + "_budget.pdf";
                     string _filePath = Request.PhysicalApplicationPath + _filename;
