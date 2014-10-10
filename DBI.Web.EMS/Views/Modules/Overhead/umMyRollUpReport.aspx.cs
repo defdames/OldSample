@@ -16,7 +16,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
         {
             if (!X.IsAjaxRequest)
             {
-                if (!validateComponentSecurity("SYS.OverheadBudget.Security"))
+                if (!validateComponentSecurity("SYS.OverheadBudget.Report.User.Rollup"))
                 {
                     X.Redirect("~/Views/uxDefault.aspx");
                 }

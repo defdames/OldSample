@@ -160,7 +160,7 @@
                     <Store>
                         <ext:Store runat="server"
                             ID="uxOrganizationAccountStore"
-                            AutoDataBind="true" RemoteSort="true" OnReadData="loadBudgetDetails" AutoLoad="true" GroupField="CATEGORY_NAME" RemoteGroup="true" OnSubmitData="deExportData">
+                            AutoDataBind="true" RemoteSort="true" OnReadData="loadBudgetDetails" AutoLoad="true" GroupField="CATEGORY_NAME" RemoteGroup="true" >
                             <Model>
                                 <ext:Model ID="Model2" runat="server" IDProperty="CODE_COMBINATION_ID">
                                     <Fields>
@@ -362,14 +362,6 @@
                         Layout="FitLayout">
                         <Items>
                          <ext:Checkbox ID="uxPrintNote" runat="server" BoxLabel="Print Notes" HideLabel="true"></ext:Checkbox>
-                        </Items>
-                    </ext:FieldContainer> 
-                 <ext:FieldContainer ID="FieldContainer5" 
-                        runat="server"
-                        LabelStyle="font-weight:bold;padding:0;"
-                        Layout="FitLayout">
-                        <Items>
-                         <ext:Checkbox ID="uxPrintRollup" runat="server" BoxLabel="Print Rolled Up" HideLabel="true"></ext:Checkbox>
                         </Items>
                     </ext:FieldContainer> 
             </Items>
