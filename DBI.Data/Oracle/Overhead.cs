@@ -544,8 +544,8 @@ namespace DBI.Data
                         where rownum = 1
                         and BU in (select organization_id from apps.hr_operating_units)";
 
-                long OrgId = _context.Database.SqlQuery<long>(sql).Single<long>();
 
+                long OrgId = _context.Database.SqlQuery<long>(sql).FirstOrDefault<long>();
                 return OrgId;
             }
         }
@@ -558,80 +558,23 @@ namespace DBI.Data
         /// <param name="budgetID"></param>
         /// <param name="organizationID"></param>
         /// <returns></returns>
-        public static List<OVERHEAD_BUDGET_VIEW> BudgetDetailsViewByBudgetID(Entities context, long budgetID, Boolean printView = false, Boolean hideBlankLines = false, Boolean rollup = false, long leorganizationID = 0, long organizationID = 0, short fiscalYear = 0, long budgetTypeID = 0, Boolean collapseAccountLines = false)
+        public static OVERHEAD_BUDGET_VIEW_V1 BudgetDetailsViewByBudgetID(Entities context, long budgetID, Boolean printView = false, Boolean hideBlankLines = false, long leorganizationID = 0, long organizationID = 0, short fiscalYear = 0, long budgetTypeID = 0, Boolean collapseAccountLines = false)
         {
+
+            OVERHEAD_BUDGET_VIEW_V1 _returnData = new OVERHEAD_BUDGET_VIEW_V1();
 
             List<OVERHEAD_BUDGET_VIEW> _data = new List<OVERHEAD_BUDGET_VIEW>();
             var _categoryList = CategoryAsQueryable(context);
             var _accountCategoryList = AccountCategoryAsQueryable(context);
-
 
             OVERHEAD_ORG_BUDGETS _budgetHeader = BudgetByID(context, budgetID);
 
             List<OVERHEAD_BUDGET_DETAIL> _budgetDetail = new List<OVERHEAD_BUDGET_DETAIL>();
             List<GL_ACCOUNT> _validAccounts = new List<GL_ACCOUNT>();
 
-            if (rollup)
-            {
-                long leID = 0;
-                if (_budgetHeader == null)
-                {
-                    leID = leorganizationID;
-                }
-                else
-                {
-                    leID = ReturnLEIDforOrganizationID(_budgetHeader.ORGANIZATION_ID);
-                }
+            _budgetDetail.AddRange(BudgetDetailByBudgetID(context, budgetID).ToList());
+            _validAccounts.AddRange(AccountListValidByOrganizationID(context, _budgetHeader.ORGANIZATION_ID));
 
-
-                long _hierarchyID = long.Parse(SYS_ORG_PROFILE_OPTIONS.OrganizationProfileOption("OverheadBudgetHierarchy", leID));
-                List<HR.ORGANIZATION_V1> data = new List<HR.ORGANIZATION_V1>();
-
-                if (_budgetHeader == null)
-                {
-                    data = HR.OverheadOrganizationStatusByHierarchy(_hierarchyID, leorganizationID).Where(x => x.ORGANIZATION_STATUS == "Active").ToList();
-
-                    data = (from b in data
-                            where SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.LoggedInUser().USER_ID).Any(x => x.ORG_ID == b.ORGANIZATION_ID)
-                            select b).ToList();
-                }
-                else
-                {
-                    _budgetDetail.AddRange(BudgetDetailByBudgetID(context, budgetID).ToList());
-                    _validAccounts.AddRange(AccountListValidByOrganizationID(context, _budgetHeader.ORGANIZATION_ID));
-                    data = HR.OverheadOrganizationStatusByHierarchy(_hierarchyID, _budgetHeader.ORGANIZATION_ID).Where(x => x.ORGANIZATION_STATUS == "Active").ToList();
-
-                    data = (from b in data
-                            where SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.LoggedInUser().USER_ID).Any(x => x.ORG_ID == b.ORGANIZATION_ID)
-                            select b).ToList();
-                }
-
-                foreach (HR.ORGANIZATION_V1 _organization in data)
-                {
-                    OVERHEAD_ORG_BUDGETS _budget;
-                    if (_budgetHeader != null)
-                    {
-                        _budget = OVERHEAD_BUDGET_FORECAST.BudgetsByOrganizationID(context, _organization.ORGANIZATION_ID).Where(x => x.FISCAL_YEAR == _budgetHeader.FISCAL_YEAR & x.OVERHEAD_BUDGET_TYPE_ID == _budgetHeader.OVERHEAD_BUDGET_TYPE_ID).SingleOrDefault();
-                    }
-                    else
-                    {
-                        _budget = OVERHEAD_BUDGET_FORECAST.BudgetsByOrganizationID(context, _organization.ORGANIZATION_ID).Where(x => x.FISCAL_YEAR == fiscalYear & x.OVERHEAD_BUDGET_TYPE_ID == budgetTypeID).SingleOrDefault();
-                    }
-
-                    if (_budget != null)
-                    {
-                        _validAccounts.AddRange(AccountListValidByOrganizationID(context, _budget.ORGANIZATION_ID));
-                        _budgetDetail.AddRange(BudgetDetailByBudgetID(context, _budget.ORG_BUDGET_ID).ToList());
-                    }
-                }
-
-            }
-
-            else
-            {
-                _budgetDetail.AddRange(BudgetDetailByBudgetID(context, budgetID).ToList());
-                _validAccounts.AddRange(AccountListValidByOrganizationID(context, _budgetHeader.ORGANIZATION_ID));
-            }
 
             List<OVERHEAD_ACCOUNT_COMMENT> _accountComments = context.OVERHEAD_ACCOUNT_COMMENT.Where(x => x.ORG_BUDGET_ID == budgetID).ToList();
 
@@ -676,24 +619,6 @@ namespace DBI.Data
                         _record.ACCOUNT_DESCRIPTION3 = SEGMENT5DESC;
                     _record.ACCOUNT_DESCRIPTION2 = "(" + _account.SEGMENT5 + ")";
 
-                    if (_accountComments.Any())
-                    {
-                        OVERHEAD_ACCOUNT_COMMENT _comments = _accountComments.Where(x => x.CODE_COMBINATION_ID == _account.CODE_COMBINATION_ID).SingleOrDefault();
-                        if (_comments != null)
-                        {
-                            _record.ACCOUNT_NOTES = _comments.COMMENTS;
-                        }
-                        else
-                        {
-                            _record.ACCOUNT_NOTES = "";
-                        }
-                    }
-                    else
-                    {
-                        _record.ACCOUNT_NOTES = "";
-                    }
-
-
                 }
                 else
                 {
@@ -714,7 +639,7 @@ namespace DBI.Data
                 _record.AMOUNT11 = GetAccountTotalByPeriod(_condensedBudgetDetail, 11);
                 _record.AMOUNT12 = GetAccountTotalByPeriod(_condensedBudgetDetail, 12);
                 _record.TOTAL = (_record.AMOUNT1 + _record.AMOUNT2 + _record.AMOUNT3 + _record.AMOUNT4 + _record.AMOUNT5 + _record.AMOUNT6 + _record.AMOUNT7 + _record.AMOUNT8 + _record.AMOUNT9 + _record.AMOUNT10 + _record.AMOUNT11 + _record.AMOUNT12);
-                _record.BUDGET_ID = budgetID;
+                _record.BUDGET_ID = 0; // replaced to zero 
 
 
 
@@ -759,28 +684,45 @@ namespace DBI.Data
                     AMOUNT11 = s.Sum(i => i.AMOUNT11),
                     AMOUNT12 = s.Sum(i => i.AMOUNT12),
                     GROUPED = _data.Where(g => g.ACCOUNT_SEGMENT == s.Key).Count() > 1 ? "Y" : "N",
-                    ACCOUNT_NOTES = AccountsGroupedNotesBySegment(s.Key, _data)
+                    //ACCOUNT_NOTES = AccountsGroupedNotesBySegment(s.Key, _data)
                 }).ToList();
 
                 if (printView)
                 {
                     var _orderedPrint = _collapsedView.OrderBy(x => x.CATEGORY_SORT_ORDER).ThenBy(x => x.SORT_ORDER).ThenBy(x => x.ACCOUNT_SEGMENT);
-                    return _orderedPrint.ToList();
+
+                    _returnData.OVERHEAD_BUDGET_VIEW = _orderedPrint.ToList();
+                    _returnData.OVERHEAD_ACCOUNT_COMMENT = _accountComments;
+                    _returnData.OVERHEAD_ORG_BUDGETS.Add(_budgetHeader);
+
+                    return _returnData;
                 }
 
-                return _collapsedView;
+                _returnData.OVERHEAD_BUDGET_VIEW = _collapsedView;
+                _returnData.OVERHEAD_ACCOUNT_COMMENT = _accountComments;
+                _returnData.OVERHEAD_ORG_BUDGETS.Add(_budgetHeader);
+
+                return _returnData;
             }
 
             if (printView)
             {
                 var _orderedPrint = _data.OrderBy(x => x.CATEGORY_SORT_ORDER).ThenBy(x => x.SORT_ORDER).ThenBy(x => x.ACCOUNT_SEGMENT);
-                return _orderedPrint.ToList();
+
+                _returnData.OVERHEAD_BUDGET_VIEW = _orderedPrint.ToList();
+                _returnData.OVERHEAD_ACCOUNT_COMMENT = _accountComments;
+                _returnData.OVERHEAD_ORG_BUDGETS.Add(_budgetHeader);
+
+                return _returnData;
             }
 
-            return _data;
+            _returnData.OVERHEAD_BUDGET_VIEW = _data.ToList();
+            _returnData.OVERHEAD_ACCOUNT_COMMENT = _accountComments;
+            _returnData.OVERHEAD_ORG_BUDGETS.Add(_budgetHeader);
+
+            return _returnData;
 
         }
-
 
         public static string AccountsGroupedNotesBySegment(string AccountSegment, List<OVERHEAD_BUDGET_VIEW> InData)
         {
@@ -804,7 +746,227 @@ namespace DBI.Data
 
         }
 
+        public static OVERHEAD_BUDGET_VIEW_V1 BudgetDetailsViewByOrganizationID(Entities context, long LeOrganizationID, long OrganizationID, short FiscalYear, long BudgetTypeID, PRINT_OPTIONS PrintOptions, Boolean LimitToMySecurity = false, Boolean PrintView = false)
+        {
 
+            OVERHEAD_BUDGET_VIEW_V1 _returnData = new OVERHEAD_BUDGET_VIEW_V1();
+
+            List<OVERHEAD_BUDGET_VIEW> _data = new List<OVERHEAD_BUDGET_VIEW>();
+            var _categoryList = CategoryAsQueryable(context);
+            var _accountCategoryList = AccountCategoryAsQueryable(context);
+
+            List<OVERHEAD_ACCOUNT_COMMENT> _accountComments = new List<OVERHEAD_ACCOUNT_COMMENT>();
+            List<OVERHEAD_ORG_BUDGETS> _orgBudgets = new List<OVERHEAD_ORG_BUDGETS>();
+            List<OVERHEAD_BUDGET_DETAIL> _budgetDetail = new List<OVERHEAD_BUDGET_DETAIL>();
+            List<GL_ACCOUNT> _validAccounts = new List<GL_ACCOUNT>();
+            long _hierarchyID = long.Parse(SYS_ORG_PROFILE_OPTIONS.OrganizationProfileOption("OverheadBudgetHierarchy", LeOrganizationID));
+
+            //Get a list of active organizations in the overhead budget system
+            List<HR.ORGANIZATION_V1> _organizationData = HR.OverheadOrganizationStatusByHierarchy(_hierarchyID, OrganizationID).Where(x => x.ORGANIZATION_STATUS == "Active").ToList();
+
+            //Check for the organization count and if zero it means we are at the lowest level or no data for organization, check for organization info
+            if (_organizationData.Count() == 0)
+            {
+                //Get a list of active organizations in the overhead budget system
+                _organizationData = HR.OverheadOrganizationStatusByHierarchy(_hierarchyID, LeOrganizationID).Where(x => x.ORGANIZATION_STATUS == "Active" & x.ORGANIZATION_ID == OrganizationID).ToList();
+            }
+
+            List<string> _myOrgList = new List<string>();
+             // Security must be limited to my account access organizations.
+            if (LimitToMySecurity)
+            {
+                //Get a list of organizations assigned to my username.
+                List<SYS_USER_ORGS> _userOrgs = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.LoggedInUser().USER_ID);
+
+                //Return the LE's I have access to view
+                foreach (SYS_USER_ORGS _org in _userOrgs)
+                {
+                    _myOrgList.Add(_org.ORG_ID.ToString());
+                }
+
+                //Limit organization data to only data from my org list
+                _organizationData = _organizationData.Where(x => _myOrgList.Contains(x.ORGANIZATION_ID.ToString())).ToList();
+            }
+
+            //Check it again only process it if data was returned.
+            if (_organizationData.Count() > 0)
+            {
+               
+                  foreach (HR.ORGANIZATION_V1 _organization in _organizationData)
+                  {
+                     OVERHEAD_ORG_BUDGETS _budget = OVERHEAD_BUDGET_FORECAST.BudgetsByOrganizationID(context, _organization.ORGANIZATION_ID).Where(x => x.FISCAL_YEAR == FiscalYear & x.OVERHEAD_BUDGET_TYPE_ID == BudgetTypeID).SingleOrDefault();
+                      
+                      if (_budget != null)
+                        {
+                            _validAccounts.AddRange(AccountListValidByOrganizationID(context, _budget.ORGANIZATION_ID));
+                            _budgetDetail.AddRange(BudgetDetailByBudgetID(context, _budget.ORG_BUDGET_ID).ToList());
+                            _accountComments.AddRange(context.OVERHEAD_ACCOUNT_COMMENT.Where(x => x.ORG_BUDGET_ID == _budget.ORG_BUDGET_ID));
+                            _orgBudgets.Add(_budget);
+                        }
+                  }
+
+                  foreach (GL_ACCOUNT _account in _validAccounts)
+                  {
+                      OVERHEAD_CATEGORY _category = new OVERHEAD_CATEGORY();
+                      OVERHEAD_BUDGET_VIEW _record = new OVERHEAD_BUDGET_VIEW();
+
+
+                      //Return the data for the year
+                      List<OVERHEAD_BUDGET_DETAIL> _OverheadBudgetDetailList = _budgetDetail.Where(x => x.CODE_COMBINATION_ID == _account.CODE_COMBINATION_ID).ToList();
+
+                      var _accountCategory = _accountCategoryList.Where(x => x.ACCOUNT_SEGMENT == _account.SEGMENT5).OrderBy(x => x.ACCOUNT_SEGMENT).SingleOrDefault();
+
+                      if (_accountCategory != null)
+                      {
+                          _category = _categoryList.Where(x => x.CATEGORY_ID == _accountCategory.CATEGORY_ID).SingleOrDefault();
+                          _record.CATEGORY_ID = _accountCategory.CATEGORY_ID;
+                          _record.CATEGORY_NAME = _category.NAME;
+                          _record.SORT_ORDER = _accountCategory.SORT_ORDER;
+                          _record.CATEGORY_SORT_ORDER = (long)_category.SORT_ORDER;
+                      }
+                      else
+                      {
+                          _record.CATEGORY_NAME = "Other";
+                          _record.CATEGORY_SORT_ORDER = 99999;
+                          _record.SORT_ORDER = 0;
+                      }
+
+
+                      _record.ACCOUNT_SEGMENT = _account.SEGMENT5;
+                      _record.CODE_COMBINATION_ID = _account.CODE_COMBINATION_ID;
+                      string SEGMENT5DESC = OVERHEAD_BUDGET_FORECAST.AccountDescriptionBySegment(context, 5, _account.SEGMENT5);
+
+                      if (PrintView)
+                      {
+                          _record.ACCOUNT_DESCRIPTION = SEGMENT5DESC;
+                          _record.ACCOUNT_DESCRIPTION2 = "(" + _account.SEGMENT4 + "." + _account.SEGMENT5 + ")";
+                          if (PrintOptions.GROUP_ACCOUNTS)
+                          {
+                              _record.ACCOUNT_DESCRIPTION3 = SEGMENT5DESC;
+                              _record.ACCOUNT_DESCRIPTION2 = "(" + _account.SEGMENT5 + ")";
+                          }
+
+
+                      }
+                      else
+                      {
+                          _record.ACCOUNT_NOTES = "";
+                          _record.ACCOUNT_DESCRIPTION = SEGMENT5DESC + " (" + _account.SEGMENT1 + "." + _account.SEGMENT2 + "." + _account.SEGMENT3 + "." + _account.SEGMENT4 + "." + _account.SEGMENT5 + ")";
+                          _record.ACCOUNT_DESCRIPTION2 = SEGMENT5DESC + " (" + _account.SEGMENT5 + ")";
+                      }
+                      _record.AMOUNT1 = GetAccountTotalByPeriod(_OverheadBudgetDetailList, 1);
+                      _record.AMOUNT2 = GetAccountTotalByPeriod(_OverheadBudgetDetailList, 2);
+                      _record.AMOUNT3 = GetAccountTotalByPeriod(_OverheadBudgetDetailList, 3);
+                      _record.AMOUNT4 = GetAccountTotalByPeriod(_OverheadBudgetDetailList, 4);
+                      _record.AMOUNT5 = GetAccountTotalByPeriod(_OverheadBudgetDetailList, 5);
+                      _record.AMOUNT6 = GetAccountTotalByPeriod(_OverheadBudgetDetailList, 6);
+                      _record.AMOUNT7 = GetAccountTotalByPeriod(_OverheadBudgetDetailList, 7);
+                      _record.AMOUNT8 = GetAccountTotalByPeriod(_OverheadBudgetDetailList, 8);
+                      _record.AMOUNT9 = GetAccountTotalByPeriod(_OverheadBudgetDetailList, 9);
+                      _record.AMOUNT10 = GetAccountTotalByPeriod(_OverheadBudgetDetailList, 10);
+                      _record.AMOUNT11 = GetAccountTotalByPeriod(_OverheadBudgetDetailList, 11);
+                      _record.AMOUNT12 = GetAccountTotalByPeriod(_OverheadBudgetDetailList, 12);
+                      _record.TOTAL = (_record.AMOUNT1 + _record.AMOUNT2 + _record.AMOUNT3 + _record.AMOUNT4 + _record.AMOUNT5 + _record.AMOUNT6 + _record.AMOUNT7 + _record.AMOUNT8 + _record.AMOUNT9 + _record.AMOUNT10 + _record.AMOUNT11 + _record.AMOUNT12);
+                      _record.BUDGET_ID = 0;
+
+                      if (PrintOptions.HIDE_BLANK_LINES)
+                      {
+                          if (_record.TOTAL > 0 || _record.TOTAL < 0)
+                              _data.Add(_record);
+                      }
+                      else
+                      {
+                          _data.Add(_record);
+                      }
+                  }
+
+                  if (PrintOptions.GROUP_ACCOUNTS)
+                  {
+
+                      //Group By Account Segment
+                      List<OVERHEAD_BUDGET_VIEW> _collapsedView = _data.GroupBy(x => x.ACCOUNT_SEGMENT).Select(s => new OVERHEAD_BUDGET_VIEW
+                      {
+                          BUDGET_ID = s.Min(i => i.BUDGET_ID),
+                          CATEGORY_ID = s.Min(i => i.CATEGORY_ID),
+                          CATEGORY_SORT_ORDER = s.Min(i => i.CATEGORY_SORT_ORDER),
+                          SORT_ORDER = s.Min(i => i.SORT_ORDER),
+                          ACCOUNT_SEGMENT = s.Key,
+                          CATEGORY_NAME = s.Min(i => i.CATEGORY_NAME),
+                          CODE_COMBINATION_ID = s.Min(i => i.CODE_COMBINATION_ID),
+                          ACCOUNT_DESCRIPTION = _data.Where(g => g.ACCOUNT_SEGMENT == s.Key).Count() > 1 ? ((PrintView == true) ? s.Min(i => i.ACCOUNT_DESCRIPTION3) : s.Min(i => i.ACCOUNT_DESCRIPTION2)) : s.Min(i => i.ACCOUNT_DESCRIPTION),
+                          ACCOUNT_DESCRIPTION2 = s.Min(i => i.ACCOUNT_DESCRIPTION2),
+                          TOTAL = s.Sum(i => i.TOTAL),
+                          AMOUNT1 = s.Sum(i => i.AMOUNT1),
+                          AMOUNT2 = s.Sum(i => i.AMOUNT2),
+                          AMOUNT3 = s.Sum(i => i.AMOUNT3),
+                          AMOUNT4 = s.Sum(i => i.AMOUNT4),
+                          AMOUNT5 = s.Sum(i => i.AMOUNT5),
+                          AMOUNT6 = s.Sum(i => i.AMOUNT6),
+                          AMOUNT7 = s.Sum(i => i.AMOUNT7),
+                          AMOUNT8 = s.Sum(i => i.AMOUNT8),
+                          AMOUNT9 = s.Sum(i => i.AMOUNT9),
+                          AMOUNT10 = s.Sum(i => i.AMOUNT10),
+                          AMOUNT11 = s.Sum(i => i.AMOUNT11),
+                          AMOUNT12 = s.Sum(i => i.AMOUNT12),
+                          GROUPED = _data.Where(g => g.ACCOUNT_SEGMENT == s.Key).Count() > 1 ? "Y" : "N",
+                          //ACCOUNT_NOTES = AccountsGroupedNotesBySegment(s.Key, _data)
+                      }).ToList();
+
+                      if (PrintView)
+                      {
+                          var _orderedPrint = _collapsedView.OrderBy(x => x.CATEGORY_SORT_ORDER).ThenBy(x => x.SORT_ORDER).ThenBy(x => x.ACCOUNT_SEGMENT);
+
+                          _returnData.OVERHEAD_BUDGET_VIEW = _orderedPrint.ToList();
+                          _returnData.OVERHEAD_ACCOUNT_COMMENT = _accountComments;
+                          _returnData.OVERHEAD_ORG_BUDGETS = _orgBudgets;
+
+                          return _returnData;
+
+                      }
+
+                      _returnData.OVERHEAD_BUDGET_VIEW = _collapsedView;
+                      _returnData.OVERHEAD_ACCOUNT_COMMENT = _accountComments;
+                      _returnData.OVERHEAD_ORG_BUDGETS = _orgBudgets;
+
+                      return _returnData;
+                  }
+
+                  if (PrintView)
+                  {
+                      var _orderedPrint = _data.OrderBy(x => x.CATEGORY_SORT_ORDER).ThenBy(x => x.SORT_ORDER).ThenBy(x => x.ACCOUNT_SEGMENT);
+
+                      _returnData.OVERHEAD_BUDGET_VIEW = _orderedPrint.ToList();
+                      _returnData.OVERHEAD_ACCOUNT_COMMENT = _accountComments;
+                      _returnData.OVERHEAD_ORG_BUDGETS = _orgBudgets;
+
+                      return _returnData;
+                  }
+
+                  _returnData.OVERHEAD_BUDGET_VIEW = _data;
+                  _returnData.OVERHEAD_ACCOUNT_COMMENT = _accountComments;
+                  _returnData.OVERHEAD_ORG_BUDGETS = _orgBudgets;
+
+                  return _returnData;
+            }
+
+            return _returnData;
+
+        }
+
+        public class OVERHEAD_BUDGET_VIEW_V1
+        {
+            public OVERHEAD_BUDGET_VIEW_V1()
+            {
+                this.OVERHEAD_BUDGET_VIEW = new HashSet<OVERHEAD_BUDGET_VIEW>();
+                this.OVERHEAD_ACCOUNT_COMMENT = new HashSet<OVERHEAD_ACCOUNT_COMMENT>();
+                this.OVERHEAD_ORG_BUDGETS = new HashSet<OVERHEAD_ORG_BUDGETS>();
+            }
+            public virtual ICollection<OVERHEAD_BUDGET_VIEW> OVERHEAD_BUDGET_VIEW { get; set; }
+            public virtual ICollection<OVERHEAD_ACCOUNT_COMMENT> OVERHEAD_ACCOUNT_COMMENT { get; set; }
+            public virtual ICollection<OVERHEAD_ORG_BUDGETS> OVERHEAD_ORG_BUDGETS { get; set; }
+        }
+
+  
         public static OVERHEAD_BUDGET_VIEW SummaryViewByCategoryID(IEnumerable<OVERHEAD_BUDGET_VIEW> reportList, long categoryID)
         {
 
@@ -880,6 +1042,7 @@ namespace DBI.Data
 
         public class OVERHEAD_BUDGET_VIEW
         {
+
             public long BUDGET_ID { get; set; }
             public long CATEGORY_ID { get; set; }
             public long CATEGORY_SORT_ORDER { get; set; }
@@ -905,6 +1068,8 @@ namespace DBI.Data
             public decimal AMOUNT12 { get; set; }
             public string GROUPED { get; set; }
             public string ACCOUNT_NOTES { get; set; }
+            public string BUDGET_NOTES { get; set; }
+
         }
 
 
@@ -1083,7 +1248,467 @@ namespace DBI.Data
         #region Misc functions
 
 
-        public static MemoryStream GenerateReport(Entities context, long organizationID, short fiscalYear, long budgetID, string description, PRINT_OPTIONS printOptions)
+        //public static MemoryStream GenerateReport(Entities context, long organizationID, short fiscalYear, long budgetID, string description, PRINT_OPTIONS printOptions, long leID = 0, long budgetTypeID = 0)
+        //{
+
+        //    using (MemoryStream _pdfMemoryStream = new MemoryStream())
+        //    {
+        //        //Create the document
+        //        Document _document = new Document(new Rectangle(288f, 144f), 10, 10, 10, 10);
+        //        _document.SetPageSize(iTextSharp.text.PageSize.A4.Rotate());
+        //        PdfWriter ExportWriter = PdfWriter.GetInstance(_document, _pdfMemoryStream);
+
+        //        Paragraph NewLine = new Paragraph("\n");
+        //        Font HeaderFont = FontFactory.GetFont("Helvetica", 9);
+        //        Font HeadFootTitleFont = FontFactory.GetFont("Helvetica", 9);
+        //        Font HeadFootCellFont = FontFactory.GetFont("Helvetica", 9);
+        //        Font CellFont = FontFactory.GetFont("Helvetica", 8);
+        //        Font TotalCellFont = FontFactory.GetFont("Helvetica", 8, Font.BOLD);
+
+        //        //Open Document
+        //        _document.Open();
+
+        //        HeaderFooter _footer = new HeaderFooter(new Phrase(""), true);
+        //        _document.Footer = _footer;
+
+        //        //Header Table with Columns
+        //        PdfPTable _headerPdfTable = new PdfPTable(14);
+        //        _headerPdfTable.WidthPercentage = 100;
+        //        int[] intTblWidth = { 25, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6 };
+        //        _headerPdfTable.SetWidths(intTblWidth);
+
+        //        PdfPCell[] Cells;
+        //        PdfPRow Row;
+        //        _headerPdfTable.HeaderRows = 2;
+
+        //        List<string> _title = description.Split('/').ToList<string>();
+
+        //        var _glMonthPeriods = OVERHEAD_BUDGET_FORECAST.GeneralLedgerPeriods(context).Where(x => x.PERIOD_YEAR == fiscalYear & x.PERIOD_TYPE == "Month");
+        //        var _glWeekPeriods = OVERHEAD_BUDGET_FORECAST.GeneralLedgerPeriods(context).Where(x => x.PERIOD_YEAR == fiscalYear & x.PERIOD_TYPE == "Week");
+
+        //        Cells = new PdfPCell[]{
+        //             new PdfPCell(new Phrase("Overhead Budget / " + _title[0], TotalCellFont )),
+        //             new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 1).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),
+        //             new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 2).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),
+        //             new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 3).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),
+        //             new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 4).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),
+        //             new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 5).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),
+        //             new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 6).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),
+        //             new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 7).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),
+        //             new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 8).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),
+        //             new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 9).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),
+        //             new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 10).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),
+        //             new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 11).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),
+        //             new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 12).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),
+        //             new PdfPCell(new Phrase("Total", HeadFootTitleFont)),
+        //         };
+
+        //        foreach (PdfPCell _cell in Cells)
+        //        {
+        //            _cell.BackgroundColor = new Color(230, 230, 230);
+        //            _cell.HorizontalAlignment = PdfCell.ALIGN_CENTER;
+        //        }
+
+        //        Row = new PdfPRow(Cells);
+        //        _headerPdfTable.Rows.Add(Row);
+
+        //        Cells = new PdfPCell[]{
+        //             new PdfPCell(new Phrase(_title[1] + " / " + _title[2], TotalCellFont )),
+        //             new PdfPCell(new Phrase(string.Format("{0} Weeks", _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 1).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+        //             new PdfPCell(new Phrase(string.Format("{0} Weeks", _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 2).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+        //             new PdfPCell(new Phrase(string.Format("{0} Weeks", _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 3).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+        //             new PdfPCell(new Phrase(string.Format("{0} Weeks", _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 4).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+        //             new PdfPCell(new Phrase(string.Format("{0} Weeks", _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 5).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+        //             new PdfPCell(new Phrase(string.Format("{0} Weeks", _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 6).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+        //             new PdfPCell(new Phrase(string.Format("{0} Weeks", _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 7).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+        //             new PdfPCell(new Phrase(string.Format("{0} Weeks", _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 8).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+        //             new PdfPCell(new Phrase(string.Format("{0} Weeks", _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 9).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+        //             new PdfPCell(new Phrase(string.Format("{0} Weeks", _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 10).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+        //             new PdfPCell(new Phrase(string.Format("{0} Weeks", _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 11).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+        //             new PdfPCell(new Phrase(string.Format("{0} Weeks", _glWeekPeriods.Where(x => x.ENTERED_PERIOD_NAME.Contains(_glMonthPeriods.Where(y => y.PERIOD_NUM == 12).Single().ENTERED_PERIOD_NAME)).Count()),HeadFootTitleFont)),
+        //             new PdfPCell(new Phrase("", HeadFootTitleFont)),
+        //         };
+
+        //        foreach (PdfPCell _cell in Cells)
+        //        {
+        //            _cell.BackgroundColor = new Color(230, 230, 230);
+        //            _cell.HorizontalAlignment = PdfCell.ALIGN_CENTER;
+        //        }
+
+
+        //        Row = new PdfPRow(Cells);
+        //        _headerPdfTable.Rows.Add(Row);
+
+        //        List<OVERHEAD_BUDGET_VIEW> _budgetView = new List<OVERHEAD_BUDGET_VIEW>();
+
+        //        OVERHEAD_ORG_BUDGETS _budgetDetail = new OVERHEAD_ORG_BUDGETS();
+
+        //        if (budgetID != null)
+        //        {
+
+        //            _budgetDetail = OVERHEAD_BUDGET_FORECAST.BudgetByID(context, budgetID);
+        //            //Details Row
+        //            //Return budget detail information
+        //            _budgetView = BudgetDetailsViewByBudgetID(context, budgetID, true, printOptions.HIDE_BLANK_LINES, 0, organizationID, fiscalYear, _budgetDetail.OVERHEAD_BUDGET_TYPE_ID, printOptions.GROUP_ACCOUNTS).ToList();
+        //        }
+        //        else
+        //        {
+        //            _budgetView = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByBudgetID(context, 0, false,true, leID, organizationID, fiscalYear, budgetTypeID, true);
+        //        }
+
+        //        NumberFormatInfo nfi = CultureInfo.CurrentCulture.NumberFormat;
+        //        nfi = (NumberFormatInfo)nfi.Clone();
+        //        nfi.CurrencySymbol = "";
+
+        //        long _lastCategoryID = 0;
+
+        //        foreach (OVERHEAD_BUDGET_VIEW _row in _budgetView)
+        //        {
+
+        //            if (_lastCategoryID != 0)
+        //            {
+        //                if (_lastCategoryID != _row.CATEGORY_ID)
+        //                {
+        //                    //Add a total line
+        //                    OVERHEAD_BUDGET_VIEW _summaryView = SummaryViewByCategoryID(_budgetView, _lastCategoryID);
+
+        //                    Phrase _totalPhase = new Phrase();
+        //                    _totalPhase.Add(new Chunk(_summaryView.CATEGORY_NAME + " - Total", TotalCellFont));
+        //                    _totalPhase.Add(new Chunk("\n"));
+
+
+
+        //                    Cells = new PdfPCell[]{
+        //                    new PdfPCell(_totalPhase),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryView.AMOUNT1) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryView.AMOUNT2) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryView.AMOUNT3) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryView.AMOUNT4) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryView.AMOUNT5) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryView.AMOUNT6) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryView.AMOUNT7) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryView.AMOUNT8) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryView.AMOUNT9) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryView.AMOUNT10) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryView.AMOUNT11) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryView.AMOUNT12) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryView.TOTAL), TotalCellFont))
+        //                };
+
+        //                    int cellCount = 1;
+        //                    foreach (PdfPCell _cell in Cells)
+        //                    {
+        //                        if (cellCount == 1)
+        //                        {
+        //                            _cell.BackgroundColor = new Color(224, 224, 209);
+        //                        }
+        //                        else
+        //                        {
+        //                            _cell.BackgroundColor = new Color(224, 224, 209);
+        //                            _cell.HorizontalAlignment = PdfCell.ALIGN_RIGHT;
+        //                        }
+
+        //                        cellCount = cellCount + 1;
+        //                    }
+
+
+        //                    Row = new PdfPRow(Cells);
+        //                    _headerPdfTable.Rows.Add(Row);
+        //                }
+
+        //            }
+
+
+        //            Phrase _accountPhase = new Phrase();
+        //            _accountPhase.Add(new Chunk(_row.ACCOUNT_DESCRIPTION, CellFont));
+        //            _accountPhase.Add(new Chunk("\n"));
+        //            _accountPhase.Add(new Chunk("     " + _row.ACCOUNT_DESCRIPTION2, CellFont));
+
+        //            Phrase _detailRow = new Phrase();
+        //            _detailRow.Add(new Chunk(_row.ACCOUNT_DESCRIPTION, CellFont));
+
+
+        //            Cells = new PdfPCell[]{
+        //             new PdfPCell(_accountPhase),
+        //             new PdfPCell(new Phrase((_row.AMOUNT1.ToString() == "0")? "" : String.Format(nfi,"{0:C0}", _row.AMOUNT1) ,CellFont)),
+        //             new PdfPCell(new Phrase((_row.AMOUNT2.ToString() == "0") ? "" :String.Format(nfi,"{0:C0}", _row.AMOUNT2) ,CellFont)),
+        //             new PdfPCell(new Phrase((_row.AMOUNT3.ToString() == "0") ? "" :String.Format(nfi,"{0:C0}", _row.AMOUNT3) ,CellFont)),
+        //             new PdfPCell(new Phrase((_row.AMOUNT4.ToString() == "0") ? "" :String.Format(nfi,"{0:C0}", _row.AMOUNT4) ,CellFont)),
+        //             new PdfPCell(new Phrase((_row.AMOUNT5.ToString() == "0") ? "" :String.Format(nfi,"{0:C0}", _row.AMOUNT5) ,CellFont)),
+        //             new PdfPCell(new Phrase((_row.AMOUNT6.ToString() == "0") ? "" :String.Format(nfi,"{0:C0}", _row.AMOUNT6) ,CellFont)),
+        //             new PdfPCell(new Phrase((_row.AMOUNT7.ToString() == "0") ? "" :String.Format(nfi,"{0:C0}", _row.AMOUNT7) ,CellFont)),
+        //             new PdfPCell(new Phrase((_row.AMOUNT8.ToString() == "0") ? "" :String.Format(nfi,"{0:C0}", _row.AMOUNT8) ,CellFont)),
+        //             new PdfPCell(new Phrase((_row.AMOUNT9.ToString() == "0") ? "" :String.Format(nfi,"{0:C0}", _row.AMOUNT9) ,CellFont)),
+        //             new PdfPCell(new Phrase((_row.AMOUNT10.ToString() == "0") ? "" :String.Format(nfi,"{0:C0}", _row.AMOUNT10) ,CellFont)),
+        //             new PdfPCell(new Phrase((_row.AMOUNT11.ToString() == "0") ? "" :String.Format(nfi,"{0:C0}", _row.AMOUNT11) ,CellFont)),
+        //             new PdfPCell(new Phrase((_row.AMOUNT12.ToString() == "0") ? "" :String.Format(nfi,"{0:C0}", _row.AMOUNT12) ,CellFont)),
+        //             new PdfPCell(new Phrase((_row.TOTAL.ToString() == "0") ? "" : String.Format(nfi,"{0:C0}", _row.TOTAL), CellFont))
+        //         };
+
+        //            //Enable 1st column light gray
+        //            int rowcount = 1;
+        //            foreach (PdfPCell _cell in Cells)
+        //            {
+        //                if (rowcount == 1)
+        //                {
+        //                    if (_row.GROUPED == "Y")
+        //                    {
+        //                        _cell.BackgroundColor = new Color(224, 255, 255);
+        //                    }
+        //                    else
+        //                    {
+        //                        _cell.BackgroundColor = new Color(230, 230, 230);
+        //                    }
+
+        //                }
+        //                else
+        //                {
+        //                    if (_row.GROUPED == "Y")
+        //                    {
+        //                        _cell.BackgroundColor = new Color(224, 255, 255);
+        //                    }
+        //                    _cell.HorizontalAlignment = PdfCell.ALIGN_RIGHT;
+        //                }
+
+        //                rowcount = rowcount + 1;
+        //            }
+
+        //            Row = new PdfPRow(Cells);
+        //            _headerPdfTable.Rows.Add(Row);
+
+        //            _lastCategoryID = _row.CATEGORY_ID;
+
+        //        }
+
+        //        Row = new PdfPRow(Cells);
+        //        _headerPdfTable.Rows.Add(Row);
+
+
+        //        //Add Other Row
+
+        //        //Add a total line based on other
+        //        OVERHEAD_BUDGET_VIEW _summaryViewOther = SummaryViewByCategoryID(_budgetView, _lastCategoryID);
+
+        //        Phrase _totalPhaseOther = new Phrase();
+        //        _totalPhaseOther.Add(new Chunk(_summaryViewOther.CATEGORY_NAME + " - Total", TotalCellFont));
+        //        _totalPhaseOther.Add(new Chunk("\n"));
+
+        //        Cells = new PdfPCell[]{
+        //                    new PdfPCell(_totalPhaseOther),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewOther.AMOUNT1) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewOther.AMOUNT2) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewOther.AMOUNT3) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewOther.AMOUNT4) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewOther.AMOUNT5) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewOther.AMOUNT6) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewOther.AMOUNT7) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewOther.AMOUNT8) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewOther.AMOUNT9) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewOther.AMOUNT10) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewOther.AMOUNT11) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewOther.AMOUNT12) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewOther.TOTAL), TotalCellFont))
+        //                };
+
+        //        int cellCount2 = 1;
+        //        foreach (PdfPCell _cell in Cells)
+        //        {
+        //            if (cellCount2 == 1)
+        //            {
+        //                _cell.BackgroundColor = new Color(224, 224, 209);
+        //            }
+        //            else
+        //            {
+        //                _cell.BackgroundColor = new Color(224, 224, 209);
+        //                _cell.HorizontalAlignment = PdfCell.ALIGN_RIGHT;
+        //            }
+
+        //            cellCount2 = cellCount2 + 1;
+        //        }
+
+
+
+        //        Row = new PdfPRow(Cells);
+        //        _headerPdfTable.Rows.Add(Row);
+
+
+        //        //Add a total line based on budget
+
+        //        OVERHEAD_BUDGET_VIEW _summaryViewTotal = SummaryViewByBudgetID(_budgetView, budgetID);
+
+        //        Phrase _totalPhaseFinal = new Phrase();
+        //        _totalPhaseFinal.Add(new Chunk("Budget Total", FontFactory.GetFont("Verdana", 8, Font.BOLD)));
+        //        _totalPhaseFinal.Add(new Chunk("\n"));
+
+        //        Cells = new PdfPCell[]{
+        //                    new PdfPCell(_totalPhaseFinal),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewTotal.AMOUNT1) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewTotal.AMOUNT2) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewTotal.AMOUNT3) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewTotal.AMOUNT4) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewTotal.AMOUNT5) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewTotal.AMOUNT6) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewTotal.AMOUNT7) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewTotal.AMOUNT8) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewTotal.AMOUNT9) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewTotal.AMOUNT10) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewTotal.AMOUNT11) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewTotal.AMOUNT12) ,TotalCellFont)),
+        //                    new PdfPCell(new Phrase(String.Format(nfi,"{0:C0}", _summaryViewTotal.TOTAL), TotalCellFont))
+        //                };
+
+        //        int cellCount3 = 1;
+        //        foreach (PdfPCell _cell in Cells)
+        //        {
+        //            if (cellCount3 == 1)
+        //            {
+        //                _cell.BackgroundColor = new Color(224, 224, 209);
+        //            }
+        //            else
+        //            {
+        //                _cell.BackgroundColor = new Color(224, 224, 209);
+        //                _cell.HorizontalAlignment = PdfCell.ALIGN_RIGHT;
+        //            }
+
+        //            cellCount3 = cellCount3 + 1;
+        //        }
+
+
+
+        //        Row = new PdfPRow(Cells);
+        //        _headerPdfTable.Rows.Add(Row);
+
+
+        //        _document.Add(_headerPdfTable);
+
+        //        if (printOptions.SHOW_NOTES)
+        //        {
+        //            try
+        //            {
+
+        //                _document.NewPage();
+
+
+        //                //Header Table with Columns
+        //                PdfPTable _commentsPDFTable = new PdfPTable(2);
+        //                _commentsPDFTable.WidthPercentage = 100;
+        //                int[] intWidth = { 25, 75 };
+        //                _commentsPDFTable.SetWidths(intWidth);
+        //                _commentsPDFTable.HeaderRows = 2;
+
+        //                Cells = new PdfPCell[]{
+        //             new PdfPCell(new Phrase("Overhead Budget / " + _title[0], TotalCellFont )),
+        //             new PdfPCell(new Phrase("Account Notes",TotalCellFont))
+        //           };
+
+        //                foreach (PdfPCell _cell in Cells)
+        //                {
+        //                    _cell.BackgroundColor = new Color(230, 230, 230);
+        //                    _cell.HorizontalAlignment = PdfCell.ALIGN_CENTER;
+        //                }
+
+        //                Row = new PdfPRow(Cells);
+        //                _commentsPDFTable.Rows.Add(Row);
+
+        //                Cells = new PdfPCell[]{
+        //             new PdfPCell(new Phrase(_title[1] + " / " + _title[2], TotalCellFont )),
+        //             new PdfPCell(new Phrase(""))
+        //         };
+
+        //                foreach (PdfPCell _cell in Cells)
+        //                {
+        //                    _cell.BackgroundColor = new Color(230, 230, 230);
+        //                    _cell.HorizontalAlignment = PdfCell.ALIGN_CENTER;
+        //                }
+
+
+        //                Row = new PdfPRow(Cells);
+        //                _commentsPDFTable.Rows.Add(Row);
+
+
+        //                foreach (OVERHEAD_BUDGET_VIEW _row in _budgetView)
+        //                {
+        //                    if (_row.ACCOUNT_NOTES.Length > 0)
+        //                    {
+        //                        Phrase _accountPhase = new Phrase();
+        //                        _accountPhase.Add(new Chunk(_row.ACCOUNT_DESCRIPTION, CellFont));
+        //                        _accountPhase.Add(new Chunk(" " + _row.ACCOUNT_DESCRIPTION2, CellFont));
+
+
+        //                        Cells = new PdfPCell[]{
+        //                        new PdfPCell(_accountPhase),
+        //                        new PdfPCell(new Phrase(_row.ACCOUNT_NOTES,TotalCellFont))
+        //                                             };
+
+
+        //                        Row = new PdfPRow(Cells);
+        //                        _commentsPDFTable.Rows.Add(Row);
+        //                    }
+
+        //                }
+
+
+        //                _document.Add(_commentsPDFTable);
+
+        //                _document.Add(NewLine);
+        //                _document.Add(NewLine);
+
+
+        //                if (_budgetDetail.COMMENTS.Length > 0)
+        //                {
+
+        //                    //Overall Budget Notes
+        //                    PdfPTable _budgetNotes = new PdfPTable(1);
+        //                    _budgetNotes.WidthPercentage = 100;
+        //                    int[] _budgetNotesWidth = { 100 };
+        //                    _budgetNotes.SetWidths(_budgetNotesWidth);
+        //                    _budgetNotes.HeaderRows = 1;
+
+        //                    Cells = new PdfPCell[]{
+        //             new PdfPCell(new Phrase("Overhead Budget Notes / " + _title[0] + " / " + _title[1] + " / " + _title[2], TotalCellFont ))
+        //           };
+
+        //                    foreach (PdfPCell _cell in Cells)
+        //                    {
+        //                        _cell.BackgroundColor = new Color(230, 230, 230);
+        //                        _cell.HorizontalAlignment = PdfCell.ALIGN_LEFT;
+        //                    }
+
+        //                    Row = new PdfPRow(Cells);
+        //                    _budgetNotes.Rows.Add(Row);
+
+
+        //                    Cells = new PdfPCell[]{
+        //             new PdfPCell(new Phrase(_budgetDetail.COMMENTS,TotalCellFont))
+        //                                };
+
+        //                    Row = new PdfPRow(Cells);
+        //                    _budgetNotes.Rows.Add(Row);
+
+
+        //                    _document.Add(_budgetNotes);
+
+        //                }
+
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                System.Diagnostics.Debug.WriteLine(ex.InnerException);
+        //            }
+
+
+        //        }
+
+        //        ExportWriter.CloseStream = false;
+        //        _document.Close();
+        //        return _pdfMemoryStream;
+        //    }
+
+        //}
+
+
+
+        public static MemoryStream GenerateReport(Entities context, string budgetDescription, short fiscalYear, OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW_V1 _dataIn, Boolean printNotes = false)
         {
 
             using (MemoryStream _pdfMemoryStream = new MemoryStream())
@@ -1116,13 +1741,13 @@ namespace DBI.Data
                 PdfPRow Row;
                 _headerPdfTable.HeaderRows = 2;
 
-                List<string> _title = description.Split('/').ToList<string>();
+                List<string> _title = budgetDescription.Split('/').ToList<string>();
 
                 var _glMonthPeriods = OVERHEAD_BUDGET_FORECAST.GeneralLedgerPeriods(context).Where(x => x.PERIOD_YEAR == fiscalYear & x.PERIOD_TYPE == "Month");
                 var _glWeekPeriods = OVERHEAD_BUDGET_FORECAST.GeneralLedgerPeriods(context).Where(x => x.PERIOD_YEAR == fiscalYear & x.PERIOD_TYPE == "Week");
 
                 Cells = new PdfPCell[]{
-                     new PdfPCell(new Phrase("Overhead Budget / " + _title[0], TotalCellFont )),
+                     new PdfPCell(new Phrase(_title[0], TotalCellFont )),
                      new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 1).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),
                      new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 2).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),
                      new PdfPCell(new Phrase(string.Format("{0}", _glMonthPeriods.Where(x => x.PERIOD_NUM == 3).Single().ENTERED_PERIOD_NAME),HeadFootTitleFont)),
@@ -1174,13 +1799,9 @@ namespace DBI.Data
                 Row = new PdfPRow(Cells);
                 _headerPdfTable.Rows.Add(Row);
 
+                List<OVERHEAD_BUDGET_VIEW> _budgetView = _dataIn.OVERHEAD_BUDGET_VIEW.ToList();
 
-                OVERHEAD_ORG_BUDGETS _budgetDetail = OVERHEAD_BUDGET_FORECAST.BudgetByID(context, budgetID);
-                //Details Row
-                //Return budget detail information
-                IEnumerable<OVERHEAD_BUDGET_VIEW> _budgetView = BudgetDetailsViewByBudgetID(context, budgetID, true, printOptions.HIDE_BLANK_LINES, printOptions.ROLLUP, 0, organizationID, fiscalYear, _budgetDetail.OVERHEAD_BUDGET_TYPE_ID, printOptions.GROUP_ACCOUNTS);
-
-
+ 
                 NumberFormatInfo nfi = CultureInfo.CurrentCulture.NumberFormat;
                 nfi = (NumberFormatInfo)nfi.Clone();
                 nfi.CurrencySymbol = "";
@@ -1359,7 +1980,7 @@ namespace DBI.Data
 
                 //Add a total line based on budget
 
-                OVERHEAD_BUDGET_VIEW _summaryViewTotal = SummaryViewByBudgetID(_budgetView, budgetID);
+                OVERHEAD_BUDGET_VIEW _summaryViewTotal = SummaryViewByBudgetID(_budgetView, 0);
 
                 Phrase _totalPhaseFinal = new Phrase();
                 _totalPhaseFinal.Add(new Chunk("Budget Total", FontFactory.GetFont("Verdana", 8, Font.BOLD)));
@@ -1402,96 +2023,41 @@ namespace DBI.Data
 
                 Row = new PdfPRow(Cells);
                 _headerPdfTable.Rows.Add(Row);
-
-
                 _document.Add(_headerPdfTable);
 
-                if (printOptions.SHOW_NOTES)
+                if (printNotes)
                 {
-                    try
+
+                    // Budget notes will always exist count, but it's possible they are null or have no lenght.
+
+                    HR.ORGANIZATION _organizationInfo = new HR.ORGANIZATION();
+                    string _budgetDescription = "";
+
+                    foreach (OVERHEAD_ORG_BUDGETS _budget in _dataIn.OVERHEAD_ORG_BUDGETS)
                     {
+                        //Return Org Info
+                        _organizationInfo = HR.Organization(_budget.ORGANIZATION_ID);
 
-                        _document.NewPage();
+                        _budgetDescription = OVERHEAD_BUDGET_TYPE.GetDescriptionByTypeId(_budget.OVERHEAD_BUDGET_TYPE_ID);
 
+                        //Return a list of account comments
+                        List<OVERHEAD_ACCOUNT_COMMENT> _accountLevelComments = _dataIn.OVERHEAD_ACCOUNT_COMMENT.Where(x => x.ORG_BUDGET_ID == _budget.ORG_BUDGET_ID).ToList();
 
-                        //Header Table with Columns
-                        PdfPTable _commentsPDFTable = new PdfPTable(2);
-                        _commentsPDFTable.WidthPercentage = 100;
-                        int[] intWidth = { 25, 75 };
-                        _commentsPDFTable.SetWidths(intWidth);
-                        _commentsPDFTable.HeaderRows = 2;
-
-                        Cells = new PdfPCell[]{
-                     new PdfPCell(new Phrase("Overhead Budget / " + _title[0], TotalCellFont )),
-                     new PdfPCell(new Phrase("Account Notes",TotalCellFont))
-                   };
-
-                        foreach (PdfPCell _cell in Cells)
+                        if (_budget.COMMENTS != null || _accountLevelComments.Count() > 0)
                         {
-                            _cell.BackgroundColor = new Color(230, 230, 230);
-                            _cell.HorizontalAlignment = PdfCell.ALIGN_CENTER;
-                        }
 
-                        Row = new PdfPRow(Cells);
-                        _commentsPDFTable.Rows.Add(Row);
-
-                        Cells = new PdfPCell[]{
-                     new PdfPCell(new Phrase(_title[1] + " / " + _title[2], TotalCellFont )),
-                     new PdfPCell(new Phrase(""))
-                 };
-
-                        foreach (PdfPCell _cell in Cells)
-                        {
-                            _cell.BackgroundColor = new Color(230, 230, 230);
-                            _cell.HorizontalAlignment = PdfCell.ALIGN_CENTER;
-                        }
-
-
-                        Row = new PdfPRow(Cells);
-                        _commentsPDFTable.Rows.Add(Row);
-
-
-                        foreach (OVERHEAD_BUDGET_VIEW _row in _budgetView)
-                        {
-                            if (_row.ACCOUNT_NOTES.Length > 0)
-                            {
-                                Phrase _accountPhase = new Phrase();
-                                _accountPhase.Add(new Chunk(_row.ACCOUNT_DESCRIPTION, CellFont));
-                                _accountPhase.Add(new Chunk(" " + _row.ACCOUNT_DESCRIPTION2, CellFont));
-
-
-                                Cells = new PdfPCell[]{
-                                new PdfPCell(_accountPhase),
-                                new PdfPCell(new Phrase(_row.ACCOUNT_NOTES,TotalCellFont))
-                                                     };
-
-
-                                Row = new PdfPRow(Cells);
-                                _commentsPDFTable.Rows.Add(Row);
-                            }
-
-                        }
-
-
-                        _document.Add(_commentsPDFTable);
-
-                        _document.Add(NewLine);
-                        _document.Add(NewLine);
-
-
-                        if (_budgetDetail.COMMENTS.Length > 0)
-                        {
+                            _document.NewPage();
 
                             //Overall Budget Notes
                             PdfPTable _budgetNotes = new PdfPTable(1);
                             _budgetNotes.WidthPercentage = 100;
                             int[] _budgetNotesWidth = { 100 };
                             _budgetNotes.SetWidths(_budgetNotesWidth);
-                            _budgetNotes.HeaderRows = 1;
+                            _budgetNotes.HeaderRows = 1;   
 
                             Cells = new PdfPCell[]{
-                     new PdfPCell(new Phrase("Overhead Budget Notes / " + _title[0] + " / " + _title[1] + " / " + _title[2], TotalCellFont ))
-                   };
+                                                new PdfPCell(new Phrase("Overhead Budget Notes / " + _organizationInfo.ORGANIZATION_NAME + " / " + _budget.FISCAL_YEAR + " / " + _budgetDescription, TotalCellFont ))
+                                                              };
 
                             foreach (PdfPCell _cell in Cells)
                             {
@@ -1502,10 +2068,18 @@ namespace DBI.Data
                             Row = new PdfPRow(Cells);
                             _budgetNotes.Rows.Add(Row);
 
-
-                            Cells = new PdfPCell[]{
-                     new PdfPCell(new Phrase(_budgetDetail.COMMENTS,TotalCellFont))
-                                        };
+                            if (_budget.COMMENTS != null)
+                            {
+                                Cells = new PdfPCell[]{
+                                                new PdfPCell(new Phrase(_budget.COMMENTS,TotalCellFont))
+                                                              };
+                            }
+                            else
+                            {
+                                Cells = new PdfPCell[]{
+                                                new PdfPCell(new Phrase("Account Level Notes Only",TotalCellFont))
+                                                              };
+                            }
 
                             Row = new PdfPRow(Cells);
                             _budgetNotes.Rows.Add(Row);
@@ -1513,16 +2087,50 @@ namespace DBI.Data
 
                             _document.Add(_budgetNotes);
 
+                            _document.Add(NewLine);
                         }
 
-                    }
-                    catch (Exception ex)
-                    {
-                        System.Diagnostics.Debug.WriteLine(ex.InnerException);
-                    }
 
+                        foreach(OVERHEAD_ACCOUNT_COMMENT _comment in _accountLevelComments)
+                        {
+                            if (_comment.COMMENTS != null)
+                            {
+
+                                //Header Table with Columns
+                                PdfPTable _commentsPDFTable = new PdfPTable(2);
+                                _commentsPDFTable.WidthPercentage = 100;
+                                int[] intWidth = { 25, 75 };
+                                _commentsPDFTable.SetWidths(intWidth);
+
+                                //We need the description for the account
+                                GL_ACCOUNTS_V _accountInfo = GL_ACCOUNTS_V.AccountInformation((long)_comment.CODE_COMBINATION_ID);
+
+
+                                Phrase _accountPhase = new Phrase();
+                                _accountPhase.Add(new Chunk(_accountInfo.SEGMENT5_DESC, CellFont));
+                                _accountPhase.Add(new Chunk(" (" + _accountInfo.SEGMENT1 + "." + _accountInfo.SEGMENT2 + "." + _accountInfo.SEGMENT3 + "." + _accountInfo.SEGMENT4 + ")", CellFont));
+
+                                Cells = new PdfPCell[]{
+                                                            new PdfPCell(_accountPhase),
+                                                            new PdfPCell(new Phrase(_comment.COMMENTS,TotalCellFont))
+                                                                                 };
+
+                                Row = new PdfPRow(Cells);
+                                _commentsPDFTable.Rows.Add(Row);
+
+
+                                _document.Add(_commentsPDFTable);
+
+                            }
+                        }
+
+
+                       
+
+                    }
 
                 }
+
 
                 ExportWriter.CloseStream = false;
                 _document.Close();
@@ -1535,7 +2143,6 @@ namespace DBI.Data
         public class PRINT_OPTIONS
         {
             public Boolean SHOW_NOTES { get; set; }
-            public Boolean ROLLUP { get; set; }
             public Boolean HIDE_BLANK_LINES { get; set; }
             public Boolean GROUP_ACCOUNTS { get; set; }
         }

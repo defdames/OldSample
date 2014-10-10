@@ -18,7 +18,14 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!X.IsAjaxRequest) ;
+            if (!X.IsAjaxRequest)
+            {
+                if (!validateComponentSecurity("SYS.TimeClock.Payroll"))
+                {
+                    X.Redirect("~/Views/uxDefault.aspx");
+                }
+            }
+
 
             if (uxToggleSubmitted.Checked)
             { uxSubmitButton.Disabled = true; }
@@ -384,7 +391,8 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                             dtrecord.ADJUSTMENT = "N";
                             dtrecord.FRINGE_RATE = 0;
                             dtrecord.TOTAL_HOURS =_TimeSum;
-                            dtrecord.PREVAILING_WAGE_RATE = null;
+                            dtrecord.FRINGE_RATE = 0;
+                            dtrecord.PREVAILING_WAGE_RATE = (decimal)DBI.Data.TIMECLOCK.ReturnEmployeeSalary(_employeeInfo.PERSON_ID);
                             dtrecord.EFFECTIVE_START_DATE = current.GetFirstDayOfWeek().AddDays(-7).Date;
                             dtrecord.EFFECTIVE_END_DATE = current.GetLastDayOfWeek().AddDays(-7).Date;
 

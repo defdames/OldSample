@@ -65,17 +65,7 @@ namespace DBI.Data.Test
         #endregion
 
 
-        /// <summary>
-        ///A test for BudgetDetailsViewByBudgetID
-        ///</summary>
-        [TestMethod()]
-        public void BudgetDetailsViewByBudgetIDTest()
-        {
-            Entities context = new Entities(); // TODO: Initialize to an appropriate value
-            List<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW> actual;
-            actual = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByBudgetID(context, 0, false, false, true, 121, 0, 2012, 169, false);
-        }
-
+       
         /// <summary>
         ///A test for ImportActualForBudgetVersion
         ///</summary>
@@ -132,5 +122,7 @@ namespace DBI.Data.Test
             actual = OVERHEAD_BUDGET_FORECAST.OrganizationBudgetsByHierarchy(context, hierarchyID, leOrganizationID, withSecurity, withEMSSecurity);
             Assert.AreEqual(1, 1);
         }
+
+        
     }
 }

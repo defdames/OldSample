@@ -82,7 +82,7 @@
                 metadata.style = "background-color: #FFFF99;";
             }
 
-            if (isNaN(parseInt.value) == true) { return value; }
+            if (isNaN(value) || isNaN(parseInt(value))) { return value; }
 
             var template = '<span style="color:{0};">{1}</span>';
 
@@ -471,6 +471,13 @@
                                                                     <ExtraParams>
                                                                         <ext:Parameter Name="RecordType" Value="MATERIAL" Mode="Value" />
                                                                     </ExtraParams>
+                                                                </Click>
+                                                            </DirectEvents>
+                                                        </ext:Button>
+                                                        <ext:Button ID="uxAddNewBOM" runat="server" Text="Add BOM Items" Icon="PackageAdd">
+                                                            <DirectEvents>
+                                                                <Click OnEvent="deAddNewBOM">
+                                                                    <EventMask ShowMask="true" Msg="Processing..." />
                                                                 </Click>
                                                             </DirectEvents>
                                                         </ext:Button>

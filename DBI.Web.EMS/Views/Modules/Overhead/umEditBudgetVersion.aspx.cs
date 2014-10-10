@@ -272,14 +272,14 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     uxImportActualsButton.Disable();
                 }
 
-                List<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW> _data = new List<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW>();
+                OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW_V1 _data = new OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW_V1();
    
 
                 _data = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByBudgetID(_context, _budgetid, hideBlankLines:uxHideBlankLinesCheckbox.Checked, collapseAccountLines:uxCollapseAccountTotals.Checked);
 
 
                 int count;
-                uxOrganizationAccountStore.DataSource = GenericData.ListFilterHeader<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW>(e.Start, 5000, e.Sort, e.Parameters["filterheader"], _data.AsQueryable(), e.Parameters["group"], out count);
+                uxOrganizationAccountStore.DataSource = GenericData.ListFilterHeader<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW>(e.Start, 5000, e.Sort, e.Parameters["filterheader"], _data.OVERHEAD_BUDGET_VIEW.AsQueryable(), e.Parameters["group"], out count);
                 e.Total = count;
 
 
@@ -372,46 +372,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         }
 
-        protected void deExportData(object sender, StoreSubmitDataEventArgs e)
-        {
-            string format = this.FormatType.Value.ToString();
-
-            XmlNode xml = e.Xml;
-
-            this.Response.Clear();
-
-            switch (format)
-            {
-                case "xml":
-                    string strXml = xml.OuterXml;
-                    this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.xml");
-                    this.Response.AddHeader("Content-Length", strXml.Length.ToString());
-                    this.Response.ContentType = "application/xml";
-                    this.Response.Write(strXml);
-                    break;
-
-                case "xls":
-                    this.Response.ContentType = "application/vnd.ms-excel";
-                    this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.xls");
-                    XslCompiledTransform xtExcel = new XslCompiledTransform();
-                    xtExcel.Load(Server.MapPath("Excel.xsl"));
-                    xtExcel.Transform(xml, null, Response.OutputStream);
-
-                    break;
-
-                case "csv":
-                    this.Response.ContentType = "application/octet-stream";
-                    this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.csv");
-                    XslCompiledTransform xtCsv = new XslCompiledTransform();
-                    xtCsv.Load(Server.MapPath("Csv.xsl"));
-                    xtCsv.Transform(xml, null, Response.OutputStream);
-
-                    break;
-            }
-            this.Response.End();
-        }
-
-
+       
         protected void ExportToExcel(object sender, DirectEventArgs e)
         {
 
@@ -454,10 +415,11 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 OVERHEAD_BUDGET_FORECAST.PRINT_OPTIONS _printOptions = new OVERHEAD_BUDGET_FORECAST.PRINT_OPTIONS();
                 _printOptions.HIDE_BLANK_LINES = uxHideBlankLinesCheckbox.Checked;
 
-                IEnumerable<OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW> _budgetView = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByBudgetID(_context, _budgetid, true, _printOptions.HIDE_BLANK_LINES);
+               OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW_V1 _budgetView = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByBudgetID(_context, _budgetid, true, _printOptions.HIDE_BLANK_LINES);
+
 
                 int _cellCount = 2;
-                foreach (OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW _row in _budgetView)
+                foreach (OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW _row in _budgetView.OVERHEAD_BUDGET_VIEW)
                 {
 
                     ws.Cells["A" + _cellCount].Value = _row.ACCOUNT_DESCRIPTION + " - " + _row.ACCOUNT_DESCRIPTION2;
@@ -540,24 +502,28 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         public void printOverheadBudget(object sender, DirectEventArgs e)
         {
+            long _organizationID;
+            bool checkOrgId = long.TryParse(Request.QueryString["orgid"], out _organizationID);
             short _fiscal_year = short.Parse(Request.QueryString["fiscalyear"]);
-            long _organizationID = long.Parse(Request.QueryString["orgid"]);
             long _budgetid = long.Parse(Request.QueryString["budget_id"]);
             string _description = Request.QueryString["description"];
 
-            using(Entities _context = new Entities())
+
+            using (Entities _context = new Entities())
             {
+                //pull budget detail data
+                var _budgetDetail = OVERHEAD_BUDGET_FORECAST.BudgetByID(_context, _budgetid);
 
-                OVERHEAD_BUDGET_FORECAST.PRINT_OPTIONS _printOptions = new OVERHEAD_BUDGET_FORECAST.PRINT_OPTIONS();
-                _printOptions.HIDE_BLANK_LINES = uxPrintBlank.Checked;
-                _printOptions.GROUP_ACCOUNTS = uxPrintGroup.Checked;
-                _printOptions.SHOW_NOTES = uxPrintNote.Checked;
-                _printOptions.ROLLUP = uxPrintRollup.Checked;
+                if (_budgetDetail.STATUS == "C")
+                {
+                    uxImportActualsButton.Disable();
+                }
 
+                OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW_V1 _data = new OVERHEAD_BUDGET_FORECAST.OVERHEAD_BUDGET_VIEW_V1();
+                _data = OVERHEAD_BUDGET_FORECAST.BudgetDetailsViewByBudgetID(_context, _budgetid, hideBlankLines: uxHideBlankLinesCheckbox.Checked, collapseAccountLines: uxCollapseAccountTotals.Checked,printView:true);
 
-                MemoryStream PdfStream = OVERHEAD_BUDGET_FORECAST.GenerateReport(_context, _organizationID, _fiscal_year, _budgetid, _description, _printOptions);
+                MemoryStream PdfStream = OVERHEAD_BUDGET_FORECAST.GenerateReport(_context, _description, _fiscal_year, _data, uxPrintNote.Checked);
 
-                
                 string _filename = _organizationID + "_" + _fiscal_year + "_budget.pdf";
                 string _filePath = Request.PhysicalApplicationPath + _filename;
                 FileStream fs = new FileStream(_filePath,FileMode.Create);
