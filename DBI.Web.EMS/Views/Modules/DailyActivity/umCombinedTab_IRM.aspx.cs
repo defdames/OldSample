@@ -186,12 +186,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     double Hours = Math.Truncate((double)item.TRAVEL_TIME);
                     double Minutes = Math.Round(((double)item.TRAVEL_TIME - Hours) * 60);
                     TimeSpan TotalTimeSpan = new TimeSpan(Convert.ToInt32(Hours), Convert.ToInt32(Minutes), 0);
-                    item.TRAVEL_TIME_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
+                    item.TRAVEL_TIME_FORMATTED = DateTime.Now.Date + TotalTimeSpan;
                     item.TOTAL_HOURS = (item.TIME_OUT - item.TIME_IN).ToString("hh\\:mm");
                     Hours = Math.Truncate((double)item.DRIVE_TIME);
                     Minutes = Math.Round(((double)item.DRIVE_TIME - Hours) * 60);
                     TotalTimeSpan = new TimeSpan(Convert.ToInt32(Hours), Convert.ToInt32(Minutes), 0);
-                    item.DRIVE_TIME_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
+                    item.DRIVE_TIME_FORMATTED = DateTime.Now.Date + TotalTimeSpan;
                     Hours = Math.Truncate((double)item.SHOPTIME_AM);
                     Minutes = Math.Round(((double)item.SHOPTIME_AM - Hours) * 60);
                     TotalTimeSpan = new TimeSpan(Convert.ToInt32(Hours), Convert.ToInt32(Minutes), 0);
@@ -216,7 +216,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         }
                     }
                     
-                    WarningData EmployeeBusinessUnitFailures = ValidationChecks.EmployeeBusinessUnitCheck(item.EMPLOYEE_ID);
+                    WarningData EmployeeBusinessUnitFailures = ValidationChecks.EmployeeBusinessUnitCheck((long)item.EMPLOYEE_ID);
                     if (EmployeeBusinessUnitFailures != null)
                     {
                         WarningList.Add(EmployeeBusinessUnitFailures);
@@ -242,7 +242,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             WarningList.Add(EmployeeOver14);
                         }
                     }
-                    List<WarningData> DuplicatePerDiems = ValidationChecks.checkPerDiem(item.EMPLOYEE_ID, item.HEADER_ID);
+                    List<WarningData> DuplicatePerDiems = ValidationChecks.checkPerDiem((long)item.EMPLOYEE_ID, item.HEADER_ID);
                     if (DuplicatePerDiems.Count > 0)
                     {
                         WarningList.AddRange(DuplicatePerDiems);
