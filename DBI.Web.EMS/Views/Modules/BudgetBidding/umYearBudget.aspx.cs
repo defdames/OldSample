@@ -16,21 +16,21 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         {
             if (!X.IsAjaxRequest)
             {
-
-                List<object> list = new List<object>
-                {
-                        new { ACTION_ID = "reporgSum" ,ACTION_NAME =  "Org Summary" }
-                };
-
-                this.reportList.DataSource = list;
-                this.reportList.DataBind();
-
-
                 if (!BasePage.validateComponentSecurity("SYS.BudgetBidding.Security"))
                 {
                     X.Redirect("~/Views/uxDefault.aspx");
                 }
 
+                List<object> list = new List<object>
+                {
+                    new { ACTION_ID = "repOrgSum" ,ACTION_NAME =  "Org Summary" },
+                    new { ACTION_ID = "repOrgComm" ,ACTION_NAME =  "Comments & Variances" },
+                    new { ACTION_ID = "repOrgLiab" ,ACTION_NAME =  "Liabilities" },
+                    new { ACTION_ID = "repOrgAllPro" ,ACTION_NAME =  "All Projects - Including Detail Sheets" }
+                };
+
+                this.reportList.DataSource = list;
+                this.reportList.DataBind();
 
                 long leOrgID = long.Parse(Request.QueryString["leOrgID"]);
                 long orgID = long.Parse(Request.QueryString["orgID"]);
@@ -381,73 +381,66 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         // Reports
         protected void deLoadReports(object sender, DirectEventArgs e)
         {
-
-            string strreportName = uxSummaryReports.Value.ToString();
-            if (strreportName == "reporgSum")
+            string reportName = uxSummaryReports.Value.ToString();
+            string url ="";
+            if (reportName == "repOrgSum")
             {
-
-                string strOrgID = Request.QueryString["OrgID"];
-                string strYearID = Request.QueryString["fiscalYear"];
-                string strVerID = Request.QueryString["verID"];
-                string strPrevYearID = uxHidPrevYear.Text;
-                string strPrevVerID = uxHidPrevVer.Text;
-
-                
-
-                string strorgName = Request.QueryString["orgName"];
+                string orgName = Request.QueryString["orgName"];
                 long orgID = long.Parse(Request.QueryString["OrgID"]);
                 long yearID = long.Parse(Request.QueryString["fiscalYear"]);
                 long verID = long.Parse(Request.QueryString["verID"]);
-                long prevYearID = Convert.ToInt64(uxHidPrevYear.Text);
-                long prevVerID = Convert.ToInt64(uxHidPrevVer.Text);
+                string prevYearID = uxHidPrevYear.Text;
+                string prevVerID = uxHidPrevVer.Text;
+                string oh = BBOH.DataSingle(orgID, yearID, verID).OH.ToString();
 
-                string strOH = BBOH.DataSingle(orgID, yearID, verID).OH.ToString();
-
-
-
-                string url = "/Views/Modules/BudgetBidding/Reports/umReport1.aspx?orgName=" + strorgName + "&orgID=" + orgID + "&yearID=" + yearID + "&verID=" + verID + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID + "&oh=" + strOH;
-
-                Window win = new Window
-                {
-                    ID = "uxReport",
-                    Title = "Report",
-                    Height = 800,
-                    Width = 800,
-                    Modal = true,
-                    Resizable = true,
-                    CloseAction = CloseAction.Destroy,
-                    Loader = new ComponentLoader
-                    {
-                        Mode = LoadMode.Frame,
-                        DisableCaching = true,
-                        Url = url,
-                        AutoLoad = true,
-                        LoadMask =
-                        {
-                            ShowMask = true
-                        }
-                    }
-
-
-                };
-                //win.Listeners.Close.Handler = "#{uxPayrollAuditGrid}.getStore().load();";
-                
-                win.Render(this.Form);
-                win.Show();
-                uxSummaryReports.Reset();
-
+                url = "/Views/Modules/BudgetBidding/Reports/umRepOrgSum.aspx?orgName=" + orgName + "&orgID=" + orgID + "&yearID=" + yearID + "&verID=" + verID + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID + "&oh=" + oh;
             }
-            else
+            else if (reportName == "repOrgComm")
             {
 
             }
-           
-        }
-        protected void deChooseReport(object sender, DirectEventArgs e)
-        {
+            else if (reportName == "repOrgLiab")
+            {
+                string orgName = Request.QueryString["orgName"];
+                long orgID = long.Parse(Request.QueryString["OrgID"]);
+                long yearID = long.Parse(Request.QueryString["fiscalYear"]);
+                long verID = long.Parse(Request.QueryString["verID"]);
+                string prevYearID = uxHidPrevYear.Text;
+                string prevVerID = uxHidPrevVer.Text;
+                string oh = BBOH.DataSingle(orgID, yearID, verID).OH.ToString();
 
-        }
+                url = "/Views/Modules/BudgetBidding/Reports/umRepOrgLiab.aspx?orgName=" + orgName + "&orgID=" + orgID + "&yearID=" + yearID + "&verID=" + verID + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID + "&oh=" + oh;
+            }
+            else if (reportName == "repoOrgAllPro")
+            {
 
+            }
+
+            Window win = new Window
+            {
+                ID = "uxReport",
+                Title = "Report",
+                Height = 600,
+                Width = 1120,
+                Modal = true,
+                Resizable = true,
+                CloseAction = CloseAction.Destroy,
+                Loader = new ComponentLoader
+                {
+                    Mode = LoadMode.Frame,
+                    DisableCaching = true,
+                    Url = url,
+                    AutoLoad = true,
+                    LoadMask =
+                    {
+                        ShowMask = true
+                    }
+                }
+            };
+            win.Render(this.Form);
+            win.Show();
+            uxSummaryReports.Reset();
+        }
 
 
         // Load Project Info                        
@@ -1516,13 +1509,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             if (amount < lowRange || amount > highRange) { amount = 0; }
             return amount;
         }
-
-        
-        private void LoadReport()
-        {
-            
-        }
-
         protected void deCancel(object sender, DirectEventArgs e)
         {
             uxProjectInfo.Disable();

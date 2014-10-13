@@ -6,10 +6,9 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Microsoft.Reporting.WebForms;
 
-
 namespace DBI.Web.EMS.Views.Modules.BudgetBidding.Reports
 {
-    public partial class WebForm1 : System.Web.UI.Page
+    public partial class umRepOrgLiab : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -17,15 +16,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding.Reports
             {
                 if (!Page.IsPostBack)
                 {
-
-
                     string orgName = Request.QueryString["orgName"];
                     long orgID = Convert.ToInt64(Request.QueryString["orgID"]);
                     long yearID = Convert.ToInt64(Request.QueryString["yearID"]);
                     long verID = Convert.ToInt64(Request.QueryString["verID"]);
                     long prevYearID = Convert.ToInt64(Request.QueryString["prevYearID"]);
                     long prevVerID = Convert.ToInt64(Request.QueryString["prevVerID"]);
-                    string oh   =   Request.QueryString["oh"];
+                    string oh = Request.QueryString["oh"];
 
 
                     string iyearID = yearID.ToString();
@@ -39,8 +36,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding.Reports
 
                     ReportParameter pyID = new ReportParameter("pyearID", iyearID);
                     this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { pyID });
-                    ReportParameter pohead = new ReportParameter("poh", oh);
-                    this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { pohead });
+                    //ReportParameter pohead = new ReportParameter("poh", oh);
+                    //this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { pohead });
                     ReportParameter poName = new ReportParameter("porgName", orgName);
                     this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { poName });
                     if (verID == 1)
@@ -88,17 +85,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding.Reports
 
         protected void Page_Init(object sender, EventArgs e)
         {
-            //ReportViewer1.ProcessingMode = ProcessingMode.Local;
 
-            //LocalReport localReport = ReportViewer1.LocalReport;
-
-            
-        }
-
-        
-
-        
+        }     
     }
-
-    //public static DataTable GetReportData( )
 }

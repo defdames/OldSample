@@ -174,7 +174,7 @@
                             runat="server"
                             ValueField="ID_NAME"
                             DisplayField="ID_NAME"
-                            Width="253"
+                            Width="200"
                             EmptyText="-- Actions --"
                             Editable="false">
                             <Store>
@@ -204,7 +204,7 @@
                             runat="server"
                             ValueField="ACTION_ID"
                             DisplayField="ACTION_NAME"
-                            Width="200"
+                            Width="253"
                             EmptyText="-- Reports/Export --"
                             Editable="false">
                             <Store>
