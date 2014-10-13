@@ -1181,13 +1181,11 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Report1.rdlc" />
     <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\Report2.rdlc" />
     <EmbeddedResource Include="Views\Modules\CrossingMaintenance\StateCrossingList.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>StateCrossingList.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Modules\BudgetBidding\Reports\Report1.rdlc" />
     <EmbeddedResource Include="Views\Modules\BudgetBidding\Reports\umRepOrgComm.rdlc" />
     <EmbeddedResource Include="Views\Modules\BudgetBidding\Reports\umRepOrgLiab.rdlc" />
     <EmbeddedResource Include="Views\Modules\BudgetBidding\Reports\umRepOrgSum.rdlc" />
