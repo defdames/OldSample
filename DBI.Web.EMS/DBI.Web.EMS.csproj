@@ -48,16 +48,6 @@
     <Reference Include="Antlr3.Runtime">
       <HintPath>..\packages\WebGrease.1.3.0\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="CrystalDecisions.Web, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
@@ -154,7 +144,9 @@
     <Content Include="Resources\Images\wwbnight.png" />
     <Content Include="Resources\Scripts\jquery-2.0.1.js" />
     <Content Include="Resources\Scripts\jquery-2.0.1.min.js" />
-    <Content Include="Views\Modules\BudgetBidding\Reports\umReport1.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\Reports\umRepOrgComm.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\Reports\umRepOrgLiab.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\Reports\umRepOrgSum.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umAdminMain.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umBlankBudget.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umBOM.aspx" />
@@ -274,17 +266,6 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Views\Modules\BudgetBidding\Reports\DataSet1.xsc">
-      <DependentUpon>DataSet1.xsd</DependentUpon>
-    </Content>
-    <None Include="Views\Modules\BudgetBidding\Reports\DataSet1.xsd">
-      <SubType>Designer</SubType>
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DataSet1.Designer.cs</LastGenOutput>
-    </None>
-    <Content Include="Views\Modules\BudgetBidding\Reports\DataSet1.xss">
-      <DependentUpon>DataSet1.xsd</DependentUpon>
-    </Content>
     <None Include="Web.APPDEV.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -332,22 +313,30 @@
     <Compile Include="Views\Handlers\SystemUsers.ashx.cs">
       <DependentUpon>SystemUsers.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\BudgetBidding\Reports\DataSet1.cs">
-      <DependentUpon>DataSet1.xsd</DependentUpon>
-      <SubType>Component</SubType>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepOrgComm.aspx.cs">
+      <DependentUpon>umRepOrgComm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\BudgetBidding\Reports\DataSet1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DataSet1.xsd</DependentUpon>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepOrgComm.aspx.designer.cs">
+      <DependentUpon>umRepOrgComm.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\BudgetBidding\Reports\umReport1.aspx.cs">
-      <DependentUpon>umReport1.aspx</DependentUpon>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepOrgLiab.aspx.cs">
+      <DependentUpon>umRepOrgLiab.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Views\Modules\BudgetBidding\Reports\umReport1.aspx.designer.cs">
       <DependentUpon>umReport1.aspx</DependentUpon>
       </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepOrgLiab.aspx.designer.cs">
+      <DependentUpon>umRepOrgLiab.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepOrgSum.aspx.cs">
+      <DependentUpon>umRepOrgSum.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepOrgSum.aspx.designer.cs">
+      <DependentUpon>umRepOrgSum.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\BudgetBidding\umAdminMain.aspx.cs">
       <DependentUpon>umAdminMain.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1187,7 +1176,9 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\Modules\BudgetBidding\Reports\Report1.rdlc" />
+    <EmbeddedResource Include="Views\Modules\BudgetBidding\Reports\umRepOrgComm.rdlc" />
+    <EmbeddedResource Include="Views\Modules\BudgetBidding\Reports\umRepOrgLiab.rdlc" />
+    <EmbeddedResource Include="Views\Modules\BudgetBidding\Reports\umRepOrgSum.rdlc" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
