@@ -19,9 +19,9 @@ namespace DBI.Mobile.EMS.Controllers
             if (id == "production")
             {
                 Version ver = new Version();
-                ver.number = "1.0.T141010";
+                ver.number = "1.0.T141011";
                 ver.mandatory = true;
-                ver.install_url = "itms-services://?action=download-manifest&url=https://emsmobile.dbiservices.com/iems/iEMS.plist";
+                ver.install_url = "itms-services://?action=download-manifest&url=https://emsmobiletest.dbiservices.com/iems/iEMS.plist";
                 ver.descriptionText = "Added EPA numbers from inventory and support for IOS 8.0";
 
                 RootObject root = new RootObject();
