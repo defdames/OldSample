@@ -420,8 +420,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             {
                 ID = "uxReport",
                 Title = "Report",
-                Height = 500,
-                Width = 1000,
+                Height = 600,
+                Width = 1120,
                 Modal = true,
                 Resizable = true,
                 CloseAction = CloseAction.Destroy,

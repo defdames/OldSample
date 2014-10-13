@@ -1002,6 +1002,8 @@ namespace DBI.Data
                 public string COMPARE_PRJ_OVERRIDE { get; set; }
                 public string WE_OVERRIDE { get; set; }
                 public string COMMENTS { get; set; }
+                public string LIABILITY { get; set; }
+                public decimal LIABILITY_OP { get; set; }
             }
             #endregion
 
@@ -1011,7 +1013,8 @@ namespace DBI.Data
                     WITH
                         CUR_PROJECT_INFO_WITH_STATUS AS(
                             SELECT BUD_BID_STATUS.STATUS_ID, BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID, BUD_BID_PROJECTS.PROJECT_ID, BUD_BID_PROJECTS.TYPE, BUD_BID_PROJECTS.PRJ_NAME, BUD_BID_STATUS.STATUS,
-                                BUD_BID_PROJECTS.ACRES, BUD_BID_PROJECTS.DAYS, BUD_BID_PROJECTS.COMPARE_PRJ_OVERRIDE, BUD_BID_PROJECTS.COMPARE_PRJ_AMOUNT, BUD_BID_PROJECTS.WE_OVERRIDE, BUD_BID_PROJECTS.COMMENTS
+                                BUD_BID_PROJECTS.ACRES, BUD_BID_PROJECTS.DAYS, BUD_BID_PROJECTS.COMPARE_PRJ_OVERRIDE, BUD_BID_PROJECTS.COMPARE_PRJ_AMOUNT, BUD_BID_PROJECTS.WE_OVERRIDE, BUD_BID_PROJECTS.COMMENTS,
+                                BUD_BID_PROJECTS.LIABILITY, BUD_BID_PROJECTS.LIABILITY_OP
                             FROM BUD_BID_PROJECTS
                             INNER JOIN BUD_BID_STATUS
                             ON BUD_BID_PROJECTS.STATUS_ID = BUD_BID_STATUS.STATUS_ID
@@ -1078,7 +1081,9 @@ namespace DBI.Data
                         BUDGET_LINE_AMOUNTS.OP - (CASE WHEN CUR_PROJECT_INFO_WITH_STATUS.COMPARE_PRJ_OVERRIDE = 'Y' THEN CUR_PROJECT_INFO_WITH_STATUS.COMPARE_PRJ_AMOUNT ELSE (CASE WHEN PREV_OP.PREV_OP IS NULL THEN 0 ELSE PREV_OP.PREV_OP END) END) OP_VAR,
                         CUR_PROJECT_INFO_WITH_STATUS.COMPARE_PRJ_OVERRIDE,
                         CUR_PROJECT_INFO_WITH_STATUS.WE_OVERRIDE,
-                        CUR_PROJECT_INFO_WITH_STATUS.COMMENTS
+                        CUR_PROJECT_INFO_WITH_STATUS.COMMENTS,
+                        CUR_PROJECT_INFO_WITH_STATUS.LIABILITY,
+                        CUR_PROJECT_INFO_WITH_STATUS.LIABILITY_OP
                     FROM CUR_PROJECT_INFO_WITH_STATUS
                     LEFT OUTER JOIN ORACLE_PROJECT_NAMES ON CUR_PROJECT_INFO_WITH_STATUS.PROJECT_ID = ORACLE_PROJECT_NAMES.PROJECT_ID AND CUR_PROJECT_INFO_WITH_STATUS.TYPE = ORACLE_PROJECT_NAMES.TYPE
                     LEFT OUTER JOIN BUDGET_LINE_AMOUNTS ON CUR_PROJECT_INFO_WITH_STATUS.BUD_BID_PROJECTS_ID = BUDGET_LINE_AMOUNTS.PROJECT_ID
@@ -1089,6 +1094,11 @@ namespace DBI.Data
                 {
                     return context.Database.SqlQuery<Fields>(sql).ToList();                    
                 }
+            }
+
+            public static List<Fields> LiabilitiesOnly(string orgName, long orgID, long yearID, long verID, long prevYearID, long prevVerID)
+            {
+                return Data(orgName, orgID, yearID, verID, prevYearID, prevVerID).Where(x => x.LIABILITY == "Y").ToList(); 
             }
         }
 

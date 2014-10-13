@@ -11,14 +11,14 @@
 <body>
     <form id="form1" runat="server">
        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
-                <rsweb:ReportViewer ID="ReportViewer1" runat="server" Width="100%" Font-Names="Verdana" Font-Size="8pt" WaitMessageFont-Names="Verdana" WaitMessageFont-Size="14pt" Height="473px">
+                <rsweb:ReportViewer ID="ReportViewer1" runat="server" Width="100%" Font-Names="Verdana" Font-Size="8pt" WaitMessageFont-Names="Verdana" WaitMessageFont-Size="14pt" Height="540px">
                     <LocalReport ReportEmbeddedResource="DBI.Web.EMS.Views.Modules.BudgetBidding.Reports.umRepOrgSum.rdlc" ReportPath="Views\Modules\BudgetBidding\Reports\umRepOrgSum.rdlc">
                         <DataSources>
                             <rsweb:ReportDataSource DataSourceId="ObjectDataSource1" Name="Org_Summary" />
                         </DataSources>
                     </LocalReport>
         </rsweb:ReportViewer>    
-        <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="Data" TypeName="DBI.Data.BBSummary+Grid, DBI.Data, Version=2.2014.718.199, Culture=neutral, PublicKeyToken=null">
+        <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="Data" TypeName="DBI.Data.BBSummary+Grid">
             <SelectParameters>
                 <asp:QueryStringParameter DefaultValue="" Name="orgName" QueryStringField="strorgName" Type="String" />
                 <asp:QueryStringParameter DefaultValue="" Name="orgID" QueryStringField="orgID" Type="Int64" />

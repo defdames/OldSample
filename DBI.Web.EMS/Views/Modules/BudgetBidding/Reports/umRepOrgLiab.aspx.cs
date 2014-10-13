@@ -36,8 +36,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding.Reports
 
                     ReportParameter pyID = new ReportParameter("pyearID", iyearID);
                     this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { pyID });
-                    ReportParameter pohead = new ReportParameter("poh", oh);
-                    this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { pohead });
+                    //ReportParameter pohead = new ReportParameter("poh", oh);
+                    //this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { pohead });
                     ReportParameter poName = new ReportParameter("porgName", orgName);
                     this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { poName });
                     if (verID == 1)
