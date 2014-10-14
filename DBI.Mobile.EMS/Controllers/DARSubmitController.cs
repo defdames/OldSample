@@ -240,9 +240,12 @@ namespace DBI.Mobile.EMS.Controllers
                     transaction.Complete();
                 }
 
-                System.IO.StreamWriter file2 = new System.IO.StreamWriter("c:\\temp\\json.txt");
-                file2.Write(jsonString.ToString());
-                file2.Close();
+                //System.IO.StreamWriter file2 = new System.IO.StreamWriter("c:\\temp\\json.txt");
+                //file2.Write(jsonString.ToString());
+                //file2.Close();
+
+
+
 
             }
             catch (DbEntityValidationException dbeve)

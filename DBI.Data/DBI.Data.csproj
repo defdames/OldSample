@@ -315,6 +315,7 @@
     </Compile>
     <Compile Include="Oracle\OVERHEAD.cs" />
     <Compile Include="Oracle\CROSSING_MAINTENANCE.cs" />
+    <Compile Include="Oracle\SYS_EMAIL.cs" />
     <Compile Include="Oracle\TIMECLOCK.cs" />
     <Compile Include="Oracle\CUSTOMER_SURVEYS.cs" />
     <Compile Include="Oracle\BUDGETBIDDING.cs" />
@@ -414,6 +415,9 @@
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="SYS_ACTIVITY.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SYS_EMAIL.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="SYS_GROUPS.cs">

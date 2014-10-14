@@ -1303,6 +1303,25 @@ warning 6002: The table/view 'XXDBI.XXPJ_PREV_WAGE_RATES' does not have a primar
           <Property Name="PARENT_ITEM_ID" Type="number" Precision="15" Scale="0" />
           <Property Name="SORT_NUMBER" Type="number" Precision="15" Scale="0" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'XXEMS.SYS_EMAIL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="SYS_EMAIL">
+          <Key>
+            <PropertyRef Name="MESSAGE_ID" />
+          </Key>
+          <Property Name="MESSAGE_ID" Type="number" Precision="15" Scale="0" Nullable="false" />
+          <Property Name="TYPE_ID" Type="number" Precision="15" Scale="0" />
+          <Property Name="MODULE_ID" Type="number" Precision="15" Scale="0" />
+          <Property Name="USER_ID" Type="number" Precision="15" Scale="0" />
+          <Property Name="EMAIL_ADDRESS" Type="varchar2" MaxLength="250" />
+          <Property Name="SUBJECT_DESC" Type="varchar2" MaxLength="500" />
+          <Property Name="MESSAGE_BODY" Type="clob" />
+          <Property Name="MESSAGE_SENT" Type="varchar2" MaxLength="1" />
+          <Property Name="CREATED_DATE" Type="date" />
+          <Property Name="DATE_SENT" Type="date" />
+          <Property Name="MESSAGE_VIEWED" Type="varchar2" MaxLength="1" />
+          <Property Name="VIEWED_DATE" Type="date" />
+        </EntityType>
         <EntityType Name="SYS_GROUPS">
           <Key>
             <PropertyRef Name="GROUP_ID" />
@@ -3593,6 +3612,22 @@ FROM "PA"."PA_PERIODS_ALL" "PA_PERIODS_ALL"</DefiningQuery>
 "XXPJ_PREV_WAGE_RATES"."PROJECT_ID" AS "PROJECT_ID"
 FROM "XXDBI"."XXPJ_PREV_WAGE_RATES" "XXPJ_PREV_WAGE_RATES"</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="SYS_EMAIL" EntityType="Self.SYS_EMAIL" store:Type="Tables" store:Schema="XXEMS">
+            <DefiningQuery>SELECT 
+"SYS_EMAIL"."MESSAGE_ID" AS "MESSAGE_ID", 
+"SYS_EMAIL"."TYPE_ID" AS "TYPE_ID", 
+"SYS_EMAIL"."MODULE_ID" AS "MODULE_ID", 
+"SYS_EMAIL"."USER_ID" AS "USER_ID", 
+"SYS_EMAIL"."EMAIL_ADDRESS" AS "EMAIL_ADDRESS", 
+"SYS_EMAIL"."SUBJECT_DESC" AS "SUBJECT_DESC", 
+"SYS_EMAIL"."MESSAGE_BODY" AS "MESSAGE_BODY", 
+"SYS_EMAIL"."MESSAGE_SENT" AS "MESSAGE_SENT", 
+"SYS_EMAIL"."CREATED_DATE" AS "CREATED_DATE", 
+"SYS_EMAIL"."DATE_SENT" AS "DATE_SENT", 
+"SYS_EMAIL"."MESSAGE_VIEWED" AS "MESSAGE_VIEWED", 
+"SYS_EMAIL"."VIEWED_DATE" AS "VIEWED_DATE"
+FROM "XXEMS"."SYS_EMAIL" "SYS_EMAIL"</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="PA_LOCATIONS_V" EntityType="Self.PA_LOCATIONS_V" store:Type="Views" store:Schema="APPS">
             <DefiningQuery>SELECT 
 "PA_LOCATIONS_V"."ROW_ID" AS "ROW_ID", 
@@ -4738,6 +4773,7 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           </AssociationSet>
           <EntitySet Name="SYS_USER_INFORMATION" EntityType="OracleModel.SYS_USER_INFORMATION" />
           <EntitySet Name="SYS_USER_ACTIVITY_LOG" EntityType="OracleModel.SYS_USER_ACTIVITY_LOG" />
+          <EntitySet Name="SYS_EMAIL" EntityType="OracleModel.SYS_EMAIL" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -8411,6 +8447,23 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           <Property Name="USER_ID" Type="Int64" Nullable="false" />
           <Property Name="LAST_ACTIVITY_DATE" Type="DateTime" />
         </EntityType>
+        <EntityType Name="SYS_EMAIL">
+          <Key>
+            <PropertyRef Name="MESSAGE_ID" />
+          </Key>
+          <Property Name="MESSAGE_ID" Type="Int64" Nullable="false" />
+          <Property Name="TYPE_ID" Type="Int64" />
+          <Property Name="MODULE_ID" Type="Int64" />
+          <Property Name="USER_ID" Type="Int64" />
+          <Property Name="EMAIL_ADDRESS" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="SUBJECT_DESC" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="MESSAGE_BODY" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="MESSAGE_SENT" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="CREATED_DATE" Type="DateTime" />
+          <Property Name="DATE_SENT" Type="DateTime" />
+          <Property Name="MESSAGE_VIEWED" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="VIEWED_DATE" Type="DateTime" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -11212,6 +11265,24 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
                 <ScalarProperty Name="LAST_ACTIVITY_DATE" ColumnName="LAST_ACTIVITY_DATE" />
                 <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYS_EMAIL">
+            <EntityTypeMapping TypeName="OracleModel.SYS_EMAIL">
+              <MappingFragment StoreEntitySet="SYS_EMAIL">
+                <ScalarProperty Name="VIEWED_DATE" ColumnName="VIEWED_DATE" />
+                <ScalarProperty Name="MESSAGE_VIEWED" ColumnName="MESSAGE_VIEWED" />
+                <ScalarProperty Name="DATE_SENT" ColumnName="DATE_SENT" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="MESSAGE_SENT" ColumnName="MESSAGE_SENT" />
+                <ScalarProperty Name="MESSAGE_BODY" ColumnName="MESSAGE_BODY" />
+                <ScalarProperty Name="SUBJECT_DESC" ColumnName="SUBJECT_DESC" />
+                <ScalarProperty Name="EMAIL_ADDRESS" ColumnName="EMAIL_ADDRESS" />
+                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+                <ScalarProperty Name="MODULE_ID" ColumnName="MODULE_ID" />
+                <ScalarProperty Name="TYPE_ID" ColumnName="TYPE_ID" />
+                <ScalarProperty Name="MESSAGE_ID" ColumnName="MESSAGE_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
