@@ -160,6 +160,7 @@
     <Content Include="Views\Modules\CrossingMaintenance\Excel.xsl" />
     <Content Include="Views\Modules\CrossingMaintenance\ManageKCS.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\Reports\MaintenanceInvoiceReport.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\SupplementalInvoiceReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umAppDate.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umBillingInvoice.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umBillingMain.aspx" />
@@ -325,9 +326,6 @@
       <DependentUpon>umRepOrgLiab.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\BudgetBidding\Reports\umReport1.aspx.designer.cs">
-      <DependentUpon>umReport1.aspx</DependentUpon>
-      </Compile>
     <Compile Include="Views\Modules\BudgetBidding\Reports\umRepOrgLiab.aspx.designer.cs">
       <DependentUpon>umRepOrgLiab.aspx</DependentUpon>
     </Compile>
@@ -414,6 +412,13 @@
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\Reports\MaintenanceInvoiceReport.aspx.designer.cs">
       <DependentUpon>MaintenanceInvoiceReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\SupplementalInvoiceReport.aspx.cs">
+      <DependentUpon>SupplementalInvoiceReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\SupplementalInvoiceReport.aspx.designer.cs">
+      <DependentUpon>SupplementalInvoiceReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\StateCrossingList.cs">
       <AutoGen>True</AutoGen>
@@ -1184,13 +1189,12 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Report1.rdlc" />
-    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\Report2.rdlc" />
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\MaintenanceInvoiceReport.rdlc" />
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\SupplementalInvoiceReport.rdlc" />
     <EmbeddedResource Include="Views\Modules\CrossingMaintenance\StateCrossingList.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>StateCrossingList.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Modules\BudgetBidding\Reports\Report1.rdlc" />
     <EmbeddedResource Include="Views\Modules\BudgetBidding\Reports\umRepOrgComm.rdlc" />
     <EmbeddedResource Include="Views\Modules\BudgetBidding\Reports\umRepOrgLiab.rdlc" />
     <EmbeddedResource Include="Views\Modules\BudgetBidding\Reports\umRepOrgSum.rdlc" />
