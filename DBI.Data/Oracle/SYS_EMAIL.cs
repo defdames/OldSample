@@ -8,6 +8,8 @@ using DBI.Data;
 
 using DBI.Core.Web;
 using System.Net.Mail;
+using System.IO;
+using System.Reflection;
 
 namespace DBI.Data
 {
@@ -19,104 +21,72 @@ namespace DBI.Data
             DAR_SUBMITTED = 1
         };
 
-        public static void GenerateEmailAndProcess(SYS_EMAIL dataIn)
+        public static void GenerateEmailAndProcess(List<SYS_EMAIL> dataIn)
         {
             GenericData.Insert<SYS_EMAIL>(dataIn);
 
-            SendMessage(dataIn.EMAIL_ADDRESS,"NoReply-EMS@dbiservices.com", dataIn.SUBJECT_DESC, dataIn.MESSAGE_BODY);
-
-            dataIn.MESSAGE_SENT = "Y";
-            dataIn.DATE_SENT = DateTime.Now;
+            foreach (SYS_EMAIL _email in dataIn)
+            {
+                //SendMessage(_email.EMAIL_ADDRESS, "noreply@dbiservices.com", _email.SUBJECT_DESC, _email.MESSAGE_BODY);
+                SendMessage("ljankowski@dbiservices.com", "noreply@dbiservices.com", _email.SUBJECT_DESC + "   " + _email.EMAIL_ADDRESS, _email.MESSAGE_BODY);
+                _email.MESSAGE_SENT = "Y";
+                _email.DATE_SENT = DateTime.Now;
+            }
          
             //Update the email to sent datetime
             GenericData.Update<SYS_EMAIL>(dataIn);
         }
 
-        public static List<SYS_EMAIL> DARSubmittedEmail(DAILY_ACTIVITY_HEADER _header)
+        public static List<SYS_EMAIL> DARSubmittedEmail(long _headerID)
         {
             SYS_MODULES _module = SYS_MODULES.GetModules().Where(x => x.MODULE_NAME == "Daily Activity").SingleOrDefault();
-            List<long> _projectManagerList = PA.GetProjectManagersList((long)_header.PROJECT_ID);
+            DAILY_ACTIVITY_HEADER _header = new DAILY_ACTIVITY_HEADER();
+            List<long> _projectManagerList = new List<long>();
             PROJECTS_V _ProjectInformation = new PROJECTS_V();
             List<SYS_EMAIL> _email = new List<SYS_EMAIL>();
 
-            if(_module != null)
+            using (Entities _context = new Entities())
             {
-                if(_projectManagerList.Count() > 0)
+
+                if (_module != null)
                 {
-                    foreach (long _projectManager in _projectManagerList)
+                    _header = _context.DAILY_ACTIVITY_HEADER.Where(x => x.HEADER_ID == _headerID).SingleOrDefault();
+                    _projectManagerList = PA.GetProjectManagersList((long)_header.PROJECT_ID);
+
+                    if (_projectManagerList.Count() > 0)
                     {
-                        SYS_USER_INFORMATION _userInformation = new SYS_USER_INFORMATION();
-                        
-                        using(Entities _context = new Entities())
+                        foreach (long _projectManager in _projectManagerList)
                         {
-                        //Return user information from project manager
+                            SYS_USER_INFORMATION _userInformation = new SYS_USER_INFORMATION();
+
+                            //Return user information from project manager
                             _userInformation = _context.SYS_USER_INFORMATION.Where(x => x.PERSON_ID == _projectManager).SingleOrDefault();
                             _ProjectInformation = _context.PROJECTS_V.Where(p => p.PROJECT_ID == _header.PROJECT_ID).SingleOrDefault();
-                        }
 
-                        string _emailBody = string.Format(@"<html><head><title></title><style type='text/css'>
-            .auto-style1
-            {
-                width: 100%;
-            }
-            .auto-style2
-            {
-                font-family: Arial, Helvetica, sans-serif;
-                font-size: x-small;
-            }
-            .auto-style3
-            {
-                font-family: Arial, Helvetica, sans-serif;
-                font-size: x-small;
-                font-weight: bold;
-                border-style: solid;
-                border-width: 1px;
-                padding: 1px 4px;
-                background-color: #CCCCCC;
-            }
-            .auto-style4
-            {
-                border-style: solid;
-                border-width: 1px;
-                padding: 1px 4px;
-            }
-        </style>
-    </head>
-    <body>
-    <p>
-        <span class='auto-style2'>The following daily activity sheet was created in EMSv2 and needs to be approved. </span>
-        <br class='auto-style2' />
-        <span class='auto-style2'>You are listed as the project manager for this project. If that information is incorrect, please have your project functional owner change it in Oracle.</span></p>
-    <table class='auto-style1'>
-        <tr>
-            <td class='auto-style3'>DRS Number</td>
-            <td class='auto-style3'>Project Number</td>
-            <td class='auto-style3'>Project Name</td>
-            <td class='auto-style3'>Project Description</td>
-            <td class='auto-style3'>Daily Activity Date</td>
-        </tr>
-        <tr>
-            <td class='auto-style4'>{0}</td>
-            <td class='auto-style4'>{1}</td>
-            <td class='auto-style4'>{2}</td>
-            <td class='auto-style4'>{3}</td>
-            <td class='auto-style4'>{4}</td>
-        </tr>
-    </table>
-</body>
-</html>", _header.DA_HEADER_ID.ToString(), _ProjectInformation.SEGMENT1, _ProjectInformation.NAME, _ProjectInformation.LONG_NAME, _header.DA_DATE.ToString());
+                            var _emailHTML = GetResourceTextFile("DARSubmittedEmail.html");
 
-                        if (_userInformation != null)
-                        {
-                            SYS_EMAIL _mail = new SYS_EMAIL();
-                            _mail.TYPE_ID = (long)MESSAGE_TYPE.DAR_SUBMITTED;
-                            _mail.MODULE_ID = (long)_module.MODULE_ID;
-                            _mail.SUBJECT_DESC = "EMS - Daily Activity Sheet Submitted For Your Approval";
-                            _mail.EMAIL_ADDRESS = _userInformation.EMAIL_ADDRESS;
-                            _mail.USER_ID = _userInformation.USER_ID;
-                            _mail.CREATED_DATE = DateTime.Now;
-                            _mail.MESSAGE_BODY = _emailBody;
-                            _email.Add(_mail);
+                            string _daHeaderID = _headerID.ToString();
+                            string _segment =  _ProjectInformation.SEGMENT1.ToString();
+                            string _projectName =  _ProjectInformation.NAME.ToString();
+                            string _projectLongName = _ProjectInformation.LONG_NAME.ToString();
+                            string _da_date = _header.DA_DATE.Value.ToLongDateString();
+
+                            string _emailBody = string.Format(_emailHTML, _daHeaderID, _segment, _projectName, _projectLongName, _da_date);
+
+                            if (_userInformation != null)
+                            {
+                                SYS_EMAIL _mail = new SYS_EMAIL();
+                                _mail.TYPE_ID = (long)MESSAGE_TYPE.DAR_SUBMITTED;
+                                _mail.MODULE_ID = (long)_module.MODULE_ID;
+                                _mail.SUBJECT_DESC = "EMS - Daily Activity Sheet Submitted For Your Approval";
+                                _mail.EMAIL_ADDRESS = _userInformation.EMAIL_ADDRESS;
+                                _mail.USER_ID = _userInformation.USER_ID;
+                                _mail.CREATED_DATE = DateTime.Now;
+                                _mail.MESSAGE_VIEWED = "N";
+                                _mail.MESSAGE_SENT = "N";
+                                _mail.MESSAGE_BODY = _emailBody;
+                                _email.Add(_mail);
+                            }
                         }
                     }
                 }
@@ -127,6 +97,7 @@ namespace DBI.Data
 
         public static void SendMessage(string MailTo, string MailFrom, string Subject, string Message)
         {
+
             MailMessage MessageToSend = new MailMessage(MailFrom, MailTo)
             {
                 Subject = Subject,
@@ -135,6 +106,24 @@ namespace DBI.Data
             };
 
             MailSend(MessageToSend);
+        }
+
+        public static string GetResourceTextFile(string filename)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var resourceName = "DBI.Data.Oracle." + filename;
+            //string[] resourceNames = Assembly.GetExecutingAssembly().GetManifestResourceNames();
+            string returnValue = "";
+
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            {
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    returnValue = reader.ReadToEnd();
+                }
+            }
+
+            return returnValue;
         }
 
         public static void MailSend(MailMessage Message)

@@ -87,7 +87,7 @@ namespace DBI.Data
             string sql = @"select PERSON_ID from apps.pa_project_players_v
                            where role = 'Project Manager'
                            and sysdate between start_date_active and nvl(end_date_active,'31-DEC-4712')
-                           order by 1";
+                           and project_id = " + project_id;
 
             using (Entities context = new Entities())
             {

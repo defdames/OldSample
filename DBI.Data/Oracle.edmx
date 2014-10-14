@@ -1303,13 +1303,11 @@ warning 6002: The table/view 'XXDBI.XXPJ_PREV_WAGE_RATES' does not have a primar
           <Property Name="PARENT_ITEM_ID" Type="number" Precision="15" Scale="0" />
           <Property Name="SORT_NUMBER" Type="number" Precision="15" Scale="0" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'XXEMS.SYS_EMAIL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SYS_EMAIL">
           <Key>
             <PropertyRef Name="MESSAGE_ID" />
           </Key>
-          <Property Name="MESSAGE_ID" Type="number" Precision="15" Scale="0" Nullable="false" />
+          <Property Name="MESSAGE_ID" Type="number" Precision="15" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="TYPE_ID" Type="number" Precision="15" Scale="0" />
           <Property Name="MODULE_ID" Type="number" Precision="15" Scale="0" />
           <Property Name="USER_ID" Type="number" Precision="15" Scale="0" />
@@ -3550,6 +3548,7 @@ warning 6002: The table/view 'XXEMS.UNIT_OF_MEASURE_V' does not have a primary k
           <EntitySet Name="OVERHEAD_GL_RANGE" EntityType="Self.OVERHEAD_GL_RANGE" Schema="XXEMS" store:Type="Tables" />
           <EntitySet Name="OVERHEAD_ORG_BUDGETS" EntityType="Self.OVERHEAD_ORG_BUDGETS" Schema="XXEMS" store:Type="Tables" />
           <EntitySet Name="SYS_ACTIVITY" EntityType="Self.SYS_ACTIVITY" Schema="XXEMS" store:Type="Tables" />
+          <EntitySet Name="SYS_EMAIL" EntityType="Self.SYS_EMAIL" Schema="XXEMS" store:Type="Tables" />
           <EntitySet Name="SYS_GROUPS" EntityType="Self.SYS_GROUPS" Schema="XXEMS" store:Type="Tables" />
           <EntitySet Name="SYS_GROUPS_PERMS" EntityType="Self.SYS_GROUPS_PERMS" Schema="XXEMS" store:Type="Tables" />
           <EntitySet Name="SYS_LOG" EntityType="Self.SYS_LOG" Schema="XXEMS" store:Type="Tables" />
@@ -3611,22 +3610,6 @@ FROM "PA"."PA_PERIODS_ALL" "PA_PERIODS_ALL"</DefiningQuery>
 "XXPJ_PREV_WAGE_RATES"."LAST_UPDATE_LOGIN" AS "LAST_UPDATE_LOGIN", 
 "XXPJ_PREV_WAGE_RATES"."PROJECT_ID" AS "PROJECT_ID"
 FROM "XXDBI"."XXPJ_PREV_WAGE_RATES" "XXPJ_PREV_WAGE_RATES"</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="SYS_EMAIL" EntityType="Self.SYS_EMAIL" store:Type="Tables" store:Schema="XXEMS">
-            <DefiningQuery>SELECT 
-"SYS_EMAIL"."MESSAGE_ID" AS "MESSAGE_ID", 
-"SYS_EMAIL"."TYPE_ID" AS "TYPE_ID", 
-"SYS_EMAIL"."MODULE_ID" AS "MODULE_ID", 
-"SYS_EMAIL"."USER_ID" AS "USER_ID", 
-"SYS_EMAIL"."EMAIL_ADDRESS" AS "EMAIL_ADDRESS", 
-"SYS_EMAIL"."SUBJECT_DESC" AS "SUBJECT_DESC", 
-"SYS_EMAIL"."MESSAGE_BODY" AS "MESSAGE_BODY", 
-"SYS_EMAIL"."MESSAGE_SENT" AS "MESSAGE_SENT", 
-"SYS_EMAIL"."CREATED_DATE" AS "CREATED_DATE", 
-"SYS_EMAIL"."DATE_SENT" AS "DATE_SENT", 
-"SYS_EMAIL"."MESSAGE_VIEWED" AS "MESSAGE_VIEWED", 
-"SYS_EMAIL"."VIEWED_DATE" AS "VIEWED_DATE"
-FROM "XXEMS"."SYS_EMAIL" "SYS_EMAIL"</DefiningQuery>
           </EntitySet>
           <EntitySet Name="PA_LOCATIONS_V" EntityType="Self.PA_LOCATIONS_V" store:Type="Views" store:Schema="APPS">
             <DefiningQuery>SELECT 
@@ -8451,7 +8434,7 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           <Key>
             <PropertyRef Name="MESSAGE_ID" />
           </Key>
-          <Property Name="MESSAGE_ID" Type="Int64" Nullable="false" />
+          <Property Name="MESSAGE_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TYPE_ID" Type="Int64" />
           <Property Name="MODULE_ID" Type="Int64" />
           <Property Name="USER_ID" Type="Int64" />

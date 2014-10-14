@@ -123,6 +123,7 @@
     <Compile Include="CROSSINGSTest.cs" />
     <Compile Include="OVERHEAD_ORG_BUDGETSTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SYS_EMAILTest.cs" />
     <Compile Include="SYS_ORG_PROFILE_OPTIONSTest.cs" />
     <Compile Include="SYS_USER_PROFILE_OPTIONSTest.cs" />
     <Compile Include="TIMECLOCKTest.cs" />
