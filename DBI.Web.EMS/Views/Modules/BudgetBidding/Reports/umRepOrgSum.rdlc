@@ -6,37 +6,37 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>0.89583in</Width>
+              <Width>2.10413in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>0.65625in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.57292in</Width>
+              <Width>0.44791in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>0.44791in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.91667in</Width>
+              <Width>0.84376in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.91667in</Width>
+              <Width>0.84376in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.91667in</Width>
+              <Width>0.84376in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.91667in</Width>
+              <Width>0.84376in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.91667in</Width>
+              <Width>0.84376in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.91667in</Width>
+              <Width>0.84376in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.91667in</Width>
+              <Width>0.84376in</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -904,7 +904,7 @@
                               <Style>
                                 <FontFamily>Calibri</FontFamily>
                                 <FontSize>7pt</FontSize>
-                                <Format>'$'0.00;('$'0.00)</Format>
+                                <Format>'$'#,0.00;('$'#,0.00)</Format>
                                 <Color>=IIF(Fields!OP_VAR.Value &lt; 0, "Red", "Black")</Color>
                               </Style>
                             </TextRun>
@@ -1418,7 +1418,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Total Active</Value>
+                              <Value>Total Active:</Value>
                               <Style>
                                 <FontFamily>Calibri</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -2318,7 +2318,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Total Missing</Value>
+                              <Value>Total Missing:</Value>
                               <Style>
                                 <FontFamily>Calibri</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -3206,7 +3206,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Grand Total</Value>
+                              <Value>Grand Total:</Value>
                               <Style>
                                 <FontFamily>Calibri</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -3766,7 +3766,7 @@
         <Top>1.07167in</Top>
         <Left>0.17583in</Left>
         <Height>1.64582in</Height>
-        <Width>8.9896in</Width>
+        <Width>9.56252in</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -3793,7 +3793,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox7</rd:DefaultName>
         <Top>0.13764in</Top>
-        <Left>8.19668in</Left>
+        <Left>8.73835in</Left>
         <Height>0.17014in</Height>
         <Width>1in</Width>
         <ZIndex>1</ZIndex>
@@ -3825,7 +3825,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox8</rd:DefaultName>
         <Top>0.34944in</Top>
-        <Left>8.19668in</Left>
+        <Left>8.73835in</Left>
         <Height>0.17014in</Height>
         <Width>1in</Width>
         <ZIndex>2</ZIndex>
@@ -3859,7 +3859,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox9</rd:DefaultName>
         <Top>0.56125in</Top>
-        <Left>8.19668in</Left>
+        <Left>8.73835in</Left>
         <Height>0.17014in</Height>
         <Width>1in</Width>
         <ZIndex>3</ZIndex>
@@ -3892,7 +3892,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox8</rd:DefaultName>
         <Top>0.34944in</Top>
-        <Left>7.2071in</Left>
+        <Left>7.74877in</Left>
         <Height>0.17014in</Height>
         <Width>1in</Width>
         <ZIndex>4</ZIndex>
@@ -3925,7 +3925,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox9</rd:DefaultName>
         <Top>0.56125in</Top>
-        <Left>7.2071in</Left>
+        <Left>7.74877in</Left>
         <Height>0.17014in</Height>
         <Width>1in</Width>
         <ZIndex>5</ZIndex>
@@ -3958,7 +3958,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox7</rd:DefaultName>
         <Top>0.13764in</Top>
-        <Left>7.2071in</Left>
+        <Left>7.74877in</Left>
         <Height>0.17014in</Height>
         <Width>1in</Width>
         <ZIndex>6</ZIndex>
@@ -3990,9 +3990,9 @@
         </Paragraphs>
         <rd:DefaultName>Textbox1</rd:DefaultName>
         <Top>2.87375in</Top>
-        <Left>7.57513in</Left>
+        <Left>7.22096in</Left>
         <Height>0.25in</Height>
-        <Width>0.91667in</Width>
+        <Width>0.84376in</Width>
         <ZIndex>7</ZIndex>
         <Style>
           <Border>
@@ -4025,7 +4025,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox2</rd:DefaultName>
         <Top>2.87375in</Top>
-        <Left>6.56124in</Left>
+        <Left>6.20707in</Left>
         <Height>0.25in</Height>
         <Width>1in</Width>
         <ZIndex>8</ZIndex>
@@ -4059,7 +4059,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox4</rd:DefaultName>
         <Top>3.20361in</Top>
-        <Left>6.56124in</Left>
+        <Left>6.20707in</Left>
         <Height>0.25in</Height>
         <Width>1in</Width>
         <ZIndex>9</ZIndex>
@@ -4095,9 +4095,9 @@
         </Paragraphs>
         <rd:DefaultName>Textbox5</rd:DefaultName>
         <Top>3.20361in</Top>
-        <Left>7.56124in</Left>
+        <Left>7.20707in</Left>
         <Height>0.25in</Height>
-        <Width>0.91667in</Width>
+        <Width>0.84376in</Width>
         <ZIndex>10</ZIndex>
         <Style>
           <Border>
@@ -4127,7 +4127,7 @@
         </Style>
       </Image>
     </ReportItems>
-    <Height>3.625in</Height>
+    <Height>3.85417in</Height>
     <Style>
       <Border>
         <Style>None</Style>
@@ -4135,7 +4135,7 @@
       <BackgroundColor>White</BackgroundColor>
     </Style>
   </Body>
-  <Width>9.69668in</Width>
+  <Width>10in</Width>
   <Page>
     <PageFooter>
       <Height>0.31944in</Height>
@@ -4163,7 +4163,7 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox3</rd:DefaultName>
-          <Top>0.06944in</Top>
+          <Top>0in</Top>
           <Left>0.17583in</Left>
           <Height>0.25in</Height>
           <Width>2.38542in</Width>
@@ -4197,8 +4197,7 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>TotalPages</rd:DefaultName>
-          <Top>0.06944in</Top>
-          <Left>6.81126in</Left>
+          <Left>7.35293in</Left>
           <Height>0.25in</Height>
           <Width>2.38542in</Width>
           <ZIndex>1</ZIndex>
@@ -4220,8 +4219,8 @@
         <BackgroundColor>White</BackgroundColor>
       </Style>
     </PageFooter>
-    <PageHeight>8in</PageHeight>
-    <PageWidth>10.5in</PageWidth>
+    <PageHeight>8.5in</PageHeight>
+    <PageWidth>11in</PageWidth>
     <LeftMargin>0.25in</LeftMargin>
     <RightMargin>0.25in</RightMargin>
     <TopMargin>0.25in</TopMargin>

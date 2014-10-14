@@ -6,19 +6,19 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>1.90625in</Width>
+              <Width>2.10413in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>0.65625in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1in</Width>
+              <Width>0.84376in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1in</Width>
+              <Width>0.84376in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>4.67709in</Width>
+              <Width>5.11462in</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -60,7 +60,6 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -248,7 +247,6 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
-                        <BackgroundColor>=IIF(Reportitems!STATUS.Value = "Missing", "Gray", IIF(Fields!TYPE.Value = "OVERRIDE", "Yellow", "No Color"))</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -292,7 +290,6 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
-                        <BackgroundColor>=IIF(Reportitems!STATUS.Value = "Missing", "Gray", "No Color")</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -336,7 +333,6 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
-                        <BackgroundColor>=IIF(Fields!WE_OVERRIDE.Value = "Y", "Yellow", "No Color")</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -381,7 +377,6 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
-                        <BackgroundColor>=IIF(Fields!WE_OVERRIDE.Value = "Y", "Yellow", "No Color")</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -435,7 +430,7 @@
               </TablixCells>
             </TablixRow>
             <TablixRow>
-              <Height>0.17708in</Height>
+              <Height>0.25in</Height>
               <TablixCells>
                 <TablixCell>
                   <CellContents>
@@ -640,7 +635,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Grand Total</Value>
+                              <Value>Grand Total:</Value>
                               <Style>
                                 <FontFamily>Calibri</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -896,10 +891,10 @@
             <Direction>Descending</Direction>
           </SortExpression>
         </SortExpressions>
-        <Top>1.44667in</Top>
+        <Top>1.07167in</Top>
         <Left>0.17583in</Left>
-        <Height>0.92708in</Height>
-        <Width>9.23959in</Width>
+        <Height>1in</Height>
+        <Width>9.56252in</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -925,10 +920,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox7</rd:DefaultName>
-        <Top>0.12722in</Top>
-        <Left>8.08209in</Left>
-        <Height>0.25in</Height>
-        <Width>1.33333in</Width>
+        <Top>0.13764in</Top>
+        <Left>8.73835in</Left>
+        <Height>0.17014in</Height>
+        <Width>1in</Width>
         <ZIndex>1</ZIndex>
         <Style>
           <Border />
@@ -957,10 +952,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox8</rd:DefaultName>
-        <Top>0.37722in</Top>
-        <Left>8.08209in</Left>
-        <Height>0.25in</Height>
-        <Width>1.33333in</Width>
+        <Top>0.34944in</Top>
+        <Left>8.73835in</Left>
+        <Height>0.17014in</Height>
+        <Width>1in</Width>
         <ZIndex>2</ZIndex>
         <Style>
           <Border>
@@ -991,10 +986,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox9</rd:DefaultName>
-        <Top>0.62722in</Top>
-        <Left>8.08209in</Left>
-        <Height>0.25in</Height>
-        <Width>1.33333in</Width>
+        <Top>0.56125in</Top>
+        <Left>8.73835in</Left>
+        <Height>0.17014in</Height>
+        <Width>1in</Width>
         <ZIndex>3</ZIndex>
         <Style>
           <Border>
@@ -1024,9 +1019,9 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox8</rd:DefaultName>
-        <Top>0.38764in</Top>
-        <Left>7.09251in</Left>
-        <Height>0.25in</Height>
+        <Top>0.34944in</Top>
+        <Left>7.74877in</Left>
+        <Height>0.17014in</Height>
         <Width>1in</Width>
         <ZIndex>4</ZIndex>
         <Style>
@@ -1057,9 +1052,9 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox9</rd:DefaultName>
-        <Top>0.63764in</Top>
-        <Left>7.09251in</Left>
-        <Height>0.25in</Height>
+        <Top>0.56125in</Top>
+        <Left>7.74877in</Left>
+        <Height>0.17014in</Height>
         <Width>1in</Width>
         <ZIndex>5</ZIndex>
         <Style>
@@ -1091,8 +1086,8 @@
         </Paragraphs>
         <rd:DefaultName>Textbox7</rd:DefaultName>
         <Top>0.13764in</Top>
-        <Left>7.09251in</Left>
-        <Height>0.25in</Height>
+        <Left>7.74877in</Left>
+        <Height>0.17014in</Height>
         <Width>1in</Width>
         <ZIndex>6</ZIndex>
         <Style>
@@ -1119,7 +1114,7 @@
         </Style>
       </Image>
     </ReportItems>
-    <Height>4.28in</Height>
+    <Height>3.85417in</Height>
     <Style>
       <Border>
         <Style>None</Style>
@@ -1127,10 +1122,10 @@
       <BackgroundColor>White</BackgroundColor>
     </Style>
   </Body>
-  <Width>9.52999in</Width>
+  <Width>10in</Width>
   <Page>
     <PageFooter>
-      <Height>0.60417in</Height>
+      <Height>0.31944in</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
@@ -1149,14 +1144,49 @@
                   </Style>
                 </TextRun>
               </TextRuns>
-              <Style />
+              <Style>
+                <TextAlign>Left</TextAlign>
+              </Style>
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox3</rd:DefaultName>
-          <Top>0.23958in</Top>
           <Left>0.17583in</Left>
           <Height>0.25in</Height>
-          <Width>1in</Width>
+          <Width>2.38542in</Width>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+        <Textbox Name="TotalPages">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>="Page " &amp; Globals!PageNumber &amp; " of " &amp; Globals!TotalPages</Value>
+                  <Style>
+                    <FontFamily>Calibri</FontFamily>
+                    <FontSize>7pt</FontSize>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style>
+                <TextAlign>Right</TextAlign>
+              </Style>
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>TotalPages</rd:DefaultName>
+          <Left>7.35293in</Left>
+          <Height>0.25in</Height>
+          <Width>2.38542in</Width>
+          <ZIndex>1</ZIndex>
           <Style>
             <Border>
               <Style>None</Style>
@@ -1172,14 +1202,15 @@
         <Border>
           <Style>None</Style>
         </Border>
+        <BackgroundColor>White</BackgroundColor>
       </Style>
     </PageFooter>
     <PageHeight>8.5in</PageHeight>
     <PageWidth>11in</PageWidth>
-    <LeftMargin>0.5in</LeftMargin>
-    <RightMargin>0.5in</RightMargin>
-    <TopMargin>0.5in</TopMargin>
-    <BottomMargin>0.5in</BottomMargin>
+    <LeftMargin>0.25in</LeftMargin>
+    <RightMargin>0.25in</RightMargin>
+    <TopMargin>0.25in</TopMargin>
+    <BottomMargin>0.25in</BottomMargin>
     <Style />
   </Page>
   <AutoRefresh>0</AutoRefresh>
