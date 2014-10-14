@@ -397,7 +397,15 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             }
             else if (reportName == "repOrgComm")
             {
+                string orgName = Request.QueryString["orgName"];
+                long orgID = long.Parse(Request.QueryString["OrgID"]);
+                long yearID = long.Parse(Request.QueryString["fiscalYear"]);
+                long verID = long.Parse(Request.QueryString["verID"]);
+                string prevYearID = uxHidPrevYear.Text;
+                string prevVerID = uxHidPrevVer.Text;
+                string oh = BBOH.DataSingle(orgID, yearID, verID).OH.ToString();
 
+                url = "/Views/Modules/BudgetBidding/Reports/umRepOrgComm.aspx?orgName=" + orgName + "&orgID=" + orgID + "&yearID=" + yearID + "&verID=" + verID + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID + "&oh=" + oh;
             }
             else if (reportName == "repOrgLiab")
             {
