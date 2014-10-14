@@ -23,6 +23,9 @@ namespace DBI.Core.Web
             MailSend(MessageToSend);
         }
 
+
+
+
         public static void SendMessage(string MailTo, string Subject, string Message, bool IsHtml)
         {
             string MailFrom =  HttpContext.Current.User.Identity.Name + "@dbiservices.com";
@@ -33,9 +36,8 @@ namespace DBI.Core.Web
                 IsBodyHtml = IsHtml
             };
 
-            MailSend(MessageToSend);
-               
-            
+            MailSend(MessageToSend);     
+           
         }
 
         public static void SendMessage(string MailTo, string Subject, string Message, bool IsHtml, Attachment MailAttachment)

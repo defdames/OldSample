@@ -238,12 +238,9 @@ namespace DBI.Mobile.EMS.Controllers
                         GenericData.Insert<DAILY_ACTIVITY_FOOTER>(f);
                     }
                     transaction.Complete();
+
                 }
-
-                System.IO.StreamWriter file2 = new System.IO.StreamWriter("c:\\temp\\json.txt");
-                file2.Write(jsonString.ToString());
-                file2.Close();
-
+                
             }
             catch (DbEntityValidationException dbeve)
             {
@@ -279,6 +276,9 @@ namespace DBI.Mobile.EMS.Controllers
             import.HEADER_ID = h.HEADER_ID;
             GenericData.Insert<DAILY_ACTIVITY_IMPORT>(import);
 
+           //Get a list of email
+           List<SYS_EMAIL> _generatedEmail = SYS_EMAIL.DARSubmittedEmail(h.HEADER_ID);
+           SYS_EMAIL.GenerateEmailAndProcess(_generatedEmail);
 
         }
 
