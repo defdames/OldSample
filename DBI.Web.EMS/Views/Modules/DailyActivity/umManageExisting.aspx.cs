@@ -572,7 +572,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                   join p in _context.PROJECTS_V on equip.PROJECT_ID equals p.PROJECT_ID into proj
                                   from projects in proj.DefaultIfEmpty()
                                   where d.HEADER_ID == HeaderId
-                                  select new EmployeeDetails { EMPLOYEE_NAME = e.EMPLOYEE_NAME, NAME = projects.NAME, LUNCH = d.LUNCH, LUNCH_LENGTH = d.LUNCH_LENGTH, TIME_IN = (DateTime)d.TIME_IN, TIME_OUT = (DateTime)d.TIME_OUT, FOREMAN_LICENSE = d.FOREMAN_LICENSE, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), SHOPTIME_AM = (d.SHOPTIME_AM == null ? 0 : d.SHOPTIME_AM), SHOPTIME_PM = (d.SHOPTIME_PM == null ? 0 : d.SHOPTIME_PM), PER_DIEM = d.PER_DIEM, ROLE_TYPE = d.ROLE_TYPE, COMMENTS = d.COMMENTS }).ToList();
+                                  select new EmployeeDetails { EMPLOYEE_NAME = e.EMPLOYEE_NAME, NAME = projects.NAME, LUNCH = d.LUNCH, LUNCH_LENGTH = d.LUNCH_LENGTH, TIME_IN = (DateTime)d.TIME_IN, TIME_OUT = (DateTime)d.TIME_OUT, FOREMAN_LICENSE = d.FOREMAN_LICENSE, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), SHOPTIME_AM = (d.SHOPTIME_AM == null ? 0 : d.SHOPTIME_AM), SHOPTIME_PM = (d.SHOPTIME_PM == null ? 0 : d.SHOPTIME_PM), PER_DIEM = (d.PER_DIEM == "Y" ? true : false), ROLE_TYPE = d.ROLE_TYPE, COMMENTS = d.COMMENTS }).ToList();
                 foreach (var item in returnData)
                 {
                     double Hours = Math.Truncate((double)item.TRAVEL_TIME);
@@ -584,10 +584,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     item.DRIVE_TIME_FORMATTED = DateTime.Now.Date + TotalTimeSpan;
                     Hours = Math.Truncate((double)item.SHOPTIME_AM);
                     Minutes = Math.Round(((double)item.SHOPTIME_AM - Hours) * 60);
-                    item.SHOPTIME_AM_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
+                    item.SHOPTIME_AM_FORMATTED = DateTime.Now.Date + TotalTimeSpan;
                     Hours = Math.Truncate((double)item.SHOPTIME_PM);
                     Minutes = Math.Round(((double)item.SHOPTIME_PM - Hours) * 60);
-                    item.SHOPTIME_PM_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
+                    item.SHOPTIME_PM_FORMATTED = DateTime.Now.Date + TotalTimeSpan;
                 }
                 return returnData;
             }
@@ -1097,8 +1097,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						new PdfPCell(new Phrase(TotalHours.ToString("hh\\:mm"), CellFont)),
 						new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED.ToString(), CellFont)),
 						new PdfPCell(new Phrase(Data.DRIVE_TIME_FORMATTED.ToString(), CellFont)),
-						new PdfPCell(new Phrase(Data.SHOPTIME_AM_FORMATTED, CellFont)),
-						new PdfPCell(new Phrase(Data.SHOPTIME_PM_FORMATTED, CellFont)),
+						new PdfPCell(new Phrase(Data.SHOPTIME_AM_FORMATTED.ToString(), CellFont)),
+						new PdfPCell(new Phrase(Data.SHOPTIME_PM_FORMATTED.ToString(), CellFont)),
 						new PdfPCell(new Phrase(Data.PER_DIEM.ToString(), CellFont)),
                         new PdfPCell(new Phrase(Data.ROLE_TYPE, CellFont)),
 						new PdfPCell(new Phrase(Comments, CellFont))
@@ -1114,8 +1114,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						new PdfPCell(new Phrase(TotalHours.ToString("hh\\:mm"), CellFont)),
 						new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED.ToString(), CellFont)),
 						new PdfPCell(new Phrase(Data.DRIVE_TIME_FORMATTED.ToString(), CellFont)),
-						new PdfPCell(new Phrase(Data.SHOPTIME_AM_FORMATTED, CellFont)),
-						new PdfPCell(new Phrase(Data.SHOPTIME_PM_FORMATTED, CellFont)),
+						new PdfPCell(new Phrase(Data.SHOPTIME_AM_FORMATTED.ToString(), CellFont)),
+						new PdfPCell(new Phrase(Data.SHOPTIME_PM_FORMATTED.ToString(), CellFont)),
 						new PdfPCell(new Phrase(Data.PER_DIEM.ToString(), CellFont)),
 						new PdfPCell(new Phrase(Comments, CellFont))
                             };
@@ -1940,6 +1940,40 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
     }
 
+    public class EmployeeDetails
+    {
+        public long EMPLOYEE_ID { get; set; }
+        public long HEADER_ID { get; set; }
+        public int PERSON_ID { get; set; }
+        public string EMPLOYEE_NAME { get; set; }
+        public long? EQUIPMENT_ID { get; set; }
+        public string NAME { get; set; }
+        public DateTime TIME_IN { get; set; }
+        public DateTime TIME_IN_TIME { get; set; }
+        public DateTime TIME_OUT { get; set; }
+        public DateTime TIME_OUT_TIME { get; set; }
+        public decimal? TRAVEL_TIME { get; set; }
+        public DateTime TRAVEL_TIME_FORMATTED { get; set; }
+        public decimal? SHOPTIME_AM { get; set; }
+        public DateTime SHOPTIME_AM_FORMATTED { get; set; }
+        public decimal? SHOPTIME_PM { get; set; }
+        public DateTime SHOPTIME_PM_FORMATTED { get; set; }
+        public decimal? DRIVE_TIME { get; set; }
+        public DateTime DRIVE_TIME_FORMATTED { get; set; }
+        public bool PER_DIEM { get; set; }
+        public string FOREMAN_LICENSE { get; set; }
+        public string COMMENTS { get; set; }
+        public string ROLE_TYPE { get; set; }
+        public string LUNCH { get; set; }
+        public decimal? LUNCH_LENGTH { get; set; }
+        public DateTime? DA_DATE { get; set; }
+        public int? STATUS { get; set; }
+        public string STATE { get; set; }
+        public string COUNTY { get; set; }
+        public string TOTAL_HOURS { get; set; }
+        public string PhantomID { get; set; }
+    }
+
     public class EquipmentDetails
     {
         public string SEGMENT1 { get; set; }
@@ -1962,6 +1996,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         public string TASK_NUMBER { get; set; }
         public long TASK_ID { get; set; }
         public string DESCRIPTION { get; set; }
+        public string STATION { get; set; }
+        public string EXPENDITURE_TYPE { get; set; }
+        public decimal? BILL_RATE { get; set; }
+        public string SURFACE_TYPE { get; set; }
+        public string COMMENTS { get; set; }
+        public string UNIT_OF_MEASURE { get; set; }
         public DateTime? TIME_IN { get; set; }
         public DateTime? TIME_OUT { get; set; }
         public string WORK_AREA { get; set; }

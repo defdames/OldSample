@@ -461,7 +461,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                     if (HeaderList.Count > 1)
                     {
-                        return new WarningData { WarningType = "Error", RecordType = "Per Diem", AdditionalInformation = "An employee has a duplicate per diem" };
+                        return new WarningData { WarningType = "Warning", RecordType = "Per Diem", AdditionalInformation = "An employee has a duplicate per diem" };
                     }
 
                 }
@@ -487,7 +487,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         string EmployeeName = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == Header.PERSON_ID).Select(x => x.EMPLOYEE_NAME).Single();
                         Warnings.Add(new WarningData
                         {
-                            WarningType = "Error",
+                            WarningType = "Warning",
                             RecordType = "Per Diem",
                             AdditionalInformation = string.Format("{0} has an overlapping per diem on DRS# {1}", EmployeeName, Header.HEADER_ID.ToString())
                         });

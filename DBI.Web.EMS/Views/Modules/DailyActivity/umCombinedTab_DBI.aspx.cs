@@ -56,7 +56,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     uxEmployeeTimeOutDate.MinDate = HeaderDate;
                     uxEmployeeTimeOutDate.MaxDate = HeaderDate.AddDays(1);
                 }
-                uxEmployeeTimeOutDate.SelectedDate = DateTime.Now.Date;
+                
             }
             if (GetStatus(HeaderId) != 2)
             {
@@ -112,7 +112,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
                             join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
                             where d.HEADER_ID == HeaderId
-                            select new {d.HEADER_ID, d.PROJECT_ID, p.SEGMENT1, p.LONG_NAME, d.DA_DATE, d.SUBDIVISION, d.CONTRACTOR, d.PERSON_ID, e.EMPLOYEE_NAME, d.LICENSE, d.STATE, d.APPLICATION_TYPE, d.DENSITY, d.DA_HEADER_ID }).Single();
+                            select new {d.HEADER_ID, d.PROJECT_ID, p.SEGMENT1, p.LONG_NAME, d.DA_DATE, d.SUBDIVISION, d.CONTRACTOR, d.PERSON_ID, e.EMPLOYEE_NAME, d.LICENSE, d.STATE, d.APPLICATION_TYPE, d.DENSITY, d.DA_HEADER_ID, d.STATUS }).Single();
                 DateTime Da_date = DateTime.Parse(data.DA_DATE.ToString());
                 uxProjectField.SetValue(data.PROJECT_ID.ToString(), string.Format("({0}) - {1}", data.SEGMENT1, data.LONG_NAME));
                 uxDateField.SelectedDate = Da_date;
@@ -125,6 +125,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxTypeField.Value = data.APPLICATION_TYPE;
                 uxHeaderField.Value = data.HEADER_ID.ToString();
                 uxOracleField.Value = data.DA_HEADER_ID.ToString();
+                uxStatusField.Value = data.STATUS.ToString();
             }
         }
 
@@ -191,7 +192,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             join p in _context.PROJECTS_V on equip.PROJECT_ID equals p.PROJECT_ID into proj
                             from projects in proj.DefaultIfEmpty()
                             where d.HEADER_ID == HeaderId
-                            select new EmployeeDetails { EMPLOYEE_ID = d.EMPLOYEE_ID, PERSON_ID = e.PERSON_ID, DA_DATE = d.DAILY_ACTIVITY_HEADER.DA_DATE, EMPLOYEE_NAME = e.EMPLOYEE_NAME, FOREMAN_LICENSE = d.FOREMAN_LICENSE, NAME = projects.NAME, TIME_IN = (DateTime)d.TIME_IN, TIME_OUT = (DateTime)d.TIME_OUT, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), PER_DIEM = d.PER_DIEM, COMMENTS = d.COMMENTS, LUNCH_LENGTH = d.LUNCH_LENGTH, STATUS = d.DAILY_ACTIVITY_HEADER.STATUS, EQUIPMENT_ID = d.EQUIPMENT_ID }).ToList();
+                            select new EmployeeDetails { EMPLOYEE_ID = d.EMPLOYEE_ID, PERSON_ID = e.PERSON_ID, DA_DATE = d.DAILY_ACTIVITY_HEADER.DA_DATE, EMPLOYEE_NAME = e.EMPLOYEE_NAME, FOREMAN_LICENSE = d.FOREMAN_LICENSE, NAME = projects.NAME, TIME_IN = (DateTime)d.TIME_IN, TIME_OUT = (DateTime)d.TIME_OUT, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), PER_DIEM = (d.PER_DIEM == "Y" ? true : false), COMMENTS = d.COMMENTS, LUNCH_LENGTH = d.LUNCH_LENGTH, STATUS = d.DAILY_ACTIVITY_HEADER.STATUS, EQUIPMENT_ID = d.EQUIPMENT_ID }).ToList();
                 foreach (var item in data)
                 {
                     double Hours = Math.Truncate((double)item.TRAVEL_TIME);
@@ -863,7 +864,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 NewEmployee.HEADER_ID = long.Parse(Request.QueryString["HeaderId"]);
                 NewEmployee.MODIFIED_BY = User.Identity.Name;
                 NewEmployee.MODIFY_DATE = DateTime.Now;
-                NewEmployee.PER_DIEM = item.PER_DIEM;
+                NewEmployee.PER_DIEM = (item.PER_DIEM == true ? "Y" : "N");
                 NewEmployee.PERSON_ID = item.PERSON_ID;
                 NewEmployee.TIME_IN = item.TIME_IN.Date + item.TIME_IN_TIME.TimeOfDay;
                 NewEmployee.TIME_OUT = item.TIME_OUT.Date + item.TIME_OUT_TIME.TimeOfDay;
@@ -904,7 +905,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 UpdatedEmployee.FOREMAN_LICENSE = item.FOREMAN_LICENSE;
                 UpdatedEmployee.MODIFIED_BY = User.Identity.Name;
                 UpdatedEmployee.MODIFY_DATE = DateTime.Now;
-                UpdatedEmployee.PER_DIEM = item.PER_DIEM;
+                UpdatedEmployee.PER_DIEM = (item.PER_DIEM == true ? "Y" : "N");
                 UpdatedEmployee.PERSON_ID = item.PERSON_ID;
                 UpdatedEmployee.TIME_IN = item.TIME_IN.Date + item.TIME_IN_TIME.TimeOfDay;
                 UpdatedEmployee.TIME_OUT = item.TIME_OUT.Date + item.TIME_OUT_TIME.TimeOfDay;
@@ -1552,6 +1553,17 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxEmployeeTimeOutTime.ClearInvalid();
                 uxEmployeeTimeOutTime.MarkAsValid();
             }
+        }
+
+        [DirectMethod]
+        public string dmCheckStatus()
+        {
+            int Status = GetStatus(long.Parse(Request.QueryString["HeaderId"]));
+            if (Status != 2)
+            {
+                return "false";
+            }
+            return "true";
         }
 
         [DirectMethod]

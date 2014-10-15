@@ -8,6 +8,50 @@ using System.Web;
 
 namespace DBI.Data
 {
+    public class BBReports
+    {
+        #region Fields
+        public class Fields
+        {
+            public string PROJECT_ID { get; set; }
+            public long BUD_BID_PROJECTS_ID { get; set; }
+            public string TYPE { get; set; }
+            public string PROJECT_NAME { get; set; }
+            public long STATUS_ID { get; set; }
+            public string STATUS { get; set; }
+            public decimal ACRES { get; set; }
+            public decimal DAYS { get; set; }
+            public string APP_TYPE { get; set; }
+            public string CHEMICAL_MIX { get; set; }
+            public string COMMENTS { get; set; }
+            public string LIABILITY { get; set; }
+            public decimal LIABILITY_OP { get; set; }
+            public string COMPARE_PRJ_OVERRIDE { get; set; }
+            public decimal COMPARE_PRJ_AMOUNT { get; set; }
+            public DateTime? WE_DATE { get; set; }
+            public string WE_OVERRIDE { get; set; }
+        }
+        #endregion
+
+        public static List<Fields> ProjectDetails(long budBidProjectID)
+        {
+            string sql = string.Format(@"
+                    SELECT BUD_BID_PROJECTS.PROJECT_ID, BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID, BUD_BID_PROJECTS.TYPE, BUD_BID_PROJECTS.PRJ_NAME PROJECT_NAME, BUD_BID_STATUS.STATUS_ID,
+                        BUD_BID_STATUS.STATUS, BUD_BID_PROJECTS.ACRES, BUD_BID_PROJECTS.DAYS, BUD_BID_PROJECTS.APP_TYPE, BUD_BID_PROJECTS.CHEMICAL_MIX, BUD_BID_PROJECTS.COMMENTS,
+                        BUD_BID_PROJECTS.LIABILITY, BUD_BID_PROJECTS.LIABILITY_OP, BUD_BID_PROJECTS.COMPARE_PRJ_OVERRIDE, BUD_BID_PROJECTS.COMPARE_PRJ_AMOUNT, BUD_BID_PROJECTS.WE_DATE,
+                        BUD_BID_PROJECTS.WE_OVERRIDE
+                    FROM BUD_BID_PROJECTS
+                    INNER JOIN BUD_BID_STATUS
+                    ON BUD_BID_PROJECTS.STATUS_ID = BUD_BID_STATUS.STATUS_ID
+                    WHERE BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = {0}", budBidProjectID);
+
+            using (Entities context = new Entities())
+            {
+                return context.Database.SqlQuery<Fields>(sql).ToList();
+            }
+        }
+    }
+    
     public class BB
     {
         public static void CleanOldTempRecords(int numOfDaysOld)

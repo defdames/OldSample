@@ -7,6 +7,13 @@
     <title></title>
     <link href="../../../Resources/StyleSheets/main.css" rel="stylesheet" />
     <script type="text/javascript">
+        var checkStatus = function () {
+            if (App.uxStatusField.value == 2) {
+                return true;
+            }
+            return false;
+        };
+
         var setIcon = function (value, metadata, record) {
             var tpl = "<img src='{0}' />";
             if (value == "Error") {
@@ -549,6 +556,7 @@
                                 <ext:ListItem Text="High" Value="HIGH" />
                             </Items>
                         </ext:ComboBox>
+                        <ext:Hidden runat="server" ID="uxStatusField" />
                     </Items>
                     <Buttons>
                         <ext:Button runat="server" ID="uxSaveHeaderButton" Icon="Add" Text="Save" Disabled="true">
@@ -616,9 +624,8 @@
                                         <ext:ModelField Name="TIME_OUT" Type="Date" />
                                         <ext:ModelField Name="TIME_OUT_TIME" Type="Date" />
                                         <ext:ModelField Name="TRAVEL_TIME_FORMATTED" Type="Date" />
-                                        <ext:ModelField Name="DRIVE_TIME_FORMATTED" />
                                         <ext:ModelField Name="TOTAL_HOURS" />
-                                        <ext:ModelField Name="PER_DIEM" />
+                                        <ext:ModelField Name="PER_DIEM" Type="Boolean" />
                                         <ext:ModelField Name="FOREMAN_LICENSE" />
                                         <ext:ModelField Name="COMMENTS" />
                                         <ext:ModelField Name="LUNCH_LENGTH" />
@@ -831,7 +838,7 @@
                                     <ext:TimeField runat="server" MinTime="00:00" MaxTime="23:59" Format="H:mm" />
                                 </Editor>
                             </ext:DateColumn>
-                            <ext:CheckColumn ID="uxPerDiemColumn" runat="server" DataIndex="PER_DIEM" Text="Per Diem" Flex="6" Editable="true" />
+                            <ext:CheckColumn ID="uxPerDiemColumn" runat="server" DataIndex="PER_DIEM" Text="Per Diem" Flex="6" Editable="true"/>
                             <ext:Column ID="Column1" runat="server" DataIndex="LUNCH_LENGTH" Text="Lunch Length" Flex="7" />
                             <ext:Column ID="Column14" runat="server" DataIndex="COMMENTS" Text="Comments" Flex="14">
                                 <Editor>
@@ -891,6 +898,9 @@
                                 </Edit>
                                 <BeforeEdit OnEvent="deSetTimeInDate" />
                             </DirectEvents>
+                            <Listeners>
+                                <BeforeEdit Fn="checkStatus" />
+                            </Listeners>
                         </ext:RowEditing>
                     </Plugins>
                     <Listeners>
@@ -1085,6 +1095,9 @@
                                     </ExtraParams>
                                 </Edit>
                             </DirectEvents>
+                            <Listeners>
+                                <BeforeEdit Fn="checkStatus" />
+                            </Listeners>
                         </ext:RowEditing>
                     </Plugins>
                     <SelectionModel>
@@ -1242,6 +1255,9 @@
                                     </ExtraParams>
                                 </Edit>
                             </DirectEvents>
+                            <Listeners>
+                                <BeforeEdit Fn="checkStatus" />
+                            </Listeners>
                         </ext:RowEditing>
                     </Plugins>
                 </ext:GridPanel>
@@ -1359,6 +1375,9 @@
                                     </ExtraParams>
                                 </Edit>
                             </DirectEvents>
+                            <Listeners>
+                                <BeforeEdit Fn="checkStatus" />
+                            </Listeners>
                         </ext:RowEditing>
                     </Plugins>
                 </ext:GridPanel>
@@ -1840,6 +1859,9 @@
                                     </ExtraParams>
                                 </BeforeEdit>
                             </DirectEvents>
+                            <Listeners>
+                                <BeforeEdit Fn="checkStatus" />
+                            </Listeners>
                         </ext:RowEditing>
                     </Plugins>
                 </ext:GridPanel>
