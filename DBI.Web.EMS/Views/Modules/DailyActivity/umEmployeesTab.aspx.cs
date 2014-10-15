@@ -144,11 +144,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     Hours = Math.Truncate((double)item.SHOPTIME_AM);
                     Minutes = Math.Round(((double)item.SHOPTIME_AM - Hours) * 60);
                     TotalTimeSpan = new TimeSpan(Convert.ToInt32(Hours), Convert.ToInt32(Minutes), 0);
-                    item.SHOPTIME_AM_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
+                    item.SHOPTIME_AM_FORMATTED = DateTime.Now.Date + TotalTimeSpan;
                     Hours = Math.Truncate((double)item.SHOPTIME_PM);
                     Minutes = Math.Round(((double)item.SHOPTIME_PM - Hours) * 60);
                     TotalTimeSpan = new TimeSpan(Convert.ToInt32(Hours), Convert.ToInt32(Minutes), 0);
-                    item.SHOPTIME_PM_FORMATTED = TotalTimeSpan.ToString("hh\\:mm");
+                    item.SHOPTIME_PM_FORMATTED = DateTime.Now.Date + TotalTimeSpan;
 
                     
                 }
@@ -240,11 +240,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         public decimal? TRAVEL_TIME { get; set; }
         public DateTime TRAVEL_TIME_FORMATTED { get; set; }
         public decimal? SHOPTIME_AM { get; set; }
-        public string SHOPTIME_AM_FORMATTED { get; set; }
+        public DateTime SHOPTIME_AM_FORMATTED { get; set; }
         public decimal? SHOPTIME_PM { get; set; }
-        public string SHOPTIME_PM_FORMATTED { get; set; }
+        public DateTime SHOPTIME_PM_FORMATTED { get; set; }
         public decimal? DRIVE_TIME { get; set; }
-        public DateTime? DRIVE_TIME_FORMATTED { get; set; }
+        public DateTime DRIVE_TIME_FORMATTED { get; set; }
         public string PER_DIEM { get; set; }
         public string FOREMAN_LICENSE { get; set; }
         public string COMMENTS { get; set; }
@@ -253,6 +253,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         public decimal? LUNCH_LENGTH { get; set; }
         public DateTime? DA_DATE { get; set; }
         public int? STATUS { get; set; }
+        public string STATE { get; set; }
+        public string COUNTY { get; set; }
         public string TOTAL_HOURS { get; set; }
         public string PhantomID { get; set; }
     }

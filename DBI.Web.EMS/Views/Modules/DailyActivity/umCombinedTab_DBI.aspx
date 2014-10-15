@@ -7,6 +7,13 @@
     <title></title>
     <link href="../../../Resources/StyleSheets/main.css" rel="stylesheet" />
     <script type="text/javascript">
+        var checkStatus = function () {
+            if (App.uxStatusField.value == 2) {
+                return true;
+            }
+            return false;
+        };
+
         var setIcon = function (value, metadata, record) {
             var tpl = "<img src='{0}' />";
             if (value == "Error") {
@@ -549,6 +556,7 @@
                                 <ext:ListItem Text="High" Value="HIGH" />
                             </Items>
                         </ext:ComboBox>
+                        <ext:Hidden runat="server" ID="uxStatusField" />
                     </Items>
                     <Buttons>
                         <ext:Button runat="server" ID="uxSaveHeaderButton" Icon="Add" Text="Save" Disabled="true">
@@ -891,6 +899,9 @@
                                 </Edit>
                                 <BeforeEdit OnEvent="deSetTimeInDate" />
                             </DirectEvents>
+                            <Listeners>
+                                <BeforeEdit Fn="checkStatus" />
+                            </Listeners>
                         </ext:RowEditing>
                     </Plugins>
                     <Listeners>
@@ -1085,6 +1096,9 @@
                                     </ExtraParams>
                                 </Edit>
                             </DirectEvents>
+                            <Listeners>
+                                <BeforeEdit Fn="checkStatus" />
+                            </Listeners>
                         </ext:RowEditing>
                     </Plugins>
                     <SelectionModel>
@@ -1242,6 +1256,9 @@
                                     </ExtraParams>
                                 </Edit>
                             </DirectEvents>
+                            <Listeners>
+                                <BeforeEdit Fn="checkStatus" />
+                            </Listeners>
                         </ext:RowEditing>
                     </Plugins>
                 </ext:GridPanel>
@@ -1359,6 +1376,9 @@
                                     </ExtraParams>
                                 </Edit>
                             </DirectEvents>
+                            <Listeners>
+                                <BeforeEdit Fn="checkStatus" />
+                            </Listeners>
                         </ext:RowEditing>
                     </Plugins>
                 </ext:GridPanel>
@@ -1840,6 +1860,9 @@
                                     </ExtraParams>
                                 </BeforeEdit>
                             </DirectEvents>
+                            <Listeners>
+                                <BeforeEdit Fn="checkStatus" />
+                            </Listeners>
                         </ext:RowEditing>
                     </Plugins>
                 </ext:GridPanel>

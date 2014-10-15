@@ -56,7 +56,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     uxEmployeeTimeOutDate.MinDate = HeaderDate;
                     uxEmployeeTimeOutDate.MaxDate = HeaderDate.AddDays(1);
                 }
-                uxEmployeeTimeOutDate.SelectedDate = DateTime.Now.Date;
+                
             }
             if (GetStatus(HeaderId) != 2)
             {
@@ -112,7 +112,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
                             join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
                             where d.HEADER_ID == HeaderId
-                            select new {d.HEADER_ID, d.PROJECT_ID, p.SEGMENT1, p.LONG_NAME, d.DA_DATE, d.SUBDIVISION, d.CONTRACTOR, d.PERSON_ID, e.EMPLOYEE_NAME, d.LICENSE, d.STATE, d.APPLICATION_TYPE, d.DENSITY, d.DA_HEADER_ID }).Single();
+                            select new {d.HEADER_ID, d.PROJECT_ID, p.SEGMENT1, p.LONG_NAME, d.DA_DATE, d.SUBDIVISION, d.CONTRACTOR, d.PERSON_ID, e.EMPLOYEE_NAME, d.LICENSE, d.STATE, d.APPLICATION_TYPE, d.DENSITY, d.DA_HEADER_ID, d.STATUS }).Single();
                 DateTime Da_date = DateTime.Parse(data.DA_DATE.ToString());
                 uxProjectField.SetValue(data.PROJECT_ID.ToString(), string.Format("({0}) - {1}", data.SEGMENT1, data.LONG_NAME));
                 uxDateField.SelectedDate = Da_date;
@@ -125,6 +125,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxTypeField.Value = data.APPLICATION_TYPE;
                 uxHeaderField.Value = data.HEADER_ID.ToString();
                 uxOracleField.Value = data.DA_HEADER_ID.ToString();
+                uxStatusField.Value = data.STATUS.ToString();
             }
         }
 
@@ -1552,6 +1553,17 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxEmployeeTimeOutTime.ClearInvalid();
                 uxEmployeeTimeOutTime.MarkAsValid();
             }
+        }
+
+        [DirectMethod]
+        public string dmCheckStatus()
+        {
+            int Status = GetStatus(long.Parse(Request.QueryString["HeaderId"]));
+            if (Status != 2)
+            {
+                return "false";
+            }
+            return "true";
         }
 
         [DirectMethod]
