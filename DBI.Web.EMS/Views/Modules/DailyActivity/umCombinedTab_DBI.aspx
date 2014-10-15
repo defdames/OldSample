@@ -624,7 +624,6 @@
                                         <ext:ModelField Name="TIME_OUT" Type="Date" />
                                         <ext:ModelField Name="TIME_OUT_TIME" Type="Date" />
                                         <ext:ModelField Name="TRAVEL_TIME_FORMATTED" Type="Date" />
-                                        <ext:ModelField Name="DRIVE_TIME_FORMATTED" />
                                         <ext:ModelField Name="TOTAL_HOURS" />
                                         <ext:ModelField Name="PER_DIEM" Type="Boolean" />
                                         <ext:ModelField Name="FOREMAN_LICENSE" />
