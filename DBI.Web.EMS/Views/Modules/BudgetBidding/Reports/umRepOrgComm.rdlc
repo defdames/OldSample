@@ -1236,20 +1236,13 @@
         <DataProvider>System.Data.DataSet</DataProvider>
         <ConnectString>/* Local Connection */</ConnectString>
       </ConnectionProperties>
-      <rd:DataSourceID>2c75d002-475f-48f7-94a5-ec5471773718</rd:DataSourceID>
-    </DataSource>
-    <DataSource Name="DBIData1">
-      <ConnectionProperties>
-        <DataProvider>System.Data.DataSet</DataProvider>
-        <ConnectString>/* Local Connection */</ConnectString>
-      </ConnectionProperties>
-      <rd:DataSourceID>f10a80d7-f231-424e-a5e5-3aa2670a801c</rd:DataSourceID>
+      <rd:DataSourceID>5a527673-99c5-4240-bc1a-59e62c64bfb5</rd:DataSourceID>
     </DataSource>
   </DataSources>
   <DataSets>
     <DataSet Name="Org_Summary">
       <Query>
-        <DataSourceName>DBIData1</DataSourceName>
+        <DataSourceName>DBIData</DataSourceName>
         <CommandText>/* Local Query */</CommandText>
       </Query>
       <Fields>

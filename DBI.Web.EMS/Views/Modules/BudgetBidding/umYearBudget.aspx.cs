@@ -26,7 +26,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     new { ACTION_ID = "repOrgSum" ,ACTION_NAME =  "Org Summary" },
                     new { ACTION_ID = "repOrgComm" ,ACTION_NAME =  "Comments & Variances" },
                     new { ACTION_ID = "repOrgLiab" ,ACTION_NAME =  "Liabilities" },
-                    new { ACTION_ID = "repOrgAllPro" ,ACTION_NAME =  "All Projects - Including Detail Sheets" }
+                    new { ACTION_ID = "repOrgAllPro" ,ACTION_NAME =  "All Projects - Including Detail Sheets" },
+                    new { ACTION_ID = "repProj" ,ACTION_NAME =  "Selected Project" }
                 };
 
                 this.reportList.DataSource = list;
@@ -383,45 +384,42 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         {
             string reportName = uxSummaryReports.Value.ToString();
             string url ="";
+
+            string orgName = Request.QueryString["orgName"];
+            long orgID = long.Parse(Request.QueryString["OrgID"]);
+            long yearID = long.Parse(Request.QueryString["fiscalYear"]);
+            long verID = long.Parse(Request.QueryString["verID"]);
+            string prevYearID = uxHidPrevYear.Text;
+            string prevVerID = uxHidPrevVer.Text;
+            string oh = BBOH.DataSingle(orgID, yearID, verID).OH.ToString();
+
+            string budBidprojectID = e.ExtraParams["BudBidProjectID"];
+            string projectNumID = e.ExtraParams["ProjectNumID"];
+            string type = e.ExtraParams["Type"];
+            string projectNum = e.ExtraParams["ProjectNum"];
+            string projectName = e.ExtraParams["ProjectName"];
+
+
+
             if (reportName == "repOrgSum")
             {
-                string orgName = Request.QueryString["orgName"];
-                long orgID = long.Parse(Request.QueryString["OrgID"]);
-                long yearID = long.Parse(Request.QueryString["fiscalYear"]);
-                long verID = long.Parse(Request.QueryString["verID"]);
-                string prevYearID = uxHidPrevYear.Text;
-                string prevVerID = uxHidPrevVer.Text;
-                string oh = BBOH.DataSingle(orgID, yearID, verID).OH.ToString();
-
                 url = "/Views/Modules/BudgetBidding/Reports/umRepOrgSum.aspx?orgName=" + orgName + "&orgID=" + orgID + "&yearID=" + yearID + "&verID=" + verID + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID + "&oh=" + oh;
             }
             else if (reportName == "repOrgComm")
             {
-                string orgName = Request.QueryString["orgName"];
-                long orgID = long.Parse(Request.QueryString["OrgID"]);
-                long yearID = long.Parse(Request.QueryString["fiscalYear"]);
-                long verID = long.Parse(Request.QueryString["verID"]);
-                string prevYearID = uxHidPrevYear.Text;
-                string prevVerID = uxHidPrevVer.Text;
-                string oh = BBOH.DataSingle(orgID, yearID, verID).OH.ToString();
-
                 url = "/Views/Modules/BudgetBidding/Reports/umRepOrgComm.aspx?orgName=" + orgName + "&orgID=" + orgID + "&yearID=" + yearID + "&verID=" + verID + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID + "&oh=" + oh;
             }
             else if (reportName == "repOrgLiab")
             {
-                string orgName = Request.QueryString["orgName"];
-                long orgID = long.Parse(Request.QueryString["OrgID"]);
-                long yearID = long.Parse(Request.QueryString["fiscalYear"]);
-                long verID = long.Parse(Request.QueryString["verID"]);
-                string prevYearID = uxHidPrevYear.Text;
-                string prevVerID = uxHidPrevVer.Text;
-                string oh = BBOH.DataSingle(orgID, yearID, verID).OH.ToString();
-
                 url = "/Views/Modules/BudgetBidding/Reports/umRepOrgLiab.aspx?orgName=" + orgName + "&orgID=" + orgID + "&yearID=" + yearID + "&verID=" + verID + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID + "&oh=" + oh;
             }
             else if (reportName == "repoOrgAllPro")
             {
 
+            }
+            else if (reportName == "repProj")
+            {
+                url = "/Views/Modules/BudgetBidding/Reports/umRepProject.aspx?orgName=" + orgName + "&orgID=" + orgID + "&yearID=" + yearID + "&verID=" + verID + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID + "&oh=" + oh;
             }
 
             Window win = new Window
