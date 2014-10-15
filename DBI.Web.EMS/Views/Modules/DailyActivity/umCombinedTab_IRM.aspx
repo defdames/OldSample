@@ -579,7 +579,7 @@
                                         <ext:ModelField Name="DRIVE_TIME_FORMATTED" Type="Date" />
                                         <ext:ModelField Name="SHOPTIME_AM_FORMATTED" Type="Date" />
                                         <ext:ModelField Name="SHOPTIME_PM_FORMATTED" Type="Date" />
-                                        <ext:ModelField Name="PER_DIEM" />
+                                        <ext:ModelField Name="PER_DIEM" Type="Boolean" />
                                         <ext:ModelField Name="FOREMAN_LICENSE" />
                                         <ext:ModelField Name="ROLE_TYPE" />
                                         <ext:ModelField Name="COMMENTS" />

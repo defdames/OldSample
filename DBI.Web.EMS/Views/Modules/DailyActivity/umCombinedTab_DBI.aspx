@@ -626,7 +626,7 @@
                                         <ext:ModelField Name="TRAVEL_TIME_FORMATTED" Type="Date" />
                                         <ext:ModelField Name="DRIVE_TIME_FORMATTED" />
                                         <ext:ModelField Name="TOTAL_HOURS" />
-                                        <ext:ModelField Name="PER_DIEM" />
+                                        <ext:ModelField Name="PER_DIEM" Type="Boolean" />
                                         <ext:ModelField Name="FOREMAN_LICENSE" />
                                         <ext:ModelField Name="COMMENTS" />
                                         <ext:ModelField Name="LUNCH_LENGTH" />
@@ -839,7 +839,7 @@
                                     <ext:TimeField runat="server" MinTime="00:00" MaxTime="23:59" Format="H:mm" />
                                 </Editor>
                             </ext:DateColumn>
-                            <ext:CheckColumn ID="uxPerDiemColumn" runat="server" DataIndex="PER_DIEM" Text="Per Diem" Flex="6" Editable="true" />
+                            <ext:CheckColumn ID="uxPerDiemColumn" runat="server" DataIndex="PER_DIEM" Text="Per Diem" Flex="6" Editable="true"/>
                             <ext:Column ID="Column1" runat="server" DataIndex="LUNCH_LENGTH" Text="Lunch Length" Flex="7" />
                             <ext:Column ID="Column14" runat="server" DataIndex="COMMENTS" Text="Comments" Flex="14">
                                 <Editor>

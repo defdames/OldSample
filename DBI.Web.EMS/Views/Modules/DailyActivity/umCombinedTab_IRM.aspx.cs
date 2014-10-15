@@ -193,7 +193,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             join p in _context.PROJECTS_V on equip.PROJECT_ID equals p.PROJECT_ID into proj
                             from projects in proj.DefaultIfEmpty()
                             where d.HEADER_ID == HeaderId
-                            select new EmployeeDetails {PERSON_ID = e.PERSON_ID, EMPLOYEE_ID = d.EMPLOYEE_ID, DA_DATE = d.DAILY_ACTIVITY_HEADER.DA_DATE, EMPLOYEE_NAME = e.EMPLOYEE_NAME, FOREMAN_LICENSE = d.FOREMAN_LICENSE, NAME = projects.NAME, TIME_IN = (DateTime)d.TIME_IN, TIME_OUT = (DateTime)d.TIME_OUT, TIME_IN_TIME = (DateTime)d.TIME_IN, TIME_OUT_TIME = (DateTime)d.TIME_OUT, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), SHOPTIME_AM = (d.SHOPTIME_AM == null ? 0 : d.SHOPTIME_AM), SHOPTIME_PM = (d.SHOPTIME_PM == null ? 0 : d.SHOPTIME_PM), PER_DIEM = d.PER_DIEM, COMMENTS = d.COMMENTS, ROLE_TYPE = d.ROLE_TYPE, STATUS = d.DAILY_ACTIVITY_HEADER.STATUS, EQUIPMENT_ID = d.EQUIPMENT_ID }).ToList();
+                            select new EmployeeDetails {PERSON_ID = e.PERSON_ID, EMPLOYEE_ID = d.EMPLOYEE_ID, DA_DATE = d.DAILY_ACTIVITY_HEADER.DA_DATE, EMPLOYEE_NAME = e.EMPLOYEE_NAME, FOREMAN_LICENSE = d.FOREMAN_LICENSE, NAME = projects.NAME, TIME_IN = (DateTime)d.TIME_IN, TIME_OUT = (DateTime)d.TIME_OUT, TIME_IN_TIME = (DateTime)d.TIME_IN, TIME_OUT_TIME = (DateTime)d.TIME_OUT, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), SHOPTIME_AM = (d.SHOPTIME_AM == null ? 0 : d.SHOPTIME_AM), SHOPTIME_PM = (d.SHOPTIME_PM == null ? 0 : d.SHOPTIME_PM), PER_DIEM = (d.PER_DIEM == "Y" ? true: false), COMMENTS = d.COMMENTS, ROLE_TYPE = d.ROLE_TYPE, STATUS = d.DAILY_ACTIVITY_HEADER.STATUS, EQUIPMENT_ID = d.EQUIPMENT_ID }).ToList();
                 foreach (var item in data)
                 {
                     double Hours = Math.Truncate((double)item.TRAVEL_TIME);
@@ -925,7 +925,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 NewEmployee.HEADER_ID = long.Parse(Request.QueryString["HeaderId"]);
                 NewEmployee.MODIFIED_BY = User.Identity.Name;
                 NewEmployee.MODIFY_DATE = DateTime.Now;
-                NewEmployee.PER_DIEM = item.PER_DIEM;
+                NewEmployee.PER_DIEM = (item.PER_DIEM == true ? "Y" : "N");
                 NewEmployee.PERSON_ID = item.PERSON_ID;
                 NewEmployee.TIME_IN = item.TIME_IN.Date + item.TIME_IN_TIME.TimeOfDay;
                 NewEmployee.TIME_OUT = item.TIME_OUT.Date + item.TIME_OUT_TIME.TimeOfDay;
@@ -974,7 +974,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 UpdatedEmployee.FOREMAN_LICENSE = item.FOREMAN_LICENSE;
                 UpdatedEmployee.MODIFIED_BY = User.Identity.Name;
                 UpdatedEmployee.MODIFY_DATE = DateTime.Now;
-                UpdatedEmployee.PER_DIEM = item.PER_DIEM;
+                UpdatedEmployee.PER_DIEM = (item.PER_DIEM == true ? "Y" : "N");
                 UpdatedEmployee.PERSON_ID = item.PERSON_ID;
                 UpdatedEmployee.TIME_IN = item.TIME_IN.Date + item.TIME_IN_TIME.TimeOfDay;
                 UpdatedEmployee.TIME_OUT = item.TIME_OUT.Date + item.TIME_OUT_TIME.TimeOfDay;
