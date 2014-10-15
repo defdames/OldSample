@@ -97,6 +97,38 @@ namespace DBI.Data
                 }
         }
 
+        /// <summary>
+        /// returns a list of organizations by hierarchy and business unit or legal entity.
+        /// </summary>
+        /// <param name="hierarchyId"></param>
+        /// <param name="organizationId"></param>
+        /// <returns></returns>
+        public static List<ORGANIZATION> OrganizationsByHierarchy(long hierarchyId, long organizationId)
+        {
+
+            using (Entities _context = new Entities())
+            {
+                string sql = @"select    c.organization_id_child ORGANIZATION_ID,
+                        c.d_child_name ORGANIZATION_NAME,
+                        haou.type,
+                        haou.date_from,
+                        haou.date_to
+                        FROM                per_organization_structures_v a
+                        INNER JOIN          per_org_structure_versions_v b on a.organization_structure_id = b.organization_structure_id
+                        INNER JOIN          per_org_structure_elements_v c on b.org_structure_version_id = c.org_structure_version_id
+                        INNER JOIN          apps.hr_all_organization_units haou on haou.organization_id = c.organization_id_child
+                        WHERE               SYSDATE BETWEEN b.date_from and nvl(b.date_to,'31-DEC-4712')
+                        AND                 a.organization_structure_id = " + hierarchyId.ToString() + @"
+                        START WITH          c.organization_id_parent = " + organizationId.ToString() + @" AND a.organization_structure_id + 0 = " + hierarchyId.ToString() + @"
+                        CONNECT BY PRIOR    c.organization_id_child = c.organization_id_parent AND a.organization_structure_id + 0 = " + hierarchyId.ToString() + @"
+                        ORDER SIBLINGS BY   c.d_child_name";
+
+                List<ORGANIZATION> _data = _context.Database.SqlQuery<ORGANIZATION>(sql).ToList();
+                return _data;
+            }
+        }
+
+
         public static IQueryable<ORGANIZATION_V1> ActiveOrganizationsByHierarchy(long hierarchyId, long organizationId, Entities _context)
         {
                 string sql = @"SELECT              c.organization_id_child ORGANIZATION_ID,

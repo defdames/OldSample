@@ -210,6 +210,9 @@
     <Content Include="Views\Modules\DailyActivity\umPostMultipleWindow.aspx" />
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_DBI.aspx" />
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_IRM.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umWeatherTab.aspx" />
+    <Content Include="Views\Modules\Fleet\umEquipmentThermalPrintReport.aspx" />
+    <Content Include="Views\Modules\Fleet\umViewEquipmentList.aspx" />
     <Content Include="Views\Modules\Overhead\umMyRollUpReport.aspx" />
     <Content Include="Views\Modules\Overhead\umAddGLAccountForCategory.aspx" />
     <Content Include="Views\Modules\Overhead\umAddOverheadDetailLine.aspx" />
@@ -277,6 +280,7 @@
     </Compile>
     <Compile Include="QRCodeGenerator.aspx.cs">
       <DependentUpon>QRCodeGenerator.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="QRCodeGenerator.aspx.designer.cs">
       <DependentUpon>QRCodeGenerator.aspx</DependentUpon>
@@ -756,6 +760,20 @@
       <DependentUpon>umSubmitActivity_IRM.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\ValidationChecks.cs" />
+    <Compile Include="Views\Modules\Fleet\umEquipmentThermalPrintReport.aspx.cs">
+      <DependentUpon>umEquipmentThermalPrintReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Fleet\umEquipmentThermalPrintReport.aspx.designer.cs">
+      <DependentUpon>umEquipmentThermalPrintReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\Fleet\umViewEquipmentList.aspx.cs">
+      <DependentUpon>umViewEquipmentList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Fleet\umViewEquipmentList.aspx.designer.cs">
+      <DependentUpon>umViewEquipmentList.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\Overhead\umMyRollUpReport.aspx.cs">
       <DependentUpon>umMyRollUpReport.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1101,6 +1119,7 @@
   <ItemGroup>
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
