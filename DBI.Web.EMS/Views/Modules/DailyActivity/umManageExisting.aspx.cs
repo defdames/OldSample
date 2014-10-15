@@ -1940,6 +1940,40 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
     }
 
+    public class EmployeeDetails
+    {
+        public long EMPLOYEE_ID { get; set; }
+        public long HEADER_ID { get; set; }
+        public int PERSON_ID { get; set; }
+        public string EMPLOYEE_NAME { get; set; }
+        public long? EQUIPMENT_ID { get; set; }
+        public string NAME { get; set; }
+        public DateTime TIME_IN { get; set; }
+        public DateTime TIME_IN_TIME { get; set; }
+        public DateTime TIME_OUT { get; set; }
+        public DateTime TIME_OUT_TIME { get; set; }
+        public decimal? TRAVEL_TIME { get; set; }
+        public DateTime TRAVEL_TIME_FORMATTED { get; set; }
+        public decimal? SHOPTIME_AM { get; set; }
+        public DateTime SHOPTIME_AM_FORMATTED { get; set; }
+        public decimal? SHOPTIME_PM { get; set; }
+        public DateTime SHOPTIME_PM_FORMATTED { get; set; }
+        public decimal? DRIVE_TIME { get; set; }
+        public DateTime DRIVE_TIME_FORMATTED { get; set; }
+        public string PER_DIEM { get; set; }
+        public string FOREMAN_LICENSE { get; set; }
+        public string COMMENTS { get; set; }
+        public string ROLE_TYPE { get; set; }
+        public string LUNCH { get; set; }
+        public decimal? LUNCH_LENGTH { get; set; }
+        public DateTime? DA_DATE { get; set; }
+        public int? STATUS { get; set; }
+        public string STATE { get; set; }
+        public string COUNTY { get; set; }
+        public string TOTAL_HOURS { get; set; }
+        public string PhantomID { get; set; }
+    }
+
     public class EquipmentDetails
     {
         public string SEGMENT1 { get; set; }
