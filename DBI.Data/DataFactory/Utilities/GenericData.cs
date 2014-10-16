@@ -433,7 +433,7 @@ namespace DBI.Data
                                 break;
                         }
                         break;
-
+                    
                     case FilterType.Numeric:
                         bool isInt = data.Count > 0 && data[0].GetType().GetProperty(dataIndex).PropertyType == typeof(int);
                         switch (condition.Operator)
@@ -482,7 +482,14 @@ namespace DBI.Data
                         itemValue = oValue as string;
                     }
 
-                    return (oValue != null) ? !oValue.ToString().ToLower().Contains(value.ToString().ToLower()) : true;
+                    switch (op)
+                    {
+                        case "compare":
+                            return !((IEquatable<IComparable>)value).Equals((IComparable)oValue);
+                        default:
+                            return (oValue != null) ? !oValue.ToString().ToLower().Contains(value.ToString().ToLower()) : true;
+                    }
+                    
                    
                 });
             }
