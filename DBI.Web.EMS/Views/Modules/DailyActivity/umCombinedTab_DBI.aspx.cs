@@ -92,6 +92,19 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             
         }
 
+        protected void deReadRoleData(object sender, StoreReadDataEventArgs e)
+        {
+            using (Entities _context = new Entities())
+            {
+                long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+                List<PA_ROLES_V> RoleList = (from d in _context.DAILY_ACTIVITY_HEADER
+                                             join p in _context.PA_ROLES_V on d.PROJECT_ID equals p.PROJECT_ID
+                                             where d.HEADER_ID == HeaderId
+                                             select p).ToList();
+
+                uxEmployeeRoleStore.DataSource = RoleList;
+            }
+        }
         protected int GetStatus(long HeaderId)
         {
             using (Entities _context = new Entities())
@@ -193,8 +206,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             from projects in proj.DefaultIfEmpty()
                             where d.HEADER_ID == HeaderId
                             select new EmployeeDetails { EMPLOYEE_ID = d.EMPLOYEE_ID, PERSON_ID = e.PERSON_ID, DA_DATE = d.DAILY_ACTIVITY_HEADER.DA_DATE, EMPLOYEE_NAME = e.EMPLOYEE_NAME, FOREMAN_LICENSE = d.FOREMAN_LICENSE, NAME = projects.NAME, TIME_IN = (DateTime)d.TIME_IN, TIME_OUT = (DateTime)d.TIME_OUT, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), PER_DIEM = (d.PER_DIEM == "Y" ? true : false), COMMENTS = d.COMMENTS, LUNCH_LENGTH = d.LUNCH_LENGTH, STATUS = d.DAILY_ACTIVITY_HEADER.STATUS, EQUIPMENT_ID = d.EQUIPMENT_ID }).ToList();
+
+
                 foreach (var item in data)
                 {
+                    item.PREVAILING_WAGE = roleNeeded();
                     double Hours = Math.Truncate((double)item.TRAVEL_TIME);
                     double Minutes = Math.Round(((double)item.TRAVEL_TIME - Hours) * 60);
                     item.TOTAL_HOURS = (item.TIME_OUT - item.TIME_IN).ToString("hh\\:mm");
@@ -869,6 +885,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 NewEmployee.TIME_IN = item.TIME_IN.Date + item.TIME_IN_TIME.TimeOfDay;
                 NewEmployee.TIME_OUT = item.TIME_OUT.Date + item.TIME_OUT_TIME.TimeOfDay;
                 NewEmployee.TRAVEL_TIME = (decimal)item.TRAVEL_TIME_FORMATTED.TimeOfDay.TotalMinutes / 60;
+                NewEmployee.ROLE_TYPE = item.ROLE_TYPE;
+                NewEmployee.STATE = item.STATE;
+                NewEmployee.COUNTY = item.COUNTY;
                 GenericData.Insert<DAILY_ACTIVITY_EMPLOYEE>(NewEmployee);
 
                 string EmployeeName;
@@ -909,7 +928,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 UpdatedEmployee.PERSON_ID = item.PERSON_ID;
                 UpdatedEmployee.TIME_IN = item.TIME_IN.Date + item.TIME_IN_TIME.TimeOfDay;
                 UpdatedEmployee.TIME_OUT = item.TIME_OUT.Date + item.TIME_OUT_TIME.TimeOfDay;
-
+                UpdatedEmployee.ROLE_TYPE = item.ROLE_TYPE;
+                UpdatedEmployee.STATE = item.STATE;
+                UpdatedEmployee.COUNTY = item.COUNTY;
                 UpdatedEmployee.TRAVEL_TIME = (decimal)item.TRAVEL_TIME_FORMATTED.TimeOfDay.TotalMinutes / 60;
 
                 GenericData.Update<DAILY_ACTIVITY_EMPLOYEE>(UpdatedEmployee);
@@ -1552,6 +1573,27 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxEmployeeTimeInTime.MarkAsValid();
                 uxEmployeeTimeOutTime.ClearInvalid();
                 uxEmployeeTimeOutTime.MarkAsValid();
+            }
+        }
+
+        protected bool roleNeeded()
+        {
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+
+            using (Entities _context = new Entities())
+            {
+                string PrevailingWage = (from d in _context.DAILY_ACTIVITY_HEADER
+                                         join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                                         where d.HEADER_ID == HeaderId
+                                         select p.ATTRIBUTE3).Single();
+                if (PrevailingWage == "Y")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
 

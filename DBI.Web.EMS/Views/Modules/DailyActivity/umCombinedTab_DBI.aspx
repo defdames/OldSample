@@ -342,7 +342,7 @@
                 <ext:Hidden ID="uxYellowWarning" runat="server" />
                 <ext:Hidden ID="uxRedWarning" runat="server" />
                 <ext:FormPanel runat="server"
-                    ID="uxHeaderPanel" Padding="10" BodyPadding="5" MaxWidth="1200">
+                    ID="uxHeaderPanel" Padding="10" BodyPadding="5" MaxWidth="1400">
                     <Items>
                         <ext:DateField runat="server" ID="uxDateField" FieldLabel="Date" AllowBlank="false" LabelWidth="100" Width="200" />
                         <ext:TextField runat="server" ID="uxHeaderField" FieldLabel="DRS Id" Width="200" LabelWidth="100" ReadOnly="true" />
@@ -575,7 +575,7 @@
                     ID="uxWarningGrid"
                     Title="Warnings/Errors"
                     Padding="10"
-                    MaxWidth="1200">
+                    MaxWidth="1400">
                     <Store>
                         <ext:Store runat="server" ID="uxWarningStore">
                             <Model>
@@ -607,7 +607,7 @@
                     ID="uxEmployeeGrid"
                     Title="Employees"
                     PaddingSpec="10 10 30 10"
-                    MaxWidth="1200">
+                    MaxWidth="1400">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxEmployeeStore">
@@ -629,6 +629,10 @@
                                         <ext:ModelField Name="FOREMAN_LICENSE" />
                                         <ext:ModelField Name="COMMENTS" />
                                         <ext:ModelField Name="LUNCH_LENGTH" />
+                                        <ext:ModelField Name="ROLE_TYPE" />
+                                        <ext:ModelField Name="STATE" />
+                                        <ext:ModelField Name="COUNTY" />
+                                        <ext:ModelField Name="PREVAILING_WAGE" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -839,6 +843,67 @@
                                 </Editor>
                             </ext:DateColumn>
                             <ext:CheckColumn ID="uxPerDiemColumn" runat="server" DataIndex="PER_DIEM" Text="Per Diem" Flex="6" Editable="true"/>
+                            <ext:CheckColumn runat="server" DataIndex="PREVAILING_WAGE" Text="Prevailing Wage" Flex="7" Editable="false" />
+                            <ext:Column runat="server" ID="uxRoleTypeColumn" DataIndex="ROLE_TYPE" Text="Role Type" Flex="12">
+                                <Editor>
+                                    <ext:DropDownField runat="server"
+                                        ID="uxEmployeeRole" Editable="false"
+                                        AllowBlank="true"
+                                        Hidden="true" Width="500">
+                                        <Component>
+                                            <ext:GridPanel runat="server"
+                                                ID="uxEmployeeRoleGrid"
+                                                Layout="HBoxLayout">
+                                                <Store>
+                                                    <ext:Store runat="server"
+                                                        ID="uxEmployeeRoleStore"
+                                                        OnReadData="deReadRoleData"
+                                                        AutoDataBind="true">
+                                                        <Model>
+                                                            <ext:Model ID="Model17" runat="server">
+                                                                <Fields>
+                                                                    <ext:ModelField Name="MEANING" />
+                                                                    <ext:ModelField Name="COUNTY" Type="String" />
+                                                                    <ext:ModelField Name="STATE" />
+                                                                </Fields>
+                                                            </ext:Model>
+                                                        </Model>
+                                                        <Parameters>
+                                                            <ext:StoreParameter Name="Form" Value="Add" />
+                                                        </Parameters>
+                                                        <Proxy>
+                                                            <ext:PageProxy />
+                                                        </Proxy>
+                                                    </ext:Store>
+                                                </Store>
+                                                <ColumnModel>
+                                                    <Columns>
+                                                        <ext:Column ID="Column61" runat="server" Text="Role Name" DataIndex="MEANING" Flex="33" />
+                                                        <ext:Column ID="Column62" runat="server" Text="County" DataIndex="COUNTY" Flex="34" />
+                                                        <ext:Column ID="Column63" runat="server" Text="State" DataIndex="STATE" Flex="33" />
+                                                    </Columns>
+                                                </ColumnModel>
+                                                <SelectionModel>
+                                                    <ext:RowSelectionModel Mode="Single" />
+                                                </SelectionModel>
+                                                <DirectEvents>
+                                                    <SelectionChange OnEvent="deStoreRoleGridValue">
+                                                        <ExtraParams>
+                                                            <ext:Parameter Name="Meaning" Value="#{uxEmployeeRoleGrid}.getSelectionModel().getSelection()[0].data.MEANING" Mode="Raw" />
+                                                            <ext:Parameter Name="County" Value="#{uxEmployeeRoleGrid}.getSelectionModel().getSelection()[0].data.COUNTY" Mode="Raw" />
+                                                            <ext:Parameter Name="State" Value="#{uxEmployeeRoleGrid}.getSelectionModel().getSelection()[0].data.STATE" Mode="Raw" />
+                                                            <ext:Parameter Name="Type" Value="Add" />
+                                                        </ExtraParams>
+                                                    </SelectionChange>
+                                                </DirectEvents>
+                                            </ext:GridPanel>
+                                        </Component>
+                                        <Listeners>
+                                            <Expand Handler="this.picker.setWidth(500);" />
+                                        </Listeners>
+                                    </ext:DropDownField>
+                                </Editor>
+                            </ext:Column>
                             <ext:Column ID="Column1" runat="server" DataIndex="LUNCH_LENGTH" Text="Lunch Length" Flex="7" />
                             <ext:Column ID="Column14" runat="server" DataIndex="COMMENTS" Text="Comments" Flex="14">
                                 <Editor>
@@ -846,6 +911,16 @@
                                         ID="uxAddEmployeeComments" Width="500"
                                         Rows="5"
                                         AllowBlank="true" />
+                                </Editor>
+                            </ext:Column>
+                             <ext:Column ID="Column59" runat="server" DataIndex="STATE" Hidden="true" Text="State">
+                                <Editor>
+                                    <ext:DisplayField runat="server" ID="uxEmployeeState" />
+                                </Editor>
+                            </ext:Column>
+                            <ext:Column ID="Column60" runat="server" DataIndex="COUNTY" Hidden="true" Text="County">
+                                <Editor>
+                                    <ext:DisplayField runat="server" ID="uxEmployeeCounty" />
                                 </Editor>
                             </ext:Column>
                         </Columns>

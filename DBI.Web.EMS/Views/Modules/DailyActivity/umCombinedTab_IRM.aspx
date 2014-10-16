@@ -584,6 +584,7 @@
                                         <ext:ModelField Name="ROLE_TYPE" />
                                         <ext:ModelField Name="COMMENTS" />
                                         <ext:ModelField Name="TOTAL_HOURS" />
+                                        <ext:ModelField Name="PREVAILING_WAGE" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -809,6 +810,7 @@
                                 </Editor>
                             </ext:DateColumn>
                             <ext:CheckColumn ID="uxPerDiemColumn" runat="server" DataIndex="PER_DIEM" Text="Per Diem" Flex="6" Editable="true" />
+                            <ext:CheckColumn ID="CheckColumn1" runat="server" DataIndex="PREVAILING_WAGE" Text="Prevailing Wage" Flex="7" Editable="false" />
                             <ext:Column runat="server" ID="uxRoleTypeColumn" DataIndex="ROLE_TYPE" Text="Role Type" Flex="12">
                                 <Editor>
                                     <ext:DropDownField runat="server"

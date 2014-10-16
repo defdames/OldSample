@@ -1963,6 +1963,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         public bool PER_DIEM { get; set; }
         public string FOREMAN_LICENSE { get; set; }
         public string COMMENTS { get; set; }
+        public bool PREVAILING_WAGE { get; set; }
         public string ROLE_TYPE { get; set; }
         public string LUNCH { get; set; }
         public decimal? LUNCH_LENGTH { get; set; }

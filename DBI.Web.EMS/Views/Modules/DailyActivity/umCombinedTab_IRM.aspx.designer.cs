@@ -895,6 +895,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.CheckColumn uxPerDiemColumn;
         
         /// <summary>
+        /// CheckColumn1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.CheckColumn CheckColumn1;
+        
+        /// <summary>
         /// uxRoleTypeColumn control.
         /// </summary>
         /// <remarks>
