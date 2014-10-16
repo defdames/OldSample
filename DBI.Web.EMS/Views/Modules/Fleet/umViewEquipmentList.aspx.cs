@@ -35,6 +35,9 @@ namespace DBI.Web.EMS.Views.Modules.Fleet
             //First get a list of organizations
             List<string> _organizationList = HR.OrganizationsByHierarchy(_hierarchyID, _organizationID).Select(x =>x.ORGANIZATION_ID.ToString()).ToList();
 
+            if (_organizationList.Count == 0)
+                _organizationList.Add(_organizationID.ToString());
+
             using (Entities _context = new Entities())
             {
                 List<PROJECTS_V> _data = (from _dbData in _context.PROJECTS_V
@@ -67,6 +70,9 @@ namespace DBI.Web.EMS.Views.Modules.Fleet
 
             //First get a list of organizations
             List<string> _organizationList = HR.OrganizationsByHierarchy(_hierarchyID, _organizationID).Select(x => x.ORGANIZATION_ID.ToString()).ToList();
+
+            if (_organizationList.Count == 0)
+                _organizationList.Add(_organizationID.ToString());
 
             using (Entities _context = new Entities())
             {

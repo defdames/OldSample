@@ -143,7 +143,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                 
                string _nodeText = e.ExtraParams["ORGANIZATION_NAME"];
-               AddTab(sm.SelectedRecordID + "OS", _nodeText + " - Equipment List", "umViewEquipmentList.aspx?orgid=" + sm.SelectedRecordID + "&desc=" + _nodeText + " - Equipment List",true,true);
+               AddTab("EL1", _nodeText + " - Equipment List", "umViewEquipmentList.aspx?orgid=" + sm.SelectedRecordID + "&desc=" + _nodeText + " - Equipment List",true,true);
 
              }
         }
@@ -160,7 +160,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             pan.Loader.ID = "loader" + id.Replace(":", "_");
             pan.Loader.Url = url;
             pan.Loader.Mode = LoadMode.Frame;
-            pan.Closable = true;
+            pan.Closable = false;
             pan.Loader.LoadMask.ShowMask = true;
             pan.Loader.DisableCaching = true;
             pan.AddTo(uxCenterTabPanel);

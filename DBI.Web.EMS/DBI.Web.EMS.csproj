@@ -210,7 +210,6 @@
     <Content Include="Views\Modules\DailyActivity\umPostMultipleWindow.aspx" />
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_DBI.aspx" />
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_IRM.aspx" />
-    <Content Include="Views\Modules\DailyActivity\umWeatherTab.aspx" />
     <Content Include="Views\Modules\Fleet\umEquipmentThermalPrintReport.aspx" />
     <Content Include="Views\Modules\Fleet\umViewEquipmentList.aspx" />
     <Content Include="Views\Modules\Overhead\umMyRollUpReport.aspx" />
