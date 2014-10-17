@@ -7,9 +7,20 @@
     <title></title>
     <link href="../../../Resources/StyleSheets/main.css" rel="stylesheet" />
     <script type="text/javascript">
-        var checkStatus = function () {
+        var checkStatus = function (e) {
             if (App.uxStatusField.value == 2) {
                 return true;
+            }
+            return false;
+        };
+
+        var checkEmployeeStatus = function () {
+            if (App.uxStatusField.value == 2) {
+                if (App.uxEmployeeGrid.getSelectionModel().getSelection()[0].data.PREVAILING_WAGE == false) {
+                    App.uxEmployeeRowEdit.editor.form.findField('ROLE_TYPE').disable();
+                }
+                return true;
+                
             }
             return false;
         };
@@ -632,7 +643,7 @@
                                         <ext:ModelField Name="ROLE_TYPE" />
                                         <ext:ModelField Name="STATE" />
                                         <ext:ModelField Name="COUNTY" />
-                                        <ext:ModelField Name="PREVAILING_WAGE" />
+                                        <ext:ModelField Name="PREVAILING_WAGE" Type="Boolean" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -843,7 +854,7 @@
                                 </Editor>
                             </ext:DateColumn>
                             <ext:CheckColumn ID="uxPerDiemColumn" runat="server" DataIndex="PER_DIEM" Text="Per Diem" Flex="6" Editable="true"/>
-                            <ext:CheckColumn runat="server" DataIndex="PREVAILING_WAGE" Text="Prevailing Wage" Flex="7" Editable="false" />
+                            <ext:CheckColumn runat="server" DataIndex="PREVAILING_WAGE" Text="Prevailing" Flex="7" Editable="false" />
                             <ext:Column runat="server" ID="uxRoleTypeColumn" DataIndex="ROLE_TYPE" Text="Role Type" Flex="12">
                                 <Editor>
                                     <ext:DropDownField runat="server"
@@ -962,7 +973,7 @@
                         </ext:Toolbar>
                     </TopBar>
                     <Plugins>
-                        <ext:RowEditing runat="server" ClicksToEdit="1" AutoCancel="false" ID="test">
+                        <ext:RowEditing runat="server" ClicksToEdit="1" AutoCancel="false" ID="uxEmployeeRowEdit">
                             <DirectEvents>
                                 <Edit OnEvent="deSaveEmployee" Before="return #{uxEmployeeStore}.isDirty();">
                                     <ExtraParams>
@@ -974,7 +985,7 @@
                                 <BeforeEdit OnEvent="deSetTimeInDate" />
                             </DirectEvents>
                             <Listeners>
-                                <BeforeEdit Fn="checkStatus" />
+                                <BeforeEdit Fn="checkEmployeeStatus" />
                             </Listeners>
                         </ext:RowEditing>
                     </Plugins>

@@ -453,6 +453,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        protected void deStoreRoleGridValue(object sender, DirectEventArgs e)
+        {
+            uxEmployeeRole.SetValue(e.ExtraParams["Meaning"], e.ExtraParams["Meaning"]);
+            uxEmployeeState.SetValue(e.ExtraParams["State"]);
+            uxEmployeeCounty.SetValue(e.ExtraParams["County"]);
+        }
+
         /// <summary>
         /// Reads/Filters Project Data
         /// </summary>

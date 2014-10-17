@@ -13,6 +13,18 @@
             }
             return false;
         };
+
+        var checkEmployeeStatus = function () {
+            if (App.uxStatusField.value == 2) {
+                if (App.uxEmployeeGrid.getSelectionModel().getSelection()[0].data.PREVAILING_WAGE == false) {
+                    App.uxEmployeeRowEdit.editor.form.findField('ROLE_TYPE').disable();
+                }
+                return true;
+
+            }
+            return false;
+        };
+
         var setIcon = function (value, metadata, record) {
             var tpl = "<img src='{0}' />";
             if (value == "Error") {
@@ -584,7 +596,7 @@
                                         <ext:ModelField Name="ROLE_TYPE" />
                                         <ext:ModelField Name="COMMENTS" />
                                         <ext:ModelField Name="TOTAL_HOURS" />
-                                        <ext:ModelField Name="PREVAILING_WAGE" />
+                                        <ext:ModelField Name="PREVAILING_WAGE" Type="Boolean" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
@@ -810,7 +822,7 @@
                                 </Editor>
                             </ext:DateColumn>
                             <ext:CheckColumn ID="uxPerDiemColumn" runat="server" DataIndex="PER_DIEM" Text="Per Diem" Flex="6" Editable="true" />
-                            <ext:CheckColumn ID="CheckColumn1" runat="server" DataIndex="PREVAILING_WAGE" Text="Prevailing Wage" Flex="7" Editable="false" />
+                            <ext:CheckColumn ID="CheckColumn1" runat="server" DataIndex="PREVAILING_WAGE" Text="Prevailing" Flex="7" Editable="false" />
                             <ext:Column runat="server" ID="uxRoleTypeColumn" DataIndex="ROLE_TYPE" Text="Role Type" Flex="12">
                                 <Editor>
                                     <ext:DropDownField runat="server"
