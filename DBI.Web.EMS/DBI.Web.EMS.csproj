@@ -160,6 +160,7 @@
     <Content Include="Views\Modules\CrossingMaintenance\Excel.xsl" />
     <Content Include="Views\Modules\CrossingMaintenance\ManageKCS.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\Reports\MaintenanceInvoiceReport.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\Reports\SupplementalInvoiceReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umAppDate.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umBillingInvoice.aspx" />
@@ -416,6 +417,13 @@
     <Compile Include="Views\Modules\CrossingMaintenance\Reports\MaintenanceInvoiceReport.aspx.designer.cs">
       <DependentUpon>MaintenanceInvoiceReport.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.aspx.cs">
+      <DependentUpon>StateCrossingListReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.aspx.designer.cs">
+      <DependentUpon>StateCrossingListReport.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\Reports\SupplementalInvoiceReport.aspx.cs">
       <DependentUpon>SupplementalInvoiceReport.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -458,6 +466,7 @@
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umCrossingSecurityTab.aspx.cs">
       <DependentUpon>umCrossingSecurityTab.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umCrossingSecurityTab.aspx.designer.cs">
       <DependentUpon>umCrossingSecurityTab.aspx</DependentUpon>
@@ -548,6 +557,7 @@
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umPricing.aspx.cs">
       <DependentUpon>umPricing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umPricing.aspx.designer.cs">
       <DependentUpon>umPricing.aspx</DependentUpon>
@@ -610,6 +620,7 @@
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umViewCrossings.aspx.cs">
       <DependentUpon>umViewCrossings.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umViewCrossings.aspx.designer.cs">
       <DependentUpon>umViewCrossings.aspx</DependentUpon>
@@ -1211,8 +1222,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\MaintenanceInvoiceReport.rdlc" />
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.rdlc" />
     <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\SupplementalInvoiceReport.rdlc" />
-    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\Report2.rdlc" />
     <EmbeddedResource Include="Views\Modules\CrossingMaintenance\StateCrossingList.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>StateCrossingList.cs</LastGenOutput>

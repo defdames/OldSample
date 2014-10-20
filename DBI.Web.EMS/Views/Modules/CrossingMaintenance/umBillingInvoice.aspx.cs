@@ -164,7 +164,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 ID = "uxMaintenanceInvoice",
                 Height = 600,
-                Width = 1120,
+                Width = 1050,
                 Title = "Maintenance Invoice Report",
                 Modal = true,
                 Resizable = false,

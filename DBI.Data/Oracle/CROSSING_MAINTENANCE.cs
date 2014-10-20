@@ -653,6 +653,42 @@ SELECT
                   return context.Database.SqlQuery<SupplementalReport>(sql).ToList();
               }
           }
+          public static List<StateCrossingList> GetStateCrossingList(string selectedRailroad, string selectedServiceUnit, string selectedSubDiv, string selectedState)
+          {
+              //long selected = Convert.ToInt64(selectedRailroad);
+
+              string sql = string.Format(@"                           
+
+                             SELECT
+                                d.CROSSING_ID,
+                                d.CROSSING_NUMBER,
+                                d.SUB_DIVISION,
+                                d.STATE,
+                                d.COUNTY,
+                                d.SERVICE_UNIT,
+                                d.CITY,
+                                d.MILE_POST,
+                                d.ROWNE,
+                                d.ROWNW,
+                                d.ROWSE,
+                                d.ROWSW,
+                                d.STREET,
+                                d.STATUS,
+                                d.SUB_CONTRACTED,
+                                d.LONGITUDE,
+                                d.LATITUDE,
+                                d.SPECIAL_INSTRUCTIONS,
+
+                FROM CROSSINGS d
+                WHERE d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = {1} AND d.SUB_DIVISION = {2} AND d.STATE = {3}
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+
+              using (Entities context = new Entities())
+              {
+                  return context.Database.SqlQuery<StateCrossingList>(sql).ToList();
+              }
+          }
           public class SupplementalReport
           {
               public decimal INVOICE_SUPP_ID { get; set; }
