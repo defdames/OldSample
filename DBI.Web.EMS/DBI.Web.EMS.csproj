@@ -1127,7 +1127,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\Modules\BudgetBidding\Reports\umRepProject.rdlc" />
-    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\Report2.rdlc" />
     <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\MaintenanceInvoiceReport.rdlc" />
     <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.rdlc" />
     <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\SupplementalInvoiceReport.rdlc" />
