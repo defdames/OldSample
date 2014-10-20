@@ -171,7 +171,7 @@
                                 <ext:PageProxy />
                             </Proxy>
                             <Sorters>
-                                <ext:DataSorter Direction="ASC" Property="SERVICE_UNIT" />
+                                <ext:DataSorter Direction="ASC" Property="CROSSING_NUMBER" />
                             </Sorters>
                         </ext:Store>
                     </Store>
@@ -207,7 +207,7 @@
                     </SelectionModel>
                     <Store>
                         <ext:Store runat="server"
-                            ID="uxApplicationStore" OnReadData="GetApplicationGridData" AutoDataBind="true" AutoLoad="false" GroupField="CROSSING_NUMBER">
+                            ID="uxApplicationStore" OnReadData="GetApplicationGridData" PageSize="10" AutoDataBind="true" AutoLoad="true" GroupField="CROSSING_NUMBER">
                          
                             <Model>
                                 <ext:Model ID="Model1" runat="server" IDProperty="APPLICATION_ID">
@@ -260,6 +260,18 @@
                                     </Listeners>
 
                                 </ext:Button>
+                                 <ext:Button ID="Button4" runat="server" Text="Edit Entry" Icon="ApplicationEdit" Disabled="true">
+                                    <Listeners>
+                                        <Click Handler="#{uxEditApplicationWindow}.show()" />
+                                    </Listeners>
+                                      <DirectEvents>
+                                        <Click OnEvent="deEditAppForm">
+                                            <ExtraParams>
+                                                <ext:Parameter Name="AppId" Value="#{uxApplicationEntryGrid}.getSelectionModel().getSelection()[0].data.APPLICATION_ID" Mode="Raw" />
+                                            </ExtraParams>
+                                        </Click>
+                                    </DirectEvents>
+                                </ext:Button>
                                 <ext:Button ID="uxRemoveAppButton" runat="server" Text="Delete Application" Icon="ApplicationDelete" Disabled="true">
                                     <DirectEvents>
                                         <Click OnEvent="deRemoveApplicationEntry">
@@ -276,9 +288,28 @@
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
+                                  <%--    <Plugins>
+                     
+                       
+                       <ext:RowEditing ID="RowEditing1" runat="server" ClicksToMoveEditor="1" AutoCancel="false">
+                                            <DirectEvents>
+                                                <Edit OnEvent="deSavePricing" Before="return #{uxPriceStore}.isDirty();">
+                                                    <ExtraParams>
+                                                        <ext:Parameter Name="PRIdata" Value="#{uxPriceStore}.getChangedData({skipIdForPhantomRecords : false})" Mode="Raw" Encode="true" />
+                                                    
+                                                    </ExtraParams>
+                                                    <EventMask ShowMask="true" />
+                                                </Edit>
+                                            </DirectEvents>
+                                        </ext:RowEditing>
+                  </Plugins>--%>
+                    <BottomBar>
+                        <ext:PagingToolbar ID="PagingToolbar2" runat="server" HideRefresh="True">
+                        </ext:PagingToolbar>
+                    </BottomBar>
                     <Listeners>
-                        <Select Handler="#{uxRemoveAppButton}.enable();" />
-                        <Deselect Handler="#{uxRemoveAppButton}.disable();" />
+                        <Select Handler="#{uxRemoveAppButton}.enable(); #{Button4}.enable();" />
+                        <Deselect Handler="#{uxRemoveAppButton}.disable(); #{Button4}.disable();" />
                     </Listeners>
                     <Features>
                         <ext:Grouping ID="Grouping1"
@@ -460,7 +491,176 @@
 
 
                 </ext:Window>
+                 <ext:Window runat="server"
+                    ID="uxEditApplicationWindow"
+                    Layout="FormLayout"
+                    Hidden="true"
+                    Title="Edit Application Entry"
+                    Width="650" Modal="true">
+                    <Items>
+                        <ext:FormPanel ID="uxEditApplicationForm" runat="server" Layout="FormLayout">
+                            <Items>
 
+
+                                <ext:FieldContainer ID="FieldContainer3" runat="server" Layout="HBoxLayout">
+                                    <Items>
+                                        <ext:TextField runat="server" ID="uxEditAppNum" LabelAlign="Right" FieldLabel="Application #" Width="235" ReadOnly="true" AnchorHorizontal="100%" TabIndex="1" />
+                                        <ext:Label ID="Label5" runat="server" Text="" Width="25" />
+                                        <ext:Checkbox ID="uxEditSprayBox" runat="server" BoxLabel="Spray" BoxLabelAlign="After" TabIndex="3" />
+                                        <ext:Label ID="Label6" runat="server" Text="" Width="25" />
+                                        <ext:Checkbox ID="uxEditCutBox" runat="server" BoxLabel="Cut" BoxLabelAlign="After" TabIndex="4" />
+
+                                    </Items>
+                                </ext:FieldContainer>
+
+                                <ext:FieldContainer ID="FieldContainer4" runat="server" Layout="HBoxLayout">
+                                    <Items>
+                                        <ext:DateField ID="uxDateEdit" runat="server" FieldLabel="Date" LabelAlign="Right" Width="300" AllowBlank="false" Editable="true" TabIndex="2" InvalidCls="allowBlank" IndicatorIcon="BulletRed" MsgTarget="Side" />
+                                        <ext:Label ID="Label7" runat="server" Text="" Width="25" />
+                                        <ext:Label ID="Label8" runat="server" Text="" Width="8" />
+                                        <ext:Checkbox ID="uxInspectEdit" runat="server" BoxLabel="Inspect" BoxLabelAlign="After" Width="250" TabIndex="5" />
+
+
+                                    </Items>
+                                </ext:FieldContainer>
+
+
+                                <ext:FieldContainer ID="FieldContainer5" runat="server" Layout="HBoxLayout">
+                                    <Items>
+
+                                        <ext:DropDownField runat="server"
+                                            ID="uxEditTruckNumber"
+                                            FieldLabel="Choose Equipment"
+                                             LabelAlign="Right"
+                                            AllowBlank="false" Width="500" TabIndex="6" InvalidCls="allowBlank" IndicatorIcon="BulletRed" MsgTarget="Side">
+                                            <Component>
+                                                <ext:GridPanel runat="server"
+                                                    ID="uxEditEquipmentGrid"
+                                                    Layout="HBoxLayout">
+                                                    <Store>
+                                                        <ext:Store runat="server"
+                                                            ID="uxEditEquipmentStore"
+                                                            OnReadData="deEditReadGrid"
+                                                            PageSize="10"
+                                                            RemoteSort="true"
+                                                            AutoDataBind="true">
+                                                            <Model>
+                                                                <ext:Model ID="Model3" runat="server">
+                                                                    <Fields>
+                                                                        <ext:ModelField Name="CLASS_CODE" Type="String" />
+                                                                        <ext:ModelField Name="NAME" Type="String" />
+                                                                        <ext:ModelField Name="ORG_ID" />
+                                                                        <ext:ModelField Name="ORGANIZATION_ID" Type="Int" />
+                                                                        <ext:ModelField Name="ORGANIZATION_NAME" Type="String" />
+                                                                        <ext:ModelField Name="PROJECT_ID" Type="Int" />
+                                                                        <ext:ModelField Name="PROJECT_STATUS_CODE" />
+                                                                        <ext:ModelField Name="SEGMENT1" Type="Int" />
+                                                                    </Fields>
+                                                                </ext:Model>
+                                                            </Model>
+                                                            <Proxy>
+                                                                <ext:PageProxy />
+                                                            </Proxy>
+                                                            <Parameters>
+                                                                <ext:StoreParameter Name="Form" Value="Edit" />
+                                                            </Parameters>
+                                                        </ext:Store>
+                                                    </Store>
+                                                    <ColumnModel>
+                                                        <Columns>
+                                                            <ext:Column runat="server"
+                                                                ID="Column8"
+                                                                DataIndex="CLASS_CODE"
+                                                                Text="Class Code" />
+                                                            <ext:Column runat="server"
+                                                                ID="Column13"
+                                                                DataIndex="NAME"
+                                                                Text="Equipment Name" />
+                                                            <ext:Column runat="server"
+                                                                ID="Column15"
+                                                                DataIndex="ORGANIZATION_NAME"
+                                                                Text="Organization Name" />
+                                                            <ext:Column runat="server"
+                                                                ID="Column16"
+                                                                DataIndex="SEGMENT1"
+                                                                Text="Project Number" />
+                                                        </Columns>
+                                                    </ColumnModel>
+                                                    <Plugins>
+                                                        <ext:FilterHeader ID="uxEditEquipmentFilter" runat="server" Remote="true" />
+                                                    </Plugins>
+                                                    <TopBar>
+                                                        <ext:Toolbar runat="server"
+                                                            ID="Toolbar2">
+                                                            <Items>
+                                                                <ext:Button runat="server"
+                                                                    ID="uxEditToggle"
+                                                                    EnableToggle="true"
+                                                                    Text="All Regions"
+                                                                    Icon="Group">
+                                                                    <DirectEvents>
+                                                                        <Toggle OnEvent="deEditReloadStore">
+                                                                            <ExtraParams>
+                                                                                <ext:Parameter Name="Type" Value="Equipment" />
+                                                                            </ExtraParams>
+                                                                        </Toggle>
+                                                                    </DirectEvents>
+                                                                </ext:Button>
+                                                            </Items>
+                                                        </ext:Toolbar>
+                                                    </TopBar>
+                                                    <BottomBar>
+                                                        <ext:PagingToolbar runat="server"
+                                                            ID="PagingToolbar4" />
+                                                    </BottomBar>
+                                                    <SelectionModel>
+                                                        <ext:RowSelectionModel ID="RowSelectionModel4" runat="server" Mode="Single" />
+                                                    </SelectionModel>
+                                                    <DirectEvents>
+                                                        <SelectionChange OnEvent="deEditStoreGridValue">
+                                                            <ExtraParams>
+                                                                <ext:Parameter Name="ProjectId" Value="#{uxEditEquipmentGrid}.getSelectionModel().getSelection()[0].data.PROJECT_ID" Mode="Raw" />
+                                                                <ext:Parameter Name="EquipmentName" Value="#{uxEditEquipmentGrid}.getSelectionModel().getSelection()[0].data.NAME" Mode="Raw" />
+                                                                <ext:Parameter Name="Form" Value="Edit" />
+                                                            </ExtraParams>
+                                                        </SelectionChange>
+                                                    </DirectEvents>
+                                                </ext:GridPanel>
+                                            </Component>
+                                        </ext:DropDownField>
+                                    </Items>
+                                </ext:FieldContainer>
+
+                                <ext:TextArea ID="TextArea1" FieldLabel="Remarks" runat="server" LabelAlign="Right" TabIndex="7" />
+                            </Items>
+                            <Buttons>
+                                <ext:Button ID="Button2" runat="server" Text="Update" Icon="Add">
+                                    <DirectEvents>
+                                        <Click OnEvent="deEditApp">
+                                            <ExtraParams>
+                                                <ext:Parameter Name="AppId" Value="#{uxApplicationEntryGrid}.getSelectionModel().getSelection()[0].data.APPLICATION_ID" Mode="Raw" />
+                                               <%-- <ext:Parameter Name="selectedCrossings" Value="Ext.encode(#{uxApplicationCrossingGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
+                                                <ext:Parameter Name="appList" Value="Ext.encode(#{uxApplicationEntryGrid}.getRowsValues({selectedOnly: false}))" Mode="Raw" />--%>
+
+                                            </ExtraParams>
+                                        </Click>
+                                    </DirectEvents>
+                                </ext:Button>
+                                <ext:Button ID="Button3" runat="server" Text="Cancel" Icon="Delete">
+                                    <Listeners>
+                                        <Click Handler="#{uxEditApplicationForm}.reset();
+									#{uxEditApplicationWindow}.hide()" />
+                                    </Listeners>
+                                </ext:Button>
+                            </Buttons>
+                            <Listeners>
+                                <ValidityChange Handler="#{Button2}.setDisabled(!valid);" />
+                            </Listeners>
+                        </ext:FormPanel>
+                    </Items>
+
+
+                </ext:Window>
                 <ext:Hidden ID="uxHidYearOK" runat="server" />
                 <ext:Hidden ID="uxHidVerOK" runat="server" />
 

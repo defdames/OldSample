@@ -1094,7 +1094,7 @@
         </Style>
       </Tablix>
     </ReportItems>
-    <Height>5.97917in</Height>
+    <Height>0.79514in</Height>
     <Style>
       <Border>
         <Style>None</Style>
@@ -1102,7 +1102,7 @@
       <BackgroundColor>White</BackgroundColor>
     </Style>
   </Body>
-  <Width>11.17893in</Width>
+  <Width>10.5in</Width>
   <Page>
     <PageHeader>
       <Height>0.85291in</Height>
@@ -1253,7 +1253,7 @@
       </Style>
     </PageHeader>
     <PageFooter>
-      <Height>0.3125in</Height>
+      <Height>0.32292in</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
@@ -1278,9 +1278,9 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox429</rd:DefaultName>
-          <Top>0.01389in</Top>
+          <Top>0.02778in</Top>
           <Height>0.25in</Height>
-          <Width>11.17893in</Width>
+          <Width>10.38542in</Width>
           <Style>
             <Border>
               <Style>None</Style>

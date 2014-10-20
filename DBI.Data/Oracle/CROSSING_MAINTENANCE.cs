@@ -617,7 +617,98 @@ SELECT
                   return context.Database.SqlQuery<ApplicationDetails>(sql).ToList();
               }
           }
+          public static List<SupplementalReport> GetSupplementalReport(string selectedSupp)
+          {
+              long selected = Convert.ToInt64(selectedSupp);
+            
+              string sql = string.Format(@"                           
 
+                             SELECT
+                                   v.INVOICE_SUPP_NUMBER,
+                                   v.INVOICE_SUPP_DATE,
+                                   v.INVOICE_SUPP_ID,
+                                   a.APPROVED_DATE,
+                                   a.SQUARE_FEET,
+                                   a.SUPPLEMENTAL_ID,
+                                   a.SERVICE_TYPE,
+                                   a.TRUCK_NUMBER,
+                                   d.CROSSING_ID,
+                                   d.CROSSING_NUMBER,
+                                   d.SUB_DIVISION,
+                                   d.MILE_POST,
+                                   d.SERVICE_UNIT,
+                                   p.PROJECT_ID,
+                                   p.SEGMENT1,
+                                   d.STATE
+                FROM CROSSING_SUPPLEMENTAL a
+                LEFT JOIN CROSSINGS d ON a.CROSSING_ID = d.CROSSING_ID
+                LEFT JOIN CROSSING_SUPP_INVOICE v ON a.INVOICE_SUPP_ID = v.INVOICE_SUPP_ID
+                LEFT JOIN PROJECTS_V p ON a.PROJECT_ID = p.PROJECT_ID
+                WHERE a.INVOICE_SUPP_ID = {0}
+
+                   ", selectedSupp);
+
+              using (Entities context = new Entities())
+              {
+                  return context.Database.SqlQuery<SupplementalReport>(sql).ToList();
+              }
+          }
+          public static List<StateCrossingList> GetStateCrossingList(string selectedRailroad, string selectedServiceUnit, string selectedSubDiv, string selectedState)
+          {
+              //long selected = Convert.ToInt64(selectedRailroad);
+
+              string sql = string.Format(@"                           
+
+                             SELECT
+                                d.CROSSING_ID,
+                                d.CROSSING_NUMBER,
+                                d.SUB_DIVISION,
+                                d.STATE,
+                                d.COUNTY,
+                                d.SERVICE_UNIT,
+                                d.CITY,
+                                d.MILE_POST,
+                                d.ROWNE,
+                                d.ROWNW,
+                                d.ROWSE,
+                                d.ROWSW,
+                                d.STREET,
+                                d.STATUS,
+                                d.SUB_CONTRACTED,
+                                d.LONGITUDE,
+                                d.LATITUDE,
+                                d.SPECIAL_INSTRUCTIONS,
+
+                FROM CROSSINGS d
+                WHERE d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = {1} AND d.SUB_DIVISION = {2} AND d.STATE = {3}
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+
+              using (Entities context = new Entities())
+              {
+                  return context.Database.SqlQuery<StateCrossingList>(sql).ToList();
+              }
+          }
+          public class SupplementalReport
+          {
+              public decimal INVOICE_SUPP_ID { get; set; }
+              public decimal SUPPLEMENTAL_ID { get; set; }
+              public long CROSSING_ID { get; set; }
+              public long PROJECT_ID { get; set; }
+              public string CROSSING_NUMBER { get; set; }
+              public DateTime APPROVED_DATE { get; set; }
+              public string SERVICE_TYPE { get; set; }
+              public string TRUCK_NUMBER { get; set; }
+              public string STATE { get; set; }
+              public long SQUARE_FEET { get; set; }
+              public string SEGMENT1 { get; set; }
+              public string INVOICE_SUPP_NUMBER { get; set; }
+              public DateTime? INVOICE_SUPP_DATE { get; set; }
+              public string SUB_DIVISION { get; set; }
+              public string SERVICE_UNIT { get; set; }
+              public decimal? MILE_POST { get; set; }
+      
+          }
           public class ApplicationDetails
           {
               public decimal? INVOICE_ID { get; set; }
@@ -635,7 +726,18 @@ SELECT
               public string SERVICE_UNIT { get; set; }
               public long? PROJECT_ID { get; set; }
           }
-          
+          public class SupplementalDetails
+          {
+              public decimal? INVOICE_SUPP_ID { get; set; }
+              public decimal SUPPLEMENTAL_ID { get; set; }
+              public long CROSSING_ID { get; set; }
+              public DateTime APPROVED_DATE { get; set; }
+              public string SERVICE_TYPE { get; set; }
+              public string TRUCK_NUMBER { get; set; }
+              public long SQUARE_FEET { get; set; }
+
+
+          }
             public class WeeklyWorkList
           {
               public string CROSSING_NUMBER { get; set; }

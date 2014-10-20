@@ -223,9 +223,9 @@
                                 </ExtraParams>
                                 </Click>
                         </DirectEvents>
-                                <Listeners>
+                                <%--<Listeners>
                                     <Click Handler="#{uxInvoiceReportStore}.reload()" />
-                                </Listeners>
+                                </Listeners>--%>
                             </ext:Button>
                             <ext:Button runat="server"
                                 ID="Button2"
@@ -239,7 +239,7 @@
                     </ext:Toolbar>
                 </BottomBar>
             </ext:GridPanel>
-        <ext:Window runat="server"
+       <%-- <ext:Window runat="server"
             ID="uxBillingReportWindow"
             Layout="FormLayout"
             Hidden="true"
@@ -358,7 +358,7 @@
                 </BottomBar>
             </ext:GridPanel>
                 </Items>
-            </ext:Window>
+            </ext:Window>--%>
                     </Items>
             </ext:Viewport>
 

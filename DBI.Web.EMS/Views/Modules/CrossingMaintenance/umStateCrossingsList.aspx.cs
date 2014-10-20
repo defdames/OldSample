@@ -42,7 +42,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
         }
 
-        protected void deStateCrossingListGrid(object sender, StoreReadDataEventArgs e)
+        protected void deStateCrossingListGrid(object sender, DirectEventArgs e)
         {
             decimal Application = Convert.ToDecimal(uxAddAppReqeusted.SelectedItem.Value);
             string ServiceUnit = uxAddServiceUnit.SelectedItem.Value;
@@ -52,32 +52,51 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
 
-                
-                IQueryable<CROSSING_MAINTENANCE.StateCrossingList> allData = CROSSING_MAINTENANCE.GetStateCrossingList(RailroadId, _context);
 
-                if (ServiceUnit != null)
-                {
-                    allData = allData.Where(x => x.SERVICE_UNIT == ServiceUnit);
-                }
-                if (SubDiv != null)
-                {
-                    allData = allData.Where(x => x.SUB_DIVISION == SubDiv);
-                }
-                if (State != null)
-                {
-                    allData = allData.Where(x => x.STATE == State);
-                }
-                List<object> _data = allData.ToList<object>();
-                
-           
+                //IQueryable<CROSSING_MAINTENANCE.StateCrossingList> allData = CROSSING_MAINTENANCE.GetStateCrossingList(RailroadId, _context);
 
-                int count;
-                uxStateCrossingListStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
-                e.Total = count;
-                
+                //if (ServiceUnit != null)
+                //{
+                //    allData = allData.Where(x => x.SERVICE_UNIT == ServiceUnit);
+                //}
+                //if (SubDiv != null)
+                //{
+                //    allData = allData.Where(x => x.SUB_DIVISION == SubDiv);
+                //}
+                //if (State != null)
+                //{
+                //    allData = allData.Where(x => x.STATE == State);
+                //}
+                //List<object> _data = allData.ToList<object>();
+
+
+
+                //int count;
+                //uxStateCrossingListStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
+                //e.Total = count;
+
+                string selectedRailroad = RailroadId.ToString();
+                string selectedServiceUnit = ServiceUnit.ToString();
+                string selectedSubDiv = SubDiv.ToString();
+                string selectedState = State.ToString();
+
+                string url = "/Views/Modules/CrossingMaintenance/Reports/StateCrossingListReport.aspx?selectedRailroad=" + selectedRailroad + "&selectedServiceUnit=" + selectedServiceUnit + "&selectedSubDiv=" + selectedSubDiv + "&selectedState=" + selectedState;
+                Ext.Net.Panel pan = new Ext.Net.Panel();
+
+                pan.ID = "Tab";
+                pan.Title = "State Crossing List Report";
+                pan.CloseAction = CloseAction.Destroy;
+                pan.Loader = new ComponentLoader();
+                pan.Loader.ID = "loader";
+                pan.Loader.Url = url;
+                pan.Loader.Mode = LoadMode.Frame;
+                pan.Loader.LoadMask.ShowMask = true;
+                pan.Loader.DisableCaching = true;
+                pan.AddTo(uxCenterPanel);
+              
             }
-
         }
+
         protected void deClearFilters(object sender, DirectEventArgs e)
         {
             FilterForm.Reset();      
@@ -163,10 +182,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
 
         }
-        protected void deLaunchGrid(object sender, DirectEventArgs e)
-        {
-            GridPanel1.Show();
-        }
+        //protected void deLaunchGrid(object sender, DirectEventArgs e)
+        //{
+        //    GridPanel1.Show();
+        //}
        protected void ToXml(object sender, EventArgs e)
         {
             string json = this.Hidden1.Value.ToString();
