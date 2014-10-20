@@ -223,6 +223,14 @@
                                             </DirectEvents>
                                         </ext:Button>
                                         <ext:Button runat="server"
+                                            ID="uxExportMultiple"
+                                            Text="Export Multple"
+                                            Icon="PageWhiteAcrobat">
+                                            <DirectEvents>
+                                                <Click OnEvent="deOpenExportMultipleWindow" />
+                                            </DirectEvents>
+                                        </ext:Button>
+                                        <ext:Button runat="server"
                                             ID="uxEmailPdf"
                                             Text="Email Copy"
                                             Icon="EmailAttach"

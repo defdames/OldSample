@@ -1823,6 +1823,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             CreateWindow("umPostMultipleWindow.aspx");
         }
 
+        protected void deOpenExportMultipleWindow(object sender, DirectEventArgs e)
+        {
+            CreateWindow("umPrintMultipleWindow.aspx");
+        }
+
         protected bool roleNeeded(long HeaderId)
         {
             using (Entities _context = new Entities())
@@ -1840,54 +1845,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     return false;
                 }
             }
-        }
-
-        [DirectMethod]
-        public void dmLoadChemicalWindow(string WindowType, string HeaderId, string ChemicalMixId)
-        {
-            CreateWindow(string.Format("umAddEditChemical.aspx?HeaderId={0}&Type={1}&ChemicalMixId={2}", HeaderId, WindowType, ChemicalMixId));
-        }
-
-        [DirectMethod]
-        public void dmLoadEmployeeWindow(string WindowType, string HeaderId, string EmployeeId)
-        {
-            CreateWindow(string.Format("umAddEditEmployee.aspx?HeaderId={0}&Type={1}&EmployeeId={2}", HeaderId, WindowType, EmployeeId));
-        }
-
-        [DirectMethod]
-        public void dmLoadEquipmentWindow(string WindowType, string HeaderId, string EquipmentId)
-        {
-            CreateWindow(string.Format("umAddEditEquipment.aspx?HeaderId={0}&Type={1}&EquipmentId={2}", HeaderId, WindowType, EquipmentId));
-        }
-
-        [DirectMethod]
-        public void dmLoadInventoryWindow_DBI(string WindowType, string HeaderId, string InventoryId)
-        {
-            CreateWindow(string.Format("umAddEditInventory_DBI.aspx?HeaderId={0}&Type={1}&InventoryId={2}", HeaderId, WindowType, InventoryId));
-        }
-
-        [DirectMethod]
-        public void dmLoadInventoryWindow_IRM(string WindowType, string HeaderId, string InventoryId)
-        {
-            CreateWindow(string.Format("umAddEditInventory_IRM.aspx?HeaderId={0}&Type={1}&InventoryId={2}", HeaderId, WindowType, InventoryId));
-        }
-
-        [DirectMethod]
-        public void dmLoadProductionWindow_DBI(string WindowType, string HeaderId, string ProductionId)
-        {
-            CreateWindow(string.Format("umAddEditProduction_DBI.aspx?HeaderId={0}&Type={1}&ProductionId={2}", HeaderId, WindowType, ProductionId));
-        }
-
-        [DirectMethod]
-        public void dmLoadProductionWindow_IRM(string WindowType, string HeaderId, string ProductionId)
-        {
-            CreateWindow(string.Format("umAddEditProduction_IRM.aspx?HeaderId={0}&Type={1}&ProductionId={2}", HeaderId, WindowType, ProductionId));
-        }
-
-        [DirectMethod]
-        public void dmLoadWeatherWindow(string WindowType, string HeaderId, string WeatherId)
-        {
-            CreateWindow(string.Format("umAddEditWeather.aspx?HeaderId={0}&Type={1}&WeatherId={2}", HeaderId, WindowType, WeatherId));
         }
 
         [DirectMethod]

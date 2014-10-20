@@ -738,6 +738,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         public decimal? DA_HEADER_ID { get; set; }
         public string STATUS_VALUE { get; set; }
         public string WARNING { get; set; }
+        public string APPLICATION_TYPE { get; set; }
+        public string CONTRACTOR { get; set; }
+        public string DENSITY { get; set; }
+        public string EMPLOYEE_NAME { get; set; }
+        public string LICENSE { get; set; }
+        public string STATE { get; set; }
+        public string SUBDIVISION { get; set; }
         public string WARNING_TYPE { get; set; }
         public int? STATUS { get; set; }
         public long? ORG_ID { get; set; }

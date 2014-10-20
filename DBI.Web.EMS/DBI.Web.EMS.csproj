@@ -208,6 +208,7 @@
     <Content Include="Views\Modules\DailyActivity\umInventoryReport.aspx" />
     <Content Include="Views\Modules\DailyActivity\umManageExisting.aspx" />
     <Content Include="Views\Modules\DailyActivity\umPostMultipleWindow.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umPrintMultipleWindow.aspx" />
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_DBI.aspx" />
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_IRM.aspx" />
     <Content Include="Views\Modules\Fleet\umEquipmentThermalPrintReport.aspx" />
@@ -743,6 +744,13 @@
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umPostMultipleWindow.aspx.designer.cs">
       <DependentUpon>umPostMultipleWindow.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umPrintMultipleWindow.aspx.cs">
+      <DependentUpon>umPrintMultipleWindow.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\DailyActivity\umPrintMultipleWindow.aspx.designer.cs">
+      <DependentUpon>umPrintMultipleWindow.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umSubmitActivity_DBI.aspx.cs">
       <DependentUpon>umSubmitActivity_DBI.aspx</DependentUpon>
