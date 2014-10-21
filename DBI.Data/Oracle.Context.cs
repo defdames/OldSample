@@ -133,5 +133,6 @@ namespace DBI.Data
         public DbSet<SYS_USER_INFORMATION> SYS_USER_INFORMATION { get; set; }
         public DbSet<SYS_USER_ACTIVITY_LOG> SYS_USER_ACTIVITY_LOG { get; set; }
         public DbSet<SYS_EMAIL> SYS_EMAIL { get; set; }
+        public DbSet<SYS_ATTACHMENTS> SYS_ATTACHMENTS { get; set; }
     }
 }

@@ -1303,6 +1303,22 @@ warning 6002: The table/view 'XXDBI.XXPJ_PREV_WAGE_RATES' does not have a primar
           <Property Name="PARENT_ITEM_ID" Type="number" Precision="15" Scale="0" />
           <Property Name="SORT_NUMBER" Type="number" Precision="15" Scale="0" Nullable="false" />
         </EntityType>
+        <EntityType Name="SYS_ATTACHMENTS">
+          <Key>
+            <PropertyRef Name="ATTACHMENT_ID" />
+          </Key>
+          <Property Name="ATTACHMENT_ID" Type="number" Precision="15" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="MODULE_ID" Type="number" Precision="15" Scale="0" />
+          <Property Name="REFERENCE_TABLE" Type="varchar2" MaxLength="250" />
+          <Property Name="REFERENCE_NUMBER" Type="number" Precision="15" Scale="0" />
+          <Property Name="ATTACHMENT_DESC" Type="varchar2" MaxLength="500" />
+          <Property Name="ATTACHMENT_MIME" Type="varchar2" MaxLength="500" />
+          <Property Name="DATA" Type="blob" />
+          <Property Name="CREATED_BY" Type="number" Precision="15" Scale="0" />
+          <Property Name="CREATED_DATE" Type="date" />
+          <Property Name="MODIFIED_BY" Type="number" Precision="15" Scale="0" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+        </EntityType>
         <EntityType Name="SYS_EMAIL">
           <Key>
             <PropertyRef Name="MESSAGE_ID" />
@@ -3548,6 +3564,7 @@ warning 6002: The table/view 'XXEMS.UNIT_OF_MEASURE_V' does not have a primary k
           <EntitySet Name="OVERHEAD_GL_RANGE" EntityType="Self.OVERHEAD_GL_RANGE" Schema="XXEMS" store:Type="Tables" />
           <EntitySet Name="OVERHEAD_ORG_BUDGETS" EntityType="Self.OVERHEAD_ORG_BUDGETS" Schema="XXEMS" store:Type="Tables" />
           <EntitySet Name="SYS_ACTIVITY" EntityType="Self.SYS_ACTIVITY" Schema="XXEMS" store:Type="Tables" />
+          <EntitySet Name="SYS_ATTACHMENTS" EntityType="Self.SYS_ATTACHMENTS" Schema="XXEMS" store:Type="Tables" />
           <EntitySet Name="SYS_EMAIL" EntityType="Self.SYS_EMAIL" Schema="XXEMS" store:Type="Tables" />
           <EntitySet Name="SYS_GROUPS" EntityType="Self.SYS_GROUPS" Schema="XXEMS" store:Type="Tables" />
           <EntitySet Name="SYS_GROUPS_PERMS" EntityType="Self.SYS_GROUPS_PERMS" Schema="XXEMS" store:Type="Tables" />
@@ -4757,6 +4774,7 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           <EntitySet Name="SYS_USER_INFORMATION" EntityType="OracleModel.SYS_USER_INFORMATION" />
           <EntitySet Name="SYS_USER_ACTIVITY_LOG" EntityType="OracleModel.SYS_USER_ACTIVITY_LOG" />
           <EntitySet Name="SYS_EMAIL" EntityType="OracleModel.SYS_EMAIL" />
+          <EntitySet Name="SYS_ATTACHMENTS" EntityType="OracleModel.SYS_ATTACHMENTS" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -8447,6 +8465,22 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           <Property Name="MESSAGE_VIEWED" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="VIEWED_DATE" Type="DateTime" />
         </EntityType>
+        <EntityType Name="SYS_ATTACHMENTS">
+          <Key>
+            <PropertyRef Name="ATTACHMENT_ID" />
+          </Key>
+          <Property Name="ATTACHMENT_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MODULE_ID" Type="Int64" />
+          <Property Name="REFERENCE_TABLE" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="REFERENCE_NUMBER" Type="Int64" />
+          <Property Name="ATTACHMENT_DESC" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ATTACHMENT_MIME" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="DATA" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="CREATED_BY" Type="Int64" />
+          <Property Name="CREATED_DATE" Type="DateTime" />
+          <Property Name="MODIFIED_BY" Type="Int64" />
+          <Property Name="MODIFIED_DATE" Type="DateTime" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -11266,6 +11300,23 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
                 <ScalarProperty Name="MODULE_ID" ColumnName="MODULE_ID" />
                 <ScalarProperty Name="TYPE_ID" ColumnName="TYPE_ID" />
                 <ScalarProperty Name="MESSAGE_ID" ColumnName="MESSAGE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYS_ATTACHMENTS">
+            <EntityTypeMapping TypeName="OracleModel.SYS_ATTACHMENTS">
+              <MappingFragment StoreEntitySet="SYS_ATTACHMENTS">
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="DATA" ColumnName="DATA" />
+                <ScalarProperty Name="ATTACHMENT_MIME" ColumnName="ATTACHMENT_MIME" />
+                <ScalarProperty Name="ATTACHMENT_DESC" ColumnName="ATTACHMENT_DESC" />
+                <ScalarProperty Name="REFERENCE_NUMBER" ColumnName="REFERENCE_NUMBER" />
+                <ScalarProperty Name="REFERENCE_TABLE" ColumnName="REFERENCE_TABLE" />
+                <ScalarProperty Name="MODULE_ID" ColumnName="MODULE_ID" />
+                <ScalarProperty Name="ATTACHMENT_ID" ColumnName="ATTACHMENT_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
