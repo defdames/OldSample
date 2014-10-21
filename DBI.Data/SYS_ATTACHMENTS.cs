@@ -21,9 +21,11 @@ namespace DBI.Data
         public string ATTACHMENT_DESC { get; set; }
         public string ATTACHMENT_MIME { get; set; }
         public byte[] DATA { get; set; }
-        public Nullable<long> CREATED_BY { get; set; }
         public Nullable<System.DateTime> CREATED_DATE { get; set; }
-        public Nullable<long> MODIFIED_BY { get; set; }
         public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
+        public Nullable<decimal> GPS_LATITUDE { get; set; }
+        public Nullable<decimal> GPS_LONGITUDE { get; set; }
+        public string CREATED_BY { get; set; }
+        public string MODIFIED_BY { get; set; }
     }
 }

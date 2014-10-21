@@ -1314,10 +1314,12 @@ warning 6002: The table/view 'XXDBI.XXPJ_PREV_WAGE_RATES' does not have a primar
           <Property Name="ATTACHMENT_DESC" Type="varchar2" MaxLength="500" />
           <Property Name="ATTACHMENT_MIME" Type="varchar2" MaxLength="500" />
           <Property Name="DATA" Type="blob" />
-          <Property Name="CREATED_BY" Type="number" Precision="15" Scale="0" />
           <Property Name="CREATED_DATE" Type="date" />
-          <Property Name="MODIFIED_BY" Type="number" Precision="15" Scale="0" />
           <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="GPS_LATITUDE" Type="number" Precision="15" Scale="9" />
+          <Property Name="GPS_LONGITUDE" Type="number" Precision="15" Scale="9" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="250" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="250" />
         </EntityType>
         <EntityType Name="SYS_EMAIL">
           <Key>
@@ -8476,10 +8478,12 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           <Property Name="ATTACHMENT_DESC" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="ATTACHMENT_MIME" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="DATA" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <Property Name="CREATED_BY" Type="Int64" />
           <Property Name="CREATED_DATE" Type="DateTime" />
-          <Property Name="MODIFIED_BY" Type="Int64" />
           <Property Name="MODIFIED_DATE" Type="DateTime" />
+          <Property Name="GPS_LATITUDE" Type="Decimal" Precision="15" Scale="9" />
+          <Property Name="GPS_LONGITUDE" Type="Decimal" Precision="15" Scale="9" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -11306,10 +11310,12 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           <EntitySetMapping Name="SYS_ATTACHMENTS">
             <EntityTypeMapping TypeName="OracleModel.SYS_ATTACHMENTS">
               <MappingFragment StoreEntitySet="SYS_ATTACHMENTS">
-                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
                 <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="GPS_LONGITUDE" ColumnName="GPS_LONGITUDE" />
+                <ScalarProperty Name="GPS_LATITUDE" ColumnName="GPS_LATITUDE" />
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
                 <ScalarProperty Name="DATA" ColumnName="DATA" />
                 <ScalarProperty Name="ATTACHMENT_MIME" ColumnName="ATTACHMENT_MIME" />
                 <ScalarProperty Name="ATTACHMENT_DESC" ColumnName="ATTACHMENT_DESC" />

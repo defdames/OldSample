@@ -24,6 +24,10 @@ namespace DBI.Mobile.EMS.Controllers
         {
             string jsonString = req.Content.ReadAsStringAsync().Result;
 
+            //System.IO.StreamWriter file2 = new System.IO.StreamWriter("c:\\temp\\LennyTest.txt");
+           // file2.Write(jsonString);
+            //file2.Close();
+
             var jsonObj = new DailyActivityResponse.RootObject();
 
             try
@@ -33,9 +37,9 @@ namespace DBI.Mobile.EMS.Controllers
             catch (Exception ex)
             {
                 //DEBUG TESTING
-                //System.IO.StreamWriter file2 = new System.IO.StreamWriter("c:\\temp\\error.txt");
-                //file2.Write(ex.ToString());
-                //file2.Close();
+              // System.IO.StreamWriter file6 = new System.IO.StreamWriter("c:\\temp\\LennyTestErr.txt");
+                //file6.Write(ex.ToString());
+                //file6.Close();
                 //throw(ex);
             }
 
@@ -237,6 +241,30 @@ namespace DBI.Mobile.EMS.Controllers
                         f.MODIFIED_BY = h.CREATED_BY;
                         GenericData.Insert<DAILY_ACTIVITY_FOOTER>(f);
                     }
+
+                    foreach (DailyActivityResponse.DailyActivityPhoto j in jsonObj.daily_activity_photos)
+                    {
+                        SYS_ATTACHMENTS attachment = new SYS_ATTACHMENTS();
+                        attachment.ATTACHMENT_MIME = j.mime_type;
+                        attachment.ATTACHMENT_DESC = j.image_date;
+                        attachment.DATA = Convert.FromBase64String(j.image_data);
+                        attachment.CREATED_DATE = DateTime.Now;
+                        attachment.CREATED_BY = h.CREATED_BY;
+                        attachment.MODIFIED_BY = h.MODIFIED_BY;
+                        attachment.MODIFIED_DATE = DateTime.Now;
+                        attachment.GPS_LATITUDE = decimal.Parse(j.gps_lat);
+                        attachment.GPS_LONGITUDE = decimal.Parse(j.gps_lon);
+                        attachment.REFERENCE_NUMBER = h.HEADER_ID;
+                        attachment.REFERENCE_TABLE = "DAILY_ACTIVITY_HEADER";
+
+                        using (Entities _context = new Entities())
+                        {
+                            SYS_MODULES _module = _context.SYS_MODULES.Where(x => x.MODULE_NAME == "Daily Activity").SingleOrDefault();
+                            attachment.MODULE_ID = (long)_module.MODULE_ID;
+                        }
+                        GenericData.Insert<SYS_ATTACHMENTS>(attachment);
+                    }
+
                     transaction.Complete();
 
                 }
@@ -257,6 +285,10 @@ namespace DBI.Mobile.EMS.Controllers
                     }
                 }
 
+                System.IO.StreamWriter f = new System.IO.StreamWriter("c:\\temp\\E1.txt");
+                f.Write(outputLines.ToString());
+                f.Close();
+
                 import.ERROR_CODE = outputLines.ToString();
                 import.CREATED_BY = h.CREATED_BY;
                 GenericData.Insert<DAILY_ACTIVITY_IMPORT>(import);
@@ -265,6 +297,10 @@ namespace DBI.Mobile.EMS.Controllers
 
             catch (Exception ex)
             {
+                System.IO.StreamWriter f = new System.IO.StreamWriter("c:\\temp\\E2.txt");
+                f.Write(ex.ToString());
+                f.Close();
+
                 import.ERROR_CODE = ex.ToString();
                 import.CREATED_BY = h.CREATED_BY;
                 GenericData.Insert<DAILY_ACTIVITY_IMPORT>(import);
