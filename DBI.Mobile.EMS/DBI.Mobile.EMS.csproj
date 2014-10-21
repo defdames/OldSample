@@ -282,6 +282,7 @@
     <Content Include="iems\1392251685_19.png" />
     <Content Include="iems\iEMS.plist">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <None Include="Properties\PublishProfiles\EMSMobile.pubxml" />
     <None Include="Properties\PublishProfiles\Local.pubxml" />

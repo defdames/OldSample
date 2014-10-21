@@ -118,6 +118,16 @@ namespace DBI.Mobile.EMS.Models
             public decimal shoptime_pm { get; set; }
         }
 
+        public class DailyActivityPhoto
+        {
+            public string image_data { get; set; }
+            public string gps_lon { get; set; }
+            public string mime_type { get; set; }
+            public string image_date { get; set; }
+            public string size { get; set; }
+            public string gps_lat { get; set; }
+        }
+
         public class RootObject
         {
             public List<DailyActivityChemicalMix> daily_activity_chemical_mix { get; set; }
@@ -128,6 +138,7 @@ namespace DBI.Mobile.EMS.Models
             public List<DailyActivityHeader> daily_activity_header { get; set; }
             public List<DailyActivityEquipment> daily_activity_equipment { get; set; }
             public List<DailyActivityEmployee> daily_activity_employee { get; set; }
+            public List<DailyActivityPhoto> daily_activity_photos { get; set; }
         }
 
 
