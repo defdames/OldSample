@@ -39,6 +39,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 GetWeatherData();
                 GetChemicalMixData();
                 GetInventory();
+                GetAttachmentData();
                 GetFooterData();
                 GetWarnings();
 
@@ -410,6 +411,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        protected void GetAttachmentData()
+        {
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+            using (Entities _context = new Entities())
+            {
+                var data = _context.SYS_ATTACHMENTS.Where(x => x.REFERENCE_TABLE == "DAILY_ACTIVITY_HEADER" && x.REFERENCE_NUMBER == HeaderId).ToList();
+                uxAttachmentStore.DataSource = data;
+            }
+        }
         /// <summary>
         /// Get data for Footer grid
         /// </summary>
@@ -1336,6 +1346,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxInventoryStore.CommitChanges();
         }
 
+        protected void deSaveAttachment(object sender, DirectEventArgs e)
+        {
+            //file upload
+            HttpPostedFile ForemanSignatureFile = uxForemanImageField.PostedFile;
+            byte[] ForemanSignatureArray = ImageToByteArray(ForemanSignatureFile);
+            
+        }
         protected void deStoreEquipmentGridValue(object sender, DirectEventArgs e)
         {
             //Set value and text for equipment

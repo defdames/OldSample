@@ -36,6 +36,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 GetIRMProductionData();
                 GetWeatherData();
                 GetInventory();
+                GetAttachmentData();
                 GetFooterData();
                 GetWarnings();
 
@@ -366,6 +367,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             select new InventoryDetails { INVENTORY_ID = d.INVENTORY_ID, INV_NAME = j.INV_NAME, SEGMENT1 = j.SEGMENT1, SUB_INVENTORY_SECONDARY_NAME = d.SUB_INVENTORY_SECONDARY_NAME, ITEM_ID = (decimal)d.ITEM_ID, SUB_INVENTORY_ORG_ID = d.SUB_INVENTORY_ORG_ID, DESCRIPTION = j.DESCRIPTION, RATE = d.RATE, UOM_CODE = j.UOM_CODE, UNIT_OF_MEASURE = d.UNIT_OF_MEASURE }).ToList();
                 uxInventoryStore.DataSource = data;
                 uxInventoryStore.DataBind();
+            }
+        }
+
+        protected void GetAttachmentData()
+        {
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+            using (Entities _context = new Entities())
+            {
+                List<SYS_ATTACHMENTS> data = _context.SYS_ATTACHMENTS.ToList();
+                uxAttachmentStore.DataSource = data;
             }
         }
 

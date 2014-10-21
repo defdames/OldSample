@@ -417,6 +417,9 @@
     <Compile Include="SYS_ACTIVITY.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="SYS_ATTACHMENTS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="SYS_EMAIL.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>

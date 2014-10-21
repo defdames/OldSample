@@ -245,6 +245,17 @@
             });
         };
 
+        var deleteAttachment = function () {
+            var AttachmentRecord = App.uxAttachmentGrid.getSelectionModel().getSelection();
+
+            Ext.Msg.confirm('Really Delete?', 'Do you really want to delete this inventory entry?', function (e) {
+                if (e == 'yes') {
+                    App.uxAttachmentStore.remove(AttachmentRecord);
+                    App.direct.dmDeleteAttachment(AttachmentRecord[0].data.ATTACHMENT_ID);
+                }
+            });
+        };
+
 
         var doAddMath = function () {
             var gallonStart = parseInt(App.uxAddInventoryMixGrid.getSelectionModel().getSelection()[0].data.GALLON_STARTING);
@@ -1950,6 +1961,64 @@
                             </Listeners>
                         </ext:RowEditing>
                     </Plugins>
+                </ext:GridPanel>
+                <ext:GridPanel ID="uxAttachmentGrid" runat="server"
+                    Title="Attachments"
+                    PaddingSpec="10 10 30 10"
+                    MaxWidth="1400">
+                    <Store>
+                        <ext:Store runat="server" ID="uxAttachmentStore">
+                            <Model>
+                                <ext:Model ID="Model18" runat="server" Name="Attachment" IDProperty="ATTACHMENT_ID" ClientIdProperty="PhantomId">
+                                    <Fields>
+                                        <ext:ModelField Name="ATTACHMENT_ID" Type="Int" />
+                                        <ext:ModelField Name="MODULE_ID" Type="Int" />
+                                        <ext:ModelField Name="REFERENCE_TABLE" />
+                                        <ext:ModelField Name="REFERENCE_NUMBER" />
+                                        <ext:ModelField Name="ATTACHMENT_DESC" />
+                                        <ext:ModelField Name="ATTACHMENT_MIME" />
+                                        <ext:ModelField Name="DATA" />
+                                    </Fields>
+                                </ext:Model>
+                            </Model>
+                        </ext:Store>
+                    </Store>
+                    <ColumnModel>
+                        <Columns>
+                            <ext:Column ID="Column64" runat="server" Text="Name" DataIndex="ATTACHMENT_DESC" Flex="75" />
+                            <ext:Column ID="Column65" runat="server" Text="File Type" DataIndex="ATTACHMENT_MIME" Flex="25" />
+                        </Columns>
+                    </ColumnModel>
+                    <TopBar>
+                        <ext:Toolbar runat="server">
+                            <Items>
+                                <ext:Button runat="server" ID="uxAddAttachmentButton" Text="Add" Icon="ApplicationAdd">
+                                    <Listeners>
+                                        <Click Handler="#{uxAttachmentStore}.insert(0, new Attachment())" />
+                                    </Listeners>
+                                </ext:Button>
+                                <ext:Button runat="server" ID="uxDeleteAttachmentButton" Text="Delete" Icon="ApplicationDelete" Disabled="true">
+                                    <Listeners>
+                                        <Click Fn="deleteAttachment" />
+                                    </Listeners>
+                                </ext:Button>
+                            </Items>
+                        </ext:Toolbar>
+                    </TopBar>
+                    <Plugins>
+                        <ext:RowEditing runat="server" ClicksToEdit="1" AutoCancel="false">
+                            <DirectEvents>
+                                <Edit OnEvent="deSaveAttachment" Before="return #{uxAttachmentStore}.isDirty();">
+                                    <ExtraParams>
+                                        <ext:Parameter Name="data" Value="#{uxAttachmentStore}.getChangedData({skipIdForPhantomRecords : false})" Mode="Raw" Encode="true" />
+                                    </ExtraParams>
+                                </Edit>
+                            </DirectEvents>
+                        </ext:RowEditing>
+                    </Plugins>
+                    <Listeners>
+                        <Select Handler="#{uxDeleteAttachmentButton}.enable()" />
+                    </Listeners>
                 </ext:GridPanel>
                 <ext:FormPanel runat="server" ID="uxFooterPanel" Padding="10" BodyPadding="5" MaxWidth="1200">
                     <Items>
