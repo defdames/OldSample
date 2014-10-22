@@ -657,8 +657,7 @@ SELECT
           {
               //long selected = Convert.ToInt64(selectedRailroad);
 
-              string sql = string.Format(@"                           
-
+              string sql1 = string.Format(@"                          
                              SELECT
                                 d.CROSSING_ID,
                                 d.CROSSING_NUMBER,
@@ -677,18 +676,74 @@ SELECT
                                 d.SUB_CONTRACTED,
                                 d.LONGITUDE,
                                 d.LATITUDE,
-                                d.SPECIAL_INSTRUCTIONS,
+                                d.SPECIAL_INSTRUCTIONS
+                FROM CROSSINGS d ");
 
-                FROM CROSSINGS d
-                WHERE d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = {1} AND d.SUB_DIVISION = {2} AND d.STATE = {3}
+              string sql2 = "";
+              if (selectedServiceUnit != null && selectedSubDiv != null && selectedState != null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PUB' AND d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}' AND d.SUB_DIVISION = '{2}' AND d.STATE = '{3}'
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+              }
+
+              else if (selectedServiceUnit != null && selectedSubDiv != null && selectedState == null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PUB' AND d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}' AND d.SUB_DIVISION = '{2}'
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+              }
+              else if (selectedServiceUnit != null && selectedSubDiv == null && selectedState == null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PUB' AND d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}'
 
                    ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
 
-              using (Entities context = new Entities())
-              {
-                  return context.Database.SqlQuery<StateCrossingList>(sql).ToList();
               }
-          }
+              else if (selectedServiceUnit != null && selectedSubDiv == null && selectedState != null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PUB' AND d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}' AND d.STATE = '{3}'
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+
+              }
+            
+              else if (selectedServiceUnit == null && selectedSubDiv != null && selectedState != null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PUB' AND d.RAILROAD_ID = {0} AND d.SUB_DIVISION = '{2}' AND d.STATE = '{3}'
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+
+              }
+              else if (selectedServiceUnit == null && selectedSubDiv == null && selectedState != null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PUB' AND d.RAILROAD_ID = {0} AND d.STATE = '{3}'
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+
+              }
+              else if (selectedServiceUnit == null && selectedSubDiv == null && selectedState == null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PUB' AND d.RAILROAD_ID = {0}
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+              }
+                   string sql = sql1 + sql2;
+                          using (Entities context = new Entities())
+                          {
+                              return context.Database.SqlQuery<StateCrossingList>(sql).ToList();
+                          }
+                      }
+                  
+              
+          
           public class SupplementalReport
           {
               public decimal INVOICE_SUPP_ID { get; set; }
@@ -827,7 +882,7 @@ SELECT
               public string CITY { get; set; }
               public string STREET { get; set; }
               public string STATUS { get; set; }
-
+              public long RAILROAD_ID { get; set; }
           }
           public class CompletedCrossingsSupplemental
           {
