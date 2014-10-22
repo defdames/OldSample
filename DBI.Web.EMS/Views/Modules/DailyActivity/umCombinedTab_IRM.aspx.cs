@@ -375,7 +375,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
             using (Entities _context = new Entities())
             {
-                List<SYS_ATTACHMENTS> data = _context.SYS_ATTACHMENTS.ToList();
+                var data = _context.SYS_ATTACHMENTS.Where(x => x.REFERENCE_TABLE == "DAILY_ACTIVITY_HEADER" && x.REFERENCE_NUMBER == (long?)HeaderId).ToList();
                 uxAttachmentStore.DataSource = data;
             }
         }

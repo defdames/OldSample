@@ -164,7 +164,9 @@
             Ext.Msg.confirm('Really Delete?', 'Do you really want to delete this employee?', function (e) {
                 if (e == 'yes') {
                     App.uxEmployeeStore.remove(EmployeeRecord);
-                    App.direct.dmDeleteEmployee(EmployeeRecord[0].data.EMPLOYEE_ID);
+                    if (EmployeeRecord[0].data.EMPLOYEE_ID) {
+                        App.direct.dmDeleteEmployee(EmployeeRecord[0].data.EMPLOYEE_ID);
+                    }
                 }
             });
         };
@@ -175,7 +177,9 @@
             Ext.Msg.confirm('Really Delete?', 'Do you really want to delete this equipment entry?', function (e) {
                 if (e == 'yes') {
                     App.uxEquipmentStore.remove(EquipmentRecord);
-                    App.direct.dmDeleteEquipment(EquipmentRecord[0].data.EQUIPMENT_ID);
+                    if (EquipmentRecord[0].data.EQUIPMENT_ID) {
+                        App.direct.dmDeleteEquipment(EquipmentRecord[0].data.EQUIPMENT_ID);
+                    }
                 }
             });
         };
@@ -186,7 +190,9 @@
             Ext.Msg.confirm('Really Delete?', 'Do you really want to delete this production entry?', function (e) {
                 if (e == 'yes') {
                     App.uxProductionStore.remove(ProductionRecord);
-                    App.direct.dmDeleteProduction(ProductionRecord[0].data.PRODUCTION_ID);
+                    if (ProductionRecord[0].data.PRODUCTION_ID) {
+                        App.direct.dmDeleteProduction(ProductionRecord[0].data.PRODUCTION_ID);
+                    }
                 }
             });
         };
@@ -197,7 +203,9 @@
             Ext.Msg.confirm('Really Delete?', 'Do you really want to delete this weather entry?', function (e) {
                 if (e == 'yes') {
                     App.uxWeatherStore.remove(WeatherRecord);
-                    App.direct.dmDeleteWeather(WeatherRecord[0].data.WEATHER_ID);
+                    if (WeatherRecord[0].data.WEATHER_ID) {
+                        App.direct.dmDeleteWeather(WeatherRecord[0].data.WEATHER_ID);
+                    }
                 }
             });
         };
@@ -208,7 +216,9 @@
             Ext.Msg.confirm('Really Delete?', 'Do you really want to delete this inventory entry?', function (e) {
                 if (e == 'yes') {
                     App.uxInventoryStore.remove(InventoryRecord);
-                    App.direct.dmDeleteInventory(InventoryRecord[0].data.INVENTORY_ID);
+                    if (InventoryRecord[0].data.INVENTORY_ID) {
+                        App.direct.dmDeleteInventory(InventoryRecord[0].data.INVENTORY_ID);
+                    }
                 }
             });
         };
@@ -218,7 +228,9 @@
             Ext.Msg.confirm('Really Delete?', 'Do you really want to delete this inventory entry?', function (e) {
                 if (e == 'yes') {
                     App.uxAttachmentStore.remove(AttachmentRecord);
-                    App.direct.dmDeleteAttachment(AttachmentRecord[0].data.ATTACHMENT_ID);
+                    if (AttachmentRecord[0].data.ATTACHMENT_ID) {
+                        App.direct.dmDeleteAttachment(AttachmentRecord[0].data.ATTACHMENT_ID);
+                    }
                 }
             });
         };
@@ -1770,8 +1782,13 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column runat="server" Text="Name" DataIndex="ATTACHMENT_DESC" Flex="75" />
-                            <ext:Column runat="server" Text="File Type" DataIndex="ATTACHMENT_MIME" Flex="25" />
+                            <ext:Column runat="server" Text="Description" DataIndex="ATTACHMENT_DESC" Flex="70" />
+                            <ext:Column runat="server" Text="File Type" DataIndex="ATTACHMENT_MIME" Flex="20" />
+                            <ext:ImageCommandColumn runat="server" Text="Download" Flex="10">
+                                <Commands>
+                                    <ext:ImageCommand Icon="DiskDownload" ToolTip-Text="Download" CommandName="Download" />
+                                </Commands>
+                            </ext:ImageCommandColumn>
                         </Columns>
                     </ColumnModel>
                     <TopBar>
