@@ -29,16 +29,23 @@ namespace DBI.Core.Security
         /// <returns>Boolean</returns>
         public static bool Authenticate(string username, string password)
         {
+
             //First, create a new return variable
             bool _authenticated = true;
-            //UserPrincipal _usr;
 
             //Next, create a new context for the domain
-            using (PrincipalContext ctx = new PrincipalContext(ContextType.Domain, "dbiservices.com"))
+            using (PrincipalContext ctx = new PrincipalContext(ContextType.Domain,"dbiservices.com"))
             {
-                //Next, attempt to validate the credentials
-                _authenticated = ctx.ValidateCredentials(username, password,ContextOptions.Negotiate);
-                //_usr = UserPrincipal.FindByIdentity(ctx, username);
+                var isAccountLockedOut = false;
+                _authenticated = ctx.ValidateCredentials(username + "@dbiservices.com", password, ctx.Options);
+                if (!_authenticated)
+                {
+                    // System.DirectoryServices.AccountManagement.PrincipalOperationException : Information about the domain could not be retrieved (1355).
+                    using (var user = UserPrincipal.FindByIdentity(ctx, IdentityType.UserPrincipalName, username))
+                    {
+                        isAccountLockedOut = (user != null) && user.IsAccountLockedOut();
+                    }
+                }
             }
 
             //Finally, return the return variable
