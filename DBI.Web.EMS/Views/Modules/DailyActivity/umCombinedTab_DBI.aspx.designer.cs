@@ -2245,13 +2245,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Column Column64;
         
         /// <summary>
-        /// uxFileUploadField control.
+        /// uxAttachmentField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FileUploadField uxFileUploadField;
+        protected global::Ext.Net.FileUploadField uxAttachmentField;
         
         /// <summary>
         /// Column65 control.

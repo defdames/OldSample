@@ -1348,10 +1348,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
         protected void deSaveAttachment(object sender, DirectEventArgs e)
         {
-            //file upload
-            HttpPostedFile ForemanSignatureFile = uxForemanImageField.PostedFile;
-            byte[] ForemanSignatureArray = ImageToByteArray(ForemanSignatureFile);
-            
+            ChangeRecords<SYS_ATTACHMENTS> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<SYS_ATTACHMENTS>();
+
+            foreach (SYS_ATTACHMENTS item in data.Created)
+            {
+                //file upload
+                HttpPostedFile FileToUpload = uxAttachmentField.PostedFile;
+                byte[] ForemanSignatureArray = ImageToByteArray(FileToUpload);
+            }
         }
         protected void deStoreEquipmentGridValue(object sender, DirectEventArgs e)
         {

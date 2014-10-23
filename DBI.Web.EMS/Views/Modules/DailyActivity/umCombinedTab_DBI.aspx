@@ -2004,7 +2004,7 @@
                         <Columns>
                             <ext:Column ID="Column64" runat="server" Text="Name" DataIndex="ATTACHMENT_DESC" Flex="75">
                                 <Editor>
-                                    <ext:FileUploadField runat="server" ID="uxFileUploadField" />
+                                    <ext:FileUploadField runat="server" ID="uxAttachmentField" />
                                 </Editor>
                             </ext:Column>
                             <ext:Column ID="Column65" runat="server" Text="File Type" DataIndex="ATTACHMENT_MIME" Flex="25" />
