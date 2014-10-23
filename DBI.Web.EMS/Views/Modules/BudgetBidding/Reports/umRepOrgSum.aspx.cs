@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Microsoft.Reporting.WebForms;
+using DBI.Data;
 
 namespace DBI.Web.EMS.Views.Modules.BudgetBidding.Reports
 {
@@ -12,71 +13,28 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding.Reports
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            if (!Page.IsPostBack)
             {
-                if (!Page.IsPostBack)
-                {
-                    string orgName = Request.QueryString["orgName"];
-                    long orgID = Convert.ToInt64(Request.QueryString["orgID"]);
-                    long yearID = Convert.ToInt64(Request.QueryString["yearID"]);
-                    long verID = Convert.ToInt64(Request.QueryString["verID"]);
-                    long prevYearID = Convert.ToInt64(Request.QueryString["prevYearID"]);
-                    long prevVerID = Convert.ToInt64(Request.QueryString["prevVerID"]);
-                    string oh = Request.QueryString["oh"];
-                    string iyearID = yearID.ToString();
+                long orgID = Convert.ToInt64(Request.QueryString["orgID"]);
+                string orgName = Request.QueryString["orgName"];
+                long yearID = Convert.ToInt64(Request.QueryString["yearID"]);                
+                long verID = Convert.ToInt64(Request.QueryString["verID"]);
+                string verName = Request.QueryString["verName"];
+                string oh = BBOH.DataSingle(orgID, yearID, verID).OH.ToString();
 
-                    ReportParameter pyID = new ReportParameter("pyearID", iyearID);
-                    this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { pyID });
-                    ReportParameter pohead = new ReportParameter("poh", oh);
-                    this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { pohead });
-                    ReportParameter poName = new ReportParameter("porgName", orgName);
-                    this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { poName });
-                    if (verID == 1)
-                    {
-                        ReportParameter bver = new ReportParameter("pbudVer", "Bid");
-                        this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { bver });
-                    }
-                    else if (verID == 2)
-                    {
-                        ReportParameter bver = new ReportParameter("pbudVer", "First Draft");
-                        this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { bver });
-                    }
-                    else if (verID == 3)
-                    {
-                        ReportParameter bver = new ReportParameter("pbudVer", "Final Draft");
-                        this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { bver });
-                    }
-                    else if (verID == 4)
-                    {
-                        ReportParameter bver = new ReportParameter("pbudVer", "1st Reforecast");
-                        this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { bver });
-                    }
-                    else if (verID == 5)
-                    {
-                        ReportParameter bver = new ReportParameter("pbudVer", "2nd Reforecast");
-                        this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { bver });
-                    }
-                    else if (verID == 6)
-                    {
-                        ReportParameter bver = new ReportParameter("pbudVer", "3rd Reforecast");
-                        this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { bver });
-                    }
-                    else if (verID == 7)
-                    {
-                        ReportParameter bver = new ReportParameter("pbudVer", "4th Reforecast");
-                        this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { bver });
-                    }
-                }
+
+                ReportParameter paramOrgName = new ReportParameter("paramOrgName", orgName);
+                this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { paramOrgName });
+
+                ReportParameter paramYear = new ReportParameter("paramYear", yearID.ToString());
+                this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { paramYear });
+
+                ReportParameter paramVer = new ReportParameter("paramVer", verName);
+                this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { paramVer });
+
+                ReportParameter paramOH = new ReportParameter("paramOH", oh);
+                this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { paramOH });
             }
-            catch (Exception err)
-            {
-
-            }
-        }
-
-        protected void Page_Init(object sender, EventArgs e)
-        {
-            
-        }     
+        } 
     }
 }

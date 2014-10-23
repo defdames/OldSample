@@ -908,7 +908,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Parameters!pyearID.Value</Value>
+                <Value>=Parameters!paramYear.Value</Value>
                 <Style>
                   <FontFamily>Calibri</FontFamily>
                   <FontSize>7pt</FontSize>
@@ -940,7 +940,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Parameters!pbudVer.Value</Value>
+                <Value>=Parameters!paramVer.Value</Value>
                 <Style>
                   <FontFamily>Calibri</FontFamily>
                   <FontSize>7pt</FontSize>
@@ -974,7 +974,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Parameters!porgName.Value</Value>
+                <Value>=Parameters!paramOrgName.Value</Value>
                 <Style>
                   <FontFamily>Calibri</FontFamily>
                   <FontSize>7pt</FontSize>
@@ -1337,7 +1337,7 @@
     </DataSet>
   </DataSets>
   <ReportParameters>
-    <ReportParameter Name="pyearID">
+    <ReportParameter Name="paramYear">
       <DataType>String</DataType>
       <Nullable>true</Nullable>
       <DefaultValue>
@@ -1348,7 +1348,7 @@
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
-    <ReportParameter Name="porgName">
+    <ReportParameter Name="paramOrgName">
       <DataType>String</DataType>
       <Nullable>true</Nullable>
       <DefaultValue>
@@ -1359,7 +1359,7 @@
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
-    <ReportParameter Name="pbudVer">
+    <ReportParameter Name="paramVer">
       <DataType>String</DataType>
       <Nullable>true</Nullable>
       <DefaultValue>
