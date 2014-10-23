@@ -244,6 +244,7 @@ namespace DBI.Mobile.EMS.Controllers
 
                     foreach (DailyActivityResponse.DailyActivityPhoto j in jsonObj.daily_activity_photos)
                     {
+
                         SYS_ATTACHMENTS attachment = new SYS_ATTACHMENTS();
                         attachment.ATTACHMENT_MIME = j.mime_type;
                         attachment.ATTACHMENT_DESC = j.image_date;
@@ -256,13 +257,16 @@ namespace DBI.Mobile.EMS.Controllers
                         attachment.GPS_LONGITUDE = decimal.Parse(j.gps_lon);
                         attachment.REFERENCE_NUMBER = h.HEADER_ID;
                         attachment.REFERENCE_TABLE = "DAILY_ACTIVITY_HEADER";
+                        attachment.ATTACHMENT_FILENAME = j.file_name;
 
                         using (Entities _context = new Entities())
                         {
                             SYS_MODULES _module = _context.SYS_MODULES.Where(x => x.MODULE_NAME == "Daily Activity").SingleOrDefault();
-                            attachment.MODULE_ID = (long)_module.MODULE_ID;
+                            if(_module != null)
+                                attachment.MODULE_ID = (long)_module.MODULE_ID;
                         }
                         GenericData.Insert<SYS_ATTACHMENTS>(attachment);
+
                     }
 
                     transaction.Complete();

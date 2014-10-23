@@ -126,6 +126,7 @@ namespace DBI.Mobile.EMS.Models
             public string image_date { get; set; }
             public string size { get; set; }
             public string gps_lat { get; set; }
+            public string file_name { get; set; }
         }
 
         public class RootObject

@@ -236,8 +236,8 @@
 
             Ext.Msg.confirm('Really Delete?', 'Do you really want to delete this chemical entry?', function (e) {
                 if (e == 'yes') {
+                    App.uxMainContainer.body.mask('Loading ...');
                     if (ChemicalRecord[0].data.CHEMICAL_MIX_ID) {
-                        App.uxMainContainer.body.mask('Loading ...');
                         App.direct.dmDeleteChemical(ChemicalRecord[0].data.CHEMICAL_MIX_ID);
                     }
                     else {
