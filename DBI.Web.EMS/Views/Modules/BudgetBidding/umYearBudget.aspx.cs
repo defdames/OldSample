@@ -21,18 +21,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     X.Redirect("~/Views/uxDefault.aspx");
                 }
 
-                List<object> list = new List<object>
-                {
-                    new { ACTION_ID = "repOrgSum" ,ACTION_NAME =  "Org Summary" },
-                    new { ACTION_ID = "repOrgComm" ,ACTION_NAME =  "Comments & Variances" },
-                    new { ACTION_ID = "repOrgLiab" ,ACTION_NAME =  "Liabilities" },
-                    new { ACTION_ID = "repOrgAllPro" ,ACTION_NAME =  "All Projects - Including Detail Sheets" },
-                    new { ACTION_ID = "repProj" ,ACTION_NAME =  "Selected Project" }
-                };
-
-                this.reportList.DataSource = list;
-                this.reportList.DataBind();
-
                 long leOrgID = long.Parse(Request.QueryString["leOrgID"]);
                 long orgID = long.Parse(Request.QueryString["orgID"]);
                 long yearID = long.Parse(Request.QueryString["fiscalYear"]);
@@ -380,47 +368,62 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
 
         // Reports
-        protected void deLoadReports(object sender, DirectEventArgs e)
+        protected void deLoadSummaryReports(object sender, StoreReadDataEventArgs e)
         {
-            string reportName = uxSummaryReports.Value.ToString();
-            string url ="";
+            uxReportsStore.DataSource = BBReports.YearSummaryReports();
+        }
+        protected void deChooseSummaryReport(object sender, DirectEventArgs e)
+        {
+            string selectedReport = uxSummaryReports.Text;           
 
-            string orgName = Request.QueryString["orgName"];
             long orgID = long.Parse(Request.QueryString["OrgID"]);
+            string orgName = HttpUtility.UrlEncode(Request.QueryString["orgName"]);            
             long yearID = long.Parse(Request.QueryString["fiscalYear"]);
             long verID = long.Parse(Request.QueryString["verID"]);
+            string verName = HttpUtility.UrlEncode(Request.QueryString["verName"]);
             string prevYearID = uxHidPrevYear.Text;
             string prevVerID = uxHidPrevVer.Text;
-            string oh = BBOH.DataSingle(orgID, yearID, verID).OH.ToString();
+            string projectNum = uxProjectNum.Text;
+            string projectName = HttpUtility.UrlEncode(uxProjectName.Text);
+            string url = "";
 
-            string budBidprojectID = e.ExtraParams["BudBidProjectID"];
-            string projectNumID = e.ExtraParams["ProjectNumID"];
-            string type = e.ExtraParams["Type"];
-            string projectNum = e.ExtraParams["ProjectNum"];
-            string projectName = e.ExtraParams["ProjectName"];
+            uxSummaryReports.Clear();
 
+            switch (selectedReport)
+            {
+                case "Org Summary":
+                    url = "/Views/Modules/BudgetBidding/Reports/umRepOrgSum.aspx?orgID=" + orgID + "&orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&verName=" + verName + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID;
+                    break;
 
+                case "Comments & Variances":
+                    url = "/Views/Modules/BudgetBidding/Reports/umRepOrgComm.aspx?orgID=" + orgID + "&orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&verName=" + verName + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID;
+                    break;
 
-            if (reportName == "repOrgSum")
-            {
-                url = "/Views/Modules/BudgetBidding/Reports/umRepOrgSum.aspx?orgName=" + orgName + "&orgID=" + orgID + "&yearID=" + yearID + "&verID=" + verID + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID + "&oh=" + oh;
-            }
-            else if (reportName == "repOrgComm")
-            {
-                url = "/Views/Modules/BudgetBidding/Reports/umRepOrgComm.aspx?orgName=" + orgName + "&orgID=" + orgID + "&yearID=" + yearID + "&verID=" + verID + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID + "&oh=" + oh;
-            }
-            else if (reportName == "repOrgLiab")
-            {
-                url = "/Views/Modules/BudgetBidding/Reports/umRepOrgLiab.aspx?orgName=" + orgName + "&orgID=" + orgID + "&yearID=" + yearID + "&verID=" + verID + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID + "&oh=" + oh;
-            }
-            else if (reportName == "repoOrgAllPro")
-            {
+                case "Liabilities":
+                    url = "/Views/Modules/BudgetBidding/Reports/umRepOrgLiab.aspx?orgID=" + orgID + "&orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&verName=" + verName + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID;
+                    break;
 
-            }
-            else if (reportName == "repProj")
-            {
-                url = "/Views/Modules/BudgetBidding/Reports/umRepProject.aspx?orgName=" + orgName + "&orgID=" + orgID + "&yearID=" + yearID + "&verID=" + verID + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID + "&oh=" + oh;
-            }
+                case "Selected Project":
+                    if (uxHidBudBidID.Text == "")
+                    {
+                        StandardMsgBox("Report", "A project must be selected before a report can be generated.", "INFO");
+                        return;
+                    }
+
+                    long budBidID = Convert.ToInt64(uxHidBudBidID.Text);
+
+                    if (BB.ProjectStillExists(budBidID) == false)
+                    {
+                        StandardMsgBox("Report", "Project has been deleted or has changed.  Please refresh summary", "INFO");
+                        return;
+                    }
+
+                    url = "/Views/Modules/BudgetBidding/Reports/umRepProject.aspx?orgID=" + orgID + "&orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&verName=" + verName + "&budBidprojectID=" + budBidID + "&projectNum=" + projectNum + "&projectName=" + projectName;
+                    break;
+
+                case "All Projects - Including Detail Sheets":
+                    break;
+            }            
 
             Window win = new Window
             {
@@ -444,8 +447,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 }
             };
             win.Render(this.Form);
-            win.Show();
-            uxSummaryReports.Reset();
+            win.Show();            
         }
 
 

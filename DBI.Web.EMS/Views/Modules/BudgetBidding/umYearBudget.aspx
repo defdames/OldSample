@@ -202,28 +202,27 @@
 
                         <ext:ComboBox ID="uxSummaryReports"
                             runat="server"
-                            ValueField="ACTION_ID"
-                            DisplayField="ACTION_NAME"
+                            ValueField="ID_NAME"
+                            DisplayField="ID_NAME"
                             Width="253"
                             EmptyText="-- Reports/Export --"
                             Editable="false">
                             <Store>
-                                <ext:Store ID="reportList" runat="server">
+                                <ext:Store ID="uxReportsStore" runat="server" OnReadData="deLoadSummaryReports" AutoLoad="false">
                                     <Model>
-                                        <ext:Model ID="Model6" runat="server" IDProperty="ACTION_ID">
+                                        <ext:Model ID="Model6" runat="server">
                                             <Fields>
-                                                <ext:ModelField Name="ACTION_ID" />
-                                                <ext:ModelField Name="ACTION_NAME" />
+                                                <ext:ModelField Name="ID_NAME" />
                                             </Fields>
                                         </ext:Model>
                                     </Model>
-                                   <%-- <Proxy>
+                                    <Proxy>
                                         <ext:PageProxy />
-                                    </Proxy>--%>
+                                    </Proxy>
                                 </ext:Store>
                             </Store>
                             <DirectEvents>
-                                <Select OnEvent="deLoadReports">
+                                <Select OnEvent="deChooseSummaryReport">
                                     <EventMask ShowMask="true" Msg="Processing..." />
                                 </Select>
                             </DirectEvents>
