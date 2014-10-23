@@ -369,6 +369,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        protected void deGetAttachmentData(object sender, StoreReadDataEventArgs e)
+        {
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+            using (Entities _context = new Entities())
+            {
+                var data = _context.SYS_ATTACHMENTS.Where(x => x.REFERENCE_TABLE == "DAILY_ACTIVITY_HEADER" && x.REFERENCE_NUMBER == (long?)HeaderId).ToList();
+                uxAttachmentStore.DataSource = data;
+            }
+        }
+
         /// <summary>
         /// Get data for Footer grid
         /// </summary>
@@ -1318,6 +1328,27 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxInventoryStore.CommitChanges();
         }
 
+        protected void deSaveAttachment(object sender, DirectEventArgs e)
+        {
+            SYS_ATTACHMENTS Attachment = new SYS_ATTACHMENTS();
+            Attachment.DATA = uxAttachmentField.FileBytes;
+            Attachment.ATTACHMENT_DESC = uxAttachmentDescription.Text;
+            Attachment.ATTACHMENT_FILENAME = uxAttachmentField.FileName;
+            Attachment.CREATED_BY = User.Identity.Name;
+            Attachment.MODIFIED_BY = User.Identity.Name;
+            Attachment.MODIFIED_DATE = DateTime.Now;
+            Attachment.CREATED_DATE = DateTime.Now;
+            Attachment.REFERENCE_NUMBER = long.Parse(Request.QueryString["HeaderId"]);
+            Attachment.REFERENCE_TABLE = "DAILY_ACTIVITY_HEADER";
+            Attachment.MODULE_ID = 1;
+
+            GenericData.Insert(Attachment);
+
+            uxAttachmentStore.Reload();
+            uxAttachmentForm.Reset();
+            uxAttachmentWindow.Hide();
+        }
+
         protected void deStoreEquipmentGridValue(object sender, DirectEventArgs e)
         {
             //Set value and text for equipment
@@ -1532,6 +1563,24 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxAddInventoryMeasureStore.DataSource = data;
                 uxAddInventoryMeasureStore.DataBind();
             }
+        }
+
+        protected void deDownloadAttachment(object sender, DirectEventArgs e)
+        {
+            SYS_ATTACHMENTS Attachment;
+            long AttachmentId = long.Parse(e.ExtraParams["ATTACHMENT_ID"]);
+            using (Entities _context = new Entities())
+            {
+                Attachment = _context.SYS_ATTACHMENTS.Where(x => x.ATTACHMENT_ID == AttachmentId).Single();
+            }
+
+            Response.Clear();
+            Response.ClearContent();
+            Response.ClearHeaders();
+            Response.ContentType = (Attachment.ATTACHMENT_MIME == string.Empty ? "image/jpeg" : Attachment.ATTACHMENT_MIME);
+            Response.AppendHeader("Content-Disposition", string.Format("attachment;filename={0}", Attachment.ATTACHMENT_FILENAME));
+            Response.BinaryWrite(Attachment.DATA);
+            Response.End();
         }
 
         [DirectMethod]

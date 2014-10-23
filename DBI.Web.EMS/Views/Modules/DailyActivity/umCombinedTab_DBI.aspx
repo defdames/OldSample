@@ -20,7 +20,7 @@
                     App.uxEmployeeRowEdit.editor.form.findField('ROLE_TYPE').disable();
                 }
                 return true;
-                
+
             }
             return false;
         };
@@ -136,6 +136,10 @@
             }
             return record.record.data.NAME;
         };
+
+        var AttachmentRenderer = function (value, record) {
+            return record.record.data.ATTACHMENT_FILENAME;
+        }
 
         var ProductionTaskRenderer = function (value, record) {
             if (!record) {
@@ -255,6 +259,19 @@
                     App.uxInventoryStore.remove(InventoryRecord);
                     if (InventoryRecord[0].data.INVENTORY_ID) {
                         App.direct.dmDeleteInventory(InventoryRecord[0].data.INVENTORY_ID);
+                    }
+                }
+            });
+        };
+
+        var deleteAttachment = function () {
+            var AttachmentRecord = App.uxAttachmentGrid.getSelectionModel().getSelection();
+
+            Ext.Msg.confirm('Really Delete?', 'Do you really want to delete this inventory entry?', function (e) {
+                if (e == 'yes') {
+                    App.uxAttachmentStore.remove(AttachmentRecord);
+                    if (AttachmentRecord[0].data.ATTACHMENT_ID) {
+                        App.direct.dmDeleteAttachment(AttachmentRecord[0].data.ATTACHMENT_ID);
                     }
                 }
             });
@@ -868,7 +885,7 @@
                                     <ext:TimeField runat="server" MinTime="00:00" MaxTime="23:59" Format="H:mm" />
                                 </Editor>
                             </ext:DateColumn>
-                            <ext:CheckColumn ID="uxPerDiemColumn" runat="server" DataIndex="PER_DIEM" Text="Per Diem" Flex="6" Editable="true"/>
+                            <ext:CheckColumn ID="uxPerDiemColumn" runat="server" DataIndex="PER_DIEM" Text="Per Diem" Flex="6" Editable="true" />
                             <ext:CheckColumn runat="server" DataIndex="PREVAILING_WAGE" Text="Prevailing" Flex="7" Editable="false" />
                             <ext:Column runat="server" ID="uxRoleTypeColumn" DataIndex="ROLE_TYPE" Text="Role Type" Flex="12">
                                 <Editor>
@@ -939,7 +956,7 @@
                                         AllowBlank="true" />
                                 </Editor>
                             </ext:Column>
-                             <ext:Column ID="Column59" runat="server" DataIndex="STATE" Hidden="true" Text="State">
+                            <ext:Column ID="Column59" runat="server" DataIndex="STATE" Hidden="true" Text="State">
                                 <Editor>
                                     <ext:DisplayField runat="server" ID="uxEmployeeState" />
                                 </Editor>
@@ -1011,7 +1028,7 @@
                 <ext:GridPanel runat="server" ID="uxEquipmentGrid"
                     Title="Equipment"
                     PaddingSpec="10 10 30 10"
-                    MaxWidth="1200">
+                    MaxWidth="1400">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxEquipmentStore">
@@ -1215,7 +1232,7 @@
                     ID="uxProductionGrid"
                     Title="Production"
                     PaddingSpec="10 10 30 10"
-                    MaxWidth="1200">
+                    MaxWidth="1400">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxProductionStore">
@@ -1366,7 +1383,7 @@
                     ID="uxWeatherGrid"
                     Title="Weather"
                     PaddingSpec="10 10 30 10"
-                    MaxWidth="1200">
+                    MaxWidth="1400">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxWeatherStore">
@@ -1486,7 +1503,7 @@
                     ID="uxChemicalGrid"
                     Title="Chemical Mix"
                     PaddingSpec="10 10 30 10"
-                    MaxWidth="1200">
+                    MaxWidth="1400">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxChemicalStore">
@@ -1641,7 +1658,7 @@
                     ID="uxInventoryGrid"
                     Title="Inventory"
                     PaddingSpec="10 10 30 10"
-                    MaxWidth="1200">
+                    MaxWidth="1400">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxInventoryStore">
@@ -1966,7 +1983,68 @@
                         </ext:RowEditing>
                     </Plugins>
                 </ext:GridPanel>
-                <ext:FormPanel runat="server" ID="uxFooterPanel" Padding="10" BodyPadding="5" MaxWidth="1200">
+                <ext:GridPanel ID="uxAttachmentGrid" runat="server"
+                    Title="Attachments"
+                    PaddingSpec="10 10 30 10"
+                    MaxWidth="1400">
+                    <Store>
+                        <ext:Store runat="server" ID="uxAttachmentStore" OnReadData="deGetAttachmentData">
+                            <Model>
+                                <ext:Model ID="Model18" runat="server" Name="Attachment" IDProperty="ATTACHMENT_ID">
+                                    <Fields>
+                                        <ext:ModelField Name="ATTACHMENT_ID" Type="Int" />
+                                        <ext:ModelField Name="MODULE_ID" Type="Int" />
+                                        <ext:ModelField Name="REFERENCE_TABLE" />
+                                        <ext:ModelField Name="REFERENCE_NUMBER" />
+                                        <ext:ModelField Name="ATTACHMENT_FILENAME" />
+                                        <ext:ModelField Name="ATTACHMENT_DESC" />
+                                        <ext:ModelField Name="ATTACHMENT_MIME" />
+                                        <ext:ModelField Name="DATA" />
+                                    </Fields>
+                                </ext:Model>
+                            </Model>
+                            <Proxy>
+                                <ext:PageProxy />
+                            </Proxy>
+                        </ext:Store>
+                    </Store>
+                    <ColumnModel>
+                        <Columns>
+                            <ext:Column ID="Column64" runat="server" Text="Name" DataIndex="ATTACHMENT_FILENAME" Flex="25" />
+                            <ext:Column runat="server" Text="Description" DataIndex="ATTACHMENT_DESC" Flex="50" />
+                            <ext:Column ID="Column65" runat="server" Text="File Type" DataIndex="ATTACHMENT_MIME" Flex="25" />
+                        </Columns>
+                    </ColumnModel>
+                    <TopBar>
+                        <ext:Toolbar runat="server">
+                            <Items>
+                                <ext:Button runat="server" ID="uxAddAttachmentButton" Text="Add" Icon="ApplicationAdd">
+                                    <Listeners>
+                                        <Click Handler="#{uxAttachmentWindow}.show()" />
+                                    </Listeners>
+                                </ext:Button>
+                                <ext:Button runat="server" ID="uxDeleteAttachmentButton" Text="Delete" Icon="ApplicationDelete" Disabled="true">
+                                    <Listeners>
+                                        <Click Fn="deleteAttachment" />
+                                    </Listeners>
+                                </ext:Button>
+                                <ext:Button runat="server" ID="uxSaveAttachmentButton" Text="View/Download" Icon="DiskDownload" Disabled="true">
+                                    <DirectEvents>
+                                        <Click OnEvent="deDownloadAttachment" IsUpload="true">
+                                            <ExtraParams>
+                                                <ext:Parameter Name="ATTACHMENT_ID" Value="#{uxAttachmentGrid}.getSelectionModel().getSelection()[0].data.ATTACHMENT_ID" Mode="Raw" />
+                                            </ExtraParams>
+                                        </Click>
+                                    </DirectEvents>
+                                </ext:Button>
+                            </Items>
+                        </ext:Toolbar>
+                    </TopBar>
+                    <Listeners>
+                        <Select Handler="#{uxDeleteAttachmentButton}.enable(); #{uxSaveAttachmentButton}.enable()" />
+                    </Listeners>
+                </ext:GridPanel>
+                <ext:FormPanel runat="server" ID="uxFooterPanel" Padding="10" BodyPadding="5" MaxWidth="1400">
                     <Items>
                         <ext:TextField runat="server" ID="uxReasonForNoWorkField" FieldLabel="Reason for no work" Width="700" LabelWidth="100" />
                         <ext:TextField runat="server" ID="uxHotelField" FieldLabel="Hotel" LabelWidth="100" Width="400" />
@@ -2104,6 +2182,30 @@
                 </ext:ToolTip>
             </Items>
         </ext:Panel>
+        <ext:Window runat="server" ID="uxAttachmentWindow" Hidden="true" CloseAction="Hide" Width="650" Title="Add Attachment">
+            <Items>
+                <ext:FormPanel runat="server" ID="uxAttachmentForm">
+                    <Items>
+                        <ext:FileUploadField runat="server" ID="uxAttachmentField" FieldLabel="File" LabelWidth="150" Width="600" Padding="5" />
+                        <ext:TextField runat="server" ID="uxAttachmentDescription" FieldLabel="Description" LabelWidth="150" Width="600" Padding="5" />
+                    </Items>
+                    <Buttons>
+                        <ext:Button runat="server" ID="uxAddAttachmentSubmit" Text="Save" Icon="Add">
+                            <DirectEvents>
+                                <Click OnEvent="deSaveAttachment">
+                                    <EventMask ShowMask="true" />
+                                </Click>
+                            </DirectEvents>
+                        </ext:Button>
+                        <ext:Button runat="server" ID="uxAddAttachmentCancel" Text="Cancel" Icon="Delete">
+                            <Listeners>
+                                <Click Handler="#{uxAttachmentWindow}.hide(); #{uxAttachmentForm}.reset()" />
+                            </Listeners>
+                        </ext:Button>
+                    </Buttons>
+                </ext:FormPanel>
+            </Items>
+        </ext:Window>
     </form>
 </body>
 </html>
