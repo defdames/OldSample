@@ -1788,5 +1788,18 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             GenericData.Delete(DeletedInventory);
             uxInventoryGrid.GetView();
         }
+
+        [DirectMethod]
+        public void dmDeleteAttachment(string AttachmentId)
+        {
+            SYS_ATTACHMENTS DeletedAttachment;
+            long Attachment = long.Parse(AttachmentId);
+            using (Entities _context = new Entities())
+            {
+                DeletedAttachment = _context.SYS_ATTACHMENTS.Where(x => x.ATTACHMENT_ID == Attachment).Single();
+            }
+            GenericData.Delete(DeletedAttachment);
+            uxAttachmentGrid.GetView();
+        }
     }
 }

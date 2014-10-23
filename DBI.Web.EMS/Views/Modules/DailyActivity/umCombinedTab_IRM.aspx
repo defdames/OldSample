@@ -225,7 +225,7 @@
         var deleteAttachment = function () {
             var AttachmentRecord = App.uxAttachmentGrid.getSelectionModel().getSelection();
 
-            Ext.Msg.confirm('Really Delete?', 'Do you really want to delete this inventory entry?', function (e) {
+            Ext.Msg.confirm('Really Delete?', 'Do you really want to delete this attachment entry?', function (e) {
                 if (e == 'yes') {
                     App.uxAttachmentStore.remove(AttachmentRecord);
                     if (AttachmentRecord[0].data.ATTACHMENT_ID) {
