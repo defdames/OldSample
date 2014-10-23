@@ -34,7 +34,7 @@ namespace DBI.Core.Security
             //UserPrincipal _usr;
 
             //Next, create a new context for the domain
-            using (PrincipalContext ctx = new PrincipalContext(ContextType.Domain))
+            using (PrincipalContext ctx = new PrincipalContext(ContextType.Domain, "dbiservices.com"))
             {
                 //Next, attempt to validate the credentials
                 _authenticated = ctx.ValidateCredentials(username, password,ContextOptions.Negotiate);
