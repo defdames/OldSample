@@ -1312,6 +1312,7 @@ warning 6002: The table/view 'XXDBI.XXPJ_PREV_WAGE_RATES' does not have a primar
           <Property Name="REFERENCE_TABLE" Type="varchar2" MaxLength="250" />
           <Property Name="REFERENCE_NUMBER" Type="number" Precision="15" Scale="0" />
           <Property Name="ATTACHMENT_DESC" Type="varchar2" MaxLength="500" />
+          <Property Name="ATTACHMENT_FILENAME" Type="varchar2" MaxLength="500" />
           <Property Name="ATTACHMENT_MIME" Type="varchar2" MaxLength="500" />
           <Property Name="DATA" Type="blob" />
           <Property Name="CREATED_DATE" Type="date" />
@@ -8476,6 +8477,7 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
           <Property Name="REFERENCE_TABLE" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="REFERENCE_NUMBER" Type="Int64" />
           <Property Name="ATTACHMENT_DESC" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ATTACHMENT_FILENAME" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="ATTACHMENT_MIME" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="DATA" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="CREATED_DATE" Type="DateTime" />
@@ -11318,6 +11320,7 @@ FROM "XXEMS"."UNIT_OF_MEASURE_V" "UNIT_OF_MEASURE_V"</DefiningQuery>
                 <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
                 <ScalarProperty Name="DATA" ColumnName="DATA" />
                 <ScalarProperty Name="ATTACHMENT_MIME" ColumnName="ATTACHMENT_MIME" />
+                <ScalarProperty Name="ATTACHMENT_FILENAME" ColumnName="ATTACHMENT_FILENAME" />
                 <ScalarProperty Name="ATTACHMENT_DESC" ColumnName="ATTACHMENT_DESC" />
                 <ScalarProperty Name="REFERENCE_NUMBER" ColumnName="REFERENCE_NUMBER" />
                 <ScalarProperty Name="REFERENCE_TABLE" ColumnName="REFERENCE_TABLE" />

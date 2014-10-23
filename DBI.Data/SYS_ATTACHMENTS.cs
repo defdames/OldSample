@@ -19,6 +19,7 @@ namespace DBI.Data
         public string REFERENCE_TABLE { get; set; }
         public Nullable<long> REFERENCE_NUMBER { get; set; }
         public string ATTACHMENT_DESC { get; set; }
+        public string ATTACHMENT_FILENAME { get; set; }
         public string ATTACHMENT_MIME { get; set; }
         public byte[] DATA { get; set; }
         public Nullable<System.DateTime> CREATED_DATE { get; set; }
