@@ -1329,6 +1329,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxInventoryStore.CommitChanges();
         }
 
+        protected void deSaveAttachment(object sender, DirectEventArgs e)
+        {
+            //file upload
+            HttpPostedFile ForemanSignatureFile = uxForemanImageField.PostedFile;
+            byte[] ForemanSignatureArray = ImageToByteArray(ForemanSignatureFile);
+
+        }
+
         protected void deStoreEquipmentGridValue(object sender, DirectEventArgs e)
         {
             //Set value and text for equipment

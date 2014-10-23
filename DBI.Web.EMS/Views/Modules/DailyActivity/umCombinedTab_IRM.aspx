@@ -1766,7 +1766,7 @@
                     <Store>
                         <ext:Store runat="server" ID="uxAttachmentStore">
                             <Model>
-                                <ext:Model runat="server" Name="Attachments" IDProperty="ATTACHMENT_ID" ClientIdProperty="PhantomId">
+                                <ext:Model runat="server" Name="Attachment" IDProperty="ATTACHMENT_ID" ClientIdProperty="PhantomId">
                                     <Fields>
                                         <ext:ModelField Name="ATTACHMENT_ID" Type="Int" />
                                         <ext:ModelField Name="MODULE_ID" Type="Int" />
@@ -1782,27 +1782,49 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column runat="server" Text="Description" DataIndex="ATTACHMENT_DESC" Flex="70" />
+                            <ext:Column runat="server" Text="Description" DataIndex="ATTACHMENT_DESC" Flex="70">
+                                <Editor>
+                                    <ext:FileUploadField runat="server" ID="uxFileUploadField" />
+                                </Editor>
+                            </ext:Column>
                             <ext:Column runat="server" Text="File Type" DataIndex="ATTACHMENT_MIME" Flex="20" />
-                            <ext:ImageCommandColumn runat="server" Text="Download" Flex="10">
+                            <%--<ext:ImageCommandColumn runat="server" Text="Download" Flex="10">
                                 <Commands>
                                     <ext:ImageCommand Icon="DiskDownload" ToolTip-Text="Download" CommandName="Download" />
                                 </Commands>
-                            </ext:ImageCommandColumn>
+                            </ext:ImageCommandColumn>--%>
                         </Columns>
                     </ColumnModel>
                     <TopBar>
                         <ext:Toolbar ID="Toolbar3" runat="server">
                             <Items>
                                 <ext:Button runat="server" ID="uxAddAttachmentButton" Text="Add" Icon="ApplicationAdd">
-
+                                    <Listeners>
+                                        <Click Handler="#{uxAttachmentStore}.insert(0, new Attachment())" />
+                                    </Listeners>
                                 </ext:Button>
                                 <ext:Button runat="server" ID="uxDeleteAttachmentButton" Text="Delete" Icon="ApplicationDelete" Disabled="true">
-
+                                    <Listeners>
+                                        <Click Fn="deleteAttachment" />
+                                    </Listeners>
                                 </ext:Button>
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
+                    <Plugins>
+                        <ext:RowEditing ID="RowEditing5" runat="server" ClicksToEdit="1" AutoCancel="false">
+                            <DirectEvents>
+                                <Edit OnEvent="deSaveAttachment" Before="return #{uxAttachmentStore}.isDirty();">
+                                    <ExtraParams>
+                                        <ext:Parameter Name="data" Value="#{uxAttachmentStore}.getChangedData({skipIdForPhantomRecords : false})" Mode="Raw" Encode="true" />
+                                    </ExtraParams>
+                                </Edit>
+                            </DirectEvents>
+                            <Listeners>
+                                <BeforeEdit Handler="return (#{uxAttachmentGrid}.getSelectionModel().getSelection()[0].data.ATTACHMENT_ID ? false : true)" />
+                            </Listeners>
+                        </ext:RowEditing>
+                    </Plugins>
                 </ext:GridPanel>
                 <ext:FormPanel runat="server" ID="uxFooterPanel" Padding="10" BodyPadding="5" MaxWidth="1400">
                     <Items>

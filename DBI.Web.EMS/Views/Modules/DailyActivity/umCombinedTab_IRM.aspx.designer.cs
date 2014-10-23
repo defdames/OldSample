@@ -2110,6 +2110,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Store uxAttachmentStore;
         
         /// <summary>
+        /// uxFileUploadField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FileUploadField uxFileUploadField;
+        
+        /// <summary>
         /// Toolbar3 control.
         /// </summary>
         /// <remarks>
@@ -2135,6 +2144,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Button uxDeleteAttachmentButton;
+        
+        /// <summary>
+        /// RowEditing5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowEditing RowEditing5;
         
         /// <summary>
         /// uxFooterPanel control.
