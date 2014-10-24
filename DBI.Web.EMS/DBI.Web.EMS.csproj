@@ -1151,12 +1151,24 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\Modules\BudgetBidding\Reports\umRepProject.rdlc" />
-    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\MaintenanceInvoiceReport.rdlc" />
-    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\AppDateReport.rdlc" />
-    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\InspectionReport.rdlc" />
-    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\IncidentReport.rdlc" />
-    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.rdlc" />
-    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\SupplementalInvoiceReport.rdlc" />
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\MaintenanceInvoiceReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\AppDateReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\InspectionReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\IncidentReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\SupplementalInvoiceReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Modules\CrossingMaintenance\StateCrossingList.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>StateCrossingList.cs</LastGenOutput>
