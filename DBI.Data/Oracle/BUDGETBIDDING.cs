@@ -10,32 +10,47 @@ namespace DBI.Data
 {
     public class BBReports
     {
-        #region Fields
-        public class Fields
+        public static List<SingleCombo> YearSummaryReports()
         {
-            public string PROJECT_ID { get; set; }
-            public long BUD_BID_PROJECTS_ID { get; set; }
-            public string TYPE { get; set; }
-            public string PROJECT_NAME { get; set; }
-            public long STATUS_ID { get; set; }
-            public string STATUS { get; set; }
-            public decimal ACRES { get; set; }
-            public decimal DAYS { get; set; }
-            public string APP_TYPE { get; set; }
-            public string CHEMICAL_MIX { get; set; }
-            public string COMMENTS { get; set; }
-            public string LIABILITY { get; set; }
-            public decimal LIABILITY_OP { get; set; }
-            public string COMPARE_PRJ_OVERRIDE { get; set; }
-            public decimal COMPARE_PRJ_AMOUNT { get; set; }
-            public DateTime? WE_DATE { get; set; }
-            public string WE_OVERRIDE { get; set; }
-        }
-        #endregion
+            List<SingleCombo> comboItems = new List<SingleCombo>();
 
-        public static List<Fields> ProjectDetails(long budBidProjectID)
+            comboItems.Add(new SingleCombo { ID_NAME = "Org Summary" });
+            comboItems.Add(new SingleCombo { ID_NAME = "Comments & Variances" });
+            comboItems.Add(new SingleCombo { ID_NAME = "Liabilities" });
+            comboItems.Add(new SingleCombo { ID_NAME = "All Projects - Including Detail Sheets" });
+            comboItems.Add(new SingleCombo { ID_NAME = "Selected Project" });        
+            return comboItems;
+        }
+        public class Project
         {
-            string sql = string.Format(@"
+            public class Project_Details
+            {
+                #region Fields
+                public class Fields
+                {
+                    public string PROJECT_ID { get; set; }
+                    public long BUD_BID_PROJECTS_ID { get; set; }
+                    public string TYPE { get; set; }
+                    public string PROJECT_NAME { get; set; }
+                    public long STATUS_ID { get; set; }
+                    public string STATUS { get; set; }
+                    public decimal ACRES { get; set; }
+                    public decimal DAYS { get; set; }
+                    public string APP_TYPE { get; set; }
+                    public string CHEMICAL_MIX { get; set; }
+                    public string COMMENTS { get; set; }
+                    public string LIABILITY { get; set; }
+                    public decimal LIABILITY_OP { get; set; }
+                    public string COMPARE_PRJ_OVERRIDE { get; set; }
+                    public decimal COMPARE_PRJ_AMOUNT { get; set; }
+                    public DateTime? WE_DATE { get; set; }
+                    public string WE_OVERRIDE { get; set; }
+                }
+                #endregion
+
+                public static List<Fields> ProjectDetails(long budBidProjectID)
+                {
+                    string sql = string.Format(@"
                     SELECT BUD_BID_PROJECTS.PROJECT_ID, BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID, BUD_BID_PROJECTS.TYPE, BUD_BID_PROJECTS.PRJ_NAME PROJECT_NAME, BUD_BID_STATUS.STATUS_ID,
                         BUD_BID_STATUS.STATUS, BUD_BID_PROJECTS.ACRES, BUD_BID_PROJECTS.DAYS, BUD_BID_PROJECTS.APP_TYPE, BUD_BID_PROJECTS.CHEMICAL_MIX, BUD_BID_PROJECTS.COMMENTS,
                         BUD_BID_PROJECTS.LIABILITY, BUD_BID_PROJECTS.LIABILITY_OP, BUD_BID_PROJECTS.COMPARE_PRJ_OVERRIDE, BUD_BID_PROJECTS.COMPARE_PRJ_AMOUNT, BUD_BID_PROJECTS.WE_DATE,
@@ -45,13 +60,136 @@ namespace DBI.Data
                     ON BUD_BID_PROJECTS.STATUS_ID = BUD_BID_STATUS.STATUS_ID
                     WHERE BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = {0}", budBidProjectID);
 
-            using (Entities context = new Entities())
+                    using (Entities context = new Entities())
+                    {
+                        return context.Database.SqlQuery<Fields>(sql).ToList();
+                    }
+                }
+            }
+
+            public class StartNumbers
             {
-                return context.Database.SqlQuery<Fields>(sql).ToList();
+                #region Fields
+                public class Fields
+                {
+                    public long PROJECT_ID { get; set; }
+                    public decimal GROSS_REC { get; set; }
+                    public decimal MAT_USAGE { get; set; }
+                    public decimal GROSS_REV { get; set; }
+                    public decimal DIR_EXP { get; set; }
+                    public decimal OP { get; set; }
+                }
+                #endregion
+
+                public static List<Fields> StartNums(long projectID)
+                {
+                    string sql = string.Format(@"
+                    SELECT * FROM (
+                        SELECT BUD_BID_ACTUAL_NUM.PROJECT_ID, LINE_ID, NOV
+                        FROM BUD_BID_DETAIL_TASK
+                        LEFT JOIN BUD_BID_ACTUAL_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_ACTUAL_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_ACTUAL_NUM.DETAIL_TASK_ID
+                        WHERE BUD_BID_DETAIL_TASK.PROJECT_ID = {0} AND BUD_BID_DETAIL_TASK.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT'  )
+                    PIVOT(
+                        SUM(NOV) FOR (LINE_ID)
+                        IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))", projectID);
+
+                    using (Entities context = new Entities())
+                    {
+                        return context.Database.SqlQuery<Fields>(sql).ToList();
+                    }
+                }
+            }
+
+            public class EndNumbers
+            {
+                #region Fields
+                public class Fields
+                {
+                    public long PROJECT_ID { get; set; }
+                    public decimal GROSS_REC { get; set; }
+                    public decimal MAT_USAGE { get; set; }
+                    public decimal GROSS_REV { get; set; }
+                    public decimal DIR_EXP { get; set; }
+                    public decimal OP { get; set; }
+                }
+                #endregion
+
+                public static List<Fields> Data(long projectID)
+                {
+                    string sql = string.Format(@"
+                    SELECT * FROM (
+                        SELECT BUD_BID_BUDGET_NUM.PROJECT_ID, LINE_ID, NOV
+                        FROM BUD_BID_DETAIL_TASK
+                        LEFT JOIN BUD_BID_BUDGET_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_BUDGET_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_BUDGET_NUM.DETAIL_TASK_ID
+                        WHERE BUD_BID_DETAIL_TASK.PROJECT_ID = {0} AND BUD_BID_DETAIL_TASK.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT'  )
+                    PIVOT(
+                        SUM(NOV) FOR (LINE_ID)
+                        IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))", projectID);
+
+                    using (Entities context = new Entities())
+                    {
+                        return context.Database.SqlQuery<Fields>(sql).ToList();
+                    }
+                }
+            }
+
+            public class DetailSheets
+            {
+                #region Fields
+                public class Fields
+                {
+                    public long DETAIL_TASK_ID { get; set; }
+                    public string DETAIL_NAME { get; set; }
+                    public long SHEET_ORDER { get; set; }
+                    public decimal GROSS_REC { get; set; }
+                    public decimal MAT_USAGE { get; set; }
+                    public decimal GROSS_REV { get; set; }
+                    public decimal DIR_EXP { get; set; }
+                    public decimal OP { get; set; }
+                }
+                #endregion
+
+                public static List<Fields> Data(long projectID)
+                {
+                    string sql = string.Format(@"
+                    WITH
+                        TASKS AS (            
+                            SELECT PROJECT_ID, DETAIL_TASK_ID, DETAIL_NAME, SHEET_ORDER, MODIFIED_BY
+                            FROM BUD_BID_DETAIL_TASK
+                            WHERE PROJECT_ID = {0}
+                        ),          
+                        BUDGET_LINE_AMOUNTS AS (
+                            SELECT * FROM (
+                                SELECT PROJECT_ID, DETAIL_TASK_ID, LINE_ID, NOV, MODIFIED_BY
+                                FROM BUD_BID_BUDGET_NUM
+                                WHERE PROJECT_ID = {0})
+                            PIVOT(
+                                SUM(NOV) FOR (LINE_ID)
+                                IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                        )         
+                    SELECT TASKS.PROJECT_ID,
+                        TASKS.DETAIL_TASK_ID,
+                        TASKS.DETAIL_NAME,
+                        TASKS.SHEET_ORDER,
+                        BUDGET_LINE_AMOUNTS.GROSS_REC,
+                        BUDGET_LINE_AMOUNTS.MAT_USAGE,
+                        BUDGET_LINE_AMOUNTS. GROSS_REV,
+                        BUDGET_LINE_AMOUNTS.DIR_EXP,
+                        BUDGET_LINE_AMOUNTS.OP
+                    FROM TASKS 
+                    INNER JOIN BUDGET_LINE_AMOUNTS ON TASKS.PROJECT_ID = BUDGET_LINE_AMOUNTS.PROJECT_ID AND TASKS.DETAIL_TASK_ID = BUDGET_LINE_AMOUNTS.DETAIL_TASK_ID
+                    WHERE TASKS.DETAIL_NAME <> 'SYS_PROJECT'
+                    ORDER BY SHEET_ORDER", projectID);
+
+                    using (Entities context = new Entities())
+                    {
+                        return context.Database.SqlQuery<Fields>(sql).ToList();
+                    }
+                }
             }
         }
     }
-    
+        
     public class BB
     {
         public static void CleanOldTempRecords(int numOfDaysOld)
@@ -1333,7 +1471,6 @@ namespace DBI.Data
                 return context.Database.SqlQuery<Fields>(sql).ToList();
             }
         }
-
         public static Fields DataSingle(long orgID, long yearID, long verID)
         {
             string ohVer = BB.BudBidVerToOHBudVer(verID);

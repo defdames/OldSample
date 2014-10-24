@@ -76,9 +76,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 //e.Total = count;
 
                 string selectedRailroad = RailroadId.ToString();
-                string selectedServiceUnit = ServiceUnit.ToString();
-                string selectedSubDiv = SubDiv.ToString();
-                string selectedState = State.ToString();
+                string selectedServiceUnit = ServiceUnit;
+                string selectedSubDiv = SubDiv;
+                string selectedState = State;
 
                 string url = "/Views/Modules/CrossingMaintenance/Reports/StateCrossingListReport.aspx?selectedRailroad=" + selectedRailroad + "&selectedServiceUnit=" + selectedServiceUnit + "&selectedSubDiv=" + selectedSubDiv + "&selectedState=" + selectedState;
                 Ext.Net.Panel pan = new Ext.Net.Panel();
@@ -93,7 +93,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 pan.Loader.LoadMask.ShowMask = true;
                 pan.Loader.DisableCaching = true;
                 pan.AddTo(uxCenterPanel);
-              
+                
             }
         }
 

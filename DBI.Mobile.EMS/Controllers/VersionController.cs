@@ -19,10 +19,10 @@ namespace DBI.Mobile.EMS.Controllers
             if (id == "production")
             {
                 Version ver = new Version();
-                ver.number = "1.0.R141011";
+                ver.number = "1.0.T141024";
                 ver.mandatory = true;
-                ver.install_url = "itms-services://?action=download-manifest&url=https://emsmobiledev.dbiservices.com/iems/iEMS.plist";
-                ver.descriptionText = "Added EPA numbers from inventory and support for IOS 8.0";
+                ver.install_url = "itms-services://?action=download-manifest&url=https://emsmobiletest.dbiservices.com/iems/iEMS.plist";
+                ver.descriptionText = "NEW FEATURES! QR Scanner has been added to equipment lookup and attachments are now supported on all DAR sheets (Limit of 3). Additional bugfixes and enhancements.";
 
                 RootObject root = new RootObject();
                 root.version = ver;

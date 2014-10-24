@@ -57,7 +57,7 @@
          <ext:Hidden ID="Hidden1" runat="server" Hidden="true" />
          <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
                 <Items>
-        <ext:FormPanel runat="server" ID="FilterForm" Margin="5" Region="North" Title="Filter State Crossing List">
+        <ext:FormPanel runat="server" ID="FilterForm" Margin="5" Region="North" Title="Filter State Crossing List" Collapsible="true">
             <Items>
                 <ext:FieldSet runat="server" Title="Filter">
                     <Items>
@@ -205,9 +205,12 @@
 						<ValidityChange Handler="#{Button4}.setDisabled(!valid);" />
 					</Listeners>
         </ext:FormPanel>
-         <ext:Panel runat="server" DeferredRender="true" Region="Center" ID="uxCenterPanel" Padding="5">
+         <ext:Panel runat="server" ID="uxCenterPanel" Region="Center">
+              <LayoutConfig>
+                <ext:FitLayoutConfig />
+              </LayoutConfig>
                     <Items>
-                        <ext:Panel ID="Tab" runat="server">
+                        <ext:Panel ID="Tab" runat="server" ManageHeight="true">
                         </ext:Panel>
                     </Items>
                 </ext:Panel>

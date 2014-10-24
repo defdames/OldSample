@@ -103,13 +103,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.ComboBox uxSummaryReports;
         
         /// <summary>
-        /// reportList control.
+        /// uxReportsStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store reportList;
+        protected global::Ext.Net.Store uxReportsStore;
         
         /// <summary>
         /// Model6 control.
