@@ -11,7 +11,6 @@ using DBI.Core.Web;
 using DBI.Core.Security;
 using DBI.Data;
 using DBI.Data.DataFactory;
-using DBI.Core.Security;
 using Ext.Net;
 
 namespace DBI.Web.EMS.Views.Modules.DailyActivity
@@ -35,10 +34,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 GetHeaderData();
                 GetEmployeeData();
                 GetEquipmentData();
-                GetDBIProductionData();
-                GetWeatherData();
-                GetChemicalMixData();
-                GetInventory();
                 GetFooterData();
                 GetWarnings();
 
@@ -58,7 +53,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
                 
             }
-            if (GetStatus(HeaderId) != 2)
+            if (GetStatus(HeaderId) != 2 || !validateComponentSecurity("SYS.DailyActivity.View"))
             {
                 uxEmployeeToolbar.Hidden = true;
                 uxEquipmentToolbar.Hidden = true;
@@ -68,6 +63,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxInventoryToolbar.Hidden = true;
                 uxSaveHeaderButton.Hidden = true;
                 uxSaveFooterButton.Hidden = true;
+                uxAttachmentToolbar.Hidden = true;
 
                 uxDateField.ReadOnly = true;
                 uxProjectField.ReadOnly = true;
@@ -140,6 +136,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxHeaderField.Value = data.HEADER_ID.ToString();
                 uxOracleField.Value = data.DA_HEADER_ID.ToString();
                 uxStatusField.Value = data.STATUS.ToString();
+
+                uxCanEditField.Value = validateComponentSecurity("SYS.DailyActivity.View");
             }
         }
 
@@ -338,7 +336,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <summary>
         /// Get data for Production grid
         /// </summary>
-        protected void GetDBIProductionData()
+        protected void deGetDBIProductionData(object sender, StoreReadDataEventArgs e)
         {
             //Query and set datasource for Production
             using (Entities _context = new Entities())
@@ -358,7 +356,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <summary>
         /// Get data for Weather grid
         /// </summary>
-        protected void GetWeatherData()
+        protected void deGetWeatherData(object sender, StoreReadDataEventArgs e)
         {
             //Query and set datasource for Weather
             using (Entities _context = new Entities())
@@ -375,7 +373,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <summary>
         /// Get data for Chemical Mix grid
         /// </summary>
-        protected void GetChemicalMixData()
+        protected void deGetChemicalMixData(object sender, StoreReadDataEventArgs e)
         {
             //Query and set datasource for Chemical Mix
             using (Entities _context = new Entities())
@@ -392,7 +390,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <summary>
         /// Get data for Inventory grid
         /// </summary>
-        protected void GetInventory()
+        protected void deGetInventory(object sender, StoreReadDataEventArgs e)
         {
             //Query and set datasource for Inventory
             using (Entities _context = new Entities())
