@@ -53,7 +53,7 @@
             <ext:Hidden ID="Hidden1" runat="server" Hidden="true" />
              <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
                 <Items>
-            <ext:FormPanel ID="uxFilterForm" runat="server" Margin="5" Region="North" Title="Filter Application Date">
+            <ext:FormPanel ID="uxFilterForm" runat="server" Margin="5" Region="North" Title="Filter Application Date" Collapsible="true">
                 <Items>
                     <ext:FieldSet ID="FieldSet1" runat="server" Title="Filter">
                         <Items>
@@ -179,13 +179,9 @@
                             Text="Run"
                             Icon="PlayGreen" Disabled="true">
                                   <DirectEvents>
-                                <Click OnEvent="deLaunchGrid" >
-                                <EventMask ShowMask="true" Msg="Loading..." />
-                                </Click>
+                                <Click OnEvent="deAppDateGrid" />                               
                             </DirectEvents>
-                            <Listeners>
-                                <Click Handler="#{uxAppDateStore}.load()" />                              
-                            </Listeners>
+                                
                         </ext:Button>
                         <ext:Button runat="server"
                             ID="Button3"
@@ -202,102 +198,16 @@
 						<ValidityChange Handler="#{Button4}.setDisabled(!valid);" />
 					</Listeners>
             </ext:FormPanel>
+                     <ext:Panel runat="server" ID="uxCenterPanel" Region="Center">
+              <LayoutConfig>
+                <ext:FitLayoutConfig />
+              </LayoutConfig>
+                    <Items>
+                        <ext:Panel ID="Tab" runat="server" ManageHeight="true">
+                        </ext:Panel>
+                    </Items>
+                </ext:Panel>
 
-            <ext:GridPanel
-                ID="GridPanel1"
-                runat="server"
-                Title="Application Date Report"
-                Icon="Report"
-                Frame="false"
-                Resizable="false"
-                Collapsible="false"
-                Hidden="true" Region="Center">
-                <Store>
-                    <ext:Store ID="uxAppDateStore"
-                        runat="server"
-                        GroupField="SUB_DIVISION" AutoDataBind="true" OnReadData="deAppDateGrid" AutoLoad="false" PageSize="10">
-                        <Model>
-                            <ext:Model ID="Model1" runat="server">
-                                <Fields>
-                                    <ext:ModelField Name="CROSSING_ID" />
-                                    <ext:ModelField Name="CROSSING_NUMBER" Type="String" />
-                                    <ext:ModelField Name="APPLICATION_DATE" Type="Date" />
-                                    <ext:ModelField Name="MILE_POST" />
-                                    <ext:ModelField Name="STATE" />
-                                    <ext:ModelField Name="TRUCK_NUMBER" />
-                                    <ext:ModelField Name="CITY" />
-                                    <ext:ModelField Name="STREET" />
-                                    <ext:ModelField Name="SUB_DIVISION" />
-                                    <ext:ModelField Name="REMARKS" />
-
-
-                                </Fields>
-                            </ext:Model>
-                        </Model>
-                        <Proxy>
-                            <ext:PageProxy />
-                        </Proxy>
-
-                        <Sorters>
-                            <ext:DataSorter Property="SUB_DIVISION" />
-
-                        </Sorters>
-
-                    </ext:Store>
-                </Store>
-
-                <ColumnModel ID="ColumnModel1" runat="server">
-                    <Columns>
-                        <ext:Column ID="uxSubDiv" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="1" />
-                        <ext:Column ID="uxMainCrossingNum" runat="server" DataIndex="CROSSING_NUMBER" Text="DOT #" Flex="1" />
-                        <ext:Column ID="Column2" runat="server" Text="State" Flex="1" DataIndex="STATE" />
-                        <ext:Column ID="Column1" runat="server" Text="MP" Flex="1" DataIndex="MILE_POST" />
-                        <ext:DateColumn runat="server" Text="Date" DataIndex="APPLICATION_DATE" Flex="1" Format="MM/dd/yyyy" />
-                        <ext:Column ID="Column4" runat="server" DataIndex="TRUCK_NUMBER" Text="Truck #" Flex="1" />
-                        <%--<ext:Column ID="Column8" runat="server" DataIndex="REMARKS" Text="Remarks" Flex="3" />--%>
-                    </Columns>
-                </ColumnModel>
-                <Features>
-                    <ext:RowBody ID="RowBody1" runat="server" RowBodyCls="rowBodyCls">
-
-                        <GetAdditionalData Fn="GetAdditionalData" />
-                    </ext:RowBody>
-                </Features>
-                <Features>
-                    <ext:Grouping ID="Grouping1"
-                        runat="server"
-                        HideGroupedHeader="true"
-                        Collapsible="false"
-                        Cls="x-grid-group-title; x-grid-group-hd" />
-                </Features>
-                <TopBar>
-                    <ext:Toolbar ID="Toolbar2" runat="server">
-                        <Items>
-                           
-                           <ext:Button ID="Button6" runat="server" Text="To XML" AutoPostBack="true" OnClick="ToXml" Icon="PageCode">
-                            <Listeners>
-                                <Click Fn="saveData" />
-                            </Listeners>
-                        </ext:Button>
-                        
-                        <ext:Button ID="Button7" runat="server" Text="To Excel" AutoPostBack="true" OnClick="ToExcel" Icon="PageExcel">
-                            <Listeners>
-                                <Click Fn="saveData" />
-                            </Listeners>
-                        </ext:Button>
-                        
-                        <ext:Button ID="Button8" runat="server" Text="To CSV" AutoPostBack="true" OnClick="ToCsv" Icon="PageAttach">
-                            <Listeners>
-                                <Click Fn="saveData" />
-                            </Listeners>
-                        </ext:Button>
-                        </Items>
-                    </ext:Toolbar>
-                </TopBar>
-                <BottomBar>
-                    <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
-                </BottomBar>
-            </ext:GridPanel>
                     </Items>
                  </ext:Viewport>
         </div>

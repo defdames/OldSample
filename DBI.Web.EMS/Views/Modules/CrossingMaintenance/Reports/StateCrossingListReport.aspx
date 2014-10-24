@@ -15,8 +15,8 @@
     <div>
     
     </div>
-        <rsweb:ReportViewer ID="ReportViewer1" runat="server">
-             <LocalReport ReportEmbeddedResource="DBI.Web.EMS.Views.Modules.CrossingMaintenance.Reports.StateCrossingListReport.rdlc" ReportPath="Views\Modules\CrossingMaintenance\Reports\StateCrossingList.rdlc">
+        <rsweb:ReportViewer ID="ReportViewer1" runat="server" Height="700px" Width="100%">
+             <LocalReport ReportEmbeddedResource="DBI.Web.EMS.Views.Modules.CrossingMaintenance.Reports.StateCrossingListReport.rdlc" ReportPath="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.rdlc">
                         <DataSources>
                             <rsweb:ReportDataSource DataSourceId="ObjectDataSource1" Name="StateCrossingList" />
                         </DataSources>
@@ -24,10 +24,10 @@
         </rsweb:ReportViewer>
          <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="GetStateCrossingList" TypeName="DBI.Data.CROSSING_MAINTENANCE">
              <SelectParameters>
-                 <asp:Parameter Name="selectedRailroad" Type="String" />
-                 <asp:Parameter Name="selectedServiceUnit" Type="String" />
-                 <asp:Parameter Name="selectedSubDiv" Type="String" />
-                 <asp:Parameter Name="selectedState" Type="String" />
+                 <asp:QueryStringParameter Name="selectedRailroad" QueryStringField="selectedRailroad" Type="String" />
+                 <asp:QueryStringParameter Name="selectedServiceUnit" QueryStringField="selectedServiceUnit" Type="String" />
+                 <asp:QueryStringParameter Name="selectedSubDiv" QueryStringField="selectedSubDiv" Type="String" />
+                 <asp:QueryStringParameter Name="selectedState" QueryStringField="selectedState" Type="String" />
              </SelectParameters>
          </asp:ObjectDataSource>
     </form>
