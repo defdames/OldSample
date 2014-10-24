@@ -57,10 +57,6 @@ namespace DBI.Data
         {
 
             return (from d in _context.CROSSINGS
-                    //where !(from r in _context.CROSSING_RELATIONSHIP
-                    //        where d.CROSSING_ID == r.CROSSING_ID
-                    //        select r.CROSSING_ID)
-                    //   .Contains(d.CROSSING_ID)
                     where d.RAILROAD_ID == RailroadId
                     select new CrossingList { RAILROAD_ID = d.RAILROAD, CONTACT_ID = d.CONTACT_ID, STATUS = d.STATUS, STATE = d.STATE, CROSSING_ID = d.CROSSING_ID, CROSSING_NUMBER = d.CROSSING_NUMBER, SERVICE_UNIT = d.SERVICE_UNIT, SUB_DIVISION = d.SUB_DIVISION, CONTACT_NAME = d.CROSSING_CONTACTS.CONTACT_NAME });
 
@@ -230,34 +226,7 @@ SELECT
             }
         }
 
-        //public static IQueryable<CrossingData> GetSuppCrossingList(decimal RailroadId, Entities _context)
-        //{
-        //    return (from d in _context.CROSSINGS
-        //            join r in _context.CROSSING_RELATIONSHIP on d.CROSSING_ID equals r.CROSSING_ID
-        //            join p in _context.PROJECTS_V on r.PROJECT_ID equals p.PROJECT_ID
-        //            //where (from c in _context.CROSSINGS
-        //            //       select c.CROSSING_NUMBER).Distinct()
-        //            where d.RAILROAD_ID == RailroadId
-
-        //            select new CrossingData
-        //            {
-        //                RAILROAD_ID = d.RAILROAD_ID,
-        //                CONTACT_ID = d.CONTACT_ID,
-        //                CROSSING_ID = d.CROSSING_ID,
-        //                CROSSING_NUMBER = d.CROSSING_NUMBER,
-        //                SERVICE_UNIT = d.SERVICE_UNIT,
-        //                SUB_DIVISION = d.SUB_DIVISION,
-        //                CONTACT_NAME = d.CROSSING_CONTACTS.CONTACT_NAME,
-        //                PROJECT_TYPE = p.PROJECT_TYPE,
-        //                CARRYING_OUT_ORGANIZATION_ID = p.CARRYING_OUT_ORGANIZATION_ID,
-        //                PROJECT_STATUS_CODE = p.PROJECT_STATUS_CODE,
-        //                TEMPLATE_FLAG = p.TEMPLATE_FLAG,
-        //                PROJECT_ID = p.PROJECT_ID,
-        //                STATE = d.STATE,
-        //                ORGANIZATION_NAME = p.ORGANIZATION_NAME
-        //            }).Distinct();
-                      
-        //}
+       
         public static IQueryable<ApplicationList> GetApplications( Entities _context)
         {
            
@@ -280,7 +249,6 @@ SELECT
           {
               return (from i in _context.CROSSING_INCIDENT
                       join c in _context.CROSSINGS on i.CROSSING_ID equals c.CROSSING_ID
-                      //where i.CROSSING_ID == CrossingId
                       select new IncidentList { CROSSING_NUMBER = c.CROSSING_NUMBER, CROSSING_ID = i.CROSSING_ID, INCIDENT_ID = i.INCIDENT_ID, INCIDENT_NUMBER = i.INCIDENT_NUMBER,
                       DATE_REPORTED = i.DATE_REPORTED, DATE_CLOSED = i.DATE_CLOSED, SLOW_ORDER = i.SLOW_ORDER, REMARKS = i.REMARKS });
 
@@ -357,7 +325,6 @@ SELECT
           public static IQueryable<StateCrossingList> GetStateCrossingList(decimal RailroadId, Entities _context)
           {
               return (from d in _context.CROSSINGS
-                      //join a in _context.CROSSING_APPLICATION on d.CROSSING_ID equals a.CROSSING_ID
                       where d.RAILROAD_ID == RailroadId && d.STATUS != "DELETED" && d.PROPERTY_TYPE == "PUB"
                       select new StateCrossingList
                             {
@@ -379,11 +346,6 @@ SELECT
                                 LONGITUDE = d.LONGITUDE,
                                 LATITUDE = d.LATITUDE,
                                 SPECIAL_INSTRUCTIONS = d.SPECIAL_INSTRUCTIONS,
-                                //SPRAY = a.SPRAY,
-                                //CUT = a.CUT,
-                                //INSPECT = a.INSPECT,
-                                //APPLICATION_ID = a.APPLICATION_ID,
-                                //APPLICATION_REQUESTED = a.APPLICATION_REQUESTED
                             });
           }
           public static IQueryable<ApplicationDateList> GetAppDate(decimal RailroadId, decimal Application, Entities _context)
@@ -549,44 +511,10 @@ SELECT
 
           }
 
-          //public static IQueryable<ApplicationDetails> GetInvoiceReport(Entities _context)
-          //{
-          //    return (from a in _context.CROSSING_APPLICATION
-          //            join d in _context.CROSSINGS on a.CROSSING_ID equals d.CROSSING_ID
-          //            join v in _context.CROSSING_INVOICE on a.INVOICE_ID equals v.INVOICE_ID
-          //            join p in _context.PROJECTS_V on a.PROJECT_ID equals p.PROJECT_ID
-          //            where ReportList.Contains(a.APPLICATION_ID)
-          //            select new ApplicationDetails
-          //            {
-          //                INVOICE_ID = a.INVOICE_ID,
-          //                INVOICE_NUMBER = v.INVOICE_NUMBER,
-          //                INVOICE_DATE = v.INVOICE_DATE,
-          //                CROSSING_ID = d.CROSSING_ID,
-          //                APPLICATION_ID = a.APPLICATION_ID,
-          //                APPLICATION_DATE = a.APPLICATION_DATE,
-          //                APPLICATION_REQUESTED = a.APPLICATION_REQUESTED,
-          //                CROSSING_NUMBER = d.CROSSING_NUMBER,
-          //                SUB_DIVISION = d.SUB_DIVISION,
-          //                STATE = d.STATE,
-          //                MILE_POST = d.MILE_POST,
-          //                SERVICE_UNIT = d.SERVICE_UNIT,
-          //                PROJECT_ID = p.PROJECT_ID,
-          //                SEGMENT1 = p.SEGMENT1,
-          //            });
-          //}
-
           public static List<ApplicationDetails> GetInvoiceReport(string selectedApp)
           {
               long selected = Convert.ToInt64(selectedApp);
-              //X.Js.Call("parent.App.uxApplicationEntryGrid.getRowsValues({selectedOnly: true})");
-              //List<ApplicationDetails> appList = new List<ApplicationDetails>();
-
-              //List<decimal> ReportList = new List<decimal>();
-              //foreach (ApplicationDetails app in appList)
-              //{
-              //    ReportList.Add(app.APPLICATION_ID);
-              //}
-
+          
               string sql = string.Format(@"                           
 
                                 SELECT
@@ -655,8 +583,7 @@ SELECT
           }
           public static List<StateCrossingList> GetStateCrossingList(string selectedRailroad, string selectedServiceUnit, string selectedSubDiv, string selectedState)
           {
-              //long selected = Convert.ToInt64(selectedRailroad);
-
+             
               string sql1 = string.Format(@"                          
                              SELECT
                                 d.CROSSING_ID,
@@ -741,8 +668,372 @@ SELECT
                               return context.Database.SqlQuery<StateCrossingList>(sql).ToList();
                           }
                       }
-                  
-              
+
+          public static List<ApplicationDateList> GetAppDateList(string selectedRailroad, string selectedServiceUnit, string selectedSubDiv, string selectedState, decimal selectedApplication, DateTime selectedStart, DateTime selectedEnd)
+          {
+
+              string sql1 = string.Format(@"                          
+                             SELECT
+                                d.CROSSING_ID,
+                                d.CROSSING_NUMBER,
+                                d.SUB_DIVISION,
+                                d.STATE,
+                                d.SERVICE_UNIT,
+                                d.MILE_POST,
+                                d.REMARKS,
+                                d.STREET,
+                                d.CITY,
+                                a.TRUCK_NUMBER,
+                                a.APPLICATION_ID,
+                                a.APPLICATION_REQUESTED,
+                                a.APPLICATION_DATE,
+                                a.SPRAY,
+                                a.CUT,
+                                a.INSPECT
+                FROM CROSSING_APPLICATION a
+                LEFT JOIN CROSSINGS d ON a.CROSSING_ID = d.CROSSING_ID 
+                 ");
+
+              string sql2 = "";
+              if (selectedServiceUnit != null && selectedSubDiv != null && selectedState != null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PUB' AND d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}' AND d.SUB_DIVISION = '{2}' AND d.STATE = '{3}'
+                AND a.APPLICATION_REQUESTED = {4}
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState, selectedApplication);
+              }
+
+              else if (selectedServiceUnit != null && selectedSubDiv != null && selectedState == null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PUB' AND d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}' AND d.SUB_DIVISION = '{2}'
+                 AND a.APPLICATION_REQUESTED = {4}
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState, selectedApplication);
+              }
+              else if (selectedServiceUnit != null && selectedSubDiv == null && selectedState == null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PUB' AND d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}'
+                 AND a.APPLICATION_REQUESTED = {4}
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState, selectedApplication);
+
+              }
+              else if (selectedServiceUnit != null && selectedSubDiv == null && selectedState != null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PUB' AND d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}' AND d.STATE = '{3}'
+                 AND a.APPLICATION_REQUESTED = {4}
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState, selectedApplication);
+
+              }
+
+              else if (selectedServiceUnit == null && selectedSubDiv != null && selectedState != null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PUB' AND d.RAILROAD_ID = {0} AND d.SUB_DIVISION = '{2}' AND d.STATE = '{3}'
+                 AND a.APPLICATION_REQUESTED = {4}
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState, selectedApplication);
+
+              }
+              else if (selectedServiceUnit == null && selectedSubDiv == null && selectedState != null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PUB' AND d.RAILROAD_ID = {0} AND d.STATE = '{3}'
+                 AND a.APPLICATION_REQUESTED = {4}
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState, selectedApplication);
+
+              }
+              else if (selectedServiceUnit == null && selectedSubDiv == null && selectedState == null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE  d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PUB' AND d.RAILROAD_ID = {0}
+                 AND a.APPLICATION_REQUESTED = {4}
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState, selectedApplication);
+              }
+              string sql3 = "";
+              if (selectedStart != DateTime.MinValue && selectedEnd != DateTime.MinValue)
+              {
+                  sql3 = string.Format(@" 
+                AND a.APPLICATION_DATE >= ('{0}') AND a.APPLICATION_DATE <= ('{1}')
+
+                   ", selectedStart.ToString("dd-MMM-yyyy"), selectedEnd.ToString("dd-MMM-yyyy"));
+              }
+              else if (selectedStart != DateTime.MinValue)
+              {
+                  sql3 = string.Format(@" 
+                AND a.APPLICATION_DATE >= ('{0}')
+
+                   ", selectedStart.ToString("dd-MMM-yyyy"));
+              }
+
+              else if (selectedEnd != DateTime.MinValue)
+              {
+                  sql3 = string.Format(@" 
+                AND a.APPLICATION_DATE <= ('{0}')
+
+                   ", selectedEnd.ToString("dd-MMM-yyyy"));
+              }
+              string sql = sql1 + sql2 + sql3;
+              using (Entities context = new Entities())
+              {
+                  return context.Database.SqlQuery<ApplicationDateList>(sql).ToList();
+              }
+          }
+
+          public static List<ApplicationDateList> GetInspectionList(string selectedRailroad, string selectedServiceUnit, string selectedSubDiv, string selectedState, decimal selectedApplication, DateTime selectedStart, DateTime selectedEnd)
+          {
+
+              string sql1 = string.Format(@"                          
+                             SELECT
+                                d.CROSSING_ID,
+                                d.CROSSING_NUMBER,
+                                d.SUB_DIVISION,
+                                d.STATE,
+                                d.SERVICE_UNIT,
+                                d.MILE_POST,
+                                d.STREET,
+                                d.CITY,
+                                a.REMARKS,                                
+                                a.TRUCK_NUMBER,
+                                a.APPLICATION_ID,
+                                a.APPLICATION_REQUESTED,
+                                a.APPLICATION_DATE,
+                                a.SPRAY,
+                                a.CUT,
+                                a.INSPECT
+                FROM CROSSING_APPLICATION a
+                LEFT JOIN CROSSINGS d ON a.CROSSING_ID = d.CROSSING_ID ");
+
+              string sql2 = "";
+              if (selectedServiceUnit != null && selectedSubDiv != null && selectedState != null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE a.INSPECT = 'Y' AND d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PUB' AND d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}' AND d.SUB_DIVISION = '{2}' AND d.STATE = '{3}'
+                AND a.APPLICATION_REQUESTED = {4}
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState, selectedApplication);
+              }
+
+              else if (selectedServiceUnit != null && selectedSubDiv != null && selectedState == null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE a.INSPECT = 'Y' AND d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PUB' AND d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}' AND d.SUB_DIVISION = '{2}'
+                 AND a.APPLICATION_REQUESTED = {4}
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState, selectedApplication);
+              }
+              else if (selectedServiceUnit != null && selectedSubDiv == null && selectedState == null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE a.INSPECT = 'Y' AND d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PUB' AND d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}'
+                 AND a.APPLICATION_REQUESTED = {4}
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState, selectedApplication);
+
+              }
+              else if (selectedServiceUnit != null && selectedSubDiv == null && selectedState != null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE a.INSPECT = 'Y' AND d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PUB' AND d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}' AND d.STATE = '{3}'
+                 AND a.APPLICATION_REQUESTED = {4}
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState, selectedApplication);
+
+              }
+
+              else if (selectedServiceUnit == null && selectedSubDiv != null && selectedState != null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE a.INSPECT = 'Y' AND d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PUB' AND d.RAILROAD_ID = {0} AND d.SUB_DIVISION = '{2}' AND d.STATE = '{3}'
+                 AND a.APPLICATION_REQUESTED = {4}
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState, selectedApplication);
+
+              }
+              else if (selectedServiceUnit == null && selectedSubDiv == null && selectedState != null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE a.INSPECT = 'Y' AND d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PUB' AND d.RAILROAD_ID = {0} AND d.STATE = '{3}'
+                 AND a.APPLICATION_REQUESTED = {4}
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState, selectedApplication);
+
+              }
+              else if (selectedServiceUnit == null && selectedSubDiv == null && selectedState == null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE a.INSPECT = 'Y' AND d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PUB' AND d.RAILROAD_ID = {0}
+                 AND a.APPLICATION_REQUESTED = {4}
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState, selectedApplication);
+              }
+              string sql3 = "";
+              if (selectedStart != DateTime.MinValue && selectedEnd != DateTime.MinValue)
+              {
+                  sql3 = string.Format(@" 
+                AND a.APPLICATION_DATE >= ('{0}') AND a.APPLICATION_DATE <= ('{1}')
+
+                   ", selectedStart.ToString("dd-MMM-yyyy"), selectedEnd.ToString("dd-MMM-yyyy"));
+              }
+              else if (selectedStart != DateTime.MinValue)
+              {
+                  sql3 = string.Format(@" 
+                AND a.APPLICATION_DATE >= ('{0}')
+
+                   ", selectedStart.ToString("dd-MMM-yyyy"));
+              }
+
+              else if (selectedEnd != DateTime.MinValue)
+              {
+                  sql3 = string.Format(@" 
+                AND a.APPLICATION_DATE <= ('{0}')
+
+                   ", selectedEnd.ToString("dd-MMM-yyyy"));
+              }
+
+              string sql = sql1 + sql2 + sql3;
+              using (Entities context = new Entities())
+              {
+                  return context.Database.SqlQuery<ApplicationDateList>(sql).ToList();
+              }
+          }
+
+          public static List<IncidentReportList> GetIncidentList(string selectedRailroad, string selectedServiceUnit, string selectedSubDiv, string selectedState, DateTime selectedStart, DateTime selectedEnd, string selectedOpen, string selectedClosed)
+          {
+
+              string sql1 = string.Format(@"                          
+                             SELECT
+                                d.CROSSING_ID,
+                                d.CROSSING_NUMBER,
+                                d.SUB_DIVISION,
+                                d.STATE,
+                                d.SERVICE_UNIT,
+                                d.MILE_POST,
+                                i.REMARKS,                                
+                                i.INCIDENT_NUMBER,
+                                i.INCIDENT_ID,
+                                i.SLOW_ORDER,
+                                i.DATE_REPORTED,
+                                i.DATE_CLOSED
+                FROM CROSSING_INCIDENT i
+                LEFT JOIN CROSSINGS d ON i.CROSSING_ID = d.CROSSING_ID ");
+
+              string sql2 = "";
+              if (selectedServiceUnit != null && selectedSubDiv != null && selectedState != null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}' AND d.SUB_DIVISION = '{2}' AND d.STATE = '{3}'
+                
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+              }
+
+              else if (selectedServiceUnit != null && selectedSubDiv != null && selectedState == null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}' AND d.SUB_DIVISION = '{2}'
+                
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+              }
+              else if (selectedServiceUnit != null && selectedSubDiv == null && selectedState == null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}'
+                
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+
+              }
+              else if (selectedServiceUnit != null && selectedSubDiv == null && selectedState != null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}' AND d.STATE = '{3}'
+             
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+
+              }
+
+              else if (selectedServiceUnit == null && selectedSubDiv != null && selectedState != null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.RAILROAD_ID = {0} AND d.SUB_DIVISION = '{2}' AND d.STATE = '{3}'
+                
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+
+              }
+              else if (selectedServiceUnit == null && selectedSubDiv == null && selectedState != null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.RAILROAD_ID = {0} AND d.STATE = '{3}'
+                
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+
+              }
+              else if (selectedServiceUnit == null && selectedSubDiv == null && selectedState == null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.RAILROAD_ID = {0}
+                
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+              }
+              string sql3 = "";
+              if (selectedStart != DateTime.MinValue && selectedEnd != DateTime.MinValue)
+              {
+                  sql3 = string.Format(@" 
+                AND i.DATE_REPORTED >= ('{0}') AND i.DATE_REPORTED <= ('{1}')
+
+                   ", selectedStart.ToString("dd-MMM-yyyy"), selectedEnd.ToString("dd-MMM-yyyy"));
+              }
+              else if (selectedStart != DateTime.MinValue)
+              {
+                  sql3 = string.Format(@" 
+                AND i.DATE_REPORTED >= ('{0}')
+
+                   ", selectedStart.ToString("dd-MMM-yyyy"));
+              }
+
+              else if (selectedEnd != DateTime.MinValue)
+              {
+                  sql3 = string.Format(@" 
+                AND i.DATE_REPORTED <= ('{0}')
+
+                   ", selectedEnd.ToString("dd-MMM-yyyy"));
+              }
+
+                 string sql4 = "";
+                 if (selectedOpen == "Y")
+                 {
+                     sql4 = string.Format(@"
+                     AND i.DATE_CLOSED is null 
+                     ", selectedOpen);
+                     }
+                 else if (selectedClosed == "Y")
+                   {
+                      sql4 = string.Format(@"
+                      AND i.DATE_CLOSED is not null
+                                  
+                      ", selectedClosed);
+                   }
+
+              string sql = sql1 + sql2 + sql3 + sql4;
+              using (Entities context = new Entities())
+              {
+                  return context.Database.SqlQuery<IncidentReportList>(sql).ToList();
+              }
+          }
+          
           
           public class SupplementalReport
           {
@@ -856,6 +1147,11 @@ SELECT
               public string TRUCK_NUMBER { get; set; }
               public string STATE { get; set; }
               public decimal? MILE_POST { get; set; }
+              public string SPRAY { get; set; }
+              public string CUT { get; set; }
+              public string INSPECT { get; set; }
+              public string STREET { get; set; }
+              public string CITY { get; set; }
           }
           public class StateCrossingList
           {

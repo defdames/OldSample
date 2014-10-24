@@ -39,7 +39,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
             }
         }
-        protected void deIncidentGrid(object sender, StoreReadDataEventArgs e)
+        protected void deIncidentGrid(object sender, DirectEventArgs e)
         {
             DateTime StartDate = uxStartDate.SelectedDate;
             DateTime EndDate = uxEndDate.SelectedDate;
@@ -52,52 +52,79 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 //Get List of all incidents open and closed 
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
 
-                IQueryable<CROSSING_MAINTENANCE.IncidentReportList> allData = CROSSING_MAINTENANCE.GetIncidentReport(RailroadId, _context);
+                //IQueryable<CROSSING_MAINTENANCE.IncidentReportList> allData = CROSSING_MAINTENANCE.GetIncidentReport(RailroadId, _context);
 
                 //filter down specific information to show the incidents needed for report
-                if (StartDate != DateTime.MinValue)
-                {
-                    allData = allData.Where(x => x.DATE_REPORTED >= StartDate);
-                }
+                //if (StartDate != DateTime.MinValue)
+                //{
+                //    allData = allData.Where(x => x.DATE_REPORTED >= StartDate);
+                //}
 
-                if (EndDate != DateTime.MinValue)
-                {
-                    allData = allData.Where(x => x.DATE_REPORTED <= EndDate);
-                }
+                //if (EndDate != DateTime.MinValue)
+                //{
+                //    allData = allData.Where(x => x.DATE_REPORTED <= EndDate);
+                //}
 
-                if (StartDate != DateTime.MinValue && EndDate != DateTime.MinValue)
-                {
-                    allData = allData.Where(x => x.DATE_REPORTED >= StartDate && x.DATE_REPORTED <= EndDate);
-                }
+                //if (StartDate != DateTime.MinValue && EndDate != DateTime.MinValue)
+                //{
+                //    allData = allData.Where(x => x.DATE_REPORTED >= StartDate && x.DATE_REPORTED <= EndDate);
+                //}
 
-                if (ServiceUnit != null)
-                {
-                    allData = allData.Where(x => x.SERVICE_UNIT == ServiceUnit);
-                }
+                //if (ServiceUnit != null)
+                //{
+                //    allData = allData.Where(x => x.SERVICE_UNIT == ServiceUnit);
+                //}
 
-                if (SubDiv != null)
-                {
-                    allData = allData.Where(x => x.SUB_DIVISION == SubDiv);
-                }
+                //if (SubDiv != null)
+                //{
+                //    allData = allData.Where(x => x.SUB_DIVISION == SubDiv);
+                //}
 
-                if (State != null)
+                //if (State != null)
+                //{
+                //    allData = allData.Where(x => x.STATE == State);
+                //}
+                string Open = "";
+                string Closed = "";
+                if (uxOpenIncident.Checked)
                 {
-                    allData = allData.Where(x => x.STATE == State);
+                    Open = "Y";
                 }
-                if(uxOpenIncident.Checked)
+                if (uxClosedIncident.Checked)
                 {
-                    allData = allData.Where(x => x.DATE_CLOSED == null);
+                    Closed = "Y";
                 }
-                if(uxClosedIncident.Checked)
-                {
-                    allData = allData.Where(x => x.DATE_CLOSED != null);
-                }
-                List<object> _data = allData.ToList<object>();
+                //List<object> _data = allData.ToList<object>();
 
 
-                int count;
-                uxIncidentStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
-                e.Total = count;
+                //int count;
+                //uxIncidentStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
+                //e.Total = count;
+
+          
+                string selectedOpen = Open;
+                string selectedClosed = Closed;
+                DateTime selectedStart = StartDate;
+                DateTime selectedEnd = EndDate;
+                string selectedRailroad = RailroadId.ToString();
+                string selectedServiceUnit = ServiceUnit;
+                string selectedSubDiv = SubDiv;
+                string selectedState = State;
+
+                string url = "/Views/Modules/CrossingMaintenance/Reports/IncidentReport.aspx?selectedRailroad=" + selectedRailroad + "&selectedServiceUnit=" + selectedServiceUnit + "&selectedSubDiv=" + selectedSubDiv + "&selectedState=" + selectedState + "&selectedStart=" + selectedStart + "&selectedEnd=" + selectedEnd + "&selectedOpen=" + selectedOpen + "&selectedClosed=" + selectedClosed;
+                Ext.Net.Panel pan = new Ext.Net.Panel();
+
+                pan.ID = "Tab";
+                pan.Title = " RMCC Incident Report";
+                pan.CloseAction = CloseAction.Destroy;
+                pan.Loader = new ComponentLoader();
+                pan.Loader.ID = "loader";
+                pan.Loader.Url = url;
+                pan.Loader.Mode = LoadMode.Frame;
+                pan.Loader.LoadMask.ShowMask = true;
+                pan.Loader.DisableCaching = true;
+                pan.AddTo(uxCenterPanel);
+                
             }
         }
         protected void deClearFilters(object sender, DirectEventArgs e)
@@ -144,10 +171,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 uxAddSubDivStore.DataBind();
             }
         }
-        protected void deLaunchGrid(object sender, DirectEventArgs e)
-        {
-            uxIncidentGrid.Show();
-        }
+      
         protected void ToXml(object sender, EventArgs e)
         {
             string json = this.Hidden1.Value.ToString();

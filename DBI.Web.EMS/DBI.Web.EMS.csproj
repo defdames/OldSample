@@ -160,6 +160,9 @@
     <Content Include="Views\Modules\CrossingMaintenance\Csv.xsl" />
     <Content Include="Views\Modules\CrossingMaintenance\Excel.xsl" />
     <Content Include="Views\Modules\CrossingMaintenance\ManageKCS.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\AppDateReport.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\IncidentReport.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\InspectionReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\Reports\MaintenanceInvoiceReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\Reports\SupplementalInvoiceReport.aspx" />
@@ -404,6 +407,27 @@
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\ManageKCS.aspx.designer.cs">
       <DependentUpon>ManageKCS.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\AppDateReport.aspx.cs">
+      <DependentUpon>AppDateReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\AppDateReport.aspx.designer.cs">
+      <DependentUpon>AppDateReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\IncidentReport.aspx.cs">
+      <DependentUpon>IncidentReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\IncidentReport.aspx.designer.cs">
+      <DependentUpon>IncidentReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\InspectionReport.aspx.cs">
+      <DependentUpon>InspectionReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\InspectionReport.aspx.designer.cs">
+      <DependentUpon>InspectionReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\Reports\MaintenanceInvoiceReport.aspx.cs">
       <DependentUpon>MaintenanceInvoiceReport.aspx</DependentUpon>
@@ -1120,6 +1144,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Views\Modules\BudgetBidding\Reports\umRepProject.rdlc" />
     <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\MaintenanceInvoiceReport.rdlc" />
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\AppDateReport.rdlc" />
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\InspectionReport.rdlc" />
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\IncidentReport.rdlc" />
     <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.rdlc" />
     <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\SupplementalInvoiceReport.rdlc" />
     <EmbeddedResource Include="Views\Modules\CrossingMaintenance\StateCrossingList.rpt">
