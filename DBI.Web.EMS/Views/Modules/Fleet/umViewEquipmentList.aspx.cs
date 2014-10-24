@@ -20,7 +20,13 @@ namespace DBI.Web.EMS.Views.Modules.Fleet
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!X.IsAjaxRequest)
+            {
+                if (!validateComponentSecurity("SYS.Fleet.Reports.TruckLabels"))
+                {
+                    X.Redirect("~/Views/uxDefault.aspx");
+                }
+            }
         }
 
         protected void uxOrganizationEquipmentListStore_ReadData(object sender, StoreReadDataEventArgs e)
@@ -35,8 +41,8 @@ namespace DBI.Web.EMS.Views.Modules.Fleet
             //First get a list of organizations
             List<string> _organizationList = HR.OrganizationsByHierarchy(_hierarchyID, _organizationID).Select(x =>x.ORGANIZATION_ID.ToString()).ToList();
 
-            if (_organizationList.Count == 0)
-                _organizationList.Add(_organizationID.ToString());
+            //if (_organizationList.Count == 0)
+            _organizationList.Add(_organizationID.ToString());
 
             using (Entities _context = new Entities())
             {
