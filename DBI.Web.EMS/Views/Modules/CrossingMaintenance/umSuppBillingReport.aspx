@@ -155,13 +155,10 @@
                                 Text="Run"
                                 Icon="PlayGreen">
                                    <DirectEvents>
-                                <Click OnEvent="deLaunchGrid" >
-                                    <EventMask ShowMask="true" Msg="Loading..." />
+                                <Click OnEvent="deSupplementalReportGrid" >
                                     </Click>
                             </DirectEvents>
-                         <Listeners>
-                                <Click Handler="#{uxWeeklyActivityStore}.load()" />
-                            </Listeners>
+                        
                             </ext:Button>
                             <ext:Button runat="server"
                                 ID="Button3"
@@ -175,9 +172,17 @@
                     </ext:Toolbar>
                 </BottomBar>
             </ext:FormPanel>
-          
+            <ext:Panel runat="server" ID="uxCenterPanel" Region="Center">
+              <LayoutConfig>
+                <ext:FitLayoutConfig />
+              </LayoutConfig>
+                    <Items>
+                        <ext:Panel ID="Panel" runat="server" ManageHeight="true">
+                        </ext:Panel>
+                    </Items>
+                </ext:Panel>
        
-        <ext:GridPanel
+        <%--<ext:GridPanel
             ID="GridPanel1"
             runat="server"
             Title="Supplemental Billing Report"
@@ -280,7 +285,7 @@
             <BottomBar>
                 <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
             </BottomBar>
-        </ext:GridPanel>
+        </ext:GridPanel>--%>
                     </Items>
              </ext:Viewport>
     </div>

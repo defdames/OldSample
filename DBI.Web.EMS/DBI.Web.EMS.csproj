@@ -164,7 +164,10 @@
     <Content Include="Views\Modules\CrossingMaintenance\Reports\IncidentReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\Reports\InspectionReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\Reports\MaintenanceInvoiceReport.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\MissingROW.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\PrivateCrossingReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\SupplementalBillingReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\Reports\SupplementalInvoiceReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umAppDate.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umBillingInvoice.aspx" />
@@ -437,12 +440,33 @@
     <Compile Include="Views\Modules\CrossingMaintenance\Reports\MaintenanceInvoiceReport.aspx.designer.cs">
       <DependentUpon>MaintenanceInvoiceReport.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\MissingROW.aspx.cs">
+      <DependentUpon>MissingROW.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\MissingROW.aspx.designer.cs">
+      <DependentUpon>MissingROW.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\PrivateCrossingReport.aspx.cs">
+      <DependentUpon>PrivateCrossingReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\PrivateCrossingReport.aspx.designer.cs">
+      <DependentUpon>PrivateCrossingReport.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.aspx.cs">
       <DependentUpon>StateCrossingListReport.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.aspx.designer.cs">
       <DependentUpon>StateCrossingListReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\SupplementalBillingReport.aspx.cs">
+      <DependentUpon>SupplementalBillingReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\SupplementalBillingReport.aspx.designer.cs">
+      <DependentUpon>SupplementalBillingReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\Reports\SupplementalInvoiceReport.aspx.cs">
       <DependentUpon>SupplementalInvoiceReport.aspx</DependentUpon>
@@ -1151,12 +1175,31 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\Modules\BudgetBidding\Reports\umRepProject.rdlc" />
-    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\MaintenanceInvoiceReport.rdlc" />
-    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\AppDateReport.rdlc" />
-    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\InspectionReport.rdlc" />
-    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\IncidentReport.rdlc" />
-    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.rdlc" />
-    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\SupplementalInvoiceReport.rdlc" />
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\MaintenanceInvoiceReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\AppDateReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\InspectionReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\IncidentReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\PrivateCrossingReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\MissingROW.rdlc" />
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\SupplementalBillingReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\SupplementalInvoiceReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Modules\CrossingMaintenance\StateCrossingList.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>StateCrossingList.cs</LastGenOutput>

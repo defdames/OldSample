@@ -815,7 +815,7 @@ SELECT
               if (selectedServiceUnit != null && selectedSubDiv != null && selectedState != null)
               {
                   sql2 = string.Format(@" 
-                WHERE a.INSPECT = 'Y' AND d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PUB' AND d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}' AND d.SUB_DIVISION = '{2}' AND d.STATE = '{3}'
+                WHERE a.INSPECT = 'Y' AND d.STATUS = 'ACTIVE' AND d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}' AND d.SUB_DIVISION = '{2}' AND d.STATE = '{3}'
                 AND a.APPLICATION_REQUESTED = {4}
 
                    ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState, selectedApplication);
@@ -824,7 +824,7 @@ SELECT
               else if (selectedServiceUnit != null && selectedSubDiv != null && selectedState == null)
               {
                   sql2 = string.Format(@" 
-                WHERE a.INSPECT = 'Y' AND d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PUB' AND d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}' AND d.SUB_DIVISION = '{2}'
+                WHERE a.INSPECT = 'Y' AND d.STATUS = 'ACTIVE' AND d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}' AND d.SUB_DIVISION = '{2}'
                  AND a.APPLICATION_REQUESTED = {4}
 
                    ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState, selectedApplication);
@@ -832,7 +832,7 @@ SELECT
               else if (selectedServiceUnit != null && selectedSubDiv == null && selectedState == null)
               {
                   sql2 = string.Format(@" 
-                WHERE a.INSPECT = 'Y' AND d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PUB' AND d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}'
+                WHERE a.INSPECT = 'Y' AND d.STATUS = 'ACTIVE' AND d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}'
                  AND a.APPLICATION_REQUESTED = {4}
 
                    ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState, selectedApplication);
@@ -841,7 +841,7 @@ SELECT
               else if (selectedServiceUnit != null && selectedSubDiv == null && selectedState != null)
               {
                   sql2 = string.Format(@" 
-                WHERE a.INSPECT = 'Y' AND d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PUB' AND d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}' AND d.STATE = '{3}'
+                WHERE a.INSPECT = 'Y' AND d.STATUS = 'ACTIVE' AND d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}' AND d.STATE = '{3}'
                  AND a.APPLICATION_REQUESTED = {4}
 
                    ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState, selectedApplication);
@@ -851,7 +851,7 @@ SELECT
               else if (selectedServiceUnit == null && selectedSubDiv != null && selectedState != null)
               {
                   sql2 = string.Format(@" 
-                WHERE a.INSPECT = 'Y' AND d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PUB' AND d.RAILROAD_ID = {0} AND d.SUB_DIVISION = '{2}' AND d.STATE = '{3}'
+                WHERE a.INSPECT = 'Y' AND d.STATUS = 'ACTIVE' AND d.RAILROAD_ID = {0} AND d.SUB_DIVISION = '{2}' AND d.STATE = '{3}'
                  AND a.APPLICATION_REQUESTED = {4}
 
                    ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState, selectedApplication);
@@ -860,7 +860,7 @@ SELECT
               else if (selectedServiceUnit == null && selectedSubDiv == null && selectedState != null)
               {
                   sql2 = string.Format(@" 
-                WHERE a.INSPECT = 'Y' AND d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PUB' AND d.RAILROAD_ID = {0} AND d.STATE = '{3}'
+                WHERE a.INSPECT = 'Y' AND d.STATUS = 'ACTIVE' AND d.RAILROAD_ID = {0} AND d.STATE = '{3}'
                  AND a.APPLICATION_REQUESTED = {4}
 
                    ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState, selectedApplication);
@@ -869,7 +869,7 @@ SELECT
               else if (selectedServiceUnit == null && selectedSubDiv == null && selectedState == null)
               {
                   sql2 = string.Format(@" 
-                WHERE a.INSPECT = 'Y' AND d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PUB' AND d.RAILROAD_ID = {0}
+                WHERE a.INSPECT = 'Y' AND d.STATUS = 'ACTIVE' AND d.RAILROAD_ID = {0}
                  AND a.APPLICATION_REQUESTED = {4}
 
                    ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState, selectedApplication);
@@ -1033,8 +1033,301 @@ SELECT
                   return context.Database.SqlQuery<IncidentReportList>(sql).ToList();
               }
           }
-          
-          
+
+          public static List<SupplementalReport> GetSupplementalReportList(string selectedRailroad, string selectedServiceUnit, string selectedSubDiv, string selectedState, DateTime selectedStart, DateTime selectedEnd)
+          {
+
+              string sql1 = string.Format(@"                          
+                              SELECT
+                                   v.INVOICE_SUPP_NUMBER,
+                                   v.INVOICE_SUPP_DATE,
+                                   v.INVOICE_SUPP_ID,
+                                   a.APPROVED_DATE,
+                                   a.SQUARE_FEET,
+                                   a.SUPPLEMENTAL_ID,
+                                   a.SERVICE_TYPE,
+                                   a.TRUCK_NUMBER,
+                                   d.CROSSING_ID,
+                                   d.CROSSING_NUMBER,
+                                   d.SUB_DIVISION,
+                                   d.MILE_POST,
+                                   d.SERVICE_UNIT,
+                                   p.PROJECT_ID,
+                                   p.SEGMENT1,
+                                   d.STATE
+                FROM CROSSING_SUPPLEMENTAL a
+                LEFT JOIN CROSSINGS d ON a.CROSSING_ID = d.CROSSING_ID
+                LEFT JOIN CROSSING_SUPP_INVOICE v ON a.INVOICE_SUPP_ID = v.INVOICE_SUPP_ID
+                LEFT JOIN PROJECTS_V p ON a.PROJECT_ID = p.PROJECT_ID ");
+
+              string sql2 = "";
+              if (selectedServiceUnit != null && selectedSubDiv != null && selectedState != null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}' AND d.SUB_DIVISION = '{2}' AND d.STATE = '{3}'
+                
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+              }
+
+              else if (selectedServiceUnit != null && selectedSubDiv != null && selectedState == null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}' AND d.SUB_DIVISION = '{2}'
+                 
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+              }
+              else if (selectedServiceUnit != null && selectedSubDiv == null && selectedState == null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}'
+                
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+
+              }
+              else if (selectedServiceUnit != null && selectedSubDiv == null && selectedState != null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}' AND d.STATE = '{3}'
+                
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+
+              }
+
+              else if (selectedServiceUnit == null && selectedSubDiv != null && selectedState != null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.RAILROAD_ID = {0} AND d.SUB_DIVISION = '{2}' AND d.STATE = '{3}'
+                
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+
+              }
+              else if (selectedServiceUnit == null && selectedSubDiv == null && selectedState != null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.RAILROAD_ID = {0} AND d.STATE = '{3}'
+                
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+
+              }
+              else if (selectedServiceUnit == null && selectedSubDiv == null && selectedState == null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.RAILROAD_ID = {0}
+               
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+              }
+              string sql3 = "";
+              if (selectedStart != DateTime.MinValue && selectedEnd != DateTime.MinValue)
+              {
+                  sql3 = string.Format(@" 
+                AND a.APPROVED_DATE >= ('{0}') AND a.APPROVED_DATE <= ('{1}')
+
+                   ", selectedStart.ToString("dd-MMM-yyyy"), selectedEnd.ToString("dd-MMM-yyyy"));
+              }
+              else if (selectedStart != DateTime.MinValue)
+              {
+                  sql3 = string.Format(@" 
+                AND a.APPROVED_DATE >= ('{0}')
+
+                   ", selectedStart.ToString("dd-MMM-yyyy"));
+              }
+
+              else if (selectedEnd != DateTime.MinValue)
+              {
+                  sql3 = string.Format(@" 
+                AND a.APPROVED_DATE <= ('{0}')
+
+                   ", selectedEnd.ToString("dd-MMM-yyyy"));
+              }
+
+              string sql = sql1 + sql2 + sql3;
+              using (Entities context = new Entities())
+              {
+                  return context.Database.SqlQuery<SupplementalReport>(sql).ToList();
+              }
+          }
+          public static List<StateCrossingList> GetPrivateCrossingList(string selectedRailroad, string selectedServiceUnit, string selectedSubDiv, string selectedState)
+          {
+
+              string sql1 = string.Format(@"                          
+                             SELECT
+                                d.CROSSING_ID,
+                                d.CROSSING_NUMBER,
+                                d.SUB_DIVISION,
+                                d.STATE,
+                                d.COUNTY,
+                                d.SERVICE_UNIT,
+                                d.CITY,
+                                d.MILE_POST,
+                                d.ROWNE,
+                                d.ROWNW,
+                                d.ROWSE,
+                                d.ROWSW,
+                                d.STREET,
+                                d.STATUS,
+                                d.SUB_CONTRACTED,
+                                d.LONGITUDE,
+                                d.LATITUDE,
+                                d.SPECIAL_INSTRUCTIONS
+                FROM CROSSINGS d ");
+
+              string sql2 = "";
+              if (selectedServiceUnit != null && selectedSubDiv != null && selectedState != null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PRI' AND d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}' AND d.SUB_DIVISION = '{2}' AND d.STATE = '{3}'
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+              }
+
+              else if (selectedServiceUnit != null && selectedSubDiv != null && selectedState == null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PRI' AND d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}' AND d.SUB_DIVISION = '{2}'
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+              }
+              else if (selectedServiceUnit != null && selectedSubDiv == null && selectedState == null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PRI' AND d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}'
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+
+              }
+              else if (selectedServiceUnit != null && selectedSubDiv == null && selectedState != null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PRI' AND d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}' AND d.STATE = '{3}'
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+
+              }
+
+              else if (selectedServiceUnit == null && selectedSubDiv != null && selectedState != null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PRI' AND d.RAILROAD_ID = {0} AND d.SUB_DIVISION = '{2}' AND d.STATE = '{3}'
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+
+              }
+              else if (selectedServiceUnit == null && selectedSubDiv == null && selectedState != null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PRI' AND d.RAILROAD_ID = {0} AND d.STATE = '{3}'
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+
+              }
+              else if (selectedServiceUnit == null && selectedSubDiv == null && selectedState == null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.STATUS = 'ACTIVE' AND d.PROPERTY_TYPE = 'PRI' AND d.RAILROAD_ID = {0}
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+              }
+              string sql = sql1 + sql2;
+              using (Entities context = new Entities())
+              {
+                  return context.Database.SqlQuery<StateCrossingList>(sql).ToList();
+              }
+          }
+
+          public static List<StateCrossingList> GetMissingROWList(string selectedRailroad, string selectedServiceUnit, string selectedSubDiv, string selectedState)
+          {
+
+              string sql1 = string.Format(@"                          
+                             SELECT
+                                d.CROSSING_ID,
+                                d.CROSSING_NUMBER,
+                                d.SUB_DIVISION,
+                                d.STATE,
+                                d.COUNTY,
+                                d.SERVICE_UNIT,
+                                d.CITY,
+                                d.MILE_POST,
+                                d.ROWNE,
+                                d.ROWNW,
+                                d.ROWSE,
+                                d.ROWSW,
+                                d.STREET,
+                                d.STATUS,
+                                d.SUB_CONTRACTED,
+                                d.LONGITUDE,
+                                d.LATITUDE,
+                                d.SPECIAL_INSTRUCTIONS
+                FROM CROSSINGS d ");
+
+              string sql2 = "";
+              if (selectedServiceUnit != null && selectedSubDiv != null && selectedState != null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.STATUS = 'ACTIVE' AND d.ROWNE = 0 AND d.ROWNW = 0 AND d.ROWSE = 0 AND d.ROWSW = 0 AND d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}' AND d.SUB_DIVISION = '{2}' AND d.STATE = '{3}'
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+              }
+
+              else if (selectedServiceUnit != null && selectedSubDiv != null && selectedState == null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.STATUS = 'ACTIVE' AND d.ROWNE = 0 AND d.ROWNW = 0 AND d.ROWSE = 0 AND d.ROWSW = 0 AND d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}' AND d.SUB_DIVISION = '{2}'
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+              }
+              else if (selectedServiceUnit != null && selectedSubDiv == null && selectedState == null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.STATUS = 'ACTIVE' AND d.ROWNE = 0 AND d.ROWNW = 0 AND d.ROWSE = 0 AND d.ROWSW = 0 AND d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}'
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+
+              }
+              else if (selectedServiceUnit != null && selectedSubDiv == null && selectedState != null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.STATUS = 'ACTIVE' AND d.ROWNE = 0 AND d.ROWNW = 0 AND d.ROWSE = 0 AND d.ROWSW = 0  AND d.RAILROAD_ID = {0} AND d.SERVICE_UNIT = '{1}' AND d.STATE = '{3}'
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+
+              }
+
+              else if (selectedServiceUnit == null && selectedSubDiv != null && selectedState != null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.STATUS = 'ACTIVE' AND d.ROWNE = 0 AND d.ROWNW = 0 AND d.ROWSE = 0 AND d.ROWSW = 0 AND d.RAILROAD_ID = {0} AND d.SUB_DIVISION = '{2}' AND d.STATE = '{3}'
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+
+              }
+              else if (selectedServiceUnit == null && selectedSubDiv == null && selectedState != null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.STATUS = 'ACTIVE' AND d.ROWNE = 0 AND d.ROWNW = 0 AND d.ROWSE = 0 AND d.ROWSW = 0 AND d.RAILROAD_ID = {0} AND d.STATE = '{3}'
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+
+              }
+              else if (selectedServiceUnit == null && selectedSubDiv == null && selectedState == null)
+              {
+                  sql2 = string.Format(@" 
+                WHERE d.STATUS = 'ACTIVE' AND d.ROWNE = 0 AND d.ROWNW = 0 AND d.ROWSE = 0 AND d.ROWSW = 0 AND d.RAILROAD_ID = {0}
+
+                   ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
+              }
+              string sql = sql1 + sql2;
+              using (Entities context = new Entities())
+              {
+                  return context.Database.SqlQuery<StateCrossingList>(sql).ToList();
+              }
+          }
           public class SupplementalReport
           {
               public decimal INVOICE_SUPP_ID { get; set; }

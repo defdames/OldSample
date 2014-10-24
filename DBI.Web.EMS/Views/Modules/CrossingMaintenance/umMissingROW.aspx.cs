@@ -30,7 +30,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             if (!X.IsAjaxRequest)
             {
 
-                uxAddStateList.Data = StaticLists.StateList;
+                uxAddStateList.Data = StaticLists.CrossingStateList;
                
                 if (SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue") != string.Empty)
                 {
@@ -39,7 +39,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
             }
         }
-        protected void deMissingROWGrid(object sender, StoreReadDataEventArgs e)
+        protected void deMissingROWGrid(object sender, DirectEventArgs e)
         {
             string ServiceUnit = uxAddServiceUnit.SelectedItem.Value;
             string SubDiv = uxAddSubDiv.SelectedItem.Value;
@@ -51,25 +51,43 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
                 IQueryable<CROSSING_MAINTENANCE.StateCrossingList> allData = CROSSING_MAINTENANCE.GetMissingROW(RailroadId, _context);
               
-                if (ServiceUnit != null)
-                {
-                    allData = allData.Where(x => x.SERVICE_UNIT == ServiceUnit);
-                }
-                if (SubDiv != null)
-                {
-                    allData = allData.Where(x => x.SUB_DIVISION == SubDiv);
-                }
-                if (State != null)
-                {
-                    allData = allData.Where(x => x.STATE == State);
-                }
+                //if (ServiceUnit != null)
+                //{
+                //    allData = allData.Where(x => x.SERVICE_UNIT == ServiceUnit);
+                //}
+                //if (SubDiv != null)
+                //{
+                //    allData = allData.Where(x => x.SUB_DIVISION == SubDiv);
+                //}
+                //if (State != null)
+                //{
+                //    allData = allData.Where(x => x.STATE == State);
+                //}
 
-                List<object> _data = allData.ToList<object>();
+                //List<object> _data = allData.ToList<object>();
 
-                int count;
-                uxMissingROWStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
-                e.Total = count;
-             
+                //int count;
+                //uxMissingROWStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
+                //e.Total = count;
+                string selectedRailroad = RailroadId.ToString();
+                string selectedServiceUnit = ServiceUnit;
+                string selectedSubDiv = SubDiv;
+                string selectedState = State;
+
+                string url = "/Views/Modules/CrossingMaintenance/Reports/MissingROW.aspx?selectedRailroad=" + selectedRailroad + "&selectedServiceUnit=" + selectedServiceUnit + "&selectedSubDiv=" + selectedSubDiv + "&selectedState=" + selectedState;
+                Ext.Net.Panel pan = new Ext.Net.Panel();
+
+                pan.ID = "Tab";
+                pan.Title = "Missing ROW Report";
+                pan.CloseAction = CloseAction.Destroy;
+                pan.Loader = new ComponentLoader();
+                pan.Loader.ID = "loader";
+                pan.Loader.Url = url;
+                pan.Loader.Mode = LoadMode.Frame;
+                pan.Loader.LoadMask.ShowMask = true;
+                pan.Loader.DisableCaching = true;
+                pan.AddTo(uxCenterPanel);
+                
             }
 
         }
@@ -117,10 +135,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 uxAddSubDivStore.DataBind();
             }
         }
-        protected void deLaunchGrid(object sender, DirectEventArgs e)
-        {
-            GridPanel1.Show();
-        }
+       
         protected void ToXml(object sender, EventArgs e)
         {
             string json = this.Hidden1.Value.ToString();

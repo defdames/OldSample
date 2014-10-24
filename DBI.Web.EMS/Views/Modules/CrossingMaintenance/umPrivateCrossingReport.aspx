@@ -155,14 +155,12 @@
                             Text="Run"
                             Icon="PlayGreen">
                             <DirectEvents>
-                                <Click OnEvent="deLaunchGrid" >  
-                                <EventMask ShowMask="true" Msg="Loading..." >  
-                                    </EventMask>
+                                <Click OnEvent="dePrivateCrossingListGrid" >  
+                                  
+                                
                                     </Click>                           
                             </DirectEvents>
-                            <Listeners>
-                                <Click Handler="#{uxPrivateCrossingListStore}.load()" />
-                            </Listeners>
+                           
                         </ext:Button>
                         <ext:Button runat="server"
                             ID="Button2"
@@ -176,8 +174,16 @@
                 </ext:Toolbar>
             </BottomBar>
         </ext:FormPanel>
-
-        <ext:GridPanel
+            <ext:Panel runat="server" ID="uxCenterPanel" Region="Center">
+              <LayoutConfig>
+                <ext:FitLayoutConfig />
+              </LayoutConfig>
+                    <Items>
+                        <ext:Panel ID="Tab" runat="server" ManageHeight="true">
+                        </ext:Panel>
+                    </Items>
+                </ext:Panel>
+       <%-- <ext:GridPanel
             ID="GridPanel1"
             runat="server"
             Title="Private Crossing List Report"
@@ -222,7 +228,7 @@
 
             <ColumnModel ID="ColumnModel1" runat="server">
                 <Columns>
-                    <%--<ext:Column ID="uxMainCrossingNum" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing #" Flex="1" />--%>
+                  
                     <ext:Column ID="uxSubDiv" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="1" />
                     <ext:Column ID="Column1" runat="server" Text="MP" Flex="1" DataIndex="MILE_POST" />
                     <ext:Column ID="Column3" runat="server" Text="DOT #" Flex="1" DataIndex="CROSSING_NUMBER" />
@@ -266,7 +272,7 @@
             <BottomBar>
                 <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
             </BottomBar>
-            </ext:GridPanel>
+            </ext:GridPanel>--%>
                     </Items>
              </ext:Viewport>
     </div>
