@@ -27,8 +27,8 @@ namespace DBI.Data
 
             foreach (SYS_EMAIL _email in dataIn)
             {
-                //SendMessage(_email.EMAIL_ADDRESS, "noreply@dbiservices.com", _email.SUBJECT_DESC, _email.MESSAGE_BODY);
-                SendMessage("ljankowski@dbiservices.com", "noreply@dbiservices.com", _email.SUBJECT_DESC + "   " + _email.EMAIL_ADDRESS, _email.MESSAGE_BODY);
+                SendMessage(_email.EMAIL_ADDRESS, "noreply@dbiservices.com", _email.SUBJECT_DESC + " - EMSv2TESTING", _email.MESSAGE_BODY);
+                //SendMessage("ljankowski@dbiservices.com", "noreply@dbiservices.com", _email.SUBJECT_DESC + "   " + _email.EMAIL_ADDRESS, _email.MESSAGE_BODY);
                 _email.MESSAGE_SENT = "Y";
                 _email.DATE_SENT = DateTime.Now;
             }
