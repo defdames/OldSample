@@ -183,12 +183,9 @@
                             Icon="PlayGreen" Disabled="true">
                             <DirectEvents>
                                 <Click OnEvent="deStateCrossingListGrid" />
-                                <%--<EventMask ShowMask="true" Msg="Loading..." />
-                                    </Click>--%>
+                           
                             </DirectEvents>
-                            <%--<Listeners>
-                                <Click Handler="#{uxStateCrossingListStore}.load()" />
-                            </Listeners>--%>
+                  
                         </ext:Button>
                         <ext:Button runat="server"
                             ID="Button2"
@@ -214,140 +211,7 @@
                         </ext:Panel>
                     </Items>
                 </ext:Panel>
-      <%--  <ext:GridPanel
-            ID="GridPanel1"
-            runat="server"
-            Title="State Crossing List Report"
-            Icon="Report"
-            Resizable="true"
-            Region="Center"
-            Collapsible="false" Cls="my.grouped-header" Hidden="true">
-            <Store>
-                <ext:Store ID="uxStateCrossingListStore"
-                    runat="server"
-                    GroupField="SUB_DIVISION" AutoLoad="false" OnReadData="deStateCrossingListGrid" AutoDataBind="true" PageSize="10">
-                    <Model>
-                        <ext:Model ID="Model1" runat="server">
-                            <Fields>
-                                <ext:ModelField Name="CROSSING_ID" />
-                                <ext:ModelField Name="APPLICATION_ID" />
-                                <ext:ModelField Name="CROSSING_NUMBER" Type="String" />
-                                <ext:ModelField Name="MILE_POST" />
-                                <ext:ModelField Name="STATE" />
-                                <ext:ModelField Name="COUNTY" />
-                                <ext:ModelField Name="CITY" />
-                                <ext:ModelField Name="STREET" />
-                                <ext:ModelField Name="ROWNE" />
-                                <ext:ModelField Name="ROWNW" />
-                                <ext:ModelField Name="ROWSE" />
-                                <ext:ModelField Name="ROWSW" />
-                                <ext:ModelField Name="SUB_CONTRACTED" />
-                                <ext:ModelField Name="LONGITUDE" />
-                                <ext:ModelField Name="LATITUDE" />
-                                <ext:ModelField Name="SUB_DIVISION" />
-                                <ext:ModelField Name="SPECIAL_INSTRUCTIONS" />
-                                <ext:ModelField Name="SPRAY" />
-                                <ext:ModelField Name="CUT" />
-                                <ext:ModelField Name="INSPECT" />
-                                <ext:ModelField Name="APPLICATION_REQUESTED" />
-                                <ext:ModelField Name="CUT_ONLY" />
-
-                            </Fields>
-                        </ext:Model>
-                    </Model>
-                    <Proxy>
-                        <ext:PageProxy />
-                    </Proxy>
-
-                    <Sorters>
-                        <ext:DataSorter Property="SUB_DIVISION" />
-
-                    </Sorters>
-
-                </ext:Store>
-            </Store>
-
-            <ColumnModel ID="ColumnModel1" runat="server">
-                <Columns>
-                   
-                    <ext:Column ID="uxSubDiv" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="1" />
-                    <ext:Column ID="Column1" runat="server" Text="MP" Flex="1" DataIndex="MILE_POST" />
-                    <ext:Column ID="Column3" runat="server" Text="DOT #" Flex="1" DataIndex="CROSSING_NUMBER" />
-                    <ext:Column ID="Column2" runat="server" Text="State" Flex="1" DataIndex="STATE" />
-                    <ext:Column ID="Column4" runat="server" Text="City" Flex="1" DataIndex="CITY" />
-                    <ext:Column ID="Column5" runat="server" Text="Street" Flex="1" DataIndex="STREET" />
-                    <ext:TemplateColumn ID="TemplateColumn1" runat="server" DataIndex="" MenuDisabled="true" Header="NE / NW / SE / SW" Flex="1">
-                        <Template ID="Template1" runat="server">
-                            <Html>
-                                <tpl for=".">
-							        {ROWNE}  &nbsp&nbsp
-								    {ROWNW}  &nbsp&nbsp
-								    {ROWSE}  &nbsp&nbsp
-                                    {ROWSW} 
-						        </tpl>
-                            </Html>
-                        </Template>
-                    </ext:TemplateColumn>
-
-                    <ext:TemplateColumn ID="TemplateColumn2" runat="server" DataIndex="" MenuDisabled="true" Header="Spray / Cut / Inspect" Flex="1">
-                        <Template ID="Template2" runat="server">
-                            <Html>
-                                <tpl for=".">
-							        {SPRAY}  &nbsp&nbsp&nbsp
-								    {CUT}  &nbsp&nbsp&nbsp
-								    {INSPECT} 
-						        </tpl>
-                            </Html>
-                        </Template>
-                    </ext:TemplateColumn>
-                    <ext:Column ID="Column13" runat="server" Text="Subcontracted" Flex="1" DataIndex="SUB_CONTRACTED" />
-                    <ext:Column ID="Column14" runat="server" Text="Latitude" Flex="1" DataIndex="LATITUDE" />
-                    <ext:Column ID="Column15" runat="server" Text="Longitude" Flex="1" DataIndex="LONGITUDE" />
-
-
-                </Columns>
-            </ColumnModel>
-            <Features>
-                <ext:RowBody ID="RowBody1" runat="server" RowBodyCls="rowBodyCls">
-
-                    <GetAdditionalData Fn="GetAdditionalData" />
-                </ext:RowBody>
-            </Features>
-            <Features>
-                <ext:Grouping ID="Grouping1"
-                    runat="server"
-                    HideGroupedHeader="true" Collapsible="false" Cls="x-grid-group-title; x-grid-group-hd" />
-            </Features>
-
-            <TopBar>
-                <ext:Toolbar ID="Toolbar2" runat="server">
-                    <Items>
-
-                          <ext:Button ID="Button6" runat="server" Text="To XML" AutoPostBack="true" OnClick="ToXml" Icon="PageCode">
-                            <Listeners>
-                                <Click Fn="saveData" />
-                            </Listeners>
-                        </ext:Button>
-                        
-                        <ext:Button ID="Button7" runat="server" Text="To Excel" AutoPostBack="true" OnClick="ToExcel" Icon="PageExcel">
-                            <Listeners>
-                                <Click Fn="saveData" />
-                            </Listeners>
-                        </ext:Button>
-                        
-                        <ext:Button ID="Button8" runat="server" Text="To CSV" AutoPostBack="true" OnClick="ToCsv" Icon="PageAttach">
-                            <Listeners>
-                                <Click Fn="saveData" />
-                            </Listeners>
-                        </ext:Button>
-                    </Items>
-                </ext:Toolbar>
-            </TopBar>
-            <BottomBar>
-                <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
-            </BottomBar>
-
-        </ext:GridPanel>--%>
+   
                 </Items>
              </ext:Viewport>
     </form>

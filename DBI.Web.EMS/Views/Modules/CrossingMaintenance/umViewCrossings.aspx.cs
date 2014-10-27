@@ -29,12 +29,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
             if (!X.IsAjaxRequest)
             {
-                //deLoadUnit();
-                //deLoadType("Edit");
-                //uxAddStateList.Data = StaticLists.CrossingStateList;
-                //uxEditStateList.Data = StaticLists.CrossingStateList;
-                //uxAddPropertyType.Data = StaticLists.PropertyType;
-                //uxEditPropertyType.Data = StaticLists.PropertyType;
+               
             }
 
         }

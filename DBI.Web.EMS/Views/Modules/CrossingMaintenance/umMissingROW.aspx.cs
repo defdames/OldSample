@@ -51,24 +51,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
                 IQueryable<CROSSING_MAINTENANCE.StateCrossingList> allData = CROSSING_MAINTENANCE.GetMissingROW(RailroadId, _context);
               
-                //if (ServiceUnit != null)
-                //{
-                //    allData = allData.Where(x => x.SERVICE_UNIT == ServiceUnit);
-                //}
-                //if (SubDiv != null)
-                //{
-                //    allData = allData.Where(x => x.SUB_DIVISION == SubDiv);
-                //}
-                //if (State != null)
-                //{
-                //    allData = allData.Where(x => x.STATE == State);
-                //}
-
-                //List<object> _data = allData.ToList<object>();
-
-                //int count;
-                //uxMissingROWStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
-                //e.Total = count;
+               
                 string selectedRailroad = RailroadId.ToString();
                 string selectedServiceUnit = ServiceUnit;
                 string selectedSubDiv = SubDiv;
@@ -136,54 +119,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
         }
        
-        protected void ToXml(object sender, EventArgs e)
-        {
-            string json = this.Hidden1.Value.ToString();
-            StoreSubmitDataEventArgs eSubmit = new StoreSubmitDataEventArgs(json, null);
-            XmlNode xml = eSubmit.Xml;
-
-            string strXml = xml.OuterXml;
-
-            this.Response.Clear();
-            this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.xml");
-            this.Response.AddHeader("Content-Length", strXml.Length.ToString());
-            this.Response.ContentType = "application/xml";
-            this.Response.Write(strXml);
-            this.Response.End();
-        }
-
-        protected void ToExcel(object sender, EventArgs e)
-        {
-            string json = this.Hidden1.Value.ToString();
-            StoreSubmitDataEventArgs eSubmit = new StoreSubmitDataEventArgs(json, null);
-            XmlNode xml = eSubmit.Xml;
-
-            this.Response.Clear();
-            this.Response.ContentType = "application/vnd.ms-excel";
-            this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.xls");
-
-            XslCompiledTransform xtExcel = new XslCompiledTransform();
-
-            xtExcel.Load(Server.MapPath("Excel.xsl"));
-            xtExcel.Transform(xml, null, this.Response.OutputStream);
-            this.Response.End();
-        }
-
-        protected void ToCsv(object sender, EventArgs e)
-        {
-            string json = this.Hidden1.Value.ToString();
-            StoreSubmitDataEventArgs eSubmit = new StoreSubmitDataEventArgs(json, null);
-            XmlNode xml = eSubmit.Xml;
-
-            this.Response.Clear();
-            this.Response.ContentType = "application/octet-stream";
-            this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.csv");
-
-            XslCompiledTransform xtCsv = new XslCompiledTransform();
-
-            xtCsv.Load(Server.MapPath("Csv.xsl"));
-            xtCsv.Transform(xml, null, this.Response.OutputStream);
-            this.Response.End();
-        }
+       
     }
 }

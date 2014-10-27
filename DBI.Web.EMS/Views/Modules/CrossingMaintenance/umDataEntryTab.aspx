@@ -288,21 +288,7 @@
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
-                                  <%--    <Plugins>
-                     
-                       
-                       <ext:RowEditing ID="RowEditing1" runat="server" ClicksToMoveEditor="1" AutoCancel="false">
-                                            <DirectEvents>
-                                                <Edit OnEvent="deSavePricing" Before="return #{uxPriceStore}.isDirty();">
-                                                    <ExtraParams>
-                                                        <ext:Parameter Name="PRIdata" Value="#{uxPriceStore}.getChangedData({skipIdForPhantomRecords : false})" Mode="Raw" Encode="true" />
-                                                    
-                                                    </ExtraParams>
-                                                    <EventMask ShowMask="true" />
-                                                </Edit>
-                                            </DirectEvents>
-                                        </ext:RowEditing>
-                  </Plugins>--%>
+                          
                     <BottomBar>
                         <ext:PagingToolbar ID="PagingToolbar2" runat="server" HideRefresh="True">
                         </ext:PagingToolbar>

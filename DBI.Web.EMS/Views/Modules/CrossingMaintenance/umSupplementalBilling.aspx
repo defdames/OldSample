@@ -223,9 +223,7 @@
                                 </ExtraParams>
                                 </Click>
                         </DirectEvents>
-                                <%--<Listeners>
-                                    <Click Handler="#{uxInvoiceReportStore}.reload()" />
-                                </Listeners>--%>
+                              
                             </ext:Button>
                             <ext:Button runat="server"
                                 ID="Button2"
@@ -239,126 +237,7 @@
                     </ext:Toolbar>
                 </BottomBar>
             </ext:GridPanel>
-       <%-- <ext:Window runat="server"
-            ID="uxBillingReportWindow"
-            Layout="FormLayout"
-            Hidden="true"
-            Title="Invoice Report"
-            Height="550" Width="650" Modal="true" Closable="false">
-            <Items>
-                
-                 <ext:FormPanel ID="uxViewInvoiceForm" runat="server" Height="30" Layout="FormLayout">
-                    <Items>
-                 <ext:FieldContainer ID="FieldContainer3" runat="server" Layout="HBoxLayout" >
-                <Items>
-                <ext:TextField ID="InvoiceNumTextField" runat="server" FieldLabel="Invoice #" LabelAlign="Right" ReadOnly="true" />
-                <ext:TextField ID="InvoiceDateTextField" runat="server" FieldLabel="Date" LabelAlign="Right" ReadOnly="true" />
-                     
-                </Items>
-                </ext:FieldContainer>
-                  
-                        </Items>
-                        </ext:FormPanel>
-                 <ext:GridPanel ID="GridPanel1" Title="Invoiced Items" Height="485" runat="server" Frame="false" Collapsible="true" >
-               <TopBar>
-                <ext:Toolbar ID="Toolbar4" runat="server">
-                    <Items>
-                        <ext:ToolbarFill ID="ToolbarFill1" runat="server" />
-                        
-                        <ext:Button ID="Button6" runat="server" Text="To XML" AutoPostBack="true" OnClick="ToXml" Icon="PageCode">
-                            <Listeners>
-                                <Click Fn="saveData" />
-                            </Listeners>
-                        </ext:Button>
-                        
-                        <ext:Button ID="Button7" runat="server" Text="To Excel" AutoPostBack="true" OnClick="ToExcel" Icon="PageExcel">
-                            <Listeners>
-                                <Click Fn="saveData" />
-                            </Listeners>
-                        </ext:Button>
-                        
-                        <ext:Button ID="Button8" runat="server" Text="To CSV" AutoPostBack="true" OnClick="ToCsv" Icon="PageAttach">
-                            <Listeners>
-                                <Click Fn="saveData" />
-                            </Listeners>
-                        </ext:Button>
-                    </Items>
-                </ext:Toolbar>
-            </TopBar>
-                <Store>
-                    <ext:Store runat="server"
-                        ID="uxInvoiceReportStore" OnReadData="deInvoiceReportGrid" AutoDataBind="true" AutoLoad="false" GroupField="SUB_DIVISION">
-                        <Parameters>
-                              <ext:StoreParameter Name="selectedSupp" Value="Ext.encode(#{uxInvoiceGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
-                        </Parameters>
-                        <Model>
-                            <ext:Model ID="Model2" runat="server">
-                                <Fields>
-                                    <ext:ModelField Name="SUPPLEMENTAL_ID" />
-                                    <ext:ModelField Name="APPROVED_DATE" />
-                                    <ext:ModelField Name="CROSSING_ID" />  
-                                    <ext:ModelField Name="CROSSING_NUMBER" /> 
-                                    <ext:ModelField Name="TRUCK_NUMBER" />  
-                                     <ext:ModelField Name="SERVICE_TYPE" />                              
-                                    <ext:ModelField Name="MILE_POST" />
-                                    <ext:ModelField Name="SERVICE_UNIT" />
-                                    <ext:ModelField Name="SUB_DIVISION" />
-                                    <ext:ModelField Name="PRICE" />
-                                
-
-                                </Fields>
-                            </ext:Model>
-                        </Model>
-                        <Proxy>
-                            <ext:PageProxy />
-                        </Proxy>
-                        <Sorters>
-                            <ext:DataSorter Direction="ASC" Property="APPROVED_DATE" />
-                        </Sorters>
-                    </ext:Store>
-                </Store>
-
-                <ColumnModel>
-                    <Columns>
-                         <ext:Column ID="Column7" runat="server" DataIndex="CROSSING_NUMBER" Text="DOT Number" Flex="1" />
-                        <ext:Column ID="Column8" runat="server" DataIndex="MILE_POST" Text="MP" Flex="1" />
-                        <ext:Column ID="Column9" runat="server" DataIndex="SERVICE_UNIT" Text="Service Unit" Flex="1" />
-                        <ext:DateColumn ID="DateColumn2" runat="server" DataIndex="APPROVED_DATE" Text="Application Date" Flex="1" Format="MM/dd/yyyy" />
-                        <ext:Column ID="Column10" runat="server" DataIndex="SUB_DIVISION" Text="Sub Division" Flex="1" />     
-                        <ext:Column ID="Column11" runat="server" DataIndex="SERVICE_TYPE" Text="Service Type" Flex="1" />                 
-                        <ext:Column ID="Column4" runat="server" DataIndex="PRICE" Text="Price" Flex="1" /> 
-
-                    </Columns>
-                </ColumnModel> 
-                 <Features>
-                <ext:Grouping ID="Grouping1"
-                    runat="server"
-                    HideGroupedHeader="true" Collapsible="false" Cls="x-grid-group-title; x-grid-group-hd" />
-            </Features>
-               <BottomBar>
-                    <ext:Toolbar ID="Toolbar3" runat="server">
-                        <Items>
-                          
-                          <ext:Button runat="server"
-                                ID="Button5"
-                                Text="Close Invoice Report"
-                                Icon="BinClosed">
-                             <DirectEvents>
-                            <Click OnEvent="deCloseInvoice" />
-                            </DirectEvents>
-                               <DirectEvents>
-                            <Click OnEvent="deClearFilters" />
-                            </DirectEvents>
-                               <DirectEvents>
-                            <Click OnEvent="deResetInvoice" />
-                            </DirectEvents>
-                            </ext:Button>
-                        </Items>
-                    </ext:Toolbar>
-                </BottomBar>
-            </ext:GridPanel>
-                </Items>
-            </ext:Window>--%>
+      
                     </Items>
             </ext:Viewport>
 

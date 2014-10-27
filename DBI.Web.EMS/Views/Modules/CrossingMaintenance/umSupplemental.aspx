@@ -205,31 +205,7 @@
                             <Items>
 
                                 <ext:TextField runat="server" ID="uxAddSquareFeet" FieldLabel="Square Feet" LabelAlign="Right" AnchorHorizontal="100%" AllowBlank="false" TabIndex="4"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side" />
-                                 <%-- <ext:ComboBox ID="uxAddServiceType"
-                                    runat="server"
-                                    FieldLabel="Service Type"
-                                    LabelAlign="Right"
-                                    DisplayField="type"
-                                    ValueField="type"
-                                    QueryMode="Local"
-                                    TypeAhead="true" TabIndex="5" Width="350" AllowBlank="false" ForceSelection="true"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side">
-                                    <Store>
-                                        <ext:Store runat="server"
-                                            ID="uxAddServiceTypeStore" AutoDataBind="true">
-                                            <Model>
-                                                <ext:Model ID="Model4" runat="server">
-                                                    <Fields>
-                                                        <ext:ModelField Name="type" />
-                                                    </Fields>
-                                                </ext:Model>
-                                            </Model>
-                                            <Reader>
-                                                <ext:ArrayReader />
-                                            </Reader>
-                                        </ext:Store>
-                                    </Store>
-
-                                </ext:ComboBox>--%>
+                               
                                  <ext:DropDownField ID="uxAddPricingGrid" runat="server" FieldLabel="Service Type" AnchorHorizontal="100%" LabelAlign="Right" Width="480" TabIndex="5" Mode="ValueText" Editable="false" AllowBlank="false"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side">
                                                     <Component>
                                                         <ext:GridPanel runat="server"
@@ -384,9 +360,7 @@
                                 <Click Handler="#{uxAddSupplementalForm}.reset(); 
 									#{uxAddNewSupplementalWindow}.hide()" />
                             </Listeners>
-                          <%--  <DirectEvents>
-                                <Click OnEvent="deReloadStore" />
-                            </DirectEvents>--%>
+                        
                         </ext:Button>
                     </Buttons>
                     <Listeners>

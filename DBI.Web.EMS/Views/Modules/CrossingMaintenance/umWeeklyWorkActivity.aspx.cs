@@ -50,46 +50,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
 
-                //IQueryable<CROSSING_MAINTENANCE.WeeklyWorkList> allData = CROSSING_MAINTENANCE.GetWeeklyWork(RailroadId, _context);
-               
-                //filter down specific information to show the work done needed for report
-                //if (StartDate != DateTime.MinValue)
-                //{
-                //    allData = allData.Where(x => x.APPLICATION_DATE >= StartDate);
-                //}
-
-                //if (EndDate != DateTime.MinValue)
-                //{
-                //    allData = allData.Where(x => x.APPLICATION_DATE <= EndDate);
-                //}
-
-                //if (StartDate != DateTime.MinValue && EndDate != DateTime.MinValue)
-                //{
-                //    allData = allData.Where(x => x.APPLICATION_DATE >= StartDate && x.APPLICATION_DATE <= EndDate);
-                //}
-
-                //if (ServiceUnit != null)
-                //{
-                //    allData = allData.Where(x => x.SERVICE_UNIT == ServiceUnit);
-                //}
-
-                //if (SubDiv != null)
-                //{
-                //    allData = allData.Where(x => x.SUB_DIVISION == SubDiv);
-                //}
-
-                //if (State != null)
-                //{
-                //    allData = allData.Where(x => x.STATE == State);
-                //}
-              
-                //List<object> _data = allData.ToList<object>();
-
-
-                //int count;
-                //uxWeeklyActivityStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
-                //e.Total = count;
-
                 DateTime selectedStart = StartDate;
                 DateTime selectedEnd = EndDate;
                 string selectedRailroad = RailroadId.ToString();
@@ -158,54 +118,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
         }
        
-        protected void ToXml(object sender, EventArgs e)
-        {
-            string json = this.Hidden1.Value.ToString();
-            StoreSubmitDataEventArgs eSubmit = new StoreSubmitDataEventArgs(json, null);
-            XmlNode xml = eSubmit.Xml;
-
-            string strXml = xml.OuterXml;
-
-            this.Response.Clear();
-            this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.xml");
-            this.Response.AddHeader("Content-Length", strXml.Length.ToString());
-            this.Response.ContentType = "application/xml";
-            this.Response.Write(strXml);
-            this.Response.End();
-        }
-
-        protected void ToExcel(object sender, EventArgs e)
-        {
-            string json = this.Hidden1.Value.ToString();
-            StoreSubmitDataEventArgs eSubmit = new StoreSubmitDataEventArgs(json, null);
-            XmlNode xml = eSubmit.Xml;
-
-            this.Response.Clear();
-            this.Response.ContentType = "application/vnd.ms-excel";
-            this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.xls");
-
-            XslCompiledTransform xtExcel = new XslCompiledTransform();
-
-            xtExcel.Load(Server.MapPath("Excel.xsl"));
-            xtExcel.Transform(xml, null, this.Response.OutputStream);
-            this.Response.End();
-        }
-
-        protected void ToCsv(object sender, EventArgs e)
-        {
-            string json = this.Hidden1.Value.ToString();
-            StoreSubmitDataEventArgs eSubmit = new StoreSubmitDataEventArgs(json, null);
-            XmlNode xml = eSubmit.Xml;
-
-            this.Response.Clear();
-            this.Response.ContentType = "application/octet-stream";
-            this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.csv");
-
-            XslCompiledTransform xtCsv = new XslCompiledTransform();
-
-            xtCsv.Load(Server.MapPath("Csv.xsl"));
-            xtCsv.Transform(xml, null, this.Response.OutputStream);
-            this.Response.End();
-        }
+       
         }
     }
