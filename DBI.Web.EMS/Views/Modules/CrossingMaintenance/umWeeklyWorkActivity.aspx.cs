@@ -30,7 +30,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
               if (!X.IsAjaxRequest)
             {
              
-                uxAddStateList.Data = StaticLists.StateList;
+                uxAddStateList.Data = StaticLists.CrossingStateList;
 
                 if (SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue") != string.Empty)
                 {
@@ -39,7 +39,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
             }
         }
-        protected void deWeeklyActivityGrid(object sender, StoreReadDataEventArgs e)
+        protected void deWeeklyActivityGrid(object sender, DirectEventArgs e)
         {
             DateTime StartDate = uxStartDate.SelectedDate;
             DateTime EndDate = uxEndDate.SelectedDate;
@@ -50,45 +50,67 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
 
-                IQueryable<CROSSING_MAINTENANCE.WeeklyWorkList> allData = CROSSING_MAINTENANCE.GetWeeklyWork(RailroadId, _context);
+                //IQueryable<CROSSING_MAINTENANCE.WeeklyWorkList> allData = CROSSING_MAINTENANCE.GetWeeklyWork(RailroadId, _context);
                
                 //filter down specific information to show the work done needed for report
-                if (StartDate != DateTime.MinValue)
-                {
-                    allData = allData.Where(x => x.APPLICATION_DATE >= StartDate);
-                }
+                //if (StartDate != DateTime.MinValue)
+                //{
+                //    allData = allData.Where(x => x.APPLICATION_DATE >= StartDate);
+                //}
 
-                if (EndDate != DateTime.MinValue)
-                {
-                    allData = allData.Where(x => x.APPLICATION_DATE <= EndDate);
-                }
+                //if (EndDate != DateTime.MinValue)
+                //{
+                //    allData = allData.Where(x => x.APPLICATION_DATE <= EndDate);
+                //}
 
-                if (StartDate != DateTime.MinValue && EndDate != DateTime.MinValue)
-                {
-                    allData = allData.Where(x => x.APPLICATION_DATE >= StartDate && x.APPLICATION_DATE <= EndDate);
-                }
+                //if (StartDate != DateTime.MinValue && EndDate != DateTime.MinValue)
+                //{
+                //    allData = allData.Where(x => x.APPLICATION_DATE >= StartDate && x.APPLICATION_DATE <= EndDate);
+                //}
 
-                if (ServiceUnit != null)
-                {
-                    allData = allData.Where(x => x.SERVICE_UNIT == ServiceUnit);
-                }
+                //if (ServiceUnit != null)
+                //{
+                //    allData = allData.Where(x => x.SERVICE_UNIT == ServiceUnit);
+                //}
 
-                if (SubDiv != null)
-                {
-                    allData = allData.Where(x => x.SUB_DIVISION == SubDiv);
-                }
+                //if (SubDiv != null)
+                //{
+                //    allData = allData.Where(x => x.SUB_DIVISION == SubDiv);
+                //}
 
-                if (State != null)
-                {
-                    allData = allData.Where(x => x.STATE == State);
-                }
+                //if (State != null)
+                //{
+                //    allData = allData.Where(x => x.STATE == State);
+                //}
               
-                List<object> _data = allData.ToList<object>();
+                //List<object> _data = allData.ToList<object>();
 
 
-                int count;
-                uxWeeklyActivityStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
-                e.Total = count;
+                //int count;
+                //uxWeeklyActivityStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
+                //e.Total = count;
+
+                DateTime selectedStart = StartDate;
+                DateTime selectedEnd = EndDate;
+                string selectedRailroad = RailroadId.ToString();
+                string selectedServiceUnit = ServiceUnit;
+                string selectedSubDiv = SubDiv;
+                string selectedState = State;
+
+                string url = "/Views/Modules/CrossingMaintenance/Reports/WeeklyWorkActivity.aspx?selectedRailroad=" + selectedRailroad + "&selectedServiceUnit=" + selectedServiceUnit + "&selectedSubDiv=" + selectedSubDiv + "&selectedState=" + selectedState + "&selectedStart=" + selectedStart + "&selectedEnd=" + selectedEnd;
+                Ext.Net.Panel pan = new Ext.Net.Panel();
+
+                pan.ID = "Panel";
+                pan.Title = "Weekly Work Activity Report";
+                pan.CloseAction = CloseAction.Destroy;
+                pan.Loader = new ComponentLoader();
+                pan.Loader.ID = "loader";
+                pan.Loader.Url = url;
+                pan.Loader.Mode = LoadMode.Frame;
+                pan.Loader.LoadMask.ShowMask = true;
+                pan.Loader.DisableCaching = true;
+                pan.AddTo(uxCenterPanel);
+                
             }
         }
         protected void deClearFilters(object sender, DirectEventArgs e)
@@ -135,10 +157,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 uxAddSubDivStore.DataBind();
             }
         }
-        protected void deLaunchGrid(object sender, DirectEventArgs e)
-        {
-            GridPanel1.Show();
-        }
+       
         protected void ToXml(object sender, EventArgs e)
         {
             string json = this.Hidden1.Value.ToString();

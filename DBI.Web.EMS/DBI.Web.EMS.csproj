@@ -169,6 +169,7 @@
     <Content Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\Reports\SupplementalBillingReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\Reports\SupplementalInvoiceReport.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\WeeklyWorkActivity.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umAppDate.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umBillingInvoice.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umBillingMain.aspx" />
@@ -474,6 +475,13 @@
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\Reports\SupplementalInvoiceReport.aspx.designer.cs">
       <DependentUpon>SupplementalInvoiceReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\WeeklyWorkActivity.aspx.cs">
+      <DependentUpon>WeeklyWorkActivity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\WeeklyWorkActivity.aspx.designer.cs">
+      <DependentUpon>WeeklyWorkActivity.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\StateCrossingList.cs">
       <AutoGen>True</AutoGen>
@@ -1191,6 +1199,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\MissingROW.rdlc" />
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\WeeklyWorkActivity.rdlc" />
     <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\SupplementalBillingReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
