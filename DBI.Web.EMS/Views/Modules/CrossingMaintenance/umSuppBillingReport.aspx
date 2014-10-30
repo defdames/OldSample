@@ -53,14 +53,22 @@
          <ext:Hidden ID="Hidden1" runat="server" Hidden="true" />
          <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
                 <Items>
-         <ext:FormPanel ID="uxFilterForm" runat="server" Margin="5" Region="North" Title="Filter Incident Report">
+         <ext:FormPanel ID="uxFilterForm" runat="server" Margin="5" Region="North" Title="Filter Supplemental Billing Report">
                 <Items>
                     <ext:FieldSet ID="FieldSet1" runat="server" Title="Filter">
                         <Items>
                             <ext:TextField ID="uxRRCI" runat="server" FieldLabel="Railroad" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" Hidden="true" />
 
-                           <ext:DateField ID="uxStartDate" runat="server" AnchorHorizontal="25%" FieldLabel="Start Date" LabelAlign="Right" Editable="false" TabIndex="2" EmptyText="ALL" />
-                            <ext:DateField ID="uxEndDate" runat="server" AnchorHorizontal="25%" FieldLabel="End Date" LabelAlign="Right"  Editable="false" TabIndex="3" EmptyText="ALL" />
+                           <ext:DateField ID="uxStartDate" runat="server" AnchorHorizontal="25%" FieldLabel="Start Date" LabelAlign="Right" Editable="false" TabIndex="2" EmptyText="ALL" >
+                                <Plugins>
+                                <ext:ClearButton ID="ClearButton1" runat="server" />
+                            </Plugins>
+                               </ext:DateField>
+                            <ext:DateField ID="uxEndDate" runat="server" AnchorHorizontal="25%" FieldLabel="End Date" LabelAlign="Right"  Editable="false" TabIndex="3" EmptyText="ALL" >
+                                 <Plugins>
+                                <ext:ClearButton ID="ClearButton2" runat="server" />
+                            </Plugins>
+                                </ext:DateField>
 
                             <ext:ComboBox ID="uxAddServiceUnit"
                                 runat="server" FieldLabel="Service Unit"
@@ -92,6 +100,9 @@
                                                 <Listeners>
                                                     <Select Handler="#{uxAddSubDivStore}.load()" />
                                                 </Listeners>
+                                 <Plugins>
+                                <ext:ClearButton ID="ClearButton3" runat="server" />
+                            </Plugins>
                             </ext:ComboBox>
                             <ext:ComboBox ID="uxAddSubDiv"
                                 runat="server"
@@ -100,7 +111,7 @@
                                 AnchorHorizontal="25%"
                                 DisplayField="sub_division"
                                 ValueField="sub_division"
-                                TypeAhead="true" TabIndex="5" AllowBlank="false" ForceSelection="true" EmptyText="ALL">
+                                TypeAhead="true" TabIndex="5" ForceSelection="true" EmptyText="ALL">
                                 <Store>
                                     <ext:Store runat="server"
                                         ID="uxAddSubDivStore">
@@ -114,7 +125,9 @@
                                         </Model>
                                     </ext:Store>
                                 </Store>
-
+                                 <Plugins>
+                                <ext:ClearButton ID="ClearButton4" runat="server" />
+                            </Plugins>
                             </ext:ComboBox>
                             <ext:ComboBox runat="server"
                                 ID="uxAddStateComboBox"
@@ -125,7 +138,6 @@
                                 ValueField="name"
                                 QueryMode="Local"
                                 TypeAhead="true"
-                                AllowBlank="false"
                                 ForceSelection="true" TabIndex="4" EmptyText="ALL">
                                 <Store>
                                     <ext:Store ID="uxAddStateList" runat="server" AutoDataBind="true" >
@@ -142,6 +154,9 @@
                                         </Reader>
                                     </ext:Store>
                                 </Store>
+                                 <Plugins>
+                                <ext:ClearButton ID="ClearButton5" runat="server" />
+                            </Plugins>
                             </ext:ComboBox>
                          
                         </Items>

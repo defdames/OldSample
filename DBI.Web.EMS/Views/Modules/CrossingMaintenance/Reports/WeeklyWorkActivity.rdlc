@@ -572,15 +572,11 @@
                         <Border>
                           <Style>None</Style>
                         </Border>
-                        <TopBorder>
-                          <Style>None</Style>
-                        </TopBorder>
                         <BottomBorder>
-                          <Style>None</Style>
+                          <Color>Black</Color>
+                          <Style>Solid</Style>
+                          <Width>1pt</Width>
                         </BottomBorder>
-                        <RightBorder>
-                          <Style>None</Style>
-                        </RightBorder>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -613,6 +609,11 @@
                           <Color>LightGrey</Color>
                           <Style>None</Style>
                         </Border>
+                        <BottomBorder>
+                          <Color>Black</Color>
+                          <Style>Solid</Style>
+                          <Width>1pt</Width>
+                        </BottomBorder>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -647,6 +648,11 @@
                           <Color>LightGrey</Color>
                           <Style>None</Style>
                         </Border>
+                        <BottomBorder>
+                          <Color>Black</Color>
+                          <Style>Solid</Style>
+                          <Width>1pt</Width>
+                        </BottomBorder>
                         <RightBorder>
                           <Color>Black</Color>
                           <Style>Solid</Style>
@@ -658,6 +664,7 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>

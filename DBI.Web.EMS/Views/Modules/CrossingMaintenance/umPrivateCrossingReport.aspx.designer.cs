@@ -103,6 +103,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Model Model5;
         
         /// <summary>
+        /// ClearButton1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ClearButton ClearButton1;
+        
+        /// <summary>
         /// uxAddSubDiv control.
         /// </summary>
         /// <remarks>
@@ -130,6 +139,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Model Model7;
         
         /// <summary>
+        /// ClearButton2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ClearButton ClearButton2;
+        
+        /// <summary>
         /// uxAddStateComboBox control.
         /// </summary>
         /// <remarks>
@@ -155,6 +173,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Model Model10;
+        
+        /// <summary>
+        /// ClearButton3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ClearButton ClearButton3;
         
         /// <summary>
         /// Toolbar1 control.

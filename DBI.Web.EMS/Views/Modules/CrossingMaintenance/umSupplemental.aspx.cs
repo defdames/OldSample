@@ -31,7 +31,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
       
             }
         }
-
+        protected void deSetFocus(object sender, DirectEventArgs e)
+        {
+            uxAddApprovedDateField.Focus();
+        }
         protected void deSupplementalGridData(object sender, StoreReadDataEventArgs e)
         {
 

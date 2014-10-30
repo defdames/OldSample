@@ -21,17 +21,23 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
-            if (!validateComponentSecurity("SYS.CrossingMaintenance.DataEntryView"))
-            {
-                X.Redirect("~/Views/uxDefault.aspx");
-
-            }
             if (!X.IsAjaxRequest)
             {
-               
-            }
+                if (!validateComponentSecurity("SYS.CrossingMaintenance.DataEntryView"))
+                {
+                    X.Redirect("~/Views/uxDefault.aspx");
 
+                }
+
+                if (!validateComponentSecurity("SYS.CrossingMaintenance"))
+                {
+                    Toolbar1.Hide();
+                }
+                else
+                {
+                    Toolbar1.Show();
+                }
+            }
         }
 
         protected void deCrossingGridData(object sender, StoreReadDataEventArgs e)
@@ -138,6 +144,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             }
 
+        }
+        protected void deLoadButtons(object sender, DirectEventArgs e)
+        {
+         
+                uxDeleteCrossingButton.Enable();
+                uxReactivateCrossingButton.Enable();
+            
         }
         protected void deDeleteCrossing(object sender, DirectEventArgs e)
         {

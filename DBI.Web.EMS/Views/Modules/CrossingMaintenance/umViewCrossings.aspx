@@ -73,6 +73,9 @@
                             <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
                         </ExtraParams>
                     </Select>
+                    <Select OnEvent="deLoadButtons" >
+
+                    </Select>
                 </DirectEvents>
                
 
@@ -80,10 +83,11 @@
                     <ext:PagingToolbar ID="PagingToolbar1" runat="server" HideRefresh="True">
                     </ext:PagingToolbar>
                 </BottomBar>
-                  <Listeners>
+                <%--  <Listeners>
                         <Select Handler=" #{uxDeleteCrossingButton}.enable(); #{uxReactivateCrossingButton}.enable()" />
 
-                    </Listeners>
+                    </Listeners>--%>
+                
             </ext:GridPanel>
             
           

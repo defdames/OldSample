@@ -150,6 +150,9 @@
                     <Listeners>
                         <Click Handler="#{uxAddNewSupplementalWindow}.show()" />
                     </Listeners>
+                    <DirectEvents>
+                        <Click OnEvent="deSetFocus" />
+                    </DirectEvents>
                 </ext:Button>
                
                 <ext:Button ID="uxRemoveSuppButton" runat="server" Text="Delete Supplemental" Icon="ApplicationDelete" Disabled="true">
@@ -193,8 +196,8 @@
                     <Items>
                         <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
                             <Items>
-                                <ext:DateField ID="uxAddApprovedDateField" runat="server" FieldLabel="Approved Date" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false" Editable="false" TabIndex="1"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side"/>
-                                <ext:DateField ID="uxAddCutDateField" runat="server" FieldLabel="Cut Date" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false" Editable="false" TabIndex="2"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side"/>                       
+                                <ext:DateField ID="uxAddApprovedDateField" runat="server" FieldLabel="Approved Date" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false"  TabIndex="1"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side"/>
+                                <ext:DateField ID="uxAddCutDateField" runat="server" FieldLabel="Cut Date" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false" TabIndex="2"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side"/>                       
                                   <ext:Label ID="Label2" runat="server" Text="" Width="70" />                                
                                 <ext:Checkbox ID="uxAddRecurringBox" runat="server" BoxLabel="Recurring" BoxLabelAlign="After" AllowBlank="false" TabIndex="3" />
 
@@ -346,7 +349,7 @@
                         <ext:TextArea ID="uxAddRemarks" runat="server" FieldLabel="Remarks" AnchorHorizontal="92%" LabelAlign="Right" TabIndex="7" />
                     </Items>
                     <Buttons>
-                        <ext:Button ID="uxAddNewSupplementalButton" runat="server" Text="Add" Icon="Add">
+                        <ext:Button ID="uxAddNewSupplementalButton" runat="server" Text="Add" Icon="Add" TabIndex="8" >
                             <DirectEvents>
                                 <Click OnEvent="deAddSupplemental">
                                     <ExtraParams>
@@ -355,7 +358,7 @@
                                 </Click>
                             </DirectEvents>
                         </ext:Button>
-                        <ext:Button ID="uxCancelNewSupplementalButton" runat="server" Text="Cancel" Icon="Delete">
+                        <ext:Button ID="uxCancelNewSupplementalButton" runat="server" Text="Cancel" Icon="Delete" TabIndex="9" >
                             <Listeners>
                                 <Click Handler="#{uxAddSupplementalForm}.reset(); 
 									#{uxAddNewSupplementalWindow}.hide()" />

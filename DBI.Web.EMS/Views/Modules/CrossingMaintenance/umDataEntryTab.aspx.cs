@@ -46,7 +46,11 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             uxHidVerOK.Text = "Y";
             uxAppEntryCrossingStore.Reload();
         }
-
+        protected void deSetAppValue(object sender, DirectEventArgs e)
+        {
+            uxAddApp.SetValue(ComboBox1.SelectedItem.Value);
+            uxAddEntryDate.Focus();
+        }
        
         protected void deApplicationGridData(object sender, StoreReadDataEventArgs e)
         {

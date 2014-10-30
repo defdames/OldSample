@@ -88,6 +88,9 @@
                                     </Reader>
                                 </ext:Store>
                             </Store>
+                            <Plugins>
+                                <ext:ClearButton runat="server" />
+                            </Plugins>
                         </ext:ComboBox>
 
                         <ext:ComboBox ID="uxAddServiceUnit"
@@ -120,6 +123,9 @@
                             <Listeners>
                                 <Select Handler="#{uxAddSubDivStore}.load()" />
                             </Listeners>
+                             <Plugins>
+                                <ext:ClearButton ID="ClearButton1" runat="server" />
+                            </Plugins>
                         </ext:ComboBox>
                         <ext:ComboBox ID="uxAddSubDiv"
                             runat="server"
@@ -142,7 +148,9 @@
                                     </Model>
                                 </ext:Store>
                             </Store>
-
+                             <Plugins>
+                                <ext:ClearButton ID="ClearButton3" runat="server" />
+                            </Plugins>
                         </ext:ComboBox>
                         <ext:ComboBox runat="server"
                             ID="uxAddStateComboBox"
@@ -169,6 +177,9 @@
                                     </Reader>
                                 </ext:Store>
                             </Store>
+                             <Plugins>
+                                <ext:ClearButton ID="ClearButton2" runat="server" />
+                            </Plugins>
                         </ext:ComboBox>
 
                     </Items>

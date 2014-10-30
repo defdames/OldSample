@@ -91,6 +91,7 @@ namespace DBI.Data
             }
         }
         public static List<CrossingPricing> CrossingsPricingList()
+
         {
             using (Entities _context = new Entities())
             {
