@@ -193,6 +193,7 @@
                             <BottomBar>
                                 <ext:Toolbar ID="Toolbar1" runat="server">
                                     <Items>
+                                        <ext:Hidden runat="server" ID="uxDirtyRow" />
                                         <ext:Hidden runat="server" ID="uxHiddenApprove" />
                                         <ext:Button runat="server"
                                             ID="uxCreateActivityButton"

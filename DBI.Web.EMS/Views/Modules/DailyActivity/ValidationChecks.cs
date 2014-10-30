@@ -242,7 +242,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             string Name = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == PersonId).Select(x => x.EMPLOYEE_NAME).Single();
                             if (PreviousHeader == HeaderId)
                             {
-                                HeaderIdList.Add(new WarningData { WarningType = "Error", RecordType = Name, AdditionalInformation = string.Format("Employee has time overlap on DRS Id:{0}", Employee.HEADER_ID.ToString()) });
+                                if (HeaderId != Employee.HEADER_ID)
+                                {
+                                    HeaderIdList.Add(new WarningData { WarningType = "Error", RecordType = Name, AdditionalInformation = string.Format("Employee has time overlap on DRS Id:{0}", Employee.HEADER_ID.ToString()) });
+                                }
                             }
                             else
                             {
@@ -342,7 +345,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                            select o.PARENT_ORG).Distinct().Single();
                     string Name = _context.PROJECTS_V.Where(x => x.PROJECT_ID == EquipmentData.PROJECT_ID).Select(x => x.NAME).Single();
                     string ClassCode = _context.CLASS_CODES_V.Where(x => x.PROJECT_ID == EquipmentData.PROJECT_ID).Select(x => x.CLASS_CODE).Single();
-
 
                     return new WarningData { WarningType = "Warning", RecordType = string.Format("{0} - {1}", Name, ClassCode), AdditionalInformation = string.Format("Equipment BU is {0}, Project BU is {1}", EquipmentOrg, ProjectOrg) };
                 }
@@ -484,13 +486,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 {
                     foreach (DAILY_ACTIVITY_EMPLOYEE Header in HeaderList)
                     {
-                        string EmployeeName = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == Header.PERSON_ID).Select(x => x.EMPLOYEE_NAME).Single();
-                        Warnings.Add(new WarningData
+                        if (Header.HEADER_ID != HeaderId)
                         {
-                            WarningType = "Warning",
-                            RecordType = "Per Diem",
-                            AdditionalInformation = string.Format("{0} has an overlapping per diem on DRS# {1}", EmployeeName, Header.HEADER_ID.ToString())
-                        });
+                            string EmployeeName = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == Header.PERSON_ID).Select(x => x.EMPLOYEE_NAME).Single();
+                            Warnings.Add(new WarningData
+                            {
+                                WarningType = "Warning",
+                                RecordType = "Per Diem",
+                                AdditionalInformation = string.Format("{0} has an overlapping per diem on DRS# {1}", EmployeeName, Header.HEADER_ID.ToString())
+                            });
+                        }
                     }
                 }
                 return Warnings;

@@ -31,8 +31,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 GetInventoryDropDown();
                 GetHeaderData();
-                GetEmployeeData();
-                GetEquipmentData();
+                GetEmployeeDataWithWarnings();
+                GetEquipmentDataWithWarnings();
                 GetFooterData();
                 GetWarnings();
 
@@ -40,7 +40,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxStateList.Data = StaticLists.StateList;
                 uxStateStore.Data = StaticLists.StateList;
                 uxAddWeatherWindStore.Data = StaticLists.WindDirection;
-                
+
                 this.uxRedWarning.Value = ResourceManager.GetInstance().GetIconUrl(Ext.Net.Icon.Exclamation);
                 this.uxYellowWarning.Value = ResourceManager.GetInstance().GetIconUrl(Ext.Net.Icon.Error);
 
@@ -52,7 +52,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     uxEmployeeTimeOutDate.MaxDate = HeaderDate.AddDays(1);
                 }
 
-                if (GetStatus(long.Parse(Request.QueryString["HeaderId"])) != 2 || validateComponentSecurity("SYS.DailyActivity.View"))
+                if (GetStatus(long.Parse(Request.QueryString["HeaderId"])) != 2 || !validateComponentSecurity("SYS.DailyActivity.View"))
                 {
                     uxEmployeeToolbar.Hidden = true;
                     uxEquipmentToolbar.Hidden = true;
@@ -158,7 +158,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
                             join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
                             where d.HEADER_ID == HeaderId
-                            select new {d.HEADER_ID, d.PROJECT_ID, p.SEGMENT1, p.LONG_NAME, d.DA_DATE, d.SUBDIVISION, d.CONTRACTOR, d.PERSON_ID, e.EMPLOYEE_NAME, d.LICENSE, d.STATE, d.APPLICATION_TYPE, d.DENSITY, d.DA_HEADER_ID, d.STATUS }).Single();
+                            select new { d.HEADER_ID, d.PROJECT_ID, p.SEGMENT1, p.LONG_NAME, d.DA_DATE, d.SUBDIVISION, d.CONTRACTOR, d.PERSON_ID, e.EMPLOYEE_NAME, d.LICENSE, d.STATE, d.APPLICATION_TYPE, d.DENSITY, d.DA_HEADER_ID, d.STATUS }).Single();
                 DateTime Da_date = DateTime.Parse(data.DA_DATE.ToString());
                 uxProjectField.SetValue(data.PROJECT_ID.ToString(), string.Format("({0}) - {1}", data.SEGMENT1, data.LONG_NAME));
                 uxDateField.SelectedDate = Da_date;
@@ -176,12 +176,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
-        /// <summary>
-        /// Get data for Employee/Equipment grid
-        /// </summary>
-        protected void GetEmployeeData()
+        protected List<EmployeeDetails> GetEmployeeData()
         {
-            //Query and set datasource for employees
             using (Entities _context = new Entities())
             {
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
@@ -192,7 +188,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             join p in _context.PROJECTS_V on equip.PROJECT_ID equals p.PROJECT_ID into proj
                             from projects in proj.DefaultIfEmpty()
                             where d.HEADER_ID == HeaderId
-                            select new EmployeeDetails {PERSON_ID = e.PERSON_ID, EMPLOYEE_ID = d.EMPLOYEE_ID, DA_DATE = d.DAILY_ACTIVITY_HEADER.DA_DATE, EMPLOYEE_NAME = e.EMPLOYEE_NAME, FOREMAN_LICENSE = d.FOREMAN_LICENSE, NAME = projects.NAME, TIME_IN = (DateTime)d.TIME_IN, TIME_OUT = (DateTime)d.TIME_OUT, TIME_IN_TIME = (DateTime)d.TIME_IN, TIME_OUT_TIME = (DateTime)d.TIME_OUT, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), SHOPTIME_AM = (d.SHOPTIME_AM == null ? 0 : d.SHOPTIME_AM), SHOPTIME_PM = (d.SHOPTIME_PM == null ? 0 : d.SHOPTIME_PM), PER_DIEM = (d.PER_DIEM == "Y" ? true: false), COMMENTS = d.COMMENTS, ROLE_TYPE = d.ROLE_TYPE, STATUS = d.DAILY_ACTIVITY_HEADER.STATUS, EQUIPMENT_ID = d.EQUIPMENT_ID }).ToList();
+                            select new EmployeeDetails { PERSON_ID = e.PERSON_ID, EMPLOYEE_ID = d.EMPLOYEE_ID, DA_DATE = d.DAILY_ACTIVITY_HEADER.DA_DATE, EMPLOYEE_NAME = e.EMPLOYEE_NAME, FOREMAN_LICENSE = d.FOREMAN_LICENSE, NAME = projects.NAME, TIME_IN = (DateTime)d.TIME_IN, TIME_OUT = (DateTime)d.TIME_OUT, TIME_IN_TIME = (DateTime)d.TIME_IN, TIME_OUT_TIME = (DateTime)d.TIME_OUT, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), SHOPTIME_AM = (d.SHOPTIME_AM == null ? 0 : d.SHOPTIME_AM), SHOPTIME_PM = (d.SHOPTIME_PM == null ? 0 : d.SHOPTIME_PM), PER_DIEM = (d.PER_DIEM == "Y" ? true : false), COMMENTS = d.COMMENTS, ROLE_TYPE = d.ROLE_TYPE, HEADER_ID = d.HEADER_ID, STATUS = d.DAILY_ACTIVITY_HEADER.STATUS, EQUIPMENT_ID = d.EQUIPMENT_ID }).ToList();
                 foreach (var item in data)
                 {
                     item.PREVAILING_WAGE = roleNeeded();
@@ -213,104 +209,132 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     Minutes = Math.Round(((double)item.SHOPTIME_PM - Hours) * 60);
                     TotalTimeSpan = new TimeSpan(Convert.ToInt32(Hours), Convert.ToInt32(Minutes), 0);
                     item.SHOPTIME_PM_FORMATTED = DateTime.Now.Date + TotalTimeSpan;
+                }
+                return data;
+            }
+        }
 
-                    List<WarningData> Overlaps = ValidationChecks.employeeTimeOverlapCheck(item.PERSON_ID, item.TIME_IN, HeaderId);
-                    if (Overlaps.Count > 0)
+        /// <summary>
+        /// Get data for Employee/Equipment grid
+        /// </summary>
+        protected void GetEmployeeDataWithWarnings()
+        {
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+            var data = GetEmployeeData();
+            //Query and set datasource for employees
+
+            foreach (var item in data)
+            {
+                List<WarningData> Overlaps = ValidationChecks.employeeTimeOverlapCheck(item.PERSON_ID, item.TIME_IN, HeaderId);
+                if (Overlaps.Count > 0)
+                {
+                    WarningList.AddRange(Overlaps);
+                    if (item.STATUS == 3)
                     {
-                        WarningList.AddRange(Overlaps);
-                        if (item.STATUS == 3)
-                        {
-                            X.Js.Call("disablePostOnError");
-                            
-                        }
-                        else
-                        {
-                            X.Js.Call("disableOnError");
-                        }
-                    }
-                    
-                    WarningData EmployeeBusinessUnitFailures = ValidationChecks.EmployeeBusinessUnitCheck((long)item.EMPLOYEE_ID);
-                    if (EmployeeBusinessUnitFailures != null)
-                    {
-                        WarningList.Add(EmployeeBusinessUnitFailures);
-                        if (item.STATUS == 3 && EmployeeBusinessUnitFailures.WarningType == "Warning")
-                        {
-                            X.Js.Call("disablePostOnError");
-                        }
-                        else
-                        {
-                            X.Js.Call("disableOnError");
-                        }
-                    }
-                    WarningData EmployeeOver24 = ValidationChecks.checkEmployeeTime(24, item.PERSON_ID, item.TIME_IN);
-                    if (EmployeeOver24 != null)
-                    {
-                        WarningList.Add(EmployeeOver24);
+                        X.Js.Call("disablePostOnError");
+
                     }
                     else
                     {
-                        WarningData EmployeeOver14 = ValidationChecks.checkEmployeeTime(14, item.PERSON_ID, item.TIME_IN);
-                        if (EmployeeOver14 != null)
-                        {
-                            WarningList.Add(EmployeeOver14);
-                        }
+                        X.Js.Call("disableOnError");
                     }
-                    List<WarningData> DuplicatePerDiems = ValidationChecks.checkPerDiem((long)item.EMPLOYEE_ID, item.HEADER_ID);
-                    if (DuplicatePerDiems.Count > 0)
-                    {
-                        WarningList.AddRange(DuplicatePerDiems);
-                        if (item.STATUS == 3)
-                        {
-                            X.Js.Call("disablePostOnError");
-                        }
-                        else
-                        {
-                            X.Js.Call("disableOnError");
-                        }
-                    }
-
                 }
-                uxEmployeeStore.DataSource = data;
-                uxEmployeeStore.DataBind();
+
+                WarningData EmployeeBusinessUnitFailures = ValidationChecks.EmployeeBusinessUnitCheck((long)item.EMPLOYEE_ID);
+                if (EmployeeBusinessUnitFailures != null)
+                {
+                    WarningList.Add(EmployeeBusinessUnitFailures);
+                    if (item.STATUS == 3 && EmployeeBusinessUnitFailures.WarningType == "Warning")
+                    {
+                        X.Js.Call("disablePostOnError");
+                    }
+                    else
+                    {
+                        X.Js.Call("disableOnError");
+                    }
+                }
+                WarningData EmployeeOver24 = ValidationChecks.checkEmployeeTime(24, item.PERSON_ID, item.TIME_IN);
+                if (EmployeeOver24 != null)
+                {
+                    WarningList.Add(EmployeeOver24);
+                }
+                else
+                {
+                    WarningData EmployeeOver14 = ValidationChecks.checkEmployeeTime(14, item.PERSON_ID, item.TIME_IN);
+                    if (EmployeeOver14 != null)
+                    {
+                        WarningList.Add(EmployeeOver14);
+                    }
+                }
+                List<WarningData> DuplicatePerDiems = ValidationChecks.checkPerDiem((long)item.EMPLOYEE_ID, item.HEADER_ID);
+                if (DuplicatePerDiems.Count > 0)
+                {
+                    WarningList.AddRange(DuplicatePerDiems);
+                    if (item.STATUS == 3)
+                    {
+                        X.Js.Call("disablePostOnError");
+                    }
+                    else
+                    {
+                        X.Js.Call("disableOnError");
+                    }
+                }
+
             }
+            uxEmployeeStore.Data = data;
         }
 
-        protected void GetEquipmentData()
+        protected void deGetEmployeeData(object sender, StoreReadDataEventArgs e)
         {
+            var data = GetEmployeeData();
+            uxEmployeeStore.DataSource = data;
+            uxEmployeeStore.DataBind();
+        }
 
+        protected List<EquipmentDetails> GetEquipmentData()
+        {
             using (Entities _context = new Entities())
             {
                 long HeaderId = long.Parse(Request.QueryString["headerId"]);
-                var data = (from e in _context.DAILY_ACTIVITY_EQUIPMENT
-                            join p in _context.CLASS_CODES_V on e.PROJECT_ID equals p.PROJECT_ID
-                            where e.HEADER_ID == HeaderId
-                            select new { p.CLASS_CODE, p.SEGMENT1, p.ORGANIZATION_NAME, e.ODOMETER_START, e.ODOMETER_END, e.PROJECT_ID, e.EQUIPMENT_ID, p.NAME, e.HEADER_ID, STATUS = e.DAILY_ACTIVITY_HEADER.STATUS }).ToList();
-                foreach (var item in data)
-                {
-                    WarningData BusinessUnitWarning = ValidationChecks.EquipmentBusinessUnitCheck(item.EQUIPMENT_ID);
-                    if (BusinessUnitWarning != null)
-                    {
-                        WarningList.Add(BusinessUnitWarning);
-                        if (item.STATUS == 3 && BusinessUnitWarning.WarningType == "Warning")
-                        {
-                            X.Js.Call("disablePostOnError");
-                        }
-                        else
-                        {
-                            X.Js.Call("disableOnError");
-                        }
-                    }
-                    WarningData MeterWarning = ValidationChecks.MeterCheck(item.EQUIPMENT_ID);
-                    if (MeterWarning != null)
-                    {
-                        WarningList.Add(MeterWarning);
-                    }
-                }
-                uxEquipmentStore.DataSource = data;
-                uxEquipmentStore.DataBind();
+                return (from e in _context.DAILY_ACTIVITY_EQUIPMENT
+                        join p in _context.CLASS_CODES_V on e.PROJECT_ID equals p.PROJECT_ID
+                        where e.HEADER_ID == HeaderId
+                        select new EquipmentDetails { CLASS_CODE = p.CLASS_CODE, SEGMENT1 = p.SEGMENT1, ORGANIZATION_NAME = p.ORGANIZATION_NAME, ODOMETER_START = e.ODOMETER_START, ODOMETER_END = e.ODOMETER_END, PROJECT_ID = e.PROJECT_ID, EQUIPMENT_ID = e.EQUIPMENT_ID, NAME = p.NAME, HEADER_ID = e.HEADER_ID, STATUS = e.DAILY_ACTIVITY_HEADER.STATUS }).ToList();
             }
         }
+        protected void GetEquipmentDataWithWarnings()
+        {
+            var data = GetEquipmentData();
+            foreach (var item in data)
+            {
+                WarningData BusinessUnitWarning = ValidationChecks.EquipmentBusinessUnitCheck((long)item.EQUIPMENT_ID);
+                if (BusinessUnitWarning != null)
+                {
+                    WarningList.Add(BusinessUnitWarning);
+                    if (item.STATUS == 3 && BusinessUnitWarning.WarningType == "Warning")
+                    {
+                        X.Js.Call("disablePostOnError");
+                    }
+                    else
+                    {
+                        X.Js.Call("disableOnError");
+                    }
+                }
+                WarningData MeterWarning = ValidationChecks.MeterCheck((long)item.EQUIPMENT_ID);
+                if (MeterWarning != null)
+                {
+                    WarningList.Add(MeterWarning);
+                }
+            }
+            uxEquipmentStore.Data = data;
+        }
 
+        protected void deGetEquipmentData(object sender, StoreReadDataEventArgs e)
+        {
+            var data = GetEquipmentData();
+            uxEquipmentStore.DataSource = data;
+            uxEquipmentStore.DataBind();
+        }
         /// <summary>
         /// Get data for Production grid
         /// </summary>
@@ -470,6 +494,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxProjectField.SetValue(e.ExtraParams["ProjectId"], string.Format("({0}) - {1}", e.ExtraParams["ProjectNumber"], e.ExtraParams["LongName"]));
             //Clear existing filters
             uxFormProjectFilter.ClearFilter();
+
+            RowSelectionModel sm = uxFormProjectGrid.GetSelectionModel() as RowSelectionModel;
+            sm.ClearSelection();
         }
 
         /// <summary>
@@ -517,6 +544,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxSupervisorField.SetValue(e.ExtraParams["PersonID"], e.ExtraParams["EmployeeName"]);
             //Clear existing filters
             uxFormEmployeeFilter.ClearFilter();
+
+            RowSelectionModel sm = uxFormEmployeeGrid.GetSelectionModel() as RowSelectionModel;
+            sm.ClearSelection();
         }
 
         /// <summary>
@@ -609,7 +639,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 data.HOTEL_PHONE = uxPhoneField.Text;
                 data.CONTRACT_REP_NAME = uxContractNameField.Text;
                 data.DOT_REP_NAME = uxDOTRep.Text;
-                
+
                 //file upload
                 HttpPostedFile ForemanSignatureFile = uxForemanImageField.PostedFile;
                 byte[] ForemanSignatureArray = ImageToByteArray(ForemanSignatureFile);
@@ -771,6 +801,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxEmployeeRole.SetValue(e.ExtraParams["Meaning"], e.ExtraParams["Meaning"]);
             uxEmployeeState.SetValue(e.ExtraParams["State"]);
             uxEmployeeCounty.SetValue(e.ExtraParams["County"]);
+
+            RowSelectionModel sm = uxEmployeeRoleGrid.GetSelectionModel() as RowSelectionModel;
+            sm.ClearSelection();
         }
 
         /// <summary>
@@ -810,21 +843,30 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deStoreGridValue(object sender, DirectEventArgs e)
         {
+            RowSelectionModel sm;
             if (e.ExtraParams["Type"] == "Equipment")
             {
                 uxEmployeeEqDropDown.SetValue(e.ExtraParams["EquipmentId"], e.ExtraParams["Name"]);
+                sm = uxEmployeeEqGrid.GetSelectionModel() as RowSelectionModel;
+                sm.ClearSelection();
             }
             else
             {
                 uxEmployeeEmpDropDown.SetValue(e.ExtraParams["PersonId"], e.ExtraParams["Name"]);
                 uxEmployeeEmpFilter.ClearFilter();
+                sm = uxEmployeeEmpGrid.GetSelectionModel() as RowSelectionModel;
+                sm.ClearSelection();
             }
         }
 
         protected void deStoreTask(object sender, DirectEventArgs e)
         {
             uxAddProductionTask.SetValue(e.ExtraParams["TaskId"], e.ExtraParams["Description"]);
+            uxAddProductionTaskNumber.Value = e.ExtraParams["TaskNumber"];
             uxAddProductionTaskStore.ClearFilter();
+
+            RowSelectionModel sm = uxAddProductionTaskGrid.GetSelectionModel() as RowSelectionModel;
+            sm.ClearSelection();
         }
 
         /// <summary>
@@ -1013,7 +1055,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 ModelProxy Record = uxEmployeeStore.GetById(item.EMPLOYEE_ID);
                 Record.CreateVariable = true;
                 Record.Set("EMPLOYEE_NAME", EmployeeName);
-                
+
                 if (EquipmentName != null)
                 {
                     Record.Set("NAME", EquipmentName);
@@ -1352,9 +1394,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             //Set value and text for equipment
             uxAddEquipmentDropDown.SetValue(e.ExtraParams["ProjectId"], e.ExtraParams["EquipmentName"]);
-
+            uxAddEquipmentSegment.Value = e.ExtraParams["SEGMENT1"];
+            uxAddEquipmentClassCode.Value = e.ExtraParams["CLASS_CODE"];
+            uxAddEquipmentOrg.Value = e.ExtraParams["ORGANIZATION_NAME"];
             //Clear existing filters
             uxAddEquipmentFilter.ClearFilter();
+
+            RowSelectionModel sm = uxAddEquipmentGrid.GetSelectionModel() as RowSelectionModel;
+            sm.ClearSelection();
         }
 
         protected void deReloadEquipmentStore(object sender, DirectEventArgs e)
@@ -1616,8 +1663,51 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             else
             {
-                X.Msg.Alert("Error", "Cannot delete Equipment entry as there's currently an Employee entry using the equipment").Show();
+                X.Msg.Confirm("Delete Relationship", "You are about to delete this piece of equipment that is linked to one or more employees.  This will unbind your connection from that employee to this piece of equipment.  Are you sure you want to delete it?", new MessageBoxButtonsConfig
+                {
+                    Yes = new MessageBoxButtonConfig
+                    {
+                        Handler = "App.direct.dmDeleteEquipmentWithEmployee(" + EquipmentId + ")",
+                        Text = "Yes"
+                    },
+                    No = new MessageBoxButtonConfig
+                    {
+                        Text = "No"
+                    }
+                }).Show();
+
             }
+
+        }
+
+        [DirectMethod]
+        public void dmDeleteEquipmentWithEmployee(string EquipmentId)
+        {
+            DAILY_ACTIVITY_EQUIPMENT DeletedEquipment;
+            List<DAILY_ACTIVITY_EMPLOYEE> EmployeeCheck;
+            long EqId = long.Parse(EquipmentId);
+            using (Entities _context = new Entities())
+            {
+                DeletedEquipment = _context.DAILY_ACTIVITY_EQUIPMENT.Where(x => x.EQUIPMENT_ID == EqId).Single();
+                EmployeeCheck = _context.DAILY_ACTIVITY_EMPLOYEE.Where(x => x.EQUIPMENT_ID == EqId).ToList();
+            }
+            GenericData.Delete(DeletedEquipment);
+
+            foreach (DAILY_ACTIVITY_EMPLOYEE Employee in EmployeeCheck)
+            {
+                Employee.EQUIPMENT_ID = null;
+                GenericData.Update(Employee);
+                ModelProxy Record = uxEmployeeStore.GetById(Employee.EMPLOYEE_ID);
+                Record.Set("EQUIPMENT_ID", null);
+                Record.Set("NAME", "");
+                Record.Commit();
+            }
+            RowSelectionModel sm = uxEquipmentGrid.GetSelectionModel() as RowSelectionModel;
+
+            uxEmployeeGrid.GetView();
+            uxEquipmentStore.RemoveAt(sm.SelectedIndex);
+            uxEquipmentGrid.GetView();
+            uxEmployeeEqStore.Reload();
 
         }
 

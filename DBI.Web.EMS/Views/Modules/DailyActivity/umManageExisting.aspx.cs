@@ -1943,6 +1943,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         public long? EQUIPMENT_ID { get; set; }
         public string NAME { get; set; }
         public long? HEADER_ID { get; set; }
+        public int? STATUS { get; set; }
         public string PhantomID { get; set; }
     }
 
