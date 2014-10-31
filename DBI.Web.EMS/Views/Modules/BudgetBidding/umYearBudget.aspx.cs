@@ -1205,6 +1205,10 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     ReorderSheets();
                     break;
 
+                case "Report/Export Selected Sheet":
+                    ReportExportSelectedSheet();
+                    break;
+
                 case "Print All Sheets":
                     break;
             }
@@ -1317,7 +1321,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             string budBidProjectID = uxHidBudBidID.Text;
             string detailSheetID = uxHidDetailSheetID.Text;
             string verName = HttpUtility.UrlEncode(Request.QueryString["verName"]);
-            string weDate = uxJCDate.Text;
+            string weDate = uxJCDate.Text == "" ? "N/A" : uxJCDate.Text;
             string projectName = HttpUtility.UrlEncode(uxProjectName.Text);
             string sheetNum = uxHidDetailSheetOrder.Text;
             string detailSheetName = HttpUtility.UrlEncode(uxHidDetailSheetName.Text);
@@ -1328,8 +1332,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             string sOP = uxSOP.Text;
 
             string url = "/Views/Modules/BudgetBidding/umDetailSheet.aspx?projectID=" + budBidProjectID + "&detailSheetID=" + detailSheetID + "&leOrgID=" + leOrgID + "&orgID=" + orgID + "&yearID=" + yearID + "&verID=" + verID +
-                "&verName=" + verName + "&weDate=" + weDate + "&projectName=" + projectName + "&sheetNum=" + sheetNum + "&detailSheetName=" + detailSheetName +
-                "&sGrossRec=" + sGrossRec + "&sMatUsage=" + sMatUsage + "&sGrossRev=" + sGrossRev + "&sDirects=" + sDirects + "&sOP=" + sOP;
+                "&verName=" + verName + "&weDate=" + weDate + "&projectName=" + projectName + "&sheetNum=" + sheetNum + "&detailSheetName=" + detailSheetName;
 
             Window win = new Window
             {
@@ -1459,6 +1462,60 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             win.Render(this.Form);
             win.Show();
         }
+        protected void ReportExportSelectedSheet()
+        {
+            long orgID = long.Parse(Request.QueryString["orgID"]);
+            long leOrgID = long.Parse(Request.QueryString["leOrgID"]);
+            long yearID = long.Parse(Request.QueryString["fiscalYear"]);
+            long verID = long.Parse(Request.QueryString["verID"]);
+
+            if (uxHidDetailSheetID.Text == "")
+            {
+                StandardMsgBox("Report", "A detail sheet must be selected before a report can be generated.", "INFO");
+                return;
+            }
+
+            string budBidProjectID = uxHidBudBidID.Text;
+            string detailSheetID = uxHidDetailSheetID.Text;
+            string verName = HttpUtility.UrlEncode(Request.QueryString["verName"]);
+            string weDate = uxJCDate.Text == "" ? "N/A" : uxJCDate.Text;
+            string projectName = HttpUtility.UrlEncode(uxProjectName.Text);
+            string sheetNum = uxHidDetailSheetOrder.Text;
+            string detailSheetName = HttpUtility.UrlEncode(uxHidDetailSheetName.Text);
+            string sGrossRec = uxSGrossRec.Text;
+            string sMatUsage = uxSMatUsage.Text;
+            string sGrossRev = uxSGrossRev.Text;
+            string sDirects = uxSDirects.Text;
+            string sOP = uxSOP.Text;
+
+            string url = "/Views/Modules/BudgetBidding/Reports/umRepDetailSheet.aspx?projectID=" + budBidProjectID + "&detailSheetID=" + detailSheetID + "&leOrgID=" + leOrgID + "&orgID=" + orgID + "&yearID=" + yearID + "&verID=" + verID +
+                "&verName=" + verName + "&weDate=" + weDate + "&projectName=" + projectName + "&sheetNum=" + sheetNum + "&detailSheetName=" + detailSheetName;
+
+            Window win = new Window
+            {
+                ID = "uxReport",
+                Title = "Report",
+                Height = 600,
+                Width = 1120,
+                Modal = true,
+                Resizable = true,
+                CloseAction = CloseAction.Destroy,
+                Loader = new ComponentLoader
+                {
+                    Mode = LoadMode.Frame,
+                    DisableCaching = true,
+                    Url = url,
+                    AutoLoad = true,
+                    LoadMask =
+                    {
+                        ShowMask = true
+                    }
+                }
+            };
+            win.Render(this.Form);
+            win.Show();           
+        }
+
 
         // Other     
         protected void LockTopSection()

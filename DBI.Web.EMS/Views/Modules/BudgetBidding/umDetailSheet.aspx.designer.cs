@@ -94,13 +94,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.FieldContainer FieldContainer6;
         
         /// <summary>
-        /// Label8 control.
+        /// Label12 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Label Label8;
+        protected global::Ext.Net.Label Label12;
         
         /// <summary>
         /// FieldContainer5 control.
