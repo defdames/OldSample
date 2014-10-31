@@ -38,6 +38,14 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
               
             }
         }
+        protected void deAddSetFocus(object sender, DirectEventArgs e)
+        {
+            uxIncidentNumber.Focus();
+        }
+        protected void deCloseSetFocus(object sender, DirectEventArgs e)
+        {
+            uxCloseIncidentDateClosed.Focus();
+        }
         protected void GetIncidentGridData(object sender, StoreReadDataEventArgs e)
         {
 

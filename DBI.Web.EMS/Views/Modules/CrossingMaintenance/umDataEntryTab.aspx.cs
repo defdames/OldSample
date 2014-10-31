@@ -27,7 +27,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
             if (!X.IsAjaxRequest)
             {
-                //uxAddAppRequestedStore.Data = StaticLists.ApplicationRequested;
+               
                 Store1.Data = StaticLists.ApplicationRequested;
                 CheckboxSelectionModel sm = CheckboxSelectionModel1;
                 sm.ClearSelection();
@@ -46,7 +46,11 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             uxHidVerOK.Text = "Y";
             uxAppEntryCrossingStore.Reload();
         }
-
+        protected void deSetAppValue(object sender, DirectEventArgs e)
+        {
+            uxAddApp.SetValue(ComboBox1.SelectedItem.Value);
+            uxAddEntryDate.Focus();
+        }
        
         protected void deApplicationGridData(object sender, StoreReadDataEventArgs e)
         {
@@ -70,19 +74,19 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 if (Application == 1)
                 {
                     dataSource = dataSource.Where(x => x.APPLICATION_REQUESTED == null).ToList();
-                    //csm.ClearSelection();
+                  
                 }
 
                 if (Application == 2)
                 {
                     dataSource = dataSource.Where(x => x.APPLICATION_REQUESTED == 1).ToList();
-                    //csm.ClearSelection();
+              
                 }
 
                 if (Application == 3)
                 {
                     dataSource = dataSource.Where(x => x.APPLICATION_REQUESTED == 2).ToList();
-                    //csm.ClearSelection();
+                 
                 }
               
                 List<object> _data = dataSource.ToList<object>();
@@ -108,17 +112,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         {
 
             //Get application data and set datasource
-            //CheckboxSelectionModel sm = CheckboxSelectionModel1;
-           
-            //List<long> crossingIdList = new List<long>();
-          
-            //foreach (SelectedRow sr in sm.SelectedRows)
-            //{
-            //  crossingIdList.Add(long.Parse(sr.RecordID));
-            //}
+       
                 using (Entities _context = new Entities())
                 {
-                    IQueryable<CROSSING_MAINTENANCE.ApplicationList> data = CROSSING_MAINTENANCE.GetApplications(_context);//.Where(s => crossingIdList.Contains(s.CROSSING_ID));
+                    IQueryable<CROSSING_MAINTENANCE.ApplicationList> data = CROSSING_MAINTENANCE.GetApplications(_context);
                    
                     int count;
                     uxApplicationStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.ApplicationList>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
