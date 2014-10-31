@@ -8,14 +8,14 @@
     <link href="../../../Resources/StyleSheets/main.css" rel="stylesheet" />
     <script type="text/javascript">
         var checkStatus = function () {
-            if (App.uxStatusField.value == 2) {
+            if (App.uxStatusField.value == 2 && App.uxCanEditField.value != "false") {
                 return true;
             }
             return false;
         };
 
         var checkEmployeeStatus = function () {
-            if (App.uxStatusField.value == 2) {
+            if (App.uxStatusField.value == 2 && App.uxCanEditField.value != "false") {
                 if (App.uxEmployeeGrid.getSelectionModel().getSelection()[0].data.PREVAILING_WAGE == false) {
                     App.uxEmployeeRowEdit.editor.form.findField('ROLE_TYPE').disable();
                 }
@@ -543,6 +543,7 @@
                             </Items>
                         </ext:ComboBox>
                         <ext:Hidden runat="server" ID="uxStatusField" />
+                        <ext:Hidden runat="server" ID="uxCanEditField" />
                     </Items>
                     <Buttons>
                         <ext:Button runat="server" ID="uxSaveHeaderButton" Icon="Add" Text="Save" Disabled="true">
@@ -961,7 +962,7 @@
                                 <BeforeEdit OnEvent="deSetTimeInDate" />
                             </DirectEvents>
                             <Listeners>
-                                <BeforeEdit Fn="checkStatus" />
+                                <BeforeEdit Fn="checkEmployeeStatus" />
                             </Listeners>
                         </ext:RowEditing>
                     </Plugins>
@@ -1171,7 +1172,7 @@
                     PaddingSpec="10 10 30 10"
                     MaxWidth="1400">
                     <Store>
-                            <ext:Store runat="server" ID="uxProductionStore">
+                        <ext:Store runat="server" ID="uxProductionStore" OnReadData="deGetIRMProductionData">
                             <Model>
                                 <ext:Model ID="Model3" runat="server" Name="Production" IDProperty="PRODUCTION_ID" ClientIdProperty="PhantomId">
                                     <Fields>
@@ -1189,6 +1190,12 @@
                                     </Fields>
                                 </ext:Model>
                             </Model>
+                            <Sorters>
+                                <ext:DataSorter Property="PRODUCTION_ID" Direction="ASC" />
+                            </Sorters>
+                            <Proxy>
+                                <ext:PageProxy />
+                            </Proxy>
                         </ext:Store>
                     </Store>
                     <ColumnModel>
@@ -1416,7 +1423,7 @@
                     MaxWidth="1400">
                     <Store>
                         <ext:Store runat="server"
-                            ID="uxWeatherStore">
+                            ID="uxWeatherStore" OnReadData="deGetWeatherData">
                             <Model>
                                 <ext:Model ID="Model4" runat="server" Name="Weather" IDProperty="WEATHER_ID" ClientIdProperty="PhantomId">
                                     <Fields>
@@ -1431,6 +1438,12 @@
                                     </Fields>
                                 </ext:Model>
                             </Model>
+                            <Sorters>
+                                <ext:DataSorter Property="WEATHER_DATE" Direction="ASC" />
+                            </Sorters>
+                            <Proxy>
+                                <ext:PageProxy />
+                            </Proxy>
                         </ext:Store>
                     </Store>
                     <ColumnModel>
@@ -1536,7 +1549,7 @@
                     MaxWidth="1400">
                     <Store>
                         <ext:Store runat="server"
-                            ID="uxInventoryStore">
+                            ID="uxInventoryStore" OnReadData="deGetInventory">
                             <Model>
                                 <ext:Model ID="Model6" runat="server" Name="Inventory" IDProperty="INVENTORY_ID" ClientIdProperty="PhantomId">
                                     <Fields>
@@ -1553,6 +1566,12 @@
                                     </Fields>
                                 </ext:Model>
                             </Model>
+                            <Proxy>
+                                <ext:PageProxy />
+                            </Proxy>
+                            <Sorters>
+                                <ext:DataSorter Property="SEGMENT1" Direction="ASC" />
+                            </Sorters>
                         </ext:Store>
                     </Store>
                     <ColumnModel>
@@ -1759,7 +1778,7 @@
                         <Select Handler="#{uxDeleteInventoryButton}.enable()" />
                     </Listeners>
                 </ext:GridPanel>
-                 <ext:GridPanel ID="uxAttachmentGrid" runat="server"
+                <ext:GridPanel ID="uxAttachmentGrid" runat="server"
                     Title="Attachments"
                     PaddingSpec="10 10 30 10"
                     MaxWidth="1400">
@@ -1792,7 +1811,7 @@
                         </Columns>
                     </ColumnModel>
                     <TopBar>
-                        <ext:Toolbar ID="Toolbar3" runat="server">
+                        <ext:Toolbar ID="uxAttachmentToolbar" runat="server">
                             <Items>
                                 <ext:Button runat="server" ID="uxAddAttachmentButton" Text="Add" Icon="ApplicationAdd">
                                     <Listeners>

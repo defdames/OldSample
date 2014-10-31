@@ -8,14 +8,14 @@
     <link href="../../../Resources/StyleSheets/main.css" rel="stylesheet" />
     <script type="text/javascript">
         var checkStatus = function (e) {
-            if (App.uxStatusField.value == 2) {
+            if (App.uxStatusField.value == 2 && App.uxCanEditField.value != "false") {
                 return true;
             }
             return false;
         };
 
         var checkEmployeeStatus = function () {
-            if (App.uxStatusField.value == 2) {
+            if (App.uxStatusField.value == 2 && App.uxCanEditField.value != "false") {
                 if (App.uxEmployeeGrid.getSelectionModel().getSelection()[0].data.PREVAILING_WAGE == false) {
                     App.uxEmployeeRowEdit.editor.form.findField('ROLE_TYPE').disable();
                 }
@@ -600,6 +600,7 @@
                             </Items>
                         </ext:ComboBox>
                         <ext:Hidden runat="server" ID="uxStatusField" />
+                        <ext:Hidden runat="server" ID="uxCanEditField" />
                     </Items>
                     <Buttons>
                         <ext:Button runat="server" ID="uxSaveHeaderButton" Icon="Add" Text="Save" Disabled="true">
@@ -1235,7 +1236,7 @@
                     MaxWidth="1400">
                     <Store>
                         <ext:Store runat="server"
-                            ID="uxProductionStore">
+                            ID="uxProductionStore" OnReadData="deGetDBIProductionData">
                             <Model>
                                 <ext:Model ID="Model3" runat="server" Name="Production" IDProperty="PRODUCTION_ID" ClientIdProperty="PhantomID">
                                     <Fields>
@@ -1251,6 +1252,12 @@
                                     </Fields>
                                 </ext:Model>
                             </Model>
+                            <Sorters>
+                                <ext:DataSorter Property="PRODUCTION_ID" Direction="ASC" />
+                            </Sorters>
+                            <Proxy>
+                                <ext:PageProxy />
+                            </Proxy>
                         </ext:Store>
                     </Store>
                     <ColumnModel>
@@ -1386,7 +1393,7 @@
                     MaxWidth="1400">
                     <Store>
                         <ext:Store runat="server"
-                            ID="uxWeatherStore">
+                            ID="uxWeatherStore" OnReadData="deGetWeatherData">
                             <Model>
                                 <ext:Model ID="Model4" runat="server" Name="Weather">
                                     <Fields>
@@ -1401,6 +1408,12 @@
                                     </Fields>
                                 </ext:Model>
                             </Model>
+                            <Sorters>
+                                <ext:DataSorter Property="WEATHER_DATE" Direction="ASC" />
+                            </Sorters>
+                            <Proxy>
+                                <ext:PageProxy />
+                            </Proxy>
                         </ext:Store>
                     </Store>
                     <ColumnModel>
@@ -1506,7 +1519,7 @@
                     MaxWidth="1400">
                     <Store>
                         <ext:Store runat="server"
-                            ID="uxChemicalStore">
+                            ID="uxChemicalStore" OnReadData="deGetChemicalMixData">
                             <Model>
                                 <ext:Model ID="Model5" runat="server" Name="Chemical" IDProperty="CHEMICAL_MIX_ID" ClientIdProperty="PhantomID">
                                     <Fields>
@@ -1525,6 +1538,12 @@
                                     </Fields>
                                 </ext:Model>
                             </Model>
+                            <Proxy>
+                                <ext:PageProxy />
+                            </Proxy>
+                            <Sorters>
+                                <ext:DataSorter Property="CHEMICAL_MIX_NUMBER" />
+                            </Sorters>
                         </ext:Store>
                     </Store>
                     <ColumnModel>
@@ -1651,6 +1670,9 @@
                                     </ExtraParams>
                                 </Edit>
                             </DirectEvents>
+                            <Listeners>
+                                <BeforeEdit Fn="checkStatus" />
+                            </Listeners>
                         </ext:RowEditing>
                     </Plugins>
                 </ext:GridPanel>
@@ -1661,7 +1683,7 @@
                     MaxWidth="1400">
                     <Store>
                         <ext:Store runat="server"
-                            ID="uxInventoryStore">
+                            ID="uxInventoryStore" OnReadData="deGetInventory">
                             <Model>
                                 <ext:Model ID="Model6" runat="server" Name="Inventory" IDProperty="INVENTORY_ID" ClientIdProperty="PhantomId">
                                     <Fields>
@@ -1683,6 +1705,12 @@
                                     </Fields>
                                 </ext:Model>
                             </Model>
+                            <Sorters>
+                                <ext:DataSorter Property="SEGMENT1" Direction="ASC" />
+                            </Sorters>
+                            <Proxy>
+                                <ext:PageProxy />
+                            </Proxy>
                         </ext:Store>
                     </Store>
                     <ColumnModel>
@@ -2016,7 +2044,7 @@
                         </Columns>
                     </ColumnModel>
                     <TopBar>
-                        <ext:Toolbar runat="server">
+                        <ext:Toolbar runat="server" ID="uxAttachmentToolbar">
                             <Items>
                                 <ext:Button runat="server" ID="uxAddAttachmentButton" Text="Add" Icon="ApplicationAdd">
                                     <Listeners>

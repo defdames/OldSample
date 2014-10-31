@@ -418,6 +418,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Hidden uxStatusField;
         
         /// <summary>
+        /// uxCanEditField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Hidden uxCanEditField;
+        
+        /// <summary>
         /// uxSaveHeaderButton control.
         /// </summary>
         /// <remarks>
@@ -2146,13 +2155,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Column Column65;
         
         /// <summary>
-        /// Toolbar3 control.
+        /// uxAttachmentToolbar control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Toolbar Toolbar3;
+        protected global::Ext.Net.Toolbar uxAttachmentToolbar;
         
         /// <summary>
         /// uxAddAttachmentButton control.

@@ -33,9 +33,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 GetHeaderData();
                 GetEmployeeData();
                 GetEquipmentData();
-                GetIRMProductionData();
-                GetWeatherData();
-                GetInventory();
                 GetFooterData();
                 GetWarnings();
 
@@ -55,7 +52,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     uxEmployeeTimeOutDate.MaxDate = HeaderDate.AddDays(1);
                 }
 
-                if (GetStatus(long.Parse(Request.QueryString["HeaderId"])) != 2)
+                if (GetStatus(long.Parse(Request.QueryString["HeaderId"])) != 2 || validateComponentSecurity("SYS.DailyActivity.View"))
                 {
                     uxEmployeeToolbar.Hidden = true;
                     uxEquipmentToolbar.Hidden = true;
@@ -64,6 +61,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     uxInventoryToolbar.Hidden = true;
                     uxSaveFooterButton.Hidden = true;
                     uxSaveHeaderButton.Hidden = true;
+                    uxAttachmentToolbar.Hidden = true;
 
                     uxDateField.ReadOnly = true;
                     uxProjectField.ReadOnly = true;
@@ -174,6 +172,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxHeaderField.Value = data.HEADER_ID.ToString();
                 uxOracleField.Value = data.DA_HEADER_ID.ToString();
                 uxStatusField.Value = data.STATUS.ToString();
+                uxCanEditField.Value = validateComponentSecurity("SYS.DailyActivity.View");
             }
         }
 
@@ -315,7 +314,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <summary>
         /// Get data for Production grid
         /// </summary>
-        protected void GetIRMProductionData()
+        protected void deGetIRMProductionData(object sender, StoreReadDataEventArgs e)
         {
             //Query and set datasource for Production
             using (Entities _context = new Entities())
@@ -335,7 +334,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <summary>
         /// Get data for Weather grid
         /// </summary>
-        protected void GetWeatherData()
+        protected void deGetWeatherData(object sender, StoreReadDataEventArgs e)
         {
             //Query and set datasource for Weather
             using (Entities _context = new Entities())
@@ -352,7 +351,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <summary>
         /// Get data for Inventory grid
         /// </summary>
-        protected void GetInventory()
+        protected void deGetInventory(object sender, StoreReadDataEventArgs e)
         {
             //Query and set datasource for Inventory
             using (Entities _context = new Entities())
