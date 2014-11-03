@@ -131,7 +131,7 @@
                             runat="server"
                             Layout="HBoxLayout">
                             <Items>
-                                <ext:Label ID="Label8" runat="server" Width="665" />
+                                <ext:Label ID="Label12" runat="server" Width="665" />
                             </Items>
                         </ext:FieldContainer>
                         <ext:FieldContainer ID="FieldContainer5"

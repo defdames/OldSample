@@ -30,7 +30,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             if (!X.IsAjaxRequest)
             {
              
-                uxAddStateList.Data = StaticLists.StateList;
+                uxAddStateList.Data = StaticLists.CrossingStateList;
 
                 if (SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue") != string.Empty)
                 {

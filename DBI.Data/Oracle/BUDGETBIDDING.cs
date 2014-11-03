@@ -188,6 +188,41 @@ namespace DBI.Data
                 }
             }
         }
+        public class DetailSheet
+        {
+            public class MainTabField
+            {
+                #region Fields
+                public class Fields
+                {
+                    public decimal? RECREMAIN { get; set; }
+                    public decimal? DAYSREMAIN { get; set; }
+                    public decimal? UNITREMAIN { get; set; }
+                    public decimal? DAYSWORKED { get; set; }
+                }
+                #endregion
+
+                public static List<Fields> NumsData(long detailSheetID)
+                {
+                    string sql = string.Format(@"
+                        SELECT * FROM (
+                            SELECT DETAIL_TASK_ID, REC_TYPE, TOTAL
+                            FROM BUD_BID_DETAIL_SHEET
+                            WHERE DETAIL_TASK_ID = {0})
+                        PIVOT(
+                            SUM(TOTAL) FOR (REC_TYPE)
+                            IN ('RECREMAIN' RECREMAIN, 'DAYSREMAIN' DAYSREMAIN, 'UNITREMAIN' UNITREMAIN, 'DAYSWORKED' DAYSWORKED))", detailSheetID);
+
+                    List<Fields> data;
+                    using (Entities context = new Entities())
+                    {
+                        data = context.Database.SqlQuery<Fields>(sql).ToList();
+                    }
+
+                    return data;
+                }
+            }
+        }
     }
         
     public class BB
@@ -556,6 +591,7 @@ namespace DBI.Data
             if (readOnly == false) { comboItems.Add(new SingleCombo { ID_NAME = "Copy Selected Sheet" }); }
             if (readOnly == false) { comboItems.Add(new SingleCombo { ID_NAME = "Delete Selected Sheet" }); }
             if (readOnly == false) { comboItems.Add(new SingleCombo { ID_NAME = "Reorder Sheets" }); }
+            comboItems.Add(new SingleCombo { ID_NAME = "Report/Export Selected Sheet" });
             //comboItems.Add(new SingleCombo { ID_NAME = "Print All Sheets" });
             return comboItems;
         }
@@ -1674,7 +1710,7 @@ namespace DBI.Data
                         SELECT BUD_BID_ACTUAL_NUM.PROJECT_ID, LINE_ID, NOV
                         FROM BUD_BID_DETAIL_TASK
                         LEFT JOIN BUD_BID_ACTUAL_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_ACTUAL_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_ACTUAL_NUM.DETAIL_TASK_ID
-                        WHERE BUD_BID_DETAIL_TASK.PROJECT_ID = {0} AND BUD_BID_DETAIL_TASK.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT'  )
+                        WHERE BUD_BID_DETAIL_TASK.PROJECT_ID = {0} AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT'  )
                     PIVOT(
                         SUM(NOV) FOR (LINE_ID)
                         IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))", projectID);

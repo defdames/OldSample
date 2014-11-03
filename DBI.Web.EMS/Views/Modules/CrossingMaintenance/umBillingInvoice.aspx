@@ -67,11 +67,18 @@
                                             </Reader>
                                         </ext:Store>
                                     </Store>
+                                  <Plugins>
+                                <ext:ClearButton ID="ClearButton1" runat="server" />
+                            </Plugins>
                                 </ext:ComboBox>
                              
                             <ext:FieldContainer runat="server" Layout="HBoxLayout">
                                 <Items>
-                                  <ext:DateField ID="uxStartDate" runat="server" AnchorHorizontal="100%" FieldLabel="Start Date" LabelAlign="Right" Editable="false" TabIndex="2" EmptyText="ALL" />
+                                  <ext:DateField ID="uxStartDate" runat="server" AnchorHorizontal="100%" FieldLabel="Start Date" LabelAlign="Right" Editable="false" TabIndex="2" EmptyText="ALL" >
+                                       <Plugins>
+                                <ext:ClearButton ID="ClearButton2" runat="server" />
+                            </Plugins>
+                                      </ext:DateField>
                                   <ext:ComboBox ID="uxAddServiceUnit"
                             runat="server" FieldLabel="Service Unit"
                             LabelAlign="Right"
@@ -102,13 +109,20 @@
                             <Listeners>
                                 <Select Handler="#{uxAddSubDivStore}.load()" />
                             </Listeners>
+                                       <Plugins>
+                                <ext:ClearButton ID="ClearButton3" runat="server" />
+                            </Plugins>
                         </ext:ComboBox>
                       
                                      </Items>
                             </ext:FieldContainer>
                            <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
                                 <Items>
-                                    <ext:DateField ID="uxEndDate" runat="server" AnchorHorizontal="100%" FieldLabel="End Date" LabelAlign="Right"  Editable="false" TabIndex="3" EmptyText="ALL" />
+                                    <ext:DateField ID="uxEndDate" runat="server" AnchorHorizontal="100%" FieldLabel="End Date" LabelAlign="Right"  Editable="false" TabIndex="3" EmptyText="ALL" >
+                                         <Plugins>
+                                <ext:ClearButton ID="ClearButton4" runat="server" />
+                            </Plugins>
+                                        </ext:DateField>
                                 <ext:ComboBox ID="uxAddSubDiv"
                             runat="server"
                             FieldLabel="Sub-Division"
@@ -130,7 +144,9 @@
                                     </Model>
                                 </ext:Store>
                             </Store>
-
+                             <Plugins>
+                                <ext:ClearButton ID="ClearButton5" runat="server" />
+                            </Plugins>
                         </ext:ComboBox>
                                         <ext:Label ID="Label1" runat="server" Text="" Width="25" />
 
@@ -144,8 +160,16 @@
                     </ext:FieldSet>
                       <ext:FieldSet ID="FieldSet2" runat="server" Title="Invoice Information">
                         <Items>
-                                  <ext:TextField ID="uxInvoiceNumber" runat="server" FieldLabel="Invoice Number" AnchorHorizontal="20%" LabelAlign="Right" TabIndex="6" AllowBlank="false" InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side" />
-                                  <ext:DateField ID="uxInvoiceDate" runat="server" AnchorHorizontal="20s%" FieldLabel="Invoice Date" LabelAlign="Right"  Editable="false" TabIndex="7" AllowBlank="false" InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side" />                                 
+                                  <ext:TextField ID="uxInvoiceNumber" runat="server" FieldLabel="Invoice Number" AnchorHorizontal="20%" LabelAlign="Right" TabIndex="6" AllowBlank="false" InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side" >
+                                        <Plugins>
+                                            <ext:ClearButton ID="ClearButton6" runat="server" />
+                                        </Plugins>
+                                      </ext:TextField>
+                                  <ext:DateField ID="uxInvoiceDate" runat="server" AnchorHorizontal="20s%" FieldLabel="Invoice Date" LabelAlign="Right"  Editable="false" TabIndex="7" AllowBlank="false" InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side" >
+                                       <Plugins>
+                                <ext:ClearButton ID="ClearButton7" runat="server" />
+                            </Plugins>
+                                      </ext:DateField>                                 
                         </Items>
                     </ext:FieldSet>
                 </Items>
