@@ -9,6 +9,7 @@
     <script type="text/javascript">
         var checkStatus = function (e) {
             if (App.uxStatusField.value == 2 && App.uxCanEditField.value != "false") {
+                App.direct.dmAddToDirty();
                 return true;
             }
             return false;
@@ -47,7 +48,7 @@
                     }
                     break;
             }
-
+            App.direct.dmSubtractFromDirty();
         };
 
         var checkEmployeeStatus = function (e) {
@@ -60,6 +61,7 @@
                 else if (App.uxEmployeeGrid.getSelectionModel().getSelection()[0].data.PREVAILING_WAGE == false) {
                     App.uxEmployeeRowEdit.editor.form.findField('ROLE_TYPE').disable();
                 }
+                App.direct.dmAddToDirty();
                 return true;
 
             }

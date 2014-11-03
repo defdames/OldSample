@@ -18,9 +18,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
     public partial class umCombinedTab_DBI : BasePage
     {
         protected List<WarningData> WarningList = new List<WarningData>();
+
         protected void Page_Load(object sender, EventArgs e)
         {
-
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
             if (!validateComponentSecurity("SYS.DailyActivity.View") && !validateComponentSecurity("SYS.DailyActivity.EmployeeView"))
             {
@@ -29,6 +29,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             if (!X.IsAjaxRequest)
             {
+                isDirty = 0;
                 GetInventoryDropDown();
                 GetHeaderData();
                 GetEmployeeDataWithWarnings();
@@ -122,7 +123,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
                             join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
                             where d.HEADER_ID == HeaderId
-                            select new { d.HEADER_ID, d.PROJECT_ID, p.SEGMENT1, p.LONG_NAME, d.DA_DATE, d.SUBDIVISION, d.CONTRACTOR, d.PERSON_ID, e.EMPLOYEE_NAME, d.LICENSE, d.STATE, d.APPLICATION_TYPE, d.DENSITY, d.DA_HEADER_ID, d.STATUS }).Single();
+                            select new HeaderData { HEADER_ID = d.HEADER_ID, PROJECT_ID = d.PROJECT_ID, SEGMENT1 = p.SEGMENT1, LONG_NAME = p.LONG_NAME, DA_DATE = d.DA_DATE, SUBDIVISION = d.SUBDIVISION, CONTRACTOR = d.CONTRACTOR, PERSON_ID = d.PERSON_ID, EMPLOYEE_NAME = e.EMPLOYEE_NAME, LICENSE = d.LICENSE, STATE = d.STATE, APPLICATION_TYPE = d.APPLICATION_TYPE, DENSITY = d.DENSITY, DA_HEADER_ID = d.DA_HEADER_ID, STATUS = d.STATUS }).SingleOrDefault();
+                if (data == null) 
+                {
+                    data = (from d in _context.DAILY_ACTIVITY_HEADER
+                            join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
+                            where d.HEADER_ID == HeaderId
+                            select new HeaderData { HEADER_ID = d.HEADER_ID, PROJECT_ID = d.PROJECT_ID, SEGMENT1 = p.SEGMENT1, LONG_NAME = p.LONG_NAME, DA_DATE = d.DA_DATE, SUBDIVISION = d.SUBDIVISION, CONTRACTOR = d.CONTRACTOR, PERSON_ID = d.PERSON_ID, LICENSE = d.LICENSE, STATE = d.STATE, APPLICATION_TYPE = d.APPLICATION_TYPE, DENSITY = d.DENSITY, DA_HEADER_ID = d.DA_HEADER_ID, STATUS = d.STATUS }).SingleOrDefault();
+                }
                 DateTime Da_date = DateTime.Parse(data.DA_DATE.ToString());
                 uxProjectField.SetValue(data.PROJECT_ID.ToString(), string.Format("({0}) - {1}", data.SEGMENT1, data.LONG_NAME));
                 uxDateField.SelectedDate = Da_date;
@@ -138,6 +146,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxStatusField.Value = data.STATUS.ToString();
 
                 uxCanEditField.Value = validateComponentSecurity("SYS.DailyActivity.View");
+                    
             }
         }
 
@@ -506,6 +515,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             RowSelectionModel sm = uxEmployeeRoleGrid.GetSelectionModel() as RowSelectionModel;
             sm.ClearSelection();
+            
         }
 
         /// <summary>
@@ -1944,6 +1954,18 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             GenericData.Delete(DeletedAttachment);
             uxAttachmentGrid.GetView();
+        }
+
+        [DirectMethod]
+        public void dmAddToDirty()
+        {
+            isDirty++;
+        }
+
+        [DirectMethod]
+        public void dmSubtractFromDirty()
+        {
+            isDirty--;
         }
     }
 }

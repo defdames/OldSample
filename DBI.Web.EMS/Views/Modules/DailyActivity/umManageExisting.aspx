@@ -298,7 +298,7 @@
                         </ext:GridPanel>
                     </Items>
                     <Bin>
-                        <ext:Panel runat="server" ID="uxDetailsPanel" CloseAction="Hide" Layout="FitLayout" Title="DRS Details" Hidden="true" Closable="true">
+                        <ext:Panel runat="server" ID="uxDetailsPanel" CloseAction="Hide" Layout="FitLayout" Title="DRS Details" Hidden="true" Closable="false">
                             <Loader ID="Loader1" runat="server" Mode="Frame">
                                 <LoadMask ShowMask="true" />
                             </Loader>

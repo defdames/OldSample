@@ -267,127 +267,134 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deUpdateUrlAndButtons(object sender, DirectEventArgs e)
         {
-            long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
-            string homeUrl = string.Empty;
-            long OrgId = GetOrgId(HeaderId);
-            long CoOrgId = GetCoOrgId(HeaderId);
-            List<EmployeeData> HoursOver24 = ValidationChecks.checkEmployeeTime(24);
-            bool BadHeader = false;
-
-            if (OrgId == 121)
+            if (isDirty == 0)
             {
-                homeUrl = string.Format("umCombinedTab_DBI.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-            }
-            else if (OrgId == 123)
-            {
-                homeUrl = string.Format("umCombinedTab_IRM.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
-            }
+                long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
+                string homeUrl = string.Empty;
+                long OrgId = GetOrgId(HeaderId);
+                long CoOrgId = GetCoOrgId(HeaderId);
+                List<EmployeeData> HoursOver24 = ValidationChecks.checkEmployeeTime(24);
+                bool BadHeader = false;
 
-
-            if (SYS_USER_ORGS.IsInOrg(SYS_USER_INFORMATION.UserID(User.Identity.Name), CoOrgId))
-            {
-                switch (e.ExtraParams["Status"])
+                if (OrgId == 121)
                 {
-                    case "PENDING APPROVAL":
-                        uxApproveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
-                        uxPostActivityButton.Disabled = true;
-                        uxMarkAsPostedButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted");
-                        uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
-                        uxDeactivate.Value = "Deactivate";
-                        uxInactiveActivityButton.Text = "Set Inactive";
-                        uxApproveActivityButton.Text = "Approve";
-                        uxHiddenApprove.Value = "Approve";
-                        break;
-                    case "APPROVED":
-                        uxInactiveActivityButton.Text = "Set Inactive";
-                        uxPostActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
-                        uxMarkAsPostedButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted");
-                        uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
-                        uxDeactivate.Value = "Deactivate";
-
-                        if (validateComponentSecurity("SYS.DailyActivity.Post") && validateComponentSecurity("SYS.DailyActivity.Approve"))
-                        {
-                            uxApproveActivityButton.Text = "Unapprove";
-                            uxApproveActivityButton.Disabled = false;
-                            uxHiddenApprove.Value = "Unapprove";
-                        }
-                        else
-                        {
-                            uxApproveActivityButton.Disabled = true;
-                        }
-                        break;
-                    case "POSTED":
-                        uxApproveActivityButton.Disabled = true;
-                        uxPostActivityButton.Disabled = true;
-                        uxMarkAsPostedButton.Disabled = true;
-                        uxInactiveActivityButton.Disabled = true;
-                        break;
-                    case "INACTIVE":
-                        uxApproveActivityButton.Disabled = true;
-                        uxPostActivityButton.Disabled = true;
-                        uxMarkAsPostedButton.Disabled = true;
-
-                        uxInactiveActivityButton.Text = "Activate";
-                        uxDeactivate.Value = "Activate";
-                        uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
-                        break;
-
+                    homeUrl = string.Format("umCombinedTab_DBI.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
                 }
-                if (e.ExtraParams["Status"] != "INACTIVE")
+                else if (OrgId == 123)
                 {
-                    List<long> EmployeeOverLap = ValidationChecks.employeeTimeOverlapCheck();
+                    homeUrl = string.Format("umCombinedTab_IRM.aspx?headerId={0}", e.ExtraParams["HeaderId"]);
+                }
 
-                    if (HoursOver24.Count > 0)
-                    {
-                        if (HoursOver24.Exists(emp => emp.HEADER_ID == HeaderId))
-                        {
-                            EmployeeData HeaderData = HoursOver24.Find(emp => emp.HEADER_ID == HeaderId);
-                            BadHeader = true;
-                        }
-                    }
 
-                    if (EmployeeOverLap.Count > 0)
+                if (SYS_USER_ORGS.IsInOrg(SYS_USER_INFORMATION.UserID(User.Identity.Name), CoOrgId))
+                {
+                    switch (e.ExtraParams["Status"])
                     {
-                        using (Entities _context = new Entities())
-                        {
-                            if (EmployeeOverLap.Exists(x => x == HeaderId))
+                        case "PENDING APPROVAL":
+                            uxApproveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
+                            uxPostActivityButton.Disabled = true;
+                            uxMarkAsPostedButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted");
+                            uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
+                            uxDeactivate.Value = "Deactivate";
+                            uxInactiveActivityButton.Text = "Set Inactive";
+                            uxApproveActivityButton.Text = "Approve";
+                            uxHiddenApprove.Value = "Approve";
+                            break;
+                        case "APPROVED":
+                            uxInactiveActivityButton.Text = "Set Inactive";
+                            uxPostActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Post");
+                            uxMarkAsPostedButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.MarkAsPosted");
+                            uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
+                            uxDeactivate.Value = "Deactivate";
+
+                            if (validateComponentSecurity("SYS.DailyActivity.Post") && validateComponentSecurity("SYS.DailyActivity.Approve"))
                             {
-                                var HeaderData = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-                                                  join emp in _context.EMPLOYEES_V on d.PERSON_ID equals emp.PERSON_ID
-                                                  where d.HEADER_ID == HeaderId
-                                                  select new { d.DAILY_ACTIVITY_HEADER.DA_DATE, emp.EMPLOYEE_NAME }).First();
+                                uxApproveActivityButton.Text = "Unapprove";
+                                uxApproveActivityButton.Disabled = false;
+                                uxHiddenApprove.Value = "Unapprove";
+                            }
+                            else
+                            {
+                                uxApproveActivityButton.Disabled = true;
+                            }
+                            break;
+                        case "POSTED":
+                            uxApproveActivityButton.Disabled = true;
+                            uxPostActivityButton.Disabled = true;
+                            uxMarkAsPostedButton.Disabled = true;
+                            uxInactiveActivityButton.Disabled = true;
+                            break;
+                        case "INACTIVE":
+                            uxApproveActivityButton.Disabled = true;
+                            uxPostActivityButton.Disabled = true;
+                            uxMarkAsPostedButton.Disabled = true;
+
+                            uxInactiveActivityButton.Text = "Activate";
+                            uxDeactivate.Value = "Activate";
+                            uxInactiveActivityButton.Disabled = !validateComponentSecurity("SYS.DailyActivity.Approve");
+                            break;
+
+                    }
+                    if (e.ExtraParams["Status"] != "INACTIVE")
+                    {
+                        List<long> EmployeeOverLap = ValidationChecks.employeeTimeOverlapCheck();
+
+                        if (HoursOver24.Count > 0)
+                        {
+                            if (HoursOver24.Exists(emp => emp.HEADER_ID == HeaderId))
+                            {
+                                EmployeeData HeaderData = HoursOver24.Find(emp => emp.HEADER_ID == HeaderId);
                                 BadHeader = true;
                             }
                         }
+
+                        if (EmployeeOverLap.Count > 0)
+                        {
+                            using (Entities _context = new Entities())
+                            {
+                                if (EmployeeOverLap.Exists(x => x == HeaderId))
+                                {
+                                    var HeaderData = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
+                                                      join emp in _context.EMPLOYEES_V on d.PERSON_ID equals emp.PERSON_ID
+                                                      where d.HEADER_ID == HeaderId
+                                                      select new { d.DAILY_ACTIVITY_HEADER.DA_DATE, emp.EMPLOYEE_NAME }).First();
+                                    BadHeader = true;
+                                }
+                            }
+                        }
+                    }
+                    if (BadHeader && e.ExtraParams["Status"] == "APPROVED")
+                    {
+
+                        uxPostActivityButton.Disabled = true;
+                    }
+                    else if (BadHeader)
+                    {
+                        uxApproveActivityButton.Disabled = true;
+                        uxPostActivityButton.Disabled = true;
                     }
                 }
-                if (BadHeader && e.ExtraParams["Status"] == "APPROVED")
-                {
-
-                    uxPostActivityButton.Disabled = true;
-                }
-                else if (BadHeader)
+                else
                 {
                     uxApproveActivityButton.Disabled = true;
                     uxPostActivityButton.Disabled = true;
+                    uxMarkAsPostedButton.Disabled = true;
+                    uxInactiveActivityButton.Disabled = true;
                 }
+
+                uxExportToPDF.Disabled = false;
+                uxEmailPdf.Disabled = false;
+                uxExportPDFCombined.Disabled = false;
+                uxEmailPDFCombined.Disabled = false;
+
+                string LoaderURL = (OrgId == 123 ? "umCombinedTab_IRM.aspx" : "umCombinedTab_DBI.aspx") + "?HeaderId=" + HeaderId;
+                uxTotalRecords.Text = GetRecordNumber(int.Parse(e.ExtraParams["CurrentPage"])).ToString() + "/" + e.ExtraParams["TotalRecords"];
+                uxDetailsPanel.LoadContent(LoaderURL);
             }
             else
             {
-                uxApproveActivityButton.Disabled = true;
-                uxPostActivityButton.Disabled = true;
-                uxMarkAsPostedButton.Disabled = true;
-                uxInactiveActivityButton.Disabled = true;
+                CreateDirtyMessage();
             }
-
-            uxExportToPDF.Disabled = false;
-            uxEmailPdf.Disabled = false;
-            uxExportPDFCombined.Disabled = false;
-            uxEmailPDFCombined.Disabled = false;
-
-            string LoaderURL = (OrgId == 123 ? "umCombinedTab_IRM.aspx" : "umCombinedTab_DBI.aspx") + "?HeaderId=" + HeaderId;
-            uxTotalRecords.Text = GetRecordNumber(int.Parse(e.ExtraParams["CurrentPage"])).ToString() + "/" + e.ExtraParams["TotalRecords"];
-            uxDetailsPanel.LoadContent(LoaderURL);
 
         }
 
