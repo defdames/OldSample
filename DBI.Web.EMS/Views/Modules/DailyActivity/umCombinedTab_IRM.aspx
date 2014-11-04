@@ -264,6 +264,7 @@
                 }
             });
         };
+
         var deleteAttachment = function () {
             var AttachmentRecord = App.uxAttachmentGrid.getSelectionModel().getSelection();
 

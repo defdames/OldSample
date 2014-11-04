@@ -37,6 +37,32 @@ namespace DBI.Data
             }
         }
 
+        public static List<WEB_PROJECTS_V> ProjectList(List<long> OrgsList)
+        {
+            using (Entities _context = new Entities())
+            {
+                var data = from p in _context.PROJECTS_V
+                           where p.PROJECT_TYPE == "CUSTOMER BILLING" && p.TEMPLATE_FLAG == "N" && p.PROJECT_STATUS_CODE == "APPROVED"
+                           select p;
+                
+                data = data.Where(p => OrgsList.Contains(p.CARRYING_OUT_ORGANIZATION_ID));
+
+                var dataList = data.ToList();
+
+                List<WEB_PROJECTS_V> returnList = new List<WEB_PROJECTS_V>();
+                foreach (PROJECTS_V item in dataList)
+                {
+                    WEB_PROJECTS_V rItem = new WEB_PROJECTS_V();
+                    rItem.LONG_NAME = item.LONG_NAME;
+                    rItem.ORGANIZATION_NAME = item.ORGANIZATION_NAME;
+                    rItem.SEGMENT1 = item.SEGMENT1;
+                    rItem.PROJECT_ID = item.PROJECT_ID;
+                    returnList.Add(rItem);
+                }
+                return returnList;
+            }
+        }
+
         public static List<WEB_PROJECTS_V> supportProjectList(int OrganizationId = 0)
         {
             using (Entities _context = new Entities())

@@ -23,6 +23,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             }
             if (!X.IsAjaxRequest || !IsPostBack)
             {
+                isDirty = 0;
                 uxAddFormCatStore.Reload();
                 uxAddFormOrgStore.Reload();
                 uxQuestionFieldsetStore.Reload();
@@ -791,6 +792,18 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 uxFormTypeStore.DataSource = FormTypes;
                 uxCopyFormTypeStore.DataSource = FormTypes;
             }
+        }
+
+        [DirectMethod]
+        public void dmAddToDirty()
+        {
+            isDirty++;
+        }
+
+        [DirectMethod]
+        public void dmSubtractFromDirty()
+        {
+            isDirty--;
         }
     }
 }

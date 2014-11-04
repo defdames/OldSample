@@ -50,7 +50,7 @@
         };
 
         var setDDValue = function () {
-            if (App.uxStartFilterDate.value && App.uxEndFilterDate.value) {
+            if (App.uxStartFilterDate.value && App.uxEndFilterDate.value && App.uxStartFilterDate.isValid() && App.uxEndFilterDate.isValid()) {
                 var start = new Date(App.uxStartFilterDate.value);
                 var startDayOfMonth = start.getDate();
                 if (startDayOfMonth < 10) {
@@ -64,29 +64,25 @@
                 
                 App.uxDropDownFilter.setValue(">= " + (start.getMonth() + 1) + "-" + startDayOfMonth + "-" + start.getFullYear() + " <= " + (end.getMonth() + 1) + "-" + endDayOfMonth + "-" + end.getFullYear());
             }
-            else if (!App.uxStartFilterDate.value && App.uxEndFilterDate.value) {
-                var end = new Date(App.uxEndFilterDate.value);
-                var endDayOfMonth = end.getDate();
-                if (endDayOfMonth < 10) {
-                    endDayOfMonth = "0" + endDayOfMonth;
-                }
-                
-                App.uxDropDownFilter.setValue("<= " + (end.getMonth() + 1) + "-" + endDayOfMonth + "-" + end.getFullYear());
-            }
-            else if(!App.uxEndFilterDate.value && App.uxStartFilterDate.value){
-                var start = new Date(App.uxStartFilterDate.value);
-                var startDayOfMonth = start.getDate();
-                if (startDayOfMonth < 10) {
-                    startDayOfMonth = "0" + startDayOfMonth;
-                }
-                App.uxDropDownFilter.setValue(">= " + (start.getMonth() + 1) + "-" + startDayOfMonth + "-" + start.getFullYear());
-            }
-            
         };
 
         var clearDates = function () {
             App.uxStartFilterDate.clear();
             App.uxEndFilterDate.clear();
+        };
+
+        var dateTimeValidator = function () {
+            var StartDate = new Date(App.uxStartFilterDate.value);
+            var EndDate = new Date(App.uxEndFilterDate.value);
+
+            if (StartDate < EndDate) {
+                return true;
+                App.uxStartFilterDate.clearInvalid();
+                App.uxEndFilterDate.clearInvalid();
+            }
+            else {
+                return "Start Date/Time must be earlier than End Date/Time";
+            }
         };
     </script>
     <style type="text/css">
@@ -160,22 +156,26 @@
                                                                 runat="server"
                                                                 Editable="false"
                                                                 LabelWidth="30"
-                                                                FieldLabel="From">
+                                                                FieldLabel="From"
+                                                                InvalidCls="allowBlank">
                                                                 <Listeners>
                                                                     <Render Fn="onFilterRender" />
                                                                     <Select Fn="setDDValue" />
                                                                 </Listeners>
+                                                                <Validator Fn="dateTimeValidator" />
                                                             </ext:DateField>
                                                             <ext:DateField
                                                                 ID="uxEndFilterDate"
                                                                 runat="server"
                                                                 Editable="false"
                                                                 LabelWidth="30"
-                                                                FieldLabel="To">
+                                                                FieldLabel="To"
+                                                                InvalidCls="allowBlank">
                                                                 <Listeners>
                                                                     <Render Fn="onFilterRender" />
                                                                     <Select Fn="setDDValue" />
                                                                 </Listeners>
+                                                                <Validator Fn="dateTimeValidator" />
                                                             </ext:DateField>
                                                         </Items>
                                                     </ext:Panel>

@@ -464,6 +464,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxAttachmentStore.DataSource = data;
             }
         }
+
         /// <summary>
         /// Get data for Footer grid
         /// </summary>
@@ -1036,7 +1037,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
                 Record.Commit();
             }
-
+            dmSubtractFromDirty();
             uxEmployeeStore.CommitChanges();
         }
 
@@ -1105,7 +1106,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 Record.Set("SEGMENT1", EquipmentItem.SEGMENT1);
                 Record.Commit();
             }
-
+            dmSubtractFromDirty();
             uxEquipmentStore.CommitChanges();
         }
 
@@ -1196,6 +1197,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 Record.Set("TASK_NUMBER", TaskItem.TASK_NUMBER);
                 Record.Commit();
             }
+            dmSubtractFromDirty();
             uxProductionStore.CommitChanges();
         }
 
@@ -1247,7 +1249,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                 GenericData.Update(UpdatedWeather);
             }
-
+            dmSubtractFromDirty();
             uxWeatherStore.CommitChanges();
         }
 
@@ -1309,7 +1311,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                 GenericData.Update(UpdatedChemical);
             }
-
+            dmSubtractFromDirty();
             uxChemicalStore.CommitChanges();
         }
 
@@ -1406,7 +1408,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 Record.Set("INV_NAME", InvName);
                 Record.Commit();
             }
-
+            dmSubtractFromDirty();
             uxInventoryStore.CommitChanges();
         }
 
@@ -1469,9 +1471,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             else
             {
-                int CurrentOrg = Convert.ToInt32(Authentication.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
+                List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
+                //int CurrentOrg = Convert.ToInt32(Authentication.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
                 //Get projects for my org only
-                dataIn = WEB_EQUIPMENT_V.ListEquipment(CurrentOrg);
+                dataIn = WEB_EQUIPMENT_V.ListEquipment(OrgsList);
             }
 
             int count;

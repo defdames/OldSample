@@ -121,6 +121,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.Store uxFormTypeStore;
         
         /// <summary>
+        /// uxFormRowEdit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowEditing uxFormRowEdit;
+        
+        /// <summary>
         /// uxAddFormButton control.
         /// </summary>
         /// <remarks>
@@ -220,6 +229,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.Store uxQuestionCategoryStore;
         
         /// <summary>
+        /// uxFieldsetRowEdit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowEditing uxFieldsetRowEdit;
+        
+        /// <summary>
         /// PagingToolbar1 control.
         /// </summary>
         /// <remarks>
@@ -292,6 +310,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.Store uxQuestionFieldsetStore;
         
         /// <summary>
+        /// uxQuestionRowEdit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowEditing uxQuestionRowEdit;
+        
+        /// <summary>
         /// uxAddQuestionButton control.
         /// </summary>
         /// <remarks>
@@ -326,6 +353,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Store uxOptionsStore;
+        
+        /// <summary>
+        /// uxOptionRowEdit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowEditing uxOptionRowEdit;
         
         /// <summary>
         /// uxAddOptionButton control.
