@@ -29,7 +29,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         {
              if (!X.IsAjaxRequest)
             {
-             
+                uxSupplementalTypeStore.Data = StaticLists.SupplementalType;
                 uxAddStateList.Data = StaticLists.CrossingStateList;
 
                 if (SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue") != string.Empty)
@@ -46,6 +46,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string ServiceUnit = uxAddServiceUnit.SelectedItem.Value;
             string SubDiv = uxAddSubDiv.SelectedItem.Value;
             string State = uxAddStateComboBox.SelectedItem.Value;
+            string Type = uxSupplementalType.SelectedItem.Value;
             using (Entities _context = new Entities())
             {
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
@@ -56,8 +57,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 string selectedServiceUnit = ServiceUnit;
                 string selectedSubDiv = SubDiv;
                 string selectedState = State;
-
-                string url = "/Views/Modules/CrossingMaintenance/Reports/SupplementalBillingReport.aspx?selectedRailroad=" + selectedRailroad + "&selectedServiceUnit=" + selectedServiceUnit + "&selectedSubDiv=" + selectedSubDiv + "&selectedState=" + selectedState + "&selectedStart=" + selectedStart + "&selectedEnd=" + selectedEnd;
+                string selectedType = Type;
+                string url = "/Views/Modules/CrossingMaintenance/Reports/SupplementalBillingReport.aspx?selectedRailroad=" + selectedRailroad + "&selectedServiceUnit=" + selectedServiceUnit + "&selectedSubDiv=" + selectedSubDiv + "&selectedState=" + selectedState + "&selectedStart=" + selectedStart + "&selectedEnd=" + selectedEnd + "&selectedType=" + selectedType;
                 Ext.Net.Panel pan = new Ext.Net.Panel();
 
                 pan.ID = "Panel";

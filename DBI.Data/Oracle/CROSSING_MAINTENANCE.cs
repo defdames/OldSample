@@ -582,7 +582,7 @@ SELECT
                   return context.Database.SqlQuery<SupplementalReport>(sql).ToList();
               }
           }
-          public static List<StateCrossingList> GetStateCrossingList(string selectedRailroad, string selectedServiceUnit, string selectedSubDiv, string selectedState)
+          public static List<StateCrossingList> GetStateCrossingList(string selectedRailroad, string selectedServiceUnit, string selectedSubDiv, string selectedState, string selectedSpray)
           {
              
               string sql1 = string.Format(@"                          
@@ -604,9 +604,10 @@ SELECT
                                 d.SUB_CONTRACTED,
                                 d.LONGITUDE,
                                 d.LATITUDE,
-                                d.SPECIAL_INSTRUCTIONS
-                FROM CROSSINGS d ");
-
+                                d.SPECIAL_INSTRUCTIONS,
+                                a.SPRAY
+                FROM CROSSINGS d 
+                LEFT JOIN CROSSING_APPLICATION a ON d.CROSSING_ID = a.CROSSING_ID");
               string sql2 = "";
               if (selectedServiceUnit != null && selectedSubDiv != null && selectedState != null)
               {
@@ -663,7 +664,21 @@ SELECT
 
                    ", selectedRailroad, selectedServiceUnit, selectedSubDiv, selectedState);
               }
-                   string sql = sql1 + sql2;
+             string sql3 = "";
+             if (selectedSpray == "Sprayed")
+             {
+                 sql3 = string.Format(@" AND a.SPRAY = 'Y'
+
+                   ", selectedSpray);
+             }
+             else if (selectedSpray == "Not Sprayed")
+             {
+                 sql3 = string.Format(@" AND a.SPRAY = 'N'
+
+                   ", selectedSpray);
+             }
+             
+                   string sql = sql1 + sql2 + sql3;
                           using (Entities context = new Entities())
                           {
                               return context.Database.SqlQuery<StateCrossingList>(sql).ToList();
@@ -1035,7 +1050,7 @@ SELECT
               }
           }
 
-          public static List<SupplementalReport> GetSupplementalReportList(string selectedRailroad, string selectedServiceUnit, string selectedSubDiv, string selectedState, DateTime selectedStart, DateTime selectedEnd)
+          public static List<SupplementalReport> GetSupplementalReportList(string selectedRailroad, string selectedServiceUnit, string selectedSubDiv, string selectedState, DateTime selectedStart, DateTime selectedEnd, string selectedType)
           {
 
               string sql1 = string.Format(@"                          
@@ -1148,7 +1163,23 @@ SELECT
                    ", selectedEnd.ToString("dd-MMM-yyyy"));
               }
 
-              string sql = sql1 + sql2 + sql3;
+              string sql4 = "";
+              if (selectedType == "Approved/Not Complete")
+              {
+                  sql4 = string.Format(@" 
+                  AND a.CUT_TIME IS NULL
+
+                   ", selectedType);
+              }
+              else if (selectedType == "Complete Crossings")
+              {
+                  sql4 = string.Format(@" 
+                  AND a.CUT_TIME IS NOT NULL
+
+                   ", selectedType);
+              }
+           
+              string sql = sql1 + sql2 + sql3 + sql4;
               using (Entities context = new Entities())
               {
                   return context.Database.SqlQuery<SupplementalReport>(sql).ToList();
@@ -1435,8 +1466,8 @@ SELECT
           }
           public class SupplementalReport
           {
-              public decimal INVOICE_SUPP_ID { get; set; }
-              public decimal SUPPLEMENTAL_ID { get; set; }
+              public decimal? INVOICE_SUPP_ID { get; set; }
+              public decimal? SUPPLEMENTAL_ID { get; set; }
               public long CROSSING_ID { get; set; }
               public long PROJECT_ID { get; set; }
               public string CROSSING_NUMBER { get; set; }

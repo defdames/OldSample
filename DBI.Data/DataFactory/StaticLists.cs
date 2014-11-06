@@ -30,6 +30,31 @@ namespace DBI.Data.DataFactory
             return languages;
         }
 
+        public static object CrossingsType
+        {
+            get
+            {
+                return new object[]
+                {
+                    new object[]{"ALL", "ALL"},
+                    new object[]{"Sprayed", "Sprayed"},
+                    new object[]{"Not Sprayed", "Not Sprayed"},
+                };
+            }
+        }
+        public static object SupplementalType
+        {
+            get
+            {
+                return new object[]
+                {
+                    new object[]{"ALL", "ALL"},
+                    new object[]{"Approved/Not Complete", "Approved/Not Complete"},
+                    new object[]{"Completed Crossings", "Completed Crossings"},
+                };
+            }
+        }
+
         public static object WindDirection
         {
             get

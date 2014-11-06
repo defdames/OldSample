@@ -29,14 +29,14 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
                 }
 
-                if (!validateComponentSecurity("SYS.CrossingMaintenance"))
-                {
-                    Toolbar1.Hide();
-                }
-                else
-                {
-                    Toolbar1.Show();
-                }
+                //if (!validateComponentSecurity("SYS.CrossingMaintenance"))
+                //{
+                //    Toolbar1.Hide();
+                //}
+                //else
+                //{
+                //    Toolbar1.Show();
+                //}
             }
         }
 
