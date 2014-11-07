@@ -83,16 +83,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         public static bool AreMetersMissing(long HeaderId)
         {
             //Get List of equipment
-            List<DAILY_ACTIVITY_EQUIPMENT> EquipmentList;
+            List<DAILY_ACTIVITY.EquipmentDetails> EquipmentList;
 
             using (Entities _context = new Entities())
             {
-                EquipmentList = (from d in _context.DAILY_ACTIVITY_EQUIPMENT
-                                 where d.HEADER_ID == HeaderId
-                                 select d).ToList();
+                EquipmentList = DAILY_ACTIVITY.GetEquipmentData(_context, HeaderId).ToList();
             }
             int NumberOfMissingMeters = 0;
-            foreach (DAILY_ACTIVITY_EQUIPMENT Equipment in EquipmentList)
+            foreach (DAILY_ACTIVITY.EquipmentDetails Equipment in EquipmentList)
             {
                 if (Equipment.ODOMETER_START == null || Equipment.ODOMETER_END == null)
                 {
@@ -111,9 +109,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             using (Entities _context = new Entities())
             {
-                DAILY_ACTIVITY_EQUIPMENT EquipmentRecord = (from d in _context.DAILY_ACTIVITY_EQUIPMENT
-                                                            where d.EQUIPMENT_ID == EquipmentID
-                                                            select d).Single();
+                DAILY_ACTIVITY_EQUIPMENT EquipmentRecord = DAILY_ACTIVITY.GetEquipment(_context, EquipmentID).Single();
                 if (EquipmentRecord.ODOMETER_START == 0 || EquipmentRecord.ODOMETER_END == 0)
                 {
                     string Name = (from e in _context.DAILY_ACTIVITY_EQUIPMENT

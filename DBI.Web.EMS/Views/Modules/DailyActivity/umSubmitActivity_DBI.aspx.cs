@@ -42,9 +42,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 try
                 {
-                    data = (from d in _context.DAILY_ACTIVITY_FOOTER
-                            where d.HEADER_ID == HeaderId
-                            select d).Single();
+                    data = DAILY_ACTIVITY.GetFooter(_context, HeaderId).Single();
                     try
                     {
                         uxSubmitReasonForNoWork.SetValue(data.COMMENTS.ToString());
@@ -125,9 +123,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             using (Entities _context = new Entities())
             {
                 //Check if footer record exists
-                data = (from d in _context.DAILY_ACTIVITY_FOOTER
-                        where d.HEADER_ID == HeaderId
-                        select d).SingleOrDefault();
+                data = DAILY_ACTIVITY.GetFooter(_context, HeaderId).SingleOrDefault();
             }
             
             if (data != null)
