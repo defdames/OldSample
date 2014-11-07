@@ -313,6 +313,7 @@
     <Compile Include="MTL_TRANSACTION_INT_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="Oracle\DAILY_ACTIVITY.cs" />
     <Compile Include="Oracle\OVERHEAD.cs" />
     <Compile Include="Oracle\CROSSING_MAINTENANCE.cs" />
     <Compile Include="Oracle\SYS_EMAIL.cs" />
