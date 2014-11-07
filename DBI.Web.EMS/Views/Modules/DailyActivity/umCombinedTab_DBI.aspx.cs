@@ -904,7 +904,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 using (Entities _context = new Entities())
                 {
                     EmployeeName = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == item.PERSON_ID).Select(x => x.EMPLOYEE_NAME).Single();
-                    EquipmentName = DAILY_ACTIVITY.GetEquipmentData(_context, HeaderId).Where(x => x.EQUIPMENT_ID == item.EQUIPMENT_ID).Select(x => x.NAME).Single();
+                    EquipmentName = DAILY_ACTIVITY.GetEquipmentData(_context, HeaderId).Where(x => x.EQUIPMENT_ID == item.EQUIPMENT_ID).Select(x => x.NAME).SingleOrDefault();
                 }
                 ModelProxy Record = uxEmployeeStore.GetByInternalId(item.PhantomID);
                 Record.CreateVariable = true;
