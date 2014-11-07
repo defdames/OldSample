@@ -354,7 +354,7 @@
                               <Style>
                                 <FontFamily>Calibri</FontFamily>
                                 <FontSize>7pt</FontSize>
-                                <Format>'$'#,0.00;('$'#,0.00)</Format>
+                                <Format>#,0.00;(#,0.00)</Format>
                                 <Color>=IIF(Fields!OP.Value &lt; 0, "Red", "Black")</Color>
                               </Style>
                             </TextRun>
@@ -398,7 +398,7 @@
                               <Style>
                                 <FontFamily>Calibri</FontFamily>
                                 <FontSize>7pt</FontSize>
-                                <Format>'$'#,0.00;('$'#,0.00)</Format>
+                                <Format>#,0.00;(#,0.00)</Format>
                                 <Color>=IIF(Fields!OP_VAR.Value &lt; 0, "Red", "Black")</Color>
                               </Style>
                             </TextRun>
@@ -795,7 +795,7 @@
                               <Style>
                                 <FontFamily>Calibri</FontFamily>
                                 <FontSize>7pt</FontSize>
-                                <Format>'$'#,0.00;('$'#,0.00)</Format>
+                                <Format>#,0.00;(#,0.00)</Format>
                                 <Color>White</Color>
                               </Style>
                             </TextRun>
@@ -843,7 +843,7 @@
                               <Style>
                                 <FontFamily>Calibri</FontFamily>
                                 <FontSize>7pt</FontSize>
-                                <Format>'$'#,0.00;('$'#,0.00)</Format>
+                                <Format>#,0.00;(#,0.00)</Format>
                                 <Color>White</Color>
                               </Style>
                             </TextRun>
@@ -1133,7 +1133,7 @@
         </Style>
       </Textbox>
     </ReportItems>
-    <Height>3.85417in</Height>
+    <Height>2.19792in</Height>
     <Style>
       <BackgroundColor>White</BackgroundColor>
     </Style>

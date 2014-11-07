@@ -223,6 +223,179 @@ namespace DBI.Data
                 }
             }
         }
+
+        public static List<SingleCombo> RollupSummaryReports()
+        {
+            List<SingleCombo> comboItems = new List<SingleCombo>();
+
+            comboItems.Add(new SingleCombo { ID_NAME = "Summary" });
+            comboItems.Add(new SingleCombo { ID_NAME = "Comments & Variances" });
+            comboItems.Add(new SingleCombo { ID_NAME = "Liabilities" });
+            comboItems.Add(new SingleCombo { ID_NAME = "All Projects" });
+            comboItems.Add(new SingleCombo { ID_NAME = "Summary - Budget Year/Version Comparison" });
+            comboItems.Add(new SingleCombo { ID_NAME = "Overhead Comparison" });
+            return comboItems;
+        }
+        public class AllProjects
+        {
+            #region Fields
+            public class Fields
+            {
+                public long BUD_BID_PROJECTS_ID { get; set; }
+                public string PROJECT_ID { get; set; }
+                public string PROJECT_NUM { get; set; }
+                public string TYPE { get; set; }
+                public string PROJECT_NAME { get; set; }
+                public string STATUS { get; set; }
+                public decimal ACRES { get; set; }
+                public decimal DAYS { get; set; }
+                public decimal GROSS_REC { get; set; }
+                public decimal MAT_USAGE { get; set; }
+                public decimal GROSS_REV { get; set; }
+                public decimal DIR_EXP { get; set; }
+                public decimal OP { get; set; }
+                public decimal PREV_OP { get; set; }
+                public decimal MAT_PERC { get; set; }
+                public decimal GR_PERC { get; set; }
+                public decimal DIRECTS_PERC { get; set; }
+                public decimal OP_PERC { get; set; }
+                public decimal OP_VAR { get; set; }
+                public string COMPARE_PRJ_OVERRIDE { get; set; }
+                public string WE_OVERRIDE { get; set; }
+                public string COMMENTS { get; set; }
+                public string LIABILITY { get; set; }
+                public decimal LIABILITY_OP { get; set; }
+                public long ORG_ID { get; set; }
+                public string ORG_NAME { get; set; }
+            }
+            #endregion
+
+            public static List<Fields> AllProjects2(string orgName, long orgID, long yearID, long verID, long prevYearID, long prevVerID, long userID, long hierarchyID)
+            {              
+                string sql1 = string.Format(@"
+                    WITH
+                        CUR_PROJECT_INFO_WITH_STATUS AS(
+                            SELECT BUD_BID_STATUS.STATUS_ID, BUD_BID_PROJECTS.ORG_ID, BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID, BUD_BID_PROJECTS.PROJECT_ID, BUD_BID_PROJECTS.TYPE, BUD_BID_PROJECTS.PRJ_NAME, BUD_BID_STATUS.STATUS,
+                                BUD_BID_PROJECTS.ACRES, BUD_BID_PROJECTS.DAYS, BUD_BID_PROJECTS.COMPARE_PRJ_OVERRIDE, BUD_BID_PROJECTS.COMPARE_PRJ_AMOUNT, BUD_BID_PROJECTS.WE_OVERRIDE, BUD_BID_PROJECTS.COMMENTS,
+                                BUD_BID_PROJECTS.LIABILITY, BUD_BID_PROJECTS.LIABILITY_OP
+                            FROM BUD_BID_PROJECTS
+                            INNER JOIN BUD_BID_STATUS
+                            ON BUD_BID_PROJECTS.STATUS_ID = BUD_BID_STATUS.STATUS_ID
+                            WHERE BUD_BID_PROJECTS.YEAR_ID = {2} AND BUD_BID_PROJECTS.VER_ID = {3} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP'
+                        ),     
+                        ORACLE_PROJECT_NAMES AS (
+                            SELECT TO_CHAR(ORGANIZATION_ID) PROJECT_ID, 'N/A' AS PROJECT_NUM, NAME || ' (Org)' PROJECT_NAME, 'ORG' AS TYPE FROM APPS.HR_ALL_ORGANIZATION_UNITS
+                                UNION ALL
+                            SELECT CAST(PROJECTS_V.PROJECT_ID AS varchar(20)) AS PROJECT_ID, PROJECTS_V.SEGMENT1 AS PROJECT_NUM, PROJECTS_V.LONG_NAME AS PROJECT_NAME, 'PROJECT' AS TYPE
+                            FROM PROJECTS_V
+                            LEFT JOIN PA.PA_PROJECT_CLASSES
+                            ON PROJECTS_V.PROJECT_ID = PA.PA_PROJECT_CLASSES.PROJECT_ID
+                            WHERE PROJECTS_V.PROJECT_STATUS_CODE = 'APPROVED' AND PROJECTS_V.PROJECT_TYPE <> 'TRUCK ' || CHR(38) || ' EQUIPMENT' AND PA.PA_PROJECT_CLASSES.CLASS_CATEGORY = 'Job Cost Rollup'
+                                UNION ALL
+                            SELECT CONCAT('Various - ', PA.PA_PROJECT_CLASSES.CLASS_CODE) AS PROJECT_ID, 'N/A' AS PROJECT_NUM, CONCAT('Various - ', PA.PA_PROJECT_CLASSES.CLASS_CODE) AS PROJECT_NAME, 'ROLLUP' AS TYPE
+                            FROM PROJECTS_V
+                            LEFT JOIN PA.PA_PROJECT_CLASSES
+                            ON PROJECTS_V.PROJECT_ID = PA.PA_PROJECT_CLASSES.PROJECT_ID
+                            WHERE PROJECTS_V.PROJECT_STATUS_CODE = 'APPROVED' AND PROJECTS_V.PROJECT_TYPE <> 'TRUCK ' || CHR(38) || ' EQUIPMENT' AND PA.PA_PROJECT_CLASSES.CLASS_CATEGORY = 'Job Cost Rollup'
+                            AND PA.PA_PROJECT_CLASSES.CLASS_CODE <> 'None'
+                            GROUP BY CONCAT('Various - ', PA.PA_PROJECT_CLASSES.CLASS_CODE) 
+                        ),
+                        BUDGET_LINE_AMOUNTS AS (
+                            SELECT * FROM (           
+                                SELECT BUD_BID_BUDGET_NUM.PROJECT_ID, BUD_BID_BUDGET_NUM.LINE_ID, BUD_BID_BUDGET_NUM.NOV
+                                FROM BUD_BID_PROJECTS
+                                LEFT OUTER JOIN BUD_BID_DETAIL_TASK ON BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = BUD_BID_DETAIL_TASK.PROJECT_ID
+                                LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_BUDGET_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_BUDGET_NUM.DETAIL_TASK_ID 
+                                WHERE BUD_BID_PROJECTS.YEAR_ID = {2} AND BUD_BID_PROJECTS.VER_ID = {3} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT')       
+                            PIVOT(
+                                SUM(NOV) FOR (LINE_ID)
+                                IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                        ),
+                        PREV_OP AS (                        
+                            SELECT BUD_BID_PROJECTS.PROJECT_ID, NOV PREV_OP  
+                            FROM BUD_BID_PROJECTS
+                            LEFT OUTER JOIN BUD_BID_DETAIL_TASK ON BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = BUD_BID_DETAIL_TASK.PROJECT_ID
+                            LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_BUDGET_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_BUDGET_NUM.DETAIL_TASK_ID 
+                            WHERE BUD_BID_PROJECTS.YEAR_ID = {4} AND BUD_BID_PROJECTS.VER_ID = {5} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT' AND BUD_BID_BUDGET_NUM.LINE_ID = 10        
+                        ) ,
+                        ORG_NAME AS (
+                            SELECT ORGANIZATION_ID, NAME FROM APPS.HR_ALL_ORGANIZATION_UNITS
+                        )
+                        
+                    SELECT CASE WHEN CUR_PROJECT_INFO_WITH_STATUS.STATUS_ID = 45 THEN 'Z' ELSE 'A' END PROJECT_SORT,
+                        CUR_PROJECT_INFO_WITH_STATUS.ORG_ID,
+                        ORG_NAME.NAME ORG_NAME,
+                        CUR_PROJECT_INFO_WITH_STATUS.BUD_BID_PROJECTS_ID,
+                        CUR_PROJECT_INFO_WITH_STATUS.PROJECT_ID, 
+                        CASE WHEN CUR_PROJECT_INFO_WITH_STATUS.TYPE = 'OVERRIDE' THEN '-- OVERRIDE --'
+                            WHEN CUR_PROJECT_INFO_WITH_STATUS.TYPE = 'ORG' THEN 'N/A'
+                            WHEN CUR_PROJECT_INFO_WITH_STATUS.TYPE = 'ROLLUP' THEN 'N/A'
+                            ELSE ORACLE_PROJECT_NAMES.PROJECT_NUM END PROJECT_NUM,                       
+                        CUR_PROJECT_INFO_WITH_STATUS.TYPE,
+                        CASE WHEN CUR_PROJECT_INFO_WITH_STATUS.TYPE = 'OVERRIDE' THEN CUR_PROJECT_INFO_WITH_STATUS.PRJ_NAME ELSE ORACLE_PROJECT_NAMES.PROJECT_NAME END PROJECT_NAME,
+                        CUR_PROJECT_INFO_WITH_STATUS.STATUS, 
+                        CUR_PROJECT_INFO_WITH_STATUS.ACRES, 
+                        CUR_PROJECT_INFO_WITH_STATUS.DAYS,
+                        BUDGET_LINE_AMOUNTS.GROSS_REC,
+                        BUDGET_LINE_AMOUNTS.MAT_USAGE,
+                        BUDGET_LINE_AMOUNTS.GROSS_REV,
+                        BUDGET_LINE_AMOUNTS.DIR_EXP,
+                        BUDGET_LINE_AMOUNTS.OP,                        
+                        CASE WHEN CUR_PROJECT_INFO_WITH_STATUS.COMPARE_PRJ_OVERRIDE = 'Y' THEN CUR_PROJECT_INFO_WITH_STATUS.COMPARE_PRJ_AMOUNT ELSE (CASE WHEN PREV_OP.PREV_OP IS NULL THEN 0 ELSE PREV_OP.PREV_OP END) END PREV_OP,
+                        CASE WHEN BUDGET_LINE_AMOUNTS.GROSS_REC = 0 THEN 0 ELSE ROUND((BUDGET_LINE_AMOUNTS.MAT_USAGE/BUDGET_LINE_AMOUNTS.GROSS_REC) * 100, 2) END MAT_PERC,
+                        CASE WHEN BUDGET_LINE_AMOUNTS.GROSS_REV = 0 THEN 0 ELSE ROUND((BUDGET_LINE_AMOUNTS.GROSS_REC/BUDGET_LINE_AMOUNTS.GROSS_REV) * 100, 2) END GR_PERC,
+                        CASE WHEN BUDGET_LINE_AMOUNTS.GROSS_REV = 0 THEN 0 ELSE ROUND((BUDGET_LINE_AMOUNTS.DIR_EXP/BUDGET_LINE_AMOUNTS.GROSS_REV) * 100, 2) END DIRECTS_PERC,
+                        CASE WHEN BUDGET_LINE_AMOUNTS.GROSS_REV = 0 THEN 0 ELSE ROUND((BUDGET_LINE_AMOUNTS.OP/BUDGET_LINE_AMOUNTS.GROSS_REV) * 100, 2) END OP_PERC,       
+                        BUDGET_LINE_AMOUNTS.OP - (CASE WHEN CUR_PROJECT_INFO_WITH_STATUS.COMPARE_PRJ_OVERRIDE = 'Y' THEN CUR_PROJECT_INFO_WITH_STATUS.COMPARE_PRJ_AMOUNT ELSE (CASE WHEN PREV_OP.PREV_OP IS NULL THEN 0 ELSE PREV_OP.PREV_OP END) END) OP_VAR,
+                        CUR_PROJECT_INFO_WITH_STATUS.COMPARE_PRJ_OVERRIDE,
+                        CUR_PROJECT_INFO_WITH_STATUS.WE_OVERRIDE,
+                        CUR_PROJECT_INFO_WITH_STATUS.COMMENTS,
+                        CUR_PROJECT_INFO_WITH_STATUS.LIABILITY,
+                        CUR_PROJECT_INFO_WITH_STATUS.LIABILITY_OP
+                    FROM CUR_PROJECT_INFO_WITH_STATUS
+                    LEFT OUTER JOIN ORACLE_PROJECT_NAMES ON CUR_PROJECT_INFO_WITH_STATUS.PROJECT_ID = ORACLE_PROJECT_NAMES.PROJECT_ID AND CUR_PROJECT_INFO_WITH_STATUS.TYPE = ORACLE_PROJECT_NAMES.TYPE
+                    LEFT OUTER JOIN BUDGET_LINE_AMOUNTS ON CUR_PROJECT_INFO_WITH_STATUS.BUD_BID_PROJECTS_ID = BUDGET_LINE_AMOUNTS.PROJECT_ID
+                    LEFT OUTER JOIN PREV_OP ON CUR_PROJECT_INFO_WITH_STATUS.PROJECT_ID = PREV_OP.PROJECT_ID
+                    LEFT OUTER JOIN ORG_NAME ON CUR_PROJECT_INFO_WITH_STATUS.ORG_ID = ORG_NAME.ORGANIZATION_ID", orgName, orgID, yearID, verID, prevYearID, prevVerID);      
+
+                List<long> summaryOrgs = BB.OverallSummaryBudgetOrgsBelowCurrent(userID, hierarchyID, orgID);
+                List<Fields> lineDetail = new List<Fields>();
+                foreach (long summaryOrg in summaryOrgs)
+                {               
+                    List<long> whereOrgs = HR.ActiveOrganizationsByHierarchy(hierarchyID, summaryOrg).Select(x => x.ORGANIZATION_ID).ToList();
+                    string sql2 = " WHERE ORG_ID = 0";
+                    if (whereOrgs.Count() == 0)
+                    {
+                        if (BB.IsUserOrgAndAllowed(userID, summaryOrg) == true)
+                        {
+                            sql2 = sql2 + " OR ORG_ID = " + summaryOrg;
+                        }
+                    }
+                    else
+                    {
+                        foreach (long org in whereOrgs)
+                        {
+                            if (BB.IsUserOrgAndAllowed(userID, org) == true)
+                            {
+                                sql2 = sql2 + " OR ORG_ID = " + org;
+                            }
+                        }
+                    }
+                    string sql3 = " ORDER BY ORG_NAME, PROJECT_SORT, LOWER(PROJECT_NAME)";
+                    string sql = sql1 + sql2 + sql3;
+
+                    List<Fields> data;
+                    using (Entities context = new Entities())
+                    {
+                        data = context.Database.SqlQuery<Fields>(sql).ToList();
+                    }
+
+                    lineDetail.AddRange(data);
+                }
+
+                return lineDetail;
+            }
+        }
     }
         
     public class BB
@@ -784,123 +957,7 @@ namespace DBI.Data
                 public decimal NET_CONT_VAR { get; set; }
             }
             #endregion
-
-            public static List<Fields> ORIGData(long userID, long hierarchyID, long orgID, long yearID, long verID, long prevYearID, long prevVerID)
-            {
-                string ohVersion = BB.BudBidVerToOHBudVer(verID);
-                List<long> summaryOrgs = BB.OverallSummaryBudgetOrgsBelowCurrent(userID, hierarchyID, orgID);
-                List<Fields> lineDetail = new List<Fields>();
-                foreach (long summaryOrg in summaryOrgs)
-                {
-                    string orgName = BB.OrgName(summaryOrg);
-
-                    string sql1 = string.Format(@"                          
-                        WITH
-                            ORG_NAME AS(
-                                SELECT ORGANIZATION_ID, NAME
-                                FROM APPS.HR_ALL_ORGANIZATION_UNITS      
-                            ),
-                            BUDGET_LINE_AMOUNTS AS (
-                                SELECT * FROM (           
-                                    SELECT BUD_BID_BUDGET_NUM.LINE_ID, BUD_BID_BUDGET_NUM.NOV, BUD_BID_PROJECTS.ORG_ID
-                                    FROM BUD_BID_PROJECTS
-                                    LEFT OUTER JOIN BUD_BID_DETAIL_TASK ON BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = BUD_BID_DETAIL_TASK.PROJECT_ID
-                                    LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_BUDGET_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_BUDGET_NUM.DETAIL_TASK_ID 
-                                    WHERE BUD_BID_PROJECTS.YEAR_ID = {1} AND BUD_BID_PROJECTS.VER_ID = {2} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT')       
-                                PIVOT(
-                                    SUM(NOV) FOR (LINE_ID)
-                                    IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
-                            ),
-                            PREV_OP AS (                         
-                                SELECT BUD_BID_PROJECTS.ORG_ID, SUM(NOV) PREV_OP                                         
-                                FROM BUD_BID_PROJECTS
-                                LEFT OUTER JOIN BUD_BID_DETAIL_TASK ON BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = BUD_BID_DETAIL_TASK.PROJECT_ID
-                                LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_BUDGET_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_BUDGET_NUM.DETAIL_TASK_ID 
-                                WHERE BUD_BID_PROJECTS.YEAR_ID = {3} AND BUD_BID_PROJECTS.VER_ID = {4} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT' AND BUD_BID_BUDGET_NUM.LINE_ID = 10                             
-                                GROUP BY BUD_BID_PROJECTS.ORG_ID         
-                            ),
-                            OVERHEAD AS (
-                                SELECT OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID,
-                                    NVL(SUM(AMOUNT), 0) OH
-                                FROM OVERHEAD_ORG_BUDGETS
-                                LEFT JOIN OVERHEAD_BUDGET_TYPE ON OVERHEAD_ORG_BUDGETS.OVERHEAD_BUDGET_TYPE_ID = OVERHEAD_BUDGET_TYPE.OVERHEAD_BUDGET_TYPE_ID
-                                LEFT JOIN OVERHEAD_BUDGET_DETAIL ON OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID = OVERHEAD_BUDGET_DETAIL.ORG_BUDGET_ID 
-                                WHERE OVERHEAD_ORG_BUDGETS.FISCAL_YEAR = {1} AND OVERHEAD_BUDGET_TYPE.BUDGET_NAME = '{5}'
-                                GROUP BY OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID
-                            ),
-                            PREV_OVERHEAD AS (
-                                SELECT OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID PREV_ORG_BUDGET_ID,
-                                    NVL(SUM(AMOUNT), 0) PREV_OH
-                                FROM OVERHEAD_ORG_BUDGETS
-                                LEFT JOIN OVERHEAD_BUDGET_TYPE ON OVERHEAD_ORG_BUDGETS.OVERHEAD_BUDGET_TYPE_ID = OVERHEAD_BUDGET_TYPE.OVERHEAD_BUDGET_TYPE_ID
-                                LEFT JOIN OVERHEAD_BUDGET_DETAIL ON OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID = OVERHEAD_BUDGET_DETAIL.ORG_BUDGET_ID 
-                                WHERE OVERHEAD_ORG_BUDGETS.FISCAL_YEAR = {3} AND OVERHEAD_BUDGET_TYPE.BUDGET_NAME = '{5}'
-                                GROUP BY OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID
-                            )
-                            SELECT '{0}' NAME,
-                                SUM(NVL(GROSS_REC, 0)) GROSS_REC,                            
-                                SUM(NVL(MAT_USAGE, 0)) MAT_USAGE,
-                                SUM(NVL(GROSS_REV, 0)) GROSS_REV,
-                                SUM(NVL(DIR_EXP, 0)) DIR_EXP,
-                                SUM(NVL(OP, 0)) OP,
-                                CASE WHEN SUM(GROSS_REV) = 0 OR SUM(GROSS_REV) IS NULL THEN 0 ELSE ROUND((SUM(OP)/SUM(GROSS_REV)) * 100, 2) END OP_PERC,
-                                SUM(NVL(OH, 0)) OH,
-                                SUM(NVL(OP, 0)) - SUM(NVL(OH, 0)) NET_CONT,                              
-                                SUM(NVL(OP, 0)) - SUM(NVL(PREV_OP.PREV_OP, 0)) OP_VAR,
-                                (SUM(NVL(OP, 0)) - SUM(NVL(OH, 0))) - (SUM(NVL(PREV_OP.PREV_OP, 0))) - SUM(NVL(PREV_OH, 0)) NET_CONT_VAR                 
-                            FROM ORG_NAME
-                            LEFT OUTER JOIN BUDGET_LINE_AMOUNTS ON ORG_NAME.ORGANIZATION_ID = BUDGET_LINE_AMOUNTS.ORG_ID
-                            LEFT OUTER JOIN PREV_OP ON ORG_NAME.ORGANIZATION_ID = PREV_OP.ORG_ID
-                            LEFT OUTER JOIN OVERHEAD ON ORG_NAME.ORGANIZATION_ID = OVERHEAD.ORG_BUDGET_ID
-                            LEFT OUTER JOIN PREV_OVERHEAD ON ORG_NAME.ORGANIZATION_ID = PREV_OVERHEAD.PREV_ORG_BUDGET_ID", orgName, yearID, verID, prevYearID, prevVerID, ohVersion);                         
-                    
-                    List<long> whereOrgs = HR.ActiveOrganizationsByHierarchy(hierarchyID, summaryOrg).Select(x => x.ORGANIZATION_ID).ToList();
-                    string sql2 = "";
-                    if (whereOrgs.Count() == 0)
-                    {
-                        if (BB.IsUserOrgAndAllowed(userID, summaryOrg) == true)
-                        {
-                            sql2 = " WHERE ORGANIZATION_ID = " + summaryOrg;
-                        }
-                        else
-                        {
-                            sql2 = " WHERE ORGANIZATION_ID = 0";
-                        }
-                    }
-                    else
-                    {
-                        int i = 0;
-                        foreach (long org in whereOrgs)
-                        {
-                            if (BB.IsUserOrgAndAllowed(userID, org) == true)
-                            {
-                                if (i == 0)
-                                {
-                                    sql2 = " WHERE ORGANIZATION_ID = " + org;
-                                    i = 1;
-                                }
-                                else
-                                {
-                                    sql2 = sql2 + " OR ORGANIZATION_ID = " + org;
-                                }
-                            }
-                        }
-                    }
-                    string sql3 = " ORDER BY NAME";
-                    string sql = sql1 + sql2 + sql3;
-
-                    List<Fields> lineData;
-                    using (Entities context = new Entities())
-                    {
-                        lineData = context.Database.SqlQuery<Fields>(sql).ToList();
-                    }                    
-                    
-                    lineDetail.AddRange(lineData);
-                }
-
-                return lineDetail;
-            }
-
+            
             public static List<Fields> Data(long userID, long hierarchyID, long orgID, long yearID, long verID, long prevYearID, long prevVerID)
             {
                 string ohVersion = BB.BudBidVerToOHBudVer(verID);
@@ -1306,7 +1363,7 @@ namespace DBI.Data
                     LEFT OUTER JOIN ORACLE_PROJECT_NAMES ON CUR_PROJECT_INFO_WITH_STATUS.PROJECT_ID = ORACLE_PROJECT_NAMES.PROJECT_ID AND CUR_PROJECT_INFO_WITH_STATUS.TYPE = ORACLE_PROJECT_NAMES.TYPE
                     LEFT OUTER JOIN BUDGET_LINE_AMOUNTS ON CUR_PROJECT_INFO_WITH_STATUS.BUD_BID_PROJECTS_ID = BUDGET_LINE_AMOUNTS.PROJECT_ID
                     LEFT OUTER JOIN PREV_OP ON CUR_PROJECT_INFO_WITH_STATUS.PROJECT_ID = PREV_OP.PROJECT_ID
-                    ORDER BY PROJECT_SORT, LOWER(PROJECT_NAME)", orgName, orgID, yearID, verID, prevYearID, prevVerID);
+                    ORDER BY PROJECT_SORT, LOWER(PROJECT_NAME)", orgName, orgID, yearID, verID, prevYearID, prevVerID);                
 
                 using (Entities context = new Entities())
                 {
@@ -1748,42 +1805,9 @@ namespace DBI.Data
 
                 GenericData.Update<BUD_BID_ACTUAL_NUM>(data);
             }
-        }
+        }       
 
         public class EndNumbers
-        {
-            #region Fields
-            public class Fields
-            {
-                public long PROJECT_ID { get; set; }
-                public decimal GROSS_REC { get; set; }
-                public decimal MAT_USAGE { get; set; }
-                public decimal GROSS_REV { get; set; }
-                public decimal DIR_EXP { get; set; }
-                public decimal OP { get; set; }
-            }
-            #endregion
-
-            public static Fields Data(long projectID)
-            {
-                string sql = string.Format(@"
-                    SELECT * FROM (
-                        SELECT BUD_BID_BUDGET_NUM.PROJECT_ID, LINE_ID, NOV
-                        FROM BUD_BID_DETAIL_TASK
-                        LEFT JOIN BUD_BID_BUDGET_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_BUDGET_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_BUDGET_NUM.DETAIL_TASK_ID
-                        WHERE BUD_BID_DETAIL_TASK.PROJECT_ID = {0} AND BUD_BID_DETAIL_TASK.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT'  )
-                    PIVOT(
-                        SUM(NOV) FOR (LINE_ID)
-                        IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))", projectID);
-
-                using (Entities context = new Entities())
-                {
-                    return context.Database.SqlQuery<Fields>(sql).SingleOrDefault();
-                }
-            }
-        }  
-
-        public class EndNumbersW0
         {
             #region Fields
             public class Fields
@@ -2025,61 +2049,6 @@ namespace DBI.Data
     
     public class BBDetail
     {
-        public class MainGrid
-        {
-            #region Fields
-            public class Fields
-            {
-                public long DETAIL_TASK_ID { get; set; }
-                public string DETAIL_NAME { get; set; }
-                public long SHEET_ORDER { get; set; }
-                public decimal GROSS_REC { get; set; }
-                public decimal MAT_USAGE { get; set; }
-                public decimal GROSS_REV { get; set; }
-                public decimal DIR_EXP { get; set; }
-                public decimal OP { get; set; }
-            }
-            #endregion
-
-            public static List<Fields> Data(long projectID)
-            {
-                string sql = string.Format(@"
-                    WITH
-                        TASKS AS (            
-                            SELECT PROJECT_ID, DETAIL_TASK_ID, DETAIL_NAME, SHEET_ORDER, MODIFIED_BY
-                            FROM BUD_BID_DETAIL_TASK
-                            WHERE PROJECT_ID = {0}
-                        ),          
-                        BUDGET_LINE_AMOUNTS AS (
-                            SELECT * FROM (
-                                SELECT PROJECT_ID, DETAIL_TASK_ID, LINE_ID, NOV, MODIFIED_BY
-                                FROM BUD_BID_BUDGET_NUM
-                                WHERE PROJECT_ID = {0})
-                            PIVOT(
-                                SUM(NOV) FOR (LINE_ID)
-                                IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
-                        )         
-                    SELECT TASKS.PROJECT_ID,
-                        TASKS.DETAIL_TASK_ID,
-                        TASKS.DETAIL_NAME,
-                        TASKS.SHEET_ORDER,
-                        BUDGET_LINE_AMOUNTS.GROSS_REC,
-                        BUDGET_LINE_AMOUNTS.MAT_USAGE,
-                        BUDGET_LINE_AMOUNTS. GROSS_REV,
-                        BUDGET_LINE_AMOUNTS.DIR_EXP,
-                        BUDGET_LINE_AMOUNTS.OP
-                    FROM TASKS 
-                    INNER JOIN BUDGET_LINE_AMOUNTS ON TASKS.PROJECT_ID = BUDGET_LINE_AMOUNTS.PROJECT_ID AND TASKS.DETAIL_TASK_ID = BUDGET_LINE_AMOUNTS.DETAIL_TASK_ID
-                    WHERE TASKS.DETAIL_NAME <> 'SYS_PROJECT'
-                    ORDER BY SHEET_ORDER", projectID);
-
-                using (Entities context = new Entities())
-                {
-                    return context.Database.SqlQuery<Fields>(sql).ToList();
-                }
-            }
-        }
-
         public class Sheet
         {
             public static long ID(long budBidProjectID, long order)
@@ -2733,7 +2702,62 @@ namespace DBI.Data
                         BBDetail.Sheet.EndNumbers.DBUpdate(detailSheetID, eGrossRec, eMatUsage, eGrossRev, eDirects, eOP);
                     }
 
-                    BBProject.EndNumbersW0.DBUpdate(budBidProjectID, eGrossRec, eMatUsage, eGrossRev, eDirects, eOP);
+                    BBProject.EndNumbers.DBUpdate(budBidProjectID, eGrossRec, eMatUsage, eGrossRev, eDirects, eOP);
+                }
+            }
+        }
+
+        public class MainGrid
+        {
+            #region Fields
+            public class Fields
+            {
+                public long DETAIL_TASK_ID { get; set; }
+                public string DETAIL_NAME { get; set; }
+                public long SHEET_ORDER { get; set; }
+                public decimal GROSS_REC { get; set; }
+                public decimal MAT_USAGE { get; set; }
+                public decimal GROSS_REV { get; set; }
+                public decimal DIR_EXP { get; set; }
+                public decimal OP { get; set; }
+            }
+            #endregion
+
+            public static List<Fields> Data(long projectID)
+            {
+                string sql = string.Format(@"
+                    WITH
+                        TASKS AS (            
+                            SELECT PROJECT_ID, DETAIL_TASK_ID, DETAIL_NAME, SHEET_ORDER, MODIFIED_BY
+                            FROM BUD_BID_DETAIL_TASK
+                            WHERE PROJECT_ID = {0}
+                        ),          
+                        BUDGET_LINE_AMOUNTS AS (
+                            SELECT * FROM (
+                                SELECT PROJECT_ID, DETAIL_TASK_ID, LINE_ID, NOV, MODIFIED_BY
+                                FROM BUD_BID_BUDGET_NUM
+                                WHERE PROJECT_ID = {0})
+                            PIVOT(
+                                SUM(NOV) FOR (LINE_ID)
+                                IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                        )         
+                    SELECT TASKS.PROJECT_ID,
+                        TASKS.DETAIL_TASK_ID,
+                        TASKS.DETAIL_NAME,
+                        TASKS.SHEET_ORDER,
+                        BUDGET_LINE_AMOUNTS.GROSS_REC,
+                        BUDGET_LINE_AMOUNTS.MAT_USAGE,
+                        BUDGET_LINE_AMOUNTS. GROSS_REV,
+                        BUDGET_LINE_AMOUNTS.DIR_EXP,
+                        BUDGET_LINE_AMOUNTS.OP
+                    FROM TASKS 
+                    INNER JOIN BUDGET_LINE_AMOUNTS ON TASKS.PROJECT_ID = BUDGET_LINE_AMOUNTS.PROJECT_ID AND TASKS.DETAIL_TASK_ID = BUDGET_LINE_AMOUNTS.DETAIL_TASK_ID
+                    WHERE TASKS.DETAIL_NAME <> 'SYS_PROJECT'
+                    ORDER BY SHEET_ORDER", projectID);
+
+                using (Entities context = new Entities())
+                {
+                    return context.Database.SqlQuery<Fields>(sql).ToList();
                 }
             }
         }

@@ -169,6 +169,92 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxNetCont.Text = String.Format("{0:N2}", netCont);
         }
 
+        // Reports
+        protected void deLoadRollupReports(object sender, StoreReadDataEventArgs e)
+        {
+            uxRollupReportsStore.DataSource = BBReports.RollupSummaryReports();
+        }
+        protected void deChooseRollupReport(object sender, DirectEventArgs e)
+        {
+            string selectedReport = uxRollupReports.Text;
+
+            long hierID = long.Parse(Request.QueryString["hierID"]);
+            long orgID = long.Parse(Request.QueryString["OrgID"]);
+            string orgName = HttpUtility.UrlEncode(Request.QueryString["orgName"]);
+            long yearID = long.Parse(Request.QueryString["fiscalYear"]);
+            string verName = HttpUtility.UrlEncode(Request.QueryString["verName"]);
+            long verID = long.Parse(Request.QueryString["verID"]);
+            long prevYearID = BB.CalcPrevYear(yearID, verID);
+            long prevVerID = BB.CalcPrevVer(yearID, verID);
+            long userID = SYS_USER_INFORMATION.UserID(User.Identity.Name);
+            string url = "";
+
+            uxRollupReports.Clear();
+            Int32 reportHeight = 0;
+            Int32 reportWidth = 0;
+
+            switch (selectedReport)
+            {
+                case "Summary":
+                    url = "/Views/Modules/BudgetBidding/Reports/umRepRollupSum.aspx?hierID=" + hierID + "&orgID=" + orgID + "&orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&verName=" + verName + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID + "&userID=" + userID;
+                    reportHeight = 600;
+                    reportWidth = 1020;
+                    break;
+
+                case "Comments & Variances":
+                    //url = "/Views/Modules/BudgetBidding/Reports/umRepOrgComm.aspx?orgID=" + orgID + "&orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&verName=" + verName + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID + "&userID=" + userID;
+                    reportHeight = 600;
+                    reportWidth = 1020;
+                    break;
+
+                case "Liabilities":
+                    //url = "/Views/Modules/BudgetBidding/Reports/umRepOrgLiab.aspx?orgID=" + orgID + "&orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&verName=" + verName + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID;
+                    reportHeight = 600;
+                    reportWidth = 1020;
+                    break;
+
+                case "All Projects":
+                    url = "/Views/Modules/BudgetBidding/Reports/umRepOrgAllProjects.aspx?hierID=" + hierID + "&orgID=" + orgID + "&orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&verName=" + verName + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID + "&userID=" + userID;
+                    reportHeight = 600;
+                    reportWidth = 1020;
+                    break;
+
+                case "Summary - Budget Year/Version Comparison":
+                    reportHeight = 600;
+                    reportWidth = 1020;
+                    break;
+
+                case "Overhead Comparison":
+                    reportHeight = 600;
+                    reportWidth = 1020;
+                    break;
+            }
+
+            Window win = new Window
+            {
+                ID = "uxReport",
+                Title = "Report",
+                Height = reportHeight,
+                Width = reportWidth,
+                Modal = true,
+                Resizable = true,
+                CloseAction = CloseAction.Destroy,
+                Loader = new ComponentLoader
+                {
+                    Mode = LoadMode.Frame,
+                    DisableCaching = true,
+                    Url = url,
+                    AutoLoad = true,
+                    LoadMask =
+                    {
+                        ShowMask = true
+                    }
+                }
+            };
+            win.Render(this.Form);
+            win.Show();
+        }
+
         protected decimal ForceToDecimal(string number)
         {
             decimal amount;
