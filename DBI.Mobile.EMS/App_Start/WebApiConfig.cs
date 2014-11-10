@@ -21,7 +21,7 @@ namespace DBI.Mobile.EMS
             var authConfig = new AuthenticationConfiguration
             {
                 SendWwwAuthenticateResponseHeaders = false,
-                RequireSsl = false,
+                RequireSsl = true,
                 EnableSessionToken = true
             };
 
