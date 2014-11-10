@@ -966,7 +966,6 @@ namespace DBI.Data
                 foreach (long summaryOrg in summaryOrgs)
                 {
                     string orgName = BB.OrgName(summaryOrg);
-
                     string sql1 = string.Format(@"                          
                         WITH
                             ORG_NAME AS(
@@ -984,13 +983,53 @@ namespace DBI.Data
                                     SUM(NOV) FOR (LINE_ID)
                                     IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
                             ),
-                            PREV_OP AS (                         
-                                SELECT BUD_BID_PROJECTS.ORG_ID, SUM(NOV) PREV_OP                                         
-                                FROM BUD_BID_PROJECTS
-                                LEFT OUTER JOIN BUD_BID_DETAIL_TASK ON BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = BUD_BID_DETAIL_TASK.PROJECT_ID
-                                LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_BUDGET_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_BUDGET_NUM.DETAIL_TASK_ID 
-                                WHERE BUD_BID_PROJECTS.YEAR_ID = {3} AND BUD_BID_PROJECTS.VER_ID = {4} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT' AND BUD_BID_BUDGET_NUM.LINE_ID = 10                             
-                                GROUP BY BUD_BID_PROJECTS.ORG_ID         
+                            PREV_OP AS (       
+                  
+-- ORIGINAL
+--                                SELECT BUD_BID_PROJECTS.ORG_ID, SUM(NOV) PREV_OP                                         
+--                                FROM BUD_BID_PROJECTS
+--                                LEFT OUTER JOIN BUD_BID_DETAIL_TASK ON BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = BUD_BID_DETAIL_TASK.PROJECT_ID
+--                                LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_BUDGET_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_BUDGET_NUM.DETAIL_TASK_ID 
+--                                WHERE BUD_BID_PROJECTS.YEAR_ID = {3} AND BUD_BID_PROJECTS.VER_ID = {4} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT' AND BUD_BID_BUDGET_NUM.LINE_ID = 10                             
+--                               GROUP BY BUD_BID_PROJECTS.ORG_ID      
+-- ORIGINAL
+
+-- NEW
+                                SELECT CUR_PROJECT_INFO_WITH_STATUS.ORG_ID,                   
+                                    SUM(NVL((CASE WHEN CUR_PROJECT_INFO_WITH_STATUS.COMPARE_PRJ_OVERRIDE = 'Y' THEN CUR_PROJECT_INFO_WITH_STATUS.COMPARE_PRJ_AMOUNT ELSE (CASE WHEN PREV_OP.PREV_OP IS NULL THEN 0 ELSE PREV_OP.PREV_OP END) END), 0)) PREV_OP
+                    
+                                FROM 
+                                (
+                                    SELECT BUD_BID_PROJECTS.ORG_ID, BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID, BUD_BID_PROJECTS.PROJECT_ID,
+                                        BUD_BID_PROJECTS.COMPARE_PRJ_OVERRIDE, BUD_BID_PROJECTS.COMPARE_PRJ_AMOUNT
+                                    FROM BUD_BID_PROJECTS
+                                    WHERE BUD_BID_PROJECTS.YEAR_ID = {1} AND BUD_BID_PROJECTS.VER_ID = {2} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP'
+                                ) CUR_PROJECT_INFO_WITH_STATUS
+                    
+                                LEFT OUTER JOIN 
+                                (
+                                    SELECT * FROM (           
+                                        SELECT BUD_BID_BUDGET_NUM.PROJECT_ID, BUD_BID_BUDGET_NUM.LINE_ID, BUD_BID_BUDGET_NUM.NOV
+                                        FROM BUD_BID_PROJECTS
+                                        LEFT OUTER JOIN BUD_BID_DETAIL_TASK ON BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = BUD_BID_DETAIL_TASK.PROJECT_ID
+                                        LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_BUDGET_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_BUDGET_NUM.DETAIL_TASK_ID 
+                                        WHERE BUD_BID_PROJECTS.YEAR_ID = {1} AND BUD_BID_PROJECTS.VER_ID = {2} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT')       
+                                    PIVOT(
+                                        SUM(NOV) FOR (LINE_ID)
+                                        IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                                ) BUDGET_LINE_AMOUNTS ON CUR_PROJECT_INFO_WITH_STATUS.BUD_BID_PROJECTS_ID = BUDGET_LINE_AMOUNTS.PROJECT_ID
+                    
+                                LEFT OUTER JOIN 
+                                (                       
+                                    SELECT BUD_BID_PROJECTS.PROJECT_ID, NOV PREV_OP  
+                                    FROM BUD_BID_PROJECTS
+                                    LEFT OUTER JOIN BUD_BID_DETAIL_TASK ON BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = BUD_BID_DETAIL_TASK.PROJECT_ID
+                                    LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_BUDGET_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_BUDGET_NUM.DETAIL_TASK_ID 
+                                    WHERE BUD_BID_PROJECTS.YEAR_ID = {3} AND BUD_BID_PROJECTS.VER_ID = {4} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT' AND BUD_BID_BUDGET_NUM.LINE_ID = 10        
+                                ) PREV_OP ON CUR_PROJECT_INFO_WITH_STATUS.PROJECT_ID = PREV_OP.PROJECT_ID
+                    
+                                GROUP BY CUR_PROJECT_INFO_WITH_STATUS.ORG_ID
+-- NEW
                             ),
                             OVERHEAD AS (
                                 SELECT OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID,
@@ -1100,13 +1139,53 @@ namespace DBI.Data
                                 SUM(NOV) FOR (LINE_ID)
                                 IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
                         ),
-                        PREV_OP AS (                        
-                            SELECT BUD_BID_PROJECTS.ORG_ID, SUM(NOV) PREV_OP                                         
-                            FROM BUD_BID_PROJECTS
-                            LEFT OUTER JOIN BUD_BID_DETAIL_TASK ON BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = BUD_BID_DETAIL_TASK.PROJECT_ID
-                            LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_BUDGET_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_BUDGET_NUM.DETAIL_TASK_ID 
-                            WHERE BUD_BID_PROJECTS.YEAR_ID = {2} AND BUD_BID_PROJECTS.VER_ID = {3} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT' AND BUD_BID_BUDGET_NUM.LINE_ID = 10
-                            GROUP BY BUD_BID_PROJECTS.ORG_ID 
+                        PREV_OP AS ( 
+
+-- ORIGINAL
+--                          SELECT BUD_BID_PROJECTS.ORG_ID, SUM(NOV) PREV_OP                                         
+--                          FROM BUD_BID_PROJECTS
+--                          LEFT OUTER JOIN BUD_BID_DETAIL_TASK ON BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = BUD_BID_DETAIL_TASK.PROJECT_ID
+--                          LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_BUDGET_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_BUDGET_NUM.DETAIL_TASK_ID 
+--                          WHERE BUD_BID_PROJECTS.YEAR_ID = {2} AND BUD_BID_PROJECTS.VER_ID = {3} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT' AND BUD_BID_BUDGET_NUM.LINE_ID = 10
+--                          GROUP BY BUD_BID_PROJECTS.ORG_ID 
+-- ORIGINAL             
+            
+-- NEW              
+                            SELECT CUR_PROJECT_INFO_WITH_STATUS.ORG_ID,                   
+                                SUM(NVL((CASE WHEN CUR_PROJECT_INFO_WITH_STATUS.COMPARE_PRJ_OVERRIDE = 'Y' THEN CUR_PROJECT_INFO_WITH_STATUS.COMPARE_PRJ_AMOUNT ELSE (CASE WHEN PREV_OP.PREV_OP IS NULL THEN 0 ELSE PREV_OP.PREV_OP END) END), 0)) PREV_OP
+                    
+                            FROM 
+                            (
+                                SELECT BUD_BID_PROJECTS.ORG_ID, BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID, BUD_BID_PROJECTS.PROJECT_ID,
+                                    BUD_BID_PROJECTS.COMPARE_PRJ_OVERRIDE, BUD_BID_PROJECTS.COMPARE_PRJ_AMOUNT
+                                FROM BUD_BID_PROJECTS
+                                WHERE BUD_BID_PROJECTS.YEAR_ID = {0} AND BUD_BID_PROJECTS.VER_ID = {1} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP'
+                            ) CUR_PROJECT_INFO_WITH_STATUS
+                    
+                            LEFT OUTER JOIN 
+                            (
+                                SELECT * FROM (           
+                                    SELECT BUD_BID_BUDGET_NUM.PROJECT_ID, BUD_BID_BUDGET_NUM.LINE_ID, BUD_BID_BUDGET_NUM.NOV
+                                    FROM BUD_BID_PROJECTS
+                                    LEFT OUTER JOIN BUD_BID_DETAIL_TASK ON BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = BUD_BID_DETAIL_TASK.PROJECT_ID
+                                    LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_BUDGET_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_BUDGET_NUM.DETAIL_TASK_ID 
+                                    WHERE BUD_BID_PROJECTS.YEAR_ID = {0} AND BUD_BID_PROJECTS.VER_ID = {1} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT')       
+                                PIVOT(
+                                    SUM(NOV) FOR (LINE_ID)
+                                    IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                            ) BUDGET_LINE_AMOUNTS ON CUR_PROJECT_INFO_WITH_STATUS.BUD_BID_PROJECTS_ID = BUDGET_LINE_AMOUNTS.PROJECT_ID
+                    
+                            LEFT OUTER JOIN 
+                            (                       
+                                SELECT BUD_BID_PROJECTS.PROJECT_ID, NOV PREV_OP  
+                                FROM BUD_BID_PROJECTS
+                                LEFT OUTER JOIN BUD_BID_DETAIL_TASK ON BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = BUD_BID_DETAIL_TASK.PROJECT_ID
+                                LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_BUDGET_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_BUDGET_NUM.DETAIL_TASK_ID 
+                                WHERE BUD_BID_PROJECTS.YEAR_ID = {2} AND BUD_BID_PROJECTS.VER_ID = {3} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT' AND BUD_BID_BUDGET_NUM.LINE_ID = 10        
+                            ) PREV_OP ON CUR_PROJECT_INFO_WITH_STATUS.PROJECT_ID = PREV_OP.PROJECT_ID
+                    
+                            GROUP BY CUR_PROJECT_INFO_WITH_STATUS.ORG_ID
+-- NEW
                         ),
                         OVERHEAD AS (
                             SELECT OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID,
