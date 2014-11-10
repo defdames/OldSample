@@ -129,6 +129,10 @@
                                     <Proxy>
                                         <ext:PageProxy />
                                     </Proxy>
+                                    <Sorters>
+                                        <ext:DataSorter Property="DA_DATE" Direction="DESC" />
+                                        <ext:DataSorter Property="STATUS" Direction="ASC" />
+                                    </Sorters>
                                 </ext:Store>
                             </Store>
                             <ColumnModel>

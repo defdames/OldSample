@@ -17,7 +17,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 {
     public partial class umCombinedTab_DBI : BasePage
     {
-        protected List<WarningData> WarningList = new List<WarningData>();
+        protected List<DAILY_ACTIVITY.WarningData> WarningList = new List<DAILY_ACTIVITY.WarningData>();
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -63,7 +63,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxInventoryToolbar.Hidden = true;
                 uxSaveHeaderButton.Hidden = true;
                 uxSaveFooterButton.Hidden = true;
-                uxAttachmentToolbar.Hidden = true;
+                uxAddAttachmentButton.Hidden = true;
+                uxDeleteAttachmentButton.Hidden = true;
 
                 uxDateField.ReadOnly = true;
                 uxProjectField.ReadOnly = true;
@@ -93,10 +94,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             using (Entities _context = new Entities())
             {
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
-                List<PA_ROLES_V> RoleList = (from d in _context.DAILY_ACTIVITY_HEADER
-                                             join p in _context.PA_ROLES_V on d.PROJECT_ID equals p.PROJECT_ID
-                                             where d.HEADER_ID == HeaderId
-                                             select p).ToList();
+                List<PA_ROLES_V> RoleList = DAILY_ACTIVITY.GetRoles(_context, HeaderId).ToList();
 
                 uxEmployeeRoleStore.DataSource = RoleList;
             }
@@ -106,7 +104,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             using (Entities _context = new Entities())
             {
-                return (int)_context.DAILY_ACTIVITY_HEADER.Where(x => x.HEADER_ID == HeaderId).Select(x => x.STATUS).Single();
+                return (int)DAILY_ACTIVITY.GetHeader(_context, HeaderId).Select(x => x.STATUS).Single();
             }
         }
 
@@ -116,21 +114,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         protected void GetHeaderData()
         {
             //Query and set datasource for header
+            DAILY_ACTIVITY.HeaderData data;
             using (Entities _context = new Entities())
             {
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
-                var data = (from d in _context.DAILY_ACTIVITY_HEADER
-                            join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
-                            join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
-                            where d.HEADER_ID == HeaderId
-                            select new HeaderData { HEADER_ID = d.HEADER_ID, PROJECT_ID = d.PROJECT_ID, SEGMENT1 = p.SEGMENT1, LONG_NAME = p.LONG_NAME, DA_DATE = d.DA_DATE, SUBDIVISION = d.SUBDIVISION, CONTRACTOR = d.CONTRACTOR, PERSON_ID = d.PERSON_ID, EMPLOYEE_NAME = e.EMPLOYEE_NAME, LICENSE = d.LICENSE, STATE = d.STATE, APPLICATION_TYPE = d.APPLICATION_TYPE, DENSITY = d.DENSITY, DA_HEADER_ID = d.DA_HEADER_ID, STATUS = d.STATUS }).SingleOrDefault();
-                if (data == null) 
-                {
-                    data = (from d in _context.DAILY_ACTIVITY_HEADER
-                            join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
-                            where d.HEADER_ID == HeaderId
-                            select new HeaderData { HEADER_ID = d.HEADER_ID, PROJECT_ID = d.PROJECT_ID, SEGMENT1 = p.SEGMENT1, LONG_NAME = p.LONG_NAME, DA_DATE = d.DA_DATE, SUBDIVISION = d.SUBDIVISION, CONTRACTOR = d.CONTRACTOR, PERSON_ID = d.PERSON_ID, LICENSE = d.LICENSE, STATE = d.STATE, APPLICATION_TYPE = d.APPLICATION_TYPE, DENSITY = d.DENSITY, DA_HEADER_ID = d.DA_HEADER_ID, STATUS = d.STATUS }).SingleOrDefault();
-                }
+                data = DAILY_ACTIVITY.GetHeaderData(_context, HeaderId).Single();
+            }
                 DateTime Da_date = DateTime.Parse(data.DA_DATE.ToString());
                 uxProjectField.SetValue(data.PROJECT_ID.ToString(), string.Format("({0}) - {1}", data.SEGMENT1, data.LONG_NAME));
                 uxDateField.SelectedDate = Da_date;
@@ -146,8 +135,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 uxStatusField.Value = data.STATUS.ToString();
 
                 uxCanEditField.Value = validateComponentSecurity("SYS.DailyActivity.View");
-                    
-            }
+             
         }
 
         protected void GetWarnings()
@@ -198,56 +186,25 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
-        protected List<EmployeeDetails> GetEmployeeData()
-        {
-            using (Entities _context = new Entities())
-            {
-                long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
-                List<EmployeeDetails> data = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-                                              join em in _context.EMPLOYEES_V on d.PERSON_ID equals em.PERSON_ID
-                                              join eq in _context.DAILY_ACTIVITY_EQUIPMENT on d.EQUIPMENT_ID equals eq.EQUIPMENT_ID into equ
-                                              from equip in equ.DefaultIfEmpty()
-                                              join p in _context.PROJECTS_V on equip.PROJECT_ID equals p.PROJECT_ID into proj
-                                              from projects in proj.DefaultIfEmpty()
-                                              where d.HEADER_ID == HeaderId
-                                              select new EmployeeDetails { EMPLOYEE_ID = d.EMPLOYEE_ID, PERSON_ID = em.PERSON_ID, DA_DATE = d.DAILY_ACTIVITY_HEADER.DA_DATE, EMPLOYEE_NAME = em.EMPLOYEE_NAME, FOREMAN_LICENSE = d.FOREMAN_LICENSE, NAME = projects.NAME, TIME_IN = (DateTime)d.TIME_IN, TIME_OUT = (DateTime)d.TIME_OUT, TRAVEL_TIME = (d.TRAVEL_TIME == null ? 0 : d.TRAVEL_TIME), DRIVE_TIME = (d.DRIVE_TIME == null ? 0 : d.DRIVE_TIME), PER_DIEM = (d.PER_DIEM == "Y" ? true : false), COMMENTS = d.COMMENTS, LUNCH_LENGTH = d.LUNCH_LENGTH, STATUS = d.DAILY_ACTIVITY_HEADER.STATUS, HEADER_ID = d.HEADER_ID, EQUIPMENT_ID = d.EQUIPMENT_ID }).ToList();
-                foreach (var item in data)
-                {
-                    item.PREVAILING_WAGE = roleNeeded();
-                    double Hours = Math.Truncate((double)item.TRAVEL_TIME);
-                    double Minutes = Math.Round(((double)item.TRAVEL_TIME - Hours) * 60);
-                    item.TOTAL_HOURS = (item.TIME_OUT - item.TIME_IN).ToString("hh\\:mm");
-                    item.TIME_IN_TIME = item.TIME_IN;
-                    item.TIME_OUT_TIME = item.TIME_OUT;
-                    TimeSpan TotalTimeSpan = new TimeSpan(Convert.ToInt32(Hours), Convert.ToInt32(Minutes), 0);
-                    item.TRAVEL_TIME_FORMATTED = DateTime.Now.Date + TotalTimeSpan;
-                    Hours = Math.Truncate((double)item.DRIVE_TIME);
-                    Minutes = Math.Round(((double)item.DRIVE_TIME - Hours) * 60);
-                    TotalTimeSpan = new TimeSpan(Convert.ToInt32(Hours), Convert.ToInt32(Minutes), 0);
-                    item.DRIVE_TIME_FORMATTED = DateTime.Now.Date + TotalTimeSpan;
-                }
-                return data;
-            }
-        }
-
         protected void GetEmployeeDataWithWarnings()
         {
             //Query and set datasource for employees
-
+            List<DAILY_ACTIVITY.EmployeeDetails> data;
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
-            List<EmployeeDetails> data = GetEmployeeData();
-
-
+            using (Entities _context = new Entities())
+            {
+                data = DAILY_ACTIVITY.GetDBIEmployeeData(_context, HeaderId);
+            }
 
             foreach (var item in data)
             {
-                List<WarningData> Overlaps = ValidationChecks.employeeTimeOverlapCheck(item.PERSON_ID, (DateTime)item.DA_DATE, HeaderId);
+                List<DAILY_ACTIVITY.WarningData> Overlaps = ValidationChecks.employeeTimeOverlapCheck(item.PERSON_ID, (DateTime)item.DA_DATE, HeaderId);
                 if (Overlaps.Count > 0)
                 {
                     WarningList.AddRange(Overlaps);
                 }
 
-                WarningData EmployeeBusinessUnitFailures = ValidationChecks.EmployeeBusinessUnitCheck((long)item.EMPLOYEE_ID);
+                DAILY_ACTIVITY.WarningData EmployeeBusinessUnitFailures = ValidationChecks.EmployeeBusinessUnitCheck((long)item.EMPLOYEE_ID);
                 if (EmployeeBusinessUnitFailures != null)
                 {
                     WarningList.Add(EmployeeBusinessUnitFailures);
@@ -261,7 +218,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         X.Js.Call("disableOnError");
                     }
                 }
-                WarningData EmployeeOver24 = ValidationChecks.checkEmployeeTime(24, item.PERSON_ID, (DateTime)item.DA_DATE);
+                DAILY_ACTIVITY.WarningData EmployeeOver24 = ValidationChecks.checkEmployeeTime(24, item.PERSON_ID, (DateTime)item.DA_DATE);
                 if (EmployeeOver24 != null)
                 {
                     WarningList.Add(EmployeeOver24);
@@ -276,14 +233,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
                 else
                 {
-                    WarningData EmployeeOver14 = ValidationChecks.checkEmployeeTime(14, item.PERSON_ID, (DateTime)item.DA_DATE);
+                    DAILY_ACTIVITY.WarningData EmployeeOver14 = ValidationChecks.checkEmployeeTime(14, item.PERSON_ID, (DateTime)item.DA_DATE);
                     if (EmployeeOver14 != null)
                     {
                         WarningList.Add(EmployeeOver14);
 
                     }
                 }
-                WarningData LunchFailure = ValidationChecks.LunchCheck(item.PERSON_ID, (DateTime)item.DA_DATE);
+                DAILY_ACTIVITY.WarningData LunchFailure = ValidationChecks.LunchCheck(item.PERSON_ID, (DateTime)item.DA_DATE);
                 if (LunchFailure != null)
                 {
                     WarningList.Add(LunchFailure);
@@ -296,7 +253,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         X.Js.Call("disableOnError");
                     }
                 }
-                List<WarningData> DuplicatePerDiems = ValidationChecks.checkPerDiem((long)item.EMPLOYEE_ID, item.HEADER_ID);
+                List<DAILY_ACTIVITY.WarningData> DuplicatePerDiems = ValidationChecks.checkPerDiem((long)item.EMPLOYEE_ID, item.HEADER_ID);
                 if (DuplicatePerDiems.Count > 0)
                 {
                     WarningList.AddRange(DuplicatePerDiems);
@@ -323,33 +280,26 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         protected void deGetEmployeeData(object sender, StoreReadDataEventArgs e)
         {
             //Query and set datasource for employees
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
             using (Entities _context = new Entities())
             {
-                var data = GetEmployeeData();
+                var data = DAILY_ACTIVITY.GetDBIEmployeeData(_context, HeaderId);
                 uxEmployeeStore.DataSource = data;
                 uxEmployeeStore.DataBind();
             }
         }
 
-        protected List<EquipmentDetails> GetEquipmentData()
-        {
-
-            using (Entities _context = new Entities())
-            {
-                long HeaderId = long.Parse(Request.QueryString["headerId"]);
-                return (from e in _context.DAILY_ACTIVITY_EQUIPMENT
-                            join p in _context.CLASS_CODES_V on e.PROJECT_ID equals p.PROJECT_ID
-                            where e.HEADER_ID == HeaderId
-                            select new EquipmentDetails { CLASS_CODE= p.CLASS_CODE, SEGMENT1= p.SEGMENT1, ORGANIZATION_NAME= p.ORGANIZATION_NAME, ODOMETER_START= e.ODOMETER_START, ODOMETER_END= e.ODOMETER_END, PROJECT_ID= e.PROJECT_ID, EQUIPMENT_ID= e.EQUIPMENT_ID, NAME= p.NAME, HEADER_ID= e.HEADER_ID, STATUS = e.DAILY_ACTIVITY_HEADER.STATUS }).ToList();
-            }
-        }
-
         protected void GetEquipmentDataWithWarnings()
         {
-            List<EquipmentDetails> data = GetEquipmentData();
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+            List<DAILY_ACTIVITY.EquipmentDetails> data;
+            using (Entities _context = new Entities())
+            {
+                data = DAILY_ACTIVITY.GetEquipmentData(_context, HeaderId).ToList();
+            }
             foreach (var item in data)
             {
-                WarningData BusinessUnitWarning = ValidationChecks.EquipmentBusinessUnitCheck((long)item.EQUIPMENT_ID);
+                DAILY_ACTIVITY.WarningData BusinessUnitWarning = ValidationChecks.EquipmentBusinessUnitCheck((long)item.EQUIPMENT_ID);
                 if (BusinessUnitWarning != null)
                 {
                     WarningList.Add(BusinessUnitWarning);
@@ -363,7 +313,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         X.Js.Call("disableOnError");
                     }
                 }
-                WarningData MeterWarning = ValidationChecks.MeterCheck((long)item.EQUIPMENT_ID);
+                DAILY_ACTIVITY.WarningData MeterWarning = ValidationChecks.MeterCheck((long)item.EQUIPMENT_ID);
                 if (MeterWarning != null)
                 {
                     WarningList.Add(MeterWarning);
@@ -374,7 +324,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
         protected void deGetEquipmentData(object sender, StoreReadDataEventArgs e)
         {
-            var data = GetEquipmentData();
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+            List<DAILY_ACTIVITY.EquipmentDetails> data;
+            using (Entities _context = new Entities())
+            {
+                data = DAILY_ACTIVITY.GetEquipmentData(_context, HeaderId).ToList();
+            }
+
             uxEquipmentStore.DataSource = data;
             uxEquipmentStore.DataBind();
         }
@@ -388,12 +344,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             using (Entities _context = new Entities())
             {
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
-                var data = (from d in _context.DAILY_ACTIVITY_PRODUCTION
-                            join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
-                            join t in _context.PA_TASKS_V on d.TASK_ID equals t.TASK_ID
-                            join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
-                            where d.HEADER_ID == HeaderId
-                            select new ProductionDetails { PRODUCTION_ID = d.PRODUCTION_ID, PROJECT_ID = h.PROJECT_ID, LONG_NAME = p.LONG_NAME, TASK_NUMBER = t.TASK_NUMBER, TASK_ID = t.TASK_ID, DESCRIPTION = t.DESCRIPTION, TIME_IN = d.TIME_IN, TIME_OUT = d.TIME_OUT, WORK_AREA = d.WORK_AREA, POLE_FROM = d.POLE_FROM, POLE_TO = d.POLE_TO, ACRES_MILE = d.ACRES_MILE, QUANTITY = d.QUANTITY }).ToList();
+                var data = DAILY_ACTIVITY.GetDBIProductionData(_context, HeaderId).ToList();
                 uxProductionStore.DataSource = data;
                 uxProductionStore.DataBind();
             }
@@ -408,9 +359,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             using (Entities _context = new Entities())
             {
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
-                var data = (from w in _context.DAILY_ACTIVITY_WEATHER
-                            where w.HEADER_ID == HeaderId
-                            select new WeatherDetails { WEATHER_ID = w.WEATHER_ID, HEADER_ID = w.HEADER_ID, COMMENTS = w.COMMENTS, HUMIDITY = w.HUMIDITY, TEMP = w.TEMP, WEATHER_DATE = (DateTime)w.WEATHER_DATE_TIME, WEATHER_TIME = (DateTime)w.WEATHER_DATE_TIME, WIND_DIRECTION = w.WIND_DIRECTION, WIND_VELOCITY = w.WIND_VELOCITY }).ToList();
+                var data = DAILY_ACTIVITY.GetWeatherData(_context, HeaderId).ToList();
                 uxWeatherStore.DataSource = data;
                 uxWeatherStore.DataBind();
             }
@@ -425,9 +374,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             using (Entities _context = new Entities())
             {
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
-                var data = (from c in _context.DAILY_ACTIVITY_CHEMICAL_MIX
-                            where c.HEADER_ID == HeaderId
-                            select new ChemicalDetails { CHEMICAL_MIX_ID = c.CHEMICAL_MIX_ID, CHEMICAL_MIX_NUMBER = c.CHEMICAL_MIX_NUMBER, COUNTY = c.COUNTY, STATE = c.STATE, TARGET_AREA = c.TARGET_AREA, GALLON_ACRE = c.GALLON_ACRE, GALLON_STARTING = c.GALLON_STARTING, GALLON_MIXED = c.GALLON_MIXED, GALLON_REMAINING = c.GALLON_REMAINING, ACRES_SPRAYED = c.ACRES_SPRAYED, TOTAL = c.GALLON_STARTING + c.GALLON_MIXED, GALLON_USED = c.GALLON_STARTING + c.GALLON_MIXED - c.GALLON_REMAINING, HEADER_ID = c.HEADER_ID }).OrderBy(x => x.CHEMICAL_MIX_NUMBER).ToList();
+                var data = DAILY_ACTIVITY.GetChemicalData(_context, HeaderId).ToList();
                 uxChemicalStore.DataSource = data;
                 uxChemicalStore.DataBind();
             }
@@ -442,14 +389,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             using (Entities _context = new Entities())
             {
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
-                var data = (from d in _context.DAILY_ACTIVITY_INVENTORY
-                            join i in _context.INVENTORY_V on d.ITEM_ID equals i.ITEM_ID into joined
-                            join c in _context.DAILY_ACTIVITY_CHEMICAL_MIX on d.CHEMICAL_MIX_ID equals c.CHEMICAL_MIX_ID
-                            join u in _context.UNIT_OF_MEASURE_V on d.UNIT_OF_MEASURE equals u.UOM_CODE
-                            where d.HEADER_ID == HeaderId
-                            from j in joined
-                            where j.ORGANIZATION_ID == d.SUB_INVENTORY_ORG_ID
-                            select new InventoryDetails { INVENTORY_ID = d.INVENTORY_ID, ENABLED_FLAG = j.ENABLED_FLAG, ITEM_ID = j.ITEM_ID, ACTIVE = j.ACTIVE, LE = j.LE, SEGMENT1 = j.SEGMENT1, LAST_UPDATE_DATE = j.LAST_UPDATE_DATE, ATTRIBUTE2 = j.ATTRIBUTE2, INV_LOCATION = j.INV_LOCATION, CONTRACTOR_SUPPLIED = (d.CONTRACTOR_SUPPLIED == "Y" ? true : false), TOTAL = d.TOTAL, INV_NAME = j.INV_NAME, CHEMICAL_MIX_ID = d.CHEMICAL_MIX_ID, CHEMICAL_MIX_NUMBER = c.CHEMICAL_MIX_NUMBER, SUB_INVENTORY_SECONDARY_NAME = d.SUB_INVENTORY_SECONDARY_NAME, SUB_INVENTORY_ORG_ID = d.SUB_INVENTORY_ORG_ID, DESCRIPTION = j.DESCRIPTION, RATE = d.RATE, UOM_CODE = u.UOM_CODE, UNIT_OF_MEASURE = u.UNIT_OF_MEASURE, EPA_DESCRIPTION = (d.EPA_NUMBER == null ? j.EPA_DESCRIPTION : d.EPA_NUMBER) }).ToList();
+                var data = DAILY_ACTIVITY.GetDBIInventoryData(_context, HeaderId).ToList();
                 uxInventoryStore.DataSource = data;
                 uxInventoryStore.DataBind();
             }
@@ -460,7 +400,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
             using (Entities _context = new Entities())
             {
-                var data = _context.SYS_ATTACHMENTS.Where(x => x.REFERENCE_TABLE == "DAILY_ACTIVITY_HEADER" && x.REFERENCE_NUMBER == HeaderId).ToList();
+                var data = DAILY_ACTIVITY.GetAttachmentData(_context, HeaderId).ToList();
                 uxAttachmentStore.DataSource = data;
             }
         }
@@ -473,22 +413,18 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             using (Entities _context = new Entities())
             {
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
-                var data = (from d in _context.DAILY_ACTIVITY_FOOTER
-                            join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
-                            join e in _context.EMPLOYEES_V on h.PERSON_ID equals e.PERSON_ID
-                            where d.HEADER_ID == HeaderId
-                            select new { d, e.EMPLOYEE_NAME }).SingleOrDefault();
+                var data = DAILY_ACTIVITY.GetFooterData(_context, HeaderId).SingleOrDefault();
                 if (data != null)
                 {
-                    uxReasonForNoWorkField.Value = data.d.COMMENTS;
-                    uxHotelField.Value = data.d.HOTEL_NAME;
-                    uxCityField.Value = data.d.HOTEL_CITY;
-                    uxFooterStateField.SetValue(data.d.HOTEL_STATE);
-                    uxPhoneField.Value = data.d.HOTEL_PHONE;
-                    uxContractNameField.Value = data.d.CONTRACT_REP_NAME;
+                    uxReasonForNoWorkField.Value = data.COMMENTS;
+                    uxHotelField.Value = data.HOTEL_NAME;
+                    uxCityField.Value = data.HOTEL_CITY;
+                    uxFooterStateField.SetValue(data.HOTEL_STATE);
+                    uxPhoneField.Value = data.HOTEL_PHONE;
+                    uxContractNameField.Value = data.CONTRACT_REP_NAME;
                     uxForemanNameField.Value = data.EMPLOYEE_NAME;
 
-                    if (data.d.FOREMAN_SIGNATURE == null || data.d.FOREMAN_SIGNATURE.Length == 0)
+                    if (data.FOREMAN_SIGNATURE == null || data.FOREMAN_SIGNATURE.Length == 0)
                     {
                         uxForemanImage.ImageUrl = "../../../Resources/Images/1pixel.jpg";
                     }
@@ -496,7 +432,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     {
                         uxForemanImage.ImageUrl = string.Format("ImageLoader/ImageLoader.aspx?headerId={0}&type=foreman", HeaderId);
                     }
-                    if (data.d.CONTRACT_REP == null || data.d.CONTRACT_REP.Length == 0)
+                    if (data.CONTRACT_REP == null || data.CONTRACT_REP.Length == 0)
                     {
                         uxContractImage.ImageUrl = "../../../Resources/Images/1pixel.jpg";
                     }
@@ -654,9 +590,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             using (Entities _context = new Entities())
             {
                 var HeaderId = long.Parse(Request.QueryString["HeaderId"]);
-                data = (from d in _context.DAILY_ACTIVITY_HEADER
-                        where d.HEADER_ID == HeaderId
-                        select d).Single();
+                data = DAILY_ACTIVITY.GetHeader(_context, HeaderId).Single();
             }
             data.PROJECT_ID = ProjectId;
             data.DA_DATE = DaDate;
@@ -689,9 +623,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             using (Entities _context = new Entities())
             {
                 //Check if footer record exists
-                data = (from d in _context.DAILY_ACTIVITY_FOOTER
-                        where d.HEADER_ID == HeaderId
-                        select d).SingleOrDefault();
+                data = DAILY_ACTIVITY.GetFooter(_context, HeaderId).SingleOrDefault();
             }
 
             if (data != null)
@@ -866,9 +798,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Get the date from this header record
             using (Entities _context = new Entities())
             {
-                var HeaderDate = (from d in _context.DAILY_ACTIVITY_HEADER
-                                  where d.HEADER_ID == HeaderId
-                                  select d.DA_DATE).Single();
+                var HeaderDate = DAILY_ACTIVITY.GetHeader(_context, HeaderId).Select(x => x.DA_DATE).Single();
 
                 //Get all headerIds on this date for this person
                 var HeaderList = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
@@ -902,10 +832,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             using (Entities _context = new Entities())
             {
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
-                var data = (from d in _context.DAILY_ACTIVITY_EQUIPMENT
-                            join p in _context.CLASS_CODES_V on d.PROJECT_ID equals p.PROJECT_ID
-                            where d.HEADER_ID == HeaderId
-                            select new { d.EQUIPMENT_ID, p.NAME, d.PROJECT_ID, p.ORGANIZATION_NAME, p.CLASS_CODE, p.SEGMENT1, d.ODOMETER_START, d.ODOMETER_END }).ToList();
+                var data = DAILY_ACTIVITY.GetEquipmentData(_context, HeaderId).ToList();
                 //Set add store
                 uxEmployeeEqStore.DataSource = data;
                 uxEmployeeEqStore.DataBind();
@@ -938,7 +865,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             using (Entities _context = new Entities())
             {
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
-                DateTime? HeaderDate = _context.DAILY_ACTIVITY_HEADER.Where(x => x.HEADER_ID == HeaderId).Select(x => x.DA_DATE).Single();
+                DateTime? HeaderDate = DAILY_ACTIVITY.GetHeader(_context, HeaderId).Select(x => x.DA_DATE).Single();
                 if (HeaderDate != null)
                 {
                     uxEmployeeTimeInDate.SelectedDate = (DateTime)HeaderDate;
@@ -948,9 +875,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
         protected void deSaveEmployee(object sender, DirectEventArgs e)
         {
-            ChangeRecords<EmployeeDetails> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<EmployeeDetails>();
+            ChangeRecords<DAILY_ACTIVITY.EmployeeDetails> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<DAILY_ACTIVITY.EmployeeDetails>();
+            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
 
-            foreach (EmployeeDetails item in data.Created)
+            foreach (DAILY_ACTIVITY.EmployeeDetails item in data.Created)
             {
                 DAILY_ACTIVITY_EMPLOYEE NewEmployee = new DAILY_ACTIVITY_EMPLOYEE();
                 NewEmployee.COMMENTS = item.COMMENTS;
@@ -976,10 +904,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 using (Entities _context = new Entities())
                 {
                     EmployeeName = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == item.PERSON_ID).Select(x => x.EMPLOYEE_NAME).Single();
-                    EquipmentName = (from d in _context.DAILY_ACTIVITY_EQUIPMENT
-                                     join eq in _context.CLASS_CODES_V on d.PROJECT_ID equals eq.PROJECT_ID
-                                     where d.EQUIPMENT_ID == item.EQUIPMENT_ID
-                                     select eq.NAME).SingleOrDefault();
+                    EquipmentName = DAILY_ACTIVITY.GetEquipmentData(_context, HeaderId).Where(x => x.EQUIPMENT_ID == item.EQUIPMENT_ID).Select(x => x.NAME).SingleOrDefault();
                 }
                 ModelProxy Record = uxEmployeeStore.GetByInternalId(item.PhantomID);
                 Record.CreateVariable = true;
@@ -992,13 +917,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 Record.Commit();
             }
 
-            foreach (EmployeeDetails item in data.Updated)
+            foreach (DAILY_ACTIVITY.EmployeeDetails item in data.Updated)
             {
                 DAILY_ACTIVITY_EMPLOYEE UpdatedEmployee;
 
                 using (Entities _context = new Entities())
                 {
-                    UpdatedEmployee = _context.DAILY_ACTIVITY_EMPLOYEE.Where(x => x.EMPLOYEE_ID == item.EMPLOYEE_ID).Single();
+                    UpdatedEmployee = DAILY_ACTIVITY.GetEmployee(_context, item.EMPLOYEE_ID).Single();
                 }
 
                 UpdatedEmployee.COMMENTS = item.COMMENTS;
@@ -1022,10 +947,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 using (Entities _context = new Entities())
                 {
                     EmployeeName = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == item.PERSON_ID).Select(x => x.EMPLOYEE_NAME).Single();
-                    EquipmentName = (from d in _context.DAILY_ACTIVITY_EQUIPMENT
-                                     join eq in _context.CLASS_CODES_V on d.PROJECT_ID equals eq.PROJECT_ID
-                                     where d.EQUIPMENT_ID == item.EQUIPMENT_ID
-                                     select eq.NAME).SingleOrDefault();
+                    EquipmentName = DAILY_ACTIVITY.GetEquipmentData(_context, HeaderId).Where(x => x.EQUIPMENT_ID == item.EQUIPMENT_ID).Select(x => x.NAME).Single();
                 }
 
                 ModelProxy Record = uxEmployeeStore.GetById(item.EMPLOYEE_ID);
@@ -1043,9 +965,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
         protected void deSaveEquipment(object sender, DirectEventArgs e)
         {
-            ChangeRecords<EquipmentDetails> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<EquipmentDetails>();
+            ChangeRecords<DAILY_ACTIVITY.EquipmentDetails> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<DAILY_ACTIVITY.EquipmentDetails>();
 
-            foreach (EquipmentDetails item in data.Created)
+            foreach (DAILY_ACTIVITY.EquipmentDetails item in data.Created)
             {
 
                 DAILY_ACTIVITY_EQUIPMENT NewEquipment = new DAILY_ACTIVITY_EQUIPMENT();
@@ -1076,14 +998,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 Record.Commit();
             }
 
-            foreach (EquipmentDetails item in data.Updated)
+            foreach (DAILY_ACTIVITY.EquipmentDetails item in data.Updated)
             {
                 DAILY_ACTIVITY_EQUIPMENT UpdatedEquipment;
                 CLASS_CODES_V EquipmentItem;
 
                 using (Entities _context = new Entities())
                 {
-                    UpdatedEquipment = _context.DAILY_ACTIVITY_EQUIPMENT.Where(x => x.EQUIPMENT_ID == item.EQUIPMENT_ID).Single();
+                    UpdatedEquipment = DAILY_ACTIVITY.GetEquipment(_context, (long)item.EQUIPMENT_ID).Single();
                 }
                 UpdatedEquipment.PROJECT_ID = item.PROJECT_ID;
                 UpdatedEquipment.ODOMETER_END = item.ODOMETER_END;
@@ -1115,12 +1037,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             using (Entities _context = new Entities())
             {
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
-                var ProjectId = (from d in _context.DAILY_ACTIVITY_HEADER
-                                 where d.HEADER_ID == HeaderId
-                                 select d.PROJECT_ID).Single();
-                var data = (from t in _context.PA_TASKS_V
-                            where t.PROJECT_ID == ProjectId && t.START_DATE <= DateTime.Now && (t.COMPLETION_DATE >= DateTime.Now || t.COMPLETION_DATE == null)
-                            select t).ToList();
+                var ProjectId = DAILY_ACTIVITY.GetHeader(_context, HeaderId).Select(x => x.PROJECT_ID).Single();
+
+                var data = DAILY_ACTIVITY.GetTasks(_context, (long)ProjectId).ToList();
 
                 //Set datasource for Add/Edit store
                 int count;
@@ -1133,9 +1052,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
         protected void deSaveProduction(object sender, DirectEventArgs e)
         {
-            ChangeRecords<ProductionDetails> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<ProductionDetails>();
+            ChangeRecords<DAILY_ACTIVITY.ProductionDetails> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<DAILY_ACTIVITY.ProductionDetails>();
 
-            foreach (ProductionDetails item in data.Created)
+            foreach (DAILY_ACTIVITY.ProductionDetails item in data.Created)
             {
                 DAILY_ACTIVITY_PRODUCTION NewProduction = new DAILY_ACTIVITY_PRODUCTION();
 
@@ -1166,13 +1085,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 Record.Commit();
             }
 
-            foreach (ProductionDetails item in data.Updated)
+            foreach (DAILY_ACTIVITY.ProductionDetails item in data.Updated)
             {
                 DAILY_ACTIVITY_PRODUCTION UpdatedProduction;
 
                 using (Entities _context = new Entities())
                 {
-                    UpdatedProduction = _context.DAILY_ACTIVITY_PRODUCTION.Where(x => x.PRODUCTION_ID == item.PRODUCTION_ID).Single();
+                    UpdatedProduction = DAILY_ACTIVITY.GetProduction(_context, (long)item.PRODUCTION_ID).Single();
                 }
                 UpdatedProduction.POLE_FROM = item.POLE_TO;
                 UpdatedProduction.POLE_TO = item.POLE_TO;
@@ -1203,9 +1122,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
         protected void deSaveWeather(object sender, DirectEventArgs e)
         {
-            ChangeRecords<WeatherDetails> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<WeatherDetails>();
+            ChangeRecords<DAILY_ACTIVITY.WeatherDetails> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<DAILY_ACTIVITY.WeatherDetails>();
 
-            foreach (WeatherDetails item in data.Created)
+            foreach (DAILY_ACTIVITY.WeatherDetails item in data.Created)
             {
                 DAILY_ACTIVITY_WEATHER NewWeather = new DAILY_ACTIVITY_WEATHER();
 
@@ -1229,13 +1148,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 Record.Commit();
             }
 
-            foreach (WeatherDetails item in data.Updated)
+            foreach (DAILY_ACTIVITY.WeatherDetails item in data.Updated)
             {
                 DAILY_ACTIVITY_WEATHER UpdatedWeather;
 
                 using (Entities _context = new Entities())
                 {
-                    UpdatedWeather = _context.DAILY_ACTIVITY_WEATHER.Where(x => x.WEATHER_ID == item.WEATHER_ID).Single();
+                    UpdatedWeather = DAILY_ACTIVITY.GetWeather(_context, (long)item.WEATHER_ID).Single();
                 }
 
                 UpdatedWeather.HUMIDITY = item.HUMIDITY;
@@ -1255,9 +1174,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
         protected void deSaveChemical(object sender, DirectEventArgs e)
         {
-            ChangeRecords<ChemicalDetails> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<ChemicalDetails>();
+            ChangeRecords<DAILY_ACTIVITY.ChemicalDetails> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<DAILY_ACTIVITY.ChemicalDetails>();
 
-            foreach (ChemicalDetails item in data.Created)
+            foreach (DAILY_ACTIVITY.ChemicalDetails item in data.Created)
             {
                 DAILY_ACTIVITY_CHEMICAL_MIX NewChemical = new DAILY_ACTIVITY_CHEMICAL_MIX();
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
@@ -1289,13 +1208,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 Record.Commit();
             }
 
-            foreach (ChemicalDetails item in data.Updated)
+            foreach (DAILY_ACTIVITY.ChemicalDetails item in data.Updated)
             {
                 DAILY_ACTIVITY_CHEMICAL_MIX UpdatedChemical;
 
                 using (Entities _context = new Entities())
                 {
-                    UpdatedChemical = _context.DAILY_ACTIVITY_CHEMICAL_MIX.Where(x => x.CHEMICAL_MIX_ID == item.CHEMICAL_MIX_ID).Single();
+                    UpdatedChemical = DAILY_ACTIVITY.GetChemical(_context, (long)item.CHEMICAL_MIX_ID).Single();
                 }
 
                 UpdatedChemical.ACRES_SPRAYED = item.ACRES_SPRAYED;
@@ -1317,9 +1236,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
         protected void deSaveInventory(object sender, DirectEventArgs e)
         {
-            ChangeRecords<InventoryDetails> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<InventoryDetails>();
+            ChangeRecords<DAILY_ACTIVITY.InventoryDetails> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<DAILY_ACTIVITY.InventoryDetails>();
 
-            foreach (InventoryDetails item in data.Created)
+            foreach (DAILY_ACTIVITY.InventoryDetails item in data.Created)
             {
                 DAILY_ACTIVITY_INVENTORY NewInventory = new DAILY_ACTIVITY_INVENTORY();
                 NewInventory.CHEMICAL_MIX_ID = item.CHEMICAL_MIX_ID;
@@ -1363,13 +1282,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             }
 
-            foreach (InventoryDetails item in data.Updated)
+            foreach (DAILY_ACTIVITY.InventoryDetails item in data.Updated)
             {
                 DAILY_ACTIVITY_INVENTORY UpdatedInventory;
 
                 using (Entities _context = new Entities())
                 {
-                    UpdatedInventory = _context.DAILY_ACTIVITY_INVENTORY.Where(x => x.INVENTORY_ID == item.INVENTORY_ID).Single();
+                    UpdatedInventory = DAILY_ACTIVITY.GetInventory(_context, (long)item.INVENTORY_ID).Single();
                 }
 
                 UpdatedInventory.CHEMICAL_MIX_ID = item.CHEMICAL_MIX_ID;
@@ -1392,7 +1311,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 long SubOrg = long.Parse(item.SUB_INVENTORY_ORG_ID.ToString());
                 using (Entities _context = new Entities())
                 {
-                    ChemicalMixNumber = _context.DAILY_ACTIVITY_CHEMICAL_MIX.Where(x => x.CHEMICAL_MIX_ID == item.CHEMICAL_MIX_ID).Select(x => x.CHEMICAL_MIX_NUMBER).Single();
+                    ChemicalMixNumber = DAILY_ACTIVITY.GetChemical(_context, (long)item.CHEMICAL_MIX_ID).Select(x => x.CHEMICAL_MIX_NUMBER).Single();
                     Item = _context.INVENTORY_V.Where(x => x.ITEM_ID == item.ITEM_ID && x.ORGANIZATION_ID == item.SUB_INVENTORY_ORG_ID).Single();
                     unit = _context.UNIT_OF_MEASURE_V.Where(x => x.UOM_CODE == item.UOM_CODE).Select(x => x.UNIT_OF_MEASURE).Single();
                     InvName = _context.INVENTORY_V.Where(x => x.ORGANIZATION_ID == SubOrg).Select(x => x.INV_NAME).Distinct().Single();
@@ -1517,9 +1436,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Get Chemical mixes for current project
             using (Entities _context = new Entities())
             {
-                List<DAILY_ACTIVITY_CHEMICAL_MIX> data = (from d in _context.DAILY_ACTIVITY_CHEMICAL_MIX
-                                                          where d.HEADER_ID == HeaderId
-                                                          select d).ToList();
+                var data = DAILY_ACTIVITY.GetChemicalData(_context, HeaderId).ToList();
                 uxAddInventoryMixStore.DataSource = data;
             }
         }
@@ -1547,9 +1464,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             using (Entities _context = new Entities())
             {
-                long? ProjectId = (from d in _context.DAILY_ACTIVITY_HEADER
-                                   where d.HEADER_ID == HeaderId
-                                   select d.PROJECT_ID).Single();
+                long? ProjectId = DAILY_ACTIVITY.GetHeader(_context, HeaderId).Select(x => x.PROJECT_ID).Single();
                 long? OrgId = (from d in _context.PROJECTS_V
                                where d.PROJECT_ID == ProjectId
                                select d.ORG_ID).Single();
@@ -1688,27 +1603,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
-        protected bool roleNeeded()
-        {
-            long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
-
-            using (Entities _context = new Entities())
-            {
-                string PrevailingWage = (from d in _context.DAILY_ACTIVITY_HEADER
-                                         join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
-                                         where d.HEADER_ID == HeaderId
-                                         select p.ATTRIBUTE3).Single();
-                if (PrevailingWage == "Y")
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-
         protected void deDownloadAttachment(object sender, DirectEventArgs e)
         {
             SYS_ATTACHMENTS Attachment;
@@ -1745,7 +1639,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             long EmpId = long.Parse(EmployeeId);
             using (Entities _context = new Entities())
             {
-                DeletedEmployee = _context.DAILY_ACTIVITY_EMPLOYEE.Where(x => x.EMPLOYEE_ID == EmpId).Single();
+                DeletedEmployee = DAILY_ACTIVITY.GetEmployee(_context, EmpId).Single();
             }
 
             GenericData.Delete<DAILY_ACTIVITY_EMPLOYEE>(DeletedEmployee);
@@ -1762,7 +1656,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             using (Entities _context = new Entities())
             {
                 EmployeeCheck = _context.DAILY_ACTIVITY_EMPLOYEE.Where(x => x.EQUIPMENT_ID == EqId).ToList();
-                DeletedEquipment = _context.DAILY_ACTIVITY_EQUIPMENT.Where(x => x.EQUIPMENT_ID == EqId).Single();
+                DeletedEquipment = DAILY_ACTIVITY.GetEquipment(_context, EqId).Single();
             }
 
             if (EmployeeCheck.Count == 0)
@@ -1797,7 +1691,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             long EqId = long.Parse(EquipmentId);
             using (Entities _context = new Entities())
             {
-                DeletedEquipment = _context.DAILY_ACTIVITY_EQUIPMENT.Where(x => x.EQUIPMENT_ID == EqId).Single();
+                DeletedEquipment = DAILY_ACTIVITY.GetEquipment(_context, EqId).Single();
                 EmployeeCheck = _context.DAILY_ACTIVITY_EMPLOYEE.Where(x => x.EQUIPMENT_ID == EqId).ToList();
             }
             GenericData.Delete(DeletedEquipment);
@@ -1827,7 +1721,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             long ProdId = long.Parse(ProductionId);
             using (Entities _context = new Entities())
             {
-                DeletedProduction = _context.DAILY_ACTIVITY_PRODUCTION.Where(x => x.PRODUCTION_ID == ProdId).Single();
+                DeletedProduction = DAILY_ACTIVITY.GetProduction(_context, ProdId).Single();
             }
 
             GenericData.Delete(DeletedProduction);
@@ -1841,7 +1735,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             long Weather = long.Parse(WeatherId);
             using (Entities _context = new Entities())
             {
-                DeletedWeather = _context.DAILY_ACTIVITY_WEATHER.Where(x => x.WEATHER_ID == Weather).Single();
+                DeletedWeather = DAILY_ACTIVITY.GetWeather(_context, Weather).Single();
             }
             GenericData.Delete(DeletedWeather);
             uxWeatherGrid.GetView();
@@ -1940,7 +1834,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             long Inventory = long.Parse(InventoryId);
             using (Entities _context = new Entities())
             {
-                DeletedInventory = _context.DAILY_ACTIVITY_INVENTORY.Where(x => x.INVENTORY_ID == Inventory).Single();
+                DeletedInventory = DAILY_ACTIVITY.GetInventory(_context, Inventory).Single();
             }
             GenericData.Delete(DeletedInventory);
             uxInventoryGrid.GetView();
@@ -1953,7 +1847,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             long Attachment = long.Parse(AttachmentId);
             using (Entities _context = new Entities())
             {
-                DeletedAttachment = _context.SYS_ATTACHMENTS.Where(x => x.ATTACHMENT_ID == Attachment).Single();
+                DeletedAttachment = DAILY_ACTIVITY.GetAttachment(_context, Attachment).Single();
             }
             GenericData.Delete(DeletedAttachment);
             uxAttachmentGrid.GetView();
