@@ -58,7 +58,40 @@
             var Option = new QuestionOption({
                 TEXT: App.uxQuestionsGrid.getSelectionModel().getSelection()[0].data.TEXT
             });
+            App.direct.dmAddToDirty();
             App.uxOptionsStore.insert(0, Option);
+            App.uxOptionRowEdit.startEdit(0, 0);
+            // Create DelayedTask and call it after 100 ms
+            var task = new Ext.util.DelayedTask(function () {
+                App.uxOptionsGrid.columns[1].getEditor().focusInput();
+            });
+            task.delay(100);
+        };
+
+        var cancelEditRow = function (value) {
+            switch (value) {
+                case 'form':
+                    if (!App.uxFormsGrid.getSelectionModel().getSelection()[0].data.FORM_ID) {
+                        App.uxFormsStore.remove(App.uxFormsGrid.getSelectionModel().getSelection()[0]);
+                    }
+                    break;
+                case 'fieldset':
+                    if (!App.uxFieldsetsGrid.getSelectionModel().getSelection()[0].data.FIELDSET_ID) {
+                        App.uxFieldsetsStore.remove(App.uxFieldsetsGrid.getSelectionModel().getSelection()[0]);
+                    }
+                    break;
+                case 'question':
+                    if (!App.uxQuestionsGrid.getSelectionModel().getSelection()[0].data.QUESTION_ID) {
+                        App.uxQuestionsStore.remove(App.uxQuestionsGrid.getSelectionModel().getSelection()[0]);
+                    }
+                    break;
+                case 'option':
+                    if (!App.uxOptionsGrid.getSelectionModel().getSelection()[0].data.OPTION_ID) {
+                        App.uxOptionsStore.remove(App.uxOptionsGrid.getSelectionModel().getSelection()[0]);
+                    }
+                    break;
+            }
+            App.direct.dmSubtractFromDirty();
         };
     </script>
     <style type="text/css">
@@ -71,8 +104,6 @@
 <body>
     <form id="form1" runat="server">
         <ext:ResourceManager runat="server" IsDynamic="false" />
-
-
         <ext:Viewport ID="uxAdminViewPort" runat="server" Layout="FitLayout">
             <Items>
                 <ext:TabPanel runat="server" ID="uxTabPanel">
@@ -191,7 +222,7 @@
                                     </ColumnModel>
                                     <Plugins>
                                         <ext:FilterHeader runat="server" Remote="true" />
-                                        <ext:RowEditing runat="server" ClicksToMoveEditor="1" AutoCancel="false">
+                                        <ext:RowEditing runat="server" ID="uxFormRowEdit" ClicksToMoveEditor="1" AutoCancel="false" ErrorSummary="false">
                                             <DirectEvents>
                                                 <Edit OnEvent="deSaveForm" Before="return #{uxFormsStore}.isDirty();">
                                                     <ExtraParams>
@@ -201,6 +232,9 @@
                                                     <EventMask ShowMask="true" />
                                                 </Edit>
                                             </DirectEvents>
+                                            <Listeners>
+                                                <CancelEdit Handler="cancelEditRow('form')" />
+                                            </Listeners>
                                         </ext:RowEditing>
                                     </Plugins>
                                     <TopBar>
@@ -208,7 +242,12 @@
                                             <Items>
                                                 <ext:Button runat="server" Text="Add Form" ID="uxAddFormButton" Icon="ApplicationAdd">
                                                     <Listeners>
-                                                        <Click Handler="#{uxFormsStore}.insert(0, new Form());" />
+                                                        <Click Handler="#{uxFormsStore}.insert(0, new Form()); App.direct.dmAddToDirty() ;#{uxFormRowEdit}.startEdit(0, 0);
+                                                            // Create DelayedTask and call it after 100 ms
+                                                            var task = new Ext.util.DelayedTask(function(){
+                                                            #{uxFormsGrid}.columns[0].getEditor().focusInput();
+                                                            });
+                                                            task.delay(100);" />
                                                     </Listeners>
                                                 </ext:Button>
                                                 <ext:Button runat="server" Text="Delete Form" ID="uxDeleteFormButton" Icon="ApplicationDelete" Disabled="true">
@@ -319,7 +358,7 @@
                                     </ColumnModel>
                                     <Plugins>
                                         <ext:FilterHeader runat="server" Remote="true" />
-                                        <ext:RowEditing runat="server" ClicksToMoveEditor="1" AutoCancel="false">
+                                        <ext:RowEditing runat="server" ClicksToMoveEditor="1" ID="uxFieldsetRowEdit" AutoCancel="false" ErrorSummary="false">
                                             <DirectEvents>
                                                 <Edit OnEvent="deSaveFieldsets" Before="return #{uxFieldsetsStore}.isDirty();">
                                                     <ExtraParams>
@@ -330,6 +369,9 @@
                                                     <EventMask ShowMask="true" />
                                                 </Edit>
                                             </DirectEvents>
+                                            <Listeners>
+                                                <CancelEdit Handler="cancelEditRow('fieldset')" />
+                                            </Listeners>
                                         </ext:RowEditing>
                                     </Plugins>
                                     <BottomBar>
@@ -340,7 +382,12 @@
                                             <Items>
                                                 <ext:Button runat="server" ID="uxAddFieldsetButton" Icon="ApplicationAdd" Text="Add Fieldset" Disabled="true">
                                                     <Listeners>
-                                                        <Click Handler="#{uxFieldSetsStore}.insert(0, new Fieldset());" />
+                                                        <Click Handler="#{uxFieldSetsStore}.insert(0, new Fieldset()); App.direct.dmAddToDirty(); ;#{uxFieldsetRowEdit}.startEdit(0, 0);
+                                                            // Create DelayedTask and call it after 100 ms
+                                                            var task = new Ext.util.DelayedTask(function(){
+                                                            #{uxFieldsetsGrid}.columns[0].getEditor().focusInput();
+                                                            });
+                                                            task.delay(100);" />
                                                     </Listeners>
                                                 </ext:Button>
                                                 <ext:Button runat="server" ID="uxDeleteFieldsetButton" Icon="ApplicationDelete" Text="Delete Fieldset" Disabled="true">
@@ -360,7 +407,6 @@
                                     <Listeners>
                                         <Select Handler="#{uxDeleteFieldsetButton}.enable()" />
                                     </Listeners>
-
                                 </ext:GridPanel>
                                 <ext:GridPanel runat="server" ID="uxQuestionsGrid" Title="Form Questions" MaxWidth="1100" Margin="5" MinHeight="250">
                                     <Store>
@@ -462,7 +508,7 @@
                                     </ColumnModel>
                                     <Plugins>
                                         <ext:FilterHeader runat="server" Remote="true" />
-                                        <ext:RowEditing runat="server" ClicksToMoveEditor="1" AutoCancel="false">
+                                        <ext:RowEditing runat="server" ClicksToMoveEditor="1" ID="uxQuestionRowEdit" AutoCancel="false" ErrorSummary="false">
                                             <DirectEvents>
                                                 <Edit OnEvent="deSaveQuestions" Before="return #{uxQuestionsStore}.isDirty();">
                                                     <ExtraParams>
@@ -471,6 +517,9 @@
                                                     <EventMask ShowMask="true" />
                                                 </Edit>
                                             </DirectEvents>
+                                            <Listeners>
+                                                <CancelEdit Handler="cancelEditRow('question')" />
+                                            </Listeners>
                                         </ext:RowEditing>
                                     </Plugins>
                                     <BottomBar>
@@ -488,7 +537,12 @@
                                             <Items>
                                                 <ext:Button runat="server" ID="uxAddQuestionButton" Icon="ApplicationAdd" Text="Add Question" Disabled="true">
                                                     <Listeners>
-                                                        <Click Handler="#{uxQuestionsStore}.insert(0, new Question());" />
+                                                        <Click Handler="#{uxQuestionsStore}.insert(0, new Question()); App.direct.dmAddToDirty(); ;#{uxQuestionRowEdit}.startEdit(0, 0);
+                                                            // Create DelayedTask and call it after 100 ms
+                                                            var task = new Ext.util.DelayedTask(function(){
+                                                            #{uxQuestionsGrid}.columns[0].getEditor().focusInput();
+                                                            });
+                                                            task.delay(100);" />
                                                     </Listeners>
                                                 </ext:Button>
                                                 <ext:Button runat="server" ID="uxDeleteQuestionButton" Icon="ApplicationDelete" Text="Delete Question" Disabled="true">
@@ -553,7 +607,7 @@
                                     </ColumnModel>
                                     <Plugins>
                                         <ext:FilterHeader runat="server" Remote="true" />
-                                        <ext:RowEditing runat="server" AutoCancel="false" ClicksToMoveEditor="1">
+                                        <ext:RowEditing runat="server" ID="uxOptionRowEdit" AutoCancel="false" ClicksToMoveEditor="1" ErrorSummary="false">
                                             <DirectEvents>
                                                 <Edit OnEvent="deSaveOptions" Before="return #{uxOptionsStore}.isDirty();">
                                                     <ExtraParams>
@@ -563,6 +617,9 @@
                                                     <EventMask ShowMask="true" />
                                                 </Edit>
                                             </DirectEvents>
+                                            <Listeners>
+                                                <CancelEdit Handler="cancelEditRow('option')" />
+                                            </Listeners>
                                         </ext:RowEditing>
                                     </Plugins>
                                     <BottomBar>

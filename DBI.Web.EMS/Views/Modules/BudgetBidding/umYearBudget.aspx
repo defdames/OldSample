@@ -757,16 +757,8 @@
                             </Items>
                         </ext:FieldContainer>
 
-                        <ext:FieldContainer ID="FieldContainer11"
-                            runat="server"
-                            Layout="HBoxLayout">
-                            <Items>
-                                <ext:Label ID="Label36" runat="server" Width="60" />
-                            </Items>
-                        </ext:FieldContainer>
-
                         <%----- Begin Detail Sheet Section -----%>
-                        <ext:FieldSet ID="FieldSet1" runat="server" Width="930" Padding="10" Cls="detailBackground">
+                        <ext:FieldSet ID="FieldSet1" runat="server" Width="950" Padding="10" Cls="detailBackground">
                             <Items>
                                 <ext:FieldContainer ID="FieldContainer12"
                                     runat="server"
@@ -851,7 +843,7 @@
                                             runat="server"
                                             ValueField="ID_NAME"
                                             DisplayField="ID_NAME"
-                                            Width="150"
+                                            Width="180"
                                             EmptyText="-- Actions --"
                                             Editable="false">
                                             <Store>
@@ -966,20 +958,13 @@
                                 </ext:FieldContainer>
                             </Items>
                         </ext:FieldSet>
-                        <ext:FieldContainer ID="FieldContainer18"
-                            runat="server"
-                            Layout="HBoxLayout">
-                            <Items>
-                                <ext:Label ID="Label12" runat="server" Width="60" />
-                            </Items>
-                        </ext:FieldContainer>
                         <%----- End Detail Sheet Section -----%>
 
                         <ext:FieldContainer ID="FieldContainer17"
                             runat="server"
                             Layout="HBoxLayout">
                             <Items>
-                                <ext:Label ID="Label3" runat="server" Width="770" />
+                                <ext:Label ID="Label3" runat="server" Width="795" />
                                 <ext:Button ID="uxSave" runat="server" Text="Save" Icon="Add" Width="75">
                                     <DirectEvents>
                                         <Click OnEvent="deSave">

@@ -27,6 +27,9 @@
                             </Fields>
                         </ext:Model>
                     </Model>
+                    <Sorters>
+                        <ext:DataSorter Property="DA_DATE" Direction="DESC" />
+                    </Sorters>
                     <Proxy>
                         <ext:PageProxy />
                     </Proxy>

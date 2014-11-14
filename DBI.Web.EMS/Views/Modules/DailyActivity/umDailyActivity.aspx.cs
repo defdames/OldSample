@@ -46,9 +46,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             else
             {
-                int CurrentOrg = Convert.ToInt32(Authentication.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
+                List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
                 //Get projects for my org only
-                dataIn = WEB_PROJECTS_V.ProjectList(CurrentOrg);
+                dataIn = WEB_PROJECTS_V.ProjectList(OrgsList);
             }
 
             int count;

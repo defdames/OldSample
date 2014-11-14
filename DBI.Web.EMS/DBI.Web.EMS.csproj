@@ -144,6 +144,8 @@
     <Content Include="Resources\Images\wwbnight.png" />
     <Content Include="Resources\Scripts\jquery-2.0.1.js" />
     <Content Include="Resources\Scripts\jquery-2.0.1.min.js" />
+    <Content Include="Views\Modules\BudgetBidding\Reports\umRepOrgAllProjects.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\Reports\umRepRollupSum.aspx" />
     <Content Include="Views\Modules\BudgetBidding\Reports\umRepDetailSheet.aspx" />
     <Content Include="Views\Modules\BudgetBidding\Reports\umRepProject.aspx" />
     <Content Include="Views\Modules\BudgetBidding\Reports\umRepOrgComm.aspx" />
@@ -245,6 +247,8 @@
     <Content Include="Views\Modules\Overhead\umCategoryMaint.aspx" />
     <Content Include="Views\Modules\Overhead\umViewActualsWindow.aspx" />
     <Content Include="Views\Modules\Overhead\umViewBudget.aspx" />
+    <Content Include="Views\Modules\ReportTemplates\Portrait.aspx" />
+    <Content Include="Views\Modules\ReportTemplates\Landscape.aspx" />
     <Content Include="Views\Modules\Security\Options\AddEdit\umAddEditProfileOptions.aspx" />
     <Content Include="Views\Modules\Security\umEditGroups.aspx" />
     <Content Include="Views\Modules\Security\umEditModules.aspx" />
@@ -317,6 +321,20 @@
     </Compile>
     <Compile Include="Views\Handlers\SystemUsers.ashx.cs">
       <DependentUpon>SystemUsers.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepOrgAllProjects.aspx.cs">
+      <DependentUpon>umRepOrgAllProjects.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepOrgAllProjects.aspx.designer.cs">
+      <DependentUpon>umRepOrgAllProjects.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepRollupSum.aspx.cs">
+      <DependentUpon>umRepRollupSum.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepRollupSum.aspx.designer.cs">
+      <DependentUpon>umRepRollupSum.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\BudgetBidding\Reports\umRepDetailSheet.aspx.cs">
       <DependentUpon>umRepDetailSheet.aspx</DependentUpon>
@@ -1017,6 +1035,20 @@
     <Compile Include="Views\Modules\Overhead\umViewBudget.aspx.designer.cs">
       <DependentUpon>umViewBudget.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\ReportTemplates\Portrait.aspx.cs">
+      <DependentUpon>Portrait.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\ReportTemplates\Portrait.aspx.designer.cs">
+      <DependentUpon>Portrait.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\ReportTemplates\Landscape.aspx.cs">
+      <DependentUpon>Landscape.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\ReportTemplates\Landscape.aspx.designer.cs">
+      <DependentUpon>Landscape.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\Security\Options\AddEdit\umAddEditProfileOptions.aspx.cs">
       <DependentUpon>umAddEditProfileOptions.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1206,7 +1238,7 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\Modules\BudgetBidding\Reports\umRepDetailSheet.rdlc">
+    <Content Include="Views\Modules\BudgetBidding\Reports\umRepDetailSheet.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <Content Include="Views\Modules\BudgetBidding\Reports\umRepProject.rdlc">
@@ -1225,6 +1257,22 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.rdlc">
+    </Content>
+    <Content Include="Views\Modules\BudgetBidding\Reports\umRepRollupSum.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Modules\BudgetBidding\Reports\umRepOrgAllProjects.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\MaintenanceInvoiceReport.rdlc" />
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\AppDateReport.rdlc" />
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\InspectionReport.rdlc" />
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\IncidentReport.rdlc" />
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.rdlc" />
+    <Content Include="Views\Modules\BudgetBidding\Reports\umRepProject.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\PrivateCrossingReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\Modules\CrossingMaintenance\Reports\SupplementalInvoiceReport.rdlc">
@@ -1239,21 +1287,29 @@
     </Content>
     <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\Report1.rdlc" />
     <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\SupplementalBillingReport.rdlc">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\SupplementalInvoiceReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Modules\CrossingMaintenance\StateCrossingList.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>StateCrossingList.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Modules\BudgetBidding\Reports\umRepOrgComm.rdlc">
+    <Content Include="Views\Modules\BudgetBidding\Reports\umRepOrgComm.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Modules\BudgetBidding\Reports\umRepOrgLiab.rdlc">
+    </Content>
+    <Content Include="Views\Modules\BudgetBidding\Reports\umRepOrgLiab.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Modules\BudgetBidding\Reports\umRepOrgSum.rdlc">
+    </Content>
+    <Content Include="Views\Modules\BudgetBidding\Reports\umRepOrgSum.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
+    </Content>
+    <Content Include="Views\Modules\ReportTemplates\Portrait.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Modules\ReportTemplates\Landscape.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
