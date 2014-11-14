@@ -162,12 +162,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             var icp = User as ClaimsPrincipal;
             var AddingUser = Authentication.GetClaimValue(ClaimTypes.Name, icp);
             
-            string SubDivision;
-            string HeaderType;
-            string Contractor;
-            string Density;
-
-            
             //Create new Daily Activity Header
             DAILY_ACTIVITY_HEADER ToStore = new DAILY_ACTIVITY_HEADER()
             {

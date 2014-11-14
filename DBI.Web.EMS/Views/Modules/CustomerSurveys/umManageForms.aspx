@@ -58,7 +58,6 @@
             var Option = new QuestionOption({
                 TEXT: App.uxQuestionsGrid.getSelectionModel().getSelection()[0].data.TEXT
             });
-            App.direct.dmAddToDirty();
             App.uxOptionsStore.insert(0, Option);
             App.uxOptionRowEdit.startEdit(0, 0);
             // Create DelayedTask and call it after 100 ms
@@ -234,6 +233,7 @@
                                             </DirectEvents>
                                             <Listeners>
                                                 <CancelEdit Handler="cancelEditRow('form')" />
+                                                <BeforeEdit Handler="App.direct.dmAddToDirty()" />
                                             </Listeners>
                                         </ext:RowEditing>
                                     </Plugins>
@@ -242,7 +242,7 @@
                                             <Items>
                                                 <ext:Button runat="server" Text="Add Form" ID="uxAddFormButton" Icon="ApplicationAdd">
                                                     <Listeners>
-                                                        <Click Handler="#{uxFormsStore}.insert(0, new Form()); App.direct.dmAddToDirty() ;#{uxFormRowEdit}.startEdit(0, 0);
+                                                        <Click Handler="#{uxFormsStore}.insert(0, new Form()); #{uxFormRowEdit}.startEdit(0, 0);
                                                             // Create DelayedTask and call it after 100 ms
                                                             var task = new Ext.util.DelayedTask(function(){
                                                             #{uxFormsGrid}.columns[0].getEditor().focusInput();
@@ -371,6 +371,7 @@
                                             </DirectEvents>
                                             <Listeners>
                                                 <CancelEdit Handler="cancelEditRow('fieldset')" />
+                                                <BeforeEdit Handler="App.direct.dmAddToDirty()" />
                                             </Listeners>
                                         </ext:RowEditing>
                                     </Plugins>
@@ -382,7 +383,7 @@
                                             <Items>
                                                 <ext:Button runat="server" ID="uxAddFieldsetButton" Icon="ApplicationAdd" Text="Add Fieldset" Disabled="true">
                                                     <Listeners>
-                                                        <Click Handler="#{uxFieldSetsStore}.insert(0, new Fieldset()); App.direct.dmAddToDirty(); ;#{uxFieldsetRowEdit}.startEdit(0, 0);
+                                                        <Click Handler="#{uxFieldSetsStore}.insert(0, new Fieldset()); ;#{uxFieldsetRowEdit}.startEdit(0, 0);
                                                             // Create DelayedTask and call it after 100 ms
                                                             var task = new Ext.util.DelayedTask(function(){
                                                             #{uxFieldsetsGrid}.columns[0].getEditor().focusInput();
@@ -519,6 +520,7 @@
                                             </DirectEvents>
                                             <Listeners>
                                                 <CancelEdit Handler="cancelEditRow('question')" />
+                                                <BeforeEdit Handler="App.direct.dmAddToDirty()" />
                                             </Listeners>
                                         </ext:RowEditing>
                                     </Plugins>
@@ -537,7 +539,7 @@
                                             <Items>
                                                 <ext:Button runat="server" ID="uxAddQuestionButton" Icon="ApplicationAdd" Text="Add Question" Disabled="true">
                                                     <Listeners>
-                                                        <Click Handler="#{uxQuestionsStore}.insert(0, new Question()); App.direct.dmAddToDirty(); ;#{uxQuestionRowEdit}.startEdit(0, 0);
+                                                        <Click Handler="#{uxQuestionsStore}.insert(0, new Question()); #{uxQuestionRowEdit}.startEdit(0, 0);
                                                             // Create DelayedTask and call it after 100 ms
                                                             var task = new Ext.util.DelayedTask(function(){
                                                             #{uxQuestionsGrid}.columns[0].getEditor().focusInput();
@@ -618,6 +620,7 @@
                                                 </Edit>
                                             </DirectEvents>
                                             <Listeners>
+                                                <BeforeEdit Handler="App.direct.dmAddToDirty()" />
                                                 <CancelEdit Handler="cancelEditRow('option')" />
                                             </Listeners>
                                         </ext:RowEditing>
