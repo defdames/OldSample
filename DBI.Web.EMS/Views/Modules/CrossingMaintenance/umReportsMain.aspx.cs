@@ -53,7 +53,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     new ReportListStruct(3, "Inspection Date"),
                     new ReportListStruct(4, "Incidents"),
                     new ReportListStruct(5, "Supplemental Billing"),
-                    //new ReportListStruct(7, "Weekly Crossing Summary"),
+                    new ReportListStruct(7, "Crossing Summary"),
                     new ReportListStruct(8, "Weekly Work Activity"),
                     new ReportListStruct(9, "Private Crossing List"),
                     new ReportListStruct(10, "ROW Missing") 
@@ -101,6 +101,11 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             case "Private Crossing List":
             string PriUrl = string.Format("umPrivateCrossingReport.aspx?");
             uxReportMainPanel.LoadContent(PriUrl);
+            break;
+
+            case "Crossing Summary":
+            string CSUrl = string.Format("umCrossingSummaryReport.aspx?");
+            uxReportMainPanel.LoadContent(CSUrl);
             break;
 
             case "ROW Missing":

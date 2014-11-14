@@ -28,7 +28,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     X.Redirect("~/Views/uxDefault.aspx");
 
                 }
-
+                Toolbar1.Hidden = (!validateComponentSecurity("SYS.CrossingMaintenance.AdminView"));
                 //if (!validateComponentSecurity("SYS.CrossingMaintenance"))
                 //{
                 //    Toolbar1.Hide();

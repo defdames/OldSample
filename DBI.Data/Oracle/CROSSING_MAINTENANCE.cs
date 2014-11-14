@@ -304,6 +304,7 @@ SELECT
               return (from a in _context.CROSSING_SUPPLEMENTAL
                       join d in _context.CROSSINGS on a.CROSSING_ID equals d.CROSSING_ID
                       join v in _context.PROJECTS_V on a.PROJECT_ID equals v.PROJECT_ID
+                      join p in _context.CROSSING_PRICING on a.SERVICE_TYPE equals p.SERVICE_CATEGORY
                       where d.RAILROAD_ID == RailroadId
                       select new CompletedCrossingsSupplemental
                       {
@@ -320,6 +321,7 @@ SELECT
                           SQUARE_FEET = a.SQUARE_FEET,
                           REMARKS = a.REMARKS,
                           SEGMENT1 = v.SEGMENT1,
+                          PRICE = p.PRICE,
                       });
 
           }
@@ -568,11 +570,13 @@ SELECT
                                    d.SERVICE_UNIT,
                                    p.PROJECT_ID,
                                    p.SEGMENT1,
+                                   pr.PRICE,
                                    d.STATE
                 FROM CROSSING_SUPPLEMENTAL a
                 LEFT JOIN CROSSINGS d ON a.CROSSING_ID = d.CROSSING_ID
                 LEFT JOIN CROSSING_SUPP_INVOICE v ON a.INVOICE_SUPP_ID = v.INVOICE_SUPP_ID
                 LEFT JOIN PROJECTS_V p ON a.PROJECT_ID = p.PROJECT_ID
+                LEFT JOIN CROSSING_PRICING pr ON a.SERVICE_TYPE = pr.SERVICE_CATEGORY
                 WHERE a.INVOICE_SUPP_ID = {0}
 
                    ", selectedSupp);
@@ -684,6 +688,55 @@ SELECT
                               return context.Database.SqlQuery<StateCrossingList>(sql).ToList();
                           }
                       }
+
+          public static List<StateCrossingList> GetCrossingSummaryList(string selectedRailroad, string selectedStart, string selectedEnd)
+          {
+
+              string sql1 = string.Format(@"                          
+                             SELECT
+                                d.CROSSING_ID,
+                                d.CROSSING_NUMBER,
+                                d.SUB_DIVISION,
+                                d.STATE,
+                                d.COUNTY,
+                                d.SERVICE_UNIT,
+                                d.CITY,
+                                d.MILE_POST,
+                                d.ROWNE,
+                                d.ROWNW,
+                                d.ROWSE,
+                                d.ROWSW,
+                                d.STREET,
+                                d.STATUS,
+                                d.SUB_CONTRACTED,
+                                d.LONGITUDE,
+                                d.LATITUDE,
+                                d.SPECIAL_INSTRUCTIONS,
+                                a.SPRAY
+                FROM CROSSINGS d 
+                LEFT JOIN CROSSING_APPLICATION a ON d.CROSSING_ID = a.CROSSING_ID");
+              string sql2 = "";
+              if (selectedStart == "Y")
+              {
+                  sql2 = string.Format(@"
+                     AND i.DATE_CLOSED is null 
+                     ", selectedStart);
+              }
+              else if (selectedEnd == "Y")
+              {
+                  sql2 = string.Format(@"
+                      AND i.DATE_CLOSED is not null
+                                  
+                      ", selectedEnd);
+              }
+             
+
+              string sql = sql1 + sql2;
+              using (Entities context = new Entities())
+              {
+                  return context.Database.SqlQuery<StateCrossingList>(sql).ToList();
+              }
+          }
 
           public static List<ApplicationDateList> GetAppDateList(string selectedRailroad, string selectedServiceUnit, string selectedSubDiv, string selectedState, decimal selectedApplication, DateTime selectedStart, DateTime selectedEnd)
           {
@@ -1070,11 +1123,13 @@ SELECT
                                    d.SERVICE_UNIT,
                                    p.PROJECT_ID,
                                    p.SEGMENT1,
+                                   pr.PRICE,
                                    d.STATE
                 FROM CROSSING_SUPPLEMENTAL a
                 LEFT JOIN CROSSINGS d ON a.CROSSING_ID = d.CROSSING_ID
                 LEFT JOIN CROSSING_SUPP_INVOICE v ON a.INVOICE_SUPP_ID = v.INVOICE_SUPP_ID
-                LEFT JOIN PROJECTS_V p ON a.PROJECT_ID = p.PROJECT_ID ");
+                LEFT JOIN PROJECTS_V p ON a.PROJECT_ID = p.PROJECT_ID
+                LEFT JOIN CROSSING_PRICING pr ON a.SERVICE_TYPE = pr.SERVICE_CATEGORY ");
 
               string sql2 = "";
               if (selectedServiceUnit != null && selectedSubDiv != null && selectedState != null)
@@ -1477,6 +1532,7 @@ SELECT
               public string STATE { get; set; }
               public long SQUARE_FEET { get; set; }
               public string SEGMENT1 { get; set; }
+              public decimal? PRICE { get; set; }
               public string INVOICE_SUPP_NUMBER { get; set; }
               public DateTime? INVOICE_SUPP_DATE { get; set; }
               public string SUB_DIVISION { get; set; }
@@ -1611,6 +1667,7 @@ SELECT
           }
           public class CompletedCrossingsSupplemental
           {
+              public decimal? PRICE { get; set; }
               public string CROSSING_NUMBER { get; set; }
               public long SUPPLEMENTAL_ID { get; set; }
               public long CROSSING_ID { get; set; }
