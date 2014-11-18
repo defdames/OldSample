@@ -34,7 +34,7 @@
 							</Store>
                             <ColumnModel>
                                 <Columns>
-                                    <ext:Column ID="Column1" runat="server" DataIndex="HeaderId" Text="DRS Id" Flex="10" />
+                                    <ext:Column ID="Column1" runat="server" DataIndex="HeaderId" Text="DRS Number" Flex="10" />
                                     <ext:Column ID="Column2" runat="server" DataIndex="ProjectName" Text="Project" Flex="50" />
                                     <ext:Column ID="Column3" runat="server" DataIndex="TaskNumber" Text="Task Number" Flex="15" />
                                     <ext:Column ID="Column4" runat="server" DataIndex="TaskName" Text="Task Name" Flex="25" />
