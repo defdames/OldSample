@@ -10,6 +10,8 @@ using DBI.Data;
 using Ext.Net;
 using DBI.Data.GMS;
 using DBI.Data.DataFactory;
+using System.Net.Mail;
+
 
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 {

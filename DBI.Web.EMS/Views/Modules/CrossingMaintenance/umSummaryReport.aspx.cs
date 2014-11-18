@@ -21,48 +21,41 @@ using DBI.Data.DataFactory;
 using System.Xml.Xsl;
 using System.Xml;
 
+
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 {
-    public partial class umSuppBillingReport : System.Web.UI.Page
+    public partial class umSummaryReport : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
-        {
-             if (!X.IsAjaxRequest)
-            {
-                uxSupplementalTypeStore.Data = StaticLists.SupplementalType;
-                uxAddStateList.Data = StaticLists.CrossingStateList;
-
+        {            
                 if (SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue") != string.Empty)
                 {
                     deGetRRType("Add");
 
                 }
+           
             }
-        }
-        protected void deSupplementalReportGrid(object sender, DirectEventArgs e)
+        
+        protected void deSummaryReportGrid(object sender, DirectEventArgs e)
         {
             DateTime StartDate = uxStartDate.SelectedDate;
             DateTime EndDate = uxEndDate.SelectedDate;
-            string ServiceUnit = uxAddServiceUnit.SelectedItem.Value;
-            string SubDiv = uxAddSubDiv.SelectedItem.Value;
-            string State = uxAddStateComboBox.SelectedItem.Value;
-            string Type = uxSupplementalType.SelectedItem.Value;
+            DateTime FiscalStart = uxStartDate.SelectedDate;
+         
             using (Entities _context = new Entities())
             {
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
 
                 DateTime selectedStart = StartDate;
                 DateTime selectedEnd = EndDate;
+               // DateTime selectedFiscalStart = FiscalStart;
                 string selectedRailroad = RailroadId.ToString();
-                string selectedServiceUnit = ServiceUnit;
-                string selectedSubDiv = SubDiv;
-                string selectedState = State;
-                string selectedType = Type;
-                string url = "/Views/Modules/CrossingMaintenance/Reports/SupplementalBillingReport.aspx?selectedRailroad=" + selectedRailroad + "&selectedServiceUnit=" + selectedServiceUnit + "&selectedSubDiv=" + selectedSubDiv + "&selectedState=" + selectedState + "&selectedStart=" + selectedStart + "&selectedEnd=" + selectedEnd + "&selectedType=" + selectedType;
+       
+                string url = "/Views/Modules/CrossingMaintenance/Reports/SummaryReport.aspx?selectedRailroad=" + selectedRailroad + "&selectedStart=" + selectedStart + "&selectedEnd=" + selectedEnd;
                 Ext.Net.Panel pan = new Ext.Net.Panel();
 
                 pan.ID = "Panel";
-                pan.Title = "Supplemental Billing Report";
+                pan.Title = "Crossing Summary Report";
                 pan.CloseAction = CloseAction.Destroy;
                 pan.Loader = new ComponentLoader();
                 pan.Loader.ID = "loader";
@@ -95,30 +88,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 uxRRCI.SetValue(RRdata.r.RAILROAD);
 
                 string rrType = RRdata.r.RAILROAD;
-                if (rrLoad == "Add")
-                {
-                    List<ServiceUnitResponse> units = ServiceUnitData.ServiceUnitUnits(rrType).ToList();
-                    uxAddServiceUnit.Clear();
-                    uxAddSubDiv.Clear();
-                    uxAddServiceUnitStore.DataSource = units;
-                    uxAddServiceUnitStore.DataBind();
-                }
-
+               
             }
         }
-        protected void deLoadSubDiv(object sender, DirectEventArgs e)
-        {
-
-
-            if (e.ExtraParams["Type"] == "Add")
-            {
-                List<ServiceUnitResponse> divisions = ServiceUnitData.ServiceUnitDivisions(uxAddServiceUnit.SelectedItem.Value).ToList();
-                uxAddSubDiv.Clear();
-                uxAddSubDivStore.DataSource = divisions;
-                uxAddSubDivStore.DataBind();
-            }
-        }
-       
         protected void GetAdditionalData(object sender, DirectEventArgs e)
         {
             List<object> data;
@@ -135,3 +107,5 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
      
         }
     }
+
+    
