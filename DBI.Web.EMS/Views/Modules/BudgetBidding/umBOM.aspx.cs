@@ -58,9 +58,10 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         {
             long projectID = long.Parse(Request.QueryString["projectID"]);
             long detailTaskID = long.Parse(Request.QueryString["detailSheetID"]);
+            long orgID = long.Parse(Request.QueryString["orgID"]);
+            long billSeqID = Convert.ToInt64(uxHidBOMBillSeqID.Text);
 
-
-            BBDetail.SubGrid.BOM.AddItems(projectID, detailTaskID);
+            BBDetail.SubGrid.BOM.MaterialItems.AddItems(projectID, detailTaskID, orgID, billSeqID);
 
             X.Js.Call("closeUpdate");
         }
