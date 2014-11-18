@@ -141,7 +141,7 @@
 					<ext:CommandColumn ID="CommandColumn1" runat="server" Hidden="true">
 						<GroupCommands>
 							<ext:GridCommand Icon="TableRow" CommandName="SelectGroup">
-								<ToolTip Title="Select" Text="Select all rows of the group" />
+								<ToolTip Title="Select" Text="Select all rows of the group"  />
 							</ext:GridCommand>
 							<ext:CommandFill />
 						</GroupCommands>

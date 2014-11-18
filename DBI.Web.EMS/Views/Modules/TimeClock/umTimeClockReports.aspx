@@ -24,7 +24,7 @@
                                 </Loader>
                             </ext:Panel>
                             <ext:Panel runat="server"
-                                Title="Actual Verse Adjusted"
+                                Title="Actual vs Adjusted"
                                 ID="uxAcutalVerseAdjusted"
                                 Disabled="false">
                                 <Loader runat="server"
@@ -42,7 +42,7 @@
                                     <LoadMask ShowMask="true" />
                                 </Loader>
                             </ext:Panel>
-                            <ext:Panel runat="server"
+                            <%--<ext:Panel runat="server"
                                 Title="No Lunch"
                                 ID="uxNoLunch"
                                 Disabled="false">
@@ -50,7 +50,7 @@
                                     ID="Loader1" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umNoLunchReport.aspx">
                                     <LoadMask ShowMask="true" />
                                 </Loader>
-                            </ext:Panel>
+                            </ext:Panel>--%>
                         </Items>
                     </ext:TabPanel>
                 </Items>
