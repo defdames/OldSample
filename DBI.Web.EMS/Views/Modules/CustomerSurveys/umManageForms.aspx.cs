@@ -23,6 +23,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             }
             if (!X.IsAjaxRequest || !IsPostBack)
             {
+                isDirty = 0;
                 uxAddFormCatStore.Reload();
                 uxAddFormOrgStore.Reload();
                 uxQuestionFieldsetStore.Reload();
@@ -171,7 +172,9 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 ModelProxy Record = uxFormsStore.GetByInternalId(CreatedForm.PhantomId);
                 Record.CreateVariable = true;
                 Record.SetId(NewForm.FORM_ID);
+                Record.Set("TYPE_ID", NewForm.TYPE_ID);
                 Record.Commit();
+                uxFormTypeStore.Reload();
             }
 
             foreach (CUSTOMER_SURVEYS.CustomerSurveyForms UpdatedForm in data.Updated)
@@ -201,6 +204,11 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
                 GenericData.Update<CUSTOMER_SURVEY_FORMS>(ToBeUpdated);
                 uxFormsStore.GetById(ToBeUpdated.FORM_ID).Commit();
+
+                ModelProxy Record = uxFormsStore.GetById(ToBeUpdated.FORM_ID);
+                Record.Set("TYPE_ID", ToBeUpdated.TYPE_ID);
+                Record.Commit();
+                uxFormTypeStore.Reload();
             }
             uxFormsStore.CommitChanges();
         }
@@ -610,7 +618,6 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
         {
             decimal QuestionId = decimal.Parse(e.ExtraParams["QuestionId"]);
             CUSTOMER_SURVEY_QUESTIONS Question;
-            List<CUSTOMER_SURVEY_FORMS_ANS> Answers;
             List<CUSTOMER_SURVEY_OPTIONS> Options;
             CUSTOMER_SURVEY_RELATION RelationEntry;
             bool QuestionHasBeenAnswered;
@@ -791,6 +798,18 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 uxFormTypeStore.DataSource = FormTypes;
                 uxCopyFormTypeStore.DataSource = FormTypes;
             }
+        }
+
+        [DirectMethod]
+        public void dmAddToDirty()
+        {
+            isDirty++;
+        }
+
+        [DirectMethod]
+        public void dmSubtractFromDirty()
+        {
+            isDirty--;
         }
     }
 }

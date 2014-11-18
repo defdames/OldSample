@@ -313,6 +313,7 @@
     <Compile Include="MTL_TRANSACTION_INT_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="Oracle\DAILY_ACTIVITY.cs" />
     <Compile Include="Oracle\OVERHEAD.cs" />
     <Compile Include="Oracle\CROSSING_MAINTENANCE.cs" />
     <Compile Include="Oracle\SYS_EMAIL.cs" />
@@ -560,6 +561,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Oracle\DARSubmittedEmail.html" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

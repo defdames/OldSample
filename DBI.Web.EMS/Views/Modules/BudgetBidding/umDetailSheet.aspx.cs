@@ -45,11 +45,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 string projectName = Request.QueryString["projectName"];
                 long sheetNum = long.Parse(Request.QueryString["sheetNum"]);
                 string detailSheetName = Request.QueryString["detailSheetName"];
-                decimal sGrossRec = Convert.ToDecimal(Request.QueryString["sGrossRec"]);
-                decimal sMatUsage = Convert.ToDecimal(Request.QueryString["sMatUsage"]);
-                decimal sGrossRev = Convert.ToDecimal(Request.QueryString["sGrossRev"]);
-                decimal sDirects = Convert.ToDecimal(Request.QueryString["sDirects"]);
-                decimal sOP = Convert.ToDecimal(Request.QueryString["sOP"]);
                 long sheetCount = BBDetail.Sheets.MaxOrder(budBidProjectID);
 
                 uxYearVersion.Text = yearID + " " + verName;
@@ -59,8 +54,23 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 detailSheetName = (detailSheetName.Length >= 10 && detailSheetName.Substring(0, 10) == "SYS_DETAIL") ? "" : detailSheetName;
                 uxDetailName.Text = detailSheetName;
                 uxComments.Text = BBDetail.Sheet.MainTabField.Comment(detailSheetID);
-                
-                if (sheetNum > 1)
+
+                decimal sGrossRec;
+                decimal sMatUsage;
+                decimal sGrossRev;
+                decimal sDirects;
+                decimal sOP;
+
+                if (sheetNum == 1)
+                {
+                    BBProject.StartNumbers.Fields dataStart = BBProject.StartNumbers.Data(budBidProjectID);
+                    sGrossRec = dataStart.GROSS_REC;
+                    sMatUsage = dataStart.MAT_USAGE;
+                    sGrossRev = dataStart.GROSS_REV;
+                    sDirects = dataStart.DIR_EXP;
+                    sOP = dataStart.OP;
+                }
+                else
                 {
                     long prevSheetID = BBDetail.Sheet.ID(budBidProjectID, sheetNum - 1);
                     BBDetail.Sheet.EndNumbers.Fields sheetStartNums = BBDetail.Sheet.EndNumbers.Get(prevSheetID);
@@ -70,6 +80,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     sDirects = sheetStartNums.DIR_EXP;
                     sOP = sheetStartNums.OP;
                 }
+
                 uxSGrossRec.Text = String.Format("{0:N2}", sGrossRec);
                 uxSMatUsage.Text = String.Format("{0:N2}", sMatUsage);
                 uxSGrossRev.Text = String.Format("{0:N2}", sGrossRev);
@@ -624,7 +635,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             if (amount < lowRange || amount > highRange) { amount = 0; }
             return amount;
         }
-
         protected void LockDetailSheet()
         {
             uxAddNewMaterial.Disable();
@@ -685,6 +695,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxLumpSumQuantity.ReadOnly = true;
             uxLumpSumCost.ReadOnly = true;
         }
+        
 
 
         protected void deAddNewBOM(object sender, DirectEventArgs e)

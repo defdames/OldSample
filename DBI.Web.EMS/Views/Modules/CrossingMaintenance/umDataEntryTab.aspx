@@ -258,9 +258,11 @@
                                     <Listeners>
                                         <Click Handler="#{uxAddNewApplicationEntryWindow}.show()" />
                                     </Listeners>
-
+                                    <DirectEvents>
+                                        <Click OnEvent="deSetAppValue" />
+                                    </DirectEvents>
                                 </ext:Button>
-                                 <ext:Button ID="Button4" runat="server" Text="Edit Entry" Icon="ApplicationEdit" Disabled="true">
+                                 <ext:Button ID="Button4" runat="server" Text="Edit Entry" OnClientClick="uxAddEntryDate.focus();" Icon="ApplicationEdit" Disabled="true">
                                     <Listeners>
                                         <Click Handler="#{uxEditApplicationWindow}.show()" />
                                     </Listeners>
@@ -288,21 +290,7 @@
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
-                                  <%--    <Plugins>
-                     
-                       
-                       <ext:RowEditing ID="RowEditing1" runat="server" ClicksToMoveEditor="1" AutoCancel="false">
-                                            <DirectEvents>
-                                                <Edit OnEvent="deSavePricing" Before="return #{uxPriceStore}.isDirty();">
-                                                    <ExtraParams>
-                                                        <ext:Parameter Name="PRIdata" Value="#{uxPriceStore}.getChangedData({skipIdForPhantomRecords : false})" Mode="Raw" Encode="true" />
-                                                    
-                                                    </ExtraParams>
-                                                    <EventMask ShowMask="true" />
-                                                </Edit>
-                                            </DirectEvents>
-                                        </ext:RowEditing>
-                  </Plugins>--%>
+                          
                     <BottomBar>
                         <ext:PagingToolbar ID="PagingToolbar2" runat="server" HideRefresh="True">
                         </ext:PagingToolbar>
@@ -345,7 +333,7 @@
 
                                 <ext:FieldContainer ID="FieldContainer0" runat="server" Layout="HBoxLayout">
                                     <Items>
-                                        <ext:DateField ID="uxAddEntryDate" runat="server" FieldLabel="Date" LabelAlign="Right" Width="300" AllowBlank="false" Editable="true" TabIndex="2" InvalidCls="allowBlank" IndicatorIcon="BulletRed" MsgTarget="Side" />
+                                        <ext:DateField ID="uxAddEntryDate" runat="server" FieldLabel="Date" LabelAlign="Right" Width="300" AllowBlank="false" Editable="true" TabIndex="2" InvalidCls="allowBlank" IndicatorIcon="BulletRed" MsgTarget="Side" AutoFocus="true" />
                                         <ext:Label ID="Label1" runat="server" Text="" Width="25" />
                                         <ext:Label ID="Label2" runat="server" Text="" Width="8" />
                                         <ext:Checkbox ID="uxAddEntryInspectBox" runat="server" BoxLabel="Inspect" BoxLabelAlign="After" Width="250" TabIndex="5" />
@@ -464,7 +452,7 @@
                                 <ext:TextArea ID="uxAddEntryRemarks" FieldLabel="Remarks" runat="server" LabelAlign="Right" TabIndex="7" />
                             </Items>
                             <Buttons>
-                                <ext:Button ID="uxAddApplicationEntryButton" runat="server" Text="Add" Icon="Add">
+                                <ext:Button ID="uxAddApplicationEntryButton" runat="server" Text="Add" Icon="Add" TabIndex="8">
                                     <DirectEvents>
                                         <Click OnEvent="deAddApplication">
                                             <ExtraParams>
@@ -476,7 +464,7 @@
                                         </Click>
                                     </DirectEvents>
                                 </ext:Button>
-                                <ext:Button ID="uxCancelNewApplicationEntryButton" runat="server" Text="Cancel" Icon="Delete">
+                                <ext:Button ID="uxCancelNewApplicationEntryButton" runat="server" Text="Cancel" Icon="Delete" TabIndex="9">
                                     <Listeners>
                                         <Click Handler="#{uxAddApplicationForm}.reset();
 									#{uxAddNewApplicationEntryWindow}.hide()" />
@@ -634,7 +622,7 @@
                                 <ext:TextArea ID="TextArea1" FieldLabel="Remarks" runat="server" LabelAlign="Right" TabIndex="7" />
                             </Items>
                             <Buttons>
-                                <ext:Button ID="Button2" runat="server" Text="Update" Icon="Add">
+                                <ext:Button ID="Button2" runat="server" Text="Update" TabIndex="8" Icon="Add">
                                     <DirectEvents>
                                         <Click OnEvent="deEditApp">
                                             <ExtraParams>
@@ -646,7 +634,7 @@
                                         </Click>
                                     </DirectEvents>
                                 </ext:Button>
-                                <ext:Button ID="Button3" runat="server" Text="Cancel" Icon="Delete">
+                                <ext:Button ID="Button3" runat="server" Text="Cancel" TabIndex="9" Icon="Delete">
                                     <Listeners>
                                         <Click Handler="#{uxEditApplicationForm}.reset();
 									#{uxEditApplicationWindow}.hide()" />

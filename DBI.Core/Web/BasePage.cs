@@ -18,7 +18,7 @@ namespace DBI.Core.Web
 {
     public class BasePage : System.Web.UI.Page
     {
-
+        public static int isDirty { get; set; }
         /// <summary>
         /// Code the checks for Activity, returns false if user is 
         /// </summary>
@@ -99,8 +99,15 @@ namespace DBI.Core.Web
         /// <param name="e"></param>
         protected void deLogout(object sender, DirectEventArgs e)
         {
-            Authentication.Logout();
-            X.Redirect("~/uxLogin.aspx");
+            if (isDirty == 0)
+            {
+                Authentication.Logout();
+                X.Redirect("~/uxLogin.aspx");
+            }
+            else
+            {
+                CreateDirtyMessage();
+            }
         }
 
         /// <summary>
@@ -223,6 +230,11 @@ namespace DBI.Core.Web
 
             return script.ToString();
 
+        }
+
+        protected void CreateDirtyMessage()
+        {
+            X.Msg.Alert("Unsaved Data", "You currently have unsaved data.  Please save changes before continuing").Show();
         }
     }
 }

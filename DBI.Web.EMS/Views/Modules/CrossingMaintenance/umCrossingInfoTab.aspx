@@ -344,7 +344,7 @@
                                                     LabelAlign="Right"
                                                     DisplayField="service_unit"
                                                     ValueField="service_unit"
-                                                    QueryMode="Local" TypeAhead="true" TabIndex="2" AllowBlank="false" IndicatorIcon="BulletRed" InvalidCls="allowBlank"  MsgTarget="Side">
+                                                    QueryMode="Local" TypeAhead="true" TabIndex="2" AllowBlank="false" IndicatorIcon="BulletRed" InvalidCls="allowBlank"  MsgTarget="Side" AutoFocus="true">
                                                     <Store>
                                                         <ext:Store runat="server"
                                                             ID="uxAddServiceUnitStore" AutoLoad="false">
@@ -585,62 +585,7 @@
 
                                                 <%----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%>
 
-                                              <%--  <ext:DropDownField ID="uxAddManagerCIDropDownField" runat="server" FieldLabel="Manager" AnchorHorizontal="100%" LabelAlign="Right" Width="475" Mode="ValueText" TabIndex="26" Editable="false">
-                                                    <Component>
-                                                        <ext:GridPanel runat="server"
-                                                            ID="uxAddManager"
-                                                            Layout="HBoxLayout">
-                                                            <Store>
-                                                                <ext:Store runat="server"
-                                                                    ID="uxAddManagerStore"
-                                                                    PageSize="10"
-                                                                    RemoteSort="true"
-                                                                    OnReadData="deAddManagerGrid">
-                                                                    <Model>
-                                                                        <ext:Model ID="Model6" runat="server">
-                                                                            <Fields>
-
-                                                                                <ext:ModelField Name="CONTACT_ID" />
-                                                                                <ext:ModelField Name="CONTACT_NAME" Type="String" />
-                                                                                <ext:ModelField Name="CELL_NUMBER" />
-                                                                                <ext:ModelField Name="WORK_NUMBER" />
-                                                                            </Fields>
-                                                                        </ext:Model>
-                                                                    </Model>
-                                                                    <Proxy>
-                                                                        <ext:PageProxy />
-                                                                    </Proxy>
-                                                                </ext:Store>
-                                                            </Store>
-                                                            <ColumnModel>
-                                                                <Columns>
-                                                                    <ext:Column ID="Column3" runat="server" Text="Manager Name" DataIndex="CONTACT_NAME" Flex="1" />
-                                                                    <ext:Column ID="Column2" runat="server" Text="Work Number" DataIndex="WORK_NUMBER" Flex="1" />
-                                                                    <ext:Column ID="Column4" runat="server" Text="Cell Number" DataIndex="CELL_NUMBER" Flex="1" />
-                                                                </Columns>
-                                                            </ColumnModel>
-                                                            <BottomBar>
-                                                                <ext:PagingToolbar ID="PagingToolbar3" runat="server" />
-                                                            </BottomBar>
-                                                            <SelectionModel>
-                                                                <ext:RowSelectionModel ID="RowSelectionModel3" runat="server" Mode="Single" />
-                                                            </SelectionModel>
-                                                            <DirectEvents>
-                                                                <SelectionChange OnEvent="deStoreAddManagerValue">
-                                                                    <ExtraParams>
-                                                                        <ext:Parameter Name="ContactId" Value="#{uxAddManager}.getSelectionModel().getSelection()[0].data.CONTACT_ID" Mode="Raw" />
-                                                                        <ext:Parameter Name="ContactName" Value="#{uxAddManager}.getSelectionModel().getSelection()[0].data.CONTACT_NAME" Mode="Raw" />
-                                                                        <ext:Parameter Name="Type" Value="AddManager" />
-                                                                    </ExtraParams>
-                                                                </SelectionChange>
-                                                            </DirectEvents>
-                                                            <Plugins>
-                                                                <ext:FilterHeader runat="server" ID="uxAddManagerFilter" Remote="true" />
-                                                            </Plugins>
-                                                        </ext:GridPanel>
-                                                    </Component>
-                                                </ext:DropDownField>--%>
-
+                                            
                                             </Items>
                                         </ext:FieldContainer>
 
@@ -679,13 +624,13 @@
                                 <ext:Toolbar runat="server" >
                             <Items>
                          
-                                <ext:Button runat="server" ID="deAddCrossing" Text="Add" Icon="Add" Disabled="true">
+                                <ext:Button runat="server" ID="deAddCrossing" Text="Add" Icon="Add" Disabled="true" TabIndex="36">
                                     <DirectEvents>
                                         <Click OnEvent="deAddCrossings" />
 
                                     </DirectEvents>
                                 </ext:Button>
-                                <ext:Button runat="server" ID="CancelCrossing" Text="Cancel"  Icon="Delete">
+                                <ext:Button runat="server" ID="CancelCrossing" Text="Cancel"  Icon="Delete" TabIndex="37">
                                     <Listeners>
                                         <Click Handler="#{uxAddCrossingForm}.reset();
 									#{uxAddCrossingWindow}.hide()" />
@@ -910,60 +855,7 @@
                                     <Items>
                                         <ext:FieldContainer ID="FieldContainer30" runat="server" Layout="HBoxLayout">
                                             <Items>
-                                                <%--<ext:DropDownField ID="uxEditManagerCI" runat="server" FieldLabel="Manager" AnchorHorizontal="100%" LabelAlign="Right" Width="475" Mode="ValueText" TabIndex="26">
-                                                    <Component>
-                                                        <ext:GridPanel runat="server"
-                                                            ID="uxEditManager"
-                                                            Layout="HBoxLayout">
-                                                            <Store>
-                                                                <ext:Store runat="server"
-                                                                    ID="uxEditManagerStore"
-                                                                    PageSize="10"
-                                                                    RemoteSort="true"
-                                                                    OnReadData="deEditManagerGrid">
-                                                                    <Model>
-                                                                        <ext:Model ID="Model1" runat="server">
-                                                                            <Fields>
-                                                                                <ext:ModelField Name="CONTACT_ID" Type="Int" />
-                                                                                <ext:ModelField Name="CONTACT_NAME" Type="String" />
-                                                                                <ext:ModelField Name="CELL_NUMBER" />
-                                                                                <ext:ModelField Name="WORK_NUMBER" />
-                                                                            </Fields>
-                                                                        </ext:Model>
-                                                                    </Model>
-                                                                    <Proxy>
-                                                                        <ext:PageProxy />
-                                                                    </Proxy>
-                                                                </ext:Store>
-                                                            </Store>
-                                                            <ColumnModel>
-                                                                <Columns>
-                                                                    <ext:Column ID="Column5" runat="server" Text="Manager Name" DataIndex="CONTACT_NAME" Flex="1" />
-                                                                    <ext:Column ID="Column6" runat="server" Text="Work Number" DataIndex="WORK_NUMBER" Flex="1" />
-                                                                    <ext:Column ID="Column7" runat="server" Text="Cell Number" DataIndex="CELL_NUMBER" Flex="1" />
-                                                                </Columns>
-                                                            </ColumnModel>
-                                                            <BottomBar>
-                                                                <ext:PagingToolbar ID="PagingToolbar2" runat="server" />
-                                                            </BottomBar>
-                                                            <SelectionModel>
-                                                                <ext:RowSelectionModel ID="RowSelectionModel2" runat="server" Mode="Single" />
-                                                            </SelectionModel>
-                                                            <DirectEvents>
-                                                                <SelectionChange OnEvent="deStoreEditManagerValue">
-                                                                    <ExtraParams>
-                                                                        <ext:Parameter Name="ContactId" Value="#{uxEditManager}.getSelectionModel().getSelection()[0].data.CONTACT_ID" Mode="Raw" />
-                                                                        <ext:Parameter Name="ContactName" Value="#{uxEditManager}.getSelectionModel().getSelection()[0].data.CONTACT_NAME" Mode="Raw" />
-                                                                        <ext:Parameter Name="Type" Value="EditManager" />
-                                                                    </ExtraParams>
-                                                                </SelectionChange>
-                                                            </DirectEvents>
-                                                            <Plugins>
-                                                                <ext:FilterHeader runat="server" ID="uxEditManagerFilter" Remote="true" />
-                                                            </Plugins>
-                                                        </ext:GridPanel>
-                                                    </Component>
-                                                </ext:DropDownField>--%>
+                                              
                                             </Items>
                                         </ext:FieldContainer>
 
@@ -1003,7 +895,7 @@
                             </Items>
 
                             <Buttons>
-                                <ext:Button runat="server" ID="deEditCrossing" Text="Update" Icon="Add">
+                                <ext:Button runat="server" ID="deEditCrossing" Text="Update" Icon="Add" TabIndex="36">
                                     <DirectEvents>
                                         <Click OnEvent="deEditCrossings">
                                             <ExtraParams>
@@ -1012,7 +904,7 @@
                                         </Click>
                                     </DirectEvents>
                                 </ext:Button>
-                                <ext:Button runat="server" ID="deCancelEditCrossing" Text="Cancel" Icon="Delete">
+                                <ext:Button runat="server" ID="deCancelEditCrossing" Text="Cancel" Icon="Delete" TabIndex="37">
                                     <Listeners>
                                         <Click Handler="#{uxEditCrossingForm}.reset();
 									#{uxEditCrossingWindow}.hide()" />

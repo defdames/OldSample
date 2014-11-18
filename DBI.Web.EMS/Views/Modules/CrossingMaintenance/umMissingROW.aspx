@@ -67,7 +67,7 @@
                             AnchorHorizontal="25%"
                             DisplayField="service_unit"
                             ValueField="service_unit"
-                            QueryMode="Local" TypeAhead="true" TabIndex="2" AllowBlank="false" ForceSelection="true" Editable="false" EmptyText="ALL">
+                            QueryMode="Local" TypeAhead="true" TabIndex="2" ForceSelection="true" Editable="false" EmptyText="ALL">
                             <Store>
                                 <ext:Store runat="server"
                                     ID="uxAddServiceUnitStore">
@@ -91,6 +91,9 @@
                             <Listeners>
                                 <Select Handler="#{uxAddSubDivStore}.load()" />
                             </Listeners>
+                             <Plugins>
+                                <ext:ClearButton ID="ClearButton1" runat="server" />
+                            </Plugins>
                         </ext:ComboBox>
                         <ext:ComboBox ID="uxAddSubDiv"
                             runat="server"
@@ -99,7 +102,7 @@
                             AnchorHorizontal="25%"
                             DisplayField="sub_division"
                             ValueField="sub_division"
-                            TypeAhead="true" TabIndex="3" AllowBlank="false" ForceSelection="true" Editable="false" EmptyText="ALL">
+                            TypeAhead="true" TabIndex="3" ForceSelection="true" Editable="false" EmptyText="ALL">
                             <Store>
                                 <ext:Store runat="server"
                                     ID="uxAddSubDivStore">
@@ -113,7 +116,9 @@
                                     </Model>
                                 </ext:Store>
                             </Store>
-
+                             <Plugins>
+                                <ext:ClearButton ID="ClearButton2" runat="server" />
+                            </Plugins>
                         </ext:ComboBox>
                         <ext:ComboBox runat="server"
                             ID="uxAddStateComboBox"
@@ -124,7 +129,6 @@
                             ValueField="name"
                             QueryMode="Local"
                             TypeAhead="true"
-                            AllowBlank="false"
                             ForceSelection="true" TabIndex="4" EmptyText="ALL">
                             <Store>
                                 <ext:Store ID="uxAddStateList" runat="server" AutoDataBind="true">
@@ -141,6 +145,9 @@
                                     </Reader>
                                 </ext:Store>
                             </Store>
+                             <Plugins>
+                                <ext:ClearButton ID="ClearButton3" runat="server" />
+                            </Plugins>
                         </ext:ComboBox>
 
                     </Items>
@@ -154,13 +161,11 @@
                             Text="Run"
                             Icon="PlayGreen">
                             <DirectEvents>
-                                <Click OnEvent="deLaunchGrid" >
-                                   <EventMask ShowMask="true" Msg="Loading..." />
+                                <Click OnEvent="deMissingROWGrid" >
+                                 
                                     </Click>
                             </DirectEvents>
-                            <Listeners>
-                                <Click Handler="#{uxMissingROWStore}.load()" />
-                            </Listeners>
+                          
                         </ext:Button>
                         <ext:Button runat="server"
                             ID="Button2"
@@ -174,103 +179,16 @@
                 </ext:Toolbar>
             </BottomBar>
         </ext:FormPanel>
-
-        <ext:GridPanel
-            ID="GridPanel1"
-            runat="server"
-            Title="Missing ROW Report"
-            Icon="Report"
-            Frame="false"
-            Resizable="false"
-            Region="Center"
-            Collapsible="false" Cls="my.grouped-header" Hidden="true">
-            <Store>
-                <ext:Store ID="uxMissingROWStore"
-                    runat="server"
-                    GroupField="SUB_DIVISION" AutoLoad="false" OnReadData="deMissingROWGrid" AutoDataBind="true" PageSize="15">
-                    <Model>
-                        <ext:Model ID="Model1" runat="server">
-                            <Fields>
-                                <ext:ModelField Name="CROSSING_ID" />
-                             
-                                <ext:ModelField Name="CROSSING_NUMBER" Type="String" />
-                                <ext:ModelField Name="MILE_POST" />
-                                <ext:ModelField Name="DOT" />
-                                <ext:ModelField Name="STATE" />
-                                <ext:ModelField Name="COUNTY" />
-                                <ext:ModelField Name="CITY" />
-                                <ext:ModelField Name="SERVICE_UNIT" />
-                                <ext:ModelField Name="STREET" />
-                                <ext:ModelField Name="ROWNE" />
-                                <ext:ModelField Name="ROWNW" />
-                                <ext:ModelField Name="ROWSE" />
-                                <ext:ModelField Name="ROWSW" />
-                                <ext:ModelField Name="SUB_CONTRACTED" />
-                                <ext:ModelField Name="LONGITUDE" />
-                                <ext:ModelField Name="LATITUDE" />
-                                <ext:ModelField Name="SUB_DIVISION" />
-                                <ext:ModelField Name="SPECIAL_INSTRUCTIONS" />
-                            
-                            </Fields>
-                        </ext:Model>
-                    </Model>
-                    <Proxy>
-                        <ext:PageProxy />
-                    </Proxy>
-
-                    <Sorters>
-                        <ext:DataSorter Property="SUB_DIVISION" />
-
-                    </Sorters>
-
-                </ext:Store>
-            </Store>
-
-            <ColumnModel ID="ColumnModel1" runat="server">
-                <Columns>
-             
-                    <ext:Column ID="uxSubDiv" runat="server" DataIndex="SUB_DIVISION" Text="Sub-Division" Flex="1" />
-                    <ext:Column ID="Column1" runat="server" Text="MP" Flex="1" DataIndex="MILE_POST" />
-                    <ext:Column ID="Column3" runat="server" Text="DOT #" Flex="1" DataIndex="CROSSING_NUMBER" />
-                    <ext:Column ID="Column2" runat="server" Text="State" Flex="1" DataIndex="STATE" />
-                    <ext:Column ID="Column4" runat="server" Text="City" Flex="1" DataIndex="CITY" />
-                    <ext:Column ID="Column5" runat="server" Text="Street" Flex="1" DataIndex="STREET" />
-                </Columns>
-            </ColumnModel>
-          
-            <Features>
-                <ext:Grouping ID="Grouping1"
-                    runat="server"
-                    HideGroupedHeader="true" Collapsible="false" Cls="x-grid-group-title; x-grid-group-hd" />
-            </Features>
-
-            <TopBar>
-                <ext:Toolbar ID="Toolbar2" runat="server">
+        <ext:Panel runat="server" ID="uxCenterPanel" Region="Center">
+              <LayoutConfig>
+                <ext:FitLayoutConfig />
+              </LayoutConfig>
                     <Items>
-                      <ext:Button ID="Button6" runat="server" Text="To XML" AutoPostBack="true" OnClick="ToXml" Icon="PageCode">
-                            <Listeners>
-                                <Click Fn="saveData" />
-                            </Listeners>
-                        </ext:Button>
-                        
-                        <ext:Button ID="Button7" runat="server" Text="To Excel" AutoPostBack="true" OnClick="ToExcel" Icon="PageExcel">
-                            <Listeners>
-                                <Click Fn="saveData" />
-                            </Listeners>
-                        </ext:Button>
-                        
-                        <ext:Button ID="Button8" runat="server" Text="To CSV" AutoPostBack="true" OnClick="ToCsv" Icon="PageAttach">
-                            <Listeners>
-                                <Click Fn="saveData" />
-                            </Listeners>
-                        </ext:Button>
+                        <ext:Panel ID="Tab" runat="server" ManageHeight="true">
+                        </ext:Panel>
                     </Items>
-                </ext:Toolbar>
-            </TopBar>
-            <BottomBar>
-                <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
-            </BottomBar>
-            </ext:GridPanel>
+                </ext:Panel>
+     
                     </Items>
              </ext:Viewport>
     </div>

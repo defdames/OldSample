@@ -6,6 +6,47 @@
 <head runat="server">
     <title></title>
     <link type="text/css" rel="stylesheet" href="../../../Resources/StyleSheets/main.css" />
+    <script type="text/javascript">
+        var cancelEditRow = function (value) {
+            if (value == "formtype") {
+                if (!App.uxCategoryGrid.getSelectionModel().getSelection()[0].data.CATEGORY_ID) {
+                    App.uxCategoriesStore.remove(App.uxCategoryGrid.getSelectionModel().getSelection()[0]);
+                }
+            }
+            else {
+                if (!App.uxQuestionCategoryGrid.getSelectionModel().getSelection()[0].data.CATEGORY_ID) {
+                    App.uxQuestionCategoryStore.remove(App.uxQuestionCategoryGrid.getSelectionModel().getSelection()[0]);
+                }
+            }
+            App.direct.dmSubtractFromDirty();
+        };
+
+        var deleteQuestionCategory = function () {
+            var QuestionCategoryRecord = App.uxQuestionCategoryGrid.getSelectionModel().getSelection();
+
+            Ext.Msg.confirm('Really Delete?', 'Do you really want to delete this Question Category?', function (e) {
+                if (e == 'yes') {
+                    App.uxQuestionCategoryStore.remove(QuestionCategoryRecord);
+                    if (QuestionCategoryRecord[0].data.CATEGORY_ID) {
+                        App.direct.dmDeleteQuestionCategory(QuestionCategoryRecord[0].data.CATEGORY_ID);
+                    }
+                }
+            });
+        };
+
+        var deleteFormType = function () {
+            var FormTypeRecord = App.uxCategoryGrid.getSelectionModel().getSelection();
+
+            Ext.Msg.confirm('Really Delete?', 'Do you really want to delete this employee?', function (e) {
+                if (e == 'yes') {
+                    App.uxCategorieStore.remove(FormTypeRecord);
+                    if (FormTypeRecord[0].data.CATEGORY_ID) {
+                        App.direct.dmDeleteFormType(FormTypeRecord[0].data.CATEGORY_ID);
+                    }
+                }
+            });
+        };
+    </script>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -16,9 +57,9 @@
                     <Store>
                         <ext:Store runat="server" ID="uxCategoriesStore" OnReadData="deReadCategories" AutoDataBind="true" PageSize="10" RemoteSort="true">
                             <Model>
-                                <ext:Model runat="server">
+                                <ext:Model runat="server" Name="FormType" IDProperty="CATEGORY_ID" ClientIdProperty="PhantomId">
                                     <Fields>
-                                        <ext:ModelField Name="CATEGORY_ID" />
+                                        <ext:ModelField Name="CATEGORY_ID" Type="Int" />
                                         <ext:ModelField Name="NAME" Type="String" />
                                         <ext:ModelField Name="DESCRIPTION" Type="String" />
                                         <ext:ModelField Name="NUM_FORMS" Type="Int" />
@@ -35,41 +76,52 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column runat="server" Text="Category Name" DataIndex="NAME" Flex="25" />
-                            <ext:Column runat="server" Text="Category Description" DataIndex="DESCRIPTION" Flex="50" />
+                            <ext:Column runat="server" Text="Category Name" DataIndex="NAME" Flex="25">
+                                <Editor>
+                                    <ext:TextField runat="server" AllowBlank="false" InvalidCls="allowBlank" />
+                                </Editor>
+                            </ext:Column>
+                            <ext:Column runat="server" Text="Category Description" DataIndex="DESCRIPTION" Flex="50">
+                                <Editor>
+                                    <ext:TextField runat="server" AllowBlank="false" InvalidCls="allowBlank" />
+                                </Editor>
+                            </ext:Column>
                             <ext:Column runat="server" Text="Number of Forms" DataIndex="NUM_FORMS" Flex="25" />
                         </Columns>
                     </ColumnModel>
                     <Plugins>
                         <ext:FilterHeader runat="server" Remote="true" />
+                        <ext:RowEditing runat="server" ClicksToEdit="1" AutoCancel="false" ClicksToMoveEditor="1" ErrorSummary="false" ID="uxFormTypeRowEdit">
+                            <Listeners>
+                                <CancelEdit Handler="cancelEditRow('formtype')" />
+                                <BeforeEdit Handler="App.direct.dmAddToDirty()" />
+                            </Listeners>
+                            <DirectEvents>
+                                <Edit OnEvent="deSaveCategory" >
+                                    <ExtraParams>
+                                        <ext:Parameter Name="data" Value="#{uxCategoriesStore}.getChangedData({skipIdForPhantomRecords : false})" Mode="Raw"  Encode="true" />
+                                    </ExtraParams>
+                                </Edit>
+                            </DirectEvents>
+                        </ext:RowEditing>
                     </Plugins>
                     <TopBar>
                         <ext:Toolbar runat="server">
                             <Items>
                                 <ext:Button runat="server" ID="uxAddCategoryButton" Text="Add" Icon="ApplicationAdd">
                                     <Listeners>
-                                        <Click Handler="#{uxAddEditCategoryWindow}.show(); #{uxFormType}.setValue('Add')" />
+                                        <Click Handler="#{uxCategoriesStore}.insert(0, new FormType()); #{uxFormTypeRowEdit}.startEdit(0, 0);
+                                                            // Create DelayedTask and call it after 100 ms
+                                                            var task = new Ext.util.DelayedTask(function(){
+                                                            #{uxCategoryGrid}.columns[0].getEditor().focusInput();
+                                                            });
+                                                            task.delay(100);" />
                                     </Listeners>
                                 </ext:Button>
-                                <ext:Button runat="server" ID="uxEditCategoryButton" Text="Edit" Icon="ApplicationEdit" Disabled="true">
-                                    <DirectEvents>
-                                        <Click OnEvent="deLoadEditCategoryWindow">
-                                            <ExtraParams>
-                                                <ext:Parameter Name="CategoryInfo" Value ="Ext.encode(#{uxCategoryGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
-                                            </ExtraParams>
-                                            <EventMask ShowMask="true" />
-                                        </Click>
-                                    </DirectEvents>
-                                </ext:Button>
                                 <ext:Button runat="server" ID="uxDeleteCategoryButton" Text="Delete" Icon="ApplicationDelete" Disabled="true">
-                                    <DirectEvents>
-                                        <Click OnEvent="deDeleteCategory">
-                                            <ExtraParams>
-                                                <ext:Parameter Name="CategoryId" Value ="#{uxCategoryGrid}.getSelectionModel().getSelection()[0].data.CATEGORY_ID" Mode="Raw" />
-                                            </ExtraParams>
-                                            <Confirmation ConfirmRequest="true" Title="Really Delete?" Message="Do you really want to delete this category?" />
-                                        </Click>
-                                    </DirectEvents>
+                                    <Listeners>
+                                        <Click Fn="deleteFormType" />
+                                    </Listeners>
                                 </ext:Button>
                             </Items>
                         </ext:Toolbar>
@@ -78,16 +130,16 @@
                         <ext:PagingToolbar runat="server" />
                     </BottomBar>
                     <Listeners>
-                        <Select Handler="#{uxEditCategoryButton}.enable(); #{uxDeleteCategoryButton}.enable()" />
+                        <Select Handler="#{uxDeleteCategoryButton}.enable()" />
                     </Listeners>
                 </ext:GridPanel>
                 <ext:GridPanel ID="uxQuestionCategoryGrid" runat="server" Title="Question Categories" Region="North">
                     <Store>
                         <ext:Store runat="server" ID="uxQuestionCategoryStore" OnReadData="deReadQuestionCategories" PageSize="10" AutoDataBind="true" RemoteSort="true">
                             <Model>
-                                <ext:Model runat="server">
+                                <ext:Model runat="server" Name="QuestionCategory" IDProperty="CATEGORY_ID" ClientIdProperty="PhantomId">
                                     <Fields>
-                                        <ext:ModelField Name="CATEGORY_ID" />
+                                        <ext:ModelField Name="CATEGORY_ID" Type="Int" />
                                         <ext:ModelField Name="CATEGORY_NAME" />
                                         <ext:ModelField Name="NUM_QUESTIONS" />
                                     </Fields>
@@ -103,12 +155,29 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column runat="server" DataIndex="CATEGORY_NAME" Text="Name" Flex="1" />
+                            <ext:Column runat="server" DataIndex="CATEGORY_NAME" Text="Name" Flex="1">
+                                <Editor>
+                                    <ext:TextField runat="server" AllowBlank="false" InvalidCls="allowBlank" />
+                                </Editor>
+                            </ext:Column>
                             <ext:Column runat="server" DataIndex="NUM_QUESTIONS" Text="Number of Questions" Flex="1" />
                         </Columns>
                     </ColumnModel>
                     <Plugins>
                         <ext:FilterHeader runat="server" Remote="true" />
+                        <ext:RowEditing runat="server" ID="uxQuestionCategoryRowEdit" AutoCancel="false" ClicksToEdit="1" ClicksToMoveEditor="1" ErrorSummary="false">
+                            <Listeners>
+                                <CancelEdit Handler="cancelEditRow('questioncat')" />
+                                <BeforeEdit Handler="App.direct.dmAddToDirty()" />
+                            </Listeners>
+                            <DirectEvents>
+                                <Edit OnEvent="deSaveQuestionCategory" Before="return #{uxQuestionCategoryStore}.isDirty();">
+                                    <ExtraParams>
+                                        <ext:Parameter Name="data" Value="#{uxQuestionCategoryStore}.getChangedData({skipIdForPhantomRecords : false})" Mode="Raw"  Encode="true" />
+                                    </ExtraParams>
+                                </Edit>
+                            </DirectEvents>
+                        </ext:RowEditing>
                     </Plugins>
                     <BottomBar>
                         <ext:PagingToolbar runat="server" />
@@ -118,89 +187,28 @@
                             <Items>
                                 <ext:Button runat="server" ID="uxAddQuestionCategoryButton" Text="Add" Icon="ApplicationAdd">
                                     <Listeners>
-                                        <Click Handler="#{uxAddEditQuestionCategoryWindow}.show(); #{uxQuestionCategoryFormType}.setValue('Add')" />
+                                        <Click Handler="#{uxQuestionCategoryStore}.insert(0, new QuestionCategory()); #{uxQuestionCategoryRowEdit}.startEdit(0, 0);
+                                                            // Create DelayedTask and call it after 100 ms
+                                                            var task = new Ext.util.DelayedTask(function(){
+                                                            #{uxQuestionCategoryGrid}.columns[0].getEditor().focusInput();
+                                                            });
+                                                            task.delay(100);" />
                                     </Listeners>
                                 </ext:Button>
-                                <ext:Button runat="server" ID="uxEditQuestionCategoryButton" Text="Edit" Icon="ApplicationEdit" Disabled="true">
-                                    <DirectEvents>
-                                        <Click OnEvent="deLoadEditQuestionCategoryForm">
-                                            <ExtraParams>
-                                                <ext:Parameter Name="CategoryID" Value="#{uxAddEditQuestionCategoryGrid}.getSelectionModel().getSelection()[0].data.CATEGORY_ID" Mode="Raw" />
-                                                <ext:Parameter Name="CategoryName" Value="#{uxAddEditQuestionCategoryGrid}.getSelectionModel().getSelection()[0].data.CATEGORY_NAME" Mode="Raw" />
-                                            </ExtraParams>
-                                        </Click>
-                                    </DirectEvents>
+                                <ext:Button runat="server" ID="uxDeleteQuestionCategoryButton" Text="Delete" Icon="ApplicationDelete" Disabled="true">
+                                    <Listeners>
+                                        <Click Fn="deleteQuestionCategory" />
+                                    </Listeners>
                                 </ext:Button>
-                                <ext:Button runat="server" ID="uxDeleteQuestionCategoryButton" Text="Delete" Icon="ApplicationDelete" Disabled="true"></ext:Button>
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
+                    <Listeners>
+                        <Select Handler="#{uxDeleteQuestionCategoryButton}.enable()" />
+                    </Listeners>
                 </ext:GridPanel>
             </Items>
         </ext:Viewport>
-        <ext:Window runat="server" ID="uxAddEditCategoryWindow" Width="650" Hidden="true">
-            <Items>
-                <ext:FormPanel runat="server" ID="uxCategoryForm" Layout="VBoxLayout">
-                    <LayoutConfig>
-                        <ext:VBoxLayoutConfig Align="Stretch" />
-                    </LayoutConfig>
-                    <Items>
-                        <ext:Hidden runat="server" ID="uxFormType" />
-                        <ext:Hidden runat="server" ID="uxCategoryId" />
-                        <ext:TextField runat="server" ID="uxCategoryName" FieldLabel="Category Name" AllowBlank="false" InvalidCls="allowBlank" MsgTarget="Side" IndicatorIcon="BulletRed" />
-                        <ext:TextField runat="server" ID="uxDescription" FieldLabel="Description" AllowBlank="false" InvalidCls="allowBlank" MsgTarget="Side" IndicatorIcon="BulletRed" />
-                    </Items>
-                    <Buttons>
-                        <ext:Button runat="server" ID="uxSaveCategoryButton" Text="Submit" Icon="Add" Disabled="true">
-                            <DirectEvents>
-                                <Click OnEvent="deSaveCategory">
-                                    <EventMask ShowMask="true" />
-                                </Click>
-                            </DirectEvents>
-                        </ext:Button>
-                        <ext:Button runat="server" ID="uxCancelCategoryButton" Text="Cancel" Icon="Delete">
-                            <Listeners>
-                                <Click Handler="#{uxAddEditCategoryWindow}.hide(); #{uxCategoryForm}.reset()" />
-                            </Listeners>
-                        </ext:Button>
-                    </Buttons>
-                    <Listeners>
-                        <ValidityChange Handler="#{uxSaveCategoryButton}.setDisabled(!valid)" />
-                    </Listeners>
-                </ext:FormPanel>
-            </Items>
-        </ext:Window>
-        <ext:Window runat="server" ID="uxAddEditQuestionCategoryWindow" Width="650" Hidden="true">
-            <Items>
-                <ext:FormPanel runat="server" ID="uxQuestionCategoryForm" Layout="VBoxLayout">
-                    <LayoutConfig>
-                        <ext:VBoxLayoutConfig Align="Stretch" />
-                    </LayoutConfig>
-                    <Items>
-                        <ext:Hidden runat="server" ID="uxQuestionCategoryFormType" />
-                        <ext:Hidden runat="server" ID="uxQuestionCategoryId" />
-                        <ext:TextField runat="server" ID="uxQuestionCategoryName" AllowBlank="false" MsgTarget="Side" InvalidCls="allowBlank" IndicatorIcon="BulletRed" FieldLabel="Name" />
-                    </Items>
-                    <Buttons>
-                        <ext:Button runat="server" ID="uxSaveQuestionCategoryButton" Text="Submit" Icon="Add" Disabled="true">
-                            <DirectEvents>
-                                <Click OnEvent="deSaveQuestionCategory">
-                                    <EventMask ShowMask="true" />
-                                </Click>
-                            </DirectEvents>
-                        </ext:Button>
-                        <ext:Button runat="server" ID="uxCancelQuestionCategoryButton" Text="Cancel" Icon="Delete">
-                            <Listeners>
-                                <Click Handler="#{uxQuestionCategoryForm}.reset(); #{uxAddEditQuestionCategoryWindow}.hide()" />
-                            </Listeners>
-                        </ext:Button>
-                    </Buttons>
-                    <Listeners>
-                        <ValidityChange Handler="#{uxSaveQuestionCategoryButton}.setDisabled(!valid)" />
-                    </Listeners>
-                </ext:FormPanel>
-            </Items>
-        </ext:Window>
     </form>
 </body>
 </html>

@@ -37,7 +37,7 @@ namespace DBI.Core.Security
             using (PrincipalContext ctx = new PrincipalContext(ContextType.Domain,"dbiservices.com"))
             {
                 var isAccountLockedOut = false;
-                _authenticated = ctx.ValidateCredentials(username + "@dbiservices.com", password, ctx.Options);
+                _authenticated = ctx.ValidateCredentials(username + "@dbiservices.com", password, ContextOptions.Negotiate);
                 if (!_authenticated)
                 {
                     // System.DirectoryServices.AccountManagement.PrincipalOperationException : Information about the domain could not be retrieved (1355).

@@ -317,15 +317,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
              {
                  data.STREET = null;
              }
-            //try
-            //{
-            //    long ContactName = Convert.ToInt64(uxAddManagerCIDropDownField.Value);
-            //    data.CONTACT_ID = ContactName;
-            //}
-            //catch (FormatException)
-            //{
-            //    data.CONTACT_ID = null;
-            //}
+          
             try
             {
                 decimal Latitude = Convert.ToDecimal(uxAddLatCINumberField.Value);
@@ -582,19 +574,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                                  d, r
                               
                             }).SingleOrDefault();
-                //try
-                //{
-                //    long ContactId = long.Parse(data.d.CONTACT_ID.ToString());
-                //    var contactdata = (from c in _context.CROSSING_CONTACTS
-                //                       where c.CONTACT_ID == ContactId
-
-                //                       select c.CONTACT_NAME).Single();
-                //    uxEditManagerCI.SetValue(data.d.CONTACT_ID.ToString(), contactdata);
-                //}
-                //catch (Exception) 
-                //{
-                //    uxEditManagerCI.Value = string.Empty;
-                //}
+               
                
                 //uxEditCrossingNumCI.SetValue(data.d.CROSSING_NUMBER);
                 uxEditRouteCI.SetValue(data.d.ROUTE);
@@ -728,16 +708,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                                      
                
             }
-            //if (uxEditManagerCI.Text != "")
-            //{
-            //    long ContactName = Convert.ToInt64(uxEditManagerCI.Value.ToString());
-            //    data.CONTACT_ID = ContactName;
-              
-            //}
-            //else
-            //{
-            //    data.CONTACT_ID = null;
-            //}    
+           
 
                 //data.CROSSING_NUMBER = CrossingNum;
                 data.MILE_POST = MP;

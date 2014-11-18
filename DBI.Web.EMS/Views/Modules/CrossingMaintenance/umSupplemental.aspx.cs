@@ -31,13 +31,16 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
       
             }
         }
-
+        protected void deSetFocus(object sender, DirectEventArgs e)
+        {
+            uxAddApprovedDateField.Focus();
+        }
         protected void deSupplementalGridData(object sender, StoreReadDataEventArgs e)
         {
 
             
             long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
-            //List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
+           
             decimal UserId = SYS_USER_INFORMATION.UserID(User.Identity.Name);
 
             List<CROSSING_MAINTENANCE.CrossingData1> dataSource = CROSSING_MAINTENANCE.GetSuppCrossingList(RailroadId, UserId).ToList();
@@ -81,22 +84,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             public string CONTACT_NAME { get; set; }
             public decimal? RAILROAD_ID { get; set; }
         }
-        //protected void deReloadStore(object sender, DirectEventArgs e)
-        //{
-        //    string type = e.ExtraParams["Type"];
-        //    if (type == "Equipment")
-        //    {
-        //        uxEquipmentStore.Reload();
-        //        if (uxAddEquipmentToggleOrg.Pressed)
-        //        {
-        //            uxAddEquipmentToggleOrg.Text = "My Region";
-        //        }
-        //        else
-        //        {
-        //            uxAddEquipmentToggleOrg.Text = "All Regions";
-        //        }
-        //    }
-        //}
+       
         protected void deAddSupplemental(object sender, DirectEventArgs e)
         {
             CROSSING_SUPPLEMENTAL data;
@@ -187,11 +175,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         {
 
             long CrossingId = long.Parse(e.Parameters["CrossingId"]);
-            //long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
-           // List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
+       
             using (Entities _context = new Entities())
             {
-                List<CROSSING_MAINTENANCE.CrossingProject> data = CROSSING_MAINTENANCE.CrossingsProjectList(CrossingId);//.Where(v => v.PROJECT_TYPE == "CUSTOMER BILLING" && v.TEMPLATE_FLAG == "N" && v.PROJECT_STATUS_CODE == "APPROVED" && v.ORGANIZATION_NAME.Contains(" RR") && OrgsList.Contains(v.CARRYING_OUT_ORGANIZATION_ID) && RailroadId != null);
+                List<CROSSING_MAINTENANCE.CrossingProject> data = CROSSING_MAINTENANCE.CrossingsProjectList(CrossingId);
 
                 int count;
                 uxSupplementalProjectStore.DataSource = GenericData.EnumerableFilterHeader<CROSSING_MAINTENANCE.CrossingProject>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
@@ -263,7 +250,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             CROSSING_SUPPLEMENTAL data;
             string json = e.ExtraParams["SupplementalInfo"];
-            //long SupplementalId = long.Parse(e.ExtraParams["SupplementalId"]);
+
             List<SupplementalDetails> SupplementalList = JSON.Deserialize<List<SupplementalDetails>>(json);
             foreach (SupplementalDetails Supplemental in SupplementalList)
             {

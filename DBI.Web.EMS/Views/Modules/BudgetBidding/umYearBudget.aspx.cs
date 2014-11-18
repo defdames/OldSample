@@ -388,19 +388,27 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             string url = "";
 
             uxSummaryReports.Clear();
+            Int32 reportHeight = 0;
+            Int32 reportWidth = 0;
 
             switch (selectedReport)
             {
                 case "Org Summary":
                     url = "/Views/Modules/BudgetBidding/Reports/umRepOrgSum.aspx?orgID=" + orgID + "&orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&verName=" + verName + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID;
+                    reportHeight = 600;
+                    reportWidth = 1020;
                     break;
 
                 case "Comments & Variances":
                     url = "/Views/Modules/BudgetBidding/Reports/umRepOrgComm.aspx?orgID=" + orgID + "&orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&verName=" + verName + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID;
+                    reportHeight = 600;
+                    reportWidth = 1020;
                     break;
 
                 case "Liabilities":
                     url = "/Views/Modules/BudgetBidding/Reports/umRepOrgLiab.aspx?orgID=" + orgID + "&orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&verName=" + verName + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID;
+                    reportHeight = 600;
+                    reportWidth = 1020;
                     break;
 
                 case "Selected Project":
@@ -419,6 +427,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     }
 
                     url = "/Views/Modules/BudgetBidding/Reports/umRepProject.aspx?orgID=" + orgID + "&orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&verName=" + verName + "&budBidprojectID=" + budBidID + "&projectNum=" + projectNum + "&projectName=" + projectName;
+                    reportHeight = 600;
+                    reportWidth = 850;
                     break;
 
                 case "All Projects - Including Detail Sheets":
@@ -429,8 +439,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             {
                 ID = "uxReport",
                 Title = "Report",
-                Height = 600,
-                Width = 1120,
+                Height = reportHeight,
+                Width = reportWidth,
                 Modal = true,
                 Resizable = true,
                 CloseAction = CloseAction.Destroy,
@@ -577,7 +587,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         }
         protected void UpdateCompareNums(bool overriden, bool manuallyEdited = false)
         {
-            decimal curOP = ForceToDecimal(uxEOP.Text);
+            decimal curOP = ForceToDecimal(uxEOP.Text);           
             decimal prevOP;
 
             if (overriden == true)
@@ -589,8 +599,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     prevOP = dataOverridenOP.OP ?? 0;
                 }
                 else
-                {
-                    prevOP = ForceToDecimal(uxCompareOP.Text);
+                {                    
+                    prevOP = ForceToDecimal(uxCompareOP.Text, -9999999999.99M, 9999999999.99M);
                 }
             }
             else
@@ -699,7 +709,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             BBDetail.Sheets.DBDelete(budBidProjectID, false);
             uxSummaryDetailStore.Reload();
 
-            BBProject.EndNumbersW0.DBUpdate(budBidProjectID, 0, 0, 0, 0, 0);
+            BBProject.EndNumbers.DBUpdate(budBidProjectID, 0, 0, 0, 0, 0);
             uxEGrossRec.Text = "0.00";
             uxEMatUsage.Text = "0.00";
             uxEGrossRev.Text = "0.00";
@@ -1205,6 +1215,10 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     ReorderSheets();
                     break;
 
+                case "Report/Export Selected Sheet":
+                    ReportExportSelectedSheet();
+                    break;
+
                 case "Print All Sheets":
                     break;
             }
@@ -1317,7 +1331,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             string budBidProjectID = uxHidBudBidID.Text;
             string detailSheetID = uxHidDetailSheetID.Text;
             string verName = HttpUtility.UrlEncode(Request.QueryString["verName"]);
-            string weDate = uxJCDate.Text;
+            string weDate = uxJCDate.Text == "" ? "N/A" : uxJCDate.Text;
             string projectName = HttpUtility.UrlEncode(uxProjectName.Text);
             string sheetNum = uxHidDetailSheetOrder.Text;
             string detailSheetName = HttpUtility.UrlEncode(uxHidDetailSheetName.Text);
@@ -1328,8 +1342,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             string sOP = uxSOP.Text;
 
             string url = "/Views/Modules/BudgetBidding/umDetailSheet.aspx?projectID=" + budBidProjectID + "&detailSheetID=" + detailSheetID + "&leOrgID=" + leOrgID + "&orgID=" + orgID + "&yearID=" + yearID + "&verID=" + verID +
-                "&verName=" + verName + "&weDate=" + weDate + "&projectName=" + projectName + "&sheetNum=" + sheetNum + "&detailSheetName=" + detailSheetName +
-                "&sGrossRec=" + sGrossRec + "&sMatUsage=" + sMatUsage + "&sGrossRev=" + sGrossRev + "&sDirects=" + sDirects + "&sOP=" + sOP;
+                "&verName=" + verName + "&weDate=" + weDate + "&projectName=" + projectName + "&sheetNum=" + sheetNum + "&detailSheetName=" + detailSheetName;
 
             Window win = new Window
             {
@@ -1412,9 +1425,9 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 eDirects = data.DIR_EXP;
                 eOP = data.OP;
 
-                BBProject.EndNumbersW0.DBUpdate(budBidProjectID, eGrossRec, eMatUsage, eGrossRev, eDirects, eOP);
+                BBProject.EndNumbers.DBUpdate(budBidProjectID, eGrossRec, eMatUsage, eGrossRev, eDirects, eOP);
 
-                BBProject.EndNumbersW0.Fields dataEnd = BBProject.EndNumbersW0.Data(budBidProjectID);
+                BBProject.EndNumbers.Fields dataEnd = BBProject.EndNumbers.Data(budBidProjectID);
                 uxEGrossRec.Text = String.Format("{0:N2}", dataEnd.GROSS_REC);
                 uxEMatUsage.Text = String.Format("{0:N2}", dataEnd.MAT_USAGE);
                 uxEGrossRev.Text = String.Format("{0:N2}", dataEnd.GROSS_REV);
@@ -1459,6 +1472,60 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             win.Render(this.Form);
             win.Show();
         }
+        protected void ReportExportSelectedSheet()
+        {
+            long orgID = long.Parse(Request.QueryString["orgID"]);
+            long leOrgID = long.Parse(Request.QueryString["leOrgID"]);
+            long yearID = long.Parse(Request.QueryString["fiscalYear"]);
+            long verID = long.Parse(Request.QueryString["verID"]);
+
+            if (uxHidDetailSheetID.Text == "")
+            {
+                StandardMsgBox("Report", "A detail sheet must be selected before a report can be generated.", "INFO");
+                return;
+            }
+
+            string budBidProjectID = uxHidBudBidID.Text;
+            string detailSheetID = uxHidDetailSheetID.Text;
+            string verName = HttpUtility.UrlEncode(Request.QueryString["verName"]);
+            string weDate = uxJCDate.Text == "" ? "N/A" : uxJCDate.Text;
+            string projectName = HttpUtility.UrlEncode(uxProjectName.Text);
+            string sheetNum = uxHidDetailSheetOrder.Text;
+            string detailSheetName = HttpUtility.UrlEncode(uxHidDetailSheetName.Text);
+            string sGrossRec = uxSGrossRec.Text;
+            string sMatUsage = uxSMatUsage.Text;
+            string sGrossRev = uxSGrossRev.Text;
+            string sDirects = uxSDirects.Text;
+            string sOP = uxSOP.Text;
+
+            string url = "/Views/Modules/BudgetBidding/Reports/umRepDetailSheet.aspx?projectID=" + budBidProjectID + "&detailSheetID=" + detailSheetID + "&leOrgID=" + leOrgID + "&orgID=" + orgID + "&yearID=" + yearID + "&verID=" + verID +
+                "&verName=" + verName + "&weDate=" + weDate + "&projectName=" + projectName + "&sheetNum=" + sheetNum + "&detailSheetName=" + detailSheetName;
+
+            Window win = new Window
+            {
+                ID = "uxReport",
+                Title = "Report",
+                Height = 600,
+                Width = 850,
+                Modal = true,
+                Resizable = true,
+                CloseAction = CloseAction.Destroy,
+                Loader = new ComponentLoader
+                {
+                    Mode = LoadMode.Frame,
+                    DisableCaching = true,
+                    Url = url,
+                    AutoLoad = true,
+                    LoadMask =
+                    {
+                        ShowMask = true
+                    }
+                }
+            };
+            win.Render(this.Form);
+            win.Show();           
+        }
+
 
         // Other     
         protected void LockTopSection()

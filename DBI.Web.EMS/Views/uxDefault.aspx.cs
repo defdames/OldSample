@@ -73,8 +73,15 @@ namespace DBI.Web.EMS.Views
         /// <param name="e">Extra Parameters Page(which panel to load), and Location(where on the page to load it)</param>
         protected void deLoadPage(object sender, DirectEventArgs e)
         {
-            uxWest.Collapse();
-            LoadModule(e.ExtraParams["Page"], e.ExtraParams["Location"]);
+            if (isDirty == 0)
+            {
+                uxWest.Collapse();
+                LoadModule(e.ExtraParams["Page"], e.ExtraParams["Location"]);
+            }
+            else
+            {
+                CreateDirtyMessage();
+            }
         }
 
         /// <summary>
@@ -290,9 +297,6 @@ namespace DBI.Web.EMS.Views
             //    }
             //}
         }
-
-
-        
 
         protected Ext.Net.MenuPanel CreateMenu(SYS_MODULES Module)
         {
