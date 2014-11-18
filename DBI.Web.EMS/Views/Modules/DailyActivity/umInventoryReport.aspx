@@ -41,11 +41,11 @@
                     <ColumnModel>
                         <Columns>
                             <ext:Column runat="server" Text="Project Org" DataIndex="OrgName" Flex="15" />
-                            <ext:Column runat="server" Text="DRS Id" DataIndex="HeaderId" Flex="3"/>
+                            <ext:Column runat="server" Text="DRS Number" DataIndex="HeaderId" Flex="3"/>
                             <ext:Column runat="server" Text="Project Number" DataIndex="ProjectId" Flex="5" />
                             <ext:Column runat="server" Text="Project Name" DataIndex="ProjectDescription" Flex="21" />
                             <ext:Column runat="server" Text="Task Num." DataIndex="TaskNumber" Flex="5" />
-                            <ext:DateColumn runat="server" Text="Mat. Usage Date" DataIndex="ActivityDate" Format="MM-dd-yyyy" Flex="5" />
+                            <ext:DateColumn runat="server" Text="Date" DataIndex="ActivityDate" Format="MM-dd-yyyy" Flex="5" />
                             <ext:Column runat="server" Text="Item Number" DataIndex="ItemNumber" Flex="5" />
                             <ext:Column runat="server" Text="Item Description" DataIndex="ItemDescription" Flex="14" />
                             <ext:Column runat="server" Text="UOM" DataIndex="Units" Flex="2" />
