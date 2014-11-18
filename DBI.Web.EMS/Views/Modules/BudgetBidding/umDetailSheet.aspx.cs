@@ -100,6 +100,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 decimal laborBurden = BB.LaborBurdenRate(leOrgID, yearID) * 100;
                 uxLaborBurdenLabel.Text = "Labor Burden @ " + (String.Format("{0:N2}", laborBurden)) + "%:";
 
+                uxAddNewBOM.Visible = BB.ShowBOMOrgSetting(orgID);
+
                 CalulateDetailSheet(true);
 
                 CheckAllowDetailSave();
@@ -279,7 +281,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             switch (recType)
             {
                 case "MATERIAL":
-                    data.TOTAL = data.AMT_1 * data.AMT_2;
+                    data.TOTAL = data.AMT_3 * data.AMT_1 * data.AMT_2;
                     GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
                     uxMaterialGridStore.CommitChanges();
                     uxMaterialGridStore.Reload();
@@ -368,10 +370,11 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 data = context.BUD_BID_DETAIL_SHEET.Where(x => x.DETAIL_SHEET_ID == recordID).Single();
             }
 
+            data.AMT_3 = 1;
             data.DESC_1 = material;
             data.DESC_2 = uom;
             data.AMT_1 = Convert.ToDecimal(unitCost);
-            data.TOTAL = data.AMT_1 * data.AMT_2;
+            data.TOTAL = data.AMT_3 * data.AMT_1 * data.AMT_2;
 
             GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
             uxMaterialGridStore.CommitChanges();
@@ -514,7 +517,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             decimal totalMotels = subtotal.MOTELS ?? 0;
             decimal totalMisc = subtotal.MISC ?? 0;
             decimal totalLumpSum = subtotal.LUMPSUM ?? 0;
-            uxTotalMaterial.Text = String.Format("{0:N2}", totalMaterial);
+            uxTotalMaterial.Text = String.Format("{0:N4}", totalMaterial);
             uxTotalEquipment.Text = String.Format("{0:N2}", totalEquipment);
             uxTotalPersonnel.Text = String.Format("{0:N2}", totalPersonnel);
             uxTotalPerDiem.Text = String.Format("{0:N2}", totalPerDiem);
@@ -739,7 +742,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         public void CloseBOMWindow()
         {
             uxMaterialGridStore.Reload();
-            //CalcSummaryTotals();
+            CalulateDetailSheet();
         }
     }
 }

@@ -131,6 +131,7 @@
                                                 <ext:ModelField Name="PRIMARY_UOM_CODE" />
                                                 <ext:ModelField Name="COMPONENT_QUANTITY" />
                                                 <ext:ModelField Name="ITEM_COST" />
+                                                <ext:ModelField Name="TOTAL" />
                                             </Fields>
                                         </ext:Model>
                                     </Model>
@@ -145,6 +146,7 @@
                                     <ext:Column ID="Column8" runat="server" DataIndex="ITEM_COST" Text="Unit Cost" Flex="1" />
                                     <ext:Column ID="Column6" runat="server" DataIndex="PRIMARY_UOM_CODE" Text="UOM" Flex="1" />
                                     <ext:Column ID="Column7" runat="server" DataIndex="COMPONENT_QUANTITY" Text="Qty" Flex="1" />
+                                    <ext:Column ID="Column1" runat="server" DataIndex="TOTAL" Text="Total" Flex="1" />
                                 </Columns>
                             </ColumnModel>
                             <%--<DirectEvents>

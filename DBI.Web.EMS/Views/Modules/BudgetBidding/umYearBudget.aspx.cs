@@ -50,6 +50,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     BBAdjustments.Create(orgID, yearID, verID);
                 }
 
+                uxAdjustmentsGrid.Visible = BB.ShowAdjustsOrgSetting(orgID);
+
                 CalcSummaryTotals();
             }
         }                                           
