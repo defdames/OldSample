@@ -29,6 +29,7 @@
                                 <ext:ClearButton ID="ClearButton2" runat="server" />
                             </Plugins>
                                 </ext:DateField>
+                            
                         </Items>
                     </ext:FieldSet>
                 </Items>
@@ -40,7 +41,7 @@
                                 Text="Run"
                                 Icon="PlayGreen">
                                    <DirectEvents>
-                                <Click OnEvent="deSupplementalReportGrid" >
+                                <Click OnEvent="deSummaryReportGrid" >
                                     </Click>
                             </DirectEvents>
                         

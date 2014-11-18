@@ -104,7 +104,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             break;
 
             case "Crossing Summary":
-            string CSUrl = string.Format("umCrossingSummaryReport.aspx?");
+            string CSUrl = string.Format("umSummaryReport.aspx?");
             uxReportMainPanel.LoadContent(CSUrl);
             break;
 

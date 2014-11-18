@@ -33,13 +33,14 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                     deGetRRType("Add");
 
                 }
+           
             }
         
-        protected void deSupplementalReportGrid(object sender, DirectEventArgs e)
+        protected void deSummaryReportGrid(object sender, DirectEventArgs e)
         {
             DateTime StartDate = uxStartDate.SelectedDate;
             DateTime EndDate = uxEndDate.SelectedDate;
-
+            DateTime FiscalStart = uxStartDate.SelectedDate;
          
             using (Entities _context = new Entities())
             {
@@ -47,9 +48,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
                 DateTime selectedStart = StartDate;
                 DateTime selectedEnd = EndDate;
+               // DateTime selectedFiscalStart = FiscalStart;
                 string selectedRailroad = RailroadId.ToString();
        
-                string url = "/Views/Modules/CrossingMaintenance/Reports/SupplementalBillingReport.aspx?selectedRailroad=" + selectedRailroad + "&selectedStart=" + selectedStart + "&selectedEnd=" + selectedEnd;
+                string url = "/Views/Modules/CrossingMaintenance/Reports/SummaryReport.aspx?selectedRailroad=" + selectedRailroad + "&selectedStart=" + selectedStart + "&selectedEnd=" + selectedEnd;
                 Ext.Net.Panel pan = new Ext.Net.Panel();
 
                 pan.ID = "Panel";

@@ -688,53 +688,141 @@ SELECT
                               return context.Database.SqlQuery<StateCrossingList>(sql).ToList();
                           }
                       }
+          public static DateTime GetFiscalStart(DateTime selectedEnd)
+          {        
+              string sql = string.Format(@"SELECT START_DATE FROM APPS.GL_PERIODS_V WHERE PERIOD_YEAR =
+                (SELECT MAX(PERIOD_YEAR) FROM APPS.GL_PERIODS_V WHERE START_DATE <= ('{0}') AND period_type = 'Month' AND period_set_name = 'DBI Calendar')
+                AND period_num = 1 AND PERIOD_SET_NAME = 'DBI Calendar' AND period_type = 'Month'", selectedEnd.ToString("dd-MMM-yyyy"));
 
-          public static List<StateCrossingList> GetCrossingSummaryList(string selectedRailroad, string selectedStart, string selectedEnd)
-          {
-
-              string sql1 = string.Format(@"                          
-                             SELECT
-                                d.CROSSING_ID,
-                                d.CROSSING_NUMBER,
-                                d.SUB_DIVISION,
-                                d.STATE,
-                                d.COUNTY,
-                                d.SERVICE_UNIT,
-                                d.CITY,
-                                d.MILE_POST,
-                                d.ROWNE,
-                                d.ROWNW,
-                                d.ROWSE,
-                                d.ROWSW,
-                                d.STREET,
-                                d.STATUS,
-                                d.SUB_CONTRACTED,
-                                d.LONGITUDE,
-                                d.LATITUDE,
-                                d.SPECIAL_INSTRUCTIONS,
-                                a.SPRAY
-                FROM CROSSINGS d 
-                LEFT JOIN CROSSING_APPLICATION a ON d.CROSSING_ID = a.CROSSING_ID");
-              string sql2 = "";
-              if (selectedStart == "Y")
-              {
-                  sql2 = string.Format(@"
-                     AND i.DATE_CLOSED is null 
-                     ", selectedStart);
-              }
-              else if (selectedEnd == "Y")
-              {
-                  sql2 = string.Format(@"
-                      AND i.DATE_CLOSED is not null
-                                  
-                      ", selectedEnd);
-              }
-             
-
-              string sql = sql1 + sql2;
               using (Entities context = new Entities())
               {
-                  return context.Database.SqlQuery<StateCrossingList>(sql).ToList();
+                  return context.Database.SqlQuery<DateTime>(sql).SingleOrDefault();
+              }
+          }
+
+          public static List<CrossingSummaryReport> GetCrossingSummaryList(string selectedRailroad, DateTime selectedStart, DateTime selectedEnd)
+          {
+
+              DateTime FiscalStart = GetFiscalStart(selectedEnd);
+                
+              string sql1 = string.Format(@"                          
+                            select sum(TOTALCROSSINGCOUNT), SUM(SPRAY), sum(YESCOUNT), sum(NOCOUNT), sum(INSPECT), sum(INSPECTYES), sum(INSPECTNO), sum(INCIDENT), sum(DELETEDYES), sum(DELETED), STATE from (                             
+    
+                             SELECT                
+                                COUNT(d.CROSSING_NUMBER) TOTALCROSSINGCOUNT,
+                                COUNT(a.SPRAY) SPRAY,
+                                CASE WHEN a.SPRAY = 'Y' THEN COUNT(a.SPRAY) ELSE 0 END YESCOUNT,
+                                CASE WHEN a.SPRAY IS NULL THEN COUNT(1) WHEN a.SPRAY = 'N' THEN COUNT(a.SPRAY) ELSE 0 END NOCOUNT,
+                                COUNT(a.INSPECT) INSPECT,
+                                CASE WHEN a.INSPECT = 'Y' THEN COUNT(a.INSPECT) ELSE 0 END INSPECTYES,
+                                CASE WHEN a.INSPECT IS NULL THEN COUNT(1) WHEN a.INSPECT = 'N' THEN COUNT(a.INSPECT) ELSE 0 END INSPECTNO,
+                                COUNT(i.INCIDENT_ID) INCIDENT,
+                                COUNT(d.STATUS) DELETED,
+                                CASE WHEN d.STATUS = 'DELETED' THEN COUNT(1) ELSE 0 END DELETEDYES,
+                                d.STATE
+                FROM CROSSINGS d 
+                LEFT JOIN CROSSING_APPLICATION a ON d.CROSSING_ID = a.CROSSING_ID
+                LEFT JOIN CROSSING_INCIDENT i ON d.CROSSING_ID = i.CROSSING_ID
+                WHERE RAILROAD_ID = {0} AND d.STATE IS NOT NULL ", selectedRailroad);
+              string sql2 = "";
+              if (selectedStart != DateTime.MinValue && selectedEnd != DateTime.MinValue)
+              {
+                  sql2 = string.Format(@" 
+                AND a.APPLICATION_DATE >= ('{0}') AND a.APPLICATION_DATE <= ('{1}')
+
+                   ", selectedStart.ToString("dd-MMM-yyyy"), selectedEnd.ToString("dd-MMM-yyyy"));
+              }
+              else if (selectedStart != DateTime.MinValue)
+              {
+                  sql2 = string.Format(@" 
+                AND a.APPLICATION_DATE >= ('{0}')
+
+                   ", selectedStart.ToString("dd-MMM-yyyy"));
+              }
+
+              else if (selectedEnd != DateTime.MinValue)
+              {
+                  sql2 = string.Format(@" 
+                AND a.APPLICATION_DATE <= ('{0}')
+
+                   ", selectedEnd.ToString("dd-MMM-yyyy"));
+              }
+              string sql3 = "";
+              if (selectedStart != DateTime.MinValue && selectedEnd != DateTime.MinValue)
+              {
+                  sql3 = string.Format(@" 
+                AND i.DATE_REPORTED >= ('{0}') AND i.DATE_REPORTED <= ('{1}')
+
+                   ", selectedStart.ToString("dd-MMM-yyyy"), selectedEnd.ToString("dd-MMM-yyyy"));
+              }
+              else if (selectedStart != DateTime.MinValue)
+              {
+                  sql3 = string.Format(@" 
+                AND i.DATE_REPORTED >= ('{0}')
+
+                   ", selectedStart.ToString("dd-MMM-yyyy"));
+              }
+
+              else if (selectedEnd != DateTime.MinValue)
+              {
+                  sql3 = string.Format(@" 
+                AND i.DATE_REPORTED <= ('{0}')
+
+                   ", selectedEnd.ToString("dd-MMM-yyyy"));
+              }
+
+              string sql4 = "";
+              if (selectedStart != DateTime.MinValue && selectedEnd != DateTime.MinValue)
+              {
+                  sql4 = string.Format(@" 
+                AND d.DELETED_DATE >= ('{0}') AND d.DELETED_DATE <= ('{1}')
+
+                   ", selectedStart.ToString("dd-MMM-yyyy"), selectedEnd.ToString("dd-MMM-yyyy"));
+              }
+              else if (selectedStart != DateTime.MinValue)
+              {
+                  sql4 = string.Format(@" 
+                AND d.DELETED_DATE >= ('{0}')
+
+                   ", selectedStart.ToString("dd-MMM-yyyy"));
+              }
+
+              else if (selectedEnd != DateTime.MinValue)
+              {
+                  sql4 = string.Format(@" 
+                AND d.DELETED_DATE <= ('{0}')
+
+                   ", selectedEnd.ToString("dd-MMM-yyyy"));
+              }
+              string sql5 = "";
+              if (FiscalStart != DateTime.MinValue && selectedEnd != DateTime.MinValue)
+              {
+                  sql5 = string.Format(@" 
+                AND a.APPLICATION_DATE >= ('{0}') AND a.APPLICATION_DATE <= ('{1}')
+
+                   ", FiscalStart.ToString("dd-MMM-yyyy"), selectedEnd.ToString("dd-MMM-yyyy"));
+              }
+              string sql6 = "";
+              if (FiscalStart != DateTime.MinValue && selectedEnd != DateTime.MinValue)
+              {
+                  sql6 = string.Format(@" 
+                AND i.DATE_REPORTED >= ('{0}') AND i.DATE_REPORTED <= ('{1}')
+
+                   ", FiscalStart.ToString("dd-MMM-yyyy"), selectedEnd.ToString("dd-MMM-yyyy"));
+              }
+              string sql7 = "";
+              if (FiscalStart != DateTime.MinValue && selectedEnd != DateTime.MinValue)
+              {
+                  sql7 = string.Format(@" 
+                AND d.DELETED_DATE >= ('{0}') AND d.DELETED_DATE <= ('{1}')
+
+                   ", FiscalStart.ToString("dd-MMM-yyyy"), selectedEnd.ToString("dd-MMM-yyyy"));
+              }
+              string sql8 = "group by d.STATE, a.SPRAY, a.INSPECT, d.STATUS) group by STATE";
+              string sql = sql1 + sql2 + sql3 + sql4 + sql5 + sql6 + sql7 + sql8;
+              using (Entities context = new Entities())
+              {
+                  return context.Database.SqlQuery<CrossingSummaryReport>(sql).ToList();
               }
           }
 
@@ -1519,6 +1607,37 @@ SELECT
                   return context.Database.SqlQuery<WeeklyWorkList>(sql).ToList();
               }
           }
+          public class FiscalYear
+          {
+              public DateTime START_DATE { get; set; }
+          }
+          public class CrossingSummaryReport
+          {
+              public long TOTALCROSSINGCOUNT { get; set; }
+              public decimal MILE_POST{get;set;}
+              public long YESCOUNT { get; set; } //spray
+              public long NOCOUNT { get; set; } //spray
+              public long INSPECTYES { get; set; }
+              public long INSPECTNO { get; set; }
+              public long DELETEDYES { get; set; }
+              public long DELETEDNO { get; set; }
+              public long INCIDENT { get; set; }
+              public long CROSSING_ID { get; set; }
+              public long PROJECT_ID { get; set; }
+              public long INCIDENT_ID { get; set; }
+              public string CROSSING_NUMBER { get; set; }
+              public DateTime APPROVED_DATE { get; set; }
+              public DateTime DELETED_DATE { get; set; }
+              public DateTime DATE_REPORTED { get; set; }
+              public string STATE { get; set; }
+              public long SQUARE_FEET { get; set; }
+              public string SEGMENT1 { get; set; }
+              public string INSPECT { get; set; }
+              public string SPRAY { get; set; }
+              public string SUB_DIVISION { get; set; }
+              public string SERVICE_UNIT { get; set; }           
+          }
+
           public class SupplementalReport
           {
               public decimal? INVOICE_SUPP_ID { get; set; }

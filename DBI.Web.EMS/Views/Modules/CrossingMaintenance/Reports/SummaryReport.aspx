@@ -13,9 +13,20 @@
     <div>
     
     </div>
-        <rsweb:ReportViewer ID="ReportViewer1" runat="server">
+        <rsweb:ReportViewer ID="ReportViewer1" runat="server" Font-Names="Verdana" Font-Size="8pt" WaitMessageFont-Names="Verdana" WaitMessageFont-Size="14pt">
+            <LocalReport ReportEmbeddedResource="DBI.Web.EMS.Views.Modules.CrossingMaintenance.Reports.SummaryReport.rdlc" ReportPath="Views\Modules\CrossingMaintenance\Reports\SummaryReport.rdlc">                 
+                <DataSources>
+                    <rsweb:ReportDataSource DataSourceId="ObjectDataSource2" Name="CrossingSummaryReport" />
+                </DataSources>
+            </LocalReport>
         </rsweb:ReportViewer>
-        <asp:ObjectDataSource ID="ObjectDataSource1" runat="server"></asp:ObjectDataSource>
+        <asp:ObjectDataSource ID="ObjectDataSource2" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="GetCrossingSummaryList" TypeName="DBI.Data.CROSSING_MAINTENANCE, DBI.Data, Version=2.2014.1010.283, Culture=neutral, PublicKeyToken=null">
+            <SelectParameters>
+                <asp:QueryStringParameter Name="selectedRailroad" QueryStringField="selectedRailroad" Type="String" />
+                <asp:QueryStringParameter Name="selectedStart" QueryStringField="selectedStart" Type="DateTime" />
+                <asp:QueryStringParameter Name="selectedEnd" QueryStringField="selectedEnd" Type="DateTime" />
+            </SelectParameters>
+        </asp:ObjectDataSource>
         <asp:ScriptManager ID="ScriptManager1" runat="server">
         </asp:ScriptManager>
     </form>
