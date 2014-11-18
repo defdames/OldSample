@@ -37,10 +37,10 @@
             </Store>
             <ColumnModel>
                 <Columns>
-                    <ext:Column ID="Column1" runat="server" Text="DRS Id" DataIndex="HEADER_ID" Flex="10" />
-                    <ext:DateColumn ID="DateColumn1" runat="server" DataIndex="DA_DATE" Format="MM-dd-yyyy" Text="Activity Date" Flex="15" />
+                    <ext:Column ID="Column1" runat="server" Text="DRS Number" DataIndex="HEADER_ID" Flex="11" />
+                    <ext:DateColumn ID="DateColumn1" runat="server" DataIndex="DA_DATE" Format="MM-dd-yyyy" Text="Date" Flex="15" />
                     <ext:Column ID="Column2" runat="server" DataIndex="SEGMENT1" Text="Project" Flex="10" />
-                    <ext:Column ID="Column3" runat="server" DataIndex="LONG_NAME" Text="Project Name" Flex="65" />
+                    <ext:Column ID="Column3" runat="server" DataIndex="LONG_NAME" Text="Project Name" Flex="64" />
                 </Columns>
             </ColumnModel>
             <SelectionModel>

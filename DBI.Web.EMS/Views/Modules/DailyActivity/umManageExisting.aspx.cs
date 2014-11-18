@@ -625,9 +625,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         OracleHeader = "0";
                     }
                     Cells = new PdfPCell[]{
-						new PdfPCell(new Phrase("DRS Id", HeadFootTitleFont )),
+						new PdfPCell(new Phrase("DRS Number", HeadFootTitleFont )),
 						new PdfPCell(new Phrase(HeaderId.ToString(), HeadFootCellFont)),
-						new PdfPCell(new Phrase("Oracle Header Id", HeadFootTitleFont)),
+						new PdfPCell(new Phrase("Oracle DRS Number", HeadFootTitleFont)),
 						new PdfPCell(new Phrase(OracleHeader, HeadFootCellFont))
 					};
                     foreach (PdfPCell Cell in Cells)
@@ -1533,27 +1533,27 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
         protected void deOpenPostMultipleWindow(object sender, DirectEventArgs e)
         {
-            CreateWindow("umPostMultipleWindow.aspx");
+            CreateWindow("umPostMultipleWindow.aspx", "Post Multiple DRS");
         }
 
         protected void deOpenExportMultipleWindow(object sender, DirectEventArgs e)
         {
-            CreateWindow("umPrintMultipleWindow.aspx");
+            CreateWindow("umPrintMultipleWindow.aspx", "Export Multiple DRS");
         }
 
         [DirectMethod]
         public void dmLoadLunchWindow(string HeaderId, string EmployeeId)
         {
-            CreateWindow(string.Format("umChooseLunchHeader.aspx?HeaderId={0}&EmployeeId={1}", HeaderId, EmployeeId));
+            CreateWindow(string.Format("umChooseLunchHeader.aspx?HeaderId={0}&EmployeeId={1}", HeaderId, EmployeeId), "Choose Lunch DRS");
         }
 
         [DirectMethod]
         public void dmLoadPerDiemWindow(string HeaderId, string EmployeeId)
         {
-            CreateWindow(string.Format("umChoosePerDiem.aspx?HeaderId={0}&EmployeeId={1}", HeaderId, EmployeeId));
+            CreateWindow(string.Format("umChoosePerDiem.aspx?HeaderId={0}&EmployeeId={1}", HeaderId, EmployeeId), "Choose Per Diem");
         }
 
-        protected void CreateWindow(string LoaderUrl)
+        protected void CreateWindow(string LoaderUrl, string Title)
         {
             Window win = new Window()
             {
@@ -1563,6 +1563,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 Resizable = false,
                 AutoRender = false,
                 Y = 15,
+                Title = Title,
                 Constrain = false,
                 CloseAction = CloseAction.Destroy,
                 Loader = new ComponentLoader

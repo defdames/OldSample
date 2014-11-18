@@ -433,8 +433,8 @@
                     ID="uxHeaderPanel" Padding="10" BodyPadding="5" MaxWidth="1400">
                     <Items>
                         <ext:DateField runat="server" ID="uxDateField" FieldLabel="Date" AllowBlank="false" LabelWidth="100" Width="200" />
-                        <ext:TextField runat="server" ID="uxHeaderField" FieldLabel="DRS Id" Width="200" LabelWidth="100" ReadOnly="true" />
-                        <ext:TextField runat="server" ID="uxOracleField" FieldLabel="Oracle DRS Id" Width="200" ReadOnly="true" />
+                        <ext:TextField runat="server" ID="uxHeaderField" FieldLabel="DRS Number" Width="200" LabelWidth="100" ReadOnly="true" />
+                        <ext:TextField runat="server" ID="uxOracleField" FieldLabel="Oracle DRS Number" Width="200" ReadOnly="true" />
                         <ext:DropDownField runat="server"
                             ID="uxProjectField"
                             FieldLabel="Project"

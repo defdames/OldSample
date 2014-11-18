@@ -99,9 +99,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             OracleHeader = "0";
                         }
                         Cells = new PdfPCell[]{
-						new PdfPCell(new Phrase("DRS Id", HeadFootTitleFont )),
+						new PdfPCell(new Phrase("DRS Number", HeadFootTitleFont )),
 						new PdfPCell(new Phrase(HeaderId.ToString(), HeadFootCellFont)),
-						new PdfPCell(new Phrase("Oracle Header Id", HeadFootTitleFont)),
+						new PdfPCell(new Phrase("Oracle DRS Number", HeadFootTitleFont)),
 						new PdfPCell(new Phrase(OracleHeader, HeadFootCellFont))
 					};
                         foreach (PdfPCell Cell in Cells)
