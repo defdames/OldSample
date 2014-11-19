@@ -30,6 +30,7 @@
                 <asp:QueryStringParameter Name="selectedState" QueryStringField="selectedState" Type="String" />
                 <asp:QueryStringParameter Name="selectedStart" QueryStringField="selectedStart" Type="DateTime" />
                 <asp:QueryStringParameter Name="selectedEnd" QueryStringField="selectedEnd" Type="DateTime" />
+                <asp:QueryStringParameter Name="selectedType" QueryStringField="selectedType" Type="string" />
             </SelectParameters>
         </asp:ObjectDataSource>
     </form>
