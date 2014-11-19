@@ -16,7 +16,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// </summary>
         /// <param name="HeaderId"></param>
         /// <returns></returns>
-        public static List<EmployeeData> checkEmployeeTime(int Hours)
+        public static List<DAILY_ACTIVITY.EmployeeData> checkEmployeeTime(int Hours)
         {
 
             using (Entities _context = new Entities())
@@ -26,7 +26,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                       group d by new { d.DAILY_ACTIVITY_HEADER.DA_DATE, d.PERSON_ID } into g
                                       select new { g.Key.PERSON_ID, g.Key.DA_DATE, TotalMinutes = g.Sum(d => EntityFunctions.DiffMinutes(d.TIME_IN.Value, d.TIME_OUT.Value)) }).ToList();
 
-                List<EmployeeData> OffendingProjects = new List<EmployeeData>();
+                List<DAILY_ACTIVITY.EmployeeData> OffendingProjects = new List<DAILY_ACTIVITY.EmployeeData>();
                 foreach (var TotalHour in TotalHoursList)
                 {
 
@@ -35,10 +35,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         var ProjectsWithEmployeeHoursOver24 = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                                                join e in _context.EMPLOYEES_V on d.PERSON_ID equals e.PERSON_ID
                                                                where d.PERSON_ID == TotalHour.PERSON_ID && d.DAILY_ACTIVITY_HEADER.DA_DATE == TotalHour.DA_DATE && d.DAILY_ACTIVITY_HEADER.STATUS != 5
-                                                               select new EmployeeData { HEADER_ID = d.HEADER_ID, EMPLOYEE_NAME = e.EMPLOYEE_NAME, DA_DATE = d.DAILY_ACTIVITY_HEADER.DA_DATE }).ToList();
+                                                               select new DAILY_ACTIVITY.EmployeeData { HEADER_ID = d.HEADER_ID, EMPLOYEE_NAME = e.EMPLOYEE_NAME, DA_DATE = d.DAILY_ACTIVITY_HEADER.DA_DATE }).ToList();
                         foreach (var Project in ProjectsWithEmployeeHoursOver24)
                         {
-                            OffendingProjects.Add(new EmployeeData
+                            OffendingProjects.Add(new DAILY_ACTIVITY.EmployeeData
                             {
                                 HEADER_ID = Project.HEADER_ID,
                                 EMPLOYEE_NAME = Project.EMPLOYEE_NAME,
@@ -52,7 +52,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
-        public static WarningData checkEmployeeTime(int Hours, long PersonId, DateTime HeaderDate)
+        public static DAILY_ACTIVITY.WarningData checkEmployeeTime(int Hours, long PersonId, DateTime HeaderDate)
         {
             using (Entities _context = new Entities())
             {
@@ -65,11 +65,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     string Name = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == PersonId).Select(x => x.EMPLOYEE_NAME).Single();
                     if (Hours == 14)
                     {
-                        return new WarningData { WarningType = "Warning", RecordType = Name, AdditionalInformation = string.Format("More than {0} hours logged on {1}", Hours.ToString(), HeaderDate.ToString("MM-dd-yyyy")) };
+                        return new DAILY_ACTIVITY.WarningData { WarningType = "Warning", RecordType = Name, AdditionalInformation = string.Format("More than {0} hours logged on {1}", Hours.ToString(), HeaderDate.ToString("MM-dd-yyyy")) };
                     }
                     else if (Hours == 24)
                     {
-                        return new WarningData { WarningType = "Error", RecordType = Name, AdditionalInformation = string.Format("More than {0} hours logged on {1}", Hours.ToString(), HeaderDate.ToString("MM-dd-yyyy")) };
+                        return new DAILY_ACTIVITY.WarningData { WarningType = "Error", RecordType = Name, AdditionalInformation = string.Format("More than {0} hours logged on {1}", Hours.ToString(), HeaderDate.ToString("MM-dd-yyyy")) };
                     }
                 }
                 return null;
@@ -83,16 +83,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         public static bool AreMetersMissing(long HeaderId)
         {
             //Get List of equipment
-            List<DAILY_ACTIVITY_EQUIPMENT> EquipmentList;
+            List<DAILY_ACTIVITY.EquipmentDetails> EquipmentList;
 
             using (Entities _context = new Entities())
             {
-                EquipmentList = (from d in _context.DAILY_ACTIVITY_EQUIPMENT
-                                 where d.HEADER_ID == HeaderId
-                                 select d).ToList();
+                EquipmentList = DAILY_ACTIVITY.GetEquipmentData(_context, HeaderId).ToList();
             }
             int NumberOfMissingMeters = 0;
-            foreach (DAILY_ACTIVITY_EQUIPMENT Equipment in EquipmentList)
+            foreach (DAILY_ACTIVITY.EquipmentDetails Equipment in EquipmentList)
             {
                 if (Equipment.ODOMETER_START == null || Equipment.ODOMETER_END == null)
                 {
@@ -107,13 +105,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             return false;
         }
 
-        public static WarningData MeterCheck(long EquipmentID)
+        public static DAILY_ACTIVITY.WarningData MeterCheck(long EquipmentID)
         {
             using (Entities _context = new Entities())
             {
-                DAILY_ACTIVITY_EQUIPMENT EquipmentRecord = (from d in _context.DAILY_ACTIVITY_EQUIPMENT
-                                                            where d.EQUIPMENT_ID == EquipmentID
-                                                            select d).Single();
+                DAILY_ACTIVITY_EQUIPMENT EquipmentRecord = DAILY_ACTIVITY.GetEquipment(_context, EquipmentID).Single();
                 if (EquipmentRecord.ODOMETER_START == 0 || EquipmentRecord.ODOMETER_END == 0)
                 {
                     string Name = (from e in _context.DAILY_ACTIVITY_EQUIPMENT
@@ -124,7 +120,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                         join c in _context.CLASS_CODES_V on e.PROJECT_ID equals c.PROJECT_ID
                                         where e.EQUIPMENT_ID == EquipmentID
                                         select c.CLASS_CODE).Single();
-                    return new WarningData { WarningType = "Warning", RecordType = string.Format("{0} - {1}", Name, ClassCode), AdditionalInformation = "Equipment Missing Meter Reading" };
+                    return new DAILY_ACTIVITY.WarningData { WarningType = "Warning", RecordType = string.Format("{0} - {1}", Name, ClassCode), AdditionalInformation = "Equipment Missing Meter Reading" };
                 }
                 else
                 {
@@ -216,7 +212,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 return false;
             }
         }
-        public static List<WarningData> employeeTimeOverlapCheck(long PersonId, DateTime HeaderDate, long HeaderId)
+        public static List<DAILY_ACTIVITY.WarningData> employeeTimeOverlapCheck(long PersonId, DateTime HeaderDate, long HeaderId)
         {
             using (Entities _context = new Entities())
             {
@@ -225,7 +221,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                                               orderby d.TIME_IN ascending
                                                               where d.PERSON_ID == PersonId && EntityFunctions.TruncateTime(d.TIME_IN) == EntityFunctions.TruncateTime(HeaderDate.Date) && h.STATUS != 5
                                                               select d).ToList();
-                List<WarningData> HeaderIdList = new List<WarningData>();
+                List<DAILY_ACTIVITY.WarningData> HeaderIdList = new List<DAILY_ACTIVITY.WarningData>();
                 DateTime PreviousTimeIn = DateTime.Parse("1/11/1955");
                 DateTime PreviousTimeOut = DateTime.Parse("1/11/1955");
                 long PreviousHeader = 0;
@@ -242,11 +238,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             string Name = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == PersonId).Select(x => x.EMPLOYEE_NAME).Single();
                             if (PreviousHeader == HeaderId)
                             {
-                                HeaderIdList.Add(new WarningData { WarningType = "Error", RecordType = Name, AdditionalInformation = string.Format("Employee has time overlap on DRS Id:{0}", Employee.HEADER_ID.ToString()) });
+                                if (HeaderId != Employee.HEADER_ID)
+                                {
+                                    HeaderIdList.Add(new DAILY_ACTIVITY.WarningData { WarningType = "Error", RecordType = Name, AdditionalInformation = string.Format("Employee has time overlap on DRS Number:{0}", Employee.HEADER_ID.ToString()) });
+                                }
                             }
                             else
                             {
-                                HeaderIdList.Add(new WarningData { WarningType = "Error", RecordType = Name, AdditionalInformation = string.Format("Employee has time overlap on DRS Id:{0}", PreviousHeader.ToString()) });
+                                HeaderIdList.Add(new DAILY_ACTIVITY.WarningData { WarningType = "Error", RecordType = Name, AdditionalInformation = string.Format("Employee has time overlap on DRS Number:{0}", PreviousHeader.ToString()) });
                             }
                         }
                     }
@@ -322,7 +321,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
-        public static WarningData EquipmentBusinessUnitCheck(long EquipmentId)
+        public static DAILY_ACTIVITY.WarningData EquipmentBusinessUnitCheck(long EquipmentId)
         {
             using (Entities _context = new Entities())
             {
@@ -343,8 +342,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     string Name = _context.PROJECTS_V.Where(x => x.PROJECT_ID == EquipmentData.PROJECT_ID).Select(x => x.NAME).Single();
                     string ClassCode = _context.CLASS_CODES_V.Where(x => x.PROJECT_ID == EquipmentData.PROJECT_ID).Select(x => x.CLASS_CODE).Single();
 
-
-                    return new WarningData { WarningType = "Warning", RecordType = string.Format("{0} - {1}", Name, ClassCode), AdditionalInformation = string.Format("Equipment BU is {0}, Project BU is {1}", EquipmentOrg, ProjectOrg) };
+                    return new DAILY_ACTIVITY.WarningData { WarningType = "Warning", RecordType = string.Format("{0} - {1}", Name, ClassCode), AdditionalInformation = string.Format("Equipment BU is {0}, Project BU is {1}", EquipmentOrg, ProjectOrg) };
                 }
                 return null;
             }
@@ -412,7 +410,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
 
         }
-        public static WarningData EmployeeBusinessUnitCheck(long EmployeeId)
+        public static DAILY_ACTIVITY.WarningData EmployeeBusinessUnitCheck(long EmployeeId)
         {
             using (Entities _context = new Entities())
             {
@@ -433,13 +431,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
 
                     string Name = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == Employee.PERSON_ID).Select(x => x.EMPLOYEE_NAME).Single();
-                    return new WarningData { WarningType = "Warning", RecordType = Name, AdditionalInformation = string.Format("Employee BU is {0}, Project BU is {1}", EmployeeOrg, ProjectOrg) };
+                    return new DAILY_ACTIVITY.WarningData { WarningType = "Warning", RecordType = Name, AdditionalInformation = string.Format("Employee BU is {0}, Project BU is {1}", EmployeeOrg, ProjectOrg) };
                 }
                 return null;
             }
         }
 
-        public static WarningData checkPerDiem(long HeaderId)
+        public static DAILY_ACTIVITY.WarningData checkPerDiem(long HeaderId)
         {
             using (Entities _context = new Entities())
             {
@@ -449,7 +447,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                     where d.HEADER_ID == HeaderId && d.PER_DIEM == "Y"
                                     select new { d.PERSON_ID, d.DAILY_ACTIVITY_HEADER.DA_DATE, e.EMPLOYEE_NAME }).ToList();
 
-                EmployeeData BadHeaders = null;
+                DAILY_ACTIVITY.EmployeeData BadHeaders = null;
                 //Check for Additional active PerDiems on that day
                 foreach (var Employee in EmployeeList)
                 {
@@ -461,7 +459,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                     if (HeaderList.Count > 1)
                     {
-                        return new WarningData { WarningType = "Warning", RecordType = "Per Diem", AdditionalInformation = "An employee has a duplicate per diem" };
+                        return new DAILY_ACTIVITY.WarningData { WarningType = "Warning", RecordType = "Per Diem", AdditionalInformation = "An employee has a duplicate per diem" };
                     }
 
                 }
@@ -469,7 +467,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
-        public static List<WarningData> checkPerDiem(long EmployeeId, long HeaderId)
+        public static List<DAILY_ACTIVITY.WarningData> checkPerDiem(long EmployeeId, long HeaderId)
         {
             using (Entities _context = new Entities())
             {
@@ -479,29 +477,32 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                                             join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
                                                             where d.PERSON_ID == EmployeeInfo.PERSON_ID && h.DA_DATE == EmployeeInfo.DAILY_ACTIVITY_HEADER.DA_DATE && d.PER_DIEM == "Y" && h.STATUS != 5
                                                             select d).ToList();
-                List<WarningData> Warnings = new List<WarningData>();
+                List<DAILY_ACTIVITY.WarningData> Warnings = new List<DAILY_ACTIVITY.WarningData>();
                 if (HeaderList.Count > 1)
                 {
                     foreach (DAILY_ACTIVITY_EMPLOYEE Header in HeaderList)
                     {
-                        string EmployeeName = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == Header.PERSON_ID).Select(x => x.EMPLOYEE_NAME).Single();
-                        Warnings.Add(new WarningData
+                        if (Header.HEADER_ID != HeaderId)
                         {
-                            WarningType = "Warning",
-                            RecordType = "Per Diem",
-                            AdditionalInformation = string.Format("{0} has an overlapping per diem on DRS# {1}", EmployeeName, Header.HEADER_ID.ToString())
-                        });
+                            string EmployeeName = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == Header.PERSON_ID).Select(x => x.EMPLOYEE_NAME).Single();
+                            Warnings.Add(new DAILY_ACTIVITY.WarningData
+                            {
+                                WarningType = "Warning",
+                                RecordType = "Per Diem",
+                                AdditionalInformation = string.Format("{0} has an overlapping per diem on DRS# {1}", EmployeeName, Header.HEADER_ID.ToString())
+                            });
+                        }
                     }
                 }
                 return Warnings;
             }
         }
 
-        public static List<WarningData> LunchCheck(long HeaderId)
+        public static List<DAILY_ACTIVITY.WarningData> LunchCheck(long HeaderId)
         {
             using (Entities _context = new Entities())
             {
-                List<WarningData> WarningList = new List<WarningData>();
+                List<DAILY_ACTIVITY.WarningData> WarningList = new List<DAILY_ACTIVITY.WarningData>();
                 var EmployeeList = (from e in _context.DAILY_ACTIVITY_EMPLOYEE
                                     join h in _context.DAILY_ACTIVITY_HEADER on e.HEADER_ID equals h.HEADER_ID
                                     join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
@@ -533,7 +534,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                                  select d.LUNCH).Count();
                             if (LoggedLunches == 0)
                             {
-                                WarningList.Add(new WarningData
+                                WarningList.Add(new DAILY_ACTIVITY.WarningData
                                 {
                                     WarningType = "Error",
                                     RecordType = "Lunch Check",
@@ -550,7 +551,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                 {
                                     if (LunchLength == 60)
                                     {
-                                        WarningList.Add(new WarningData
+                                        WarningList.Add(new DAILY_ACTIVITY.WarningData
                                         {
                                             WarningType = "Error",
                                             RecordType = "Lunch Length",
@@ -562,7 +563,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                 {
                                     if (LunchLength == 30)
                                     {
-                                        WarningList.Add(new WarningData
+                                        WarningList.Add(new DAILY_ACTIVITY.WarningData
                                         {
                                             WarningType = "Error",
                                             RecordType = "Lunch Length",
@@ -580,7 +581,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
-        public static WarningData LunchCheck(long PersonId, DateTime HeaderDate)
+        public static DAILY_ACTIVITY.WarningData LunchCheck(long PersonId, DateTime HeaderDate)
         {
             using (Entities _context = new Entities())
             {
@@ -606,8 +607,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                          select d.LUNCH).Count();
                     if (LoggedLunches == 0)
                     {
-                        
-                        return new WarningData
+
+                        return new DAILY_ACTIVITY.WarningData
                         {
                             WarningType = "Error",
                             RecordType = "Lunch Check",
@@ -624,7 +625,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         {
                             if (LunchLength == 60)
                             {
-                                return new WarningData
+                                return new DAILY_ACTIVITY.WarningData
                                 {
                                     WarningType = "Error",
                                     RecordType = "Lunch Length",
@@ -636,7 +637,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         {
                             if (LunchLength == 30)
                             {
-                                return new WarningData
+                                return new DAILY_ACTIVITY.WarningData
                                 {
                                     WarningType = "Error",
                                     RecordType = "Lunch Length",
@@ -718,42 +719,5 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         //}
     }
 
-    public class EmployeeData
-    {
-        public long HEADER_ID { get; set; }
-        public string LONG_NAME { get; set; }
-        public string EMPLOYEE_NAME { get; set; }
-        public DateTime? DA_DATE { get; set; }
-        public long PERSON_ID { get; set; }
-        public int LUNCH_LENGTH { get; set; }
-    }
-
-    public class HeaderData
-    {
-        public long HEADER_ID { get; set; }
-        public long? PROJECT_ID { get; set; }
-        public DateTime? DA_DATE { get; set; }
-        public string SEGMENT1 { get; set; }
-        public string LONG_NAME { get; set; }
-        public decimal? DA_HEADER_ID { get; set; }
-        public string STATUS_VALUE { get; set; }
-        public string WARNING { get; set; }
-        public string APPLICATION_TYPE { get; set; }
-        public string CONTRACTOR { get; set; }
-        public string DENSITY { get; set; }
-        public string EMPLOYEE_NAME { get; set; }
-        public string LICENSE { get; set; }
-        public string STATE { get; set; }
-        public string SUBDIVISION { get; set; }
-        public string WARNING_TYPE { get; set; }
-        public int? STATUS { get; set; }
-        public long? ORG_ID { get; set; }
-    }
-
-    public class WarningData
-    {
-        public string WarningType { get; set; }
-        public string RecordType { get; set; }
-        public string AdditionalInformation { get; set; }
-    }
+    
 }

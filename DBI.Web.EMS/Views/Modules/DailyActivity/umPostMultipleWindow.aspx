@@ -27,6 +27,9 @@
                             </Fields>
                         </ext:Model>
                     </Model>
+                    <Sorters>
+                        <ext:DataSorter Property="DA_DATE" Direction="DESC" />
+                    </Sorters>
                     <Proxy>
                         <ext:PageProxy />
                     </Proxy>
@@ -34,10 +37,10 @@
             </Store>
             <ColumnModel>
                 <Columns>
-                    <ext:Column runat="server" Text="DRS Id" DataIndex="HEADER_ID" Flex="10" />
-                    <ext:DateColumn runat="server" DataIndex="DA_DATE" Format="MM-dd-yyyy" Text="Activity Date" Flex="15" />
+                    <ext:Column runat="server" Text="DRS Number" DataIndex="HEADER_ID" Flex="11" />
+                    <ext:DateColumn runat="server" DataIndex="DA_DATE" Format="MM-dd-yyyy" Text="Date" Flex="15" />
                     <ext:Column runat="server" DataIndex="SEGMENT1" Text="Project" Flex="10" />
-                    <ext:Column runat="server" DataIndex="LONG_NAME" Text="Project Name" Flex="65" />
+                    <ext:Column runat="server" DataIndex="LONG_NAME" Text="Project Name" Flex="64" />
                 </Columns>
             </ColumnModel>
             <SelectionModel>

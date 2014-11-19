@@ -28,6 +28,7 @@
                  <asp:QueryStringParameter Name="selectedServiceUnit" QueryStringField="selectedServiceUnit" Type="String" />
                  <asp:QueryStringParameter Name="selectedSubDiv" QueryStringField="selectedSubDiv" Type="String" />
                  <asp:QueryStringParameter Name="selectedState" QueryStringField="selectedState" Type="String" />
+                 <asp:QueryStringParameter Name="selectedSpray" QueryStringField="selectedSpray" Type="String" />
              </SelectParameters>
          </asp:ObjectDataSource>
     </form>

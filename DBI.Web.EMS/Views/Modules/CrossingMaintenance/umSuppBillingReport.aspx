@@ -159,6 +159,35 @@
                             </Plugins>
                             </ext:ComboBox>
                          
+                               <ext:ComboBox runat="server"
+                                ID="uxSupplementalType"
+                                FieldLabel="Supplemental Type"
+                                LabelAlign="Right"
+                                AnchorHorizontal="25%"
+                                DisplayField="type"
+                                ValueField="type"
+                                QueryMode="Local"
+                                TypeAhead="true"
+                                ForceSelection="true" TabIndex="5" EmptyText="ALL">
+                                <Store>
+                                    <ext:Store ID="uxSupplementalTypeStore" runat="server" AutoDataBind="true" >
+                                        <Model>
+                                            <ext:Model ID="Model1" runat="server">
+                                                <Fields>
+                                                    
+                                                    <ext:ModelField Name="type" />
+                                                </Fields>
+                                            </ext:Model>
+                                        </Model>
+                                        <Reader>
+                                            <ext:ArrayReader />
+                                        </Reader>
+                                    </ext:Store>
+                                </Store>
+                                 <Plugins>
+                                <ext:ClearButton ID="ClearButton6" runat="server" />
+                            </Plugins>
+                            </ext:ComboBox>
                         </Items>
                     </ext:FieldSet>
                 </Items>

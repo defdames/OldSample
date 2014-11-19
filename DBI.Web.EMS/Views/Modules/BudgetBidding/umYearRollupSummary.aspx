@@ -59,6 +59,43 @@
         <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
             <Items>
 
+                <%-------------------------------------------------- Toolbar --------------------------------------------------%>
+                <ext:Toolbar ID="uxMainToolbar" runat="server" Region="North">
+                    <Items>
+
+                        <ext:ToolbarFill />
+                        <ext:ComboBox ID="uxRollupReports"
+                            runat="server"
+                            ValueField="ID_NAME"
+                            DisplayField="ID_NAME"
+                            Width="300"
+                            EmptyText="-- Reports/Export --"
+                            Editable="false">
+                            <Store>
+                                <ext:Store ID="uxRollupReportsStore" runat="server" OnReadData="deLoadRollupReports" AutoLoad="false">
+                                    <Model>
+                                        <ext:Model ID="Model6" runat="server">
+                                            <Fields>
+                                                <ext:ModelField Name="ID_NAME" />
+                                            </Fields>
+                                        </ext:Model>
+                                    </Model>
+                                    <Proxy>
+                                        <ext:PageProxy />
+                                    </Proxy>
+                                </ext:Store>
+                            </Store>
+                            <DirectEvents>
+                                <Select OnEvent="deChooseRollupReport">
+                                    <EventMask ShowMask="true" Msg="Processing..." />
+                                </Select>
+                            </DirectEvents>
+                        </ext:ComboBox>
+
+                    </Items>
+                </ext:Toolbar>
+
+                <%-------------------------------------------------- Top Summary Panel --------------------------------------------------%>
                 <ext:GridPanel ID="uxSummaryGrid" runat="server" Region="North" Height="300">
                     <SelectionModel>
                         <ext:RowSelectionModel ID="uxGridRowModel" runat="server" AllowDeselect="false" Mode="Single" />

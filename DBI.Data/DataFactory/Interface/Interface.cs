@@ -659,8 +659,9 @@ namespace DBI.Data
 
                 foreach (var r in data)
                 {
-                    if (r.ORG_ID == dailyActivityHeaderRecord.ORG_ID)
-                    {
+                    //EV-437 REMOVED CHECK for Equipment per Gary. Process all Equipment back to daily activity.
+                    //if (r.ORG_ID == dailyActivityHeaderRecord.ORG_ID)
+                    //{
                         XXDBI_TRUCK_EQUIP_USAGE_V record = new XXDBI_TRUCK_EQUIP_USAGE_V();
                         record.DA_HEADER_ID = dailyActivityHeaderRecord.DA_HEADER_ID;
                         record.CREATED_BY = postedByUserId;
@@ -676,7 +677,7 @@ namespace DBI.Data
                         record.STATUS = "UNPROCESSED";
                         record.ORG_ID = (decimal)r.ORG_ID;
                         records.Add(record);
-                    }
+                    //}
                 }
 
                 foreach (XXDBI_TRUCK_EQUIP_USAGE_V record in records)

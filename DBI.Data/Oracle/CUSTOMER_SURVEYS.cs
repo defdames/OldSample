@@ -96,13 +96,13 @@ namespace DBI.Data
             return _context.CUSTOMER_SURVEY_OPTIONS.Where(x => x.OPTION_ID == OptionId).Single();
         }
 
-        public static IQueryable<CustomerSurveyThresholdStore> GetOrganizationThresholdAmounts(long OrgID, Entities _context)
+        public static IQueryable<CustomerSurveyDollarThresholdStore> GetOrganizationThresholdAmounts(long OrgID, Entities _context)
         {
             return (from c in _context.CUSTOMER_SURVEY_THRESH_AMT
                     join o in _context.ORG_HIER_V on c.ORG_ID equals o.ORG_ID
                     join f in _context.CUSTOMER_SURVEY_FORM_TYPES on c.TYPE_ID equals f.TYPE_ID
                     where c.ORG_ID == OrgID
-                    select new CustomerSurveyThresholdStore { AMOUNT_ID = c.AMOUNT_ID, HIGH_DOLLAR_AMT = c.HIGH_DOLLAR_AMT, LOW_DOLLAR_AMT = c.LOW_DOLLAR_AMT, ORG_HIER = o.ORG_HIER, TYPE_NAME = f.TYPE_NAME, TYPE_ID = f.TYPE_ID }).Distinct();
+                    select new CustomerSurveyDollarThresholdStore { AMOUNT_ID = c.AMOUNT_ID, HIGH_DOLLAR_AMT = c.HIGH_DOLLAR_AMT, LOW_DOLLAR_AMT = c.LOW_DOLLAR_AMT, ORG_HIER = o.ORG_HIER, TYPE_NAME = f.TYPE_NAME, TYPE_ID = f.TYPE_ID }).Distinct();
         }
 
         public static CUSTOMER_SURVEY_THRESH_AMT GetOrganizationThresholdAmount(decimal AmountId, Entities _context)
@@ -229,7 +229,7 @@ namespace DBI.Data
             public bool IS_REQUIRED { get; set; }
             public decimal SORT_ORDER { get; set; }
             public bool IS_ACTIVE { get; set; }
-            public int PhantomId { get; set; }
+            public string PhantomId { get; set; }
         }
 
         public class CustomerSurveyFieldsets
@@ -240,7 +240,7 @@ namespace DBI.Data
             public decimal SORT_ORDER { get; set; }
             public bool IS_ACTIVE { get; set; }
             public decimal? CATEGORY_ID { get; set; }
-            public int PhantomId { get; set; }
+            public string PhantomId { get; set; }
         }
 
         public class CustomerSurveyOptions
@@ -251,10 +251,10 @@ namespace DBI.Data
             public string TEXT { get; set; }
             public decimal SORT_ORDER { get; set; }
             public bool IS_ACTIVE { get; set; }
-            public int PhantomId { get; set; }
+            public string PhantomId { get; set; }
         }
 
-        public class CustomerSurveyThresholdStore
+        public class CustomerSurveyDollarThresholdStore
         {
             public decimal AMOUNT_ID { get; set; }
             public decimal? LOW_DOLLAR_AMT { get; set; }
@@ -262,14 +262,24 @@ namespace DBI.Data
             public string ORG_HIER { get; set; }
             public string TYPE_NAME { get; set; }
             public decimal TYPE_ID { get; set; }
+            public string PhantomId { get; set; }
         }
 
+        public class CustomerSurveyThresholdStore
+        {
+            public decimal THRESHOLD_ID { get; set; }
+            public decimal THRESHOLD { get; set; }
+            public decimal? AMOUNT_ID { get; set; }
+            public string PhantomId { get; set; }
+
+        }
         public class CustomerSurveyCategoryStore
         {
             public decimal CATEGORY_ID { get; set; }
             public string NAME { get; set; }
             public string DESCRIPTION { get; set; }
-            public int NUM_FORMS { get; set; }
+            public int? NUM_FORMS { get; set; }
+            public string PhantomId { get; set; }
         }
 
         public class CustomerSurveyCompletions
@@ -286,7 +296,8 @@ namespace DBI.Data
         {
             public decimal CATEGORY_ID { get; set; }
             public string CATEGORY_NAME { get; set; }
-            public int NUM_QUESTIONS { get; set; }
+            public int? NUM_QUESTIONS { get; set; }
+            public string PhantomId { get; set; }
         }
     }
 }

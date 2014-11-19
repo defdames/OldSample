@@ -28,7 +28,7 @@ namespace DBI.Web.EMS
         protected void Application_Start(object sender, EventArgs e)
         {
             // Set the license key needed to hide "warning" windows when deploying to server
-            Application["Ext.Net.LicenseKey"] = "ODUwODg1NjAsMiw5OTk5LTEyLTMx";
+            Application["Ext.Net.LicenseKey"] = "ODUwODg1NjAsMiw5OTk5LTEyLTMx"; 
 
         }
 

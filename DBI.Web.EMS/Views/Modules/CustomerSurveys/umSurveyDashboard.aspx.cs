@@ -146,7 +146,6 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             List<long> OrgsList;
             if (_selectedRecordID != string.Empty)
             {
-                List<long> ProjectList;
                 long SelectedOrgId = GetOrgFromTree(_selectedRecordID);
                 long HierId = GetHierarchyFromTree(_selectedRecordID);
                 //Get Orgs list
@@ -169,7 +168,6 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
         protected void deEmailLink(object sender, DirectEventArgs e)
         {
             List<XXDBI_DW.Threshold> RowData = JSON.Deserialize<List<XXDBI_DW.Threshold>>(e.ExtraParams["RowValues"]);
-            decimal FormId;
             string ToAddress;
             //Get form for Organization
             using (Entities _context = new Entities())

@@ -201,7 +201,7 @@
                                     <ext:ModelField Name="SERVICE_UNIT" />
                                     <ext:ModelField Name="SUB_DIVISION" />
                                      <ext:ModelField Name="SEGMENT1" />
-
+                                    <ext:ModelField Name="PRICE" />
                                 </Fields>
                             </ext:Model>
                         </Model>
@@ -223,6 +223,7 @@
                         <ext:DateColumn ID="DateColumn1" runat="server" DataIndex="APPROVED_DATE" Text="Approved Date" Flex="1" Format="MM/dd/yyyy" />
                     <ext:Column ID="Column6" runat="server" DataIndex="SERVICE_TYPE" Text="Service Type" Flex="1" />
                     <ext:Column ID="Column5" runat="server" DataIndex="SQUARE_FEET" Text="Square Feet" Flex="1" />
+                        <ext:Column ID="Column4" runat="server" DataIndex="PRICE" Text="Price" Flex="1" />
                     <ext:Column ID="Column13" runat="server" DataIndex="SEGMENT1" Text="Project #" Flex="1" />
 
 

@@ -265,6 +265,15 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Column Column7;
         
         /// <summary>
+        /// Column1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column Column1;
+        
+        /// <summary>
         /// FieldContainer3 control.
         /// </summary>
         /// <remarks>

@@ -247,6 +247,7 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
+                        <BackgroundColor>=IIF(Reportitems!STATUS.Value = "Missing", "Gray", IIF(Fields!TYPE.Value = "OVERRIDE", "Yellow", "No Color"))</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -290,12 +291,14 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
+                        <BackgroundColor>=IIF(Reportitems!STATUS.Value = "Missing", "Gray", "No Color")</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -311,7 +314,7 @@
                               <Style>
                                 <FontFamily>Calibri</FontFamily>
                                 <FontSize>7pt</FontSize>
-                                <Format>'$'#,0.00;('$'#,0.00)</Format>
+                                <Format>#,0.00;(#,0.00)</Format>
                                 <Color>=IIF(Fields!OP.Value &lt; 0, "Red", "Black")</Color>
                               </Style>
                             </TextRun>
@@ -355,7 +358,7 @@
                               <Style>
                                 <FontFamily>Calibri</FontFamily>
                                 <FontSize>7pt</FontSize>
-                                <Format>'$'#,0.00;('$'#,0.00)</Format>
+                                <Format>#,0.00;(#,0.00)</Format>
                                 <Color>=IIF(Fields!DIR_EXP.Value &lt; 0, "Red", "Black")</Color>
                               </Style>
                             </TextRun>
@@ -728,7 +731,7 @@
                               <Style>
                                 <FontFamily>Calibri</FontFamily>
                                 <FontSize>7pt</FontSize>
-                                <Format>'$'#,0.00;('$'#,0.00)</Format>
+                                <Format>#,0.00;(#,0.00)</Format>
                                 <Color>White</Color>
                               </Style>
                             </TextRun>
@@ -776,7 +779,7 @@
                               <Style>
                                 <FontFamily>Calibri</FontFamily>
                                 <FontSize>7pt</FontSize>
-                                <Format>'$'#,0.00;('$'#,0.00)</Format>
+                                <Format>#,0.00;(#,0.00)</Format>
                                 <Color>White</Color>
                               </Style>
                             </TextRun>
@@ -1114,7 +1117,7 @@
         </Style>
       </Image>
     </ReportItems>
-    <Height>3.85417in</Height>
+    <Height>2.20834in</Height>
     <Style>
       <Border>
         <Style>None</Style>

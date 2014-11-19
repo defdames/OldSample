@@ -32,72 +32,47 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             }
         }
 
-        protected void deLoadEditCategoryWindow(object sender, DirectEventArgs e)
-        {
-            uxFormType.Value = "Edit";
-            List<CUSTOMER_SURVEY_CAT> ToBeEdited = JSON.Deserialize<List<CUSTOMER_SURVEY_CAT>>(e.ExtraParams["CategoryInfo"]);
-            uxCategoryId.Value = ToBeEdited[0].CATEGORY_ID;
-            uxCategoryName.Value = ToBeEdited[0].NAME;
-            uxDescription.Value = ToBeEdited[0].DESCRIPTION;
-
-            uxAddEditCategoryWindow.Show();
-        }
-
         protected void deSaveCategory(object sender, DirectEventArgs e)
         {
-            CUSTOMER_SURVEY_CAT ToBeSaved;
-            if (uxFormType.Text == "Add")
+            ChangeRecords<CUSTOMER_SURVEYS.CustomerSurveyCategoryStore> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<CUSTOMER_SURVEYS.CustomerSurveyCategoryStore>();
+
+            foreach (CUSTOMER_SURVEYS.CustomerSurveyCategoryStore item in data.Created)
             {
-                ToBeSaved = new CUSTOMER_SURVEY_CAT();
-                ToBeSaved.NAME = uxCategoryName.Text;
-                ToBeSaved.DESCRIPTION = uxDescription.Text;
+                CUSTOMER_SURVEY_CAT ToBeSaved = new CUSTOMER_SURVEY_CAT();
+                ToBeSaved.NAME = item.NAME;
+                ToBeSaved.DESCRIPTION = item.DESCRIPTION;
                 ToBeSaved.CREATE_DATE = DateTime.Now;
                 ToBeSaved.CREATED_BY = User.Identity.Name;
                 ToBeSaved.MODIFIED_BY = User.Identity.Name;
                 ToBeSaved.MODIFY_DATE = DateTime.Now;
 
                 GenericData.Insert<CUSTOMER_SURVEY_CAT>(ToBeSaved);
+
+                ModelProxy Record = uxQuestionCategoryStore.GetByInternalId(item.PhantomId);
+                Record.CreateVariable = true;
+                Record.SetId(ToBeSaved.CATEGORY_ID);
+                Record.Commit();
             }
-            else
+
+            foreach (CUSTOMER_SURVEYS.CustomerSurveyCategoryStore item in data.Updated)
             {
+                CUSTOMER_SURVEY_CAT ToBeUpdated;
+
                 using (Entities _context = new Entities())
                 {
-                    ToBeSaved = CUSTOMER_SURVEYS.GetCategory(decimal.Parse(uxCategoryId.Text), _context);
+                    ToBeUpdated = CUSTOMER_SURVEYS.GetCategory(item.CATEGORY_ID, _context);
                 }
-                ToBeSaved.CATEGORY_ID = decimal.Parse(uxCategoryId.Text);
-                ToBeSaved.NAME = uxCategoryName.Text;
-                ToBeSaved.DESCRIPTION = uxDescription.Text;
-                ToBeSaved.MODIFIED_BY = User.Identity.Name;
-                ToBeSaved.MODIFY_DATE = DateTime.Now;
+                ToBeUpdated.NAME = item.NAME;
+                ToBeUpdated.DESCRIPTION = item.DESCRIPTION;
+                ToBeUpdated.MODIFIED_BY = User.Identity.Name;
+                ToBeUpdated.MODIFY_DATE = DateTime.Now;
 
-                GenericData.Update<CUSTOMER_SURVEY_CAT>(ToBeSaved);
+                GenericData.Update<CUSTOMER_SURVEY_CAT>(ToBeUpdated);
             }
-
-            uxCategoriesStore.Reload();
-            uxAddEditCategoryWindow.Hide();
-            uxCategoryForm.Reset();
+            dmSubtractFromDirty();
+            uxCategoriesStore.CommitChanges();
         }
-        protected void deDeleteCategory(object sender, DirectEventArgs e)
-        {
-            decimal CategoryId = decimal.Parse(e.ExtraParams["CategoryId"]);
-            CUSTOMER_SURVEY_CAT ToBeDeleted;
-            int FormCount;
-            using (Entities _context = new Entities())
-            {
-                ToBeDeleted = CUSTOMER_SURVEYS.GetCategory(CategoryId, _context);
-                FormCount = ToBeDeleted.CUSTOMER_SURVEY_FORMS.Count;
-            }
-            if (FormCount > 0)
-            {
-                X.Msg.Alert("Error", "This Category has forms within it.  Please remove any existing forms before deleting the Category").Show();
-            }
-            else
-            {
-                GenericData.Delete<CUSTOMER_SURVEY_CAT>(ToBeDeleted);
-            }
 
-            uxCategoriesStore.Reload();
-        }
         protected void deReadQuestionCategories(object sender, StoreReadDataEventArgs e)
         {
             using (Entities _context = new Entities())
@@ -109,39 +84,97 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             }
         }
 
-        protected void deLoadEditQuestionCategoryForm(object sender, DirectEventArgs e)
-        {
-            uxQuestionCategoryFormType.Value = "Edit";
-            uxQuestionCategoryId.Value = e.ExtraParams["CategoryId"];
-            uxQuestionCategoryName.Text = e.ExtraParams["CategoryName"];
-            uxAddEditQuestionCategoryWindow.Show();
-        }
-
         protected void deSaveQuestionCategory(object sender, DirectEventArgs e)
         {
-            if (uxQuestionCategoryFormType.Value == "Edit")
+            ChangeRecords<CUSTOMER_SURVEYS.CustomerSurveyQuestionCategoryStore> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<CUSTOMER_SURVEYS.CustomerSurveyQuestionCategoryStore>();
+
+            foreach (CUSTOMER_SURVEYS.CustomerSurveyQuestionCategoryStore item in data.Created)
             {
-                //Get Existing
-                decimal CategoryId = decimal.Parse(e.ExtraParams["CategoryId"]);
+                CUSTOMER_SURVEY_QUES_CAT NewCategory = new CUSTOMER_SURVEY_QUES_CAT();
+                NewCategory.CATEGORY_NAME = item.CATEGORY_NAME;
+                GenericData.Insert<CUSTOMER_SURVEY_QUES_CAT>(NewCategory);
+
+                ModelProxy Record = uxQuestionCategoryStore.GetByInternalId(item.PhantomId);
+                Record.CreateVariable = true;
+                Record.SetId(NewCategory.CATEGORY_ID);
+                Record.Commit();
+            }
+
+            foreach (CUSTOMER_SURVEYS.CustomerSurveyQuestionCategoryStore item in data.Updated)
+            {
                 CUSTOMER_SURVEY_QUES_CAT CategoryToEdit;
 
                 using (Entities _context = new Entities())
                 {
-                    CategoryToEdit = CUSTOMER_SURVEYS.GetQuestionCategory(CategoryId, _context);
+                    CategoryToEdit = CUSTOMER_SURVEYS.GetQuestionCategory(item.CATEGORY_ID, _context);
                 }
-                CategoryToEdit.CATEGORY_NAME = uxQuestionCategoryName.Text;
-                GenericData.Update<CUSTOMER_SURVEY_QUES_CAT>(CategoryToEdit);
+
+                CategoryToEdit.CATEGORY_NAME = item.CATEGORY_NAME;
+
+                GenericData.Update(CategoryToEdit);
+            }
+            dmSubtractFromDirty();
+            uxQuestionCategoryStore.CommitChanges();
+        }
+
+        [DirectMethod]
+        public void dmDeleteCategory(string Id)
+        {
+            decimal CategoryId = decimal.Parse(Id);
+            CUSTOMER_SURVEY_CAT ToBeDeleted;
+            int FormCount;
+            using (Entities _context = new Entities())
+            {
+                ToBeDeleted = CUSTOMER_SURVEYS.GetCategory(CategoryId, _context);
+                FormCount = ToBeDeleted.CUSTOMER_SURVEY_FORMS.Count;
+            }
+            if (FormCount > 0)
+            {
+                X.Msg.Alert("Error", "This Category has forms within it.  Please remove any existing forms before deleting the Category").Show();
+                uxCategoriesStore.Reload();
             }
             else
             {
-                CUSTOMER_SURVEY_QUES_CAT NewCategory = new CUSTOMER_SURVEY_QUES_CAT();
-                NewCategory.CATEGORY_NAME = uxQuestionCategoryName.Text;
-                GenericData.Insert<CUSTOMER_SURVEY_QUES_CAT>(NewCategory);
+                GenericData.Delete<CUSTOMER_SURVEY_CAT>(ToBeDeleted);
+            }
+        }
+
+        [DirectMethod]
+        public void dmDeleteQuestionCategory(string Id)
+        {
+            decimal CategoryId = decimal.Parse(Id);
+            CUSTOMER_SURVEY_QUES_CAT ToBeDeleted;
+            int FieldsetCount;
+            using (Entities _context = new Entities())
+            {
+                ToBeDeleted = CUSTOMER_SURVEYS.GetQuestionCategory(CategoryId, _context);
+                FieldsetCount = (from d in _context.CUSTOMER_SURVEY_QUES_CAT
+                                 join f in _context.CUSTOMER_SURVEY_FIELDSETS on d.CATEGORY_ID equals f.CATEGORY_ID
+                                 where d.CATEGORY_ID == CategoryId
+                                 select f).Count();
+            }
+            if (FieldsetCount > 0)
+            {
+                X.Msg.Alert("Error", "This Category has fieldsets within it.  Please remove any associated fieldsets, or change the fieldset to another Question Category before deleting").Show();
+                uxQuestionCategoryStore.Reload();
+            }
+            else
+            {
+                GenericData.Delete<CUSTOMER_SURVEY_QUES_CAT>(ToBeDeleted);
             }
 
-            uxAddEditQuestionCategoryWindow.Hide();
-            uxQuestionCategoryForm.Reset();
-            uxQuestionCategoryStore.Reload();
+        }
+
+        [DirectMethod]
+        public void dmAddToDirty()
+        {
+            isDirty++;
+        }
+
+        [DirectMethod]
+        public void dmSubtractFromDirty()
+        {
+            isDirty--;
         }
     }
 }

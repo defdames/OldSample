@@ -9,16 +9,60 @@
     <script type="text/javascript">
         var checkStatus = function (e) {
             if (App.uxStatusField.value == 2 && App.uxCanEditField.value != "false") {
+                App.direct.dmAddToDirty();
                 return true;
             }
             return false;
         };
 
-        var checkEmployeeStatus = function () {
+        var cancelEditRow = function (value) {
+            switch(value) {
+                case 'employee': 
+                    if (!App.uxEmployeeGrid.getSelectionModel().getSelection()[0].data.EMPLOYEE_ID) {
+                        App.uxEmployeeStore.remove(App.uxEmployeeGrid.getSelectionModel().getSelection()[0]);
+                    }
+                    break;
+                case 'equipment':
+                    if (!App.uxEquipmentGrid.getSelectionModel().getSelection()[0].data.EQUIPMENT_ID) {
+                        App.uxEquipmentStore.remove(App.uxEquipmentGrid.getSelectionModel().getSelection()[0]);
+                    }
+                    break;
+                case 'production':
+                    if (!App.uxProductionGrid.getSelectionModel().getSelection()[0].data.PRODUCTION_ID) {
+                        App.uxProductionStore.remove(App.uxProductionGrid.getSelectionModel().getSelection()[0]);
+                    }
+                    break;
+                case 'weather':
+                    if(!App.uxWeatherGrid.getSelectionModel().getSelection()[0].data.WEATHER_ID){
+                        App.uxWeatherStore.remove(App.uxWeatherGrid.getSelectionModel().getSelection()[0]);
+                    }
+                    break;
+                case 'chemical':
+                    if (!App.uxChemicalGrid.getSelectionModel().getSelection()[0].data.CHEMICAL_MIX_ID) {
+                        App.uxChemicalStore.remove(App.uxChemicalGrid.getSelectionModel().getSelection()[0]);
+                    }
+                    break;
+                case 'inventory':
+                    if (!App.uxInventoryGrid.getSelectionModel().getSelection()[0].data.INVENTORY_ID) {
+                        App.uxInventoryStore.remove(App.uxInventoryGrid.getSelectionModel().getSelection()[0]);
+                    }
+                    break;
+            }
+            App.direct.dmSubtractFromDirty();
+
+        };
+
+        var checkEmployeeStatus = function (e) {
             if (App.uxStatusField.value == 2 && App.uxCanEditField.value != "false") {
-                if (App.uxEmployeeGrid.getSelectionModel().getSelection()[0].data.PREVAILING_WAGE == false) {
+                if (!App.uxEmployeeGrid.getRowsValues({ selectedOnly: false })[0].EMPLOYEE_ID) {
+                    if (App.uxEmployeeGrid.getRowsValues({ selectedOnly: false })[0].PREVAILING_WAGE == false) {
+                        App.uxEmployeeRowEdit.editor.form.findField('ROLE_TYPE').disable();
+                    }
+                }
+                else if (App.uxEmployeeGrid.getSelectionModel().getSelection()[0].data.PREVAILING_WAGE == false) {
                     App.uxEmployeeRowEdit.editor.form.findField('ROLE_TYPE').disable();
                 }
+                App.direct.dmAddToDirty();
                 return true;
 
             }
@@ -201,7 +245,7 @@
 
             Ext.Msg.confirm('Really Delete?', 'Do you really want to delete this equipment entry?', function (e) {
                 if (e == 'yes') {
-                    App.uxEquipmentStore.remove(EquipmentRecord);
+                    
                     if (EquipmentRecord[0].data.EQUIPMENT_ID) {
                         App.direct.dmDeleteEquipment(EquipmentRecord[0].data.EQUIPMENT_ID);
                     }
@@ -279,14 +323,14 @@
 
 
         var doAddMath = function () {
-            var gallonStart = parseInt(App.uxAddInventoryMixGrid.getSelectionModel().getSelection()[0].data.GALLON_STARTING);
-            var gallonMixed = parseInt(App.uxAddInventoryMixGrid.getSelectionModel().getSelection()[0].data.GALLON_MIXED);
-            var gallonRemain = parseInt(App.uxAddInventoryMixGrid.getSelectionModel().getSelection()[0].data.GALLON_REMAINING);
-            var gallonAcre = parseInt(App.uxAddInventoryMixGrid.getSelectionModel().getSelection()[0].data.GALLON_ACRE);
+            var gallonStart = parseFloat(App.uxAddInventoryMixGrid.getSelectionModel().getSelection()[0].data.GALLON_STARTING);
+            var gallonMixed = parseFloat(App.uxAddInventoryMixGrid.getSelectionModel().getSelection()[0].data.GALLON_MIXED);
+            var gallonRemain = parseFloat(App.uxAddInventoryMixGrid.getSelectionModel().getSelection()[0].data.GALLON_REMAINING);
+            var gallonAcre = parseFloat(App.uxAddInventoryMixGrid.getSelectionModel().getSelection()[0].data.GALLON_ACRE);
 
             var gallonsUsed = gallonStart + gallonMixed - gallonRemain;
             var acresSprayed = gallonsUsed / gallonAcre;
-            var rate = parseInt(App.uxAddInventoryRate.value);
+            var rate = parseFloat(App.uxAddInventoryRate.value);
             App.uxAddInventoryTotal.setValue(rate * acresSprayed);
         };
 
@@ -367,6 +411,7 @@
                     <ext:ModelField Name="INV_NAME" />
                     <ext:ModelField Name="INV_LOCATION" />
                     <ext:ModelField Name="ORGANIZATION_ID" />
+                    <ext:ModelField Name="EPA_DESCRIPTION" />
                 </Fields>
             </ext:Model>
         </Model>
@@ -388,8 +433,8 @@
                     ID="uxHeaderPanel" Padding="10" BodyPadding="5" MaxWidth="1400">
                     <Items>
                         <ext:DateField runat="server" ID="uxDateField" FieldLabel="Date" AllowBlank="false" LabelWidth="100" Width="200" />
-                        <ext:TextField runat="server" ID="uxHeaderField" FieldLabel="DRS Id" Width="200" LabelWidth="100" ReadOnly="true" />
-                        <ext:TextField runat="server" ID="uxOracleField" FieldLabel="Oracle DRS Id" Width="200" ReadOnly="true" />
+                        <ext:TextField runat="server" ID="uxHeaderField" FieldLabel="DRS Number" Width="200" LabelWidth="100" ReadOnly="true" />
+                        <ext:TextField runat="server" ID="uxOracleField" FieldLabel="Oracle DRS Number" Width="200" ReadOnly="true" />
                         <ext:DropDownField runat="server"
                             ID="uxProjectField"
                             FieldLabel="Project"
@@ -651,10 +696,10 @@
                     ID="uxEmployeeGrid"
                     Title="Employees"
                     PaddingSpec="10 10 30 10"
-                    MaxWidth="1400">
+                    MaxWidth="1400" MinHeight="200">
                     <Store>
                         <ext:Store runat="server"
-                            ID="uxEmployeeStore">
+                            ID="uxEmployeeStore" OnReadData="deGetEmployeeData" AutoLoad="false" AutoDataBind="true">
                             <Model>
                                 <ext:Model ID="Model2" runat="server" Name="Employee" IDProperty="EMPLOYEE_ID" ClientIdProperty="PhantomId">
                                     <Fields>
@@ -680,6 +725,12 @@
                                     </Fields>
                                 </ext:Model>
                             </Model>
+                            <Proxy>
+                                <ext:PageProxy />
+                            </Proxy>
+                            <Sorters>
+                                <ext:DataSorter Property="EMPLOYEE_NAME" Direction="ASC" />
+                            </Sorters>
                         </ext:Store>
                     </Store>
                     <ColumnModel>
@@ -745,6 +796,7 @@
                                         </Component>
                                         <Listeners>
                                             <Expand Handler="this.picker.setWidth(500);" />
+                                            <Collapse Handler="#{uxEmployeeGrid}.columns[1].getEditor().focusInput();" />
                                         </Listeners>
                                     </ext:DropDownField>
                                 </Editor>
@@ -839,6 +891,7 @@
                                         </Component>
                                         <Listeners>
                                             <Expand Handler="this.picker.setWidth(500);" />
+                                            <Collapse Handler="#{uxEmployeeGrid}.columns[2].getEditor().focusInput();" />
                                         </Listeners>
                                         <CustomConfig>
                                             <ext:ConfigItem Name="setValue" Value="SetEmployeeValue" Mode="Raw" />
@@ -974,7 +1027,12 @@
                             <Items>
                                 <ext:Button ID="uxAddEmployeeButton" runat="server" Text="Add" Icon="ApplicationAdd">
                                     <Listeners>
-                                        <Click Handler="#{uxEmployeeStore}.insert(0, new Employee())" />
+                                        <Click Handler="#{uxEmployeeStore}.insert(0, new Employee()); #{uxEmployeeRowEdit}.startEdit(0, 0);
+                                            // Create DelayedTask and call it after 100 ms
+                                            var task = new Ext.util.DelayedTask(function(){
+                                            #{uxEmployeeGrid}.columns[0].getEditor().focusInput();
+                                            });
+                                            task.delay(100);" />
                                     </Listeners>
                                 </ext:Button>
                                 <ext:Button ID="uxDeleteEmployeeButton" runat="server" Text="Delete" Icon="ApplicationDelete" Disabled="true">
@@ -1005,8 +1063,11 @@
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
+                    <BottomBar>
+                        <ext:PagingToolbar runat="server" />
+                    </BottomBar>
                     <Plugins>
-                        <ext:RowEditing runat="server" ClicksToEdit="1" AutoCancel="false" ID="uxEmployeeRowEdit">
+                        <ext:RowEditing runat="server" ClicksToEdit="1" AutoCancel="false" ID="uxEmployeeRowEdit" ErrorSummary="false">
                             <DirectEvents>
                                 <Edit OnEvent="deSaveEmployee" Before="return #{uxEmployeeStore}.isDirty();">
                                     <ExtraParams>
@@ -1019,6 +1080,7 @@
                             </DirectEvents>
                             <Listeners>
                                 <BeforeEdit Fn="checkEmployeeStatus" />
+                                <CancelEdit Handler="cancelEditRow('employee')" />
                             </Listeners>
                         </ext:RowEditing>
                     </Plugins>
@@ -1029,10 +1091,10 @@
                 <ext:GridPanel runat="server" ID="uxEquipmentGrid"
                     Title="Equipment"
                     PaddingSpec="10 10 30 10"
-                    MaxWidth="1400">
+                    MaxWidth="1400" MinHeight="200">
                     <Store>
                         <ext:Store runat="server"
-                            ID="uxEquipmentStore">
+                            ID="uxEquipmentStore" OnReadData="deGetEquipmentData" AutoLoad="false">
                             <Model>
                                 <ext:Model runat="server" Name="Equipment" IDProperty="EQUIPMENT_ID" ClientIdProperty="PhantomID">
                                     <Fields>
@@ -1048,6 +1110,12 @@
                                     </Fields>
                                 </ext:Model>
                             </Model>
+                            <Proxy>
+                                <ext:PageProxy />
+                            </Proxy>
+                            <Sorters>
+                                <ext:DataSorter Property="SEGMENT1" Direction="ASC" />
+                            </Sorters>
                         </ext:Store>
                     </Store>
                     <ColumnModel>
@@ -1055,6 +1123,9 @@
                             <ext:Column ID="Column47" runat="server"
                                 DataIndex="SEGMENT1"
                                 Text="Project Number" Flex="10">
+                                <Editor>
+                                    <ext:DisplayField runat="server" ID="uxAddEquipmentSegment" />
+                                </Editor>
                             </ext:Column>
                             <ext:Column ID="Column48" runat="server"
                                 DataIndex="PROJECT_ID"
@@ -1159,6 +1230,7 @@
                                         </Component>
                                         <Listeners>
                                             <Expand Handler="this.picker.setWidth(500);" />
+                                            <Collapse Handler="#{uxEquipmentGrid}.columns[4].getEditor().focusInput();" />
                                         </Listeners>
                                         <CustomConfig>
                                             <ext:ConfigItem Name="setValue" Value="SetEquipmentValue" Mode="Raw" />
@@ -1169,10 +1241,18 @@
                             </ext:Column>
                             <ext:Column ID="Column49" runat="server"
                                 DataIndex="CLASS_CODE"
-                                Text="Class Code" Flex="35" />
+                                Text="Class Code" Flex="35">
+                                <Editor>
+                                    <ext:DisplayField runat="server" ID="uxAddEquipmentClassCode" />
+                                </Editor>
+                            </ext:Column>
                             <ext:Column ID="Column50" runat="server"
                                 DataIndex="ORGANIZATION_NAME"
-                                Text="Organization Name" Flex="25" />
+                                Text="Organization Name" Flex="25" >
+                                <Editor>
+                                    <ext:DisplayField runat="server" ID="uxAddEquipmentOrg" />
+                                </Editor>
+                            </ext:Column>
                             <ext:Column ID="Column51" runat="server"
                                 DataIndex="ODOMETER_START"
                                 Text="Starting Units" Flex="10">
@@ -1194,7 +1274,12 @@
                             <Items>
                                 <ext:Button ID="uxAddEquipmentButton" runat="server" Text="Add" Icon="ApplicationAdd">
                                     <Listeners>
-                                        <Click Handler="#{uxEquipmentStore}.insert(0, new Equipment())" />
+                                        <Click Handler="#{uxEquipmentStore}.insert(0, new Equipment()); #{uxEquipmentRowEdit}.startEdit(0, 0);
+                                            // Create DelayedTask and call it after 100 ms
+                                            var task = new Ext.util.DelayedTask(function(){
+                                            #{uxEquipmentGrid}.columns[1].getEditor().focusInput();
+                                            });
+                                            task.delay(100);"  />
                                     </Listeners>
                                 </ext:Button>
                                 <ext:Button ID="uxDeleteEquipmentButton" runat="server" Text="Delete" Icon="ApplicationDelete" Disabled="true">
@@ -1205,8 +1290,11 @@
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
+                    <BottomBar>
+                        <ext:PagingToolbar runat="server" />
+                    </BottomBar>
                     <Plugins>
-                        <ext:RowEditing runat="server" AutoCancel="false" ClicksToEdit="1">
+                        <ext:RowEditing runat="server" AutoCancel="false" ClicksToEdit="1" ID="uxEquipmentRowEdit" ErrorSummary="false">
                             <DirectEvents>
                                 <Edit OnEvent="deSaveEquipment" Before="return #{uxEquipmentStore}.isDirty();">
                                     <ExtraParams>
@@ -1216,6 +1304,7 @@
                             </DirectEvents>
                             <Listeners>
                                 <BeforeEdit Fn="checkStatus" />
+                                <CancelEdit Handler="cancelEditRow('equipment')" />
                             </Listeners>
                         </ext:RowEditing>
                     </Plugins>
@@ -1233,7 +1322,7 @@
                     ID="uxProductionGrid"
                     Title="Production"
                     PaddingSpec="10 10 30 10"
-                    MaxWidth="1400">
+                    MaxWidth="1400" MinHeight="200">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxProductionStore" OnReadData="deGetDBIProductionData">
@@ -1262,7 +1351,11 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column runat="server" DataIndex="TASK_NUMBER" Text="Task Number" Flex="10" />
+                            <ext:Column runat="server" DataIndex="TASK_NUMBER" Text="Task Number" Flex="10">
+                                <Editor>
+                                    <ext:DisplayField runat="server" ID="uxAddProductionTaskNumber" />
+                                </Editor>
+                            </ext:Column>
                             <ext:Column ID="Column15" runat="server" DataIndex="TASK_ID" Text="Task Name" Flex="15">
                                 <Editor>
                                     <ext:DropDownField runat="server" Editable="false"
@@ -1300,6 +1393,7 @@
                                                     <SelectionChange OnEvent="deStoreTask">
                                                         <ExtraParams>
                                                             <ext:Parameter Name="TaskId" Value="#{uxAddProductionTaskGrid}.getSelectionModel().getSelection()[0].data.TASK_ID" Mode="Raw" />
+                                                            <ext:Parameter Name="TaskNumber" Value="#{uxAddProductionTaskGrid}.getSelectionModel().getSelection()[0].data.TASK_NUMBER" Mode="Raw" />
                                                             <ext:Parameter Name="Description" Value="#{uxAddProductionTaskGrid}.getSelectionModel().getSelection()[0].data.DESCRIPTION" Mode="Raw" />
                                                         </ExtraParams>
                                                     </SelectionChange>
@@ -1320,6 +1414,7 @@
                                         </CustomConfig>
                                         <Listeners>
                                             <Expand Handler="this.picker.setWidth(500)" />
+                                            <Collapse Handler="#{uxProductionGrid}.columns[2].getEditor().focusInput();" />
                                         </Listeners>
                                     </ext:DropDownField>
                                 </Editor>
@@ -1357,7 +1452,12 @@
                             <Items>
                                 <ext:Button ID="uxAddProductionButton" runat="server" Text="Add" Icon="ApplicationAdd">
                                     <Listeners>
-                                        <Click Handler="#{uxProductionStore}.insert(0, new Production())" />
+                                        <Click Handler="#{uxProductionStore}.insert(0, new Production()); #{uxProductionRowEdit}.startEdit(0, 0);
+                                            // Create DelayedTask and call it after 100 ms
+                                            var task = new Ext.util.DelayedTask(function(){
+                                            #{uxProductionGrid}.columns[1].getEditor().focusInput();
+                                            });
+                                            task.delay(100);" />
                                     </Listeners>
                                 </ext:Button>
                                 <ext:Button ID="uxDeleteProductionButton" runat="server" Text="Delete" Icon="ApplicationDelete" Disabled="true">
@@ -1368,11 +1468,14 @@
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
+                    <BottomBar>
+                        <ext:PagingToolbar ID="PagingToolbar2" runat="server" />
+                    </BottomBar>
                     <Listeners>
                         <Select Handler="#{uxDeleteProductionButton}.enable()" />
                     </Listeners>
                     <Plugins>
-                        <ext:RowEditing runat="server" ClicksToEdit="1" AutoCancel="false">
+                        <ext:RowEditing runat="server" ClicksToEdit="1" AutoCancel="false" ID="uxProductionRowEdit" ErrorSummary="false">
                             <DirectEvents>
                                 <Edit OnEvent="deSaveProduction" Before="return #{uxProductionStore}.isDirty();">
                                     <ExtraParams>
@@ -1382,6 +1485,7 @@
                             </DirectEvents>
                             <Listeners>
                                 <BeforeEdit Fn="checkStatus" />
+                                <CancelEdit Handler="cancelEditRow('production')" />
                             </Listeners>
                         </ext:RowEditing>
                     </Plugins>
@@ -1390,7 +1494,7 @@
                     ID="uxWeatherGrid"
                     Title="Weather"
                     PaddingSpec="10 10 30 10"
-                    MaxWidth="1400">
+                    MaxWidth="1400" MinHeight="200">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxWeatherStore" OnReadData="deGetWeatherData">
@@ -1483,7 +1587,12 @@
                             <Items>
                                 <ext:Button ID="uxAddWeatherButton" runat="server" Text="Add" Icon="ApplicationAdd">
                                     <Listeners>
-                                        <Click Handler="#{uxWeatherStore}.insert(0, new Weather())" />
+                                        <Click Handler="#{uxWeatherStore}.insert(0, new Weather()); #{uxWeatherRowEdit}.startEdit(0, 0);
+                                            // Create DelayedTask and call it after 100 ms
+                                            var task = new Ext.util.DelayedTask(function(){
+                                            #{uxWeatherGrid}.columns[0].getEditor().focusInput();
+                                            });
+                                            task.delay(100);" />
                                     </Listeners>
                                 </ext:Button>
                                 <ext:Button ID="uxDeleteWeatherButton" runat="server" Text="Delete" Icon="ApplicationDelete" Disabled="true">
@@ -1494,11 +1603,14 @@
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
+                    <BottomBar>
+                        <ext:PagingToolbar ID="PagingToolbar4" runat="server" />
+                    </BottomBar>
                     <Listeners>
                         <Select Handler="#{uxDeleteWeatherButton}.enable()" />
                     </Listeners>
                     <Plugins>
-                        <ext:RowEditing ID="RowEditing1" runat="server" ClicksToEdit="1" AutoCancel="false">
+                        <ext:RowEditing ID="uxWeatherRowEdit" runat="server" ClicksToEdit="1" AutoCancel="false" ErrorSummary="false">
                             <DirectEvents>
                                 <Edit OnEvent="deSaveWeather" Before="return #{uxWeatherStore}.isDirty();">
                                     <ExtraParams>
@@ -1508,6 +1620,7 @@
                             </DirectEvents>
                             <Listeners>
                                 <BeforeEdit Fn="checkStatus" />
+                                <CancelEdit Handler="cancelEditRow('weather')" />
                             </Listeners>
                         </ext:RowEditing>
                     </Plugins>
@@ -1516,7 +1629,7 @@
                     ID="uxChemicalGrid"
                     Title="Chemical Mix"
                     PaddingSpec="10 10 30 10"
-                    MaxWidth="1400">
+                    MaxWidth="1400" MinHeight="200">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxChemicalStore" OnReadData="deGetChemicalMixData">
@@ -1647,7 +1760,12 @@
                             <Items>
                                 <ext:Button ID="uxAddChemicalButton" runat="server" Text="Add" Icon="ApplicationAdd">
                                     <Listeners>
-                                        <Click Handler="#{uxChemicalStore}.insert(0, new Chemical())" />
+                                        <Click Handler="#{uxChemicalStore}.insert(0, new Chemical()); #{uxChemicalRowEdit}.startEdit(0, 0);
+                                            // Create DelayedTask and call it after 100 ms
+                                            var task = new Ext.util.DelayedTask(function(){
+                                            #{uxChemicalGrid}.columns[1].getEditor().focusInput();
+                                            });
+                                            task.delay(100);" />
                                     </Listeners>
                                 </ext:Button>
                                 <ext:Button ID="uxDeleteChemicalButton" runat="server" Text="Delete" Icon="ApplicationDelete" Disabled="true">
@@ -1658,11 +1776,14 @@
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
+                    <BottomBar>
+                        <ext:PagingToolbar ID="PagingToolbar5" runat="server" />
+                    </BottomBar>
                     <Listeners>
                         <Select Handler="#{uxDeleteChemicalButton}.enable()" />
                     </Listeners>
                     <Plugins>
-                        <ext:RowEditing runat="server" AutoCancel="false" ClicksToEdit="1">
+                        <ext:RowEditing runat="server" AutoCancel="false" ClicksToEdit="1" ID="uxChemicalRowEdit" ErrorSummary="false">
                             <DirectEvents>
                                 <Edit OnEvent="deSaveChemical" Before="return #{uxChemicalStore}.isDirty();">
                                     <ExtraParams>
@@ -1672,6 +1793,7 @@
                             </DirectEvents>
                             <Listeners>
                                 <BeforeEdit Fn="checkStatus" />
+                                <CancelEdit Handler="cancelEditRow('chemical')" />
                             </Listeners>
                         </ext:RowEditing>
                     </Plugins>
@@ -1680,7 +1802,7 @@
                     ID="uxInventoryGrid"
                     Title="Inventory"
                     PaddingSpec="10 10 30 10"
-                    MaxWidth="1400">
+                    MaxWidth="1400" MinHeight="200">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxInventoryStore" OnReadData="deGetInventory">
@@ -1731,7 +1853,7 @@
                                                 Layout="HBoxLayout">
                                                 <Store>
                                                     <ext:Store runat="server"
-                                                        ID="uxAddInventoryMixStore">
+                                                        ID="uxAddInventoryMixStore" OnReadData="deGetChemicalMixDropDown">
                                                         <Model>
                                                             <ext:Model ID="Model13" runat="server">
                                                                 <Fields>
@@ -1751,6 +1873,9 @@
                                                                 </Fields>
                                                             </ext:Model>
                                                         </Model>
+                                                        <Proxy>
+                                                            <ext:PageProxy />
+                                                        </Proxy>
                                                     </ext:Store>
                                                 </Store>
                                                 <ColumnModel>
@@ -1785,6 +1910,7 @@
                                         </Component>
                                         <Listeners>
                                             <Expand Handler="this.picker.setWidth(500)" />
+                                            <Collapse Handler="#{uxInventoryGrid}.columns[1].getEditor().focusInput();" />
                                         </Listeners>
                                     </ext:DropDownField>
                                 </Editor>
@@ -1894,6 +2020,7 @@
                                                             <ext:Parameter Name="ItemId" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.ITEM_ID" Mode="Raw" />
                                                             <ext:Parameter Name="Description" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.DESCRIPTION" Mode="Raw" />
                                                             <ext:Parameter Name="Segment1" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.SEGMENT1" Mode="Raw" />
+                                                            <ext:Parameter Name="EPA" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.EPA_DESCRIPTION" Mode="Raw" />
                                                         </ExtraParams>
                                                     </Select>
                                                 </DirectEvents>
@@ -1908,6 +2035,7 @@
                                         </DirectEvents>
                                         <Listeners>
                                             <Expand Handler="#{uxAddInventoryItemStore}.reload(); this.picker.setWidth(500)" />
+                                            <Collapse Handler="#{uxInventoryGrid}.columns[5].getEditor(0).focusInput()" />
                                         </Listeners>
                                     </ext:DropDownField>
                                 </Editor>
@@ -1960,7 +2088,7 @@
                             </ext:Column>
                             <ext:Column ID="Column41" runat="server" DataIndex="EPA_DESCRIPTION" Text="EPA Number" Flex="10">
                                 <Editor>
-                                    <ext:TextField runat="server" AllowBlank="false" InvalidCls="allowBlank" />
+                                    <ext:TextField runat="server" AllowBlank="false" InvalidCls="allowBlank" ID="uxAddInventoryEPA" />
                                 </Editor>
                             </ext:Column>
                             <ext:CheckColumn ID="CheckColumn1" runat="server"
@@ -1973,7 +2101,12 @@
                             <Items>
                                 <ext:Button ID="uxAddInventoryButton" runat="server" Text="Add" Icon="ApplicationAdd">
                                     <Listeners>
-                                        <Click Handler="#{uxInventoryStore}.insert(0, new Inventory())" />
+                                        <Click Handler="#{uxInventoryStore}.insert(0, new Inventory()); #{uxInventoryRowEdit}.startEdit(0, 0);
+                                            // Create DelayedTask and call it after 100 ms
+                                            var task = new Ext.util.DelayedTask(function(){
+                                            #{uxInventoryGrid}.columns[0].getEditor().focusInput();
+                                            });
+                                            task.delay(100);" />
                                     </Listeners>
                                 </ext:Button>
                                 <ext:Button ID="uxDeleteInventoryButton" runat="server" Text="Delete" Icon="ApplicationDelete" Disabled="true">
@@ -1984,11 +2117,14 @@
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
+                    <BottomBar>
+                        <ext:PagingToolbar ID="PagingToolbar6" runat="server" />
+                    </BottomBar>
                     <Listeners>
                         <Select Handler="#{uxDeleteInventoryButton}.enable()" />
                     </Listeners>
                     <Plugins>
-                        <ext:RowEditing runat="server" ClicksToEdit="1" AutoCancel="false">
+                        <ext:RowEditing runat="server" ClicksToEdit="1" AutoCancel="false" ID="uxInventoryRowEdit" ErrorSummary="false">
                             <DirectEvents>
                                 <Edit OnEvent="deSaveInventory" Before="return #{uxInventoryStore}.isDirty()">
                                     <ExtraParams>
@@ -2007,6 +2143,7 @@
                             </DirectEvents>
                             <Listeners>
                                 <BeforeEdit Fn="checkStatus" />
+                                <CancelEdit Handler="cancelEditRow('inventory')" />
                             </Listeners>
                         </ext:RowEditing>
                     </Plugins>
@@ -2068,6 +2205,9 @@
                             </Items>
                         </ext:Toolbar>
                     </TopBar>
+                    <BottomBar>
+                        <ext:PagingToolbar ID="PagingToolbar7" runat="server" />
+                    </BottomBar>
                     <Listeners>
                         <Select Handler="#{uxDeleteAttachmentButton}.enable(); #{uxSaveAttachmentButton}.enable()" />
                     </Listeners>
