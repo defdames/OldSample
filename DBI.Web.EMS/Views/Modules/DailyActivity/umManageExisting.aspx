@@ -138,8 +138,8 @@
                             <ColumnModel>
                                 <Columns>
                                     <ext:Column runat="server" Text="DRS Number" DataIndex="HEADER_ID" Flex="10" />
-                                    <ext:Column ID="Column2" runat="server" Text="Oracle Header Id" DataIndex="DA_HEADER_ID" Flex="10" />
-                                    <ext:DateColumn runat="server" Text="Activity Date" DataIndex="DA_DATE" Flex="10" Format="MM-dd-yyyy">
+                                    <ext:Column ID="Column2" runat="server" Text="Oracle DRS Number" DataIndex="DA_HEADER_ID" Flex="10" />
+                                    <ext:DateColumn runat="server" Text="Date" DataIndex="DA_DATE" Flex="10" Format="MM-dd-yyyy">
                                         <HeaderItems>
                                             <ext:DropDownField ID="uxDropDownFilter" runat="server" Editable="true">
                                                 <Plugins>
@@ -201,14 +201,14 @@
                                         <ext:Hidden runat="server" ID="uxHiddenApprove" />
                                         <ext:Button runat="server"
                                             ID="uxCreateActivityButton"
-                                            Text="Create Activity"
+                                            Text="Create DRS"
                                             Icon="ApplicationAdd">
                                             <DirectEvents>
                                                 <Click OnEvent="deLoadCreateActivity" />
                                             </DirectEvents>
                                         </ext:Button>
                                         <ext:Button ID="uxPostMultipleButton" runat="server"
-                                            Text="Post Multiple Headers"
+                                            Text="Post Multiple DRS"
                                             Icon="ApplicationGet">
                                             <DirectEvents>
                                                 <Click OnEvent="deOpenPostMultipleWindow" />
@@ -229,7 +229,7 @@
                                         </ext:Button>
                                         <ext:Button runat="server"
                                             ID="uxExportMultiple"
-                                            Text="Export Multple"
+                                            Text="Export Multple DRS"
                                             Icon="PageWhiteAcrobat">
                                             <DirectEvents>
                                                 <Click OnEvent="deOpenExportMultipleWindow" />
@@ -461,7 +461,7 @@
                 </ext:Window>
                 <ext:Window runat="server"
                     ID="uxCreateActivityWindow"
-                    Title="Create Activity"
+                    Title="Create DRS"
                     Hidden="true"
                     Width="650"
                     Shadow="true"

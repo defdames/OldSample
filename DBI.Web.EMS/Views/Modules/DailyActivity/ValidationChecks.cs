@@ -240,12 +240,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             {
                                 if (HeaderId != Employee.HEADER_ID)
                                 {
-                                    HeaderIdList.Add(new DAILY_ACTIVITY.WarningData { WarningType = "Error", RecordType = Name, AdditionalInformation = string.Format("Employee has time overlap on DRS Id:{0}", Employee.HEADER_ID.ToString()) });
+                                    HeaderIdList.Add(new DAILY_ACTIVITY.WarningData { WarningType = "Error", RecordType = Name, AdditionalInformation = string.Format("Employee has time overlap on DRS Number:{0}", Employee.HEADER_ID.ToString()) });
                                 }
                             }
                             else
                             {
-                                HeaderIdList.Add(new DAILY_ACTIVITY.WarningData { WarningType = "Error", RecordType = Name, AdditionalInformation = string.Format("Employee has time overlap on DRS Id:{0}", PreviousHeader.ToString()) });
+                                HeaderIdList.Add(new DAILY_ACTIVITY.WarningData { WarningType = "Error", RecordType = Name, AdditionalInformation = string.Format("Employee has time overlap on DRS Number:{0}", PreviousHeader.ToString()) });
                             }
                         }
                     }

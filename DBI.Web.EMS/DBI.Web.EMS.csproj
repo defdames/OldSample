@@ -175,6 +175,7 @@
     <Content Include="Views\Modules\CrossingMaintenance\Reports\MissingROW.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\Reports\PrivateCrossingReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\SummaryReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\Reports\SupplementalBillingReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\Reports\SupplementalInvoiceReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\Reports\WeeklyWorkActivity.aspx" />
@@ -201,6 +202,7 @@
     <Content Include="Views\Modules\CrossingMaintenance\umRailroadToolbar.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umReportsMain.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umStateCrossingsList.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umSummaryReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umSuppBillingReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umSupplemental.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umSupplementalBilling.aspx" />
@@ -528,6 +530,13 @@
     <Compile Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.aspx.designer.cs">
       <DependentUpon>StateCrossingListReport.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\SummaryReport.aspx.cs">
+      <DependentUpon>SummaryReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\SummaryReport.aspx.designer.cs">
+      <DependentUpon>SummaryReport.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\Reports\SupplementalBillingReport.aspx.cs">
       <DependentUpon>SupplementalBillingReport.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -714,6 +723,13 @@
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umStateCrossingsList.aspx.designer.cs">
       <DependentUpon>umStateCrossingsList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umSummaryReport.aspx.cs">
+      <DependentUpon>umSummaryReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umSummaryReport.aspx.designer.cs">
+      <DependentUpon>umSummaryReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umSuppBillingReport.aspx.cs">
       <DependentUpon>umSuppBillingReport.aspx</DependentUpon>
@@ -1287,6 +1303,9 @@
     <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\AppDateReport.rdlc" />
     <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\InspectionReport.rdlc" />
     <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\IncidentReport.rdlc" />
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\SummaryReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.rdlc" />
     <Content Include="Views\Modules\BudgetBidding\Reports\umRepProject.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

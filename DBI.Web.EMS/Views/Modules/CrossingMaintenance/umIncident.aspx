@@ -102,7 +102,7 @@
 
                 <Store>
                     <ext:Store runat="server"
-                        ID="uxIncidentStore" OnReadData="GetIncidentGridData" AutoLoad="true" AutoDataBind="true" GroupField="CROSSING_NUMBER">
+                        ID="uxIncidentStore" OnReadData="GetIncidentGridData" AutoLoad="true" AutoDataBind="true" PageSize="10" GroupField="CROSSING_NUMBER">
                       <%--  <Parameters>
                             <ext:StoreParameter Name="CrossingId" Value="#{uxCrossingIncidentGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
                         </Parameters>--%>
@@ -130,7 +130,7 @@
                 </Store>
                 <ColumnModel>
                     <Columns>
-                        <ext:Column ID="Column2" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing Number" Flex="1" />
+                        <ext:Column ID="Column2" runat="server" DataIndex="CROSSING_NUMBER" Text="DOT #" Flex="1" />
                         <ext:Column ID="Column6" runat="server" DataIndex="INCIDENT_NUMBER" Text="Incident Number" Flex="1" />
                         <ext:DateColumn ID="DateColumn1" runat="server" DataIndex="DATE_REPORTED" Text="Date Reported" Flex="1" Format="MM/dd/yyyy" />
                         <ext:DateColumn ID="DateColumn2" runat="server" DataIndex="DATE_CLOSED" Text="Date Closed" Flex="1" Format="MM/dd/yyyy" />
@@ -187,7 +187,9 @@
                     runat="server"
                     HideGroupedHeader="true" Collapsible="false" Cls="x-grid-group-title; x-grid-group-hd" />
             </Features>
-
+                <BottomBar>
+                    <ext:PagingToolbar runat="server" HideRefresh="true" />
+                </BottomBar>
             </ext:GridPanel>
 
             <ext:Window runat="server"

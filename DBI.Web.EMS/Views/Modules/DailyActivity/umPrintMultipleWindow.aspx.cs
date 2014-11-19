@@ -99,9 +99,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             OracleHeader = "0";
                         }
                         Cells = new PdfPCell[]{
-						new PdfPCell(new Phrase("DRS Id", HeadFootTitleFont )),
+						new PdfPCell(new Phrase("DRS Number", HeadFootTitleFont )),
 						new PdfPCell(new Phrase(HeaderId.ToString(), HeadFootCellFont)),
-						new PdfPCell(new Phrase("Oracle Header Id", HeadFootTitleFont)),
+						new PdfPCell(new Phrase("Oracle DRS Number", HeadFootTitleFont)),
 						new PdfPCell(new Phrase(OracleHeader, HeadFootCellFont))
 					};
                         foreach (PdfPCell Cell in Cells)
@@ -128,9 +128,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                         //Second row
                         Cells = new PdfPCell[]{
-					new PdfPCell(new Phrase("Business License #", HeadFootTitleFont)),
+					new PdfPCell(new Phrase("Business License", HeadFootTitleFont)),
 					new PdfPCell(new Phrase(HeaderData.LICENSE, HeadFootCellFont)),
-					new PdfPCell(new Phrase("State", HeadFootTitleFont)),
+					new PdfPCell(new Phrase("Business License State", HeadFootTitleFont)),
 					new PdfPCell(new Phrase(HeaderData.STATE, HeadFootCellFont))};
 
                         foreach (PdfPCell Cell in Cells)
@@ -142,7 +142,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                         //Third row
                         Cells = new PdfPCell[]{
-					new PdfPCell(new Phrase("Type of Application/Work", HeadFootTitleFont)),
+					new PdfPCell(new Phrase("Type of Work", HeadFootTitleFont)),
 					new PdfPCell(new Phrase(HeaderData.APPLICATION_TYPE, HeadFootCellFont)),
 					new PdfPCell(new Phrase("Density", HeadFootTitleFont)),
 					new PdfPCell(new Phrase(HeaderData.DENSITY, HeadFootCellFont))};
@@ -187,16 +187,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                     EmployeeTable = new PdfPTable(13);
                                     EmployeeTable.SetWidths(new float[] { 8f, 9f, 6f, 8f, 9f, 7f, 6f, 5f, 7f, 7f, 5f, 10f, 13f });
                                     Cells = new PdfPCell[]{
-						new PdfPCell(new Phrase("Truck/Equipment \n Name", HeaderFont)),
-						new PdfPCell(new Phrase("Operator(s)", HeaderFont)),
-						new PdfPCell(new Phrase("License #", HeaderFont)),
+						new PdfPCell(new Phrase("Equipment \n Name", HeaderFont)),
+						new PdfPCell(new Phrase("Employee \n Name", HeaderFont)),
+						new PdfPCell(new Phrase("License", HeaderFont)),
 						new PdfPCell(new Phrase("Time\nIn", HeaderFont)),
 						new PdfPCell(new Phrase("Time\nOut", HeaderFont)),
 						new PdfPCell(new Phrase("Total\nHours", HeaderFont)),
 						new PdfPCell(new Phrase("Travel\nTime", HeaderFont)),
-						new PdfPCell(new Phrase("Drive\nTime", HeaderFont)),
-						new PdfPCell(new Phrase("ShopTime\nAM", HeaderFont)),
-						new PdfPCell(new Phrase("ShopTime\nPM", HeaderFont)),
+						new PdfPCell(new Phrase("Shop AM", HeaderFont)),
+						new PdfPCell(new Phrase("Shop PM", HeaderFont)),
 						new PdfPCell(new Phrase("Per\nDiem", HeaderFont)),
                         new PdfPCell(new Phrase("Role", HeaderFont)),
 						new PdfPCell(new Phrase("Comments", HeaderFont))};
@@ -206,16 +205,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                     EmployeeTable = new PdfPTable(12);
                                     EmployeeTable.SetWidths(new float[] { 9f, 10f, 7f, 9f, 10f, 8f, 7f, 6f, 8f, 7f, 6f, 13f });
                                     Cells = new PdfPCell[]{
-						new PdfPCell(new Phrase("Truck/Equipment \n Name", HeaderFont)),
-						new PdfPCell(new Phrase("Operator(s)", HeaderFont)),
-						new PdfPCell(new Phrase("License #", HeaderFont)),
+						new PdfPCell(new Phrase("Equipment \n Name", HeaderFont)),
+						new PdfPCell(new Phrase("Employee \n Name", HeaderFont)),
+						new PdfPCell(new Phrase("License", HeaderFont)),
 						new PdfPCell(new Phrase("Time\nIn", HeaderFont)),
 						new PdfPCell(new Phrase("Time\nOut", HeaderFont)),
 						new PdfPCell(new Phrase("Total\nHours", HeaderFont)),
 						new PdfPCell(new Phrase("Travel\nTime", HeaderFont)),
-						new PdfPCell(new Phrase("Drive\nTime", HeaderFont)),
-						new PdfPCell(new Phrase("ShopTime\nAM", HeaderFont)),
-						new PdfPCell(new Phrase("ShopTime\nPM", HeaderFont)),
+						new PdfPCell(new Phrase("Shop AM", HeaderFont)),
+						new PdfPCell(new Phrase("Shop PM", HeaderFont)),
 						new PdfPCell(new Phrase("Per\nDiem", HeaderFont)),
 						new PdfPCell(new Phrase("Comments", HeaderFont))};
                                 }
@@ -309,9 +307,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                 PdfPTable EmployeeTable = new PdfPTable(10);
                                 EmployeeTable.SetWidths(new float[] { 13f, 13f, 7f, 10f, 10f, 7f, 6f, 6f, 7f, 14f });
                                 Cells = new PdfPCell[]{
-						new PdfPCell(new Phrase("Truck/Equipment \n Name", HeaderFont)),
-						new PdfPCell(new Phrase("Operator(s)", HeaderFont)),
-						new PdfPCell(new Phrase("License #", HeaderFont)),
+						new PdfPCell(new Phrase("Equipment \n Name", HeaderFont)),
+						new PdfPCell(new Phrase("Employee \n Name", HeaderFont)),
+						new PdfPCell(new Phrase("License", HeaderFont)),
 						new PdfPCell(new Phrase("Time\nIn", HeaderFont)),
 						new PdfPCell(new Phrase("Time\nOut", HeaderFont)),
 						new PdfPCell(new Phrase("Total\nHours", HeaderFont)),
@@ -394,7 +392,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             EquipmentTable.SetWidths(new int[] { 10, 10, 35, 25, 10, 10 });
                             Cells = new PdfPCell[]{
                         new PdfPCell(new Phrase("Project Number", HeaderFont)),
-						new PdfPCell(new Phrase("Equipment Name", HeaderFont)),
+						new PdfPCell(new Phrase("Name", HeaderFont)),
 						new PdfPCell(new Phrase("Class Code", HeaderFont)),
 						new PdfPCell(new Phrase("Organization Name", HeaderFont)),
 						new PdfPCell(new Phrase("Starting Units", HeaderFont)),
@@ -530,7 +528,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 							new PdfPCell(new Phrase("Station", HeaderFont)),
 							new PdfPCell(new Phrase("Expenditure Type", HeaderFont)),
                             new PdfPCell(new Phrase("Bill Rate", HeaderFont)),
-                            new PdfPCell(new Phrase("Units", HeaderFont)),
+                            new PdfPCell(new Phrase("Unit of\n Measure", HeaderFont)),
                             new PdfPCell(new Phrase("Surface Type", HeaderFont)),
 							new PdfPCell(new Phrase("Comments", HeaderFont))
 						};
@@ -615,12 +613,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                 Cells = new PdfPCell[]{
 					new PdfPCell(new Phrase("Mix #", HeaderFont)),
 					new PdfPCell(new Phrase("Target\nArea", HeaderFont)),
-					new PdfPCell(new Phrase("Gals/Acre", HeaderFont)),
-					new PdfPCell(new Phrase("Gals\nStarting", HeaderFont)),
-					new PdfPCell(new Phrase("Gals\nMixed", HeaderFont)),
+					new PdfPCell(new Phrase("Gallons/\nAcre", HeaderFont)),
+					new PdfPCell(new Phrase("Gallons\nStarting", HeaderFont)),
+					new PdfPCell(new Phrase("Gallons\nMixed", HeaderFont)),
 					new PdfPCell(new Phrase("Total\nGallons", HeaderFont)),
-					new PdfPCell(new Phrase("Gals\nRemaining", HeaderFont)),
-					new PdfPCell(new Phrase("Gals\nUsed", HeaderFont)),
+					new PdfPCell(new Phrase("Gallons\nRemaining", HeaderFont)),
+					new PdfPCell(new Phrase("Gallons\nUsed", HeaderFont)),
 					new PdfPCell(new Phrase("Acres\nSprayed", HeaderFont)),
 					new PdfPCell(new Phrase("State", HeaderFont)),
 					new PdfPCell(new Phrase("County", HeaderFont))
@@ -665,16 +663,16 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             {
                                 List<DAILY_ACTIVITY.InventoryDetails> InventoryData = DAILY_ACTIVITY.GetDBIInventoryData(_context, HeaderId).ToList();
                                 PdfPTable InventoryTable = new PdfPTable(10);
-                                InventoryTable.SetWidths(new float[] { 4f, 5f, 13f, 10f, 23f, 5f, 5f, 10f, 10f, 15f });
+                                InventoryTable.SetWidths(new float[] { 4f, 23f, 10f, 5f, 13f, 5f, 5f, 10f, 10f, 15f });
                                 Cells = new PdfPCell[]{
 					new PdfPCell(new Phrase("Mix #", HeaderFont)),
-                    new PdfPCell(new Phrase("Item #", HeaderFont)),
-					new PdfPCell(new Phrase("Inventory Org", HeaderFont)),
-					new PdfPCell(new Phrase("Sub-Inventory", HeaderFont)),
-					new PdfPCell(new Phrase("Item Name", HeaderFont)),
+                    new PdfPCell(new Phrase("Inventory Org", HeaderFont)),
+					new PdfPCell(new Phrase("Sub-Inv Name", HeaderFont)),
+                    new PdfPCell(new Phrase("Item ID", HeaderFont)),
+					new PdfPCell(new Phrase("Item", HeaderFont)),
 					new PdfPCell(new Phrase("Rate", HeaderFont)),
                     new PdfPCell(new Phrase("Total", HeaderFont)),
-                    new PdfPCell(new Phrase("Units", HeaderFont)),                    
+                    new PdfPCell(new Phrase("Unit", HeaderFont)),                    
 					new PdfPCell(new Phrase("EPA \n Number", HeaderFont)),
                     new PdfPCell(new Phrase("Customer Material", HeaderFont))
 				};
@@ -694,9 +692,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                     }
                                     Cells = new PdfPCell[]{
 						new PdfPCell(new Phrase(Data.CHEMICAL_MIX_NUMBER.ToString(), CellFont)),
-                        new PdfPCell(new Phrase(Data.SEGMENT1, CellFont)),
-						new PdfPCell(new Phrase(Data.INV_NAME, CellFont)),
+                        new PdfPCell(new Phrase(Data.INV_NAME, CellFont)),
 						new PdfPCell(new Phrase(Data.SUB_INVENTORY_SECONDARY_NAME, CellFont)),
+                        new PdfPCell(new Phrase(Data.SEGMENT1, CellFont)),
 						new PdfPCell(new Phrase(Data.DESCRIPTION, CellFont)),
 						new PdfPCell(new Phrase(Data.RATE.ToString(), CellFont)),                        
 						new PdfPCell(new Phrase(Data.TOTAL.ToString(), CellFont)),
@@ -715,15 +713,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             {
                                 List<DAILY_ACTIVITY.InventoryDetails> InventoryData = DAILY_ACTIVITY.GetIRMInventoryData(_context, HeaderId).ToList();
                                 PdfPTable InventoryTable = new PdfPTable(6);
-                                InventoryTable.SetWidths(new float[] { 15f, 15f, 15f, 35f, 10f, 10f });
+                                InventoryTable.SetWidths(new float[] { 15f, 35f, 15f, 15f, 10f, 10f });
 
                                 Cells = new PdfPCell[]{
-                            new PdfPCell(new Phrase("Item #", HeaderFont)),
-							new PdfPCell(new Phrase("Inventory Org", HeaderFont)),
+                            new PdfPCell(new Phrase("Inventory Org", HeaderFont)),
 							new PdfPCell(new Phrase("Sub-Inventory", HeaderFont)),
-							new PdfPCell(new Phrase("Item Name", HeaderFont)),
+                            new PdfPCell(new Phrase("Item ID", HeaderFont)),
+							new PdfPCell(new Phrase("Item", HeaderFont)),
 							new PdfPCell(new Phrase("Quantity", HeaderFont)),
-                            new PdfPCell(new Phrase("Units", HeaderFont))
+                            new PdfPCell(new Phrase("Unit", HeaderFont))
 					 };
                                 Row = new PdfPRow(Cells);
                                 InventoryTable.Rows.Add(Row);
@@ -731,9 +729,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                 foreach (DAILY_ACTIVITY.InventoryDetails Data in InventoryData)
                                 {
                                     Cells = new PdfPCell[]{
-                                new PdfPCell(new Phrase(Data.SEGMENT1, CellFont)),
-								new PdfPCell(new Phrase(Data.INV_NAME, CellFont)),
+                                new PdfPCell(new Phrase(Data.INV_NAME, CellFont)),
 								new PdfPCell(new Phrase(Data.SUB_INVENTORY_SECONDARY_NAME, CellFont)),
+                                new PdfPCell(new Phrase(Data.SEGMENT1, CellFont)),
 								new PdfPCell(new Phrase(Data.DESCRIPTION, CellFont)),
 								new PdfPCell(new Phrase(Data.RATE.ToString(), CellFont)),
                                 new PdfPCell(new Phrase(Data.UNIT_OF_MEASURE, CellFont ))

@@ -29,7 +29,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         {
             if (!X.IsAjaxRequest)
             {
-             
+               uxSprayedNotSprayed.Data = StaticLists.CrossingsType;
                uxAddStateList.Data = StaticLists.CrossingStateList;
                uxAddAppRequestedStore.Data = StaticLists.ApplicationRequested;
                if (SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue") != string.Empty)
@@ -47,6 +47,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string ServiceUnit = uxAddServiceUnit.SelectedItem.Value;
             string SubDiv = uxAddSubDiv.SelectedItem.Value;
             string State = uxAddStateComboBox.SelectedItem.Value;
+            string SprayNotSpray = uxCrossingSprayed.SelectedItem.Value;
             using (Entities _context = new Entities())
             {
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
@@ -55,8 +56,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 string selectedServiceUnit = ServiceUnit;
                 string selectedSubDiv = SubDiv;
                 string selectedState = State;
-
-                string url = "/Views/Modules/CrossingMaintenance/Reports/StateCrossingListReport.aspx?selectedRailroad=" + selectedRailroad + "&selectedServiceUnit=" + selectedServiceUnit + "&selectedSubDiv=" + selectedSubDiv + "&selectedState=" + selectedState;
+                string selectedSpray = SprayNotSpray;
+                string url = "/Views/Modules/CrossingMaintenance/Reports/StateCrossingListReport.aspx?selectedRailroad=" + selectedRailroad + "&selectedServiceUnit=" + selectedServiceUnit + "&selectedSubDiv=" + selectedSubDiv + "&selectedState=" + selectedState + "&selectedSpray=" + selectedSpray;
                 Ext.Net.Panel pan = new Ext.Net.Panel();
 
                 pan.ID = "Tab";
