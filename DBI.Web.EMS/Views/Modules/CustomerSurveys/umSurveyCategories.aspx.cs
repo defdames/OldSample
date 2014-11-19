@@ -168,13 +168,17 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
         [DirectMethod]
         public void dmAddToDirty()
         {
+            long isDirty = long.Parse(Session["isDirty"].ToString());
             isDirty++;
+            Session["isDirty"] = isDirty;
         }
 
         [DirectMethod]
         public void dmSubtractFromDirty()
         {
+            long isDirty = long.Parse(Session["isDirty"].ToString());
             isDirty--;
+            Session["isDirty"] = isDirty;
         }
     }
 }

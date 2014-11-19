@@ -29,7 +29,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
             if (!X.IsAjaxRequest)
             {
-                isDirty = 0;
+                Session["isDirty"] = "0";
                 GetInventoryDropDown();
                 GetHeaderData();
                 GetEmployeeDataWithWarnings();
@@ -1730,13 +1730,17 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         [DirectMethod]
         public void dmAddToDirty()
         {
+            long isDirty = long.Parse(Session["isDirty"].ToString());
             isDirty++;
+            Session["isDirty"] = isDirty;
         }
 
         [DirectMethod]
         public void dmSubtractFromDirty()
         {
+            long isDirty = long.Parse(Session["isDirty"].ToString());
             isDirty--;
+            Session["isDirty"] = isDirty;
         }
     }
 }
