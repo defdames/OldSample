@@ -184,7 +184,7 @@
                     </DockedItems>
                 </ext:GridPanel>
 
-                <%--<ext:GridPanel ID="uxAdjustmentsGrid" runat="server" Region="North" HideHeaders="true">
+                <ext:GridPanel ID="uxAdjustmentsGrid" runat="server" Region="North" HideHeaders="true">
                     <SelectionModel>
                         <ext:RowSelectionModel ID="uxAdjustmentGridRowModel" runat="server" AllowDeselect="false" Mode="Single" />
                     </SelectionModel>
@@ -269,7 +269,7 @@
                             </Items>
                         </ext:FieldContainer>
                     </DockedItems>
-                </ext:GridPanel>--%>
+                </ext:GridPanel>
 
                 <ext:GridPanel ID="uxOverheadGrid" runat="server" Region="North" HideHeaders="true">
                     <SelectionModel>
