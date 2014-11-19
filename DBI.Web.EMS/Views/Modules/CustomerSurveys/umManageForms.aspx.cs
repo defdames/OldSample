@@ -23,7 +23,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             }
             if (!X.IsAjaxRequest || !IsPostBack)
             {
-                isDirty = 0;
+                Session["isDirty"] = "0";
                 uxAddFormCatStore.Reload();
                 uxAddFormOrgStore.Reload();
                 uxQuestionFieldsetStore.Reload();
@@ -803,13 +803,17 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
         [DirectMethod]
         public void dmAddToDirty()
         {
+            long isDirty = long.Parse(Session["isDirty"].ToString());
             isDirty++;
+            Session["isDirty"] = isDirty;
         }
 
         [DirectMethod]
         public void dmSubtractFromDirty()
         {
+            long isDirty = long.Parse(Session["isDirty"].ToString());
             isDirty--;
+            Session["isDirty"] = isDirty;
         }
     }
 }
