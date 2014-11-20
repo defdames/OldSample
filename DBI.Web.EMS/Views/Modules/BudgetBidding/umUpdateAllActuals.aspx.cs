@@ -16,7 +16,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         {
             if (!X.IsAjaxRequest)
             {
-                if (!BasePage.validateComponentSecurity("SYS.BudgetBidding.Security"))
+                if (!BasePage.validateComponentSecurity("SYS.BudgetBidding.View"))
                 {
                     X.Redirect("~/Views/uxDefault.aspx");
                 }
