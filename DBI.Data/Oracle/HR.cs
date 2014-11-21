@@ -72,6 +72,7 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<ORGANIZATION_V1> ActiveOrganizationsByHierarchy(long hierarchyId, long organizationId)
         {
+                
 
                 using (Entities _context = new Entities())
                 {
@@ -93,6 +94,7 @@ namespace DBI.Data
                         ORDER SIBLINGS BY   c.d_child_name";
 
                     List<ORGANIZATION_V1> _data = _context.Database.SqlQuery<ORGANIZATION_V1>(sql).ToList();
+
                     return _data;
                 }
         }

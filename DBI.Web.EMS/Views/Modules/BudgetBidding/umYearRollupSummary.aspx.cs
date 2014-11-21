@@ -128,7 +128,29 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxTOPPlusMinus.Text = String.Format("{0:N2}", tOPPlusMinus);
             uxTNetContPlusMinus.Text = String.Format("{0:N2}", tNetContPlusMinus);
 
+            BBOH.Subtotal.Fields ohData = BBOH.Subtotal.Data(orgID, yearID, verID);
+            BBOH.Subtotal.Fields prevOHData = BBOH.Subtotal.Data(orgID, prevYearID, prevVerID);
+            decimal gtGrossRec = tGrossRec;
+            decimal gtMatUsage = tMatUsage;
+            decimal gtGrossRev = tGrossRev;
+            decimal gtDirects = tDirects;
+            decimal gtOP = tOP;
+            decimal gtOPPerc = tOPPerc;
+            decimal gtOH = tOH + ohData.OH;
+            decimal gtNetCont = tNetCont - ohData.OH;
+            decimal gtOPPlusMinus = tOPPlusMinus;
+            decimal gtNetContPlusMinus = (tNetContPlusMinus - ohData.OH) + prevOHData.OH;
 
+            uxGTGrossRec.Text = String.Format("{0:N2}", gtGrossRec);
+            uxGTMatUsage.Text = String.Format("{0:N2}", gtMatUsage);
+            uxGTGrossRev.Text = String.Format("{0:N2}", gtGrossRev);
+            uxGTDirects.Text = String.Format("{0:N2}", gtDirects);
+            uxGTOP.Text = String.Format("{0:N2}", gtOP);
+            uxGTOPPerc.Text = String.Format("{0:#,##0.00%}", gtOPPerc);
+            uxGTOH.Text = String.Format("{0:N2}", gtOH);
+            uxGTNetCont.Text = String.Format("{0:N2}", gtNetCont);
+            uxGTOPPlusMinus.Text = String.Format("{0:N2}", gtOPPlusMinus);
+            uxGTNetContPlusMinus.Text = String.Format("{0:N2}", gtNetContPlusMinus);
 
 
 
@@ -163,10 +185,10 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             //uxGTOPPlusMinus.Text = String.Format("{0:N2}", gtOPPlusMinus);
 
             // Net contribution
-            BBOH.Subtotal.Fields ohData = BBOH.Subtotal.Data(orgID, yearID, verID);
-            decimal oh = ohData.OH;
-            decimal netCont = tNetCont - oh;
-            uxNetCont.Text = String.Format("{0:N2}", netCont);
+            //BBOH.Subtotal.Fields ohData = BBOH.Subtotal.Data(orgID, yearID, verID);
+            //decimal oh = ohData.OH;
+            //decimal netCont = tNetCont - oh;
+            //uxNetCont.Text = String.Format("{0:N2}", netCont);
         }
 
         // Reports

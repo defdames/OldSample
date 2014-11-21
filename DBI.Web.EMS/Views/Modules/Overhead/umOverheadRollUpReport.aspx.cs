@@ -137,6 +137,12 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                                 node.Icon = Icon.Accept;
                                 e.Nodes.Add(node);
                             }
+                            else if (view.ORGANIZATION_STATUS == "Active")
+                            {
+                                node.Icon = Icon.Accept;
+                                e.Nodes.Add(node);
+                                node.Leaf = true;
+                            }
                             else
                             {
                                 node.Icon = Icon.ControlBlank;

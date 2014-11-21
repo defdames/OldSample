@@ -2130,7 +2130,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox1</rd:DefaultName>
         <Top>1.96402in</Top>
-        <Left>7.20707in</Left>
+        <Left>6.34942in</Left>
         <Height>0.25in</Height>
         <Width>0.84376in</Width>
         <ZIndex>7</ZIndex>
@@ -2165,7 +2165,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox2</rd:DefaultName>
         <Top>1.96402in</Top>
-        <Left>6.19318in</Left>
+        <Left>5.33553in</Left>
         <Height>0.25in</Height>
         <Width>1in</Width>
         <ZIndex>8</ZIndex>
@@ -2179,49 +2179,29 @@
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
-      <Textbox Name="Textbox4">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>Net Contribution:</Value>
-                <Style>
-                  <FontFamily>Calibri</FontFamily>
-                  <FontSize>7pt</FontSize>
-                  <Color>White</Color>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>Textbox4</rd:DefaultName>
-        <Top>2.29388in</Top>
-        <Left>6.19318in</Left>
-        <Height>0.25in</Height>
-        <Width>1in</Width>
+      <Image Name="Image1">
+        <Source>Embedded</Source>
+        <Value>logo</Value>
+        <Sizing>FitProportional</Sizing>
+        <Top>0.13764in</Top>
+        <Left>0.17583in</Left>
+        <Height>0.76042in</Height>
+        <Width>1.42708in</Width>
         <ZIndex>9</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
           </Border>
-          <BackgroundColor>Black</BackgroundColor>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
         </Style>
-      </Textbox>
-      <Textbox Name="Textbox5">
+      </Image>
+      <Textbox Name="Textbox55">
         <CanGrow>true</CanGrow>
         <KeepTogether>true</KeepTogether>
         <Paragraphs>
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=CDbl(ReportItems!Textbox50.Value) - CDbl(ReportItems!Textbox1.Value)</Value>
+                <Value>=Sum(Fields!GROSS_REC.Value)</Value>
                 <Style>
                   <FontFamily>Calibri</FontFamily>
                   <FontSize>7pt</FontSize>
@@ -2230,12 +2210,14 @@
                 </Style>
               </TextRun>
             </TextRuns>
-            <Style />
+            <Style>
+              <TextAlign>Right</TextAlign>
+            </Style>
           </Paragraph>
         </Paragraphs>
-        <rd:DefaultName>Textbox5</rd:DefaultName>
-        <Top>2.29388in</Top>
-        <Left>7.19318in</Left>
+        <rd:DefaultName>Textbox46</rd:DefaultName>
+        <Top>2.28346in</Top>
+        <Left>1.30075in</Left>
         <Height>0.25in</Height>
         <Width>0.84376in</Width>
         <ZIndex>10</ZIndex>
@@ -2251,21 +2233,391 @@
           <rd:FormatSymbolCulture>en-US</rd:FormatSymbolCulture>
         </Style>
       </Textbox>
-      <Image Name="Image1">
-        <Source>Embedded</Source>
-        <Value>logo</Value>
-        <Sizing>FitProportional</Sizing>
-        <Top>0.13764in</Top>
-        <Left>0.17583in</Left>
-        <Height>0.76042in</Height>
-        <Width>1.42708in</Width>
+      <Textbox Name="Textbox76">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=Sum(Fields!MAT_USAGE.Value)</Value>
+                <Style>
+                  <FontFamily>Calibri</FontFamily>
+                  <FontSize>7pt</FontSize>
+                  <Format>#,0.00;(#,0.00)</Format>
+                  <Color>White</Color>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Right</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox47</rd:DefaultName>
+        <Top>2.28346in</Top>
+        <Left>2.14451in</Left>
+        <Height>0.25in</Height>
+        <Width>0.84376in</Width>
         <ZIndex>11</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
           </Border>
+          <BackgroundColor>Black</BackgroundColor>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+          <rd:FormatSymbolCulture>en-US</rd:FormatSymbolCulture>
         </Style>
-      </Image>
+      </Textbox>
+      <Textbox Name="Textbox77">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=Sum(Fields!GROSS_REV.Value)</Value>
+                <Style>
+                  <FontFamily>Calibri</FontFamily>
+                  <FontSize>7pt</FontSize>
+                  <Format>#,0.00;(#,0.00)</Format>
+                  <Color>White</Color>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Right</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox48</rd:DefaultName>
+        <Top>2.28346in</Top>
+        <Left>2.98827in</Left>
+        <Height>0.25in</Height>
+        <Width>0.84376in</Width>
+        <ZIndex>12</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BackgroundColor>Black</BackgroundColor>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+          <rd:FormatSymbolCulture>en-US</rd:FormatSymbolCulture>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox78">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=Sum(Fields!DIR_EXP.Value)</Value>
+                <Style>
+                  <FontFamily>Calibri</FontFamily>
+                  <FontSize>7pt</FontSize>
+                  <Format>#,0.00;(#,0.00)</Format>
+                  <Color>White</Color>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Right</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox49</rd:DefaultName>
+        <Top>2.28346in</Top>
+        <Left>3.83203in</Left>
+        <Height>0.25in</Height>
+        <Width>0.84376in</Width>
+        <ZIndex>13</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BackgroundColor>Black</BackgroundColor>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+          <rd:FormatSymbolCulture>en-US</rd:FormatSymbolCulture>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox79">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=Sum(Fields!OP.Value)</Value>
+                <Style>
+                  <FontFamily>Calibri</FontFamily>
+                  <FontSize>7pt</FontSize>
+                  <Format>#,0.00;(#,0.00)</Format>
+                  <Color>White</Color>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Right</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox50</rd:DefaultName>
+        <Top>2.28346in</Top>
+        <Left>4.67579in</Left>
+        <Height>0.25in</Height>
+        <Width>0.84376in</Width>
+        <ZIndex>14</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BackgroundColor>Black</BackgroundColor>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+          <rd:FormatSymbolCulture>en-US</rd:FormatSymbolCulture>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox80">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=Microsoft.VisualBasic.Interaction.IIf(ReportItems!Textbox77.Value = 0, 0, ReportItems!Textbox79.Value / Microsoft.VisualBasic.Interaction.IIf(ReportItems!Textbox77.Value = 0, 1, ReportItems!Textbox77.Value))</Value>
+                <Style>
+                  <FontFamily>Calibri</FontFamily>
+                  <FontSize>7pt</FontSize>
+                  <Format>0.00%</Format>
+                  <Color>White</Color>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Right</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox51</rd:DefaultName>
+        <Top>2.28346in</Top>
+        <Left>5.51955in</Left>
+        <Height>0.25in</Height>
+        <Width>0.84376in</Width>
+        <ZIndex>15</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BackgroundColor>Black</BackgroundColor>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox81">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=Sum(Fields!OH.Value)+Parameters!paramOH.Value</Value>
+                <Style>
+                  <FontFamily>Calibri</FontFamily>
+                  <FontSize>7pt</FontSize>
+                  <Format>#,0.00;(#,0.00)</Format>
+                  <Color>White</Color>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Right</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox50</rd:DefaultName>
+        <Top>2.28346in</Top>
+        <Left>6.36331in</Left>
+        <Height>0.25in</Height>
+        <Width>0.84376in</Width>
+        <ZIndex>16</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BackgroundColor>Black</BackgroundColor>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+          <rd:FormatSymbolCulture>en-US</rd:FormatSymbolCulture>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox82">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=Sum(Fields!NET_CONT.Value)-Parameters!paramOH.Value</Value>
+                <Style>
+                  <FontFamily>Calibri</FontFamily>
+                  <FontSize>7pt</FontSize>
+                  <Format>#,0.00;(#,0.00)</Format>
+                  <Color>White</Color>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Right</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox50</rd:DefaultName>
+        <Top>2.28346in</Top>
+        <Left>7.20707in</Left>
+        <Height>0.25in</Height>
+        <Width>0.84376in</Width>
+        <ZIndex>17</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BackgroundColor>Black</BackgroundColor>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+          <rd:FormatSymbolCulture>en-US</rd:FormatSymbolCulture>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox83">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=Sum(Fields!OP_VAR.Value)</Value>
+                <Style>
+                  <FontFamily>Calibri</FontFamily>
+                  <FontSize>7pt</FontSize>
+                  <Format>#,0.00;(#,0.00)</Format>
+                  <Color>White</Color>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Right</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox52</rd:DefaultName>
+        <Top>2.28346in</Top>
+        <Left>8.05083in</Left>
+        <Height>0.25in</Height>
+        <Width>0.84376in</Width>
+        <ZIndex>18</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BackgroundColor>Black</BackgroundColor>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+          <rd:FormatSymbolCulture>en-US</rd:FormatSymbolCulture>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox84">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=(Sum(Fields!NET_CONT_VAR.Value) - Parameters!paramOH.Value) + Parameters!paramPrevOH.Value</Value>
+                <Style>
+                  <FontFamily>Calibri</FontFamily>
+                  <FontSize>7pt</FontSize>
+                  <Format>#,0.00;(#,0.00)</Format>
+                  <Color>White</Color>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Right</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox52</rd:DefaultName>
+        <Top>2.28346in</Top>
+        <Left>8.89459in</Left>
+        <Height>0.25in</Height>
+        <Width>0.84376in</Width>
+        <ZIndex>19</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BackgroundColor>Black</BackgroundColor>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+          <rd:FormatSymbolCulture>en-US</rd:FormatSymbolCulture>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox6">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Grand Total:</Value>
+                <Style>
+                  <FontFamily>Calibri</FontFamily>
+                  <FontSize>7pt</FontSize>
+                  <Color>White</Color>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox4</rd:DefaultName>
+        <Top>2.28346in</Top>
+        <Left>0.17583in</Left>
+        <Height>0.25in</Height>
+        <Width>1.12492in</Width>
+        <ZIndex>20</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BackgroundColor>Black</BackgroundColor>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
     </ReportItems>
     <Height>2.6932in</Height>
     <Style>
@@ -2474,6 +2826,16 @@
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
     <ReportParameter Name="paramOH">
+      <DataType>Float</DataType>
+      <Nullable>true</Nullable>
+      <DefaultValue>
+        <Values>
+          <Value xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" />
+        </Values>
+      </DefaultValue>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="paramPrevOH">
       <DataType>Float</DataType>
       <Nullable>true</Nullable>
       <DefaultValue>

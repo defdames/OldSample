@@ -21,6 +21,9 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding.Reports
                 long verID = Convert.ToInt64(Request.QueryString["verID"]);
                 string verName = Request.QueryString["verName"];
                 string oh = BBOH.DataSingle(orgID, yearID, verID).OH.ToString();
+                long prevYearID = Convert.ToInt64(Request.QueryString["prevYearID"]);
+                long prevVerID = Convert.ToInt64(Request.QueryString["prevVerID"]);
+                BBOH.Subtotal.Fields prevOHData = BBOH.Subtotal.Data(orgID, prevYearID, prevVerID);
 
 
                 ReportParameter paramOrgName = new ReportParameter("paramOrgName", orgName);
@@ -34,6 +37,9 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding.Reports
 
                 ReportParameter paramOH = new ReportParameter("paramOH", oh);
                 this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { paramOH });
+
+                ReportParameter paramPrevOH = new ReportParameter("paramPrevOH", prevOHData.OH.ToString());
+                this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { paramPrevOH });
             }
         } 
     }

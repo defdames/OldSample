@@ -242,7 +242,7 @@
 
 
                 <%-------------------------------------------------- Top Summary Panel --------------------------------------------------%>
-                <ext:GridPanel ID="uxSummaryGrid" runat="server" Region="North" Height="170">
+                <ext:GridPanel ID="uxSummaryGrid" runat="server" Region="North" Height="190">
                     <SelectionModel>
                         <ext:RowSelectionModel ID="uxGridRowModel" runat="server" AllowDeselect="false" Mode="Single" />
                     </SelectionModel>
