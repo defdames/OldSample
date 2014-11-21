@@ -113,10 +113,8 @@
                         </ext:Store>
                     </Store>
                     <ColumnModel>
-                        <Columns>        
-                            <ext:Column ID="Column2" runat="server" DataIndex="ORGANIZATION_NAME" Text="Name" Flex="2" />
-                            <ext:Column ID="Column1" runat="server" DataIndex="ORGANIZATION_STATUS" Text="Current Status" Flex="1" /> 
-                            <ext:CommandColumn runat="server" Width="60">
+                        <Columns>     
+                            <ext:CommandColumn runat="server" Width="100">
                                 <Commands>
                                     <ext:GridCommand Icon="BookEdit" CommandName="Budgets">
                                         <ToolTip Text="Budgets" />
@@ -124,7 +122,7 @@
                                     <ext:CommandSeparator />
                                     <ext:GridCommand Icon="CalculatorEdit" CommandName="Accounts">
                                         <ToolTip Text="Accounts" />
-                            </ext:GridCommand>
+                                    </ext:GridCommand>
                                 </Commands>
                                   <DirectEvents>
                                     <Command OnEvent="deExecuteCommand">
@@ -135,7 +133,9 @@
                                         </ExtraParams>
                                     </Command>
                                 </DirectEvents>
-                            </ext:CommandColumn>
+                            </ext:CommandColumn>   
+                            <ext:Column ID="Column2" runat="server" DataIndex="ORGANIZATION_NAME" Text="Name" Flex="2" />
+                            <ext:Column ID="Column1" runat="server" DataIndex="ORGANIZATION_STATUS" Text="Current Status" Flex="1" />    
                         </Columns>
                     </ColumnModel>
                     <Plugins>
