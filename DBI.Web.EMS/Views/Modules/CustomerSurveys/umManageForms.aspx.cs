@@ -26,7 +26,6 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 Session["isDirty"] = "0";
                 uxAddFormCatStore.Reload();
                 uxAddFormOrgStore.Reload();
-                uxQuestionFieldsetStore.Reload();
             }
             
         }
@@ -245,6 +244,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 ModelProxy Record = uxFieldsetsStore.GetByInternalId(NewFieldset.PhantomId);
                 Record.CreateVariable = true;
                 Record.SetId(ToBeAdded.FIELDSET_ID);
+                Record.Set("TITLE", ToBeAdded.TITLE);
                 Record.Commit();
             }
 
@@ -274,6 +274,9 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 }
                 GenericData.Update<CUSTOMER_SURVEY_FIELDSETS>(ToBeUpdated);
 
+                ModelProxy Record = uxFieldsetsStore.GetById(ToBeUpdated.FIELDSET_ID);
+                Record.Set("TITLE", ToBeUpdated.TITLE);
+                Record.Commit();
             }
 
             uxFieldsetsStore.CommitChanges();
