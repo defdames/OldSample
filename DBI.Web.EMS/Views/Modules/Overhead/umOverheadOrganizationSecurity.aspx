@@ -51,58 +51,40 @@
                                         <Click OnEvent="deDisableOrganization"><Confirmation Message="Are you sure you want to disable these organizations for use in the overhead budget system?" ConfirmRequest="true"></Confirmation></Click>
                                     </DirectEvents>
                                 </ext:Button>
-                                <ext:ToolbarSeparator runat="server">
-                                </ext:ToolbarSeparator>
-                                <ext:Button runat="server" Text="General Ledger" Icon="CalculatorEdit" Disabled="true" ID="uxGeneralLedger">
-                                    <DirectEvents>
-                                        <Click OnEvent="deViewAccounts">
-                                            <ExtraParams>
-                                                <ext:Parameter Mode="Raw" Name="Name" Value="#{uxOrganizationsGrid}.getView().getSelectionModel().getSelection()[0].data.ORGANIZATION_NAME"></ext:Parameter>
-                                                <ext:Parameter Mode="Raw" Name="ID" Value="#{uxOrganizationsGrid}.getView().getSelectionModel().getSelection()[0].data.ORGANIZATION_ID"></ext:Parameter>
-                                            </ExtraParams>
-                                        </Click>
+
+                                <ext:SplitButton runat="server" Text="Admin Actions" Icon="ApplicationViewList">
+                                    <Menu>
+                                        <ext:Menu runat="server">
+                                            <Items>
+                                                <ext:MenuItem Text="Import Actuals" Icon="CalculatorAdd" >
+                                                    <DirectEvents>
+                                                        <Click OnEvent="deImportActuals"></Click>
+                                                    </DirectEvents>
+                                                </ext:MenuItem>
+                                                 <ext:MenuItem Text="Close Fiscal Year" Icon="BinClosed" >
+                                                    <DirectEvents>
+                                                        <Click OnEvent="deCloseFiscal"></Click>
+                                                    </DirectEvents>
+                                                </ext:MenuItem>
+                                                 <ext:MenuItem Text="Create Forecast" Icon="DatabaseLink" >
+                                                    <DirectEvents>
+                                                        <Click OnEvent="dePeriodMaintenance"></Click>
+                                                    </DirectEvents>
+                                                </ext:MenuItem>
+                                                 <ext:MenuItem Text="Edit Budget Types" Icon="NoteGo" >
+                                                        <DirectEvents>
+                                        <Click OnEvent="deShowBudgetTypes"></Click>
                                     </DirectEvents>
-                                </ext:Button>
-                                <ext:ToolbarSeparator ID="ToolbarSeparator2" runat="server"></ext:ToolbarSeparator>
-                                <ext:Button runat="server" Text="Budgets" Icon="BookEdit" Disabled="true" ID="uxOpenPeriod">
-                                    <DirectEvents>
-                                    <Click OnEvent="deViewPeriods">
-                                        <ExtraParams>
-                                                <ext:Parameter Mode="Raw" Name="Name" Value="#{uxOrganizationsGrid}.getView().getSelectionModel().getSelection()[0].data.ORGANIZATION_NAME"></ext:Parameter>
-                                                <ext:Parameter Mode="Raw" Name="ID" Value="#{uxOrganizationsGrid}.getView().getSelectionModel().getSelection()[0].data.ORGANIZATION_ID"></ext:Parameter>
-                                        </ExtraParams>
-                                    </Click>
-                                </DirectEvents>
-                                </ext:Button>
-                              
-                               
+                                                </ext:MenuItem>
+                                            </Items>
+                                        </ext:Menu>
+                                    </Menu>
+                                </ext:SplitButton>
+                                                                                                   
                                 <ext:ToolbarFill runat="server">
 
                                 </ext:ToolbarFill>
-                                 <ext:Button runat="server" ID="Button3" Text="Import Actuals" Icon="CalculatorAdd">
-                                    <DirectEvents>
-                                        <Click OnEvent="deImportActuals"></Click>
-                                    </DirectEvents>
-                                </ext:Button>
-                                <ext:ToolbarSeparator ID="ToolbarSeparator5" runat="server"></ext:ToolbarSeparator>
-                                 <ext:Button runat="server" ID="Button2" Text="Close Fiscal" Icon="BinClosed">
-                                    <DirectEvents>
-                                        <Click OnEvent="deCloseFiscal"></Click>
-                                    </DirectEvents>
-                                </ext:Button>
-                                <ext:ToolbarSeparator ID="ToolbarSeparator4" runat="server"></ext:ToolbarSeparator>
-                                 <ext:Button runat="server" ID="Button1" Text="Create Forecast" Icon="DatabaseLink">
-                                    <DirectEvents>
-                                        <Click OnEvent="dePeriodMaintenance"></Click>
-                                    </DirectEvents>
-                                </ext:Button>
-                                <ext:ToolbarSeparator ID="ToolbarSeparator3" runat="server"></ext:ToolbarSeparator>
-                                <ext:Button runat="server" ID="uxShowBudgetTypes" Text="Budget Types" Icon="NoteGo">
-                                    <DirectEvents>
-                                        <Click OnEvent="deShowBudgetTypes"></Click>
-                                    </DirectEvents>
-                                </ext:Button>
-                                <ext:ToolbarSeparator runat="server"></ext:ToolbarSeparator>
+
                                 <ext:Checkbox runat="server" HideLabel="true" BoxLabel="Show All" ID="uxShowAllOrganizationsCheckBox" >
                                     <DirectEvents>
                                         <Change OnEvent="deShowAllOrganizations" />
@@ -133,14 +115,34 @@
                     <ColumnModel>
                         <Columns>        
                             <ext:Column ID="Column2" runat="server" DataIndex="ORGANIZATION_NAME" Text="Name" Flex="2" />
-                            <ext:Column ID="Column1" runat="server" DataIndex="ORGANIZATION_STATUS" Text="Current Status" Flex="1" />   
+                            <ext:Column ID="Column1" runat="server" DataIndex="ORGANIZATION_STATUS" Text="Current Status" Flex="1" /> 
+                            <ext:CommandColumn runat="server" Width="60">
+                                <Commands>
+                                    <ext:GridCommand Icon="BookEdit" CommandName="Budgets">
+                                        <ToolTip Text="Budgets" />
+                                    </ext:GridCommand>
+                                    <ext:CommandSeparator />
+                                    <ext:GridCommand Icon="CalculatorEdit" CommandName="Accounts">
+                                        <ToolTip Text="Accounts" />
+                            </ext:GridCommand>
+                                </Commands>
+                                  <DirectEvents>
+                                    <Command OnEvent="deExecuteCommand">
+                                        <ExtraParams>
+                                            <ext:Parameter Mode="Raw" Name="Name" Value="record.data.ORGANIZATION_NAME"></ext:Parameter>
+                                            <ext:Parameter Mode="Raw" Name="ID" Value="record.data.ORGANIZATION_ID"></ext:Parameter>
+                                            <ext:Parameter Name="command" Value="command" Mode="Raw" />
+                                        </ExtraParams>
+                                    </Command>
+                                </DirectEvents>
+                            </ext:CommandColumn>
                         </Columns>
                     </ColumnModel>
                     <Plugins>
                         <ext:FilterHeader ID="uxOrganizationsGridFilter" runat="server" Remote="true" />
                     </Plugins>
                     <SelectionModel>
-                        <ext:CheckboxSelectionModel runat="server" Mode="Single" ID="uxOrganizationsGridSelectionModel" AllowDeselect="true">
+                        <ext:CheckboxSelectionModel runat="server" Mode="Simple" ID="uxOrganizationsGridSelectionModel" AllowDeselect="true">
                             <DirectEvents>
                                 <Select OnEvent="deSelectOrganization"></Select>
                                 <Deselect OnEvent="deSelectOrganization"></Deselect>
