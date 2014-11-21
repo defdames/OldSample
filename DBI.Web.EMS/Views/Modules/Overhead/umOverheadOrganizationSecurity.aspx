@@ -114,14 +114,12 @@
                     </Store>
                     <ColumnModel>
                         <Columns>     
-                            <ext:CommandColumn runat="server" Width="100">
+                            <ext:CommandColumn runat="server" Width="175">
                                 <Commands>
-                                    <ext:GridCommand Icon="BookEdit" CommandName="Budgets">
-                                        <ToolTip Text="Budgets" />
+                                    <ext:GridCommand Icon="BookEdit" CommandName="Budgets" Text="Budgets">
                                     </ext:GridCommand>
                                     <ext:CommandSeparator />
-                                    <ext:GridCommand Icon="CalculatorEdit" CommandName="Accounts">
-                                        <ToolTip Text="Accounts" />
+                                    <ext:GridCommand Icon="CalculatorEdit" CommandName="Accounts" Text="Accounts">
                                     </ext:GridCommand>
                                 </Commands>
                                   <DirectEvents>
