@@ -1030,6 +1030,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.DisplayField uxEmployeeCounty;
         
         /// <summary>
+        /// uxEmployeeSelection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel uxEmployeeSelection;
+        
+        /// <summary>
         /// uxEmployeeToolbar control.
         /// </summary>
         /// <remarks>
@@ -1633,6 +1642,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Model Model15;
         
         /// <summary>
+        /// uxProductionSelection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel uxProductionSelection;
+        
+        /// <summary>
         /// uxProductionToolbar control.
         /// </summary>
         /// <remarks>
@@ -1847,6 +1865,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.TextArea TextArea1;
+        
+        /// <summary>
+        /// uxWeatherSelection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel uxWeatherSelection;
         
         /// <summary>
         /// uxWeatherToolbar control.
@@ -2126,6 +2153,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Model Model19;
+        
+        /// <summary>
+        /// uxInventorySelection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel uxInventorySelection;
         
         /// <summary>
         /// uxInventoryToolbar control.

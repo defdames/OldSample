@@ -63,9 +63,9 @@
                 App.uxFormRowEdit.startEdit(0, 0);
             });
             task.delay(300);
-            
+
             // Create DelayedTask and call it after 100 ms
-            task = new Ext.util.DelayedTask(function(){
+            task = new Ext.util.DelayedTask(function () {
                 App.uxFormsGrid.columns[0].getEditor().focusInput();
             });
             task.delay(400);
@@ -233,7 +233,7 @@
                                             <ext:Column runat="server" DataIndex="ORG_ID" Text="Organization Name" Flex="1">
                                                 <Renderer Fn="OrgRenderer" />
                                                 <Editor>
-                                                    <ext:ComboBox runat="server" ForceSelection="true" TypeAhead="true" QueryMode="Local" ValueField="ORG_ID" DisplayField="ORG_HIER" AllowBlank="false" EmptyText="Choose Organization"  InvalidCls="allowBlank">
+                                                    <ext:ComboBox runat="server" ForceSelection="true" TypeAhead="true" QueryMode="Local" ValueField="ORG_ID" DisplayField="ORG_HIER" AllowBlank="false" EmptyText="Choose Organization" InvalidCls="allowBlank">
                                                         <Store>
                                                             <ext:Store runat="server" ID="uxAddFormOrgStore" OnReadData="deReadOrgs" AutoDataBind="true">
                                                                 <Model>

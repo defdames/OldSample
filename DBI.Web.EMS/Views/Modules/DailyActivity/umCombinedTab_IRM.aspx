@@ -15,31 +15,156 @@
             return false;
         };
 
+        var AddEmployee = function () {
+            App.uxEmployeeStore.insert(0, new Employee());
+            App.uxEmployeeSelection.setLocked(true);
+            App.uxEmployeeSelection.setLocked(false);
+            App.uxEmployeeSelection.select(0);
+            var task = new Ext.util.DelayedTask(function () {
+                App.uxEmployeeRowEdit.startEdit(0, 0);
+            });
+            task.delay(300);
+
+            // Create DelayedTask and call it after 100 ms
+            task = new Ext.util.DelayedTask(function () {
+                App.uxEmployeeGrid.columns[0].getEditor().focusInput();
+            });
+            task.delay(400);
+        };
+
+        var AddEquipment = function () {
+            App.uxEquipmentStore.insert(0, new Equipment());
+            App.uxEquipmentSM.setLocked(true);
+            App.uxEquipmentSM.setLocked(false);
+            App.uxEquipmentSM.select(0);
+            var task = new Ext.util.DelayedTask(function () {
+                App.uxEquipmentRowEdit.startEdit(0, 0);
+            });
+            task.delay(300);
+
+            // Create DelayedTask and call it after 100 ms
+            task = new Ext.util.DelayedTask(function () {
+                App.uxEquipmentGrid.columns[1].getEditor().focusInput();
+            });
+            task.delay(400);
+        };
+
+        var AddProduction = function () {
+            App.uxProductionStore.insert(0, new Production());
+            App.uxProductionSelection.setLocked(true);
+            App.uxProductionSelection.setLocked(false);
+            App.uxProductionSelection.select(0);
+            var task = new Ext.util.DelayedTask(function () {
+                App.uxProductionRowEdit.startEdit(0, 0);
+            });
+            task.delay(300);
+
+            // Create DelayedTask and call it after 100 ms
+            task = new Ext.util.DelayedTask(function () {
+                App.uxProductionGrid.columns[1].getEditor().focusInput();
+            });
+            task.delay(400);
+        };
+
+        var AddWeather = function () {
+            App.uxWeatherStore.insert(0, new Weather());
+            App.uxWeatherSelection.setLocked(true);
+            App.uxWeatherSelection.setLocked(false);
+            App.uxWeatherSelection.select(0);
+            var task = new Ext.util.DelayedTask(function () {
+                App.uxWeatherRowEdit.startEdit(0, 0);
+            });
+            task.delay(300);
+
+            // Create DelayedTask and call it after 100 ms
+            task = new Ext.util.DelayedTask(function () {
+                App.uxWeatherGrid.columns[0].getEditor().focusInput();
+            });
+            task.delay(400);
+        };
+
+        var AddInventory = function () {
+            App.uxInventoryStore.insert(0, new Inventory());
+            App.uxInventorySelection.setLocked(true);
+            App.uxInventorySelection.setLocked(false);
+            App.uxInventorySelection.select(0);
+            var task = new Ext.util.DelayedTask(function () {
+                App.uxInventoryRowEdit.startEdit(0, 0);
+            });
+            task.delay(300);
+
+            // Create DelayedTask and call it after 100 ms
+            task = new Ext.util.DelayedTask(function () {
+                App.uxInventoryGrid.columns[0].getEditor().focusInput();
+            });
+            task.delay(400);
+        };
+
+        var onBeforeEdit = function (value) {
+            switch (value) {
+                case 'employee':
+                    App.uxEmployeeGrid.getSelectionModel().setLocked(true);
+                    break;
+                case 'equipment':
+                    App.uxEquipmentGrid.getSelectionModel().setLocked(true);
+                    break;
+                case 'weather':
+                    App.uxWeatherGrid.getSelectionModel().setLocked(true);
+                    break;
+                case 'production':
+                    App.uxProductionGrid.getSelectionModel().setLocked(true);
+                    break;
+                case 'inventory':
+                    App.uxInventoryGrid.getSelectionModel().setLocked(true);
+                    break;
+            }
+        }
+
         var cancelEditRow = function (value) {
             switch(value) {
                 case 'employee': 
                     if (!App.uxEmployeeGrid.getSelectionModel().getSelection()[0].data.EMPLOYEE_ID) {
                         App.uxEmployeeStore.remove(App.uxEmployeeGrid.getSelectionModel().getSelection()[0]);
+                        var task = new Ext.util.DelayedTask(function () {
+                            App.uxEmployeeSelection.setLocked(false);
+                        });
+                        task.delay(100);
                     }
                     break;
                 case 'equipment':
                     if (!App.uxEquipmentGrid.getSelectionModel().getSelection()[0].data.EQUIPMENT_ID) {
                         App.uxEquipmentStore.remove(App.uxEquipmentGrid.getSelectionModel().getSelection()[0]);
+                        var task = new Ext.util.DelayedTask(function () {
+                            App.uxEquipmentSelection.setLocked(false);
+                        });
+                        task.delay(100);
                     }
                     break;
                 case 'production':
                     if (!App.uxProductionGrid.getSelectionModel().getSelection()[0].data.PRODUCTION_ID) {
                         App.uxProductionStore.remove(App.uxProductionGrid.getSelectionModel().getSelection()[0]);
+                        var task = new Ext.util.DelayedTask(function () {
+                            App.uxProductionSelection.setLocked(false);
+                        });
+                        task.delay(100);
                     }
                     break;
                 case 'weather':
                     if(!App.uxWeatherGrid.getSelectionModel().getSelection()[0].data.WEATHER_ID){
                         App.uxWeatherStore.remove(App.uxWeatherGrid.getSelectionModel().getSelection()[0]);
+                        var task = new Ext.util.DelayedTask(function () {
+                            App.uxWeatherSelection.setLocked(false);
+                        });
+                        task.delay(100);
                     }
                     break;
                 case 'inventory':
                     if (!App.uxInventoryGrid.getSelectionModel().getSelection()[0].data.INVENTORY_ID) {
                         App.uxInventoryStore.remove(App.uxInventoryGrid.getSelectionModel().getSelection()[0]);
+                        var task = new Ext.util.DelayedTask(function () {
+                            App.uxInventorySelection.setLocked(false);
+                        });
+                        task.delay(100);
                     }
                     break;
                 case 'attachment':
@@ -975,17 +1100,15 @@
                             </ext:Column>
                         </Columns>
                     </ColumnModel>
+                    <SelectionModel>
+                        <ext:RowSelectionModel Mode="Single" ID="uxEmployeeSelection" />
+                    </SelectionModel>
                     <TopBar>
                         <ext:Toolbar ID="uxEmployeeToolbar" runat="server">
                             <Items>
                                 <ext:Button ID="uxAddEmployeeButton" runat="server" Text="Add" Icon="ApplicationAdd">
                                     <Listeners>
-                                        <Click Handler="#{uxEmployeeStore}.insert(0, new Employee()); #{uxEmployeeRowEdit}.startEdit(0, 0);
-                                            // Create DelayedTask and call it after 100 ms
-                                            var task = new Ext.util.DelayedTask(function(){
-                                            #{uxEmployeeGrid}.columns[0].getEditor().focusInput();
-                                            });
-                                            task.delay(100);" />
+                                        <Click Fn="AddEmployee" />
                                     </Listeners>
                                 </ext:Button>
                                 <ext:Button ID="uxDeleteEmployeeButton" runat="server" Text="Delete" Icon="ApplicationDelete" Disabled="true">
@@ -1010,7 +1133,7 @@
                         <ext:PagingToolbar runat="server" />
                     </BottomBar>
                     <Plugins>
-                        <ext:RowEditing runat="server" ClicksToEdit="1" AutoCancel="false" ID="uxEmployeeRowEdit" ErrorSummary="false">
+                        <ext:RowEditing runat="server" ClicksToMoveEditor="10" AutoCancel="false" ID="uxEmployeeRowEdit" ErrorSummary="false">
                             <DirectEvents>
                                 <Edit OnEvent="deSaveEmployee" Before="return #{uxEmployeeStore}.isDirty();">
                                     <ExtraParams>
@@ -1022,7 +1145,12 @@
                                 <BeforeEdit OnEvent="deSetTimeInDate" />
                             </DirectEvents>
                             <Listeners>
-                                <BeforeEdit Fn="checkEmployeeStatus" />
+                                <BeforeEdit Handler="if(checkEmployeeStatus()){
+                                    onBeforeEdit('employee');
+                                    }
+                                    else{
+                                    return false;
+                                    }" />
                                 <CancelEdit Handler="cancelEditRow('employee')" />
                             </Listeners>
                         </ext:RowEditing>
@@ -1217,12 +1345,7 @@
                             <Items>
                                 <ext:Button ID="uxAddEquipmentButton" runat="server" Text="Add" Icon="ApplicationAdd">
                                     <Listeners>
-                                        <Click Handler="#{uxEquipmentStore}.insert(0, new Equipment()); #{uxEquipmentRowEdit}.startEdit(0, 0);
-                                            // Create DelayedTask and call it after 100 ms
-                                            var task = new Ext.util.DelayedTask(function(){
-                                            #{uxEquipmentGrid}.columns[1].getEditor().focusInput();
-                                            });
-                                            task.delay(100);"  />
+                                        <Click Fn="AddEquipment"  />
                                     </Listeners>
                                 </ext:Button>
                                 <ext:Button ID="uxDeleteEquipmentButton" runat="server" Text="Delete" Icon="ApplicationDelete" Disabled="true">
@@ -1237,7 +1360,7 @@
                         <ext:PagingToolbar runat="server" />
                     </BottomBar>
                     <Plugins>
-                        <ext:RowEditing ID="uxEquipmentRowEdit" runat="server" AutoCancel="false" ClicksToEdit="1" ErrorSummary="false">
+                        <ext:RowEditing ID="uxEquipmentRowEdit" runat="server" AutoCancel="false" ClicksToMoveEditor="10" ErrorSummary="false">
                             <DirectEvents>
                                 <Edit OnEvent="deSaveEquipment" Before="return #{uxEquipmentStore}.isDirty();">
                                     <ExtraParams>
@@ -1481,17 +1604,15 @@
                             </ext:Column>
                         </Columns>
                     </ColumnModel>
+                    <SelectionModel>
+                        <ext:RowSelectionModel Mode="Single" ID="uxProductionSelection" />
+                    </SelectionModel>
                     <TopBar>
                         <ext:Toolbar ID="uxProductionToolbar" runat="server">
                             <Items>
                                 <ext:Button ID="uxAddProductionButton" runat="server" Text="Add" Icon="ApplicationAdd">
                                     <Listeners>
-                                        <Click Handler="#{uxProductionStore}.insert(0, new Production()); #{uxProductionRowEdit}.startEdit(0, 0);
-                                            // Create DelayedTask and call it after 100 ms
-                                            var task = new Ext.util.DelayedTask(function(){
-                                            #{uxProductionGrid}.columns[1].getEditor().focusInput();
-                                            });
-                                            task.delay(100);" />
+                                        <Click Fn="AddProduction" />
                                     </Listeners>
                                 </ext:Button>
                                 <ext:Button ID="uxDeleteProductionButton" runat="server" Text="Delete" Icon="ApplicationDelete" Disabled="true">
@@ -1506,7 +1627,7 @@
                         <ext:PagingToolbar ID="PagingToolbar4" runat="server" />
                     </BottomBar>
                     <Plugins>
-                        <ext:RowEditing ID="uxProductionRowEdit" runat="server" ClicksToEdit="1" AutoCancel="false" ErrorSummary="false">
+                        <ext:RowEditing ID="uxProductionRowEdit" runat="server" ClicksToMoveEditor="10" AutoCancel="false" ErrorSummary="false">
                             <DirectEvents>
                                 <Edit OnEvent="deSaveProduction" Before="return #{uxProductionStore}.isDirty();">
                                     <ExtraParams>
@@ -1616,17 +1737,15 @@
                             </ext:Column>
                         </Columns>
                     </ColumnModel>
+                    <SelectionModel>
+                        <ext:RowSelectionModel Mode="Single" ID="uxWeatherSelection" />
+                    </SelectionModel>
                     <TopBar>
                         <ext:Toolbar ID="uxWeatherToolbar" runat="server">
                             <Items>
                                 <ext:Button ID="uxAddWeatherButton" runat="server" Text="Add" Icon="ApplicationAdd">
                                     <Listeners>
-                                        <Click Handler="#{uxWeatherStore}.insert(0, new Weather()); #{uxWeatherRowEdit}.startEdit(0, 0);
-                                            // Create DelayedTask and call it after 100 ms
-                                            var task = new Ext.util.DelayedTask(function(){
-                                            #{uxWeatherGrid}.columns[0].getEditor().focusInput();
-                                            });
-                                            task.delay(100);" />
+                                        <Click Fn="AddWeather" />
                                     </Listeners>
                                 </ext:Button>
                                 <ext:Button ID="uxDeleteWeatherButton" runat="server" Text="Delete" Icon="ApplicationDelete" Disabled="true">
@@ -1641,7 +1760,7 @@
                         <ext:PagingToolbar ID="PagingToolbar5" runat="server" />
                     </BottomBar>
                     <Plugins>
-                        <ext:RowEditing ID="uxWeatherRowEdit" runat="server" ClicksToEdit="1" AutoCancel="false" ErrorSummary="false">
+                        <ext:RowEditing ID="uxWeatherRowEdit" runat="server" ClicksToMoveEditor="10" AutoCancel="false" ErrorSummary="false">
                             <DirectEvents>
                                 <Edit OnEvent="deSaveWeather" Before="return #{uxWeatherStore}.isDirty();">
                                     <ExtraParams>
@@ -1853,17 +1972,15 @@
                             </ext:Column>
                         </Columns>
                     </ColumnModel>
+                    <SelectionModel>
+                        <ext:RowSelectionModel Mode="Single" ID="uxInventorySelection" />
+                    </SelectionModel>
                     <TopBar>
                         <ext:Toolbar ID="uxInventoryToolbar" runat="server">
                             <Items>
                                 <ext:Button ID="uxAddInventoryButton" runat="server" Text="Add" Icon="ApplicationAdd">
                                     <Listeners>
-                                        <Click Handler="#{uxInventoryStore}.insert(0, new Inventory()); #{uxInventoryRowEdit}.startEdit(0, 0);
-                                            // Create DelayedTask and call it after 100 ms
-                                            var task = new Ext.util.DelayedTask(function(){
-                                            #{uxInventoryGrid}.columns[0].getEditor().focusInput();
-                                            });
-                                            task.delay(100);" />
+                                        <Click Fn="AddInventory" />
                                     </Listeners>
                                 </ext:Button>
                                 <ext:Button ID="uxDeleteInventoryButton" runat="server" Text="Delete" Icon="ApplicationDelete" Disabled="true">
@@ -1878,7 +1995,7 @@
                         <ext:PagingToolbar ID="PagingToolbar6" runat="server" />
                     </BottomBar>
                     <Plugins>
-                        <ext:RowEditing ID="uxInventoryRowEdit" runat="server" ClicksToEdit="1" AutoCancel="false" ErrorSummary="false">
+                        <ext:RowEditing ID="uxInventoryRowEdit" runat="server" ClicksToMoveEditor="10" AutoCancel="false" ErrorSummary="false">
                             <DirectEvents>
                                 <Edit OnEvent="deSaveInventory" Before="return #{uxInventoryStore}.isDirty()">
                                     <ExtraParams>
