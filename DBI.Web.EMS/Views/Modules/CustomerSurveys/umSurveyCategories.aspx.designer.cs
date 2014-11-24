@@ -67,6 +67,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.Button uxDeleteCategoryButton;
         
         /// <summary>
+        /// uxCategorySelection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel uxCategorySelection;
+        
+        /// <summary>
         /// uxQuestionCategoryGrid control.
         /// </summary>
         /// <remarks>
@@ -110,5 +119,14 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Button uxDeleteQuestionCategoryButton;
+        
+        /// <summary>
+        /// uxQuestionCategorySelection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel uxQuestionCategorySelection;
     }
 }

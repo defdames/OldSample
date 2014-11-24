@@ -189,7 +189,7 @@ namespace DBI.Data
                    from secondsub in fr.DefaultIfEmpty()
                    join q in _context.CUSTOMER_SURVEY_QUESTIONS on secondsub.QUESTION_ID equals q.QUESTION_ID into rq
                    from thirdsub in rq.DefaultIfEmpty()
-                   group new {c, thirdsub} by new{c.CATEGORY_ID, c.CATEGORY_NAME, thirdsub.QUESTION_ID} into qc
+                   group new {c, thirdsub} by new{c.CATEGORY_ID, c.CATEGORY_NAME} into qc
                    select new CustomerSurveyQuestionCategoryStore{CATEGORY_ID = qc.Key.CATEGORY_ID, CATEGORY_NAME = qc.Key.CATEGORY_NAME, NUM_QUESTIONS = qc.Count(x => x.thirdsub.QUESTION_ID != null)});
         }
 

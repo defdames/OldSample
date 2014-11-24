@@ -72,7 +72,7 @@
         };
 
         var AddFieldset = function () {
-            App.uxFieldsetsStore.insert(0, new Form());
+            App.uxFieldsetsStore.insert(0, new Fieldset());
             App.uxFieldsetSelection.setLocked(true);
             App.uxFieldsetSelection.setLocked(false);
             App.uxFieldsetSelection.select(0);
@@ -89,7 +89,7 @@
         };
 
         var AddQuestion = function () {
-            App.uxQuestionsStore.insert(0, new Form());
+            App.uxQuestionsStore.insert(0, new Question());
             App.uxQuestionSelection.setLocked(true);
             App.uxQuestionSelection.setLocked(false);
             App.uxQuestionSelection.select(0);
@@ -309,7 +309,7 @@
                                     </ColumnModel>
                                     <Plugins>
                                         <ext:FilterHeader runat="server" Remote="true" />
-                                        <ext:RowEditing runat="server" ID="uxFormRowEdit" ClicksToMoveEditor="10" AutoCancel="true" ErrorSummary="false">
+                                        <ext:RowEditing runat="server" ID="uxFormRowEdit" ClicksToMoveEditor="10" AutoCancel="false" ErrorSummary="false">
                                             <DirectEvents>
                                                 <Edit OnEvent="deSaveForm" Before="return #{uxFormsStore}.isDirty();">
                                                     <ExtraParams>

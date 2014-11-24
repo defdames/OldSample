@@ -64,7 +64,14 @@ namespace DBI.Core.Web
             ResourceManager.GetInstance(this).Listeners.AjaxRequestException.Handler = GetExceptionHandlerScript(String.Empty);
             ResourceManager.GetInstance(this).RegisterClientScriptBlock("Localization", "Ext.override({showFailure: " + GetExceptionHandlerScript(String.Empty) + "});");
 
+            if (Session["isDirty"] == null)
+            {
+                Session["isDirty"] = 0;
+            }
+
             base.OnLoad(e);
+
+            
         }
 
         /// <summary>

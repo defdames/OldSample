@@ -7,15 +7,59 @@
     <title></title>
     <link type="text/css" rel="stylesheet" href="../../../Resources/StyleSheets/main.css" />
     <script type="text/javascript">
+
+        var AddQuestionCategory = function () {
+            App.uxQuestionCategoryStore.insert(0, new QuestionCategory());
+            if (App.uxQuestionCategorySelection.isLocked()) {
+                App.uxQuestionCategorySelection.setLocked(false);
+            }
+            App.uxQuestionCategorySelection.select(0);
+            var task = new Ext.util.DelayedTask(function () {
+                App.uxQuestionCategoryRowEdit.startEdit(0, 0);
+            });
+            task.delay(300);
+
+            // Create DelayedTask and call it after 100 ms
+            task = new Ext.util.DelayedTask(function () {
+                App.uxQuestionCategoryGrid.columns[0].getEditor().focusInput();
+            });
+            task.delay(400);
+        };
+
+        var AddFormCategory = function () {
+            App.uxCategoriesStore.insert(0, new FormType());
+            App.uxCategorySelection.setLocked(true);
+            App.uxCategorySelection.setLocked(false);
+            App.uxCategorySelection.select(0);
+            var task = new Ext.util.DelayedTask(function () {
+                App.uxFormTypeRowEdit.startEdit(0, 0);
+            });
+            task.delay(300);
+
+            // Create DelayedTask and call it after 100 ms
+            task = new Ext.util.DelayedTask(function () {
+                App.uxCategoryGrid.columns[0].getEditor().focusInput();
+            });
+            task.delay(400);
+        };
+
         var cancelEditRow = function (value) {
             if (value == "formtype") {
                 if (!App.uxCategoryGrid.getSelectionModel().getSelection()[0].data.CATEGORY_ID) {
                     App.uxCategoriesStore.remove(App.uxCategoryGrid.getSelectionModel().getSelection()[0]);
+                    var task = new Ext.util.DelayedTask(function () {
+                        App.uxCategorySelection.setLocked(false);
+                    });
+                    task.delay(100);
                 }
             }
             else {
                 if (!App.uxQuestionCategoryGrid.getSelectionModel().getSelection()[0].data.CATEGORY_ID) {
                     App.uxQuestionCategoryStore.remove(App.uxQuestionCategoryGrid.getSelectionModel().getSelection()[0]);
+                    var task = new Ext.util.DelayedTask(function () {
+                        App.uxQuestionCategorySelection.setLocked(false);
+                    });
+                    task.delay(100);
                 }
             }
             App.direct.dmSubtractFromDirty();
@@ -46,6 +90,20 @@
                 }
             });
         };
+
+        
+        
+        var onBeforeEdit = function (value) {
+            switch (value) {
+                case 'formtype':
+                    App.uxCategoryGrid.getSelectionModel().setLocked(true);
+                    break;
+                default:
+                    App.uxQuestionCategoryGrid.getSelectionModel().setLocked(true);
+                    break;
+            }
+            App.direct.dmAddToDirty();
+        }
     </script>
 </head>
 <body>
@@ -91,10 +149,15 @@
                     </ColumnModel>
                     <Plugins>
                         <ext:FilterHeader runat="server" Remote="true" />
-                        <ext:RowEditing runat="server" ClicksToEdit="1" AutoCancel="false" ClicksToMoveEditor="1" ErrorSummary="false" ID="uxFormTypeRowEdit">
+                        <ext:RowEditing runat="server" ClicksToEdit="2" AutoCancel="false" ClicksToMoveEditor="10" ErrorSummary="false" ID="uxFormTypeRowEdit">
                             <Listeners>
                                 <CancelEdit Handler="cancelEditRow('formtype')" />
-                                <BeforeEdit Handler="App.direct.dmAddToDirty()" />
+                                <BeforeEdit Handler="
+                                    if(!#{uxFormTypeRowEdit}.editor.isVisible()){
+                                                    onBeforeEdit('formtype')
+                                                    }else{
+                                                    return false;
+                                                    }" />
                             </Listeners>
                             <DirectEvents>
                                 <Edit OnEvent="deSaveCategory" >
@@ -110,12 +173,7 @@
                             <Items>
                                 <ext:Button runat="server" ID="uxAddCategoryButton" Text="Add" Icon="ApplicationAdd">
                                     <Listeners>
-                                        <Click Handler="#{uxCategoriesStore}.insert(0, new FormType()); #{uxFormTypeRowEdit}.startEdit(0, 0);
-                                                            // Create DelayedTask and call it after 100 ms
-                                                            var task = new Ext.util.DelayedTask(function(){
-                                                            #{uxCategoryGrid}.columns[0].getEditor().focusInput();
-                                                            });
-                                                            task.delay(100);" />
+                                        <Click Fn="AddFormCategory" />
                                     </Listeners>
                                 </ext:Button>
                                 <ext:Button runat="server" ID="uxDeleteCategoryButton" Text="Delete" Icon="ApplicationDelete" Disabled="true">
@@ -132,8 +190,11 @@
                     <Listeners>
                         <Select Handler="#{uxDeleteCategoryButton}.enable()" />
                     </Listeners>
+                    <SelectionModel>
+                        <ext:RowSelectionModel Mode="Single" ID="uxCategorySelection" />
+                    </SelectionModel>
                 </ext:GridPanel>
-                <ext:GridPanel ID="uxQuestionCategoryGrid" runat="server" Title="Question Categories" Region="North">
+                <ext:GridPanel ID="uxQuestionCategoryGrid" runat="server" Title="Question Categories" Region="North" Height="350">
                     <Store>
                         <ext:Store runat="server" ID="uxQuestionCategoryStore" OnReadData="deReadQuestionCategories" PageSize="10" AutoDataBind="true" RemoteSort="true">
                             <Model>
@@ -165,10 +226,14 @@
                     </ColumnModel>
                     <Plugins>
                         <ext:FilterHeader runat="server" Remote="true" />
-                        <ext:RowEditing runat="server" ID="uxQuestionCategoryRowEdit" AutoCancel="false" ClicksToEdit="1" ClicksToMoveEditor="1" ErrorSummary="false">
+                        <ext:RowEditing runat="server" ID="uxQuestionCategoryRowEdit" AutoCancel="false" ClicksToEdit="2" ClicksToMoveEditor="10" ErrorSummary="false">
                             <Listeners>
                                 <CancelEdit Handler="cancelEditRow('questioncat')" />
-                                <BeforeEdit Handler="App.direct.dmAddToDirty()" />
+                                <BeforeEdit Handler="if(!#{uxQuestionCategoryRowEdit}.editor.isVisible()){
+                                                    onBeforeEdit('questioncat')
+                                                    }else{
+                                                    return false;
+                                                    }" />
                             </Listeners>
                             <DirectEvents>
                                 <Edit OnEvent="deSaveQuestionCategory" Before="return #{uxQuestionCategoryStore}.isDirty();">
@@ -187,12 +252,7 @@
                             <Items>
                                 <ext:Button runat="server" ID="uxAddQuestionCategoryButton" Text="Add" Icon="ApplicationAdd">
                                     <Listeners>
-                                        <Click Handler="#{uxQuestionCategoryStore}.insert(0, new QuestionCategory()); #{uxQuestionCategoryRowEdit}.startEdit(0, 0);
-                                                            // Create DelayedTask and call it after 100 ms
-                                                            var task = new Ext.util.DelayedTask(function(){
-                                                            #{uxQuestionCategoryGrid}.columns[0].getEditor().focusInput();
-                                                            });
-                                                            task.delay(100);" />
+                                        <Click Fn="AddQuestionCategory" />
                                     </Listeners>
                                 </ext:Button>
                                 <ext:Button runat="server" ID="uxDeleteQuestionCategoryButton" Text="Delete" Icon="ApplicationDelete" Disabled="true">
@@ -206,6 +266,9 @@
                     <Listeners>
                         <Select Handler="#{uxDeleteQuestionCategoryButton}.enable()" />
                     </Listeners>
+                    <SelectionModel>
+                        <ext:RowSelectionModel Mode="Single" ID="uxQuestionCategorySelection" />
+                    </SelectionModel>
                 </ext:GridPanel>
             </Items>
         </ext:Viewport>

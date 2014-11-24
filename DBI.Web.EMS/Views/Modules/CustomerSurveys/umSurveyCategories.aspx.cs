@@ -79,7 +79,8 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             {
                 int count;
                 IQueryable<CUSTOMER_SURVEYS.CustomerSurveyQuestionCategoryStore> data = CUSTOMER_SURVEYS.GetQuestionCategories(_context);
-                uxQuestionCategoryStore.DataSource = GenericData.ListFilterHeader<CUSTOMER_SURVEYS.CustomerSurveyQuestionCategoryStore>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                var test = GenericData.ListFilterHeader<CUSTOMER_SURVEYS.CustomerSurveyQuestionCategoryStore>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                uxQuestionCategoryStore.DataSource = test;
                 e.Total = count;
             }
         }
