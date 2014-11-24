@@ -73,14 +73,14 @@ namespace DBI.Web.EMS.Views
         /// <param name="e">Extra Parameters Page(which panel to load), and Location(where on the page to load it)</param>
         protected void deLoadPage(object sender, DirectEventArgs e)
         {
-            if (isDirty == 0)
+            if (long.Parse(Session["isDirty"].ToString()) == 0)
             {
                 uxWest.Collapse();
                 LoadModule(e.ExtraParams["Page"], e.ExtraParams["Location"]);
             }
             else
             {
-                CreateDirtyMessage();
+               CreateDirtyMessage();
             }
         }
 

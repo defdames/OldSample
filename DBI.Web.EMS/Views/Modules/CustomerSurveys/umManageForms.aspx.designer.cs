@@ -58,6 +58,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.GridPanel uxFormsGrid;
         
         /// <summary>
+        /// uxFormSelection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel uxFormSelection;
+        
+        /// <summary>
         /// uxFormsStore control.
         /// </summary>
         /// <remarks>
@@ -173,6 +182,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.GridPanel uxFieldsetsGrid;
+        
+        /// <summary>
+        /// uxFieldsetSelection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel uxFieldsetSelection;
         
         /// <summary>
         /// uxFieldsetsStore control.
@@ -310,6 +328,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.Store uxQuestionFieldsetStore;
         
         /// <summary>
+        /// uxQuestionSelection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel uxQuestionSelection;
+        
+        /// <summary>
         /// uxQuestionRowEdit control.
         /// </summary>
         /// <remarks>
@@ -380,6 +407,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Button uxDeleteOptionButton;
+        
+        /// <summary>
+        /// uxOptionSelection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel uxOptionSelection;
         
         /// <summary>
         /// uxCopyFormWindow control.

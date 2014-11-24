@@ -994,6 +994,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Button uxChoosePerDiemButton;
         
         /// <summary>
+        /// uxEmployeeSelection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel uxEmployeeSelection;
+        
+        /// <summary>
         /// uxEmployeeRowEdit control.
         /// </summary>
         /// <remarks>
@@ -1489,6 +1498,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Button uxDeleteProductionButton;
         
         /// <summary>
+        /// uxProductionSelection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel uxProductionSelection;
+        
+        /// <summary>
         /// PagingToolbar2 control.
         /// </summary>
         /// <remarks>
@@ -1631,6 +1649,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Button uxDeleteWeatherButton;
+        
+        /// <summary>
+        /// uxWeatherSelection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel uxWeatherSelection;
         
         /// <summary>
         /// PagingToolbar4 control.
@@ -1901,6 +1928,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Button uxDeleteChemicalButton;
+        
+        /// <summary>
+        /// uxChemicalSelection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel uxChemicalSelection;
         
         /// <summary>
         /// PagingToolbar5 control.
@@ -2315,6 +2351,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Button uxDeleteInventoryButton;
+        
+        /// <summary>
+        /// uxInventorySelection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel uxInventorySelection;
         
         /// <summary>
         /// PagingToolbar6 control.

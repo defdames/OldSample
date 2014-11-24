@@ -54,11 +54,65 @@
             return r.data.CATEGORY_NAME;
         };
 
+        var AddForm = function () {
+            App.uxFormsStore.insert(0, new Form());
+            App.uxFormSelection.setLocked(true);
+            App.uxFormSelection.setLocked(false);
+            App.uxFormSelection.select(0);
+            var task = new Ext.util.DelayedTask(function () {
+                App.uxFormRowEdit.startEdit(0, 0);
+            });
+            task.delay(300);
+
+            // Create DelayedTask and call it after 100 ms
+            task = new Ext.util.DelayedTask(function () {
+                App.uxFormsGrid.columns[0].getEditor().focusInput();
+            });
+            task.delay(400);
+        };
+
+        var AddFieldset = function () {
+            App.uxFieldsetsStore.insert(0, new Form());
+            App.uxFieldsetSelection.setLocked(true);
+            App.uxFieldsetSelection.setLocked(false);
+            App.uxFieldsetSelection.select(0);
+            var task = new Ext.util.DelayedTask(function () {
+                App.uxFieldsetRowEdit.startEdit(0, 0);
+            });
+            task.delay(300);
+
+            // Create DelayedTask and call it after 100 ms
+            task = new Ext.util.DelayedTask(function () {
+                App.uxFieldsetsGrid.columns[0].getEditor().focusInput();
+            });
+            task.delay(400);
+        };
+
+        var AddQuestion = function () {
+            App.uxQuestionsStore.insert(0, new Form());
+            App.uxQuestionSelection.setLocked(true);
+            App.uxQuestionSelection.setLocked(false);
+            App.uxQuestionSelection.select(0);
+            var task = new Ext.util.DelayedTask(function () {
+                App.uxQuestionRowEdit.startEdit(0, 0);
+            });
+            task.delay(300);
+
+            // Create DelayedTask and call it after 100 ms
+            task = new Ext.util.DelayedTask(function () {
+                App.uxQuestionsGrid.columns[0].getEditor().focusInput();
+            });
+            task.delay(400);
+        };
+
         var AddOption = function () {
             var Option = new QuestionOption({
                 TEXT: App.uxQuestionsGrid.getSelectionModel().getSelection()[0].data.TEXT
             });
             App.uxOptionsStore.insert(0, Option);
+            App.uxOptionSelection.setLocked(true);
+            App.uxOptionSelection.setLocked(false);
+            App.uxOptionSelection.select(0);
             App.uxOptionRowEdit.startEdit(0, 0);
             // Create DelayedTask and call it after 100 ms
             var task = new Ext.util.DelayedTask(function () {
@@ -72,26 +126,60 @@
                 case 'form':
                     if (!App.uxFormsGrid.getSelectionModel().getSelection()[0].data.FORM_ID) {
                         App.uxFormsStore.remove(App.uxFormsGrid.getSelectionModel().getSelection()[0]);
+                        var task = new Ext.util.DelayedTask(function () {
+                            App.uxFormSelection.setLocked(false);
+                        });
+                        task.delay(100);
                     }
                     break;
                 case 'fieldset':
                     if (!App.uxFieldsetsGrid.getSelectionModel().getSelection()[0].data.FIELDSET_ID) {
                         App.uxFieldsetsStore.remove(App.uxFieldsetsGrid.getSelectionModel().getSelection()[0]);
+                        var task = new Ext.util.DelayedTask(function () {
+                            App.uxFieldsetsGrid.getSelectionModel().setLocked(false);
+                        });
+                        task.delay(100);
                     }
                     break;
                 case 'question':
                     if (!App.uxQuestionsGrid.getSelectionModel().getSelection()[0].data.QUESTION_ID) {
                         App.uxQuestionsStore.remove(App.uxQuestionsGrid.getSelectionModel().getSelection()[0]);
+                        var task = new Ext.util.DelayedTask(function () {
+                            App.uxQuestionsGrid.getSelectionModel().setLocked(false);
+                        });
+                        task.delay(100);
                     }
                     break;
                 case 'option':
                     if (!App.uxOptionsGrid.getSelectionModel().getSelection()[0].data.OPTION_ID) {
                         App.uxOptionsStore.remove(App.uxOptionsGrid.getSelectionModel().getSelection()[0]);
+                        var task = new Ext.util.DelayedTask(function () {
+                            App.uxOptionsGrid.getSelectionModel().setLocked(false);
+                        });
+                        task.delay(100);
                     }
                     break;
             }
             App.direct.dmSubtractFromDirty();
         };
+
+        var onBeforeEdit = function (value) {
+            switch (value) {
+                case 'form':
+                    App.uxFormsGrid.getSelectionModel().setLocked(true);
+                    break;
+                case 'fieldset':
+                    App.uxFieldsetsGrid.getSelectionModel().setLocked(true);
+                    break;
+                case 'question':
+                    App.uxQuestionsGrid.getSelectionModel().setLocked(true);
+                    break;
+                case 'option':
+                    App.uxOptionsGrid.getSelectionModel().setLocked(true);
+                    break;
+            }
+            App.direct.dmAddToDirty();
+        }
     </script>
     <style type="text/css">
         .allowBlank-field {
@@ -111,7 +199,7 @@
                             <Items>
                                 <ext:GridPanel runat="server" ID="uxFormsGrid" Title="Forms" MaxWidth="1100" Margin="5" MinHeight="250" SelectionMemory="true">
                                     <SelectionModel>
-                                        <ext:RowSelectionModel Mode="Single" />
+                                        <ext:RowSelectionModel Mode="Single" ID="uxFormSelection" />
                                     </SelectionModel>
                                     <Store>
                                         <ext:Store runat="server" ID="uxFormsStore" AutoDataBind="true" OnReadData="deReadForms" RemoteSort="true" PageSize="10">
@@ -145,7 +233,7 @@
                                             <ext:Column runat="server" DataIndex="ORG_ID" Text="Organization Name" Flex="1">
                                                 <Renderer Fn="OrgRenderer" />
                                                 <Editor>
-                                                    <ext:ComboBox runat="server" ForceSelection="true" TypeAhead="true" QueryMode="Local" ValueField="ORG_ID" DisplayField="ORG_HIER" AllowBlank="false" EmptyText="Choose Organization"  InvalidCls="allowBlank">
+                                                    <ext:ComboBox runat="server" ForceSelection="true" TypeAhead="true" QueryMode="Local" ValueField="ORG_ID" DisplayField="ORG_HIER" AllowBlank="false" EmptyText="Choose Organization" InvalidCls="allowBlank">
                                                         <Store>
                                                             <ext:Store runat="server" ID="uxAddFormOrgStore" OnReadData="deReadOrgs" AutoDataBind="true">
                                                                 <Model>
@@ -221,7 +309,7 @@
                                     </ColumnModel>
                                     <Plugins>
                                         <ext:FilterHeader runat="server" Remote="true" />
-                                        <ext:RowEditing runat="server" ID="uxFormRowEdit" ClicksToMoveEditor="1" AutoCancel="false" ErrorSummary="false">
+                                        <ext:RowEditing runat="server" ID="uxFormRowEdit" ClicksToMoveEditor="10" AutoCancel="true" ErrorSummary="false">
                                             <DirectEvents>
                                                 <Edit OnEvent="deSaveForm" Before="return #{uxFormsStore}.isDirty();">
                                                     <ExtraParams>
@@ -233,7 +321,11 @@
                                             </DirectEvents>
                                             <Listeners>
                                                 <CancelEdit Handler="cancelEditRow('form')" />
-                                                <BeforeEdit Handler="App.direct.dmAddToDirty()" />
+                                                <BeforeEdit Handler="if(!#{uxFormRowEdit}.editor.isVisible()){
+                                                    onBeforeEdit('form')
+                                                    }else{
+                                                    return false;
+                                                    }" />
                                             </Listeners>
                                         </ext:RowEditing>
                                     </Plugins>
@@ -242,12 +334,7 @@
                                             <Items>
                                                 <ext:Button runat="server" Text="Add Form" ID="uxAddFormButton" Icon="ApplicationAdd">
                                                     <Listeners>
-                                                        <Click Handler="#{uxFormsStore}.insert(0, new Form()); #{uxFormRowEdit}.startEdit(0, 0);
-                                                            // Create DelayedTask and call it after 100 ms
-                                                            var task = new Ext.util.DelayedTask(function(){
-                                                            #{uxFormsGrid}.columns[0].getEditor().focusInput();
-                                                            });
-                                                            task.delay(100);" />
+                                                        <Click Fn="AddForm" />
                                                     </Listeners>
                                                 </ext:Button>
                                                 <ext:Button runat="server" Text="Delete Form" ID="uxDeleteFormButton" Icon="ApplicationDelete" Disabled="true">
@@ -290,7 +377,7 @@
                                 </ext:GridPanel>
                                 <ext:GridPanel runat="server" Title="Fieldsets" ID="uxFieldsetsGrid" MaxWidth="1100" Margin="5" MinHeight="250" SelectionMemory="true">
                                     <SelectionModel>
-                                        <ext:RowSelectionModel Mode="Single" />
+                                        <ext:RowSelectionModel Mode="Single" ID="uxFieldsetSelection" />
                                     </SelectionModel>
                                     <Store>
                                         <ext:Store runat="server" ID="uxFieldsetsStore" AutoDataBind="true" AutoLoad="false" PageSize="5" RemoteSort="true" OnReadData="deReadFieldsets">
@@ -358,7 +445,7 @@
                                     </ColumnModel>
                                     <Plugins>
                                         <ext:FilterHeader runat="server" Remote="true" />
-                                        <ext:RowEditing runat="server" ClicksToMoveEditor="1" ID="uxFieldsetRowEdit" AutoCancel="false" ErrorSummary="false">
+                                        <ext:RowEditing runat="server" ClicksToMoveEditor="10" ID="uxFieldsetRowEdit" AutoCancel="false" ErrorSummary="false">
                                             <DirectEvents>
                                                 <Edit OnEvent="deSaveFieldsets" Before="return #{uxFieldsetsStore}.isDirty();">
                                                     <ExtraParams>
@@ -371,7 +458,11 @@
                                             </DirectEvents>
                                             <Listeners>
                                                 <CancelEdit Handler="cancelEditRow('fieldset')" />
-                                                <BeforeEdit Handler="App.direct.dmAddToDirty()" />
+                                                <BeforeEdit Handler="if(!#{uxFieldsetRowEdit}.editor.isVisible()){
+                                                    onBeforeEdit('fieldset')
+                                                    }else{
+                                                    return false;
+                                                    }" />
                                             </Listeners>
                                         </ext:RowEditing>
                                     </Plugins>
@@ -383,12 +474,7 @@
                                             <Items>
                                                 <ext:Button runat="server" ID="uxAddFieldsetButton" Icon="ApplicationAdd" Text="Add Fieldset" Disabled="true">
                                                     <Listeners>
-                                                        <Click Handler="#{uxFieldSetsStore}.insert(0, new Fieldset()); ;#{uxFieldsetRowEdit}.startEdit(0, 0);
-                                                            // Create DelayedTask and call it after 100 ms
-                                                            var task = new Ext.util.DelayedTask(function(){
-                                                            #{uxFieldsetsGrid}.columns[0].getEditor().focusInput();
-                                                            });
-                                                            task.delay(100);" />
+                                                        <Click Fn="AddFieldset" />
                                                     </Listeners>
                                                 </ext:Button>
                                                 <ext:Button runat="server" ID="uxDeleteFieldsetButton" Icon="ApplicationDelete" Text="Delete Fieldset" Disabled="true">
@@ -473,7 +559,7 @@
                                             <ext:Column runat="server" DataIndex="FIELDSET_ID" Text="Fieldset" Flex="20">
                                                 <Renderer Fn="FieldsetRenderer" />
                                                 <Editor>
-                                                    <ext:ComboBox runat="server" ForceSelection="true" InvalidCls="allowBlank" TypeAhead="true" QueryMode="Local" DisplayField="TITLE" ValueField="FIELDSET_ID" AllowBlank="false" EmptyText="Select a Fieldset">
+                                                    <ext:ComboBox runat="server" ForceSelection="true" InvalidCls="allowBlank" TypeAhead="true" QueryMode="Remote" DisplayField="TITLE" ValueField="FIELDSET_ID" AllowBlank="false" EmptyText="Select a Fieldset">
                                                         <Store>
                                                             <ext:Store runat="server" ID="uxQuestionFieldsetStore" OnReadData="deReadQuestionFieldsets" AutoDataBind="true" AutoLoad="false">
                                                                 <Model>
@@ -507,9 +593,12 @@
                                             </ext:Column>
                                         </Columns>
                                     </ColumnModel>
+                                    <SelectionModel>
+                                        <ext:RowSelectionModel Mode="Single" ID="uxQuestionSelection" />
+                                    </SelectionModel>
                                     <Plugins>
                                         <ext:FilterHeader runat="server" Remote="true" />
-                                        <ext:RowEditing runat="server" ClicksToMoveEditor="1" ID="uxQuestionRowEdit" AutoCancel="false" ErrorSummary="false">
+                                        <ext:RowEditing runat="server" ClicksToMoveEditor="10" ID="uxQuestionRowEdit" AutoCancel="false" ErrorSummary="false">
                                             <DirectEvents>
                                                 <Edit OnEvent="deSaveQuestions" Before="return #{uxQuestionsStore}.isDirty();">
                                                     <ExtraParams>
@@ -520,7 +609,11 @@
                                             </DirectEvents>
                                             <Listeners>
                                                 <CancelEdit Handler="cancelEditRow('question')" />
-                                                <BeforeEdit Handler="App.direct.dmAddToDirty()" />
+                                                <BeforeEdit Handler="if(!#{uxQuestionRowEdit}.editor.isVisible()){
+                                                    onBeforeEdit('question')
+                                                    }else{
+                                                    return false;
+                                                    }" />
                                             </Listeners>
                                         </ext:RowEditing>
                                     </Plugins>
@@ -539,12 +632,7 @@
                                             <Items>
                                                 <ext:Button runat="server" ID="uxAddQuestionButton" Icon="ApplicationAdd" Text="Add Question" Disabled="true">
                                                     <Listeners>
-                                                        <Click Handler="#{uxQuestionsStore}.insert(0, new Question()); #{uxQuestionRowEdit}.startEdit(0, 0);
-                                                            // Create DelayedTask and call it after 100 ms
-                                                            var task = new Ext.util.DelayedTask(function(){
-                                                            #{uxQuestionsGrid}.columns[0].getEditor().focusInput();
-                                                            });
-                                                            task.delay(100);" />
+                                                        <Click Fn="AddQuestion" />
                                                     </Listeners>
                                                 </ext:Button>
                                                 <ext:Button runat="server" ID="uxDeleteQuestionButton" Icon="ApplicationDelete" Text="Delete Question" Disabled="true">
@@ -609,7 +697,7 @@
                                     </ColumnModel>
                                     <Plugins>
                                         <ext:FilterHeader runat="server" Remote="true" />
-                                        <ext:RowEditing runat="server" ID="uxOptionRowEdit" AutoCancel="false" ClicksToMoveEditor="1" ErrorSummary="false">
+                                        <ext:RowEditing runat="server" ID="uxOptionRowEdit" AutoCancel="false" ClicksToMoveEditor="10" ErrorSummary="false">
                                             <DirectEvents>
                                                 <Edit OnEvent="deSaveOptions" Before="return #{uxOptionsStore}.isDirty();">
                                                     <ExtraParams>
@@ -620,7 +708,11 @@
                                                 </Edit>
                                             </DirectEvents>
                                             <Listeners>
-                                                <BeforeEdit Handler="App.direct.dmAddToDirty()" />
+                                                <BeforeEdit Handler="if(!#{uxOptionRowEdit}.editor.isVisible()){
+                                                    onBeforeEdit('option')
+                                                    }else{
+                                                    return false;
+                                                    }" />
                                                 <CancelEdit Handler="cancelEditRow('option')" />
                                             </Listeners>
                                         </ext:RowEditing>
@@ -653,6 +745,9 @@
                                     <Listeners>
                                         <Select Handler="#{uxDeleteOptionButton}.enable()" />
                                     </Listeners>
+                                    <SelectionModel>
+                                        <ext:RowSelectionModel Mode="Single" ID="uxOptionSelection" />
+                                    </SelectionModel>
                                 </ext:GridPanel>
                             </Items>
                         </ext:Panel>

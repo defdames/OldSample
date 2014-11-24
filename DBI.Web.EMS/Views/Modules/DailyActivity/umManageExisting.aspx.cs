@@ -153,6 +153,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deUpdateUrlAndButtons(object sender, DirectEventArgs e)
         {
+            long isDirty = long.Parse(Session["isDirty"].ToString());
             if (isDirty == 0)
             {
                 long OrgId;
