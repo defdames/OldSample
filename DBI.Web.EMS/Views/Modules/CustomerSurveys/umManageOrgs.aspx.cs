@@ -306,13 +306,17 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
         [DirectMethod]
         public void dmAddToDirty()
         {
+            long isDirty = (long)Session["isDirty"];
             isDirty++;
+            Session["isDirty"] = isDirty;
         }
 
         [DirectMethod]
         public void dmSubtractFromDirty()
         {
+            long isDirty = (long)Session["isDirty"];
             isDirty--;
+            Session["isDirty"] = isDirty;
         }
     }
 }

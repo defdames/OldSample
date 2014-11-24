@@ -18,7 +18,6 @@ namespace DBI.Core.Web
 {
     public class BasePage : System.Web.UI.Page
     {
-        public static int isDirty { get; set; }
         /// <summary>
         /// Code the checks for Activity, returns false if user is 
         /// </summary>
@@ -99,6 +98,7 @@ namespace DBI.Core.Web
         /// <param name="e"></param>
         protected void deLogout(object sender, DirectEventArgs e)
         {
+            long isDirty = long.Parse(Session["isDirty"].ToString());
             if (isDirty == 0)
             {
                 Authentication.Logout();

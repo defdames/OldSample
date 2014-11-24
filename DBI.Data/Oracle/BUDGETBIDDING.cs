@@ -578,6 +578,7 @@ namespace DBI.Data
             public static List<Fields> RollupOrgOPCompare2(long userID, long hierarchyID, long orgID, long yearID, long verID, long prevYearID, long prevVerID)
             {
                 string ohVersion = BB.BudBidVerToOHBudVer(verID);
+                string prevOHVersion = BB.BudBidVerToOHBudVer(prevVerID);
                 List<long> summaryOrgs = BB.OverallSummaryBudgetOrgsBelowCurrent(userID, hierarchyID, orgID);
                 List<Fields> lineDetail = new List<Fields>();
                 foreach (long summaryOrg in summaryOrgs)
@@ -601,30 +602,30 @@ namespace DBI.Data
                                     IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
                             ),
                             PREV_OP AS (       
-                                SELECT BUD_BID_PROJECTS.ORG_ID, SUM(NOV) PREV_OP                                         
-                                FROM BUD_BID_PROJECTS
-                                LEFT OUTER JOIN BUD_BID_DETAIL_TASK ON BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = BUD_BID_DETAIL_TASK.PROJECT_ID
-                                LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_BUDGET_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_BUDGET_NUM.DETAIL_TASK_ID 
-                                WHERE BUD_BID_PROJECTS.YEAR_ID = {3} AND BUD_BID_PROJECTS.VER_ID = {4} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT' AND BUD_BID_BUDGET_NUM.LINE_ID = 10                             
-                                GROUP BY BUD_BID_PROJECTS.ORG_ID     
+                                  SELECT BUD_BID_PROJECTS.ORG_ID, SUM(NOV) PREV_OP                                         
+                                  FROM BUD_BID_PROJECTS
+                                  LEFT OUTER JOIN BUD_BID_DETAIL_TASK ON BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = BUD_BID_DETAIL_TASK.PROJECT_ID
+                                  LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_BUDGET_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_BUDGET_NUM.DETAIL_TASK_ID 
+                                  WHERE BUD_BID_PROJECTS.YEAR_ID = {3} AND BUD_BID_PROJECTS.VER_ID = {4} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT' AND BUD_BID_BUDGET_NUM.LINE_ID = 10                             
+                                 GROUP BY BUD_BID_PROJECTS.ORG_ID     
                             ),
                             OVERHEAD AS (
-                                SELECT OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID,
+                                SELECT OVERHEAD_ORG_BUDGETS.ORGANIZATION_ID,
                                     NVL(SUM(AMOUNT), 0) OH
                                 FROM OVERHEAD_ORG_BUDGETS
                                 LEFT JOIN OVERHEAD_BUDGET_TYPE ON OVERHEAD_ORG_BUDGETS.OVERHEAD_BUDGET_TYPE_ID = OVERHEAD_BUDGET_TYPE.OVERHEAD_BUDGET_TYPE_ID
                                 LEFT JOIN OVERHEAD_BUDGET_DETAIL ON OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID = OVERHEAD_BUDGET_DETAIL.ORG_BUDGET_ID 
                                 WHERE OVERHEAD_ORG_BUDGETS.FISCAL_YEAR = {1} AND OVERHEAD_BUDGET_TYPE.BUDGET_NAME = '{5}'
-                                GROUP BY OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID
+                                GROUP BY OVERHEAD_ORG_BUDGETS.ORGANIZATION_ID
                             ),
                             PREV_OVERHEAD AS (
-                                SELECT OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID PREV_ORG_BUDGET_ID,
+                                SELECT OVERHEAD_ORG_BUDGETS.ORGANIZATION_ID PREV_ORG_BUDGET_ID,
                                     NVL(SUM(AMOUNT), 0) PREV_OH
                                 FROM OVERHEAD_ORG_BUDGETS
                                 LEFT JOIN OVERHEAD_BUDGET_TYPE ON OVERHEAD_ORG_BUDGETS.OVERHEAD_BUDGET_TYPE_ID = OVERHEAD_BUDGET_TYPE.OVERHEAD_BUDGET_TYPE_ID
                                 LEFT JOIN OVERHEAD_BUDGET_DETAIL ON OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID = OVERHEAD_BUDGET_DETAIL.ORG_BUDGET_ID 
-                                WHERE OVERHEAD_ORG_BUDGETS.FISCAL_YEAR = {3} AND OVERHEAD_BUDGET_TYPE.BUDGET_NAME = '{5}'
-                                GROUP BY OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID
+                                WHERE OVERHEAD_ORG_BUDGETS.FISCAL_YEAR = {3} AND OVERHEAD_BUDGET_TYPE.BUDGET_NAME = '{6}'
+                                GROUP BY OVERHEAD_ORG_BUDGETS.ORGANIZATION_ID
                             )
                             SELECT '{0}' NAME,
                                 SUM(NVL(GROSS_REC, 0)) GROSS_REC,                            
@@ -636,29 +637,30 @@ namespace DBI.Data
                                 SUM(NVL(OH, 0)) OH,
                                 SUM(NVL(OP, 0)) - SUM(NVL(OH, 0)) NET_CONT,                              
                                 SUM(NVL(OP, 0)) - SUM(NVL(PREV_OP.PREV_OP, 0)) OP_VAR,
-                                (SUM(NVL(OP, 0)) - SUM(NVL(OH, 0))) - (SUM(NVL(PREV_OP.PREV_OP, 0))) - SUM(NVL(PREV_OH, 0)) NET_CONT_VAR                 
+                                (SUM(NVL(OP, 0)) - SUM(NVL(OH, 0))) - (SUM(NVL(PREV_OP.PREV_OP, 0)) - SUM(NVL(PREV_OH, 0))) NET_CONT_VAR                 
                             FROM ORG_NAME
                             LEFT OUTER JOIN BUDGET_LINE_AMOUNTS ON ORG_NAME.ORGANIZATION_ID = BUDGET_LINE_AMOUNTS.ORG_ID
                             LEFT OUTER JOIN PREV_OP ON ORG_NAME.ORGANIZATION_ID = PREV_OP.ORG_ID
-                            LEFT OUTER JOIN OVERHEAD ON ORG_NAME.ORGANIZATION_ID = OVERHEAD.ORG_BUDGET_ID
-                            LEFT OUTER JOIN PREV_OVERHEAD ON ORG_NAME.ORGANIZATION_ID = PREV_OVERHEAD.PREV_ORG_BUDGET_ID", orgName, yearID, verID, prevYearID, prevVerID, ohVersion);
+                            LEFT OUTER JOIN OVERHEAD ON ORG_NAME.ORGANIZATION_ID = OVERHEAD.ORGANIZATION_ID
+                            LEFT OUTER JOIN PREV_OVERHEAD ON ORG_NAME.ORGANIZATION_ID = PREV_OVERHEAD.PREV_ORG_BUDGET_ID", orgName, yearID, verID, prevYearID, prevVerID, ohVersion, prevOHVersion);
 
                     List<long> whereOrgs = HR.ActiveOrganizationsByHierarchy(hierarchyID, summaryOrg).Select(x => x.ORGANIZATION_ID).ToList();
-                    string sql2 = " WHERE ORGANIZATION_ID = 0";
-                    if (whereOrgs.Count() == 0)
+                    string sql2 = " WHERE ORG_NAME.ORGANIZATION_ID = " + summaryOrg;
+                    //if (whereOrgs.Count() == 0)
+                    //{
+                    if (BB.IsUserOrgAndAllowed(userID, summaryOrg) == true)
                     {
-                        if (BB.IsUserOrgAndAllowed(userID, summaryOrg) == true)
-                        {
-                            sql2 = sql2 + " OR ORGANIZATION_ID = " + summaryOrg;
-                        }
+                        sql2 = sql2 + " OR ORG_NAME.ORGANIZATION_ID = " + summaryOrg;
                     }
-                    else
+                    //}
+                    //else
+                    if (whereOrgs.Count() != 0)
                     {
                         foreach (long org in whereOrgs)
                         {
                             if (BB.IsUserOrgAndAllowed(userID, org) == true)
                             {
-                                sql2 = sql2 + " OR ORGANIZATION_ID = " + org;
+                                sql2 = sql2 + " OR ORG_NAME.ORGANIZATION_ID = " + org;
                             }
                         }
                     }
@@ -701,6 +703,7 @@ namespace DBI.Data
             public static List<Fields> RollupOrgOHCompare2(long userID, long hierarchyID, long orgID, long yearID, long verID, long prevYearID, long prevVerID)
             {
                 string ohVersion = BB.BudBidVerToOHBudVer(verID);
+                string prevOHVersion = BB.BudBidVerToOHBudVer(prevVerID);
                 List<long> summaryOrgs = BB.OverallSummaryBudgetOrgsBelowCurrent(userID, hierarchyID, orgID);
                 List<Fields> lineDetail = new List<Fields>();
                 foreach (long summaryOrg in summaryOrgs)
@@ -724,30 +727,30 @@ namespace DBI.Data
                                     IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
                             ),
                             PREV_OP AS (       
-                                SELECT BUD_BID_PROJECTS.ORG_ID, SUM(NOV) PREV_OP                                         
-                                FROM BUD_BID_PROJECTS
-                                LEFT OUTER JOIN BUD_BID_DETAIL_TASK ON BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = BUD_BID_DETAIL_TASK.PROJECT_ID
-                                LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_BUDGET_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_BUDGET_NUM.DETAIL_TASK_ID 
-                                WHERE BUD_BID_PROJECTS.YEAR_ID = {3} AND BUD_BID_PROJECTS.VER_ID = {4} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT' AND BUD_BID_BUDGET_NUM.LINE_ID = 10                             
-                                GROUP BY BUD_BID_PROJECTS.ORG_ID     
+                                  SELECT BUD_BID_PROJECTS.ORG_ID, SUM(NOV) PREV_OP                                         
+                                  FROM BUD_BID_PROJECTS
+                                  LEFT OUTER JOIN BUD_BID_DETAIL_TASK ON BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = BUD_BID_DETAIL_TASK.PROJECT_ID
+                                  LEFT OUTER JOIN BUD_BID_BUDGET_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_BUDGET_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_BUDGET_NUM.DETAIL_TASK_ID 
+                                  WHERE BUD_BID_PROJECTS.YEAR_ID = {3} AND BUD_BID_PROJECTS.VER_ID = {4} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT' AND BUD_BID_BUDGET_NUM.LINE_ID = 10                             
+                                 GROUP BY BUD_BID_PROJECTS.ORG_ID     
                             ),
                             OVERHEAD AS (
-                                SELECT OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID,
+                                SELECT OVERHEAD_ORG_BUDGETS.ORGANIZATION_ID,
                                     NVL(SUM(AMOUNT), 0) OH
                                 FROM OVERHEAD_ORG_BUDGETS
                                 LEFT JOIN OVERHEAD_BUDGET_TYPE ON OVERHEAD_ORG_BUDGETS.OVERHEAD_BUDGET_TYPE_ID = OVERHEAD_BUDGET_TYPE.OVERHEAD_BUDGET_TYPE_ID
                                 LEFT JOIN OVERHEAD_BUDGET_DETAIL ON OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID = OVERHEAD_BUDGET_DETAIL.ORG_BUDGET_ID 
                                 WHERE OVERHEAD_ORG_BUDGETS.FISCAL_YEAR = {1} AND OVERHEAD_BUDGET_TYPE.BUDGET_NAME = '{5}'
-                                GROUP BY OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID
+                                GROUP BY OVERHEAD_ORG_BUDGETS.ORGANIZATION_ID
                             ),
                             PREV_OVERHEAD AS (
-                                SELECT OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID PREV_ORG_BUDGET_ID,
+                                SELECT OVERHEAD_ORG_BUDGETS.ORGANIZATION_ID PREV_ORG_BUDGET_ID,
                                     NVL(SUM(AMOUNT), 0) PREV_OH
                                 FROM OVERHEAD_ORG_BUDGETS
                                 LEFT JOIN OVERHEAD_BUDGET_TYPE ON OVERHEAD_ORG_BUDGETS.OVERHEAD_BUDGET_TYPE_ID = OVERHEAD_BUDGET_TYPE.OVERHEAD_BUDGET_TYPE_ID
                                 LEFT JOIN OVERHEAD_BUDGET_DETAIL ON OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID = OVERHEAD_BUDGET_DETAIL.ORG_BUDGET_ID 
-                                WHERE OVERHEAD_ORG_BUDGETS.FISCAL_YEAR = {3} AND OVERHEAD_BUDGET_TYPE.BUDGET_NAME = '{5}'
-                                GROUP BY OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID
+                                WHERE OVERHEAD_ORG_BUDGETS.FISCAL_YEAR = {3} AND OVERHEAD_BUDGET_TYPE.BUDGET_NAME = '{6}'
+                                GROUP BY OVERHEAD_ORG_BUDGETS.ORGANIZATION_ID
                             )
                             SELECT '{0}' NAME,
                                 SUM(NVL(GROSS_REC, 0)) GROSS_REC,                            
@@ -758,32 +761,33 @@ namespace DBI.Data
                                 CASE WHEN SUM(GROSS_REV) = 0 OR SUM(GROSS_REV) IS NULL THEN 0 ELSE ROUND((SUM(OP)/SUM(GROSS_REV)) * 100, 2) END OP_PERC,
                                 SUM(NVL(OH, 0)) OH,
                                 SUM(NVL(PREV_OH, 0)) PREV_OH,
-                                SUM(NVL(OH, 0)) - SUM(NVL(PREV_OH, 0)) PREV_OH_VAR, 
+                                SUM(NVL(OH, 0)) - SUM(NVL(PREV_OH, 0)) OH_VAR, 
                                 SUM(NVL(OP, 0)) - SUM(NVL(OH, 0)) NET_CONT,                              
                                 SUM(NVL(OP, 0)) - SUM(NVL(PREV_OP.PREV_OP, 0)) OP_VAR,
                                 (SUM(NVL(OP, 0)) - SUM(NVL(OH, 0))) - (SUM(NVL(PREV_OP.PREV_OP, 0))) - SUM(NVL(PREV_OH, 0)) NET_CONT_VAR                 
                             FROM ORG_NAME
                             LEFT OUTER JOIN BUDGET_LINE_AMOUNTS ON ORG_NAME.ORGANIZATION_ID = BUDGET_LINE_AMOUNTS.ORG_ID
                             LEFT OUTER JOIN PREV_OP ON ORG_NAME.ORGANIZATION_ID = PREV_OP.ORG_ID
-                            LEFT OUTER JOIN OVERHEAD ON ORG_NAME.ORGANIZATION_ID = OVERHEAD.ORG_BUDGET_ID
-                            LEFT OUTER JOIN PREV_OVERHEAD ON ORG_NAME.ORGANIZATION_ID = PREV_OVERHEAD.PREV_ORG_BUDGET_ID", orgName, yearID, verID, prevYearID, prevVerID, ohVersion);
+                            LEFT OUTER JOIN OVERHEAD ON ORG_NAME.ORGANIZATION_ID = OVERHEAD.ORGANIZATION_ID
+                            LEFT OUTER JOIN PREV_OVERHEAD ON ORG_NAME.ORGANIZATION_ID = PREV_OVERHEAD.PREV_ORG_BUDGET_ID", orgName, yearID, verID, prevYearID, prevVerID, ohVersion, prevOHVersion);
 
                     List<long> whereOrgs = HR.ActiveOrganizationsByHierarchy(hierarchyID, summaryOrg).Select(x => x.ORGANIZATION_ID).ToList();
-                    string sql2 = " WHERE ORGANIZATION_ID = 0";
-                    if (whereOrgs.Count() == 0)
+                    string sql2 = " WHERE ORG_NAME.ORGANIZATION_ID = " + summaryOrg;
+                    //if (whereOrgs.Count() == 0)
+                    //{
+                    if (BB.IsUserOrgAndAllowed(userID, summaryOrg) == true)
                     {
-                        if (BB.IsUserOrgAndAllowed(userID, summaryOrg) == true)
-                        {
-                            sql2 = sql2 + " OR ORGANIZATION_ID = " + summaryOrg;
-                        }
+                        sql2 = sql2 + " OR ORG_NAME.ORGANIZATION_ID = " + summaryOrg;
                     }
-                    else
+                    //}
+                    //else
+                    if (whereOrgs.Count() != 0)
                     {
                         foreach (long org in whereOrgs)
                         {
                             if (BB.IsUserOrgAndAllowed(userID, org) == true)
                             {
-                                sql2 = sql2 + " OR ORGANIZATION_ID = " + org;
+                                sql2 = sql2 + " OR ORG_NAME.ORGANIZATION_ID = " + org;
                             }
                         }
                     }
@@ -1426,6 +1430,7 @@ namespace DBI.Data
             public static List<Fields> Data(long userID, long hierarchyID, long orgID, long yearID, long verID, long prevYearID, long prevVerID)
             {
                 string ohVersion = BB.BudBidVerToOHBudVer(verID);
+                string prevOHVersion = BB.BudBidVerToOHBudVer(prevVerID);
                 List<long> summaryOrgs = BB.OverallSummaryBudgetOrgsBelowCurrent(userID, hierarchyID, orgID);
                 List<Fields> lineDetail = new List<Fields>();
                 foreach (long summaryOrg in summaryOrgs)
@@ -1497,22 +1502,22 @@ namespace DBI.Data
 -- NEW
                             ),
                             OVERHEAD AS (
-                                SELECT OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID,
+                                SELECT OVERHEAD_ORG_BUDGETS.ORGANIZATION_ID,
                                     NVL(SUM(AMOUNT), 0) OH
                                 FROM OVERHEAD_ORG_BUDGETS
                                 LEFT JOIN OVERHEAD_BUDGET_TYPE ON OVERHEAD_ORG_BUDGETS.OVERHEAD_BUDGET_TYPE_ID = OVERHEAD_BUDGET_TYPE.OVERHEAD_BUDGET_TYPE_ID
                                 LEFT JOIN OVERHEAD_BUDGET_DETAIL ON OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID = OVERHEAD_BUDGET_DETAIL.ORG_BUDGET_ID 
                                 WHERE OVERHEAD_ORG_BUDGETS.FISCAL_YEAR = {1} AND OVERHEAD_BUDGET_TYPE.BUDGET_NAME = '{5}'
-                                GROUP BY OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID
+                                GROUP BY OVERHEAD_ORG_BUDGETS.ORGANIZATION_ID
                             ),
                             PREV_OVERHEAD AS (
-                                SELECT OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID PREV_ORG_BUDGET_ID,
+                                SELECT OVERHEAD_ORG_BUDGETS.ORGANIZATION_ID PREV_ORG_BUDGET_ID,
                                     NVL(SUM(AMOUNT), 0) PREV_OH
                                 FROM OVERHEAD_ORG_BUDGETS
                                 LEFT JOIN OVERHEAD_BUDGET_TYPE ON OVERHEAD_ORG_BUDGETS.OVERHEAD_BUDGET_TYPE_ID = OVERHEAD_BUDGET_TYPE.OVERHEAD_BUDGET_TYPE_ID
                                 LEFT JOIN OVERHEAD_BUDGET_DETAIL ON OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID = OVERHEAD_BUDGET_DETAIL.ORG_BUDGET_ID 
-                                WHERE OVERHEAD_ORG_BUDGETS.FISCAL_YEAR = {3} AND OVERHEAD_BUDGET_TYPE.BUDGET_NAME = '{5}'
-                                GROUP BY OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID
+                                WHERE OVERHEAD_ORG_BUDGETS.FISCAL_YEAR = {3} AND OVERHEAD_BUDGET_TYPE.BUDGET_NAME = '{6}'
+                                GROUP BY OVERHEAD_ORG_BUDGETS.ORGANIZATION_ID
                             )
                             SELECT '{0}' NAME,
                                 SUM(NVL(GROSS_REC, 0)) GROSS_REC,                            
@@ -1524,29 +1529,30 @@ namespace DBI.Data
                                 SUM(NVL(OH, 0)) OH,
                                 SUM(NVL(OP, 0)) - SUM(NVL(OH, 0)) NET_CONT,                              
                                 SUM(NVL(OP, 0)) - SUM(NVL(PREV_OP.PREV_OP, 0)) OP_VAR,
-                                (SUM(NVL(OP, 0)) - SUM(NVL(OH, 0))) - (SUM(NVL(PREV_OP.PREV_OP, 0))) - SUM(NVL(PREV_OH, 0)) NET_CONT_VAR                 
+                                (SUM(NVL(OP, 0)) - SUM(NVL(OH, 0))) - (SUM(NVL(PREV_OP.PREV_OP, 0)) - SUM(NVL(PREV_OH, 0))) NET_CONT_VAR                 
                             FROM ORG_NAME
                             LEFT OUTER JOIN BUDGET_LINE_AMOUNTS ON ORG_NAME.ORGANIZATION_ID = BUDGET_LINE_AMOUNTS.ORG_ID
                             LEFT OUTER JOIN PREV_OP ON ORG_NAME.ORGANIZATION_ID = PREV_OP.ORG_ID
-                            LEFT OUTER JOIN OVERHEAD ON ORG_NAME.ORGANIZATION_ID = OVERHEAD.ORG_BUDGET_ID
-                            LEFT OUTER JOIN PREV_OVERHEAD ON ORG_NAME.ORGANIZATION_ID = PREV_OVERHEAD.PREV_ORG_BUDGET_ID", orgName, yearID, verID, prevYearID, prevVerID, ohVersion);
+                            LEFT OUTER JOIN OVERHEAD ON ORG_NAME.ORGANIZATION_ID = OVERHEAD.ORGANIZATION_ID
+                            LEFT OUTER JOIN PREV_OVERHEAD ON ORG_NAME.ORGANIZATION_ID = PREV_OVERHEAD.PREV_ORG_BUDGET_ID", orgName, yearID, verID, prevYearID, prevVerID, ohVersion, prevOHVersion);
 
                     List<long> whereOrgs = HR.ActiveOrganizationsByHierarchy(hierarchyID, summaryOrg).Select(x => x.ORGANIZATION_ID).ToList();
-                    string sql2 = " WHERE ORGANIZATION_ID = 0";
-                    if (whereOrgs.Count() == 0)
-                    {
+                    string sql2 = " WHERE ORG_NAME.ORGANIZATION_ID = " + summaryOrg;
+                    //if (whereOrgs.Count() == 0)
+                    //{
                         if (BB.IsUserOrgAndAllowed(userID, summaryOrg) == true)
                         {
-                            sql2 = sql2 + " OR ORGANIZATION_ID = " + summaryOrg;
+                            sql2 = sql2 + " OR ORG_NAME.ORGANIZATION_ID = " + summaryOrg;
                         }
-                    }
-                    else
+                    //}
+                    //else
+                    if (whereOrgs.Count() != 0)
                     {
                         foreach (long org in whereOrgs)
                         {
                             if (BB.IsUserOrgAndAllowed(userID, org) == true)
                             {
-                                sql2 = sql2 + " OR ORGANIZATION_ID = " + org;                                
+                                sql2 = sql2 + " OR ORG_NAME.ORGANIZATION_ID = " + org;                                
                             }
                         }
                     }
@@ -1587,6 +1593,7 @@ namespace DBI.Data
             public static Fields Data(long userID, long hierarchyID, long orgID, long yearID, long verID, long prevYearID, long prevVerID)
             {
                 string ohVersion = BB.BudBidVerToOHBudVer(verID);
+                string prevOHVersion = BB.BudBidVerToOHBudVer(prevVerID);
                 string sql1 = string.Format(@"
                     WITH
                         ORG_NAME AS(
@@ -1653,22 +1660,22 @@ namespace DBI.Data
 -- NEW
                         ),
                         OVERHEAD AS (
-                            SELECT OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID,
+                            SELECT OVERHEAD_ORG_BUDGETS.ORGANIZATION_ID,
                                 NVL(SUM(AMOUNT), 0) OH
                             FROM OVERHEAD_ORG_BUDGETS
                             LEFT JOIN OVERHEAD_BUDGET_TYPE ON OVERHEAD_ORG_BUDGETS.OVERHEAD_BUDGET_TYPE_ID = OVERHEAD_BUDGET_TYPE.OVERHEAD_BUDGET_TYPE_ID
                             LEFT JOIN OVERHEAD_BUDGET_DETAIL ON OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID = OVERHEAD_BUDGET_DETAIL.ORG_BUDGET_ID 
                             WHERE OVERHEAD_ORG_BUDGETS.FISCAL_YEAR = {0} AND OVERHEAD_BUDGET_TYPE.BUDGET_NAME = '{4}'
-                            GROUP BY OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID
+                            GROUP BY OVERHEAD_ORG_BUDGETS.ORGANIZATION_ID
                         ),
                         PREV_OVERHEAD AS (
-                            SELECT OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID PREV_ORG_BUDGET_ID,
+                            SELECT OVERHEAD_ORG_BUDGETS.ORGANIZATION_ID PREV_ORG_BUDGET_ID,
                                 NVL(SUM(AMOUNT), 0) PREV_OH
                             FROM OVERHEAD_ORG_BUDGETS
                             LEFT JOIN OVERHEAD_BUDGET_TYPE ON OVERHEAD_ORG_BUDGETS.OVERHEAD_BUDGET_TYPE_ID = OVERHEAD_BUDGET_TYPE.OVERHEAD_BUDGET_TYPE_ID
                             LEFT JOIN OVERHEAD_BUDGET_DETAIL ON OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID = OVERHEAD_BUDGET_DETAIL.ORG_BUDGET_ID 
-                            WHERE OVERHEAD_ORG_BUDGETS.FISCAL_YEAR = {2} AND OVERHEAD_BUDGET_TYPE.BUDGET_NAME = '{4}'
-                            GROUP BY OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID
+                            WHERE OVERHEAD_ORG_BUDGETS.FISCAL_YEAR = {2} AND OVERHEAD_BUDGET_TYPE.BUDGET_NAME = '{5}'
+                            GROUP BY OVERHEAD_ORG_BUDGETS.ORGANIZATION_ID
                         )
                         SELECT SUM(NVL(GROSS_REC, 0)) GROSS_REC,                            
                             SUM(NVL(MAT_USAGE, 0)) MAT_USAGE,
@@ -1678,33 +1685,34 @@ namespace DBI.Data
                             CASE WHEN SUM(GROSS_REV) = 0 OR SUM(GROSS_REV) IS NULL THEN 0 ELSE ROUND((SUM(OP)/SUM(GROSS_REV)) * 100, 2) END OP_PERC,
                             SUM(NVL(OH, 0)) OH,
                             SUM(NVL(OP, 0)) - SUM(NVL(OH, 0)) NET_CONT,                                
-                            SUM(NVL(OP, 0)) - SUM(NVL(PREV_OP.PREV_OP, 0)) OP_VAR,
-                            (SUM(NVL(OP, 0)) - SUM(NVL(OH, 0))) - (SUM(NVL(PREV_OP.PREV_OP, 0))) - SUM(NVL(PREV_OH, 0)) NET_CONT_VAR                          
+                            SUM(NVL(OP, 0)) - SUM(NVL(PREV_OP.PREV_OP, 0)) OP_VAR,   
+                            (SUM(NVL(OP, 0)) - SUM(NVL(OH, 0))) - (SUM(NVL(PREV_OP.PREV_OP, 0)) - SUM(NVL(PREV_OH, 0))) NET_CONT_VAR                     
                         FROM ORG_NAME
                         LEFT OUTER JOIN BUDGET_LINE_AMOUNTS ON ORG_NAME.ORGANIZATION_ID = BUDGET_LINE_AMOUNTS.ORG_ID
                         LEFT OUTER JOIN PREV_OP ON ORG_NAME.ORGANIZATION_ID = PREV_OP.ORG_ID
-                        LEFT OUTER JOIN OVERHEAD ON ORG_NAME.ORGANIZATION_ID = OVERHEAD.ORG_BUDGET_ID
-                        LEFT OUTER JOIN PREV_OVERHEAD ON ORG_NAME.ORGANIZATION_ID = PREV_OVERHEAD.PREV_ORG_BUDGET_ID", yearID, verID, prevYearID, prevVerID, ohVersion);
+                        LEFT OUTER JOIN OVERHEAD ON ORG_NAME.ORGANIZATION_ID = OVERHEAD.ORGANIZATION_ID
+                        LEFT OUTER JOIN PREV_OVERHEAD ON ORG_NAME.ORGANIZATION_ID = PREV_OVERHEAD.PREV_ORG_BUDGET_ID", yearID, verID, prevYearID, prevVerID, ohVersion, prevOHVersion);
 
                 List<long> summaryOrgs = BB.OverallSummaryBudgetOrgsBelowCurrent(userID, hierarchyID, orgID);
-                string sql2 = " WHERE ORGANIZATION_ID = 0";
+                string sql2 = " WHERE ORG_NAME.ORGANIZATION_ID = 0";
                 foreach (long summaryOrg in summaryOrgs)
                 {
                     List<long> whereOrgs = HR.ActiveOrganizationsByHierarchy(hierarchyID, summaryOrg).Select(x => x.ORGANIZATION_ID).ToList();
-                    if (whereOrgs.Count() == 0)
-                    {
+                    //if (whereOrgs.Count() == 0)
+                    //{
                         if (BB.IsUserOrgAndAllowed(userID, summaryOrg) == true)
                         {
-                            sql2 = sql2 + " OR ORGANIZATION_ID = " + summaryOrg;
+                            sql2 = sql2 + " OR ORG_NAME.ORGANIZATION_ID = " + summaryOrg;
                         }
-                    }
-                    else
+                    //}
+                    //else
+                    if (whereOrgs.Count() != 0)
                     {
                         foreach (long org in whereOrgs)
                         {
                             if (BB.IsUserOrgAndAllowed(userID, org) == true)
                             {
-                                sql2 = sql2 + " OR ORGANIZATION_ID = " + org;
+                                sql2 = sql2 + " OR ORG_NAME.ORGANIZATION_ID = " + org;
                             }
                         }
                     }

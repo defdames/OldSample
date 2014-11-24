@@ -23,10 +23,9 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             }
             if (!X.IsAjaxRequest || !IsPostBack)
             {
-                isDirty = 0;
+                Session["isDirty"] = "0";
                 uxAddFormCatStore.Reload();
                 uxAddFormOrgStore.Reload();
-                uxQuestionFieldsetStore.Reload();
             }
             
         }
@@ -245,6 +244,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 ModelProxy Record = uxFieldsetsStore.GetByInternalId(NewFieldset.PhantomId);
                 Record.CreateVariable = true;
                 Record.SetId(ToBeAdded.FIELDSET_ID);
+                Record.Set("TITLE", ToBeAdded.TITLE);
                 Record.Commit();
             }
 
@@ -274,6 +274,9 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 }
                 GenericData.Update<CUSTOMER_SURVEY_FIELDSETS>(ToBeUpdated);
 
+                ModelProxy Record = uxFieldsetsStore.GetById(ToBeUpdated.FIELDSET_ID);
+                Record.Set("TITLE", ToBeUpdated.TITLE);
+                Record.Commit();
             }
 
             uxFieldsetsStore.CommitChanges();
@@ -803,13 +806,17 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
         [DirectMethod]
         public void dmAddToDirty()
         {
+            long isDirty = long.Parse(Session["isDirty"].ToString());
             isDirty++;
+            Session["isDirty"] = isDirty;
         }
 
         [DirectMethod]
         public void dmSubtractFromDirty()
         {
+            long isDirty = long.Parse(Session["isDirty"].ToString());
             isDirty--;
+            Session["isDirty"] = isDirty;
         }
     }
 }

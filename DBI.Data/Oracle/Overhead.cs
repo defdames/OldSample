@@ -764,6 +764,14 @@ namespace DBI.Data
             //Get a list of active organizations in the overhead budget system
             List<HR.ORGANIZATION_V1> _organizationData = HR.OverheadOrganizationStatusByHierarchy(_hierarchyID, OrganizationID).Where(x => x.ORGANIZATION_STATUS == "Active").ToList();
 
+            //BUGFIX 11/21/2014 we need to perform a union to add the current organization being selected.
+            using(Entities _context = new Entities())
+            { 
+                string sqlBugFix = @"select organization_id,name as organization_name,0 as hier_level,type, date_from, date_to, ' ' organization_status from apps.hr_all_organization_units where organization_id = " + OrganizationID;
+                DBI.Data.HR.ORGANIZATION_V1 _firstLevelOrg = _context.Database.SqlQuery<DBI.Data.HR.ORGANIZATION_V1>(sqlBugFix).Single();
+                _organizationData.Add(_firstLevelOrg);
+            }
+
             //Check for the organization count and if zero it means we are at the lowest level or no data for organization, check for organization info
             if (_organizationData.Count() == 0)
             {

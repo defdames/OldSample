@@ -137,7 +137,7 @@ namespace DBI.Web.EMS
                 if (Authentication.Authenticate(LogInUser[0], this.uxPassword.Text))
                 {
                     List<Claim> claims = SYS_PERMISSIONS.Claims(LogInUser[0].ToUpper());
-
+                    
                     int cnt = claims.Count;
 
                     //Check if user has any roles, if not then exit now
@@ -157,6 +157,7 @@ namespace DBI.Web.EMS
                         //Disable login button
                         uxLoginButton.Disabled = true;
 
+                        Session["isDirty"] = 0;
                         // Redirect:
                         Ext.Net.ExtNet.Redirect("Views/uxDefault.aspx");
                     }
