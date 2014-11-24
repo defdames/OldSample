@@ -19,12 +19,12 @@
                         <Items>
                             <ext:TextField ID="uxRRCI" runat="server" FieldLabel="Railroad" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" Hidden="true" />
 
-                           <ext:DateField ID="uxStartDate" runat="server" AnchorHorizontal="25%" FieldLabel="Start Date" LabelAlign="Right" Editable="false" TabIndex="2" EmptyText="ALL" >
+                           <ext:DateField ID="uxStartDate" runat="server" AnchorHorizontal="25%" FieldLabel="Start Date" LabelAlign="Right" Editable="false" TabIndex="2" EmptyText="ALL" AllowBlank="false" >
                                 <Plugins>
                                 <ext:ClearButton ID="ClearButton1" runat="server" />
                             </Plugins>
                                </ext:DateField>
-                            <ext:DateField ID="uxEndDate" runat="server" AnchorHorizontal="25%" FieldLabel="End Date" LabelAlign="Right"  Editable="false" TabIndex="3" EmptyText="ALL" >
+                            <ext:DateField ID="uxEndDate" runat="server" AnchorHorizontal="25%" FieldLabel="End Date" LabelAlign="Right"  Editable="false" TabIndex="3" EmptyText="ALL" AllowBlank="false" >
                                  <Plugins>
                                 <ext:ClearButton ID="ClearButton2" runat="server" />
                             </Plugins>
@@ -57,6 +57,9 @@
                         </Items>
                     </ext:Toolbar>
                 </BottomBar>
+              <Listeners>
+				<ValidityChange Handler="#{Button4}.setDisabled(!valid);" />
+			  </Listeners>
             </ext:FormPanel>
             <ext:Panel runat="server" ID="uxCenterPanel" Region="Center">
               <LayoutConfig>
@@ -66,8 +69,9 @@
                         <ext:Panel ID="Panel" runat="server" ManageHeight="true">
                         </ext:Panel>
                     </Items>
+
                 </ext:Panel>
-       
+                    
        
                     </Items>
              </ext:Viewport>

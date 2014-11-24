@@ -700,132 +700,482 @@ SELECT
               }
           }
 
+//          public static List<CrossingSummaryReport> GetCrossingSummaryList(string selectedRailroad, DateTime selectedStart, DateTime selectedEnd)
+//          {
+
+//              DateTime FiscalStart = GetFiscalStart(selectedEnd);
+                
+//              string sql1 = string.Format(@"                          
+//                            select sum(TOTALCROSSINGCOUNT), SUM(SPRAY), sum(YESCOUNT), sum(NOCOUNT), sum(INSPECT), sum(INSPECTYES), sum(INSPECTNO), sum(INCIDENT), sum(DELETEDYES), sum(DELETED), STATE from (                             
+//    
+//                             SELECT                
+//                                COUNT(d.CROSSING_NUMBER) TOTALCROSSINGCOUNT,
+//                                COUNT(a.SPRAY) SPRAY,
+//                                CASE WHEN a.SPRAY = 'Y' THEN COUNT(a.SPRAY) ELSE 0 END YESCOUNT,
+//                                CASE WHEN a.SPRAY IS NULL THEN COUNT(1) WHEN a.SPRAY = 'N' THEN COUNT(a.SPRAY) ELSE 0 END NOCOUNT,
+//                                COUNT(a.INSPECT) INSPECT,
+//                                CASE WHEN a.INSPECT = 'Y' THEN COUNT(a.INSPECT) ELSE 0 END INSPECTYES,
+//                                CASE WHEN a.INSPECT IS NULL THEN COUNT(1) WHEN a.INSPECT = 'N' THEN COUNT(a.INSPECT) ELSE 0 END INSPECTNO,
+//                                COUNT(i.INCIDENT_ID) INCIDENT,
+//                                COUNT(d.STATUS) DELETED,
+//                                CASE WHEN d.STATUS = 'DELETED' THEN COUNT(1) ELSE 0 END DELETEDYES,
+//                                d.STATE
+//                FROM CROSSINGS d 
+//                LEFT JOIN CROSSING_APPLICATION a ON d.CROSSING_ID = a.CROSSING_ID
+//                LEFT JOIN CROSSING_INCIDENT i ON d.CROSSING_ID = i.CROSSING_ID
+//                WHERE RAILROAD_ID = {0} AND d.STATE IS NOT NULL ", selectedRailroad);
+//              string sql2 = "";
+//              if (selectedStart != DateTime.MinValue && selectedEnd != DateTime.MinValue)
+//              {
+//                  sql2 = string.Format(@" 
+//                AND a.APPLICATION_DATE >= ('{0}') AND a.APPLICATION_DATE <= ('{1}')
+//
+//                   ", selectedStart.ToString("dd-MMM-yyyy"), selectedEnd.ToString("dd-MMM-yyyy"));
+//              }
+//              else if (selectedStart != DateTime.MinValue)
+//              {
+//                  sql2 = string.Format(@" 
+//                AND a.APPLICATION_DATE >= ('{0}')
+//
+//                   ", selectedStart.ToString("dd-MMM-yyyy"));
+//              }
+
+//              else if (selectedEnd != DateTime.MinValue)
+//              {
+//                  sql2 = string.Format(@" 
+//                AND a.APPLICATION_DATE <= ('{0}')
+//
+//                   ", selectedEnd.ToString("dd-MMM-yyyy"));
+//              }
+//              string sql3 = "";
+//              if (selectedStart != DateTime.MinValue && selectedEnd != DateTime.MinValue)
+//              {
+//                  sql3 = string.Format(@" 
+//                AND i.DATE_REPORTED >= ('{0}') AND i.DATE_REPORTED <= ('{1}')
+//
+//                   ", selectedStart.ToString("dd-MMM-yyyy"), selectedEnd.ToString("dd-MMM-yyyy"));
+//              }
+//              else if (selectedStart != DateTime.MinValue)
+//              {
+//                  sql3 = string.Format(@" 
+//                AND i.DATE_REPORTED >= ('{0}')
+//
+//                   ", selectedStart.ToString("dd-MMM-yyyy"));
+//              }
+
+//              else if (selectedEnd != DateTime.MinValue)
+//              {
+//                  sql3 = string.Format(@" 
+//                AND i.DATE_REPORTED <= ('{0}')
+//
+//                   ", selectedEnd.ToString("dd-MMM-yyyy"));
+//              }
+
+//              string sql4 = "";
+//              if (selectedStart != DateTime.MinValue && selectedEnd != DateTime.MinValue)
+//              {
+//                  sql4 = string.Format(@" 
+//                AND d.DELETED_DATE >= ('{0}') AND d.DELETED_DATE <= ('{1}')
+//
+//                   ", selectedStart.ToString("dd-MMM-yyyy"), selectedEnd.ToString("dd-MMM-yyyy"));
+//              }
+//              else if (selectedStart != DateTime.MinValue)
+//              {
+//                  sql4 = string.Format(@" 
+//                AND d.DELETED_DATE >= ('{0}')
+//
+//                   ", selectedStart.ToString("dd-MMM-yyyy"));
+//              }
+
+//              else if (selectedEnd != DateTime.MinValue)
+//              {
+//                  sql4 = string.Format(@" 
+//                AND d.DELETED_DATE <= ('{0}')
+//
+//                   ", selectedEnd.ToString("dd-MMM-yyyy"));
+//              }
+//              string sql5 = "";
+//              if (FiscalStart != DateTime.MinValue && selectedEnd != DateTime.MinValue)
+//              {
+//                  sql5 = string.Format(@" 
+//                AND a.APPLICATION_DATE >= ('{0}') AND a.APPLICATION_DATE <= ('{1}')
+//
+//                   ", FiscalStart.ToString("dd-MMM-yyyy"), selectedEnd.ToString("dd-MMM-yyyy"));
+//              }
+//              string sql6 = "";
+//              if (FiscalStart != DateTime.MinValue && selectedEnd != DateTime.MinValue)
+//              {
+//                  sql6 = string.Format(@" 
+//                AND i.DATE_REPORTED >= ('{0}') AND i.DATE_REPORTED <= ('{1}')
+//
+//                   ", FiscalStart.ToString("dd-MMM-yyyy"), selectedEnd.ToString("dd-MMM-yyyy"));
+//              }
+//              string sql7 = "";
+//              if (FiscalStart != DateTime.MinValue && selectedEnd != DateTime.MinValue)
+//              {
+//                  sql7 = string.Format(@" 
+//                AND d.DELETED_DATE >= ('{0}') AND d.DELETED_DATE <= ('{1}')
+//
+//                   ", FiscalStart.ToString("dd-MMM-yyyy"), selectedEnd.ToString("dd-MMM-yyyy"));
+//              }
+//              string sql8 = "group by d.STATE, a.SPRAY, a.INSPECT, d.STATUS) group by STATE";
+//              string sql = sql1 + sql2 + sql3 + sql4 + sql5 + sql6 + sql7 + sql8;
+//              using (Entities context = new Entities())
+//              {
+//                  return context.Database.SqlQuery<CrossingSummaryReport>(sql).ToList();
+//              }
+//          }
+
           public static List<CrossingSummaryReport> GetCrossingSummaryList(string selectedRailroad, DateTime selectedStart, DateTime selectedEnd)
           {
 
               DateTime FiscalStart = GetFiscalStart(selectedEnd);
-                
-              string sql1 = string.Format(@"                          
-                            select sum(TOTALCROSSINGCOUNT), SUM(SPRAY), sum(YESCOUNT), sum(NOCOUNT), sum(INSPECT), sum(INSPECTYES), sum(INSPECTNO), sum(INCIDENT), sum(DELETEDYES), sum(DELETED), STATE from (                             
-    
-                             SELECT                
-                                COUNT(d.CROSSING_NUMBER) TOTALCROSSINGCOUNT,
-                                COUNT(a.SPRAY) SPRAY,
-                                CASE WHEN a.SPRAY = 'Y' THEN COUNT(a.SPRAY) ELSE 0 END YESCOUNT,
-                                CASE WHEN a.SPRAY IS NULL THEN COUNT(1) WHEN a.SPRAY = 'N' THEN COUNT(a.SPRAY) ELSE 0 END NOCOUNT,
-                                COUNT(a.INSPECT) INSPECT,
-                                CASE WHEN a.INSPECT = 'Y' THEN COUNT(a.INSPECT) ELSE 0 END INSPECTYES,
-                                CASE WHEN a.INSPECT IS NULL THEN COUNT(1) WHEN a.INSPECT = 'N' THEN COUNT(a.INSPECT) ELSE 0 END INSPECTNO,
-                                COUNT(i.INCIDENT_ID) INCIDENT,
-                                COUNT(d.STATUS) DELETED,
-                                CASE WHEN d.STATUS = 'DELETED' THEN COUNT(1) ELSE 0 END DELETEDYES,
-                                d.STATE
-                FROM CROSSINGS d 
-                LEFT JOIN CROSSING_APPLICATION a ON d.CROSSING_ID = a.CROSSING_ID
-                LEFT JOIN CROSSING_INCIDENT i ON d.CROSSING_ID = i.CROSSING_ID
-                WHERE RAILROAD_ID = {0} AND d.STATE IS NOT NULL ", selectedRailroad);
-              string sql2 = "";
+
+              string sql = string.Format(@"                          
+            SELECT SUM(TOTALCROSSINGCOUNT) TOTALCROSSINGCOUNT, SUM(YESCOUNT) YESCOUNT, SUM(TOTALCROSSINGCOUNT) - SUM(YESCOUNT_YTD) NOCOUNT, SUM(YESCOUNT_YTD) YESCOUNT_YTD,  SUM(DELETED) DELETED, SUM(DELETED_YTD) DELETED_YTD, SUM(INSPECTYES) INSPECTYES, SUM(INSPECTYES_YTD) INSPECTYES_YTD, SUM(INCIDENT) INCIDENT, SUM(INCIDENT_YTD) INCIDENT_YTD, STATE  
+             FROM (             
+                    SELECT COUNT(d.CROSSING_NUMBER) TOTALCROSSINGCOUNT,
+                        0 SPRAY,
+                        0 SPRAY_YTD,
+                        0 INSPECT_YTD,
+                        0 YESCOUNT,
+                        0 YESCOUNT_YTD,                   
+                        0 INSPECTYES_YTD,
+                        0 NOCOUNT,
+                        0 INSPECT,
+                        0 INSPECTYES,
+                        0 INCIDENT,
+                        0 INCIDENT_YTD,
+                        0 DELETED,
+                        0 DELETED_YTD,
+                        d.STATE
+                    FROM CROSSINGS d                
+                    LEFT JOIN CROSSING_APPLICATION a ON d.CROSSING_ID = a.CROSSING_ID               
+                    LEFT JOIN CROSSING_INCIDENT i ON d.CROSSING_ID = i.CROSSING_ID                                        
+                   ");
+                    
+                    string sql1 = "";
+                      sql1 = string.Format(@" 
+                      WHERE RAILROAD_ID = {0} AND d.STATE IS NOT NULL AND d.STATUS = 'ACTIVE' 
+                       GROUP BY d.STATE, a.SPRAY, a.INSPECT 
+                   ", selectedRailroad);
+                                 
+                    
+                    string sql2 = "";
+                    sql2 = string.Format(@"                   
+                  
+                     UNION ALL
+                    SELECT 0 TOTALCROSSINGCOUNT,
+                        0 SPRAY,                      
+                        0 SPRAY_YTD,
+                        0 INSPECT_YTD,
+                         CASE WHEN a.SPRAY = 'Y' THEN COUNT(a.SPRAY) ELSE 0 END YESCOUNT,
+                        0 YESCOUNT_YTD,
+                        0 INSPECTYES_YTD,
+                        0 NOCOUNT,                       
+                        0 INSPECT,
+                        0 INSPECTYES,
+                        0 INCIDENT,
+                        0 INCIDENT_YTD,
+                        0 DELETED,
+                        0 DELETED_YTD,
+                        d.STATE
+                    FROM CROSSINGS d                
+                    LEFT JOIN CROSSING_APPLICATION a ON d.CROSSING_ID = a.CROSSING_ID               
+                    LEFT JOIN CROSSING_INCIDENT i ON d.CROSSING_ID = i.CROSSING_ID               
+                    WHERE d.RAILROAD_ID = {0} AND d.STATE IS NOT NULL           
+                  
+                    ", selectedRailroad);
+
+                     string sql3 = "";
+                     if (selectedStart != DateTime.MinValue && selectedEnd != DateTime.MinValue)
+                        {
+                        sql3 = string.Format(@" 
+                        AND a.APPLICATION_DATE >= ('{0}') AND a.APPLICATION_DATE <= ('{1}')
+                        GROUP BY d.STATE, a.SPRAY
+                        ", selectedStart.ToString("dd-MMM-yyyy"), selectedEnd.ToString("dd-MMM-yyyy"));
+                        }
+                          else if (selectedStart != DateTime.MinValue)
+                        {
+                          sql3 = string.Format(@" 
+                          AND a.APPLICATION_DATE >= ('{0}')
+                            GROUP BY d.STATE, a.SPRAY
+                            ", selectedStart.ToString("dd-MMM-yyyy"));
+                         }
+
+                         else if (selectedEnd != DateTime.MinValue)
+                         {
+                              sql3 = string.Format(@" 
+                              AND a.APPLICATION_DATE <= ('{0}')
+                                 GROUP BY d.STATE, a.SPRAY
+                             ", selectedEnd.ToString("dd-MMM-yyyy"));
+                          }              
+                    
+                    string sql4 = "";
+                    sql4 = string.Format(@"
+                   
+                        UNION ALL
+                    SELECT 0 TOTALCROSSINGCOUNT,
+                        0 SPRAY,                     
+                        0 SPRAY_YTD,
+                        0 INSPECT_YTD,
+                        0 YESCOUNT,
+                        0 YESCOUNT_YTD,
+                        0 INSPECTYES_YTD,
+                        0 NOCOUNT,
+                        0 INSPECT,                                            
+                        CASE WHEN a.INSPECT = 'Y' THEN COUNT(a.INSPECT) ELSE 0 END INSPECTYES,
+                        0 INCIDENT,
+                        0 INCIDENT_YTD,
+                        0 DELETED,
+                        0 DELETED_YTD,
+                        d.STATE
+                    FROM CROSSINGS d                
+                    LEFT JOIN CROSSING_APPLICATION a ON d.CROSSING_ID = a.CROSSING_ID               
+                    LEFT JOIN CROSSING_INCIDENT i ON d.CROSSING_ID = i.CROSSING_ID               
+                    WHERE RAILROAD_ID = {0} AND d.STATE IS NOT NULL                                
+                    
+                     ", selectedRailroad);
+                     string sql5 = "";
+                     if (selectedStart != DateTime.MinValue && selectedEnd != DateTime.MinValue)
+                        {
+                        sql5 = string.Format(@" 
+                        AND a.APPLICATION_DATE >= ('{0}') AND a.APPLICATION_DATE <= ('{1}')
+                        GROUP BY d.STATE, a.INSPECT
+                        ", selectedStart.ToString("dd-MMM-yyyy"), selectedEnd.ToString("dd-MMM-yyyy"));
+                        }
+                     else if (selectedStart != DateTime.MinValue)
+                     {
+                         sql5 = string.Format(@" 
+                          AND a.APPLICATION_DATE >= ('{0}')
+                            GROUP BY d.STATE, a.SPRAY
+                            ", selectedStart.ToString("dd-MMM-yyyy"));
+                     }
+
+                     else if (selectedEnd != DateTime.MinValue)
+                     {
+                         sql5 = string.Format(@" 
+                              AND a.APPLICATION_DATE <= ('{0}')
+                                 GROUP BY d.STATE, a.SPRAY
+                             ", selectedEnd.ToString("dd-MMM-yyyy"));
+                     }              
+                    
+                    
+                    string sql6 = "";
+                    sql6 = string.Format(@"
+                   
+                      UNION ALL
+                      SELECT 0 TOTALCROSSINGCOUNT,
+                        0 SPRAY,
+                        0 SPRAY_YTD,
+                        0 INSPECT_YTD,
+                        0 YESCOUNT,
+                        CASE WHEN a.SPRAY = 'Y' THEN COUNT(a.SPRAY) ELSE 0 END YESCOUNT_YTD,                       
+                        CASE WHEN a.INSPECT = 'Y' THEN COUNT(a.INSPECT) ELSE 0 END INSPECTYES_YTD,
+                        0 NOCOUNT,
+                        0 INSPECT,                       
+                        0 INSPECTYES,                    
+                        0 INCIDENT,
+                        0 INCIDENT_YTD,
+                        0 DELETED,
+                        0 DELETED_YTD,
+                        d.STATE
+                    FROM CROSSINGS d                
+                    LEFT JOIN CROSSING_APPLICATION a ON d.CROSSING_ID = a.CROSSING_ID               
+                    LEFT JOIN CROSSING_INCIDENT i ON d.CROSSING_ID = i.CROSSING_ID               
+                    WHERE RAILROAD_ID = {0} AND d.STATE IS NOT NULL 
+                                   
+                  
+                     ", selectedRailroad);
+                     string sql7 = "";
+                        if (FiscalStart != DateTime.MinValue && selectedEnd != DateTime.MinValue)
+                         {
+                          sql7 = string.Format(@" 
+                          AND a.APPLICATION_DATE >= ('{0}') AND a.APPLICATION_DATE <= ('{1}')
+                             GROUP BY d.STATE, a.SPRAY, a.INSPECT, d.STATUS
+                         ", FiscalStart.ToString("dd-MMM-yyyy"), selectedEnd.ToString("dd-MMM-yyyy"));
+                          }
+                  
+                        string sql8 = "";
+                        sql8 = string.Format(@"
+                        
+                   
+                    UNION ALL
+                    SELECT 0 TOTALCROSSINGCOUNT,                     
+                        0 SPRAY,
+                        0 SPRAY_YTD,
+                        0 INSPECT_YTD,
+                        0 YESCOUNT,
+                        0 YESCOUNT_YTD,
+                        0 INSPECTYES_YTD,
+                        0 NOCOUNT,
+                        0 INSPECT,
+                        0 INSPECTYES,
+                        COUNT(i.INCIDENT_ID) INCIDENT,
+                        0 INCIDENT_YTD,
+                        0 DELETED,
+                        0 DELETED_YTD,
+                        d.STATE
+                    FROM CROSSINGS d                
+                    LEFT JOIN CROSSING_APPLICATION a ON d.CROSSING_ID = a.CROSSING_ID               
+                    LEFT JOIN CROSSING_INCIDENT i ON d.CROSSING_ID = i.CROSSING_ID               
+                    WHERE RAILROAD_ID = {0} AND d.STATE IS NOT NULL 
+                                       
+                   
+                     ", selectedRailroad);
+
+                     string sql9 = "";
               if (selectedStart != DateTime.MinValue && selectedEnd != DateTime.MinValue)
               {
-                  sql2 = string.Format(@" 
-                AND a.APPLICATION_DATE >= ('{0}') AND a.APPLICATION_DATE <= ('{1}')
-
-                   ", selectedStart.ToString("dd-MMM-yyyy"), selectedEnd.ToString("dd-MMM-yyyy"));
-              }
-              else if (selectedStart != DateTime.MinValue)
-              {
-                  sql2 = string.Format(@" 
-                AND a.APPLICATION_DATE >= ('{0}')
-
-                   ", selectedStart.ToString("dd-MMM-yyyy"));
-              }
-
-              else if (selectedEnd != DateTime.MinValue)
-              {
-                  sql2 = string.Format(@" 
-                AND a.APPLICATION_DATE <= ('{0}')
-
-                   ", selectedEnd.ToString("dd-MMM-yyyy"));
-              }
-              string sql3 = "";
-              if (selectedStart != DateTime.MinValue && selectedEnd != DateTime.MinValue)
-              {
-                  sql3 = string.Format(@" 
+                  sql9 = string.Format(@" 
                 AND i.DATE_REPORTED >= ('{0}') AND i.DATE_REPORTED <= ('{1}')
-
+                 GROUP BY d.STATE, a.SPRAY, a.INSPECT, d.STATUS
                    ", selectedStart.ToString("dd-MMM-yyyy"), selectedEnd.ToString("dd-MMM-yyyy"));
               }
-              else if (selectedStart != DateTime.MinValue)
+               else if (selectedStart != DateTime.MinValue)
               {
-                  sql3 = string.Format(@" 
+                  sql9 = string.Format(@" 
                 AND i.DATE_REPORTED >= ('{0}')
-
+                 GROUP BY d.STATE, a.SPRAY, a.INSPECT, d.STATUS
                    ", selectedStart.ToString("dd-MMM-yyyy"));
               }
 
               else if (selectedEnd != DateTime.MinValue)
               {
-                  sql3 = string.Format(@" 
+                  sql9 = string.Format(@" 
                 AND i.DATE_REPORTED <= ('{0}')
-
+                 GROUP BY d.STATE, a.SPRAY, a.INSPECT, d.STATUS
                    ", selectedEnd.ToString("dd-MMM-yyyy"));
               }
 
-              string sql4 = "";
+                    string sql10 = "";
+                    sql10 = string.Format(@"
+                 
+                       UNION ALL
+                      SELECT 0 TOTALCROSSINGCOUNT,                     
+                        0 SPRAY,
+                        0 SPRAY_YTD,
+                        0 INSPECT_YTD,
+                        0 YESCOUNT,
+                        0 YESCOUNT_YTD,
+                        0 INSPECTYES_YTD,
+                        0 NOCOUNT,
+                        0 INSPECT,
+                        0 INSPECTYES,
+                        0 INCIDENT,
+                        COUNT(i.INCIDENT_ID) INCIDENT_YTD,
+                        0 DELETED,
+                        0 DELETED_YTD,
+                        d.STATE
+                    FROM CROSSINGS d                
+                    LEFT JOIN CROSSING_APPLICATION a ON d.CROSSING_ID = a.CROSSING_ID               
+                    LEFT JOIN CROSSING_INCIDENT i ON d.CROSSING_ID = i.CROSSING_ID               
+                    WHERE RAILROAD_ID = {0} AND d.STATE IS NOT NULL 
+                                      
+                   
+                     ", selectedRailroad);
+
+                       string sql11 = "";
+              if (FiscalStart != DateTime.MinValue && selectedEnd != DateTime.MinValue)
+              {
+                  sql11 = string.Format(@" 
+                AND i.DATE_REPORTED >= ('{0}') AND i.DATE_REPORTED <= ('{1}')
+                 GROUP BY d.STATE, a.SPRAY, a.INSPECT, d.STATUS
+                   ", FiscalStart.ToString("dd-MMM-yyyy"), selectedEnd.ToString("dd-MMM-yyyy"));
+              }
+                   
+                       string sql12 = "";
+                       sql12 = string.Format(@"
+                   
+                    UNION ALL
+                    SELECT 0 TOTALCROSSINGCOUNT,
+                        0 SPRAY,
+                        0 SPRAY_YTD,
+                        0 INSPECT_YTD,                    
+                        0 YESCOUNT,
+                        0 YESCOUNT_YTD,
+                        0 INSPECTYES_YTD,
+                        0 NOCOUNT,
+                        0 INSPECT,
+                        0 INSPECTYES,
+                        0 INCIDENT,
+                        0 INCIDENT_YTD,
+                        COUNT(d.STATUS) DELETED,
+                        0 DELETED_YTD,
+                        d.STATE
+                    FROM CROSSINGS d                
+                    LEFT JOIN CROSSING_APPLICATION a ON d.CROSSING_ID = a.CROSSING_ID               
+                    LEFT JOIN CROSSING_INCIDENT i ON d.CROSSING_ID = i.CROSSING_ID               
+                    WHERE RAILROAD_ID = {0} AND d.STATE IS NOT NULL 
+                                     
+                   
+                     ", selectedRailroad);
+                      string sql13 = "";
               if (selectedStart != DateTime.MinValue && selectedEnd != DateTime.MinValue)
               {
-                  sql4 = string.Format(@" 
+                  sql13 = string.Format(@" 
                 AND d.DELETED_DATE >= ('{0}') AND d.DELETED_DATE <= ('{1}')
-
+                 GROUP BY d.STATE, a.SPRAY, a.INSPECT, d.STATUS 
                    ", selectedStart.ToString("dd-MMM-yyyy"), selectedEnd.ToString("dd-MMM-yyyy"));
               }
               else if (selectedStart != DateTime.MinValue)
               {
-                  sql4 = string.Format(@" 
+                  sql13 = string.Format(@" 
                 AND d.DELETED_DATE >= ('{0}')
-
+                 GROUP BY d.STATE, a.SPRAY, a.INSPECT, d.STATUS 
                    ", selectedStart.ToString("dd-MMM-yyyy"));
               }
 
               else if (selectedEnd != DateTime.MinValue)
               {
-                  sql4 = string.Format(@" 
+                  sql13 = string.Format(@" 
                 AND d.DELETED_DATE <= ('{0}')
-
+                GROUP BY d.STATE, a.SPRAY, a.INSPECT, d.STATUS 
                    ", selectedEnd.ToString("dd-MMM-yyyy"));
               }
-              string sql5 = "";
+                             
+                string sql14 = "";
+                sql14 = string.Format(@"
+                   
+                         UNION ALL
+                     SELECT 0 TOTALCROSSINGCOUNT,
+                        0 SPRAY,
+                        0 SPRAY_YTD,
+                        0 INSPECT_YTD,                    
+                        0 YESCOUNT,
+                        0 YESCOUNT_YTD,
+                        0 INSPECTYES_YTD,
+                        0 NOCOUNT,
+                        0 INSPECT,
+                        0 INSPECTYES,
+                        0 INCIDENT,
+                        0 INCIDENT_YTD,
+                        0 DELETED,
+                        COUNT(d.STATUS) DELETED_YTD,
+                        d.STATE
+                    FROM CROSSINGS d                
+                    LEFT JOIN CROSSING_APPLICATION a ON d.CROSSING_ID = a.CROSSING_ID               
+                    LEFT JOIN CROSSING_INCIDENT i ON d.CROSSING_ID = i.CROSSING_ID               
+                    WHERE RAILROAD_ID = {0} AND d.STATE IS NOT NULL 
+                                   
+                   
+                     ", selectedRailroad);
+                    string sql15 = "";
               if (FiscalStart != DateTime.MinValue && selectedEnd != DateTime.MinValue)
               {
-                  sql5 = string.Format(@" 
-                AND a.APPLICATION_DATE >= ('{0}') AND a.APPLICATION_DATE <= ('{1}')
-
-                   ", FiscalStart.ToString("dd-MMM-yyyy"), selectedEnd.ToString("dd-MMM-yyyy"));
-              }
-              string sql6 = "";
-              if (FiscalStart != DateTime.MinValue && selectedEnd != DateTime.MinValue)
-              {
-                  sql6 = string.Format(@" 
-                AND i.DATE_REPORTED >= ('{0}') AND i.DATE_REPORTED <= ('{1}')
-
-                   ", FiscalStart.ToString("dd-MMM-yyyy"), selectedEnd.ToString("dd-MMM-yyyy"));
-              }
-              string sql7 = "";
-              if (FiscalStart != DateTime.MinValue && selectedEnd != DateTime.MinValue)
-              {
-                  sql7 = string.Format(@" 
+                  sql15 = string.Format(@" 
                 AND d.DELETED_DATE >= ('{0}') AND d.DELETED_DATE <= ('{1}')
-
+                 
                    ", FiscalStart.ToString("dd-MMM-yyyy"), selectedEnd.ToString("dd-MMM-yyyy"));
-              }
-              string sql8 = "group by d.STATE, a.SPRAY, a.INSPECT, d.STATUS) group by STATE";
-              string sql = sql1 + sql2 + sql3 + sql4 + sql5 + sql6 + sql7 + sql8;
+              }          
+             
+              string sql16 = "GROUP BY d.STATE, a.SPRAY, a.INSPECT, d.STATUS)GROUP BY STATE";
+              string Allsql = sql + sql1 + sql2 + sql3 + sql4 + sql5 + sql6 + sql7 + sql8 +sql9 + sql10 + sql11 + sql12 + sql13 + sql14 + sql15 + sql16;
               using (Entities context = new Entities())
               {
-                  return context.Database.SqlQuery<CrossingSummaryReport>(sql).ToList();
+                  return context.Database.SqlQuery<CrossingSummaryReport>(Allsql).ToList();
               }
           }
-
           public static List<ApplicationDateList> GetAppDateList(string selectedRailroad, string selectedServiceUnit, string selectedSubDiv, string selectedState, decimal selectedApplication, DateTime selectedStart, DateTime selectedEnd)
           {
 
@@ -1616,12 +1966,15 @@ SELECT
               public long TOTALCROSSINGCOUNT { get; set; }
               public decimal MILE_POST{get;set;}
               public long YESCOUNT { get; set; } //spray
+              public long YESCOUNT_YTD { get; set; } //spray
               public long NOCOUNT { get; set; } //spray
               public long INSPECTYES { get; set; }
               public long INSPECTNO { get; set; }
-              public long DELETEDYES { get; set; }
-              public long DELETEDNO { get; set; }
+              public long DELETED { get; set; }
+              public long DELETED_YTD { get; set; }
               public long INCIDENT { get; set; }
+              public long INCIDENT_YTD { get; set; }
+              public long INSPECTYES_YTD { get; set; }
               public long CROSSING_ID { get; set; }
               public long PROJECT_ID { get; set; }
               public long INCIDENT_ID { get; set; }

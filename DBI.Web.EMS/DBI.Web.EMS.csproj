@@ -85,10 +85,6 @@
       <HintPath>..\..\My Received Files\Oracle.ManagedDataAccessDTC.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System.Activities" />
-    <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.Data.Entity">
       <Private>True</Private>
     </Reference>
@@ -108,7 +104,6 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -123,7 +118,6 @@
     <Reference Include="WebGrease">
       <HintPath>..\packages\WebGrease.1.3.0\lib\WebGrease.dll</HintPath>
     </Reference>
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -1305,28 +1299,42 @@
     <Content Include="Views\Modules\BudgetBidding\Reports\umRepRollupOPCompare.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\MaintenanceInvoiceReport.rdlc" />
-    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\AppDateReport.rdlc" />
-    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\InspectionReport.rdlc" />
-    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\IncidentReport.rdlc" />
-    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\SummaryReport.rdlc">
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\MaintenanceInvoiceReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.rdlc" />
+    </Content>
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\AppDateReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\InspectionReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\IncidentReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\SummaryReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Views\Modules\BudgetBidding\Reports\umRepProject.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\PrivateCrossingReport.rdlc">
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\PrivateCrossingReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\MissingROW.rdlc" />
-    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\WeeklyWorkActivity.rdlc" />
-    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\SupplementalBillingReport.rdlc">
+    </Content>
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\MissingROW.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\SupplementalInvoiceReport.rdlc">
+    </Content>
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\WeeklyWorkActivity.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
+    </Content>
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\SupplementalBillingReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\SupplementalInvoiceReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="Views\Modules\CrossingMaintenance\StateCrossingList.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>StateCrossingList.cs</LastGenOutput>
@@ -1353,6 +1361,7 @@
   <ItemGroup>
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
