@@ -49,11 +49,11 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             List<ReportListStruct> list = new List<ReportListStruct> 
                 {
                     new ReportListStruct(1, "State Crossing List"),
+                    new ReportListStruct(7, "Crossing Summary"),
                     new ReportListStruct(2, "Application Date"),
                     new ReportListStruct(3, "Inspection Date"),
                     new ReportListStruct(4, "Incidents"),
-                    new ReportListStruct(5, "Supplemental Billing"),
-                    new ReportListStruct(7, "Crossing Summary"),
+                    new ReportListStruct(5, "Supplemental Billing"),                  
                     new ReportListStruct(8, "Weekly Work Activity"),
                     new ReportListStruct(9, "Private Crossing List"),
                     new ReportListStruct(10, "ROW Missing") 

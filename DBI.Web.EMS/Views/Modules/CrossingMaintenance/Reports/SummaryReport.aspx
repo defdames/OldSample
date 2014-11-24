@@ -13,7 +13,7 @@
     <div>
     
     </div>
-        <rsweb:ReportViewer ID="ReportViewer1" runat="server" Font-Names="Verdana" Font-Size="8pt" WaitMessageFont-Names="Verdana" WaitMessageFont-Size="14pt">
+        <rsweb:ReportViewer ID="ReportViewer1" runat="server" Font-Names="Verdana" Font-Size="8pt" WaitMessageFont-Names="Verdana" WaitMessageFont-Size="14pt" Height="750px" Width="100%">
             <LocalReport ReportEmbeddedResource="DBI.Web.EMS.Views.Modules.CrossingMaintenance.Reports.SummaryReport.rdlc" ReportPath="Views\Modules\CrossingMaintenance\Reports\SummaryReport.rdlc">                 
                 <DataSources>
                     <rsweb:ReportDataSource DataSourceId="ObjectDataSource2" Name="CrossingSummaryReport" />
