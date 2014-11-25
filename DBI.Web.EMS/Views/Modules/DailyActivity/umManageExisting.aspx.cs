@@ -43,13 +43,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             using (Entities _context = new Entities())
             {
-                IQueryable<DAILY_ACTIVITY.HeaderData> rawData;
+                List<DAILY_ACTIVITY.HeaderData> rawData;
 
                 if (validateComponentSecurity("SYS.DailyActivity.View"))
                 {
                     List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
 
-                    rawData = DAILY_ACTIVITY.GetHeaders(_context, uxToggleInactive.Checked, uxTogglePosted.Checked, OrgsList);
+                    rawData = DAILY_ACTIVITY.GetHeaders(_context, uxToggleInactive.Checked, uxTogglePosted.Checked, OrgsList).ToList();
                 }
                 else
                 {
@@ -58,14 +58,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                      where d.EMPLOYEE_NAME == EmployeeName
                                      select d.PERSON_ID).Single();
 
-                    rawData = DAILY_ACTIVITY.GetHeaders(_context, uxToggleInactive.Checked, uxTogglePosted.Checked, null, PersonId);
+                    rawData = DAILY_ACTIVITY.GetHeaders(_context, uxToggleInactive.Checked, uxTogglePosted.Checked, null, PersonId).ToList();
                     uxCreateActivityButton.Disabled = true;
 
                 }
 
                 int count;
 
-                List<DAILY_ACTIVITY.HeaderData> data = GenericData.ListFilterHeader<DAILY_ACTIVITY.HeaderData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], rawData, out count).ToList();
+                List<DAILY_ACTIVITY.HeaderData> data = GenericData.EnumerableFilterHeader<DAILY_ACTIVITY.HeaderData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], rawData, out count).ToList();
 
                 List<DAILY_ACTIVITY.EmployeeData> HoursOver24 = ValidationChecks.checkEmployeeTime(24);
                 List<DAILY_ACTIVITY.EmployeeData> HoursOver14 = ValidationChecks.checkEmployeeTime(14);

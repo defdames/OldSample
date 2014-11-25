@@ -81,6 +81,8 @@
                 App.uxEndFilterDate.clearInvalid();
             }
             else {
+                App.uxStartFilterDate.setMaxValue(App.uxEndFilterDate.value);
+                App.uxEndFilterDate.setMinValue(App.uxStartFilterDate.value);
                 return "Start Date/Time must be earlier than End Date/Time";
             }
         };
