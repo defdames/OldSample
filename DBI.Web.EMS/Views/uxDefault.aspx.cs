@@ -76,7 +76,7 @@ namespace DBI.Web.EMS.Views
             //if (long.Parse(Session["isDirty"].ToString()) == 0)
             //{
                 uxWest.Collapse();
-            //    LoadModule(e.ExtraParams["Page"], e.ExtraParams["Location"]);
+               LoadModule(e.ExtraParams["Page"], e.ExtraParams["Location"]);
             //}
             //else
             //{
