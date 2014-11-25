@@ -106,15 +106,15 @@ namespace DBI.Core.Web
         protected void deLogout(object sender, DirectEventArgs e)
         {
             long isDirty = long.Parse(Session["isDirty"].ToString());
-            if (isDirty == 0)
-            {
+            //if (isDirty == 0)
+            //{
                 Authentication.Logout();
                 X.Redirect("~/uxLogin.aspx");
-            }
-            else
-            {
-                CreateDirtyMessage();
-            }
+            //}
+            //else
+            //{
+            //    CreateDirtyMessage();
+            //}
         }
 
         /// <summary>

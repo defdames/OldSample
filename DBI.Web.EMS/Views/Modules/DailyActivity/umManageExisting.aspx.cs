@@ -153,9 +153,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deUpdateUrlAndButtons(object sender, DirectEventArgs e)
         {
-            long isDirty = long.Parse(Session["isDirty"].ToString());
-            if (isDirty == 0)
-            {
+            //long isDirty = long.Parse(Session["isDirty"].ToString());
+            //if (isDirty == 0)
+            //{
                 long OrgId;
                 long CoOrgId;
                 long HeaderId = long.Parse(e.ExtraParams["HeaderId"]);
@@ -283,11 +283,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 string LoaderURL = (OrgId == 123 ? "umCombinedTab_IRM.aspx" : "umCombinedTab_DBI.aspx") + "?HeaderId=" + HeaderId;
                 uxTotalRecords.Text = GetRecordNumber(int.Parse(e.ExtraParams["CurrentPage"])).ToString() + "/" + e.ExtraParams["TotalRecords"];
                 uxDetailsPanel.LoadContent(LoaderURL);
-            }
-            else
-            {
-                CreateDirtyMessage();
-            }
+            //}
+            //else
+            //{
+            //    CreateDirtyMessage();
+            //}
 
         }
 
