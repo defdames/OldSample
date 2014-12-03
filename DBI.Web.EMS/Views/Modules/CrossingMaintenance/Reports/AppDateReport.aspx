@@ -31,6 +31,7 @@
                 <asp:QueryStringParameter Name="selectedApplication" QueryStringField="selectedApplication" Type="Decimal" />
                 <asp:QueryStringParameter Name="selectedStart" QueryStringField="selectedStart" Type="DateTime" />
                 <asp:QueryStringParameter Name="selectedEnd" QueryStringField="selectedEnd" Type="DateTime" />
+                <asp:QueryStringParameter Name="selectedDot" QueryStringField="selectedDot" Type="string" />
             </SelectParameters>
         </asp:ObjectDataSource>
     </form>

@@ -115,7 +115,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
        
                 using (Entities _context = new Entities())
                 {
-                    IQueryable<CROSSING_MAINTENANCE.ApplicationList> data = CROSSING_MAINTENANCE.GetApplications(_context);
+                    long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
+                    IQueryable<CROSSING_MAINTENANCE.ApplicationList> data = CROSSING_MAINTENANCE.GetApplications(_context, RailroadId);
                    
                     int count;
                     uxApplicationStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.ApplicationList>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
@@ -136,9 +137,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
                 else
                 {
-                    int CurrentOrg = Convert.ToInt32(Authentication.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
+                    List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
                     //Get projects for my org only
-                    dataIn = WEB_EQUIPMENT_V.ListEquipment(CurrentOrg);
+                    dataIn = WEB_EQUIPMENT_V.ListEquipment(OrgsList);
                 }
 
                 int count;
