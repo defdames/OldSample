@@ -30,6 +30,13 @@
             background-color: #EFF7FF !important;
             background-image: none;
         }
+             
+        .x-label-value{
+            color:black;
+            font-weight:bold;
+        
+    
+        }
     </style>
 </head>
 <body>
@@ -389,19 +396,19 @@
                                                             <ext:Column runat="server"
                                                                 ID="uxEquipmentClassCode"
                                                                 DataIndex="CLASS_CODE"
-                                                                Text="Class Code" />
+                                                                Text="Class Code" Flex="1" />
                                                             <ext:Column runat="server"
                                                                 ID="uxEquipmentName"
                                                                 DataIndex="NAME"
-                                                                Text="Equipment Name" />
+                                                                Text="Equipment Name" Flex="1" />
                                                             <ext:Column runat="server"
                                                                 ID="uxEquipmentOrgName"
                                                                 DataIndex="ORGANIZATION_NAME"
-                                                                Text="Organization Name" />
+                                                                Text="Org Name" Flex="1" />
                                                             <ext:Column runat="server"
                                                                 ID="uxEquipmentSegment"
                                                                 DataIndex="SEGMENT1"
-                                                                Text="Project Number" />
+                                                                Text="Project #" Flex="1" />
                                                         </Columns>
                                                     </ColumnModel>
                                                     <Plugins>
@@ -414,8 +421,8 @@
                                                                 <ext:Button runat="server"
                                                                     ID="uxAddEquipmentToggleOrg"
                                                                     EnableToggle="true"
-                                                                    Text="All Regions"
-                                                                    Icon="Group">
+                                                                    Text="All Organizations"
+                                                                    Icon="Group" >
                                                                     <DirectEvents>
                                                                         <Toggle OnEvent="deReloadStore">
                                                                             <ExtraParams>
@@ -424,6 +431,12 @@
                                                                         </Toggle>
                                                                     </DirectEvents>
                                                                 </ext:Button>
+                                                                <ext:ToolbarSpacer runat="server" />
+                                                                <ext:ToolbarSeparator runat="server" />
+                                                                <ext:ToolbarSpacer ID="ToolbarSpacer1" runat="server" />
+                                                                <ext:ToolbarSpacer ID="ToolbarSpacer2" runat="server" />
+                                                               <%-- <ext:ToolbarFill runat="server" />--%>
+                                                                <ext:Label runat="server" ID="uxOrgsLabel" Cls="x-label-value" Text="Viewing my organizations" />
                                                             </Items>
                                                         </ext:Toolbar>
                                                     </TopBar>
@@ -584,7 +597,7 @@
                                                                 <ext:Button runat="server"
                                                                     ID="uxEditToggle"
                                                                     EnableToggle="true"
-                                                                    Text="All Regions"
+                                                                    Text="All Organizations"
                                                                     Icon="Group">
                                                                     <DirectEvents>
                                                                         <Toggle OnEvent="deEditReloadStore">

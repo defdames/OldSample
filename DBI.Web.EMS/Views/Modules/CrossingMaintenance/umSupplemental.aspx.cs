@@ -64,14 +64,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             //}
             using (Entities _context = new Entities())
             {
+                long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
                IQueryable<CROSSING_MAINTENANCE.SupplementalList> data;
                 if (uxToggleClosed.Checked)
                 {
-                    data = CROSSING_MAINTENANCE.GetSupplementals(_context);
+                    data = CROSSING_MAINTENANCE.GetSupplementals(_context, RailroadId);
                 }
                 else
                 {
-                    data = CROSSING_MAINTENANCE.GetSupplementals(_context).Where(i => i.CUT_TIME == DateTime.MinValue);
+                    data = CROSSING_MAINTENANCE.GetSupplementals(_context, RailroadId).Where(i => i.CUT_TIME == DateTime.MinValue);
                 }
          
             

@@ -53,15 +53,16 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             using (Entities _context = new Entities())
             {
+                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
                 //long CrossingId = long.Parse(e.Parameters["CrossingId"]);
                 IQueryable<CROSSING_MAINTENANCE.IncidentList> data;
                 if (uxToggleClosed.Checked)
                 {
-                    data = CROSSING_MAINTENANCE.GetIncidents(_context);
+                    data = CROSSING_MAINTENANCE.GetIncidents(_context, RailroadId);
                 }
                 else
                 {
-                    data = CROSSING_MAINTENANCE.GetIncidents(_context).Where(i => i.DATE_CLOSED == null);
+                    data = CROSSING_MAINTENANCE.GetIncidents(_context, RailroadId).Where(i => i.DATE_CLOSED == null);
                 }
          
                 int count;

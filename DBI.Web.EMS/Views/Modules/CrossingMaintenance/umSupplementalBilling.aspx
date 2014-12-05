@@ -30,7 +30,105 @@
             background-image: none;
         }
     </style>
-   
+    <script type="text/javascript">
+        var isEditAdjustmentAllowed = function (e) {
+            if (e.originalValue == 12345678910) {
+                return false;
+            }
+        }
+        var editAdjustment = function (editor, e) {
+            if (e.originalValue != e.value) {
+                SaveRecord.deSaveAdjustments(e.record.data.ADJ_ID, e.field, e.value);
+            }
+        }
+        Ext.util.Format.CurrencyFactory = function (dp, dSeparator, tSeparator, symbol, red) {
+            return function (n) {
+                if (n == 12345678910) {
+                    return " ";
+                }
+
+                var template = '<span style="color:{0};">{1}</span>';
+
+                dp = Math.abs(dp) + 1 ? dp : 2;
+                dSeparator = dSeparator || ".";
+                tSeparator = tSeparator || ",";
+
+                var m = /(\d+)(?:(\.\d+)|)/.exec(n + ""),
+                    x = m[1].length > 3 ? m[1].length % 3 : 0;
+
+
+                var r = (n < 0 ? '-' : '') // preserve minus sign
+                        + (x ? m[1].substr(0, x) + tSeparator : "")
+                        + m[1].substr(x).replace(/(\d{3})(?=\d)/g, "$1" + tSeparator)
+                        + (dp ? dSeparator + (+m[2] || 0).toFixed(dp).substr(2) : "")
+                        + symbol;
+
+                return Ext.String.format(template, (n >= 0 || red == false) ? "black" : "red", r);
+            };
+        };
+        // EXAMPLE
+        //var colorErrors = function (value, metadata, record) {
+        //    if (record.data.WARNING == "Error") {
+        //        metadata.style = "background-color: red;";
+        //    }
+        //    else if (record.data.WARNING == "Warning") {
+        //        metadata.style = "background-color: yellow;";
+        //    }
+        //    return value;
+        //};
+        var colorProjectOverride = function (value, metadata, record) {
+            if (record.data.TYPE == "OVERRIDE") {
+                metadata.style = "background-color: #FFFF99;";
+            }
+            return value;
+        };
+        var colorCompareOverride = function (value, metadata, record) {
+            if (record.data.COMPARE_PRJ_OVERRIDE == "Y") {
+                metadata.style = "background-color: #FFFF99;";
+            }
+
+            var template = '<span style="color:{0};">{1}</span>';
+
+            var dp = 2;
+            var dSeparator = ".";
+            var tSeparator = ",";
+            var symbol = '';
+            var red = false;
+
+            var m = /(\d+)(?:(\.\d+)|)/.exec(value + ""),
+                x = m[1].length > 3 ? m[1].length % 3 : 0;
+            var r = (value < 0 ? '-' : '') // preserve minus sign
+                    + (x ? m[1].substr(0, x) + tSeparator : "")
+                    + m[1].substr(x).replace(/(\d{3})(?=\d)/g, "$1" + tSeparator)
+                    + (dp ? dSeparator + (+m[2] || 0).toFixed(dp).substr(2) : "")
+                    + symbol;
+
+            return Ext.String.format(template, (value >= 0 || red == false) ? "black" : "red", r);
+        };
+        var colorWEOverride = function (value, metadata, record) {
+            if (record.data.WE_OVERRIDE == "Y") {
+                metadata.style = "background-color: #FFFF99;";
+            }
+
+            var template = '<span style="color:{0};">{1}</span>';
+
+            var dp = 2;
+            var dSeparator = ".";
+            var tSeparator = ",";
+            var symbol = '';
+            var red = false;
+
+            var m = /(\d+)(?:(\.\d+)|)/.exec(value + ""),
+                x = m[1].length > 3 ? m[1].length % 3 : 0;
+            var r = (value < 0 ? '-' : '') // preserve minus sign
+                    + (x ? m[1].substr(0, x) + tSeparator : "")
+                    + m[1].substr(x).replace(/(\d{3})(?=\d)/g, "$1" + tSeparator)
+                    + (dp ? dSeparator + (+m[2] || 0).toFixed(dp).substr(2) : "")
+                    + symbol;
+
+            return Ext.String.format(template, (value >= 0 || red == false) ? "black" : "red", r);
+        };
+    </script>
    <script>
        var saveData = function () {
            App.Hidden1.setValue(Ext.encode(App.GridPanel1.getRowsValues({ selectedOnly: false })));
@@ -202,6 +300,7 @@
                                     <ext:ModelField Name="SUB_DIVISION" />
                                      <ext:ModelField Name="SEGMENT1" />
                                     <ext:ModelField Name="PRICE" />
+                                    <ext:ModelField Name="TOTALPRICE" />
                                 </Fields>
                             </ext:Model>
                         </Model>
@@ -223,7 +322,15 @@
                         <ext:DateColumn ID="DateColumn1" runat="server" DataIndex="APPROVED_DATE" Text="Approved Date" Flex="1" Format="MM/dd/yyyy" />
                     <ext:Column ID="Column6" runat="server" DataIndex="SERVICE_TYPE" Text="Service Type" Flex="1" />
                     <ext:Column ID="Column5" runat="server" DataIndex="SQUARE_FEET" Text="Square Feet" Flex="1" />
-                        <ext:Column ID="Column4" runat="server" DataIndex="PRICE" Text="Price" Flex="1" />
+                        <ext:Column ID="Column4" runat="server" DataIndex="PRICE" Text="Price Per Ft" Flex="1" >
+                        <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                             </ext:Column>
+                         <ext:Column ID="Column7" runat="server" DataIndex="TOTALPRICE" Text="Total Price" Flex="1" >
+                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                             </ext:Column>
+                      <%--   <ext:NumberColumn ID="NumberColumn1" runat="server" DataIndex="TOTALPRICE" Text="Total Price" Flex="1" Align="Right">
+                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                            </ext:NumberColumn>--%>
                     <ext:Column ID="Column13" runat="server" DataIndex="SEGMENT1" Text="Project #" Flex="1" />
 
 

@@ -31,7 +31,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             {
                 uxAddAppRequestedStore.Data = StaticLists.ApplicationRequested;
                 uxAddStateList.Data = StaticLists.CrossingStateList;
-
+                
                 if (SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue") != string.Empty)
                 {
                     deGetRRType("Add");
@@ -41,7 +41,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         }
         protected void deAppDateGrid(object sender, DirectEventArgs e)
         {
-            
+            string Dot = uxDotDropDownField.Value.ToString();
             DateTime StartDate = uxStartDate.SelectedDate;
             DateTime EndDate = uxEndDate.SelectedDate;
             decimal Application = Convert.ToDecimal(uxAddAppReqeusted.SelectedItem.Value);
@@ -51,7 +51,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             using (Entities _context = new Entities())
             {
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
-               
+
+                string selectedDot = Dot;
                 DateTime selectedStart = StartDate;
                 DateTime selectedEnd = EndDate;
                 decimal selectedApplication = Application;
@@ -60,7 +61,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 string selectedSubDiv = SubDiv;
                 string selectedState = State;
 
-                string url = "/Views/Modules/CrossingMaintenance/Reports/AppDateReport.aspx?selectedRailroad=" + selectedRailroad + "&selectedServiceUnit=" + selectedServiceUnit + "&selectedSubDiv=" + selectedSubDiv + "&selectedState=" + selectedState + "&selectedStart=" + selectedStart + "&selectedEnd=" + selectedEnd + "&selectedApplication=" + selectedApplication;
+                string url = "/Views/Modules/CrossingMaintenance/Reports/AppDateReport.aspx?selectedRailroad=" + selectedRailroad + "&selectedServiceUnit=" + selectedServiceUnit + "&selectedSubDiv=" + selectedSubDiv + "&selectedState=" + selectedState + "&selectedStart=" + selectedStart + "&selectedEnd=" + selectedEnd + "&selectedApplication=" + selectedApplication + "&selectedDot=" + selectedDot;
                 Ext.Net.Panel pan = new Ext.Net.Panel();
 
                 pan.ID = "Tab";
@@ -110,6 +111,34 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             }
         }
+        protected void deDOTValue(object sender, DirectEventArgs e)
+        {
+
+            switch (e.ExtraParams["Type"])
+            {
+                case "Add":
+                    uxDotDropDownField.SetValue(e.ExtraParams["CrossingNumber"], e.ExtraParams["CrossingNumber"]);
+                    uxAddProjectFilter.ClearFilter();
+                    break;
+
+            }
+          
+        }
+        protected void deLoadDOT(object sender, StoreReadDataEventArgs e)
+        {
+            
+            using (Entities _context = new Entities())
+            {
+                long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));  
+                List<CROSSING_MAINTENANCE.DOTList> data = CROSSING_MAINTENANCE.DotList(RailroadId);
+                    
+                int count;
+                uxDOTStore.DataSource = GenericData.EnumerableFilterHeader<CROSSING_MAINTENANCE.DOTList>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                e.Total = count;
+            }
+
+        }
+      
         protected void deLoadSubDiv(object sender, DirectEventArgs e)
         {
 

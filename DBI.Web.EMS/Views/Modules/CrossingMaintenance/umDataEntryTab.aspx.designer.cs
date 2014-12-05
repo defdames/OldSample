@@ -634,6 +634,24 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.Button uxAddEquipmentToggleOrg;
         
         /// <summary>
+        /// ToolbarSpacer1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ToolbarSpacer ToolbarSpacer1;
+        
+        /// <summary>
+        /// uxOrgsLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Label uxOrgsLabel;
+        
+        /// <summary>
         /// uxAddEquipmentPaging control.
         /// </summary>
         /// <remarks>

@@ -13,7 +13,7 @@
          <ext:Hidden ID="Hidden1" runat="server" Hidden="true" />
          <ext:Viewport ID="Viewport1" runat="server" Layout="BorderLayout">
                 <Items>
-         <ext:FormPanel ID="uxFilterForm" runat="server" Margin="5" Region="North" Title="Filter Supplemental Billing Report">
+         <ext:FormPanel ID="uxFilterForm" runat="server" Margin="5" Region="North" Title="Filter Crossing Summary Report">
                 <Items>
                     <ext:FieldSet ID="FieldSet1" runat="server" Title="Filter">
                         <Items>
@@ -39,7 +39,7 @@
                             <ext:Button runat="server"
                                 ID="Button4"
                                 Text="Run"
-                                Icon="PlayGreen">
+                                Icon="PlayGreen" Disabled="true">
                                    <DirectEvents>
                                 <Click OnEvent="deSummaryReportGrid" >
                                     </Click>
