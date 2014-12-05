@@ -354,6 +354,8 @@ SELECT
                           REMARKS = a.REMARKS,
                           SEGMENT1 = v.SEGMENT1,
                           PRICE = p.PRICE,
+                          TOTALPRICE = (a.SQUARE_FEET != 0 ? a.SQUARE_FEET * p.PRICE : p.PRICE )
+                          
                       });
 
           }
@@ -2180,6 +2182,7 @@ SELECT
           public class CompletedCrossingsSupplemental
           {
               public decimal? PRICE { get; set; }
+              public decimal? TOTALPRICE { get; set; }
               public string CROSSING_NUMBER { get; set; }
               public long SUPPLEMENTAL_ID { get; set; }
               public long CROSSING_ID { get; set; }

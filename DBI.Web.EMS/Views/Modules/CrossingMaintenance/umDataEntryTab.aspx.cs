@@ -442,11 +442,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 uxEquipmentStore.Reload();
                 if (uxAddEquipmentToggleOrg.Pressed)
                 {
-                    uxAddEquipmentToggleOrg.Text = "My Region";
+                    uxAddEquipmentToggleOrg.Text = "My Organizations";
+                    uxOrgsLabel.Text = "Viewing all organizations";
                 }
                 else
                 {
-                    uxAddEquipmentToggleOrg.Text = "All Regions";
+                    uxAddEquipmentToggleOrg.Text = "All Organizations";
+                    uxOrgsLabel.Text = "Viewing my organizations";
                 }
             }
         }

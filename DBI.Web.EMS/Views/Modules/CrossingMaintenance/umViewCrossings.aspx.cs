@@ -191,7 +191,15 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                    }
                    else
                    {
-                       X.Msg.Alert("Warning", "Crossing is not assigned to a project. Please assign this crossing to a current project before reactivating.").Show();
+                       Ext.Net.X.Msg.Show(new MessageBoxConfig
+                       {
+                           Title = "Warning",
+                           Message = "Crossing is not assigned to a project. Please assign this crossing to a current project before reactivating.",
+                           Buttons = MessageBox.Button.OK,
+                           Icon = MessageBox.Icon.WARNING
+                       });
+
+            
                    }
                
         }
