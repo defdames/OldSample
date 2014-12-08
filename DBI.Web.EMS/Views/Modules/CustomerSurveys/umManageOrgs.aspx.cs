@@ -44,7 +44,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
         {
             using (Entities _context = new Entities())
             {
-                uxFormTypeStore.DataSource = _context.CUSTOMER_SURVEY_FORM_TYPES.ToList();
+                uxFormTypeStore.DataSource = _context.SURVEY_TYPES.ToList();
             }
         }
 
@@ -198,7 +198,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
             uxThresholdStore.Reload();
             uxThresholdForm.Reset();
-            dmSubtractFromDirty();
+            //dmSubtractFromDirty();
         }
 
         protected void deSaveDollar(object sender, DirectEventArgs e)
@@ -226,7 +226,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 using (Entities _context = new Entities())
                 {
                     ORG_HIER = _context.ORG_HIER_V.Where(x => x.ORG_ID == Dollars.ORG_ID).Select(x => x.ORG_HIER).Distinct().Single();
-                    TYPE_NAME = _context.CUSTOMER_SURVEY_FORM_TYPES.Where(x => x.TYPE_ID == Dollars.TYPE_ID).Select(x => x.TYPE_NAME).Single();
+                    TYPE_NAME = _context.SURVEY_TYPES.Where(x => x.TYPE_ID == Dollars.TYPE_ID).Select(x => x.TYPE_NAME).Single();
                 }
                 ModelProxy Record = uxDollarStore.GetByInternalId(item.PhantomId);
                 Record.CreateVariable = true;
@@ -249,7 +249,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 }
                 GenericData.Update<CUSTOMER_SURVEY_THRESH_AMT>(Dollars);
             }
-            dmSubtractFromDirty();
+            //dmSubtractFromDirty();
             uxDollarGrid.GetView().Refresh();
             uxThresholdStore.Reload();
         }
@@ -303,20 +303,20 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             }
         }
 
-        [DirectMethod]
-        public void dmAddToDirty()
-        {
-            long isDirty = (long)Session["isDirty"];
-            isDirty++;
-            Session["isDirty"] = isDirty;
-        }
+        //[DirectMethod]
+        //public void dmAddToDirty()
+        //{
+        //    long isDirty = (long)Session["isDirty"];
+        //    isDirty++;
+        //    Session["isDirty"] = isDirty;
+        //}
 
-        [DirectMethod]
-        public void dmSubtractFromDirty()
-        {
-            long isDirty = (long)Session["isDirty"];
-            isDirty--;
-            Session["isDirty"] = isDirty;
-        }
+        //[DirectMethod]
+        //public void dmSubtractFromDirty()
+        //{
+        //    long isDirty = (long)Session["isDirty"];
+        //    isDirty--;
+        //    Session["isDirty"] = isDirty;
+        //}
     }
 }

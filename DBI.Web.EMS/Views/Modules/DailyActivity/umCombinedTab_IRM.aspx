@@ -9,7 +9,7 @@
     <script type="text/javascript">
         var checkStatus = function (e) {
             if (App.uxStatusField.value == 2 && App.uxCanEditField.value != "false") {
-                App.direct.dmAddToDirty();
+                //App.direct.dmAddToDirty();
                 return true;
             }
             return false;
@@ -17,8 +17,8 @@
 
         var AddEmployee = function () {
             App.uxEmployeeStore.insert(0, new Employee());
-            App.uxEmployeeSelection.setLocked(true);
-            App.uxEmployeeSelection.setLocked(false);
+            //App.uxEmployeeSelection.setLocked(true);
+            //App.uxEmployeeSelection.setLocked(false);
             App.uxEmployeeSelection.select(0);
             var task = new Ext.util.DelayedTask(function () {
                 App.uxEmployeeRowEdit.startEdit(0, 0);
@@ -34,8 +34,8 @@
 
         var AddEquipment = function () {
             App.uxEquipmentStore.insert(0, new Equipment());
-            App.uxEquipmentSM.setLocked(true);
-            App.uxEquipmentSM.setLocked(false);
+            //App.uxEquipmentSM.setLocked(true);
+            //App.uxEquipmentSM.setLocked(false);
             App.uxEquipmentSM.select(0);
             var task = new Ext.util.DelayedTask(function () {
                 App.uxEquipmentRowEdit.startEdit(0, 0);
@@ -51,8 +51,8 @@
 
         var AddProduction = function () {
             App.uxProductionStore.insert(0, new Production());
-            App.uxProductionSelection.setLocked(true);
-            App.uxProductionSelection.setLocked(false);
+            //App.uxProductionSelection.setLocked(true);
+            //App.uxProductionSelection.setLocked(false);
             App.uxProductionSelection.select(0);
             var task = new Ext.util.DelayedTask(function () {
                 App.uxProductionRowEdit.startEdit(0, 0);
@@ -68,8 +68,8 @@
 
         var AddWeather = function () {
             App.uxWeatherStore.insert(0, new Weather());
-            App.uxWeatherSelection.setLocked(true);
-            App.uxWeatherSelection.setLocked(false);
+            //App.uxWeatherSelection.setLocked(true);
+            //App.uxWeatherSelection.setLocked(false);
             App.uxWeatherSelection.select(0);
             var task = new Ext.util.DelayedTask(function () {
                 App.uxWeatherRowEdit.startEdit(0, 0);
@@ -85,8 +85,8 @@
 
         var AddInventory = function () {
             App.uxInventoryStore.insert(0, new Inventory());
-            App.uxInventorySelection.setLocked(true);
-            App.uxInventorySelection.setLocked(false);
+            //App.uxInventorySelection.setLocked(true);
+            //App.uxInventorySelection.setLocked(false);
             App.uxInventorySelection.select(0);
             var task = new Ext.util.DelayedTask(function () {
                 App.uxInventoryRowEdit.startEdit(0, 0);
@@ -101,22 +101,22 @@
         };
 
         var onBeforeEdit = function (value) {
-            switch (value) {
-                case 'employee':
-                    App.uxEmployeeGrid.getSelectionModel().setLocked(true);
-                    break;
-                case 'equipment':
-                    App.uxEquipmentGrid.getSelectionModel().setLocked(true);
-                    break;
-                case 'weather':
-                    App.uxWeatherGrid.getSelectionModel().setLocked(true);
-                    break;
-                case 'production':
-                    App.uxProductionGrid.getSelectionModel().setLocked(true);
-                    break;
-                case 'inventory':
-                    App.uxInventoryGrid.getSelectionModel().setLocked(true);
-                    break;
+            //switch (value) {
+            //    case 'employee':
+            //        App.uxEmployeeGrid.getSelectionModel().setLocked(true);
+            //        break;
+            //    case 'equipment':
+            //        App.uxEquipmentGrid.getSelectionModel().setLocked(true);
+            //        break;
+            //    case 'weather':
+            //        App.uxWeatherGrid.getSelectionModel().setLocked(true);
+            //        break;
+            //    case 'production':
+            //        App.uxProductionGrid.getSelectionModel().setLocked(true);
+            //        break;
+            //    case 'inventory':
+            //        App.uxInventoryGrid.getSelectionModel().setLocked(true);
+            //        break;
             }
         }
 
@@ -126,7 +126,7 @@
                     if (!App.uxEmployeeGrid.getSelectionModel().getSelection()[0].data.EMPLOYEE_ID) {
                         App.uxEmployeeStore.remove(App.uxEmployeeGrid.getSelectionModel().getSelection()[0]);
                         var task = new Ext.util.DelayedTask(function () {
-                            App.uxEmployeeSelection.setLocked(false);
+                            //App.uxEmployeeSelection.setLocked(false);
                         });
                         task.delay(100);
                     }
@@ -135,7 +135,7 @@
                     if (!App.uxEquipmentGrid.getSelectionModel().getSelection()[0].data.EQUIPMENT_ID) {
                         App.uxEquipmentStore.remove(App.uxEquipmentGrid.getSelectionModel().getSelection()[0]);
                         var task = new Ext.util.DelayedTask(function () {
-                            App.uxEquipmentSelection.setLocked(false);
+                            //App.uxEquipmentSelection.setLocked(false);
                         });
                         task.delay(100);
                     }
@@ -144,7 +144,7 @@
                     if (!App.uxProductionGrid.getSelectionModel().getSelection()[0].data.PRODUCTION_ID) {
                         App.uxProductionStore.remove(App.uxProductionGrid.getSelectionModel().getSelection()[0]);
                         var task = new Ext.util.DelayedTask(function () {
-                            App.uxProductionSelection.setLocked(false);
+                            //App.uxProductionSelection.setLocked(false);
                         });
                         task.delay(100);
                     }
@@ -153,7 +153,7 @@
                     if(!App.uxWeatherGrid.getSelectionModel().getSelection()[0].data.WEATHER_ID){
                         App.uxWeatherStore.remove(App.uxWeatherGrid.getSelectionModel().getSelection()[0]);
                         var task = new Ext.util.DelayedTask(function () {
-                            App.uxWeatherSelection.setLocked(false);
+                            //App.uxWeatherSelection.setLocked(false);
                         });
                         task.delay(100);
                     }
@@ -162,7 +162,7 @@
                     if (!App.uxInventoryGrid.getSelectionModel().getSelection()[0].data.INVENTORY_ID) {
                         App.uxInventoryStore.remove(App.uxInventoryGrid.getSelectionModel().getSelection()[0]);
                         var task = new Ext.util.DelayedTask(function () {
-                            App.uxInventorySelection.setLocked(false);
+                            //App.uxInventorySelection.setLocked(false);
                         });
                         task.delay(100);
                     }
@@ -173,7 +173,7 @@
                     }
                     break;
             }
-            App.direct.dmSubtractFromDirty();
+            //App.direct.dmSubtractFromDirty();
         };
 
         var checkEmployeeStatus = function (e) {
@@ -186,7 +186,7 @@
                 else if (App.uxEmployeeGrid.getSelectionModel().getSelection()[0].data.PREVAILING_WAGE == false) {
                     App.uxEmployeeRowEdit.editor.form.findField('ROLE_TYPE').disable();
                 }
-                App.direct.dmAddToDirty();
+                //App.direct.dmAddToDirty();
                 return true;
 
             }

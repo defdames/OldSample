@@ -179,7 +179,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             {
 
                 //generate code to tie back to customer
-                CUSTOMER_SURVEY_FORMS_COMP NewFormToSubmit = new CUSTOMER_SURVEY_FORMS_COMP();
+                SURVEY_FORMS_COMP NewFormToSubmit = new SURVEY_FORMS_COMP();
                 using (Entities _context = new Entities())
                 {
                     NewFormToSubmit.FORM_ID = CUSTOMER_SURVEYS.GetFormIdByOrg(RowData[0].ORG_ID, _context);
@@ -191,7 +191,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                     NewFormToSubmit.MODIFIED_BY = User.Identity.Name;
                 }
 
-                GenericData.Insert<CUSTOMER_SURVEY_FORMS_COMP>(NewFormToSubmit);
+                GenericData.Insert<SURVEY_FORMS_COMP>(NewFormToSubmit);
 
                 //generate link
 
@@ -232,7 +232,7 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
             }
 
             //generate code to tie back to customer
-            CUSTOMER_SURVEY_FORMS_COMP NewFormToSubmit = new CUSTOMER_SURVEY_FORMS_COMP();
+            SURVEY_FORMS_COMP NewFormToSubmit = new SURVEY_FORMS_COMP();
             
             NewFormToSubmit.FORM_ID = FormId;
             NewFormToSubmit.PROJECT_ID = RowData[0].PROJECT_ID;
@@ -243,7 +243,7 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
             NewFormToSubmit.MODIFIED_BY = User.Identity.Name;
             
 
-            GenericData.Insert<CUSTOMER_SURVEY_FORMS_COMP>(NewFormToSubmit);
+            GenericData.Insert<SURVEY_FORMS_COMP>(NewFormToSubmit);
             //Get questions
             byte[] PdfStream = generatePDF(FormId, NewFormToSubmit.COMPLETION_ID);
 
@@ -321,7 +321,7 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
                         //Table.SetWidths(new float[] { .65f, .35f });
                         PdfPCell Cell;
                         iTextSharp.text.pdf.events.FieldPositioningEvents Events;
-                        List<CUSTOMER_SURVEY_OPTIONS> QuestionOptions;
+                        List<SURVEY_OPTIONS> QuestionOptions;
                         string[] Options;
                         int count = 0;
                         switch (Question.QUESTION_TYPE_NAME)
@@ -353,7 +353,7 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
                                 }
                                 Options = new string[QuestionOptions.Count];
 
-                                foreach (CUSTOMER_SURVEY_OPTIONS Option in QuestionOptions)
+                                foreach (SURVEY_OPTIONS Option in QuestionOptions)
                                 {
                                     Options[count] = Option.OPTION_NAME;
                                     count++;
@@ -383,7 +383,7 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
                                 RadioCheckField Radio;
                                 PdfFormField RadioField = null;
 
-                                foreach (CUSTOMER_SURVEY_OPTIONS Option in QuestionOptions)
+                                foreach (SURVEY_OPTIONS Option in QuestionOptions)
                                 {
                                     var root = PdfFormField.CreateEmpty(ExportWriter);
                                     root.FieldName = "root" + Option.OPTION_ID.ToString();
@@ -432,7 +432,7 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
                                 RadioCheckField Check;
                                 PdfFormField CheckField = null;
 
-                                foreach (CUSTOMER_SURVEY_OPTIONS Option in QuestionOptions)
+                                foreach (SURVEY_OPTIONS Option in QuestionOptions)
                                 {
                                     var root = PdfFormField.CreateEmpty(ExportWriter);
                                     root.FieldName = "root" + Option.OPTION_ID.ToString();
@@ -494,7 +494,7 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
             }
 
             //generate code to tie back to customer
-            CUSTOMER_SURVEY_FORMS_COMP NewFormToSubmit = new CUSTOMER_SURVEY_FORMS_COMP();
+            SURVEY_FORMS_COMP NewFormToSubmit = new SURVEY_FORMS_COMP();
             
             NewFormToSubmit.FORM_ID = FormId;
             NewFormToSubmit.PROJECT_ID = RowData[0].PROJECT_ID;
@@ -504,7 +504,7 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
             NewFormToSubmit.CREATED_BY = User.Identity.Name;
             NewFormToSubmit.MODIFIED_BY = User.Identity.Name;
             
-            GenericData.Insert<CUSTOMER_SURVEY_FORMS_COMP>(NewFormToSubmit);
+            GenericData.Insert<SURVEY_FORMS_COMP>(NewFormToSubmit);
 
             if (ToAddress != null)
             {
@@ -563,7 +563,7 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
             {
                 FormId = CUSTOMER_SURVEYS.GetFormIdByOrg(OrgId, _context);
             }
-            CUSTOMER_SURVEY_FORMS_COMP NewComp =  new CUSTOMER_SURVEY_FORMS_COMP();
+            SURVEY_FORMS_COMP NewComp =  new SURVEY_FORMS_COMP();
             NewComp.FORM_ID = FormId;
             NewComp.CREATE_DATE = DateTime.Now;
             NewComp.CREATED_BY = User.Identity.Name;
@@ -571,7 +571,7 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
             NewComp.MODIFY_DATE = DateTime.Now;
             NewComp.PROJECT_ID = long.Parse(e.ExtraParams["ProjectId"]);
 
-            GenericData.Insert<CUSTOMER_SURVEY_FORMS_COMP>(NewComp);
+            GenericData.Insert<SURVEY_FORMS_COMP>(NewComp);
             Ext.Net.Panel uxSurveyPanel = new Ext.Net.Panel();
             uxSurveyPanel.ID = "uxSurveyPanel";
             uxSurveyPanel.Layout = "Fit";

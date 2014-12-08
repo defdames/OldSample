@@ -85,7 +85,7 @@ namespace DBI.Data
                 .Where(x => x.PERCENTAGE > (x.THRESHOLD - 5));
 
             var filtereddata = (from d in data
-                                where !_context.CUSTOMER_SURVEY_FORMS_COMP.Any(x => x.THRESHOLD_ID == d.THRESHOLD_ID && x.PROJECT_ID == d.PROJECT_ID)
+                                where !_context.SURVEY_FORMS_COMP.Any(x => x.THRESHOLD_ID == d.THRESHOLD_ID && x.PROJECT_ID == d.PROJECT_ID)
                                 select d);
                                 
             return filtereddata;

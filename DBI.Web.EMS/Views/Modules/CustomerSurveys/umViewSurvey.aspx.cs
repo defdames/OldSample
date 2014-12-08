@@ -126,8 +126,8 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                     Combobox.TypeAhead = true;
                                     Combobox.ForceSelection = true;
                                     Combobox.QueryMode = DataLoadMode.Local;
-                                    List<CUSTOMER_SURVEY_OPTIONS> ComboOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).Where(x => x.IS_ACTIVE == "Y").OrderBy(x => x.SORT_ORDER).ToList();
-                                    foreach (CUSTOMER_SURVEY_OPTIONS Option in ComboOptions)
+                                    List<SURVEY_OPTIONS> ComboOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).Where(x => x.IS_ACTIVE == "Y").OrderBy(x => x.SORT_ORDER).ToList();
+                                    foreach (SURVEY_OPTIONS Option in ComboOptions)
                                     {
                                         Combobox.Items.Add(new Ext.Net.ListItem
                                         {
@@ -150,9 +150,9 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                     }
                                     RadioQuestion.LabelWidth = 250;
                                     
-                                    List<CUSTOMER_SURVEY_OPTIONS> RadioOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).Where(x => x.IS_ACTIVE == "Y").OrderBy(x => x.SORT_ORDER).ToList();
+                                    List<SURVEY_OPTIONS> RadioOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).Where(x => x.IS_ACTIVE == "Y").OrderBy(x => x.SORT_ORDER).ToList();
                                     RadioQuestion.ColumnsNumber = RadioOptions.Count;
-                                    foreach (CUSTOMER_SURVEY_OPTIONS Option in RadioOptions)
+                                    foreach (SURVEY_OPTIONS Option in RadioOptions)
                                     {
                                         RadioQuestion.Items.Add(new Radio
                                         {
@@ -178,10 +178,10 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                     }
                                     CheckQuestion.AllowBlank = !Question.IS_REQUIRED;
 
-                                    List<CUSTOMER_SURVEY_OPTIONS> CheckOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).Where(x => x.IS_ACTIVE == "Y").OrderBy(x => x.SORT_ORDER).ToList();
+                                    List<SURVEY_OPTIONS> CheckOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).Where(x => x.IS_ACTIVE == "Y").OrderBy(x => x.SORT_ORDER).ToList();
                                     CheckQuestion.ColumnsNumber = CheckOptions.Count;
 
-                                    foreach (CUSTOMER_SURVEY_OPTIONS Option in CheckOptions)
+                                    foreach (SURVEY_OPTIONS Option in CheckOptions)
                                     {
                                         CheckQuestion.Items.Add(new Checkbox
                                         {
@@ -240,7 +240,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                         foreach (CUSTOMER_SURVEYS.CustomerSurveyQuestions Question in Questions)
                         {
 
-                            CUSTOMER_SURVEY_FORMS_ANS Answer = CUSTOMER_SURVEYS.GetFormAnswerByQuestion(Question.QUESTION_ID, _context).Where(x => x.COMPLETION_ID == CompletionId).SingleOrDefault();
+                            SURVEY_FORMS_ANS Answer = CUSTOMER_SURVEYS.GetFormAnswerByQuestion(Question.QUESTION_ID, _context).Where(x => x.COMPLETION_ID == CompletionId).SingleOrDefault();
                             switch ((long)Question.TYPE_ID)
                             {
                                 case 1:
@@ -303,8 +303,8 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                         Combobox.Select(Answer.ANSWER);
                                     }
                                     catch (Exception e) { }
-                                    List<CUSTOMER_SURVEY_OPTIONS> ComboOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).OrderBy(x => x.SORT_ORDER).ToList();
-                                    foreach (CUSTOMER_SURVEY_OPTIONS Option in ComboOptions)
+                                    List<SURVEY_OPTIONS> ComboOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).OrderBy(x => x.SORT_ORDER).ToList();
+                                    foreach (SURVEY_OPTIONS Option in ComboOptions)
                                     {
                                         Combobox.Items.Add(new Ext.Net.ListItem
                                         {
@@ -324,9 +324,9 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                     RadioQuestion.LabelWidth = 150;
                                     RadioQuestion.LabelAlign = LabelAlign.Top;
                                     
-                                    List<CUSTOMER_SURVEY_OPTIONS> RadioOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).OrderBy(x => x.SORT_ORDER).ToList();
+                                    List<SURVEY_OPTIONS> RadioOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).OrderBy(x => x.SORT_ORDER).ToList();
                                     RadioQuestion.ColumnsNumber = RadioOptions.Count;
-                                    foreach (CUSTOMER_SURVEY_OPTIONS Option in RadioOptions)
+                                    foreach (SURVEY_OPTIONS Option in RadioOptions)
                                     {
                                         try
                                         {
@@ -363,9 +363,9 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                     CheckQuestion.AllowBlank = !Question.IS_REQUIRED;
                                     CheckQuestion.LabelAlign = LabelAlign.Top;
                                     
-                                    List<CUSTOMER_SURVEY_OPTIONS> CheckOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).OrderBy(x => x.SORT_ORDER).ToList();
+                                    List<SURVEY_OPTIONS> CheckOptions = CUSTOMER_SURVEYS.GetQuestionOptions(Question.QUESTION_ID, _context).OrderBy(x => x.SORT_ORDER).ToList();
                                     CheckQuestion.ColumnsNumber = CheckOptions.Count;
-                                    foreach (CUSTOMER_SURVEY_OPTIONS Option in CheckOptions)
+                                    foreach (SURVEY_OPTIONS Option in CheckOptions)
                                     {
                                         try
                                         {
@@ -419,7 +419,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             decimal CompletionId = decimal.Parse(uxFormCode.Value.ToString());
             decimal FormId;
             List<CUSTOMER_SURVEYS.CustomerSurveyQuestions> QuestionList;
-            CUSTOMER_SURVEY_FORMS_COMP Completion;
+            SURVEY_FORMS_COMP Completion;
             using (Entities _context = new Entities())
             {
                 FormId = CUSTOMER_SURVEYS.GetFormCompletion(_context).Where(x => x.COMPLETION_ID == CompletionId).Select(x => x.FORM_ID).Single();
@@ -431,20 +431,20 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             {
                 Completion.FILLED_BY = User.Identity.Name;
                 Completion.FILLED_ON = DateTime.Now;
-                GenericData.Update<CUSTOMER_SURVEY_FORMS_COMP>(Completion);
+                GenericData.Update<SURVEY_FORMS_COMP>(Completion);
 
                 foreach (CUSTOMER_SURVEYS.CustomerSurveyQuestions Question in QuestionList)
                 {
                     TextField TextValue;
                     TextArea AreaValue;
                     ComboBox ComboValue;
-                    CUSTOMER_SURVEY_FORMS_ANS AnswerToAdd;
+                    SURVEY_FORMS_ANS AnswerToAdd;
 
                     switch (Question.QUESTION_TYPE_NAME)
                     {
                         case "singletext":
                             TextValue = form1.FindControl("question" + Question.QUESTION_ID.ToString()) as TextField;
-                            AnswerToAdd = new CUSTOMER_SURVEY_FORMS_ANS();
+                            AnswerToAdd = new SURVEY_FORMS_ANS();
                             AnswerToAdd.COMPLETION_ID = CompletionId;
                             AnswerToAdd.QUESTION_ID = Question.QUESTION_ID;
                             AnswerToAdd.ANSWER = TextValue.Text;
@@ -455,7 +455,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                             break;
                         case "multitext":
                             AreaValue = form1.FindControl("question" + Question.QUESTION_ID.ToString()) as TextArea;
-                            AnswerToAdd = new CUSTOMER_SURVEY_FORMS_ANS();
+                            AnswerToAdd = new SURVEY_FORMS_ANS();
                             AnswerToAdd.COMPLETION_ID = CompletionId;
                             AnswerToAdd.QUESTION_ID = Question.QUESTION_ID;
                             AnswerToAdd.ANSWER = AreaValue.Text;
@@ -466,7 +466,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                             break;
                         case "dropdown":
                             ComboValue = form1.FindControl("question" + Question.QUESTION_ID.ToString()) as ComboBox;
-                            AnswerToAdd = new CUSTOMER_SURVEY_FORMS_ANS();
+                            AnswerToAdd = new SURVEY_FORMS_ANS();
                             AnswerToAdd.COMPLETION_ID = CompletionId;
                             AnswerToAdd.QUESTION_ID = Question.QUESTION_ID;
                             AnswerToAdd.ANSWER = ComboValue.Text;
@@ -476,7 +476,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                             AnswerToAdd.MODIFIED_BY = User.Identity.Name;
                             break;
                         case "radio":
-                            AnswerToAdd = new CUSTOMER_SURVEY_FORMS_ANS();
+                            AnswerToAdd = new SURVEY_FORMS_ANS();
                             AnswerToAdd.COMPLETION_ID = CompletionId;
                             AnswerToAdd.QUESTION_ID = Question.QUESTION_ID;
                             AnswerToAdd.ANSWER = Request["question" + Question.QUESTION_ID.ToString()];
@@ -486,7 +486,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                             AnswerToAdd.MODIFIED_BY = User.Identity.Name;
                             break;
                         case "checkbox":
-                            AnswerToAdd = new CUSTOMER_SURVEY_FORMS_ANS();
+                            AnswerToAdd = new SURVEY_FORMS_ANS();
                             AnswerToAdd.COMPLETION_ID = CompletionId;
                             AnswerToAdd.QUESTION_ID = Question.QUESTION_ID;
                             AnswerToAdd.ANSWER = Request["question" + Question.QUESTION_ID.ToString()];
@@ -500,7 +500,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                             break;
                     }
 
-                    GenericData.Insert<CUSTOMER_SURVEY_FORMS_ANS>(AnswerToAdd);
+                    GenericData.Insert<SURVEY_FORMS_ANS>(AnswerToAdd);
                 }
             }
             else
@@ -528,7 +528,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             PROJECT_CONTACTS_V Contact;
             string ProjectName = null;
             using (Entities _context = new Entities()){
-                long ProjectID = _context.CUSTOMER_SURVEY_FORMS_COMP.Where(x => x.COMPLETION_ID == CompletionId).Select(x => (long)x.PROJECT_ID).SingleOrDefault();
+                long ProjectID = _context.SURVEY_FORMS_COMP.Where(x => x.COMPLETION_ID == CompletionId).Select(x => (long)x.PROJECT_ID).SingleOrDefault();
                 if (ProjectID != null)
                 {
                     ProjectName = _context.PROJECTS_V.Where(x => x.PROJECT_ID == ProjectID).Select(x => x.LONG_NAME).SingleOrDefault();
