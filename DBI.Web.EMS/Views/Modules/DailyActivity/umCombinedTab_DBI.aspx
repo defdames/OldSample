@@ -176,13 +176,14 @@
 
         var checkEmployeeStatus = function (e) {
             if (App.uxStatusField.value == 2 && App.uxCanEditField.value != "false") {
-                if (!App.uxEmployeeGrid.getRowsValues({ selectedOnly: false })[0].EMPLOYEE_ID) {
-                    if (App.uxEmployeeGrid.getRowsValues({ selectedOnly: false })[0].PREVAILING_WAGE == false) {
-                        App.uxEmployeeRowEdit.editor.form.findField('ROLE_TYPE').disable();
-                    }
-                }
-                else if (App.uxEmployeeGrid.getSelectionModel().getSelection()[0].data.PREVAILING_WAGE == false) {
-                    //App.uxEmployeeRowEdit.editor.form.findField('ROLE_TYPE').disable();
+                //if (App.uxEmployeeGrid.getRowsValues({ selectedOnly: false })[0].EMPLOYEE_ID) {
+                //    if (App.uxEmployeeGrid.getRowsValues({ selectedOnly: false })[0].PREVAILING_WAGE == false) {
+                //        App.uxEmployeeRowEdit.editor.form.findField('ROLE_TYPE').disable();
+                //    }
+                //}
+                //else 
+                if (App.uxEmployeeGrid.getSelectionModel().getSelection()[0].data.PREVAILING_WAGE == false) {
+                    App.uxEmployeeRowEdit.editor.form.findField('ROLE_TYPE').disable();
                 }
                 App.direct.dmAddToDirty();
                 return true;
@@ -275,6 +276,16 @@
             parent.App.uxPostActivityButton.disable();
             parent.App.uxApproveActivityButton.disable();
         };
+
+        var enablePost = function () {
+            parent.App.uxPostActivityButton.enable();
+            parent.App.uxInactiveActivityButton.enable();
+        };
+
+        var enableApprove = function () {
+            parent.App.uxApproveActivityButton.enable();
+            parent.App.uxInactiveActivityButton.enable();
+        }
 
         var updateAddTotalAndUsed = function () {
             App.uxAddChemicalGallonTotal.setValue(parseFloat(App.uxAddChemicalGallonStart.value) + parseFloat(App.uxAddChemicalGallonMixed.value));
@@ -1214,7 +1225,7 @@
                                 <BeforeEdit OnEvent="deSetTimeInDate" />
                             </DirectEvents>
                             <Listeners>
-                                <BeforeEdit Handler="if(checkStatus()){
+                                <BeforeEdit Handler="if(checkEmployeeStatus()){
                                     onBeforeEdit('employee');
                                     }
                                     else{

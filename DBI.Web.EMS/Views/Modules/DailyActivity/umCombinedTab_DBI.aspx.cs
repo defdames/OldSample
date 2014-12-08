@@ -152,13 +152,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         case 2:
                             if (validateComponentSecurity("SYS.DailyActivity.Approve"))
                             {
-                                X.Js.Call("parent.App.uxApproveActivityButton.enable();parent.App.uxInactiveActivityButton.enable()");
+                                X.Js.Call("enableApprove");
                             }
                             break;
                         case 3:
                             if (validateComponentSecurity("SYS.DailyActivity.Post"))
                             {
-                                X.Js.Call("parent.App.uxPostActivityButton.enable();parent.App.uxInactiveActivityButton.enable()");
+                                X.Js.Call("enablePost");
                             }
                             break;
                     }
@@ -172,13 +172,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     case 2:
                         if (validateComponentSecurity("SYS.DailyActivity.Approve"))
                         {
-                            X.Js.Call("parent.App.uxApproveActivityButton.enable();parent.App.uxInactiveActivityButton.enable()");
+                            X.Js.Call("enableApprove");
                         }
                         break;
                     case 3:
                         if (validateComponentSecurity("SYS.DailyActivity.Post"))
                         {
-                            X.Js.Call("parent.App.uxPostActivityButton.enable();parent.App.uxInactiveActivityButton.enable()");
+                            X.Js.Call("enablePost");
                         }
                         break;
                 }
@@ -947,7 +947,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 using (Entities _context = new Entities())
                 {
                     EmployeeName = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == item.PERSON_ID).Select(x => x.EMPLOYEE_NAME).Single();
-                    EquipmentName = DAILY_ACTIVITY.GetEquipmentData(_context, HeaderId).Where(x => x.EQUIPMENT_ID == item.EQUIPMENT_ID).Select(x => x.NAME).Single();
+                    EquipmentName = DAILY_ACTIVITY.GetEquipmentData(_context, HeaderId).Where(x => x.EQUIPMENT_ID == item.EQUIPMENT_ID).Select(x => x.NAME).SingleOrDefault();
                 }
 
                 ModelProxy Record = uxEmployeeStore.GetById(item.EMPLOYEE_ID);
