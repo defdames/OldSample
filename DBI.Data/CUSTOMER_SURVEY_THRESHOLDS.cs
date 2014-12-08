@@ -16,7 +16,7 @@ namespace DBI.Data
     {
         public CUSTOMER_SURVEY_THRESHOLDS()
         {
-            this.CUSTOMER_SURVEY_FORMS_COMP = new HashSet<CUSTOMER_SURVEY_FORMS_COMP>();
+            this.SURVEY_FORMS_COMP = new HashSet<SURVEY_FORMS_COMP>();
         }
     
         public decimal THRESHOLD_ID { get; set; }
@@ -27,7 +27,7 @@ namespace DBI.Data
         public decimal AMOUNT_ID { get; set; }
         public decimal THRESHOLD { get; set; }
     
-        public virtual ICollection<CUSTOMER_SURVEY_FORMS_COMP> CUSTOMER_SURVEY_FORMS_COMP { get; set; }
         public virtual CUSTOMER_SURVEY_THRESH_AMT CUSTOMER_SURVEY_THRESH_AMT { get; set; }
+        public virtual ICollection<SURVEY_FORMS_COMP> SURVEY_FORMS_COMP { get; set; }
     }
 }

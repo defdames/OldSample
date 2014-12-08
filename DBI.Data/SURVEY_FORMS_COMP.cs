@@ -12,11 +12,11 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class CUSTOMER_SURVEY_FORMS_COMP
+    public partial class SURVEY_FORMS_COMP
     {
-        public CUSTOMER_SURVEY_FORMS_COMP()
+        public SURVEY_FORMS_COMP()
         {
-            this.CUSTOMER_SURVEY_FORMS_ANS = new HashSet<CUSTOMER_SURVEY_FORMS_ANS>();
+            this.SURVEY_FORMS_ANS = new HashSet<SURVEY_FORMS_ANS>();
         }
     
         public decimal COMPLETION_ID { get; set; }
@@ -30,8 +30,8 @@ namespace DBI.Data
         public Nullable<decimal> THRESHOLD_ID { get; set; }
         public Nullable<long> PROJECT_ID { get; set; }
     
-        public virtual ICollection<CUSTOMER_SURVEY_FORMS_ANS> CUSTOMER_SURVEY_FORMS_ANS { get; set; }
         public virtual CUSTOMER_SURVEY_THRESHOLDS CUSTOMER_SURVEY_THRESHOLDS { get; set; }
-        public virtual CUSTOMER_SURVEY_FORMS CUSTOMER_SURVEY_FORMS { get; set; }
+        public virtual SURVEY_FORMS SURVEY_FORMS { get; set; }
+        public virtual ICollection<SURVEY_FORMS_ANS> SURVEY_FORMS_ANS { get; set; }
     }
 }

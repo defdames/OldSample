@@ -12,12 +12,12 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class CUSTOMER_SURVEY_FORMS
+    public partial class SURVEY_FORMS
     {
-        public CUSTOMER_SURVEY_FORMS()
+        public SURVEY_FORMS()
         {
-            this.CUSTOMER_SURVEY_FIELDSETS = new HashSet<CUSTOMER_SURVEY_FIELDSETS>();
-            this.CUSTOMER_SURVEY_FORMS_COMP = new HashSet<CUSTOMER_SURVEY_FORMS_COMP>();
+            this.SURVEY_FIELDSETS = new HashSet<SURVEY_FIELDSETS>();
+            this.SURVEY_FORMS_COMP = new HashSet<SURVEY_FORMS_COMP>();
         }
     
         public decimal FORM_ID { get; set; }
@@ -30,9 +30,9 @@ namespace DBI.Data
         public decimal CATEGORY_ID { get; set; }
         public decimal TYPE_ID { get; set; }
     
-        public virtual CUSTOMER_SURVEY_CAT CUSTOMER_SURVEY_CAT { get; set; }
-        public virtual ICollection<CUSTOMER_SURVEY_FIELDSETS> CUSTOMER_SURVEY_FIELDSETS { get; set; }
-        public virtual CUSTOMER_SURVEY_FORM_TYPES CUSTOMER_SURVEY_FORM_TYPES { get; set; }
-        public virtual ICollection<CUSTOMER_SURVEY_FORMS_COMP> CUSTOMER_SURVEY_FORMS_COMP { get; set; }
+        public virtual SURVEY_CAT SURVEY_CAT { get; set; }
+        public virtual ICollection<SURVEY_FIELDSETS> SURVEY_FIELDSETS { get; set; }
+        public virtual ICollection<SURVEY_FORMS_COMP> SURVEY_FORMS_COMP { get; set; }
+        public virtual SURVEY_TYPES SURVEY_TYPES { get; set; }
     }
 }
