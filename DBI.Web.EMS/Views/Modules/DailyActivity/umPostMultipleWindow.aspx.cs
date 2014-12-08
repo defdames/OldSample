@@ -43,11 +43,33 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             string json = e.ExtraParams["RowsToPost"];
             List<DAILY_ACTIVITY.HeaderData> HeadersToPost = JSON.Deserialize<List<DAILY_ACTIVITY.HeaderData>>(json);
+            string HeadersPosted = "";
             foreach (DAILY_ACTIVITY.HeaderData HeaderToPost in HeadersToPost)
             {
                 Interface.PostToOracle(HeaderToPost.HEADER_ID, User.Identity.Name);
-            }
+                HeadersPosted += HeaderToPost.HEADER_ID.ToString() + ", ";
 
+            }
+            HeadersPosted = HeadersPosted.TrimEnd(new char[]{',', ' '});
+            X.Msg.Show(new MessageBoxConfig()
+            {
+                Title = "Continue",
+                Message= string.Format("The following headers have been posted: {0}", HeadersPosted),
+                Buttons = MessageBox.Button.YESNO,
+                MessageBoxButtonsConfig = new MessageBoxButtonsConfig()
+                {
+                    Yes = new MessageBoxButtonConfig()
+                    {
+                        Text="Post More",
+                        Handler="App.uxHeaderPostStore.reload()"
+                    },
+                    No = new MessageBoxButtonConfig()
+                    {
+                        Text="Continue",
+                        Handler = "parent.App.uxPlaceholderWindow.close()"
+                    }
+                }
+            });
             X.Js.Call("parent.App.uxManageGridStore.reload()");
         }
     }

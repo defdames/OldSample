@@ -412,6 +412,17 @@
             var EndDateTime = new Date(EndDate.getFullYear(), EndDate.getMonth(), EndDate.getDate(), EndTime.getHours(), EndTime.getMinutes(), EndTime.getSeconds(), EndTime.getMilliseconds());
 
             if (StartDateTime < EndDateTime) {
+
+                var difference = new Date(EndDateTime - StartDateTime);
+
+                var Hours = difference.getUTCHours();
+                var Days = difference.getUTCDate();
+                var Minutes = difference.getUTCMinutes();
+                if (Days > 1) {
+                    Hours += 24;
+                }
+                App.uxTotalHours.setValue((Hours < 10 ? "0" + Hours : Hours) + ":" + (Minutes < 10 ? "0" + Minutes : Minutes));
+
                 return true;
                 App.uxEmployeeTimeInDate.clearInvalid();
                 App.uxEmployeeTimeInTime.clearInvalid();
@@ -999,7 +1010,11 @@
                                     </ext:TimeField>
                                 </Editor>
                             </ext:DateColumn>
-                            <ext:Column ID="Column5" runat="server" DataIndex="TOTAL_HOURS" Text="Total Hours" Flex="6" />
+                            <ext:Column ID="Column5" runat="server" DataIndex="TOTAL_HOURS" Text="Total Hours" Flex="6">
+                                <Editor>
+                                    <ext:DisplayField runat="server" ID="uxTotalHours" />
+                                </Editor>
+                            </ext:Column>
                             <ext:DateColumn ID="DateColumn5" runat="server" DataIndex="TRAVEL_TIME_FORMATTED" Text="Travel Time" Flex="7" Format="H:mm">
                                 <Editor>
                                     <ext:TimeField ID="TimeField1" runat="server" MinTime="00:00" MaxTime="23:59" Format="H:mm" />
@@ -1145,7 +1160,7 @@
                                 <BeforeEdit OnEvent="deSetTimeInDate" />
                             </DirectEvents>
                             <Listeners>
-                                <BeforeEdit Handler="if(checkEmployeeStatus()){
+                                <BeforeEdit Handler="if(checkStatus()){
                                     onBeforeEdit('employee');
                                     }
                                     else{

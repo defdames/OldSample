@@ -59,6 +59,7 @@
                             <ExtraParams>
                                 <ext:Parameter Name="RowsToPost" Value="Ext.encode(#{uxHeaderPostGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
                             </ExtraParams>
+                            <Confirmation ConfirmRequest="true" Title="Continue" Message="Are you sure you want to post these records?" />
                             <EventMask ShowMask="true" />
                         </Click>
                     </DirectEvents>

@@ -787,13 +787,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.TimeField uxEmployeeTimeOutTime;
         
         /// <summary>
-        /// Column4 control.
+        /// uxTotalHours control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Column Column4;
+        protected global::Ext.Net.DisplayField uxTotalHours;
         
         /// <summary>
         /// uxPerDiemColumn control.

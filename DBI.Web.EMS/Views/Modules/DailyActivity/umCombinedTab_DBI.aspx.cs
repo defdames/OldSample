@@ -27,7 +27,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 X.Redirect("~/Views/uxDefault.aspx");
             }
 
-            if (!X.IsAjaxRequest)
+            if (!X.IsAjaxRequest || IsPostBack)
             {
                 Session["isDirty"] = 0;
                 GetInventoryDropDown();

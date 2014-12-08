@@ -182,7 +182,7 @@
                     }
                 }
                 else if (App.uxEmployeeGrid.getSelectionModel().getSelection()[0].data.PREVAILING_WAGE == false) {
-                    App.uxEmployeeRowEdit.editor.form.findField('ROLE_TYPE').disable();
+                    //App.uxEmployeeRowEdit.editor.form.findField('ROLE_TYPE').disable();
                 }
                 App.direct.dmAddToDirty();
                 return true;
@@ -464,7 +464,18 @@
             var StartDateTime = new Date(StartDate.getFullYear(), StartDate.getMonth(), StartDate.getDate(), StartTime.getHours(), StartTime.getMinutes(), StartTime.getSeconds(), StartTime.getMilliseconds());
             var EndDateTime = new Date(EndDate.getFullYear(), EndDate.getMonth(), EndDate.getDate(), EndTime.getHours(), EndTime.getMinutes(), EndTime.getSeconds(), EndTime.getMilliseconds());
 
+            
             if (StartDateTime < EndDateTime) {
+                
+                var difference = new Date(EndDateTime - StartDateTime);
+
+                var Hours = difference.getUTCHours();
+                var Days = difference.getUTCDate();
+                var Minutes = difference.getUTCMinutes();
+                if (Days > 1) {
+                    Hours += 24;
+                }
+                App.uxTotalHours.setValue((Hours < 10 ? "0" + Hours : Hours) + ":" + (Minutes < 10 ? "0" + Minutes : Minutes));
                 return true;
                 App.uxEmployeeTimeInDate.clearInvalid();
                 App.uxEmployeeTimeInTime.clearInvalid();
@@ -821,7 +832,7 @@
                     MaxWidth="1400" MinHeight="200">
                     <Store>
                         <ext:Store runat="server"
-                            ID="uxEmployeeStore" OnReadData="deGetEmployeeData" AutoLoad="false" AutoDataBind="true">
+                            ID="uxEmployeeStore" OnReadData="deGetEmployeeData" AutoLoad="false">
                             <Model>
                                 <ext:Model ID="Model2" runat="server" Name="Employee" IDProperty="EMPLOYEE_ID" ClientIdProperty="PhantomId">
                                     <Fields>
@@ -1055,7 +1066,11 @@
                                     </ext:TimeField>
                                 </Editor>
                             </ext:DateColumn>
-                            <ext:Column ID="Column4" runat="server" DataIndex="TOTAL_HOURS" Text="Total Hours" Flex="7" />
+                            <ext:Column runat="server" DataIndex="TOTAL_HOURS" Text="Total Hours" Flex="7">
+                                <Editor>
+                                    <ext:DisplayField runat="server" ID="uxTotalHours" />
+                                </Editor>
+                            </ext:Column>
                             <ext:DateColumn runat="server" DataIndex="TRAVEL_TIME_FORMATTED" Text="Travel Time" Flex="6" Format="H:mm">
                                 <Editor>
                                     <ext:TimeField runat="server" MinTime="00:00" MaxTime="23:59" Format="H:mm" />
@@ -1199,7 +1214,7 @@
                                 <BeforeEdit OnEvent="deSetTimeInDate" />
                             </DirectEvents>
                             <Listeners>
-                                <BeforeEdit Handler="if(checkEmployeeStatus()){
+                                <BeforeEdit Handler="if(checkStatus()){
                                     onBeforeEdit('employee');
                                     }
                                     else{
