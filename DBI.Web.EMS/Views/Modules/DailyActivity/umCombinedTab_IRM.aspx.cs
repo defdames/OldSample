@@ -985,7 +985,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
                 Record.Commit();
             }
-            dmSubtractFromDirty();
+            //dmSubtractFromDirty();
             uxEmployeeStore.CommitChanges();
             uxAddEmployeeButton.Enable();
         }
@@ -1055,7 +1055,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 Record.Set("SEGMENT1", EquipmentItem.SEGMENT1);
                 Record.Commit();
             }
-            dmSubtractFromDirty();
+            //dmSubtractFromDirty();
             uxEquipmentStore.CommitChanges();
             uxAddEquipmentButton.Enable();
         }
@@ -1152,7 +1152,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 Record.Set("TASK_NUMBER", TaskItem.TASK_NUMBER);
                 Record.Commit();
             }
-            dmSubtractFromDirty();
+            //dmSubtractFromDirty();
             uxProductionStore.CommitChanges();
             uxAddProductionButton.Enable();
         }
@@ -1205,7 +1205,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                 GenericData.Update(UpdatedWeather);
             }
-            dmSubtractFromDirty();
+            //dmSubtractFromDirty();
             uxWeatherStore.CommitChanges();
             uxAddWeatherButton.Enable();
         }
@@ -1289,7 +1289,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 Record.Set("INV_NAME", InvName);
                 Record.Commit();
             }
-            dmSubtractFromDirty();
+            //dmSubtractFromDirty();
             uxInventoryStore.CommitChanges();
             uxAddInventoryButton.Enable();
         }
@@ -1732,20 +1732,20 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxAttachmentGrid.GetView();
         }
 
-        [DirectMethod]
-        public void dmAddToDirty()
-        {
-            long isDirty = long.Parse(Session["isDirty"].ToString());
-            isDirty++;
-            Session["isDirty"] = isDirty;
-        }
+        //[DirectMethod]
+        //public void dmAddToDirty()
+        //{
+        //    long isDirty = long.Parse(Session["isDirty"].ToString());
+        //    isDirty++;
+        //    Session["isDirty"] = isDirty;
+        //}
 
-        [DirectMethod]
-        public void dmSubtractFromDirty()
-        {
-            long isDirty = long.Parse(Session["isDirty"].ToString());
-            isDirty--;
-            Session["isDirty"] = isDirty;
-        }
+        //[DirectMethod]
+        //public void dmSubtractFromDirty()
+        //{
+        //    long isDirty = long.Parse(Session["isDirty"].ToString());
+        //    isDirty--;
+        //    Session["isDirty"] = isDirty;
+        //}
     }
 }

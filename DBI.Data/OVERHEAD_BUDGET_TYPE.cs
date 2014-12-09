@@ -24,5 +24,6 @@ namespace DBI.Data
         public string MODIFIED_BY { get; set; }
         public Nullable<long> PARENT_BUDGET_TYPE_ID { get; set; }
         public string IMPORT_ACTUALS_ALLOWED { get; set; }
+        public string EXPORT_GL_FLAG { get; set; }
     }
 }

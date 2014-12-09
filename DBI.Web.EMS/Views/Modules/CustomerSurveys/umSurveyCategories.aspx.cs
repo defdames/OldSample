@@ -38,7 +38,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
             foreach (CUSTOMER_SURVEYS.CustomerSurveyCategoryStore item in data.Created)
             {
-                CUSTOMER_SURVEY_CAT ToBeSaved = new CUSTOMER_SURVEY_CAT();
+                SURVEY_CAT ToBeSaved = new SURVEY_CAT();
                 ToBeSaved.NAME = item.NAME;
                 ToBeSaved.DESCRIPTION = item.DESCRIPTION;
                 ToBeSaved.CREATE_DATE = DateTime.Now;
@@ -46,7 +46,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 ToBeSaved.MODIFIED_BY = User.Identity.Name;
                 ToBeSaved.MODIFY_DATE = DateTime.Now;
 
-                GenericData.Insert<CUSTOMER_SURVEY_CAT>(ToBeSaved);
+                GenericData.Insert<SURVEY_CAT>(ToBeSaved);
 
                 ModelProxy Record = uxQuestionCategoryStore.GetByInternalId(item.PhantomId);
                 Record.CreateVariable = true;
@@ -56,7 +56,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
             foreach (CUSTOMER_SURVEYS.CustomerSurveyCategoryStore item in data.Updated)
             {
-                CUSTOMER_SURVEY_CAT ToBeUpdated;
+                SURVEY_CAT ToBeUpdated;
 
                 using (Entities _context = new Entities())
                 {
@@ -67,9 +67,9 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 ToBeUpdated.MODIFIED_BY = User.Identity.Name;
                 ToBeUpdated.MODIFY_DATE = DateTime.Now;
 
-                GenericData.Update<CUSTOMER_SURVEY_CAT>(ToBeUpdated);
+                GenericData.Update<SURVEY_CAT>(ToBeUpdated);
             }
-            dmSubtractFromDirty();
+            //dmSubtractFromDirty();
             uxCategoriesStore.CommitChanges();
         }
 
@@ -91,9 +91,9 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
             foreach (CUSTOMER_SURVEYS.CustomerSurveyQuestionCategoryStore item in data.Created)
             {
-                CUSTOMER_SURVEY_QUES_CAT NewCategory = new CUSTOMER_SURVEY_QUES_CAT();
+                SURVEY_QUES_CAT NewCategory = new SURVEY_QUES_CAT();
                 NewCategory.CATEGORY_NAME = item.CATEGORY_NAME;
-                GenericData.Insert<CUSTOMER_SURVEY_QUES_CAT>(NewCategory);
+                GenericData.Insert<SURVEY_QUES_CAT>(NewCategory);
 
                 ModelProxy Record = uxQuestionCategoryStore.GetByInternalId(item.PhantomId);
                 Record.CreateVariable = true;
@@ -103,7 +103,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
             foreach (CUSTOMER_SURVEYS.CustomerSurveyQuestionCategoryStore item in data.Updated)
             {
-                CUSTOMER_SURVEY_QUES_CAT CategoryToEdit;
+                SURVEY_QUES_CAT CategoryToEdit;
 
                 using (Entities _context = new Entities())
                 {
@@ -114,7 +114,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
                 GenericData.Update(CategoryToEdit);
             }
-            dmSubtractFromDirty();
+            //dmSubtractFromDirty();
             uxQuestionCategoryStore.CommitChanges();
         }
 
@@ -122,12 +122,12 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
         public void dmDeleteCategory(string Id)
         {
             decimal CategoryId = decimal.Parse(Id);
-            CUSTOMER_SURVEY_CAT ToBeDeleted;
+            SURVEY_CAT ToBeDeleted;
             int FormCount;
             using (Entities _context = new Entities())
             {
                 ToBeDeleted = CUSTOMER_SURVEYS.GetCategory(CategoryId, _context);
-                FormCount = ToBeDeleted.CUSTOMER_SURVEY_FORMS.Count;
+                FormCount = ToBeDeleted.SURVEY_FORMS.Count;
             }
             if (FormCount > 0)
             {
@@ -136,7 +136,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             }
             else
             {
-                GenericData.Delete<CUSTOMER_SURVEY_CAT>(ToBeDeleted);
+                GenericData.Delete<SURVEY_CAT>(ToBeDeleted);
             }
         }
 
@@ -144,13 +144,13 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
         public void dmDeleteQuestionCategory(string Id)
         {
             decimal CategoryId = decimal.Parse(Id);
-            CUSTOMER_SURVEY_QUES_CAT ToBeDeleted;
+            SURVEY_QUES_CAT ToBeDeleted;
             int FieldsetCount;
             using (Entities _context = new Entities())
             {
                 ToBeDeleted = CUSTOMER_SURVEYS.GetQuestionCategory(CategoryId, _context);
-                FieldsetCount = (from d in _context.CUSTOMER_SURVEY_QUES_CAT
-                                 join f in _context.CUSTOMER_SURVEY_FIELDSETS on d.CATEGORY_ID equals f.CATEGORY_ID
+                FieldsetCount = (from d in _context.SURVEY_QUES_CAT
+                                 join f in _context.SURVEY_FIELDSETS on d.CATEGORY_ID equals f.CATEGORY_ID
                                  where d.CATEGORY_ID == CategoryId
                                  select f).Count();
             }
@@ -161,25 +161,25 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             }
             else
             {
-                GenericData.Delete<CUSTOMER_SURVEY_QUES_CAT>(ToBeDeleted);
+                GenericData.Delete<SURVEY_QUES_CAT>(ToBeDeleted);
             }
 
         }
 
-        [DirectMethod]
-        public void dmAddToDirty()
-        {
-            long isDirty = long.Parse(Session["isDirty"].ToString());
-            isDirty++;
-            Session["isDirty"] = isDirty;
-        }
+        //[DirectMethod]
+        //public void dmAddToDirty()
+        //{
+        //    long isDirty = long.Parse(Session["isDirty"].ToString());
+        //    isDirty++;
+        //    Session["isDirty"] = isDirty;
+        //}
 
-        [DirectMethod]
-        public void dmSubtractFromDirty()
-        {
-            long isDirty = long.Parse(Session["isDirty"].ToString());
-            isDirty--;
-            Session["isDirty"] = isDirty;
-        }
+        //[DirectMethod]
+        //public void dmSubtractFromDirty()
+        //{
+        //    long isDirty = long.Parse(Session["isDirty"].ToString());
+        //    isDirty--;
+        //    Session["isDirty"] = isDirty;
+        //}
     }
 }

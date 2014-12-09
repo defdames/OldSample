@@ -11,7 +11,7 @@
         var AddQuestionCategory = function () {
             App.uxQuestionCategoryStore.insert(0, new QuestionCategory());
             if (App.uxQuestionCategorySelection.isLocked()) {
-                App.uxQuestionCategorySelection.setLocked(false);
+                //App.uxQuestionCategorySelection.setLocked(false);
             }
             App.uxQuestionCategorySelection.select(0);
             var task = new Ext.util.DelayedTask(function () {
@@ -28,8 +28,8 @@
 
         var AddFormCategory = function () {
             App.uxCategoriesStore.insert(0, new FormType());
-            App.uxCategorySelection.setLocked(true);
-            App.uxCategorySelection.setLocked(false);
+            //App.uxCategorySelection.setLocked(true);
+            //App.uxCategorySelection.setLocked(false);
             App.uxCategorySelection.select(0);
             var task = new Ext.util.DelayedTask(function () {
                 App.uxFormTypeRowEdit.startEdit(0, 0);
@@ -48,7 +48,7 @@
                 if (!App.uxCategoryGrid.getSelectionModel().getSelection()[0].data.CATEGORY_ID) {
                     App.uxCategoriesStore.remove(App.uxCategoryGrid.getSelectionModel().getSelection()[0]);
                     var task = new Ext.util.DelayedTask(function () {
-                        App.uxCategorySelection.setLocked(false);
+                        //App.uxCategorySelection.setLocked(false);
                     });
                     task.delay(100);
                 }
@@ -57,12 +57,12 @@
                 if (!App.uxQuestionCategoryGrid.getSelectionModel().getSelection()[0].data.CATEGORY_ID) {
                     App.uxQuestionCategoryStore.remove(App.uxQuestionCategoryGrid.getSelectionModel().getSelection()[0]);
                     var task = new Ext.util.DelayedTask(function () {
-                        App.uxQuestionCategorySelection.setLocked(false);
+                        //App.uxQuestionCategorySelection.setLocked(false);
                     });
                     task.delay(100);
                 }
             }
-            App.direct.dmSubtractFromDirty();
+            //App.direct.dmSubtractFromDirty();
         };
 
         var deleteQuestionCategory = function () {
@@ -91,24 +91,24 @@
             });
         };
 
-        
-        
+
+
         var onBeforeEdit = function (value) {
             switch (value) {
                 case 'formtype':
-                    App.uxCategoryGrid.getSelectionModel().setLocked(true);
+                    //App.uxCategoryGrid.getSelectionModel().setLocked(true);
                     break;
                 default:
-                    App.uxQuestionCategoryGrid.getSelectionModel().setLocked(true);
+                    //App.uxQuestionCategoryGrid.getSelectionModel().setLocked(true);
                     break;
             }
-            App.direct.dmAddToDirty();
+            //App.direct.dmAddToDirty();
         }
     </script>
 </head>
 <body>
     <form id="form1" runat="server">
-    <ext:ResourceManager runat="server" IsDynamic="false" />
+        <ext:ResourceManager runat="server" IsDynamic="false" />
         <ext:Viewport runat="server" Layout="BorderLayout">
             <Items>
                 <ext:GridPanel runat="server" ID="uxCategoryGrid" Title="Form Types" Region="Center">
@@ -160,9 +160,9 @@
                                                     }" />
                             </Listeners>
                             <DirectEvents>
-                                <Edit OnEvent="deSaveCategory" >
+                                <Edit OnEvent="deSaveCategory">
                                     <ExtraParams>
-                                        <ext:Parameter Name="data" Value="#{uxCategoriesStore}.getChangedData({skipIdForPhantomRecords : false})" Mode="Raw"  Encode="true" />
+                                        <ext:Parameter Name="data" Value="#{uxCategoriesStore}.getChangedData({skipIdForPhantomRecords : false})" Mode="Raw" Encode="true" />
                                     </ExtraParams>
                                 </Edit>
                             </DirectEvents>
@@ -238,7 +238,7 @@
                             <DirectEvents>
                                 <Edit OnEvent="deSaveQuestionCategory" Before="return #{uxQuestionCategoryStore}.isDirty();">
                                     <ExtraParams>
-                                        <ext:Parameter Name="data" Value="#{uxQuestionCategoryStore}.getChangedData({skipIdForPhantomRecords : false})" Mode="Raw"  Encode="true" />
+                                        <ext:Parameter Name="data" Value="#{uxQuestionCategoryStore}.getChangedData({skipIdForPhantomRecords : false})" Mode="Raw" Encode="true" />
                                     </ExtraParams>
                                 </Edit>
                             </DirectEvents>

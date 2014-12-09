@@ -9,7 +9,7 @@
     <script type="text/javascript">
         var checkStatus = function (e) {
             if (App.uxStatusField.value == 2 && App.uxCanEditField.value != "false") {
-                App.direct.dmAddToDirty();
+                //App.direct.dmAddToDirty();
                 return true;
             }
             return false;
@@ -155,10 +155,9 @@
                     if (!App.uxInventoryStore.getAt(0).data.INVENTORY_ID) {
                         App.uxInventoryStore.removeAt(0);
                     }
-                    App.uxAddInventoryButton.enable();
                     break;
             }
-            App.direct.dmSubtractFromDirty();
+            //App.direct.dmSubtractFromDirty();
         };
 
         var checkEmployeeStatus = function (e) {
@@ -172,7 +171,7 @@
                 if (App.uxEmployeeGrid.getSelectionModel().getSelection()[0].data.PREVAILING_WAGE == false) {
                     App.uxEmployeeRowEdit.editor.form.findField('ROLE_TYPE').disable();
                 }
-                App.direct.dmAddToDirty();
+                //App.direct.dmAddToDirty();
                 return true;
 
             }
