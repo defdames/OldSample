@@ -56,8 +56,8 @@
 
         var AddForm = function () {
             App.uxFormsStore.insert(0, new Form());
-            App.uxFormSelection.setLocked(true);
-            App.uxFormSelection.setLocked(false);
+            //App.uxFormSelection.setLocked(true);
+            //App.uxFormSelection.setLocked(false);
             App.uxFormSelection.select(0);
             var task = new Ext.util.DelayedTask(function () {
                 App.uxFormRowEdit.startEdit(0, 0);
@@ -73,8 +73,8 @@
 
         var AddFieldset = function () {
             App.uxFieldsetsStore.insert(0, new Fieldset());
-            App.uxFieldsetSelection.setLocked(true);
-            App.uxFieldsetSelection.setLocked(false);
+            //App.uxFieldsetSelection.setLocked(true);
+            //App.uxFieldsetSelection.setLocked(false);
             App.uxFieldsetSelection.select(0);
             var task = new Ext.util.DelayedTask(function () {
                 App.uxFieldsetRowEdit.startEdit(0, 0);
@@ -90,8 +90,8 @@
 
         var AddQuestion = function () {
             App.uxQuestionsStore.insert(0, new Question());
-            App.uxQuestionSelection.setLocked(true);
-            App.uxQuestionSelection.setLocked(false);
+            //App.uxQuestionSelection.setLocked(true);
+            //App.uxQuestionSelection.setLocked(false);
             App.uxQuestionSelection.select(0);
             var task = new Ext.util.DelayedTask(function () {
                 App.uxQuestionRowEdit.startEdit(0, 0);
@@ -110,8 +110,8 @@
                 TEXT: App.uxQuestionsGrid.getSelectionModel().getSelection()[0].data.TEXT
             });
             App.uxOptionsStore.insert(0, Option);
-            App.uxOptionSelection.setLocked(true);
-            App.uxOptionSelection.setLocked(false);
+            //App.uxOptionSelection.setLocked(true);
+            //App.uxOptionSelection.setLocked(false);
             App.uxOptionSelection.select(0);
             App.uxOptionRowEdit.startEdit(0, 0);
             // Create DelayedTask and call it after 100 ms
@@ -127,7 +127,7 @@
                     if (!App.uxFormsGrid.getSelectionModel().getSelection()[0].data.FORM_ID) {
                         App.uxFormsStore.remove(App.uxFormsGrid.getSelectionModel().getSelection()[0]);
                         var task = new Ext.util.DelayedTask(function () {
-                            App.uxFormSelection.setLocked(false);
+                            //App.uxFormSelection.setLocked(false);
                         });
                         task.delay(100);
                     }
@@ -136,7 +136,7 @@
                     if (!App.uxFieldsetsGrid.getSelectionModel().getSelection()[0].data.FIELDSET_ID) {
                         App.uxFieldsetsStore.remove(App.uxFieldsetsGrid.getSelectionModel().getSelection()[0]);
                         var task = new Ext.util.DelayedTask(function () {
-                            App.uxFieldsetsGrid.getSelectionModel().setLocked(false);
+                            //App.uxFieldsetsGrid.getSelectionModel().setLocked(false);
                         });
                         task.delay(100);
                     }
@@ -145,7 +145,7 @@
                     if (!App.uxQuestionsGrid.getSelectionModel().getSelection()[0].data.QUESTION_ID) {
                         App.uxQuestionsStore.remove(App.uxQuestionsGrid.getSelectionModel().getSelection()[0]);
                         var task = new Ext.util.DelayedTask(function () {
-                            App.uxQuestionsGrid.getSelectionModel().setLocked(false);
+                            //App.uxQuestionsGrid.getSelectionModel().setLocked(false);
                         });
                         task.delay(100);
                     }
@@ -154,31 +154,31 @@
                     if (!App.uxOptionsGrid.getSelectionModel().getSelection()[0].data.OPTION_ID) {
                         App.uxOptionsStore.remove(App.uxOptionsGrid.getSelectionModel().getSelection()[0]);
                         var task = new Ext.util.DelayedTask(function () {
-                            App.uxOptionsGrid.getSelectionModel().setLocked(false);
+                            //App.uxOptionsGrid.getSelectionModel().setLocked(false);
                         });
                         task.delay(100);
                     }
                     break;
             }
-            App.direct.dmSubtractFromDirty();
+            //App.direct.dmSubtractFromDirty();
         };
 
         var onBeforeEdit = function (value) {
             switch (value) {
                 case 'form':
-                    App.uxFormsGrid.getSelectionModel().setLocked(true);
+                    //App.uxFormsGrid.getSelectionModel().setLocked(true);
                     break;
                 case 'fieldset':
-                    App.uxFieldsetsGrid.getSelectionModel().setLocked(true);
+                    //App.uxFieldsetsGrid.getSelectionModel().setLocked(true);
                     break;
                 case 'question':
-                    App.uxQuestionsGrid.getSelectionModel().setLocked(true);
+                    //App.uxQuestionsGrid.getSelectionModel().setLocked(true);
                     break;
                 case 'option':
-                    App.uxOptionsGrid.getSelectionModel().setLocked(true);
+                    //App.uxOptionsGrid.getSelectionModel().setLocked(true);
                     break;
             }
-            App.direct.dmAddToDirty();
+            //App.direct.dmAddToDirty();
         }
     </script>
     <style type="text/css">

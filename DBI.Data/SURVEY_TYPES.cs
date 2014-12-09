@@ -12,19 +12,19 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class CUSTOMER_SURVEY_FORM_TYPES
+    public partial class SURVEY_TYPES
     {
-        public CUSTOMER_SURVEY_FORM_TYPES()
+        public SURVEY_TYPES()
         {
-            this.CUSTOMER_SURVEY_FORMS = new HashSet<CUSTOMER_SURVEY_FORMS>();
             this.CUSTOMER_SURVEY_THRESH_AMT = new HashSet<CUSTOMER_SURVEY_THRESH_AMT>();
+            this.SURVEY_FORMS = new HashSet<SURVEY_FORMS>();
         }
     
         public decimal TYPE_ID { get; set; }
         public string TYPE_NAME { get; set; }
         public Nullable<decimal> SORT_ORDER { get; set; }
     
-        public virtual ICollection<CUSTOMER_SURVEY_FORMS> CUSTOMER_SURVEY_FORMS { get; set; }
         public virtual ICollection<CUSTOMER_SURVEY_THRESH_AMT> CUSTOMER_SURVEY_THRESH_AMT { get; set; }
+        public virtual ICollection<SURVEY_FORMS> SURVEY_FORMS { get; set; }
     }
 }

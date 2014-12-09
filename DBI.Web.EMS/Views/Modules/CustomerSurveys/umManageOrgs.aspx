@@ -54,7 +54,7 @@
                     App.uxThresholdStore.remove(App.uxThresholdGrid.getSelectionModel().getSelection()[0]);
                 }
             }
-            App.direct.dmSubtractFromDirty();
+            //App.direct.dmSubtractFromDirty();
         };
     </script>
 </head>
@@ -163,7 +163,7 @@
                         <ext:RowEditing runat="server" ID="uxDollarRowEdit" ClicksToEdit="2" ClicksToMoveEditor="1" AutoCancel="false" ErrorSummary="false">
                             <Listeners>
                                 <CancelEdit Handler="cancelEditRow('dollar')" />
-                                <BeforeEdit Handler="App.direct.dmAddToDirty()" />
+                                <%--<BeforeEdit Handler="App.direct.dmAddToDirty()" />--%>
                             </Listeners>
                             <DirectEvents>
                                 <Edit OnEvent="deSaveDollar" Before="return #{uxDollarStore}.isDirty()">
@@ -274,7 +274,7 @@
                     <Plugins>
                         <ext:RowEditing runat="server" ID="uxThresholdRowEdit" ClicksToEdit="2" ClicksToMoveEditor="1" ErrorSummary="false" AutoCancel="false">
                             <Listeners>
-                                <BeforeEdit Handler="App.direct.dmAddToDirty()" />
+                                <%--<BeforeEdit Handler="App.direct.dmAddToDirty()" />--%>
                                 <CancelEdit Handler="cancelEditRow('threshold')" />
                             </Listeners>
                             <DirectEvents>

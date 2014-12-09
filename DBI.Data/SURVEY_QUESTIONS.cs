@@ -12,13 +12,13 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class CUSTOMER_SURVEY_QUESTIONS
+    public partial class SURVEY_QUESTIONS
     {
-        public CUSTOMER_SURVEY_QUESTIONS()
+        public SURVEY_QUESTIONS()
         {
-            this.CUSTOMER_SURVEY_FORMS_ANS = new HashSet<CUSTOMER_SURVEY_FORMS_ANS>();
-            this.CUSTOMER_SURVEY_OPTIONS = new HashSet<CUSTOMER_SURVEY_OPTIONS>();
-            this.CUSTOMER_SURVEY_RELATION = new HashSet<CUSTOMER_SURVEY_RELATION>();
+            this.SURVEY_FORMS_ANS = new HashSet<SURVEY_FORMS_ANS>();
+            this.SURVEY_OPTIONS = new HashSet<SURVEY_OPTIONS>();
+            this.SURVEY_RELATION = new HashSet<SURVEY_RELATION>();
         }
     
         public decimal QUESTION_ID { get; set; }
@@ -33,9 +33,9 @@ namespace DBI.Data
         public decimal SORT_ORDER { get; set; }
         public decimal CATEGORY_ID { get; set; }
     
-        public virtual ICollection<CUSTOMER_SURVEY_FORMS_ANS> CUSTOMER_SURVEY_FORMS_ANS { get; set; }
-        public virtual ICollection<CUSTOMER_SURVEY_OPTIONS> CUSTOMER_SURVEY_OPTIONS { get; set; }
-        public virtual CUSTOMER_SURVEY_QUES_TYPES CUSTOMER_SURVEY_QUES_TYPES { get; set; }
-        public virtual ICollection<CUSTOMER_SURVEY_RELATION> CUSTOMER_SURVEY_RELATION { get; set; }
+        public virtual ICollection<SURVEY_FORMS_ANS> SURVEY_FORMS_ANS { get; set; }
+        public virtual ICollection<SURVEY_OPTIONS> SURVEY_OPTIONS { get; set; }
+        public virtual SURVEY_QUES_TYPES SURVEY_QUES_TYPES { get; set; }
+        public virtual ICollection<SURVEY_RELATION> SURVEY_RELATION { get; set; }
     }
 }

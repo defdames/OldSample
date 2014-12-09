@@ -12,16 +12,21 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class CUSTOMER_SURVEY_QUES_CAT
+    public partial class SURVEY_CAT
     {
-        public CUSTOMER_SURVEY_QUES_CAT()
+        public SURVEY_CAT()
         {
-            this.CUSTOMER_SURVEY_FIELDSETS = new HashSet<CUSTOMER_SURVEY_FIELDSETS>();
+            this.SURVEY_FORMS = new HashSet<SURVEY_FORMS>();
         }
     
         public decimal CATEGORY_ID { get; set; }
-        public string CATEGORY_NAME { get; set; }
+        public string NAME { get; set; }
+        public string DESCRIPTION { get; set; }
+        public string CREATED_BY { get; set; }
+        public Nullable<System.DateTime> CREATE_DATE { get; set; }
+        public string MODIFIED_BY { get; set; }
+        public Nullable<System.DateTime> MODIFY_DATE { get; set; }
     
-        public virtual ICollection<CUSTOMER_SURVEY_FIELDSETS> CUSTOMER_SURVEY_FIELDSETS { get; set; }
+        public virtual ICollection<SURVEY_FORMS> SURVEY_FORMS { get; set; }
     }
 }

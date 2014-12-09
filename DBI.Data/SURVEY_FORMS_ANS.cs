@@ -12,20 +12,18 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class CUSTOMER_SURVEY_QUES_TYPES
+    public partial class SURVEY_FORMS_ANS
     {
-        public CUSTOMER_SURVEY_QUES_TYPES()
-        {
-            this.CUSTOMER_SURVEY_QUESTIONS = new HashSet<CUSTOMER_SURVEY_QUESTIONS>();
-        }
-    
-        public decimal TYPE_ID { get; set; }
-        public string QUESTION_TYPE_NAME { get; set; }
+        public decimal ANSWER_ID { get; set; }
+        public string ANSWER { get; set; }
+        public decimal COMPLETION_ID { get; set; }
+        public decimal QUESTION_ID { get; set; }
         public string CREATED_BY { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public string MODIFIED_BY { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
     
-        public virtual ICollection<CUSTOMER_SURVEY_QUESTIONS> CUSTOMER_SURVEY_QUESTIONS { get; set; }
+        public virtual SURVEY_FORMS_COMP SURVEY_FORMS_COMP { get; set; }
+        public virtual SURVEY_QUESTIONS SURVEY_QUESTIONS { get; set; }
     }
 }

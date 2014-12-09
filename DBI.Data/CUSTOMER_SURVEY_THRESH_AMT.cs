@@ -29,7 +29,7 @@ namespace DBI.Data
         public string MODIFIED_BY { get; set; }
         public decimal TYPE_ID { get; set; }
     
-        public virtual CUSTOMER_SURVEY_FORM_TYPES CUSTOMER_SURVEY_FORM_TYPES { get; set; }
         public virtual ICollection<CUSTOMER_SURVEY_THRESHOLDS> CUSTOMER_SURVEY_THRESHOLDS { get; set; }
+        public virtual SURVEY_TYPES SURVEY_TYPES { get; set; }
     }
 }
