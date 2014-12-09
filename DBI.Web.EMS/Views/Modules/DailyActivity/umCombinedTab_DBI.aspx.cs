@@ -961,6 +961,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             dmSubtractFromDirty();
             uxEmployeeStore.CommitChanges();
+            uxAddEmployeeButton.Enable();
         }
 
         protected void deSaveEquipment(object sender, DirectEventArgs e)
@@ -1030,6 +1031,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             dmSubtractFromDirty();
             uxEquipmentStore.CommitChanges();
+            uxAddEquipmentButton.Enable();
         }
 
         protected void deReadTaskData(object sender, StoreReadDataEventArgs e)
@@ -1118,6 +1120,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             dmSubtractFromDirty();
             uxProductionStore.CommitChanges();
+            uxAddProductionButton.Enable();
         }
 
         protected void deSaveWeather(object sender, DirectEventArgs e)
@@ -1170,6 +1173,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             dmSubtractFromDirty();
             uxWeatherStore.CommitChanges();
+            uxAddWeatherButton.Enable();
         }
 
         protected void deSaveChemical(object sender, DirectEventArgs e)
@@ -1232,6 +1236,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             dmSubtractFromDirty();
             uxChemicalStore.CommitChanges();
+            uxAddChemicalButton.Enable();
         }
 
         protected void deSaveInventory(object sender, DirectEventArgs e)
@@ -1329,6 +1334,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             dmSubtractFromDirty();
             uxInventoryStore.CommitChanges();
+            uxAddInventoryButton.Enable();
         }
 
         protected void deSaveAttachment(object sender, DirectEventArgs e)

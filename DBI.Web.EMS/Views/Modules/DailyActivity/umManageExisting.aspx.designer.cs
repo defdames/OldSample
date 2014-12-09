@@ -409,15 +409,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.ToolbarSpacer ToolbarSpacer5;
         
         /// <summary>
-        /// uxPlaceholderWindow control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Window uxPlaceholderWindow;
-        
-        /// <summary>
         /// uxCreateActivityWindow control.
         /// </summary>
         /// <remarks>

@@ -449,7 +449,7 @@
                     </Bin>
                 </ext:TabPanel>
                 <%-- Hidden Windows --%>
-                <ext:Window runat="server"
+                <%--<ext:Window runat="server"
                     ID="uxPlaceholderWindow"
                     Hidden="true"
                     Width="650"
@@ -460,7 +460,7 @@
                         ID="uxPlaceholderLoader"
                         Mode="Frame"
                         AutoLoad="false" />
-                </ext:Window>
+                </ext:Window>--%>
                 <ext:Window runat="server"
                     ID="uxCreateActivityWindow"
                     Title="Create DRS"

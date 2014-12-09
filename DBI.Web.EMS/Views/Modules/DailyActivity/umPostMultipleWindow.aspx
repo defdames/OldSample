@@ -9,8 +9,10 @@
 <body>
     <form id="form1" runat="server">
         <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
+        <ext:Viewport runat="server" Layout="BorderLayout">
+            <Items>
         <ext:GridPanel runat="server" ID="uxHeaderPostGrid"
-            Layout="HBoxLayout" Height="400" Width="700">
+            Layout="HBoxLayout" Region="Center">
             <Store>
                 <ext:Store runat="server" ID="uxHeaderPostStore"
                     AutoDataBind="true"
@@ -70,17 +72,9 @@
                     </Listeners>
                 </ext:Button>
             </Buttons>
-            <Listeners>
-                <AfterRender
-                    Handler="var win = parentAutoLoadControl.target || parentAutoLoadControl, //you can use just 'parentAutoLoadControl' after update to Ext.NET v2 beta.
-									size = this.getSize();
- 
-								size.height += 70;
-								size.width += 12;
-								win.setSize(size);"
-                    Delay="100" />
-            </Listeners>
         </ext:GridPanel>
+                </Items>
+            </ext:Viewport>
     </form>
 </body>
 </html>

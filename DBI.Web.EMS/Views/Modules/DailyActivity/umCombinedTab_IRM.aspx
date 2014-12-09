@@ -17,8 +17,6 @@
 
         var AddEmployee = function () {
             App.uxEmployeeStore.insert(0, new Employee());
-            App.uxEmployeeSelection.setLocked(true);
-            App.uxEmployeeSelection.setLocked(false);
             App.uxEmployeeSelection.select(0);
             var task = new Ext.util.DelayedTask(function () {
                 App.uxEmployeeRowEdit.startEdit(0, 0);
@@ -34,8 +32,6 @@
 
         var AddEquipment = function () {
             App.uxEquipmentStore.insert(0, new Equipment());
-            App.uxEquipmentSM.setLocked(true);
-            App.uxEquipmentSM.setLocked(false);
             App.uxEquipmentSM.select(0);
             var task = new Ext.util.DelayedTask(function () {
                 App.uxEquipmentRowEdit.startEdit(0, 0);
@@ -51,8 +47,6 @@
 
         var AddProduction = function () {
             App.uxProductionStore.insert(0, new Production());
-            App.uxProductionSelection.setLocked(true);
-            App.uxProductionSelection.setLocked(false);
             App.uxProductionSelection.select(0);
             var task = new Ext.util.DelayedTask(function () {
                 App.uxProductionRowEdit.startEdit(0, 0);
@@ -68,8 +62,6 @@
 
         var AddWeather = function () {
             App.uxWeatherStore.insert(0, new Weather());
-            App.uxWeatherSelection.setLocked(true);
-            App.uxWeatherSelection.setLocked(false);
             App.uxWeatherSelection.select(0);
             var task = new Ext.util.DelayedTask(function () {
                 App.uxWeatherRowEdit.startEdit(0, 0);
@@ -85,8 +77,6 @@
 
         var AddInventory = function () {
             App.uxInventoryStore.insert(0, new Inventory());
-            App.uxInventorySelection.setLocked(true);
-            App.uxInventorySelection.setLocked(false);
             App.uxInventorySelection.select(0);
             var task = new Ext.util.DelayedTask(function () {
                 App.uxInventoryRowEdit.startEdit(0, 0);
@@ -103,74 +93,69 @@
         var onBeforeEdit = function (value) {
             switch (value) {
                 case 'employee':
-                    App.uxEmployeeGrid.getSelectionModel().setLocked(true);
+                    if (App.uxEmployeeRowEdit.editing)
+                        return false;
+                    else
+                        return true;
                     break;
                 case 'equipment':
-                    App.uxEquipmentGrid.getSelectionModel().setLocked(true);
+                    if (App.uxEquipmentRowEdit.editing)
+                        return false;
+                    else
+                        return true;
                     break;
                 case 'weather':
-                    App.uxWeatherGrid.getSelectionModel().setLocked(true);
+                    if (App.uxWeatherRowEdit.editing)
+                        return false;
+                    else
+                        return true;
                     break;
                 case 'production':
-                    App.uxProductionGrid.getSelectionModel().setLocked(true);
+                    if (App.uxProductionRowEdit.editing)
+                        return false;
+                    else
+                        return true;
                     break;
                 case 'inventory':
-                    App.uxInventoryGrid.getSelectionModel().setLocked(true);
+                    if (App.uxInventoryRowEdit.editing)
+                        return false;
+                    else
+                        return true;
                     break;
             }
-        }
+        };
 
         var cancelEditRow = function (value) {
-            switch(value) {
-                case 'employee': 
-                    if (!App.uxEmployeeGrid.getSelectionModel().getSelection()[0].data.EMPLOYEE_ID) {
-                        App.uxEmployeeStore.remove(App.uxEmployeeGrid.getSelectionModel().getSelection()[0]);
-                        var task = new Ext.util.DelayedTask(function () {
-                            App.uxEmployeeSelection.setLocked(false);
-                        });
-                        task.delay(100);
+            switch (value) {
+                case 'employee':
+                    if (!App.uxEmployeeStore.getAt(0).data.EMPLOYEE_ID) {
+                        App.uxEmployeeStore.removeAt(0);
                     }
+                    App.uxAddEmployeeButton.enable();
                     break;
                 case 'equipment':
-                    if (!App.uxEquipmentGrid.getSelectionModel().getSelection()[0].data.EQUIPMENT_ID) {
-                        App.uxEquipmentStore.remove(App.uxEquipmentGrid.getSelectionModel().getSelection()[0]);
-                        var task = new Ext.util.DelayedTask(function () {
-                            App.uxEquipmentSelection.setLocked(false);
-                        });
-                        task.delay(100);
+                    if (!App.uxEquipmentStore.getAt(0).data.EQUIPMENT_ID) {
+                        App.uxEquipmentStore.removeAt(0);
                     }
+                    App.uxAddEquipmentButton.enable();
                     break;
                 case 'production':
-                    if (!App.uxProductionGrid.getSelectionModel().getSelection()[0].data.PRODUCTION_ID) {
-                        App.uxProductionStore.remove(App.uxProductionGrid.getSelectionModel().getSelection()[0]);
-                        var task = new Ext.util.DelayedTask(function () {
-                            App.uxProductionSelection.setLocked(false);
-                        });
-                        task.delay(100);
+                    if (!App.uxProductionStore.getAt(0).data.PRODUCTION_ID) {
+                        App.uxProductionStore.removeAt(0);
                     }
+                    App.uxAddProductionButton.enable();
                     break;
                 case 'weather':
-                    if(!App.uxWeatherGrid.getSelectionModel().getSelection()[0].data.WEATHER_ID){
-                        App.uxWeatherStore.remove(App.uxWeatherGrid.getSelectionModel().getSelection()[0]);
-                        var task = new Ext.util.DelayedTask(function () {
-                            App.uxWeatherSelection.setLocked(false);
-                        });
-                        task.delay(100);
+                    if (!App.uxWeatherStore.getAt(0).data.WEATHER_ID) {
+                        App.uxWeatherStore.removeAt(0);
                     }
+                    App.uxAddWeatherButton.enable();
                     break;
                 case 'inventory':
-                    if (!App.uxInventoryGrid.getSelectionModel().getSelection()[0].data.INVENTORY_ID) {
-                        App.uxInventoryStore.remove(App.uxInventoryGrid.getSelectionModel().getSelection()[0]);
-                        var task = new Ext.util.DelayedTask(function () {
-                            App.uxInventorySelection.setLocked(false);
-                        });
-                        task.delay(100);
+                    if (!App.uxInventoryStore.getAt(0).data.INVENTORY_ID) {
+                        App.uxInventoryStore.removeAt(0);
                     }
-                    break;
-                case 'attachment':
-                    if(!App.uxAttachmentGrid.getSelectionModel().getSelection()[0].data.ATTACHMENT_ID){
-                        App.uxAttachmentStore.remove(App.uxAttachmentGrid.getSelectionModel().getSelection()[0]);
-                    }
+                    App.uxAddInventoryButton.enable();
                     break;
             }
             App.direct.dmSubtractFromDirty();
@@ -212,8 +197,10 @@
 				record = view.getRecord(view.findItemByChild(toolTip.triggerElement)),
 				column = view.getHeaderByCell(toolTip.triggerElement),
 				data = record.get(column.dataIndex);
-
-            toolTip.update(data);
+            if (data)
+                toolTip.update(data);
+            else
+                toolTip.hide();
         };
 
         var showButtons = function () {
@@ -1171,8 +1158,9 @@
                                 <BeforeEdit OnEvent="deSetTimeInDate" />
                             </DirectEvents>
                             <Listeners>
-                                <BeforeEdit Handler="if(checkEmployeeStatus()){
-                                    onBeforeEdit('employee');
+                                <BeforeEdit Handler="if(checkEmployeeStatus() && onBeforeEdit('employee')){
+                                    #{uxAddEmployeeButton}.disable();
+                                           return true;
                                     }
                                     else{
                                     return false;
@@ -1395,7 +1383,13 @@
                                 </Edit>
                             </DirectEvents>
                             <Listeners>
-                                <BeforeEdit Fn="checkStatus" />
+                                <BeforeEdit Handler="if(checkStatus() && onBeforeEdit('equipment')){
+                                    #{uxAddEquipmentButton}.disable();       
+                                    return true;
+                                    }
+                                    else{
+                                    return false;
+                                    }" />
                                 <CancelEdit Handler="cancelEditRow('equipment')" />
                             </Listeners>
                         </ext:RowEditing>
@@ -1662,7 +1656,13 @@
                                 </Edit>
                             </DirectEvents>
                             <Listeners>
-                                <BeforeEdit Fn="checkStatus" />
+                                <BeforeEdit Handler="if(checkStatus() && onBeforeEdit('production')){
+                                    #{uxAddProductionButton}.disable();
+                                           return true;
+                                    }
+                                    else{
+                                    return false;
+                                    }" />
                                 <CancelEdit Handler="cancelEditRow('production')" />
                             </Listeners>
                         </ext:RowEditing>
@@ -1795,7 +1795,13 @@
                                 </Edit>
                             </DirectEvents>
                             <Listeners>
-                                <BeforeEdit Fn="checkStatus" />
+                                <BeforeEdit Handler="if(checkStatus() && onBeforeEdit('weather')){
+                                    #{uxAddWeatherButton}.disable();
+                                           return true;
+                                    }
+                                    else{
+                                    return false;
+                                    }" />
                                 <CancelEdit Handler="cancelEditRow('weather')" />
                             </Listeners>
                         </ext:RowEditing>
@@ -2039,7 +2045,13 @@
                                 </BeforeEdit>
                             </DirectEvents>
                             <Listeners>
-                                <BeforeEdit Fn="checkStatus" />
+                                <BeforeEdit Handler="if(checkStatus() && onBeforeEdit('inventory')){
+                                    #{uxAddInventoryButton}.disable();
+                                           return true;
+                                    }
+                                    else{
+                                    return false;
+                                    }" />
                                 <CancelEdit Handler="cancelEditRow('inventory')" />
                             </Listeners>
                         </ext:RowEditing>
