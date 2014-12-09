@@ -56,8 +56,6 @@
 
         var AddForm = function () {
             App.uxFormsStore.insert(0, new Form());
-            //App.uxFormSelection.setLocked(true);
-            //App.uxFormSelection.setLocked(false);
             App.uxFormSelection.select(0);
             var task = new Ext.util.DelayedTask(function () {
                 App.uxFormRowEdit.startEdit(0, 0);
@@ -73,8 +71,6 @@
 
         var AddFieldset = function () {
             App.uxFieldsetsStore.insert(0, new Fieldset());
-            //App.uxFieldsetSelection.setLocked(true);
-            //App.uxFieldsetSelection.setLocked(false);
             App.uxFieldsetSelection.select(0);
             var task = new Ext.util.DelayedTask(function () {
                 App.uxFieldsetRowEdit.startEdit(0, 0);
@@ -90,8 +86,6 @@
 
         var AddQuestion = function () {
             App.uxQuestionsStore.insert(0, new Question());
-            //App.uxQuestionSelection.setLocked(true);
-            //App.uxQuestionSelection.setLocked(false);
             App.uxQuestionSelection.select(0);
             var task = new Ext.util.DelayedTask(function () {
                 App.uxQuestionRowEdit.startEdit(0, 0);
@@ -110,8 +104,6 @@
                 TEXT: App.uxQuestionsGrid.getSelectionModel().getSelection()[0].data.TEXT
             });
             App.uxOptionsStore.insert(0, Option);
-            //App.uxOptionSelection.setLocked(true);
-            //App.uxOptionSelection.setLocked(false);
             App.uxOptionSelection.select(0);
             App.uxOptionRowEdit.startEdit(0, 0);
             // Create DelayedTask and call it after 100 ms
@@ -124,40 +116,24 @@
         var cancelEditRow = function (value) {
             switch (value) {
                 case 'form':
-                    if (!App.uxFormsGrid.getSelectionModel().getSelection()[0].data.FORM_ID) {
-                        App.uxFormsStore.remove(App.uxFormsGrid.getSelectionModel().getSelection()[0]);
-                        var task = new Ext.util.DelayedTask(function () {
-                            //App.uxFormSelection.setLocked(false);
-                        });
-                        task.delay(100);
-                    }
+                    if (!App.uxFormsStore.getAt(0).data.FORM_ID)
+                        App.uxFormsStore.removeAt(0);
+                    App.uxAddFormButton.enable();
                     break;
                 case 'fieldset':
-                    if (!App.uxFieldsetsGrid.getSelectionModel().getSelection()[0].data.FIELDSET_ID) {
-                        App.uxFieldsetsStore.remove(App.uxFieldsetsGrid.getSelectionModel().getSelection()[0]);
-                        var task = new Ext.util.DelayedTask(function () {
-                            //App.uxFieldsetsGrid.getSelectionModel().setLocked(false);
-                        });
-                        task.delay(100);
-                    }
+                    if (!App.uxFieldsetsStore.getAt(0).data.FIELDSET_ID)
+                        App.uxFieldsetsStore.removeAt(0);
+                    App.uxAddFieldsetButton.enable();
                     break;
                 case 'question':
-                    if (!App.uxQuestionsGrid.getSelectionModel().getSelection()[0].data.QUESTION_ID) {
-                        App.uxQuestionsStore.remove(App.uxQuestionsGrid.getSelectionModel().getSelection()[0]);
-                        var task = new Ext.util.DelayedTask(function () {
-                            //App.uxQuestionsGrid.getSelectionModel().setLocked(false);
-                        });
-                        task.delay(100);
-                    }
+                    if (!App.uxQuestionsStore.getAt(0).data.QUESTION_ID)
+                        App.uxQuestionsStore.removeAt(0);
+                    App.uxAddQuestionButton.enable();
                     break;
                 case 'option':
-                    if (!App.uxOptionsGrid.getSelectionModel().getSelection()[0].data.OPTION_ID) {
-                        App.uxOptionsStore.remove(App.uxOptionsGrid.getSelectionModel().getSelection()[0]);
-                        var task = new Ext.util.DelayedTask(function () {
-                            //App.uxOptionsGrid.getSelectionModel().setLocked(false);
-                        });
-                        task.delay(100);
-                    }
+                    if (!App.uxOptionsStore.getAt(0).data.OPTION_ID)
+                        App.uxOptionsStore.removeAt(0);
+                    App.uxAddOptionButton.enable();
                     break;
             }
             //App.direct.dmSubtractFromDirty();
@@ -166,16 +142,28 @@
         var onBeforeEdit = function (value) {
             switch (value) {
                 case 'form':
-                    //App.uxFormsGrid.getSelectionModel().setLocked(true);
+                    if (App.uxFormRowEdit.editing)
+                        return false;
+                    else
+                        return true;
                     break;
                 case 'fieldset':
-                    //App.uxFieldsetsGrid.getSelectionModel().setLocked(true);
+                    if (App.uxFieldsetRowEdit.editing)
+                        return false;
+                    else
+                        return true;
                     break;
                 case 'question':
-                    //App.uxQuestionsGrid.getSelectionModel().setLocked(true);
+                    if (App.uxQuestionRowEdit.editing)
+                        return false;
+                    else
+                        return true;
                     break;
                 case 'option':
-                    //App.uxOptionsGrid.getSelectionModel().setLocked(true);
+                    if (App.uxOptionRowEdit.editing)
+                        return false;
+                    else
+                        return true;
                     break;
             }
             //App.direct.dmAddToDirty();
@@ -321,8 +309,9 @@
                                             </DirectEvents>
                                             <Listeners>
                                                 <CancelEdit Handler="cancelEditRow('form')" />
-                                                <BeforeEdit Handler="if(!#{uxFormRowEdit}.editor.isVisible()){
-                                                    onBeforeEdit('form')
+                                                <BeforeEdit Handler="if(onBeforeEdit('form')){
+                                                    #{uxAddFormButton}.disable();
+                                                    return true;
                                                     }else{
                                                     return false;
                                                     }" />
@@ -458,8 +447,9 @@
                                             </DirectEvents>
                                             <Listeners>
                                                 <CancelEdit Handler="cancelEditRow('fieldset')" />
-                                                <BeforeEdit Handler="if(!#{uxFieldsetRowEdit}.editor.isVisible()){
-                                                    onBeforeEdit('fieldset')
+                                                <BeforeEdit Handler="if(onBeforeEdit('fieldset')){
+                                                    #{uxAddFieldsetButton}.disable();
+                                                    return true;
                                                     }else{
                                                     return false;
                                                     }" />
@@ -609,8 +599,9 @@
                                             </DirectEvents>
                                             <Listeners>
                                                 <CancelEdit Handler="cancelEditRow('question')" />
-                                                <BeforeEdit Handler="if(!#{uxQuestionRowEdit}.editor.isVisible()){
-                                                    onBeforeEdit('question')
+                                                <BeforeEdit Handler="if(onBeforeEdit('question')){
+                                                    #{uxAddQuestionButton}.disable();
+                                                    return true;
                                                     }else{
                                                     return false;
                                                     }" />
@@ -708,8 +699,9 @@
                                                 </Edit>
                                             </DirectEvents>
                                             <Listeners>
-                                                <BeforeEdit Handler="if(!#{uxOptionRowEdit}.editor.isVisible()){
-                                                    onBeforeEdit('option')
+                                                <BeforeEdit Handler="if(onBeforeEdit('option')){
+                                                    #{uxAddOptionButton}.disable();
+                                                    return true;
                                                     }else{
                                                     return false;
                                                     }" />

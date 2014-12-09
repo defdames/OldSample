@@ -211,6 +211,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             }
             //dmSubtractFromDirty();
             uxFormsStore.CommitChanges();
+            uxAddFormButton.Enable();
         }
 
         protected void deSaveFieldsets(object sender, DirectEventArgs e)
@@ -282,6 +283,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             //dmSubtractFromDirty();
             uxFieldsetsStore.CommitChanges();
             uxQuestionFieldsetStore.Reload();
+            uxAddFieldsetButton.Enable();
         }
 
         protected void deSaveQuestions(object sender, DirectEventArgs e)
@@ -354,6 +356,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             //dmSubtractFromDirty();
             uxQuestionsStore.CommitChanges();
             uxQuestionsStore.Reload();
+            uxAddQuestionButton.Enable();
         }
 
         protected void deSaveOptions(object sender, DirectEventArgs e)
@@ -395,6 +398,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             uxOptionsStore.CommitChanges();
             uxOptionsStore.Reload();
             //dmSubtractFromDirty();
+            uxAddOptionButton.Enable();
         }
 
         protected void deLoadOptions(object sender, DirectEventArgs e)
