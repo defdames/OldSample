@@ -63,6 +63,7 @@ namespace DBI.Core.Web
         {
             ResourceManager.GetInstance(this).Listeners.AjaxRequestException.Handler = GetExceptionHandlerScript(String.Empty);
             ResourceManager.GetInstance(this).RegisterClientScriptBlock("Localization", "Ext.override({showFailure: " + GetExceptionHandlerScript(String.Empty) + "});");
+            ResourceManager.GetInstance(this).Listeners.DocumentReady.Handler = "delete Ext.tip.Tip.prototype.minWidth;";
 
             if (Session["isDirty"] == null)
             {
