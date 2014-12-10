@@ -573,7 +573,11 @@
     </script>
 </head>
 <body>
-    <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
+    <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False">
+        <Listeners>
+            <DocumentReady Handler="delete Ext.tip.Tip.prototype.minWidth;" />
+        </Listeners>
+    </ext:ResourceManager>
     <ext:Store runat="server"
         ID="uxAddInventoryItemStore"
         RemoteSort="true"

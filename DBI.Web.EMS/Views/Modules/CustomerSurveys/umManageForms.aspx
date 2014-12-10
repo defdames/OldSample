@@ -205,7 +205,11 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <ext:ResourceManager runat="server" IsDynamic="false" />
+        <ext:ResourceManager runat="server" IsDynamic="false">
+            <Listeners>
+            <DocumentReady Handler="delete Ext.tip.Tip.prototype.minWidth;" />
+        </Listeners>
+        </ext:ResourceManager>
         <ext:Viewport ID="uxAdminViewPort" runat="server" Layout="FitLayout">
             <Items>
                 <ext:TabPanel runat="server" ID="uxTabPanel">
