@@ -121,24 +121,35 @@
                 case 'form':
                     if (!App.uxFormsStore.getAt(0).data.FORM_ID)
                         App.uxFormsStore.removeAt(0);
+                    else {
+                        App.uxDeleteFormButton.enable();
+                        App.uxViewFormButton.enable();
+                        App.uxCopyFormButton.enable();
+                    }
                     App.uxAddFormButton.enable();
                     App.uxFormSelection.setLocked(false);
                     break;
                 case 'fieldset':
                     if (!App.uxFieldsetsStore.getAt(0).data.FIELDSET_ID)
                         App.uxFieldsetsStore.removeAt(0);
+                    else 
+                        App.uxDeleteFieldsetButton.enable();
                     App.uxAddFieldsetButton.enable();
                     App.uxFieldsetSelection.setLocked(false);
                     break;
                 case 'question':
                     if (!App.uxQuestionsStore.getAt(0).data.QUESTION_ID)
                         App.uxQuestionsStore.removeAt(0);
+                    else
+                        App.uxDeleteQuestionButton.enable();
                     App.uxAddQuestionButton.enable();
                     App.uxQuestionSelection.setLocked(false);
                     break;
                 case 'option':
                     if (!App.uxOptionsStore.getAt(0).data.OPTION_ID)
                         App.uxOptionsStore.removeAt(0);
+                    else
+                        App.uxDeleteOptionButton.enable();
                     App.uxAddOptionButton.enable();
                     App.uxOptionSelection.setLocked(false);
                     break;
@@ -153,6 +164,9 @@
                         return false;
                     else {
                         App.direct.dmSetDirty('true');
+                        App.uxDeleteFormButton.disable();
+                        App.uxCopyFormButton.disable();
+                        App.uxViewFormButton.disable();
                         App.uxFormSelection.setLocked(true);
                         return true;
                     }
@@ -162,6 +176,7 @@
                         return false;
                     else {
                         App.direct.dmSetDirty('true');
+                        App.uxDeleteFieldsetButton.disable();
                         App.uxFieldsetSelection.setLocked(true);
                         return true;
                     }
@@ -171,6 +186,7 @@
                         return false;
                     else {
                         App.direct.dmSetDirty('true');
+                        App.uxDeleteQuestionButton.disable();
                         App.uxQuestionSelection.setLocked(true);
                         return true;
                     }
@@ -180,6 +196,7 @@
                         return false;
                     else {
                         App.direct.dmSetDirty('true');
+                        App.uxDeleteOptionButton.disable();
                         App.uxOptionSelection.setLocked(true);
                         return true;
                     }

@@ -213,6 +213,9 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             uxAddFormButton.Enable();
             X.Js.Call("checkEditing");
             uxFormSelection.SetLocked(false);
+            uxDeleteFormButton.Enable();
+            uxCopyFormButton.Enable();
+            uxViewFormButton.Enable();
         }
 
         protected void deSaveFieldsets(object sender, DirectEventArgs e)
@@ -286,6 +289,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             uxAddFieldsetButton.Enable();
             X.Js.Call("checkEditing");
             uxFieldsetSelection.SetLocked(false);
+            uxDeleteFieldsetButton.Enable();
         }
 
         protected void deSaveQuestions(object sender, DirectEventArgs e)
@@ -360,6 +364,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             uxAddQuestionButton.Enable();
             X.Js.Call("checkEditing");
             uxQuestionSelection.SetLocked(false);
+            uxDeleteQuestionButton.Enable();
         }
 
         protected void deSaveOptions(object sender, DirectEventArgs e)
@@ -403,6 +408,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             uxAddOptionButton.Enable();
             X.Js.Call("checkEditing");
             uxOptionSelection.SetLocked(false);
+            uxDeleteOptionButton.Enable();
         }
 
         protected void deLoadOptions(object sender, DirectEventArgs e)

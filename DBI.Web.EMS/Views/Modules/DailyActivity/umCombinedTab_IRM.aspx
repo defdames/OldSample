@@ -96,6 +96,8 @@
                         return false;
                     else {
                         App.direct.dmSetDirty('true');
+                        App.uxDeleteEmployeeButton.disable();
+                        App.uxChoosePerDiemButton.disable();
                         App.uxEmployeeSelection.setLocked(true);
                         return true;
                     }
@@ -105,6 +107,7 @@
                         return false;
                     else {
                         App.direct.dmSetDirty('true');
+                        App.uxDeleteEquipmentButton.disable();
                         App.uxEquipmentSM.setLocked(true);
                         return true;
                     }
@@ -114,6 +117,7 @@
                         return false;
                     else {
                         App.direct.dmSetDirty('true');
+                        App.uxDeleteWeatherButton.disable();
                         App.uxWeatherSelection.setLocked(true);
                         return true;
                     }
@@ -123,6 +127,7 @@
                         return false;
                     else {
                         App.direct.dmSetDirty('true');
+                        App.uxDeleteProductionButton.disable();
                         App.uxProductionSelection.setLocked(true);
                         return true;
                     }
@@ -131,6 +136,7 @@
                     if (App.uxInventoryRowEdit.editing)
                         return false;
                     else {
+                        App.uxDeleteInventoryButton.disable();
                         App.direct.dmSetDirty('true');
                         App.uxInventorySelection.setLocked(true);
                         return true;
@@ -145,12 +151,19 @@
                     if (!App.uxEmployeeStore.getAt(0).data.EMPLOYEE_ID) {
                         App.uxEmployeeStore.removeAt(0);
                     }
+                    else {
+                        App.uxDeleteEmployeeButton.enable();
+                        App.uxChoosePerDiemButton.enable();
+                    }
                     App.uxAddEmployeeButton.enable();
                     App.uxEmployeeSelection.setLocked(false);
                     break;
                 case 'equipment':
                     if (!App.uxEquipmentStore.getAt(0).data.EQUIPMENT_ID) {
                         App.uxEquipmentStore.removeAt(0);
+                    }
+                    else {
+                        App.uxDeleteEquipmentButton.enable();
                     }
                     App.uxAddEquipmentButton.enable();
                     App.uxEquipmentSM.setLocked(false);
@@ -159,6 +172,9 @@
                     if (!App.uxProductionStore.getAt(0).data.PRODUCTION_ID) {
                         App.uxProductionStore.removeAt(0);
                     }
+                    else {
+                        App.uxDeleteProductionButton.enable();
+                    }
                     App.uxAddProductionButton.enable();
                     App.uxProductionSelection.setLocked(false);
                     break;
@@ -166,12 +182,18 @@
                     if (!App.uxWeatherStore.getAt(0).data.WEATHER_ID) {
                         App.uxWeatherStore.removeAt(0);
                     }
+                    else {
+                        App.uxDeleteWeatherButton.enable();
+                    }
                     App.uxAddWeatherButton.enable();
                     App.uxWeatherSelection.setLocked(false);
                     break;
                 case 'inventory':
                     if (!App.uxInventoryStore.getAt(0).data.INVENTORY_ID) {
                         App.uxInventoryStore.removeAt(0);
+                    }
+                    else {
+                        App.uxDeleteInventoryButton.enable();
                     }
                     App.uxInventoryButton.enable();
                     App.uxInventorySelection.setLocked(false);

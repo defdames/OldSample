@@ -111,6 +111,9 @@
                         return false;
                     else {
                         App.direct.dmSetDirty('true');
+                        App.uxDeleteEmployeeButton.disable();
+                        App.uxChooseLunchHeaderButton.disable();
+                        App.uxChoosePerDiemButton.disable();
                         App.uxEmployeeSelection.setLocked(true);
                         return true;
                     }
@@ -120,6 +123,7 @@
                         return false;
                     else {
                         App.direct.dmSetDirty('true');
+                        App.uxDeleteEquipmentButton.disable();
                         App.uxEquipmentSM.setLocked(true);
                         return true;
                     }
@@ -129,6 +133,7 @@
                         return false;
                     else {
                         App.direct.dmSetDirty('true');
+                        App.uxDeleteWeatherButton.disable();
                         App.uxWeatherSelection.setLocked(true);
                         return true;
                     }
@@ -138,6 +143,7 @@
                         return false;
                     else {
                         App.direct.dmSetDirty('true');
+                        App.uxDeleteProductionButton.disable();
                         App.uxProductionSelection.setLocked(true);
                         return true;
                     }
@@ -147,6 +153,7 @@
                         return false;
                     else {
                         App.direct.dmSetDirty('true');
+                        App.uxDeleteChemicalButton.disable();
                         App.uxChemicalSelection.setLocked(true);
                         return true;
                     }
@@ -156,6 +163,7 @@
                         return false;
                     else {
                         App.direct.dmSetDirty('true');
+                        App.uxDeleteInventoryButton.disable();
                         App.uxInventorySelection.setLocked(true);
                         return true;
                     }
@@ -169,12 +177,20 @@
                     if (!App.uxEmployeeStore.getAt(0).data.EMPLOYEE_ID) {
                         App.uxEmployeeStore.removeAt(0);
                     }
+                    else {
+                        App.uxDeleteEmployeeButton.enable();
+                        App.uxChooseLunchHeaderButton.enable();
+                        App.uxChoosePerDiemButton.enable();
+                    }
                     App.uxAddEmployeeButton.enable();
                     App.uxEmployeeSelection.setLocked(false);
                     break;
                 case 'equipment':
                     if (!App.uxEquipmentStore.getAt(0).data.EQUIPMENT_ID) {
                         App.uxEquipmentStore.removeAt(0);
+                    }
+                    else {
+                        App.uxDeleteEquipmentButton.enable();
                     }
                     App.uxAddEquipmentButton.enable();
                     App.uxEquipmentSM.setLocked(false);
@@ -183,12 +199,18 @@
                     if (!App.uxProductionStore.getAt(0).data.PRODUCTION_ID) {
                         App.uxProductionStore.removeAt(0);
                     }
+                    else {
+                        App.uxDeleteProductionButton.enable();
+                    }
                     App.uxAddProductionButton.enable();
                     App.uxProductionSelection.setLocked(false);
                     break;
                 case 'weather':
                     if (!App.uxWeatherStore.getAt(0).data.WEATHER_ID) {
                         App.uxWeatherStore.removeAt(0);
+                    }
+                    else {
+                        App.uxDeleteWeatherButton.enable();
                     }
                     App.uxAddWeatherButton.enable();
                     App.uxWeatherSelection.setLocked(false);
@@ -197,12 +219,18 @@
                     if (!App.uxChemicalStore.getAt(0).data.CHEMICAL_MIX_ID) {
                         App.uxChemicalStore.removeAt(0);
                     }
+                    else {
+                        App.uxDeleteChemicalButton.enable();
+                    }
                     App.uxAddChemicalButton.enable();
                     App.uxChemicalSelection.setLocked(false);
                     break;
                 case 'inventory':
                     if (!App.uxInventoryStore.getAt(0).data.INVENTORY_ID) {
                         App.uxInventoryStore.removeAt(0);
+                    }
+                    else {
+                        App.uxDeleteInventoryButton.enable();
                     }
                     App.uxAddInventoryButton.enable();
                     App.uxInventorySelection.setLocked(false);
