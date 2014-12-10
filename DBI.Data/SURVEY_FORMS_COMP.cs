@@ -31,7 +31,7 @@ namespace DBI.Data
         public Nullable<long> PROJECT_ID { get; set; }
     
         public virtual CUSTOMER_SURVEY_THRESHOLDS CUSTOMER_SURVEY_THRESHOLDS { get; set; }
-        public virtual SURVEY_FORMS SURVEY_FORMS { get; set; }
         public virtual ICollection<SURVEY_FORMS_ANS> SURVEY_FORMS_ANS { get; set; }
+        public virtual SURVEY_FORMS SURVEY_FORMS { get; set; }
     }
 }

@@ -29,6 +29,8 @@ namespace DBI.Data
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public decimal CATEGORY_ID { get; set; }
         public decimal TYPE_ID { get; set; }
+        public Nullable<decimal> BU { get; set; }
+        public string LANGUAGE_TYPE { get; set; }
     
         public virtual SURVEY_CAT SURVEY_CAT { get; set; }
         public virtual ICollection<SURVEY_FIELDSETS> SURVEY_FIELDSETS { get; set; }

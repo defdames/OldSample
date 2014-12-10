@@ -125,7 +125,6 @@ namespace DBI.Data
         public DbSet<SYS_ATTACHMENTS> SYS_ATTACHMENTS { get; set; }
         public DbSet<SURVEY_CAT> SURVEY_CAT { get; set; }
         public DbSet<SURVEY_FIELDSETS> SURVEY_FIELDSETS { get; set; }
-        public DbSet<SURVEY_FORMS> SURVEY_FORMS { get; set; }
         public DbSet<SURVEY_FORMS_ANS> SURVEY_FORMS_ANS { get; set; }
         public DbSet<SURVEY_FORMS_COMP> SURVEY_FORMS_COMP { get; set; }
         public DbSet<SURVEY_OPTIONS> SURVEY_OPTIONS { get; set; }
@@ -134,5 +133,6 @@ namespace DBI.Data
         public DbSet<SURVEY_QUESTIONS> SURVEY_QUESTIONS { get; set; }
         public DbSet<SURVEY_RELATION> SURVEY_RELATION { get; set; }
         public DbSet<SURVEY_TYPES> SURVEY_TYPES { get; set; }
+        public DbSet<SURVEY_FORMS> SURVEY_FORMS { get; set; }
     }
 }
