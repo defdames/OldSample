@@ -136,7 +136,7 @@
                     App.uxAddOptionButton.enable();
                     break;
             }
-            //App.direct.dmSubtractFromDirty();
+            checkEditing();
         };
 
         var onBeforeEdit = function (value) {
@@ -144,30 +144,46 @@
                 case 'form':
                     if (App.uxFormRowEdit.editing)
                         return false;
-                    else
+                    else {
+                        App.direct.dmSetDirty('true');
                         return true;
+                    }
                     break;
                 case 'fieldset':
                     if (App.uxFieldsetRowEdit.editing)
                         return false;
-                    else
+                    else {
+                        App.direct.dmSetDirty('true');
                         return true;
+                    }
                     break;
                 case 'question':
                     if (App.uxQuestionRowEdit.editing)
                         return false;
-                    else
+                    else {
+                        App.direct.dmSetDirty('true');
                         return true;
+                    }
                     break;
                 case 'option':
                     if (App.uxOptionRowEdit.editing)
                         return false;
-                    else
+                    else {
+                        App.direct.dmSetDirty('true');
                         return true;
+                    }
                     break;
             }
-            //App.direct.dmAddToDirty();
-        }
+        };
+
+        var checkEditing = function () {
+            if (App.uxFormRowEdit.editing || App.uxFieldsetRowEdit.editing || App.uxQuestionRowEdit.editing || App.uxOptionRowEdit.editing) {
+                App.direct.dmSetDirty('true');
+            }
+            else {
+                App.direct.dmSetDirty('false');
+            }
+        };
     </script>
     <style type="text/css">
         .allowBlank-field {

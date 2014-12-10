@@ -209,9 +209,9 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 Record.Commit();
                 uxFormTypeStore.Reload();
             }
-            //dmSubtractFromDirty();
             uxFormsStore.CommitChanges();
             uxAddFormButton.Enable();
+            X.Js.Call("checkEditing");
         }
 
         protected void deSaveFieldsets(object sender, DirectEventArgs e)
@@ -280,10 +280,10 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 Record.Set("TITLE", ToBeUpdated.TITLE);
                 Record.Commit();
             }
-            //dmSubtractFromDirty();
             uxFieldsetsStore.CommitChanges();
             uxQuestionFieldsetStore.Reload();
             uxAddFieldsetButton.Enable();
+            X.Js.Call("checkEditing");
         }
 
         protected void deSaveQuestions(object sender, DirectEventArgs e)
@@ -353,10 +353,10 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                     uxAddOptionButton.Disabled = false;
                 }
             }
-            //dmSubtractFromDirty();
             uxQuestionsStore.CommitChanges();
             uxQuestionsStore.Reload();
             uxAddQuestionButton.Enable();
+            X.Js.Call("checkEditing");
         }
 
         protected void deSaveOptions(object sender, DirectEventArgs e)
@@ -397,8 +397,8 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             }
             uxOptionsStore.CommitChanges();
             uxOptionsStore.Reload();
-            //dmSubtractFromDirty();
             uxAddOptionButton.Enable();
+            X.Js.Call("checkEditing");
         }
 
         protected void deLoadOptions(object sender, DirectEventArgs e)
@@ -812,21 +812,5 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 uxCopyFormTypeStore.DataSource = FormTypes;
             }
         }
-
-        //[DirectMethod]
-        //public void dmAddToDirty()
-        //{
-        //    long isDirty = long.Parse(Session["isDirty"].ToString());
-        //    isDirty++;
-        //    Session["isDirty"] = isDirty;
-        //}
-
-    //    [DirectMethod]
-    //    public void dmSubtractFromDirty()
-    //    {
-    //        long isDirty = long.Parse(Session["isDirty"].ToString());
-    //        isDirty--;
-    //        Session["isDirty"] = isDirty;
-    //    }
     }
 }

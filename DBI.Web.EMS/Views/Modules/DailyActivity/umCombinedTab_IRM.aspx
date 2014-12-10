@@ -9,7 +9,6 @@
     <script type="text/javascript">
         var checkStatus = function (e) {
             if (App.uxStatusField.value == 2 && App.uxCanEditField.value != "false") {
-                //App.direct.dmAddToDirty();
                 return true;
             }
             return false;
@@ -95,32 +94,42 @@
                 case 'employee':
                     if (App.uxEmployeeRowEdit.editing)
                         return false;
-                    else
+                    else {
+                        App.direct.dmSetDirty('true');
                         return true;
+                    }
                     break;
                 case 'equipment':
                     if (App.uxEquipmentRowEdit.editing)
                         return false;
-                    else
+                    else {
+                        App.direct.dmSetDirty('true');
                         return true;
+                    }
                     break;
                 case 'weather':
                     if (App.uxWeatherRowEdit.editing)
                         return false;
-                    else
+                    else {
+                        App.direct.dmSetDirty('true');
                         return true;
+                    }
                     break;
                 case 'production':
                     if (App.uxProductionRowEdit.editing)
                         return false;
-                    else
+                    else {
+                        App.direct.dmSetDirty('true');
                         return true;
+                    }
                     break;
                 case 'inventory':
                     if (App.uxInventoryRowEdit.editing)
                         return false;
-                    else
+                    else {
+                        App.direct.dmSetDirty('true');
                         return true;
+                    }
                     break;
             }
         };
@@ -155,23 +164,25 @@
                     if (!App.uxInventoryStore.getAt(0).data.INVENTORY_ID) {
                         App.uxInventoryStore.removeAt(0);
                     }
+                    App.uxInventoryButton.enable();
                     break;
             }
-            //App.direct.dmSubtractFromDirty();
+            checkEditing();
+        };
+        var checkEditing = function () {
+            if (App.uxEmployeeRowEdit.editing || App.uxEquipmentRowEdit.editing || App.uxProductionRowEdit.editing || App.uxWeatherRowEdit.editing || App.uxInventoryRowEdit.editing) {
+                App.direct.dmSetDirty('true');
+            }
+            else {
+                App.direct.dmSetDirty('false');
+            }
         };
 
         var checkEmployeeStatus = function (e) {
             if (App.uxStatusField.value == 2 && App.uxCanEditField.value != "false") {
-                //if (!App.uxEmployeeGrid.getRowsValues({ selectedOnly: false })[0].EMPLOYEE_ID) {
-                //    if (App.uxEmployeeGrid.getRowsValues({ selectedOnly: false })[0].PREVAILING_WAGE == false) {
-                //        App.uxEmployeeRowEdit.editor.form.findField('ROLE_TYPE').disable();
-                //    }
-                //}
-                //else 
                 if (App.uxEmployeeGrid.getSelectionModel().getSelection()[0].data.PREVAILING_WAGE == false) {
                     App.uxEmployeeRowEdit.editor.form.findField('ROLE_TYPE').disable();
                 }
-                //App.direct.dmAddToDirty();
                 return true;
 
             }
