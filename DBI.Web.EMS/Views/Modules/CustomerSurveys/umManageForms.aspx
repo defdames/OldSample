@@ -105,12 +105,15 @@
             });
             App.uxOptionsStore.insert(0, Option);
             App.uxOptionSelection.select(0);
-            App.uxOptionRowEdit.startEdit(0, 0);
-            // Create DelayedTask and call it after 100 ms
             var task = new Ext.util.DelayedTask(function () {
+                App.uxOptionRowEdit.startEdit(0, 0);
+            });
+            task.delay(300);
+            // Create DelayedTask and call it after 100 ms
+            task = new Ext.util.DelayedTask(function () {
                 App.uxOptionsGrid.columns[1].getEditor().focusInput();
             });
-            task.delay(100);
+            task.delay(400);
         };
 
         var cancelEditRow = function (value) {
@@ -119,21 +122,25 @@
                     if (!App.uxFormsStore.getAt(0).data.FORM_ID)
                         App.uxFormsStore.removeAt(0);
                     App.uxAddFormButton.enable();
+                    App.uxFormSelection.setLocked(false);
                     break;
                 case 'fieldset':
                     if (!App.uxFieldsetsStore.getAt(0).data.FIELDSET_ID)
                         App.uxFieldsetsStore.removeAt(0);
                     App.uxAddFieldsetButton.enable();
+                    App.uxFieldsetSelection.setLocked(false);
                     break;
                 case 'question':
                     if (!App.uxQuestionsStore.getAt(0).data.QUESTION_ID)
                         App.uxQuestionsStore.removeAt(0);
                     App.uxAddQuestionButton.enable();
+                    App.uxQuestionSelection.setLocked(false);
                     break;
                 case 'option':
                     if (!App.uxOptionsStore.getAt(0).data.OPTION_ID)
                         App.uxOptionsStore.removeAt(0);
                     App.uxAddOptionButton.enable();
+                    App.uxOptionSelection.setLocked(false);
                     break;
             }
             checkEditing();
@@ -146,6 +153,7 @@
                         return false;
                     else {
                         App.direct.dmSetDirty('true');
+                        App.uxFormSelection.setLocked(true);
                         return true;
                     }
                     break;
@@ -154,6 +162,7 @@
                         return false;
                     else {
                         App.direct.dmSetDirty('true');
+                        App.uxFieldsetSelection.setLocked(true);
                         return true;
                     }
                     break;
@@ -162,6 +171,7 @@
                         return false;
                     else {
                         App.direct.dmSetDirty('true');
+                        App.uxQuestionSelection.setLocked(true);
                         return true;
                     }
                     break;
@@ -170,6 +180,7 @@
                         return false;
                     else {
                         App.direct.dmSetDirty('true');
+                        App.uxOptionSelection.setLocked(true);
                         return true;
                     }
                     break;
@@ -377,7 +388,16 @@
                                         <Select OnEvent="deLoadFormDetails" />
                                     </DirectEvents>
                                     <Listeners>
-                                        <Select Handler="#{uxDeleteFormButton}.enable(); #{uxViewFormButton}.enable(); #{uxCopyFormButton}.enable()" />
+                                        <Select Handler="if(#{uxFormsGrid}.getSelectionModel().getSelection()[0].data.FORM_ID){
+                                            #{uxDeleteFormButton}.enable();
+                                            #{uxViewFormButton}.enable();
+                                            #{uxCopyFormButton}.enable();
+                                            }
+                                            else{
+                                            #{uxDeleteFormButton}.disable();
+                                            #{uxViewFormButton}.disable();
+                                            #{uxCopyFormButton}.disable();
+                                            }" />
                                     </Listeners>
                                 </ext:GridPanel>
                                 <ext:GridPanel runat="server" Title="Fieldsets" ID="uxFieldsetsGrid" MaxWidth="1100" Margin="5" MinHeight="250" SelectionMemory="true">
@@ -498,7 +518,12 @@
                                         </ext:Toolbar>
                                     </TopBar>
                                     <Listeners>
-                                        <Select Handler="#{uxDeleteFieldsetButton}.enable()" />
+                                        <Select Handler="if(#{uxFieldsetsGrid}.getSelectionModel().getSelection()[0].data.FIELDSET_ID){
+                                            #{uxDeleteFieldsetButton}.enable();
+                                            }
+                                            else{
+                                            #{uxDeleteFieldsetButton}.disable();
+                                            }" />
                                     </Listeners>
                                 </ext:GridPanel>
                                 <ext:GridPanel runat="server" ID="uxQuestionsGrid" Title="Form Questions" MaxWidth="1100" Margin="5" MinHeight="250">
@@ -657,7 +682,12 @@
                                         </ext:Toolbar>
                                     </TopBar>
                                     <Listeners>
-                                        <Select Handler="#{uxDeleteQuestionButton}.enable()" />
+                                        <Select Handler="if(#{uxQuestionsGrid}.getSelectionModel().getSelection()[0].data.QUESTION_ID){
+                                            #{uxDeleteQuestionButton}.enable();
+                                            }
+                                            else{
+                                            #{uxDeleteQuestionButton}.disable();
+                                            }" />
                                     </Listeners>
                                 </ext:GridPanel>
                                 <ext:GridPanel runat="server" Title="Question Options" ID="uxOptionsGrid" MaxWidth="1100" Margin="5" MinHeight="250">
@@ -751,7 +781,12 @@
                                         </ext:Toolbar>
                                     </TopBar>
                                     <Listeners>
-                                        <Select Handler="#{uxDeleteOptionButton}.enable()" />
+                                        <Select Handler="if(#{uxOptionsGrid}.getSelectionModel().getSelection()[0].data.OPTION_ID){
+                                            #{uxDeleteOptionButton}.enable();
+                                            }
+                                            else{
+                                            #{uxDeleteOptionButton}.disable();
+                                            }" />
                                     </Listeners>
                                     <SelectionModel>
                                         <ext:RowSelectionModel Mode="Single" ID="uxOptionSelection" />

@@ -988,6 +988,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxEmployeeStore.CommitChanges();
             uxAddEmployeeButton.Enable();
             X.Js.Call("checkEditing");
+            uxEmployeeSelection.SetLocked(false);
         }
 
         protected void deSaveEquipment(object sender, DirectEventArgs e)
@@ -1059,6 +1060,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxEquipmentStore.CommitChanges();
             uxAddEquipmentButton.Enable();
             X.Js.Call("checkEditing");
+            uxEquipmentSM.SetLocked(false);
         }
 
         protected void deReadTaskData(object sender, StoreReadDataEventArgs e)
@@ -1156,6 +1158,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxProductionStore.CommitChanges();
             uxAddProductionButton.Enable();
             X.Js.Call("checkEditing");
+            uxProductionSelection.SetLocked(false);
         }
 
         protected void deSaveWeather(object sender, DirectEventArgs e)
@@ -1209,6 +1212,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxWeatherStore.CommitChanges();
             uxAddWeatherButton.Enable();
             X.Js.Call("checkEditing");
+            uxWeatherSelection.SetLocked(false);
         }
 
         protected void deSaveInventory(object sender, DirectEventArgs e)
@@ -1292,6 +1296,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxInventoryStore.CommitChanges();
             uxAddInventoryButton.Enable();
             X.Js.Call("checkEditing");
+            uxInventorySelection.SetLocked(false);
         }
 
         protected void deSaveAttachment(object sender, DirectEventArgs e)

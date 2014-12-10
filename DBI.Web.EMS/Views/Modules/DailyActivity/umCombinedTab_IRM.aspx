@@ -96,6 +96,7 @@
                         return false;
                     else {
                         App.direct.dmSetDirty('true');
+                        App.uxEmployeeSelection.setLocked(true);
                         return true;
                     }
                     break;
@@ -104,6 +105,7 @@
                         return false;
                     else {
                         App.direct.dmSetDirty('true');
+                        App.uxEquipmentSM.setLocked(true);
                         return true;
                     }
                     break;
@@ -112,6 +114,7 @@
                         return false;
                     else {
                         App.direct.dmSetDirty('true');
+                        App.uxWeatherSelection.setLocked(true);
                         return true;
                     }
                     break;
@@ -120,6 +123,7 @@
                         return false;
                     else {
                         App.direct.dmSetDirty('true');
+                        App.uxProductionSelection.setLocked(true);
                         return true;
                     }
                     break;
@@ -128,6 +132,7 @@
                         return false;
                     else {
                         App.direct.dmSetDirty('true');
+                        App.uxInventorySelection.setLocked(true);
                         return true;
                     }
                     break;
@@ -141,30 +146,35 @@
                         App.uxEmployeeStore.removeAt(0);
                     }
                     App.uxAddEmployeeButton.enable();
+                    App.uxEmployeeSelection.setLocked(false);
                     break;
                 case 'equipment':
                     if (!App.uxEquipmentStore.getAt(0).data.EQUIPMENT_ID) {
                         App.uxEquipmentStore.removeAt(0);
                     }
                     App.uxAddEquipmentButton.enable();
+                    App.uxEquipmentSM.setLocked(false);
                     break;
                 case 'production':
                     if (!App.uxProductionStore.getAt(0).data.PRODUCTION_ID) {
                         App.uxProductionStore.removeAt(0);
                     }
                     App.uxAddProductionButton.enable();
+                    App.uxProductionSelection.setLocked(false);
                     break;
                 case 'weather':
                     if (!App.uxWeatherStore.getAt(0).data.WEATHER_ID) {
                         App.uxWeatherStore.removeAt(0);
                     }
                     App.uxAddWeatherButton.enable();
+                    App.uxWeatherSelection.setLocked(false);
                     break;
                 case 'inventory':
                     if (!App.uxInventoryStore.getAt(0).data.INVENTORY_ID) {
                         App.uxInventoryStore.removeAt(0);
                     }
                     App.uxInventoryButton.enable();
+                    App.uxInventorySelection.setLocked(false);
                     break;
             }
             checkEditing();
@@ -1180,7 +1190,14 @@
                         </ext:RowEditing>
                     </Plugins>
                     <Listeners>
-                        <Select Handler="#{uxDeleteEmployeeButton}.enable(); #{uxChoosePerDiemButton}.enable()" />
+                        <Select Handler="if(#{uxEmployeeGrid}.getSelectionModel().getSelection()[0].data.EMPLOYEE_ID){
+                            #{uxDeleteEmployeeButton}.enable(); 
+                            #{uxChoosePerDiemButton}.enable();
+                            }
+                            else{
+                            #{uxDeleteEmployeeButton}.disable(); 
+                            #{uxChoosePerDiemButton}.disable();
+                            }" />
                     </Listeners>
                 </ext:GridPanel>
                 <ext:GridPanel runat="server" ID="uxEquipmentGrid"
@@ -1408,7 +1425,12 @@
                         <ext:RowSelectionModel ID="uxEquipmentSM" runat="server" Mode="Single" />
                     </SelectionModel>
                     <Listeners>
-                        <Select Handler="#{uxDeleteEquipmentButton}.enable()" />
+                        <Select Handler="if(#{uxEquipmentGrid}.getSelectionModel().getSelection()[0].data.EQUIPMENT_ID){
+                            #{uxDeleteEquipmentButton}.enable();
+                            }
+                            else{
+                            #{uxDeleteEquipmentButton}.disable();
+                            }" />
                     </Listeners>
                 </ext:GridPanel>
                 <ext:GridPanel runat="server"
@@ -1678,7 +1700,12 @@
                         </ext:RowEditing>
                     </Plugins>
                     <Listeners>
-                        <Select Handler="#{uxDeleteProductionButton}.enable()" />
+                        <Select Handler="if(#{uxProductionGrid}.getSelectionModel().getSelection()[0].data.PRODUCTION_ID){
+                            #{uxDeleteProductionButton}.enable();
+                            }
+                            else{
+                            #{uxDeleteProductionButton}.disable();
+                            }" />
                     </Listeners>
                 </ext:GridPanel>
                 <ext:GridPanel runat="server"
@@ -1817,7 +1844,12 @@
                         </ext:RowEditing>
                     </Plugins>
                     <Listeners>
-                        <Select Handler="#{uxDeleteWeatherButton}.enable()" />
+                        <Select Handler="if(#{uxWeatherGrid}.getSelectionModel().getSelection()[0].data.WEATHER_ID){
+                            #{uxDeleteWeatherButton}.enable();
+                            }
+                            else{
+                            #{uxDeleteWeatherButton}.disable();
+                            }" />
                     </Listeners>
                 </ext:GridPanel>
                 <ext:GridPanel runat="server"
@@ -2067,7 +2099,12 @@
                         </ext:RowEditing>
                     </Plugins>
                     <Listeners>
-                        <Select Handler="#{uxDeleteInventoryButton}.enable()" />
+                        <Select Handler="if(#{uxInventoryGrid}.getSelectionModel().getSelection()[0].data.INVENTORY_ID){
+                            #{uxDeleteInventoryButton}.enable();
+                            }
+                            else{
+                            #{uxDeleteInventoryButton}.disable();
+                            }" />
                     </Listeners>
                 </ext:GridPanel>
                 <ext:GridPanel ID="uxAttachmentGrid" runat="server"
