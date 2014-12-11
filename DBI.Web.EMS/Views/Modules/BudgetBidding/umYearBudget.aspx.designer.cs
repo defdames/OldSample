@@ -976,6 +976,15 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Model Model10;
         
         /// <summary>
+        /// Column34 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column Column34;
+        
+        /// <summary>
         /// Column31 control.
         /// </summary>
         /// <remarks>
@@ -1073,6 +1082,15 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.NumberColumn NumberColumn8;
+        
+        /// <summary>
+        /// Column35 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column Column35;
         
         /// <summary>
         /// FieldContainer19 control.

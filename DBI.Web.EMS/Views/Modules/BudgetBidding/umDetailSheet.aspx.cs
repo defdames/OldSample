@@ -11,14 +11,14 @@ using Newtonsoft.Json;
 
 namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 {
-    public partial class umDetailSheet : System.Web.UI.Page
+    public partial class umDetailSheet : BasePage
     {
         // Page Load
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!X.IsAjaxRequest)
             {
-                if (!BasePage.validateComponentSecurity("SYS.BudgetBidding.View"))
+                if (!validateComponentSecurity("SYS.BudgetBidding.View"))
                 {
                     X.Redirect("~/Views/uxDefault.aspx");
                 }
@@ -128,12 +128,12 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 decimal retVal = ForceToDecimal(myTextField.Text, -9999999999.99M, 9999999999.99M);
                 myTextField.Text = String.Format("{0:N2}", retVal);
                 BBDetail.Sheet.MainTabField.DBUpdateNums(budBidProjectID, detailSheetID, recType, retVal);
-                CalulateDetailSheet();                
-            }          
+                CalulateDetailSheet();
+            }
         }
 
- 
-        
+
+
         // Sub grid
         protected void deReadGridData(object sender, StoreReadDataEventArgs e)
         {
@@ -178,10 +178,11 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
                 default:
                     break;
-            }                
+            }
         }
         protected void deAddNewRecord(object sender, DirectEventArgs e)
         {
+            long leOrgID = long.Parse(Request.QueryString["leOrgID"]);
             long projectID = long.Parse(Request.QueryString["projectID"]);
             long detailTaskID = long.Parse(Request.QueryString["detailSheetID"]);
             string detailSheetName = e.ExtraParams["DetailSheetName"];
@@ -191,7 +192,14 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             data = new BUD_BID_DETAIL_SHEET();
             data.DESC_1 = "[NEW]";
             data.DESC_2 = "";
-            data.AMT_1 = 0;
+            if (recType == "PERDIEM")
+            {
+                data.AMT_1 = BB.PerDiemRate(leOrgID);
+            }
+            else
+            {
+                data.AMT_1 = 0;
+            }            
             data.AMT_2 = 0;
             data.AMT_3 = 0;
             data.AMT_4 = 0;
@@ -242,12 +250,22 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     uxLumpSumGridStore.Reload();
                     break;
             }
-
         }
         [DirectMethod(Namespace = "DeleteRecord")]
         public void deDeleteRecord(object sender, DirectEventArgs e)
         {
-            long id = Convert.ToInt64(e.ExtraParams["RecordID"]);
+            uxHidDelRecord.Text = e.ExtraParams["RecordID"];
+
+            X.MessageBox.Confirm("Delete", "Are sure you want to delete the selected record?", new MessageBoxButtonsConfig
+            {
+                Yes = new MessageBoxButtonConfig { Handler = "App.direct.DeleteRecordContinued()", Text = "Yes" },
+                No = new MessageBoxButtonConfig { Text = "No" }
+            }).Show();
+        }
+        [DirectMethod]
+        public void DeleteRecordContinued()
+        {
+            long id = Convert.ToInt64(uxHidDelRecord.Text);
 
             BBDetail.SubGrid.DeleteRecord(id);
             uxMaterialGridStore.Reload();   // FIX THESE WITH SWITCH!
@@ -317,7 +335,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
                 case "MOTELS":
                     data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
-                    GenericData.Update<BUD_BID_DETAIL_SHEET>(data);                                
+                    GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
                     uxMotelsGridStore.CommitChanges();
                     uxMotelsGridStore.Reload();
                     break;
@@ -474,9 +492,9 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             string recordID = e.ExtraParams["SelRecordID"];
             uxHidSelPersRecID.Text = recordID;
         }
-        
 
-        
+
+
         // Calculate
         protected void deCalculate(object sender, DirectEventArgs e)
         {
@@ -517,7 +535,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             decimal totalMotels = subtotal.MOTELS ?? 0;
             decimal totalMisc = subtotal.MISC ?? 0;
             decimal totalLumpSum = subtotal.LUMPSUM ?? 0;
-            uxTotalMaterial.Text = String.Format("{0:N4}", totalMaterial);
+            uxTotalMaterial.Text = String.Format("{0:N2}", totalMaterial);
             uxTotalEquipment.Text = String.Format("{0:N2}", totalEquipment);
             uxTotalPersonnel.Text = String.Format("{0:N2}", totalPersonnel);
             uxTotalPerDiem.Text = String.Format("{0:N2}", totalPerDiem);
@@ -698,7 +716,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxLumpSumQuantity.ReadOnly = true;
             uxLumpSumCost.ReadOnly = true;
         }
-        
+
 
 
         protected void deAddNewBOM(object sender, DirectEventArgs e)

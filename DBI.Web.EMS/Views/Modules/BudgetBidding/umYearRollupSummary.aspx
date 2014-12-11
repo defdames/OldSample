@@ -296,6 +296,7 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
+                            <ext:Column ID="Column34" runat="server" DataIndex="BLANK" Text="Blank" Width="10" />
                             <ext:Column ID="Column31" runat="server" DataIndex="ADJUSTMENT" Text="Adjustment" Flex="6" />
                             <ext:Column ID="Column32" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" />
                             <ext:NumberColumn ID="NumberColumn3" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
@@ -307,6 +308,7 @@
                             <ext:NumberColumn ID="NumberColumn8" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="NumberColumn9" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="NumberColumn10" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
+                            <ext:Column ID="Column2" runat="server" DataIndex="BLANK" Text="Blank" Width="20" />
                         </Columns>
                     </ColumnModel>
                     <DockedItems>

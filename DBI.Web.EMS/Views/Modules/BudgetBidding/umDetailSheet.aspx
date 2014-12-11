@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
+<head id="Head1" runat="server">
     <title></title>
     <style type="text/css">
         .grandTotalBackground {
@@ -473,7 +473,7 @@
                                                         <Renderer Fn="colorSubGridOverrideMaterial" />
                                                     </ext:NumberColumn>
                                                     <ext:NumberColumn ID="Column5" runat="server" DataIndex="TOTAL" Text="Total" Flex="1" Align="Right">
-                                                        <Renderer Fn="colorSubGridOverrideMaterial" />
+                                                        <Renderer Fn="colorSubGridOverride" />
                                                     </ext:NumberColumn>
                                                 </Columns>
                                             </ColumnModel>
@@ -1588,6 +1588,7 @@
                 <ext:Hidden ID="uxHidSelEquipRecID" runat="server" />
                 <ext:Hidden ID="uxHidSelPersRecID" runat="server" />
 
+                <ext:Hidden ID="uxHidDelRecord" runat="server" />
             </Items>
         </ext:Viewport>
     </form>
