@@ -243,7 +243,7 @@
                                                         <ext:ModelField Name="CATEGORY_ID" />
                                                         <ext:ModelField Name="ORG_ID" />
                                                         <ext:ModelField Name="NUM_QUESTIONS" Type="Int" DefaultValue="0" />
-                                                        <ext:ModelField Name="TYPE_ID" Type="Int" />
+                                                        <ext:ModelField Name="TYPE_ID" Type="Int" UseNull="true" />
                                                     </Fields>
                                                 </ext:Model>
                                             </Model>
@@ -401,14 +401,17 @@
                                     <BottomBar>
                                         <ext:PagingToolbar runat="server" />
                                     </BottomBar>
-                                    <DirectEvents>
-                                        <Select OnEvent="deLoadFormDetails" />
-                                    </DirectEvents>
                                     <Listeners>
                                         <Select Handler="if(#{uxFormsGrid}.getSelectionModel().getSelection()[0].data.FORM_ID){
                                             #{uxDeleteFormButton}.enable();
                                             #{uxViewFormButton}.enable();
                                             #{uxCopyFormButton}.enable();
+                                            #{uxQuestionFieldsetStore}.reload();
+                                            #{uxQuestionsStore}.reload();
+                                            #{uxFieldsetsStore}.reload();
+                                            #{uxAddFieldsetButton}.enable();
+                                            #{uxAddQuestionButton}.enable();
+                                            #{uxOptionsStore}.removeAll();
                                             }
                                             else{
                                             #{uxDeleteFormButton}.disable();
@@ -428,7 +431,7 @@
                                                     <Fields>
                                                         <ext:ModelField Name="FIELDSET_ID" Type="Int" />
                                                         <ext:ModelField Name="TITLE" Type="String" />
-                                                        <ext:ModelField Name="CATEGORY_ID" Type="Int" />
+                                                        <ext:ModelField Name="CATEGORY_ID" Type="Int" UseNull="true" />
                                                         <ext:ModelField Name="SORT_ORDER" Type="Int" />
                                                         <ext:ModelField Name="IS_ACTIVE" Type="Boolean" />
                                                     </Fields>
