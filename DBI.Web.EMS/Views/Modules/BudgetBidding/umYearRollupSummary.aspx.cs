@@ -10,13 +10,13 @@ using DBI.Core.Web;
 
 namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 {
-    public partial class umYearRollupSummary : System.Web.UI.Page
+    public partial class umYearRollupSummary : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!X.IsAjaxRequest)
             {
-                if (!BasePage.validateComponentSecurity("SYS.BudgetBidding.View"))
+                if (!validateComponentSecurity("SYS.BudgetBidding.View"))
                 {
                     X.Redirect("~/Views/uxDefault.aspx");
                 }
@@ -25,10 +25,10 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 long yearID = long.Parse(Request.QueryString["fiscalYear"]);
                 long verID = long.Parse(Request.QueryString["verID"]);
 
-                if (BBAdjustments.Count(orgID, yearID, verID) == 0)
-                {
-                    BBAdjustments.Create(orgID, yearID, verID);
-                }
+                //if (BBAdjustments.Count(orgID, yearID, verID) == 0)
+                //{
+                //    BBAdjustments.Create(orgID, yearID, verID);
+                //}
 
                 CalcSummaryTotals();
             }
@@ -194,7 +194,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         // Reports
         protected void deLoadRollupReports(object sender, StoreReadDataEventArgs e)
         {
-            uxRollupReportsStore.DataSource = BBReports.RollupSummaryReports();
+            uxRollupReportsStore.DataSource = BB.RollupSummaryReports();
         }
         protected void deChooseRollupReport(object sender, DirectEventArgs e)
         {
@@ -227,21 +227,21 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     break;
 
                 case "Comments & Variances":
-                    url = "/Views/Modules/BudgetBidding/Reports/umRepOrgComments.aspx?hierID=" + hierID + "&orgID=" + orgID + "&orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&verName=" + verName + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID + "&userID=" + userID;
+                    url = "/Views/Modules/BudgetBidding/Reports/umRepRollupComm.aspx?hierID=" + hierID + "&orgID=" + orgID + "&orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&verName=" + verName + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID + "&userID=" + userID;
                     windowTitle = "Report";
                     reportHeight = 600;
                     reportWidth = 1020;
                     break;
 
                 case "Liabilities":
-                    url = "/Views/Modules/BudgetBidding/Reports/umRepOrgLiabilities.aspx?hierID=" + hierID + "&orgID=" + orgID + "&orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&verName=" + verName + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID + "&userID=" + userID;
+                    url = "/Views/Modules/BudgetBidding/Reports/umRepRollupLiabilities.aspx?hierID=" + hierID + "&orgID=" + orgID + "&orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&verName=" + verName + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID + "&userID=" + userID;
                     windowTitle = "Report";
                     reportHeight = 600;
                     reportWidth = 1020;
                     break;
 
                 case "All Projects":
-                    url = "/Views/Modules/BudgetBidding/Reports/umRepOrgAllProjects.aspx?hierID=" + hierID + "&orgID=" + orgID + "&orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&verName=" + verName + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID + "&userID=" + userID;
+                    url = "/Views/Modules/BudgetBidding/Reports/umRepRollupAllProjects.aspx?hierID=" + hierID + "&orgID=" + orgID + "&orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&verName=" + verName + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID + "&userID=" + userID;
                     windowTitle = "Report";
                     reportHeight = 600;
                     reportWidth = 1020;
