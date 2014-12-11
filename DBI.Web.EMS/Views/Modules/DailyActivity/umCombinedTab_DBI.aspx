@@ -1742,7 +1742,7 @@
                         <ext:Store runat="server"
                             ID="uxWeatherStore" OnReadData="deGetWeatherData">
                             <Model>
-                                <ext:Model ID="Model4" runat="server" Name="Weather">
+                                <ext:Model ID="Model4" runat="server" Name="Weather" IDProperty="WEATHER_ID" ClientIdProperty="PhantomID">
                                     <Fields>
                                         <ext:ModelField Name="WEATHER_ID" />
                                         <ext:ModelField Name="WEATHER_DATE" Type="Date" />
