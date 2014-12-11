@@ -1060,6 +1060,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             
             uxEquipmentStore.CommitChanges();
+            uxEmployeeEqStore.Reload();
             uxAddEquipmentButton.Enable();
             X.Js.Call("checkEditing");
             uxEquipmentSM.SetLocked(false);

@@ -1034,6 +1034,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 Record.Commit();
             }
             uxEquipmentStore.CommitChanges();
+            uxEmployeeEqStore.Reload();
             uxAddEquipmentButton.Enable();
             X.Js.Call("checkEditing");
             uxEquipmentSM.SetLocked(false);
@@ -1245,6 +1246,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 GenericData.Update(UpdatedChemical);
             }
             uxChemicalStore.CommitChanges();
+            uxAddInventoryMixStore.Reload();
             uxAddChemicalButton.Enable();
             X.Js.Call("checkEditing");
             uxChemicalSelection.SetLocked(false);
