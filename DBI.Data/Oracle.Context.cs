@@ -134,5 +134,6 @@ namespace DBI.Data
         public DbSet<SURVEY_RELATION> SURVEY_RELATION { get; set; }
         public DbSet<SURVEY_TYPES> SURVEY_TYPES { get; set; }
         public DbSet<SURVEY_FORMS> SURVEY_FORMS { get; set; }
+        public DbSet<PROCESS> PROCESSES { get; set; }
     }
 }

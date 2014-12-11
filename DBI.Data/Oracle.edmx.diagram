@@ -117,7 +117,7 @@
         <EntityTypeShape EntityType="OracleModel.JOB_COST" Width="1.5" PointX="21.375" PointY="22.75" />
         <EntityTypeShape EntityType="OracleModel.PROJECT_CONTACTS_V" Width="1.5" PointX="0.75444998068476554" PointY="22.724045793863034" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_SUPPLEMENTAL" Width="1.5" PointX="28.75" PointY="13.25" />
-        <EntityTypeShape EntityType="OracleModel.EMPLOYEES_V" Width="1.5" PointX="5.0377610218887039" PointY="11.013042469980681" />
+        <EntityTypeShape EntityType="OracleModel.EMPLOYEES_V" Width="1.5" PointX="2.5" PointY="11" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_PRICING" Width="1.5" PointX="8.875" PointY="145" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_DETAIL_SHEET" Width="1.5" PointX="18.25" PointY="87.5" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_PROJECTS" Width="1.5" PointX="20.5" PointY="89.375" />
@@ -160,6 +160,7 @@
         <AssociationConnector Association="OracleModel.FK_FIELDSETS_FORM_ID" />
         <AssociationConnector Association="OracleModel.FK_FORMS_COMP_FORM_ID" />
         <AssociationConnector Association="OracleModel.FK_FORMS_TYPES_ID" />
+        <EntityTypeShape EntityType="OracleModel.PROCESS" Width="1.5" PointX="1.0681931549069441" PointY="13.598070359601673" />
         </Diagram>
       <Diagram DiagramId="e84dee89c5a844eb84c350f94a998eb6" Name="OVERHEAD" >
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" Width="4.25" PointX="2.75" PointY="0.75" />
