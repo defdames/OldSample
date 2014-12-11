@@ -447,7 +447,6 @@
 
             Ext.Msg.confirm('Really Delete?', 'Do you really want to delete this equipment entry?', function (e) {
                 if (e == 'yes') {
-                    
                     if (EquipmentRecord[0].data.EQUIPMENT_ID) {
                         App.direct.dmDeleteEquipment(EquipmentRecord[0].data.EQUIPMENT_ID);
                     }
@@ -486,7 +485,6 @@
 
             Ext.Msg.confirm('Really Delete?', 'Do you really want to delete this chemical entry?', function (e) {
                 if (e == 'yes') {
-                    App.uxMainContainer.body.mask('Loading ...');
                     if (ChemicalRecord[0].data.CHEMICAL_MIX_ID) {
                         App.direct.dmDeleteChemical(ChemicalRecord[0].data.CHEMICAL_MIX_ID);
                     }
@@ -909,7 +907,7 @@
                     ID="uxEmployeeGrid"
                     Title="Employees"
                     PaddingSpec="10 10 30 10"
-                    MaxWidth="1400" MinHeight="200">
+                    MaxWidth="1400" MinHeight="250">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxEmployeeStore" OnReadData="deGetEmployeeData" AutoLoad="false">
@@ -1321,12 +1319,12 @@
                 <ext:GridPanel runat="server" ID="uxEquipmentGrid"
                     Title="Equipment"
                     PaddingSpec="10 10 30 10"
-                    MaxWidth="1400" MinHeight="200">
+                    MaxWidth="1400" MinHeight="250">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxEquipmentStore" OnReadData="deGetEquipmentData" AutoLoad="false">
                             <Model>
-                                <ext:Model runat="server" Name="Equipment" IDProperty="EQUIPMENT_ID" ClientIdProperty="PhantomID">
+                                <ext:Model ID="uxEquipmentModel" runat="server" Name="Equipment" IDProperty="EQUIPMENT_ID" ClientIdProperty="PhantomID">
                                     <Fields>
                                         <ext:ModelField Name="EQUIPMENT_ID" />
                                         <ext:ModelField Name="CLASS_CODE" />
@@ -1558,7 +1556,7 @@
                     ID="uxProductionGrid"
                     Title="Production"
                     PaddingSpec="10 10 30 10"
-                    MaxWidth="1400" MinHeight="200">
+                    MaxWidth="1400" MinHeight="250">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxProductionStore" OnReadData="deGetDBIProductionData">
@@ -1739,7 +1737,7 @@
                     ID="uxWeatherGrid"
                     Title="Weather"
                     PaddingSpec="10 10 30 10"
-                    MaxWidth="1400" MinHeight="200">
+                    MaxWidth="1400" MinHeight="250">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxWeatherStore" OnReadData="deGetWeatherData">
@@ -1883,7 +1881,7 @@
                     ID="uxChemicalGrid"
                     Title="Chemical Mix"
                     PaddingSpec="10 10 30 10"
-                    MaxWidth="1400" MinHeight="200">
+                    MaxWidth="1400" MinHeight="250">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxChemicalStore" OnReadData="deGetChemicalMixData">
@@ -2065,7 +2063,7 @@
                     ID="uxInventoryGrid"
                     Title="Inventory"
                     PaddingSpec="10 10 30 10"
-                    MaxWidth="1400" MinHeight="200">
+                    MaxWidth="1400" MinHeight="250">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxInventoryStore" OnReadData="deGetInventory">

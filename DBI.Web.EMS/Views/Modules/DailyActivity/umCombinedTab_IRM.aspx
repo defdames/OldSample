@@ -195,7 +195,7 @@
                     else {
                         App.uxDeleteInventoryButton.enable();
                     }
-                    App.uxInventoryButton.enable();
+                    App.uxAddInventoryButton.enable();
                     App.uxInventorySelection.setLocked(false);
                     break;
             }
@@ -813,7 +813,7 @@
                     ID="uxEmployeeGrid"
                     Title="Employees"
                     PaddingSpec="10 10 30 10"
-                    MaxWidth="1400" MinHeight="200">
+                    MaxWidth="1400" MinHeight="250">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxEmployeeStore" OnReadData="deGetEmployeeData" AutoLoad="false">
@@ -1225,7 +1225,7 @@
                 <ext:GridPanel runat="server" ID="uxEquipmentGrid"
                     Title="Equipment"
                     PaddingSpec="10 10 30 10"
-                    MaxWidth="1400" MinHeight="200">
+                    MaxWidth="1400" MinHeight="250">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxEquipmentStore" OnReadData="deGetEquipmentData" AutoLoad="false">
@@ -1350,7 +1350,7 @@
                                                     <ext:RowSelectionModel ID="RowSelectionModel2" runat="server" Mode="Single" />
                                                 </SelectionModel>
                                                 <DirectEvents>
-                                                    <SelectionChange OnEvent="deStoreEquipmentGridValue">
+                                                    <Select OnEvent="deStoreEquipmentGridValue">
                                                         <ExtraParams>
                                                             <ext:Parameter Name="ProjectId" Value="#{uxAddEquipmentGrid}.getSelectionModel().getSelection()[0].data.PROJECT_ID" Mode="Raw" />
                                                             <ext:Parameter Name="EquipmentName" Value="#{uxAddEquipmentGrid}.getSelectionModel().getSelection()[0].data.NAME" Mode="Raw" />
@@ -1358,7 +1358,7 @@
                                                             <ext:Parameter Name="CLASS_CODE" Value="#{uxAddEquipmentGrid}.getSelectionModel().getSelection()[0].data.CLASS_CODE" Mode="Raw" />
                                                             <ext:Parameter Name="ORGANIZATION_NAME" Value="#{uxAddEquipmentGrid}.getSelectionModel().getSelection()[0].data.ORGANIZATION_NAME" Mode="Raw" />
                                                         </ExtraParams>
-                                                    </SelectionChange>
+                                                    </Select>
                                                 </DirectEvents>
                                             </ext:GridPanel>
                                         </Component>
@@ -1459,7 +1459,7 @@
                     ID="uxProductionGrid"
                     Title="Production"
                     PaddingSpec="10 10 30 10"
-                    MaxWidth="1400" MinHeight="200">
+                    MaxWidth="1400" MinHeight="250">
                     <Store>
                         <ext:Store runat="server" ID="uxProductionStore" OnReadData="deGetIRMProductionData">
                             <Model>
@@ -1734,7 +1734,7 @@
                     ID="uxWeatherGrid"
                     Title="Weather"
                     PaddingSpec="10 10 30 10"
-                    MaxWidth="1400" MinHeight="200">
+                    MaxWidth="1400" MinHeight="250">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxWeatherStore" OnReadData="deGetWeatherData">
@@ -1878,7 +1878,7 @@
                     ID="uxInventoryGrid"
                     Title="Inventory"
                     PaddingSpec="10 10 30 10"
-                    MaxWidth="1400" MinHeight="200">
+                    MaxWidth="1400" MinHeight="250">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxInventoryStore" OnReadData="deGetInventory">
