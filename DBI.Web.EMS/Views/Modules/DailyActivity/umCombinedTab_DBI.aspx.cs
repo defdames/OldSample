@@ -1442,6 +1442,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deStoreItemGridValue(object sender, DirectEventArgs e)
         {
+            GetUnitOfMeasure(e.ExtraParams["uomCode"]);
             uxAddInventoryItem.SetValue(e.ExtraParams["ItemId"], e.ExtraParams["Description"]);
             uxAddInventoryItemStore.ClearFilter();
 
@@ -1561,11 +1562,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxAddInventoryItemStore.DataSource = data;
             uxAddInventoryItemStore.DataBind();
             e.Total = count;
-        }
-
-        protected void deGetUnitOfMeasure(object sender, DirectEventArgs e)
-        {
-            GetUnitOfMeasure(e.ExtraParams["uomCode"]);
         }
 
         /// <summary>

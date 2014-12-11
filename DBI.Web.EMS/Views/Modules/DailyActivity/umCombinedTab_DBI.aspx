@@ -2282,18 +2282,12 @@
                                                             <ext:Parameter Name="Description" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.DESCRIPTION" Mode="Raw" />
                                                             <ext:Parameter Name="Segment1" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.SEGMENT1" Mode="Raw" />
                                                             <ext:Parameter Name="EPA" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.EPA_DESCRIPTION" Mode="Raw" />
+                                                            <ext:Parameter Name="uomCode" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.UOM_CODE" Mode="Raw" />
                                                         </ExtraParams>
                                                     </Select>
                                                 </DirectEvents>
                                             </ext:GridPanel>
                                         </Component>
-                                        <DirectEvents>
-                                            <Change OnEvent="deGetUnitOfMeasure">
-                                                <ExtraParams>
-                                                    <ext:Parameter Name="uomCode" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.UOM_CODE" Mode="Raw" />
-                                                </ExtraParams>
-                                            </Change>
-                                        </DirectEvents>
                                         <Listeners>
                                             <Expand Handler="#{uxAddInventoryItemStore}.reload(); this.picker.setWidth(500)" />
                                             <Collapse Handler="#{uxInventoryGrid}.columns[5].getEditor(0).focusInput()" />

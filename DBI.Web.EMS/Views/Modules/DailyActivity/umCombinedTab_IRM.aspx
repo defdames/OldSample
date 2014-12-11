@@ -2013,18 +2013,12 @@
                                                             <ext:Parameter Name="ItemId" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.ITEM_ID" Mode="Raw" />
                                                             <ext:Parameter Name="Description" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.DESCRIPTION" Mode="Raw" />
                                                             <ext:Parameter Name="Segment1" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.SEGMENT1" Mode="Raw" />
+                                                            <ext:Parameter Name="uomCode" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.UOM_CODE" Mode="Raw" />
                                                         </ExtraParams>
                                                     </Select>
                                                 </DirectEvents>
                                             </ext:GridPanel>
                                         </Component>
-                                        <DirectEvents>
-                                            <Change OnEvent="deGetUnitOfMeasure">
-                                                <ExtraParams>
-                                                    <ext:Parameter Name="uomCode" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.UOM_CODE" Mode="Raw" />
-                                                </ExtraParams>
-                                            </Change>
-                                        </DirectEvents>
                                         <Listeners>
                                             <Expand Handler="#{uxAddInventoryItemStore}.reload(); this.picker.setWidth(500)" />
                                             <Collapse Handler="#{uxInventoryGrid}.columns[4].getEditor().focusInput();" />
