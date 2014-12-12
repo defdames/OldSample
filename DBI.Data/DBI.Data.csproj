@@ -372,6 +372,9 @@
     <Compile Include="PA_TRANSACTION_INT_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="PROCESS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="PROJECTS_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>

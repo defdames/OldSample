@@ -12,26 +12,16 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class SURVEY_FORMS_COMP
+    public partial class PROCESS
     {
-        public SURVEY_FORMS_COMP()
-        {
-            this.SURVEY_FORMS_ANS = new HashSet<SURVEY_FORMS_ANS>();
-        }
-    
-        public decimal COMPLETION_ID { get; set; }
-        public decimal FORM_ID { get; set; }
-        public string FILLED_BY { get; set; }
-        public Nullable<System.DateTime> FILLED_ON { get; set; }
+        public decimal PROCESSES_ID { get; set; }
+        public string PROCESS_NAME { get; set; }
+        public Nullable<System.DateTime> RUNTIME { get; set; }
+        public string DESCRIPTION { get; set; }
+        public string RUN_STATUS { get; set; }
         public string CREATED_BY { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public string MODIFIED_BY { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
-        public Nullable<decimal> THRESHOLD_ID { get; set; }
-        public Nullable<long> PROJECT_ID { get; set; }
-    
-        public virtual CUSTOMER_SURVEY_THRESHOLDS CUSTOMER_SURVEY_THRESHOLDS { get; set; }
-        public virtual ICollection<SURVEY_FORMS_ANS> SURVEY_FORMS_ANS { get; set; }
-        public virtual SURVEY_FORMS SURVEY_FORMS { get; set; }
     }
 }
