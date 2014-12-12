@@ -14,6 +14,18 @@
             return false;
         };
 
+        var showCommentWindow = function (e) {
+            App.uxCommentId.setValue(e.id);
+            App.uxCommentField.setValue(e.value);
+            App.uxCommentWindow.show();
+            App.uxCommentWindow.center();
+            task = new Ext.util.DelayedTask(function () {
+                App.uxCommentField.focusInput();
+            });
+            task.delay(200);
+
+        };
+
         var AddEmployee = function () {
             App.uxEmployeeStore.insert(0, new Employee());
             App.uxEmployeeSelection.select(0);
@@ -1140,7 +1152,14 @@
                             </ext:Column>
                             <ext:Column ID="Column14" runat="server" DataIndex="COMMENTS" Text="Comments" Flex="13">
                                 <Editor>
-                                    <ext:TextArea runat="server" />
+                                    <ext:TriggerField runat="server" ID="uxAddEmployeeComments">
+                                        <Triggers>
+                                            <ext:FieldTrigger Tag="pick" Icon="SimpleEllipsis" />
+                                        </Triggers>
+                                        <Listeners>
+                                            <TriggerClick Fn="showCommentWindow" />
+                                        </Listeners>
+                                    </ext:TriggerField>
                                 </Editor>
                             </ext:Column>
                             <ext:Column ID="Column17" runat="server" DataIndex="STATE" Hidden="true" Text="State">
@@ -1195,7 +1214,6 @@
                                         <ext:Parameter Name="data" Value="#{uxEmployeeStore}.getChangedData({skipIdForPhantomRecords : false})" Mode="Raw" Encode="true" />
                                         <ext:Parameter Name="TypeName" Value="#{uxEmployeeEmpDropDown}.Value" Mode="Raw" />
                                     </ExtraParams>
-                                    <EventMask ShowMask="true" />
                                 </Edit>
                                 <BeforeEdit OnEvent="deSetTimeInDate" />
                             </DirectEvents>
@@ -1673,7 +1691,14 @@
                             </ext:Column>
                             <ext:Column runat="server" DataIndex="COMMENTS" Text="Comments" Flex="10">
                                 <Editor>
-                                    <ext:TextArea runat="server" />
+                                    <ext:TriggerField runat="server" ID="uxProductionComments">
+                                        <Triggers>
+                                            <ext:FieldTrigger Tag="pick" Icon="SimpleEllipsis" />
+                                        </Triggers>
+                                        <Listeners>
+                                            <TriggerClick Fn="showCommentWindow" />
+                                        </Listeners>
+                                    </ext:TriggerField>
                                 </Editor>
                             </ext:Column>
                         </Columns>
@@ -1817,7 +1842,14 @@
                             </ext:Column>
                             <ext:Column ID="Column30" runat="server" DataIndex="COMMENTS" Text="Comments" Flex="45">
                                 <Editor>
-                                    <ext:TextArea ID="TextArea1" runat="server" />
+                                    <ext:TriggerField runat="server" ID="uxWeatherComments">
+                                        <Triggers>
+                                            <ext:FieldTrigger Tag="pick" Icon="SimpleEllipsis" />
+                                        </Triggers>
+                                        <Listeners>
+                                            <TriggerClick Fn="showCommentWindow" />
+                                        </Listeners>
+                                    </ext:TriggerField>
                                 </Editor>
                             </ext:Column>
                         </Columns>
@@ -2346,6 +2378,32 @@
                     </Buttons>
                 </ext:FormPanel>
             </Items>
+        </ext:Window>
+        <ext:Window
+            ID="uxCommentWindow"
+            runat="server"
+            Hidden="true"
+            Title="Enter Comments"
+            Width="300"
+            Height="250"
+            Modal="true"
+            Closable="false">
+            <Items>
+                <ext:TextArea runat="server" ID="uxCommentField" Width="300" Height="200" />
+                <ext:Hidden runat="server" ID="uxCommentId" />
+            </Items>
+            <Buttons>
+                <ext:Button runat="server" Text="Save" Icon="Add">
+                    <Listeners>
+                        <Click Handler="#{uxCommentWindow}.hide(); Ext.getCmp(#{uxCommentId}.value).setValue(#{uxCommentField}.value); #{uxCommentField}.clear() " />
+                    </Listeners>
+                </ext:Button>
+                <ext:Button runat="server" Text="Cancel" Icon="Delete">
+                    <Listeners>
+                        <Click Handler="#{uxCommentWindow}.hide();" />
+                    </Listeners>
+                </ext:Button>
+            </Buttons>
         </ext:Window>
     </form>
 </body>

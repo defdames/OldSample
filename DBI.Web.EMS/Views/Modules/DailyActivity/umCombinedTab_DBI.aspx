@@ -14,6 +14,18 @@
             return false;
         };
 
+        var showCommentWindow = function (e) {
+            App.uxCommentId.setValue(e.id);
+            App.uxCommentField.setValue(e.value);
+            App.uxCommentWindow.show();
+            App.uxCommentWindow.center();
+            task = new Ext.util.DelayedTask(function () {
+                App.uxCommentField.focusInput();
+            });
+            task.delay(200);
+            
+        };
+
         var AddEmployee = function () {
             App.uxEmployeeStore.insert(0, new Employee());
             App.uxEmployeeSelection.select(0);
@@ -542,9 +554,9 @@
             var StartDateTime = new Date(StartDate.getFullYear(), StartDate.getMonth(), StartDate.getDate(), StartTime.getHours(), StartTime.getMinutes(), StartTime.getSeconds(), StartTime.getMilliseconds());
             var EndDateTime = new Date(EndDate.getFullYear(), EndDate.getMonth(), EndDate.getDate(), EndTime.getHours(), EndTime.getMinutes(), EndTime.getSeconds(), EndTime.getMilliseconds());
 
-            
+
             if (StartDateTime < EndDateTime) {
-                
+
                 var difference = new Date(EndDateTime - StartDateTime);
 
                 var Hours = difference.getUTCHours();
@@ -1219,10 +1231,14 @@
                             <ext:Column ID="Column1" runat="server" DataIndex="LUNCH_LENGTH" Text="Lunch Length" Flex="7" />
                             <ext:Column ID="Column14" runat="server" DataIndex="COMMENTS" Text="Comments" Flex="14">
                                 <Editor>
-                                    <ext:TextArea runat="server"
-                                        ID="uxAddEmployeeComments" Width="500"
-                                        Rows="5"
-                                        AllowBlank="true" />
+                                    <ext:TriggerField runat="server" ID="uxAddEmployeeComments">
+                                        <Triggers>
+                                            <ext:FieldTrigger Tag="pick" Icon="SimpleEllipsis" />
+                                        </Triggers>
+                                        <Listeners>
+                                            <TriggerClick Fn="showCommentWindow" />
+                                        </Listeners>
+                                    </ext:TriggerField>
                                 </Editor>
                             </ext:Column>
                             <ext:Column ID="Column59" runat="server" DataIndex="STATE" Hidden="true" Text="State">
@@ -1476,7 +1492,7 @@
                             </ext:Column>
                             <ext:Column ID="Column50" runat="server"
                                 DataIndex="ORGANIZATION_NAME"
-                                Text="Organization Name" Flex="25" >
+                                Text="Organization Name" Flex="25">
                                 <Editor>
                                     <ext:DisplayField runat="server" ID="uxAddEquipmentOrg" />
                                 </Editor>
@@ -1656,7 +1672,14 @@
                             </ext:Column>
                             <ext:Column ID="Column16" runat="server" DataIndex="WORK_AREA" Text="Spray/Work Area" Flex="40">
                                 <Editor>
-                                    <ext:TextField runat="server" AllowBlank="false" InvalidCls="allowBlank" />
+                                    <ext:TriggerField runat="server" ID="uxWorkArea" AllowBlank="false" InvalidCls="allowBlank">
+                                        <Triggers>
+                                            <ext:FieldTrigger Tag="pick" Icon="SimpleEllipsis" />
+                                        </Triggers>
+                                        <Listeners>
+                                            <TriggerClick Fn="showCommentWindow" />
+                                        </Listeners>
+                                    </ext:TriggerField>
                                 </Editor>
                             </ext:Column>
                             <ext:Column ID="Column17" runat="server" DataIndex="POLE_FROM" Text="Pole/MP From" Flex="9">
@@ -1820,7 +1843,14 @@
                             </ext:Column>
                             <ext:Column ID="Column25" runat="server" DataIndex="COMMENTS" Text="Comments" Flex="45">
                                 <Editor>
-                                    <ext:TextArea runat="server" />
+                                    <ext:TriggerField runat="server" ID="uxWeatherComments">
+                                        <Triggers>
+                                            <ext:FieldTrigger Tag="pick" Icon="SimpleEllipsis" />
+                                        </Triggers>
+                                        <Listeners>
+                                            <TriggerClick Fn="showCommentWindow" />
+                                        </Listeners>
+                                    </ext:TriggerField>
                                 </Editor>
                             </ext:Column>
                         </Columns>
@@ -2637,6 +2667,32 @@
                     </Buttons>
                 </ext:FormPanel>
             </Items>
+        </ext:Window>
+        <ext:Window
+            ID="uxCommentWindow"
+            runat="server"
+            Hidden="true"
+            Title="Enter Comments"
+            Width="300"
+            Height="250"
+            Modal="true"
+            Closable="false">
+            <Items>
+                <ext:TextArea runat="server" ID="uxCommentField" Width="300" Height="200" />
+                <ext:Hidden runat="server" ID="uxCommentId" />
+            </Items>
+            <Buttons>
+                <ext:Button runat="server" Text="Save" Icon="Add">
+                    <Listeners>
+                        <Click Handler="#{uxCommentWindow}.hide(); Ext.getCmp(#{uxCommentId}.value).setValue(#{uxCommentField}.value); #{uxCommentField}.clear() " />
+                    </Listeners>
+                </ext:Button>
+                <ext:Button runat="server" Text="Cancel" Icon="Delete">
+                    <Listeners>
+                        <Click Handler="#{uxCommentWindow}.hide();" />
+                    </Listeners>
+                </ext:Button>
+            </Buttons>
         </ext:Window>
     </form>
 </body>
