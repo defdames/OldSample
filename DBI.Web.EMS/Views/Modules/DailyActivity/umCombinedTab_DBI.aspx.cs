@@ -1034,11 +1034,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 Record.Commit();
             }
             uxEquipmentStore.CommitChanges();
-            uxEmployeeEqStore.Reload();
             uxAddEquipmentButton.Enable();
+            uxDeleteEquipmentButton.Enable();
             X.Js.Call("checkEditing");
             uxEquipmentSM.SetLocked(false);
-            uxDeleteEquipmentButton.Enable();
+            uxEmployeeEqStore.Reload();
         }
 
         protected void deReadTaskData(object sender, StoreReadDataEventArgs e)
@@ -1880,6 +1880,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             GenericData.Delete(DeletedAttachment);
             uxAttachmentGrid.GetView();
             uxDeleteAttachmentButton.Disable();
+            uxSaveAttachmentButton.Disable();            
         }
     }
 }
