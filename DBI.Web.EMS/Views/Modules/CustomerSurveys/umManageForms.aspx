@@ -411,6 +411,9 @@
                                             #{uxFieldsetsStore}.reload();
                                             #{uxAddFieldsetButton}.enable();
                                             #{uxAddQuestionButton}.enable();
+                                            #{uxDeleteQuestionButton}.disable();
+                                            #{uxDeleteFieldsetButton}.disable();
+                                            #{uxDeleteOptionButton}.disable();
                                             #{uxOptionsStore}.removeAll();
                                             }
                                             else{
