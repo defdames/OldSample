@@ -9,7 +9,6 @@
     <script type="text/javascript">
         var checkStatus = function (e) {
             if (App.uxStatusField.value == 2 && App.uxCanEditField.value != "false") {
-                //App.direct.dmAddToDirty();
                 return true;
             }
             return false;
@@ -17,8 +16,6 @@
 
         var AddEmployee = function () {
             App.uxEmployeeStore.insert(0, new Employee());
-            //App.uxEmployeeSelection.setLocked(true);
-            //App.uxEmployeeSelection.setLocked(false);
             App.uxEmployeeSelection.select(0);
             var task = new Ext.util.DelayedTask(function () {
                 App.uxEmployeeRowEdit.startEdit(0, 0);
@@ -34,8 +31,6 @@
 
         var AddEquipment = function () {
             App.uxEquipmentStore.insert(0, new Equipment());
-            //App.uxEquipmentSM.setLocked(true);
-            //App.uxEquipmentSM.setLocked(false);
             App.uxEquipmentSM.select(0);
             var task = new Ext.util.DelayedTask(function () {
                 App.uxEquipmentRowEdit.startEdit(0, 0);
@@ -51,8 +46,6 @@
 
         var AddProduction = function () {
             App.uxProductionStore.insert(0, new Production());
-            //App.uxProductionSelection.setLocked(true);
-            //App.uxProductionSelection.setLocked(false);
             App.uxProductionSelection.select(0);
             var task = new Ext.util.DelayedTask(function () {
                 App.uxProductionRowEdit.startEdit(0, 0);
@@ -68,8 +61,6 @@
 
         var AddWeather = function () {
             App.uxWeatherStore.insert(0, new Weather());
-            //App.uxWeatherSelection.setLocked(true);
-            //App.uxWeatherSelection.setLocked(false);
             App.uxWeatherSelection.select(0);
             var task = new Ext.util.DelayedTask(function () {
                 App.uxWeatherRowEdit.startEdit(0, 0);
@@ -85,8 +76,6 @@
 
         var AddChemical = function () {
             App.uxChemicalStore.insert(0, new Chemical());
-            //App.uxChemicalSelection.setLocked(true);
-            //App.uxChemicalSelection.setLocked(false);
             App.uxChemicalSelection.select(0);
             var task = new Ext.util.DelayedTask(function () {
                 App.uxChemicalRowEdit.startEdit(0, 0);
@@ -102,8 +91,6 @@
 
         var AddInventory = function () {
             App.uxInventoryStore.insert(0, new Inventory());
-            //App.uxInventorySelection.setLocked(true);
-            //App.uxInventorySelection.setLocked(false);
             App.uxInventorySelection.select(0);
             var task = new Ext.util.DelayedTask(function () {
                 App.uxInventoryRowEdit.startEdit(0, 0);
@@ -119,72 +106,153 @@
 
         var onBeforeEdit = function (value) {
             switch (value) {
-                //case 'employee':
-                //    App.uxEmployeeGrid.getSelectionModel().setLocked(true);
-                //    break;
-                //case 'equipment':
-                //    App.uxEquipmentGrid.getSelectionModel().setLocked(true);
-                //    break;
-                //case 'weather':
-                //    App.uxWeatherGrid.getSelectionModel().setLocked(true);
-                //    break;
-                //case 'production':
-                //    App.uxProductionGrid.getSelectionModel().setLocked(true);
-                //    break;
-                //case 'inventory':
-                //    App.uxInventoryGrid.getSelectionModel().setLocked(true);
-                //    break;
-            }
-        }
-
-        var cancelEditRow = function (value) {
-            switch(value) {
-                case 'employee': 
-                    if (!App.uxEmployeeGrid.getSelectionModel().getSelection()[0].data.EMPLOYEE_ID) {
-                        App.uxEmployeeStore.remove(App.uxEmployeeGrid.getSelectionModel().getSelection()[0]);
+                case 'employee':
+                    if (App.uxEmployeeRowEdit.editing)
+                        return false;
+                    else {
+                        App.direct.dmSetDirty('true');
+                        App.uxDeleteEmployeeButton.disable();
+                        App.uxChooseLunchHeaderButton.disable();
+                        App.uxChoosePerDiemButton.disable();
+                        App.uxEmployeeSelection.setLocked(true);
+                        return true;
                     }
                     break;
                 case 'equipment':
-                    if (!App.uxEquipmentGrid.getSelectionModel().getSelection()[0].data.EQUIPMENT_ID) {
-                        App.uxEquipmentStore.remove(App.uxEquipmentGrid.getSelectionModel().getSelection()[0]);
-                    }
-                    break;
-                case 'production':
-                    if (!App.uxProductionGrid.getSelectionModel().getSelection()[0].data.PRODUCTION_ID) {
-                        App.uxProductionStore.remove(App.uxProductionGrid.getSelectionModel().getSelection()[0]);
+                    if (App.uxEquipmentRowEdit.editing)
+                        return false;
+                    else {
+                        App.direct.dmSetDirty('true');
+                        App.uxDeleteEquipmentButton.disable();
+                        App.uxEquipmentSM.setLocked(true);
+                        return true;
                     }
                     break;
                 case 'weather':
-                    if(!App.uxWeatherGrid.getSelectionModel().getSelection()[0].data.WEATHER_ID){
-                        App.uxWeatherStore.remove(App.uxWeatherGrid.getSelectionModel().getSelection()[0]);
+                    if (App.uxWeatherRowEdit.editing)
+                        return false;
+                    else {
+                        App.direct.dmSetDirty('true');
+                        App.uxDeleteWeatherButton.disable();
+                        App.uxWeatherSelection.setLocked(true);
+                        return true;
+                    }
+                    break;
+                case 'production':
+                    if (App.uxProductionRowEdit.editing)
+                        return false;
+                    else {
+                        App.direct.dmSetDirty('true');
+                        App.uxDeleteProductionButton.disable();
+                        App.uxProductionSelection.setLocked(true);
+                        return true;
                     }
                     break;
                 case 'chemical':
-                    if (!App.uxChemicalGrid.getSelectionModel().getSelection()[0].data.CHEMICAL_MIX_ID) {
-                        App.uxChemicalStore.remove(App.uxChemicalGrid.getSelectionModel().getSelection()[0]);
+                    if (App.uxChemicalRowEdit.editing)
+                        return false;
+                    else {
+                        App.direct.dmSetDirty('true');
+                        App.uxDeleteChemicalButton.disable();
+                        App.uxChemicalSelection.setLocked(true);
+                        return true;
                     }
                     break;
                 case 'inventory':
-                    if (!App.uxInventoryGrid.getSelectionModel().getSelection()[0].data.INVENTORY_ID) {
-                        App.uxInventoryStore.remove(App.uxInventoryGrid.getSelectionModel().getSelection()[0]);
+                    if (App.uxInventoryRowEdit.editing)
+                        return false;
+                    else {
+                        App.direct.dmSetDirty('true');
+                        App.uxDeleteInventoryButton.disable();
+                        App.uxInventorySelection.setLocked(true);
+                        return true;
                     }
                     break;
             }
-            //App.direct.dmSubtractFromDirty();
+        };
 
+        var cancelEditRow = function (value) {
+            switch (value) {
+                case 'employee':
+                    if (!App.uxEmployeeStore.getAt(0).data.EMPLOYEE_ID) {
+                        App.uxEmployeeStore.removeAt(0);
+                    }
+                    else {
+                        App.uxDeleteEmployeeButton.enable();
+                        App.uxChooseLunchHeaderButton.enable();
+                        App.uxChoosePerDiemButton.enable();
+                    }
+                    App.uxAddEmployeeButton.enable();
+                    App.uxEmployeeSelection.setLocked(false);
+                    break;
+                case 'equipment':
+                    if (!App.uxEquipmentStore.getAt(0).data.EQUIPMENT_ID) {
+                        App.uxEquipmentStore.removeAt(0);
+                    }
+                    else {
+                        App.uxDeleteEquipmentButton.enable();
+                    }
+                    App.uxAddEquipmentButton.enable();
+                    App.uxEquipmentSM.setLocked(false);
+                    break;
+                case 'production':
+                    if (!App.uxProductionStore.getAt(0).data.PRODUCTION_ID) {
+                        App.uxProductionStore.removeAt(0);
+                    }
+                    else {
+                        App.uxDeleteProductionButton.enable();
+                    }
+                    App.uxAddProductionButton.enable();
+                    App.uxProductionSelection.setLocked(false);
+                    break;
+                case 'weather':
+                    if (!App.uxWeatherStore.getAt(0).data.WEATHER_ID) {
+                        App.uxWeatherStore.removeAt(0);
+                    }
+                    else {
+                        App.uxDeleteWeatherButton.enable();
+                    }
+                    App.uxAddWeatherButton.enable();
+                    App.uxWeatherSelection.setLocked(false);
+                    break;
+                case 'chemical':
+                    if (!App.uxChemicalStore.getAt(0).data.CHEMICAL_MIX_ID) {
+                        App.uxChemicalStore.removeAt(0);
+                    }
+                    else {
+                        App.uxDeleteChemicalButton.enable();
+                    }
+                    App.uxAddChemicalButton.enable();
+                    App.uxChemicalSelection.setLocked(false);
+                    break;
+                case 'inventory':
+                    if (!App.uxInventoryStore.getAt(0).data.INVENTORY_ID) {
+                        App.uxInventoryStore.removeAt(0);
+                    }
+                    else {
+                        App.uxDeleteInventoryButton.enable();
+                    }
+                    App.uxAddInventoryButton.enable();
+                    App.uxInventorySelection.setLocked(false);
+                    break;
+            }
+            checkEditing();
+        };
+
+        var checkEditing = function () {
+            if (App.uxEmployeeRowEdit.editing || App.uxEquipmentRowEdit.editing || App.uxProductionRowEdit.editing || App.uxWeatherRowEdit.editing || App.uxChemicalRowEdit.editing || App.uxInventoryRowEdit.editing) {
+                App.direct.dmSetDirty('true');
+            }
+            else {
+                App.direct.dmSetDirty('false');
+            }
         };
 
         var checkEmployeeStatus = function (e) {
             if (App.uxStatusField.value == 2 && App.uxCanEditField.value != "false") {
-                if (!App.uxEmployeeGrid.getRowsValues({ selectedOnly: false })[0].EMPLOYEE_ID) {
-                    if (App.uxEmployeeGrid.getRowsValues({ selectedOnly: false })[0].PREVAILING_WAGE == false) {
-                        App.uxEmployeeRowEdit.editor.form.findField('ROLE_TYPE').disable();
-                    }
-                }
-                else if (App.uxEmployeeGrid.getSelectionModel().getSelection()[0].data.PREVAILING_WAGE == false) {
+                if (App.uxEmployeeGrid.getSelectionModel().getSelection()[0].data.PREVAILING_WAGE == false) {
                     App.uxEmployeeRowEdit.editor.form.findField('ROLE_TYPE').disable();
                 }
-                //App.direct.dmAddToDirty();
                 return true;
 
             }
@@ -209,8 +277,10 @@
 				record = view.getRecord(view.findItemByChild(toolTip.triggerElement)),
 				column = view.getHeaderByCell(toolTip.triggerElement),
 				data = record.get(column.dataIndex);
-
-            toolTip.update(data);
+            if (data)
+                toolTip.update(data);
+            else
+                toolTip.hide();
         };
 
         var SetEmployeeValue = function (value, text) {
@@ -275,6 +345,16 @@
             parent.App.uxPostActivityButton.disable();
             parent.App.uxApproveActivityButton.disable();
         };
+
+        var enablePost = function () {
+            parent.App.uxPostActivityButton.enable();
+            parent.App.uxInactiveActivityButton.enable();
+        };
+
+        var enableApprove = function () {
+            parent.App.uxApproveActivityButton.enable();
+            parent.App.uxInactiveActivityButton.enable();
+        }
 
         var updateAddTotalAndUsed = function () {
             App.uxAddChemicalGallonTotal.setValue(parseFloat(App.uxAddChemicalGallonStart.value) + parseFloat(App.uxAddChemicalGallonMixed.value));
@@ -367,7 +447,6 @@
 
             Ext.Msg.confirm('Really Delete?', 'Do you really want to delete this equipment entry?', function (e) {
                 if (e == 'yes') {
-                    
                     if (EquipmentRecord[0].data.EQUIPMENT_ID) {
                         App.direct.dmDeleteEquipment(EquipmentRecord[0].data.EQUIPMENT_ID);
                     }
@@ -406,7 +485,6 @@
 
             Ext.Msg.confirm('Really Delete?', 'Do you really want to delete this chemical entry?', function (e) {
                 if (e == 'yes') {
-                    App.uxMainContainer.body.mask('Loading ...');
                     if (ChemicalRecord[0].data.CHEMICAL_MIX_ID) {
                         App.direct.dmDeleteChemical(ChemicalRecord[0].data.CHEMICAL_MIX_ID);
                     }
@@ -464,7 +542,18 @@
             var StartDateTime = new Date(StartDate.getFullYear(), StartDate.getMonth(), StartDate.getDate(), StartTime.getHours(), StartTime.getMinutes(), StartTime.getSeconds(), StartTime.getMilliseconds());
             var EndDateTime = new Date(EndDate.getFullYear(), EndDate.getMonth(), EndDate.getDate(), EndTime.getHours(), EndTime.getMinutes(), EndTime.getSeconds(), EndTime.getMilliseconds());
 
+            
             if (StartDateTime < EndDateTime) {
+                
+                var difference = new Date(EndDateTime - StartDateTime);
+
+                var Hours = difference.getUTCHours();
+                var Days = difference.getUTCDate();
+                var Minutes = difference.getUTCMinutes();
+                if (Days > 1) {
+                    Hours += 24;
+                }
+                App.uxTotalHours.setValue((Hours < 10 ? "0" + Hours : Hours) + ":" + (Minutes < 10 ? "0" + Minutes : Minutes));
                 return true;
                 App.uxEmployeeTimeInDate.clearInvalid();
                 App.uxEmployeeTimeInTime.clearInvalid();
@@ -818,10 +907,10 @@
                     ID="uxEmployeeGrid"
                     Title="Employees"
                     PaddingSpec="10 10 30 10"
-                    MaxWidth="1400" MinHeight="200">
+                    MaxWidth="1400" MinHeight="250">
                     <Store>
                         <ext:Store runat="server"
-                            ID="uxEmployeeStore" OnReadData="deGetEmployeeData" AutoLoad="false" AutoDataBind="true">
+                            ID="uxEmployeeStore" OnReadData="deGetEmployeeData" AutoLoad="false">
                             <Model>
                                 <ext:Model ID="Model2" runat="server" Name="Employee" IDProperty="EMPLOYEE_ID" ClientIdProperty="PhantomId">
                                     <Fields>
@@ -1055,7 +1144,11 @@
                                     </ext:TimeField>
                                 </Editor>
                             </ext:DateColumn>
-                            <ext:Column ID="Column4" runat="server" DataIndex="TOTAL_HOURS" Text="Total Hours" Flex="7" />
+                            <ext:Column runat="server" DataIndex="TOTAL_HOURS" Text="Total Hours" Flex="7">
+                                <Editor>
+                                    <ext:DisplayField runat="server" ID="uxTotalHours" />
+                                </Editor>
+                            </ext:Column>
                             <ext:DateColumn runat="server" DataIndex="TRAVEL_TIME_FORMATTED" Text="Travel Time" Flex="6" Format="H:mm">
                                 <Editor>
                                     <ext:TimeField runat="server" MinTime="00:00" MaxTime="23:59" Format="H:mm" />
@@ -1199,8 +1292,9 @@
                                 <BeforeEdit OnEvent="deSetTimeInDate" />
                             </DirectEvents>
                             <Listeners>
-                                <BeforeEdit Handler="if(checkEmployeeStatus()){
-                                    onBeforeEdit('employee');
+                                <BeforeEdit Handler="if(checkEmployeeStatus() && onBeforeEdit('employee')){
+                                            #{uxAddEmployeeButton}.disable();
+                                           return true;
                                     }
                                     else{
                                     return false;
@@ -1210,18 +1304,27 @@
                         </ext:RowEditing>
                     </Plugins>
                     <Listeners>
-                        <Select Handler="#{uxDeleteEmployeeButton}.enable(); #{uxChooseLunchHeaderButton}.enable(); #{uxChoosePerDiemButton}.enable()" />
+                        <Select Handler="if(#{uxEmployeeGrid}.getSelectionModel().getSelection()[0].data.EMPLOYEE_ID){
+                            #{uxDeleteEmployeeButton}.enable(); 
+                            #{uxChooseLunchHeaderButton}.enable(); 
+                            #{uxChoosePerDiemButton}.enable();
+                            }
+                            else{
+                            #{uxDeleteEmployeeButton}.disable(); 
+                            #{uxChooseLunchHeaderButton}.disable(); 
+                            #{uxChoosePerDiemButton}.disable();
+                            }" />
                     </Listeners>
                 </ext:GridPanel>
                 <ext:GridPanel runat="server" ID="uxEquipmentGrid"
                     Title="Equipment"
                     PaddingSpec="10 10 30 10"
-                    MaxWidth="1400" MinHeight="200">
+                    MaxWidth="1400" MinHeight="250">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxEquipmentStore" OnReadData="deGetEquipmentData" AutoLoad="false">
                             <Model>
-                                <ext:Model runat="server" Name="Equipment" IDProperty="EQUIPMENT_ID" ClientIdProperty="PhantomID">
+                                <ext:Model ID="uxEquipmentModel" runat="server" Name="Equipment" IDProperty="EQUIPMENT_ID" ClientIdProperty="PhantomID">
                                     <Fields>
                                         <ext:ModelField Name="EQUIPMENT_ID" />
                                         <ext:ModelField Name="CLASS_CODE" />
@@ -1423,8 +1526,9 @@
                                 </Edit>
                             </DirectEvents>
                             <Listeners>
-                                <BeforeEdit Handler="if(checkStatus()){
-                                    onBeforeEdit('equipment');
+                                <BeforeEdit Handler="if(checkStatus() && onBeforeEdit('equipment')){
+                                    #{uxAddEquipmentButton}.disable();
+                                           return true;
                                     }
                                     else{
                                     return false;
@@ -1440,14 +1544,19 @@
                         <ext:GridView runat="server" ID="uxEquipmentView" />
                     </View>
                     <Listeners>
-                        <Select Handler="#{uxDeleteEquipmentButton}.enable()" />
+                        <Select Handler="if(#{uxEquipmentGrid}.getSelectionModel().getSelection()[0].data.EQUIPMENT_ID){
+                            #{uxDeleteEquipmentButton}.enable();
+                            }
+                            else{
+                            #{uxDeleteEquipmentButton}.disable();
+                            }" />
                     </Listeners>
                 </ext:GridPanel>
                 <ext:GridPanel runat="server"
                     ID="uxProductionGrid"
                     Title="Production"
                     PaddingSpec="10 10 30 10"
-                    MaxWidth="1400" MinHeight="200">
+                    MaxWidth="1400" MinHeight="250">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxProductionStore" OnReadData="deGetDBIProductionData">
@@ -1595,7 +1704,12 @@
                         <ext:PagingToolbar ID="PagingToolbar2" runat="server" />
                     </BottomBar>
                     <Listeners>
-                        <Select Handler="#{uxDeleteProductionButton}.enable()" />
+                        <Select Handler="if(#{uxProductionGrid}.getSelectionModel().getSelection()[0].data.PRODUCTION_ID){
+                            #{uxDeleteProductionButton}.enable();
+                            }
+                            else{
+                            #{uxDeleteProductionButton}.disable();
+                            }" />
                     </Listeners>
                     <Plugins>
                         <ext:RowEditing runat="server" ClicksToMoveEditor="10" AutoCancel="false" ID="uxProductionRowEdit" ErrorSummary="false">
@@ -1607,8 +1721,9 @@
                                 </Edit>
                             </DirectEvents>
                             <Listeners>
-                                <BeforeEdit Handler="if(checkStatus()){
-                                    onBeforeEdit('production');
+                                <BeforeEdit Handler="if(checkStatus() && onBeforeEdit('production')){
+                                    #{uxAddProductionButton}.disable();
+                                           return true;
                                     }
                                     else{
                                     return false;
@@ -1622,12 +1737,12 @@
                     ID="uxWeatherGrid"
                     Title="Weather"
                     PaddingSpec="10 10 30 10"
-                    MaxWidth="1400" MinHeight="200">
+                    MaxWidth="1400" MinHeight="250">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxWeatherStore" OnReadData="deGetWeatherData">
                             <Model>
-                                <ext:Model ID="Model4" runat="server" Name="Weather">
+                                <ext:Model ID="Model4" runat="server" Name="Weather" IDProperty="WEATHER_ID" ClientIdProperty="PhantomID">
                                     <Fields>
                                         <ext:ModelField Name="WEATHER_ID" />
                                         <ext:ModelField Name="WEATHER_DATE" Type="Date" />
@@ -1733,7 +1848,12 @@
                         <ext:PagingToolbar ID="PagingToolbar4" runat="server" />
                     </BottomBar>
                     <Listeners>
-                        <Select Handler="#{uxDeleteWeatherButton}.enable()" />
+                        <Select Handler="if(#{uxWeatherGrid}.getSelectionModel().getSelection()[0].data.WEATHER_ID){
+                            #{uxDeleteWeatherButton}.enable();
+                            }
+                            else{
+                            #{uxDeleteWeatherButton}.disable();
+                            }" />
                     </Listeners>
                     <Plugins>
                         <ext:RowEditing ID="uxWeatherRowEdit" runat="server" ClicksToMoveEditor="10" AutoCancel="false" ErrorSummary="false">
@@ -1745,8 +1865,9 @@
                                 </Edit>
                             </DirectEvents>
                             <Listeners>
-                                <BeforeEdit Handler="if(checkStatus()){
-                                    onBeforeEdit('weather');
+                                <BeforeEdit Handler="if(checkStatus() && onBeforeEdit('weather')){
+                                    #{uxAddWeatherButton}.disable();
+                                           return true;
                                     }
                                     else{
                                     return false;
@@ -1760,7 +1881,7 @@
                     ID="uxChemicalGrid"
                     Title="Chemical Mix"
                     PaddingSpec="10 10 30 10"
-                    MaxWidth="1400" MinHeight="200">
+                    MaxWidth="1400" MinHeight="250">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxChemicalStore" OnReadData="deGetChemicalMixData">
@@ -1909,7 +2030,12 @@
                         <ext:PagingToolbar ID="PagingToolbar5" runat="server" />
                     </BottomBar>
                     <Listeners>
-                        <Select Handler="#{uxDeleteChemicalButton}.enable()" />
+                        <Select Handler="if(#{uxChemicalGrid}.getSelectionModel().getSelection()[0].data.CHEMICAL_MIX_ID){
+                            #{uxDeleteChemicalButton}.enable();
+                            }
+                            else{
+                            #{uxDeleteChemicalButton}.disable();
+                            }" />
                     </Listeners>
                     <Plugins>
                         <ext:RowEditing runat="server" AutoCancel="false" ClicksToMoveEditor="10" ID="uxChemicalRowEdit" ErrorSummary="false">
@@ -1921,8 +2047,9 @@
                                 </Edit>
                             </DirectEvents>
                             <Listeners>
-                                <BeforeEdit Handler="if(checkStatus()){
-                                    onBeforeEdit('chemical');
+                                <BeforeEdit Handler="if(checkStatus() && onBeforeEdit('chemical')){
+                                    #{uxAddChemicalButton}.disable();
+                                           return true;
                                     }
                                     else{
                                     return false;
@@ -1936,7 +2063,7 @@
                     ID="uxInventoryGrid"
                     Title="Inventory"
                     PaddingSpec="10 10 30 10"
-                    MaxWidth="1400" MinHeight="200">
+                    MaxWidth="1400" MinHeight="250">
                     <Store>
                         <ext:Store runat="server"
                             ID="uxInventoryStore" OnReadData="deGetInventory">
@@ -2155,18 +2282,12 @@
                                                             <ext:Parameter Name="Description" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.DESCRIPTION" Mode="Raw" />
                                                             <ext:Parameter Name="Segment1" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.SEGMENT1" Mode="Raw" />
                                                             <ext:Parameter Name="EPA" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.EPA_DESCRIPTION" Mode="Raw" />
+                                                            <ext:Parameter Name="uomCode" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.UOM_CODE" Mode="Raw" />
                                                         </ExtraParams>
                                                     </Select>
                                                 </DirectEvents>
                                             </ext:GridPanel>
                                         </Component>
-                                        <DirectEvents>
-                                            <Change OnEvent="deGetUnitOfMeasure">
-                                                <ExtraParams>
-                                                    <ext:Parameter Name="uomCode" Value="#{uxAddInventoryItemGrid}.getSelectionModel().getSelection()[0].data.UOM_CODE" Mode="Raw" />
-                                                </ExtraParams>
-                                            </Change>
-                                        </DirectEvents>
                                         <Listeners>
                                             <Expand Handler="#{uxAddInventoryItemStore}.reload(); this.picker.setWidth(500)" />
                                             <Collapse Handler="#{uxInventoryGrid}.columns[5].getEditor(0).focusInput()" />
@@ -2253,7 +2374,12 @@
                         <ext:PagingToolbar ID="PagingToolbar6" runat="server" />
                     </BottomBar>
                     <Listeners>
-                        <Select Handler="#{uxDeleteInventoryButton}.enable()" />
+                        <Select Handler="if(#{uxInventoryGrid}.getSelectionModel().getSelection()[0].data.INVENTORY_ID){
+                            #{uxDeleteInventoryButton}.enable();
+                            }
+                            else{
+                            #{uxDeleteInventoryButton}.disable();
+                            }" />
                     </Listeners>
                     <Plugins>
                         <ext:RowEditing runat="server" ClicksToMoveEditor="1" AutoCancel="false" ID="uxInventoryRowEdit" ErrorSummary="false">
@@ -2274,8 +2400,9 @@
                                 </BeforeEdit>
                             </DirectEvents>
                             <Listeners>
-                                <BeforeEdit Handler="if(checkStatus()){
-                                    onBeforeEdit('inventory');
+                                <BeforeEdit Handler="if(checkStatus() && onBeforeEdit('inventory')){
+                                    #{uxAddInventoryButton}.disable();
+                                           return true;
                                     }
                                     else{
                                     return false;

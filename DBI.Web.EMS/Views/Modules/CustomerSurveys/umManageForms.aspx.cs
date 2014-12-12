@@ -174,6 +174,8 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 Record.Set("TYPE_ID", NewForm.TYPE_ID);
                 Record.Commit();
                 uxFormTypeStore.Reload();
+                uxAddFieldsetButton.Enable();
+                uxAddQuestionButton.Enable();
             }
 
             foreach (CUSTOMER_SURVEYS.CustomerSurveyForms UpdatedForm in data.Updated)
@@ -209,8 +211,13 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 Record.Commit();
                 uxFormTypeStore.Reload();
             }
-            //dmSubtractFromDirty();
             uxFormsStore.CommitChanges();
+            uxAddFormButton.Enable();
+            X.Js.Call("checkEditing");
+            uxFormSelection.SetLocked(false);
+            uxDeleteFormButton.Enable();
+            uxCopyFormButton.Enable();
+            uxViewFormButton.Enable();
         }
 
         protected void deSaveFieldsets(object sender, DirectEventArgs e)
@@ -219,6 +226,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
             foreach (CUSTOMER_SURVEYS.CustomerSurveyFieldsets NewFieldset in data.Created)
             {
+                SURVEY_QUES_CAT NewCategory;
                 SURVEY_FIELDSETS ToBeAdded = new SURVEY_FIELDSETS();
                 ToBeAdded.CREATE_DATE = DateTime.Now;
                 ToBeAdded.MODIFY_DATE = DateTime.Now;
@@ -231,7 +239,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
                 if (NewFieldset.CATEGORY_ID == null)
                 {
-                    SURVEY_QUES_CAT NewCategory = new SURVEY_QUES_CAT();
+                    NewCategory = new SURVEY_QUES_CAT();
                     NewCategory.CATEGORY_NAME = e.ExtraParams["CategoryName"];
                     GenericData.Insert<SURVEY_QUES_CAT>(NewCategory);
                     ToBeAdded.CATEGORY_ID = NewCategory.CATEGORY_ID;
@@ -239,18 +247,25 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 else
                 {
                     ToBeAdded.CATEGORY_ID = (decimal)NewFieldset.CATEGORY_ID;
+                    using (Entities _context = new Entities())
+                    {
+                        NewCategory = _context.SURVEY_QUES_CAT.Where(x => x.CATEGORY_ID == NewFieldset.CATEGORY_ID).Single();
+                    }
                 }
                 GenericData.Insert<SURVEY_FIELDSETS>(ToBeAdded);
+                
 
                 ModelProxy Record = uxFieldsetsStore.GetByInternalId(NewFieldset.PhantomId);
                 Record.CreateVariable = true;
                 Record.SetId(ToBeAdded.FIELDSET_ID);
                 Record.Set("TITLE", ToBeAdded.TITLE);
                 Record.Commit();
+                uxQuestionCategoryStore.Reload();
             }
 
             foreach (CUSTOMER_SURVEYS.CustomerSurveyFieldsets UpdatedFieldset in data.Updated)
             {
+                SURVEY_QUES_CAT NewCategory;
                 SURVEY_FIELDSETS ToBeUpdated;
                 using (Entities _context = new Entities())
                 {
@@ -264,7 +279,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 }
                 if (UpdatedFieldset.CATEGORY_ID == null)
                 {
-                    SURVEY_QUES_CAT NewCategory = new SURVEY_QUES_CAT();
+                    NewCategory = new SURVEY_QUES_CAT();
                     NewCategory.CATEGORY_NAME = e.ExtraParams["CategoryName"];
                     GenericData.Insert<SURVEY_QUES_CAT>(NewCategory);
                     ToBeUpdated.CATEGORY_ID = NewCategory.CATEGORY_ID;
@@ -272,16 +287,26 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 else
                 {
                     ToBeUpdated.CATEGORY_ID = (decimal)UpdatedFieldset.CATEGORY_ID;
+                    using (Entities _context = new Entities())
+                    {
+                        NewCategory = _context.SURVEY_QUES_CAT.Where(x => x.CATEGORY_ID == ToBeUpdated.CATEGORY_ID).Single();
+                    }
                 }
                 GenericData.Update<SURVEY_FIELDSETS>(ToBeUpdated);
-
+                uxQuestionCategoryStore.Reload();
                 ModelProxy Record = uxFieldsetsStore.GetById(ToBeUpdated.FIELDSET_ID);
                 Record.Set("TITLE", ToBeUpdated.TITLE);
                 Record.Commit();
+                uxQuestionCategoryStore.Reload();
             }
-            //dmSubtractFromDirty();
+            
             uxFieldsetsStore.CommitChanges();
+            uxDeleteFieldsetButton.Enable();
+            uxAddFieldsetButton.Enable();
+            X.Js.Call("checkEditing");
+            uxFieldsetSelection.SetLocked(false);
             uxQuestionFieldsetStore.Reload();
+            uxFieldsetsStore.Reload();
         }
 
         protected void deSaveQuestions(object sender, DirectEventArgs e)
@@ -318,7 +343,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
                 if(ToBeAdded.TYPE_ID == 5 || ToBeAdded.TYPE_ID == 6 || ToBeAdded.TYPE_ID == 7)
                 {
-                    uxAddOptionButton.Disabled = false;
+                    uxAddOptionButton.Enable();
                 }
             }
 
@@ -347,13 +372,16 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
                 if (ToBeUpdated.TYPE_ID == 5 || ToBeUpdated.TYPE_ID == 6 || ToBeUpdated.TYPE_ID == 7)
                 {
-                    uxAddOptionButton.Disabled = false;
-                    uxAddOptionButton.Disabled = false;
+                    uxAddOptionButton.Enable();
+                    uxAddOptionButton.Enable();
                 }
             }
-            //dmSubtractFromDirty();
             uxQuestionsStore.CommitChanges();
             uxQuestionsStore.Reload();
+            uxAddQuestionButton.Enable();
+            X.Js.Call("checkEditing");
+            uxQuestionSelection.SetLocked(false);
+            uxDeleteQuestionButton.Enable();
         }
 
         protected void deSaveOptions(object sender, DirectEventArgs e)
@@ -394,7 +422,10 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             }
             uxOptionsStore.CommitChanges();
             uxOptionsStore.Reload();
-            //dmSubtractFromDirty();
+            uxAddOptionButton.Enable();
+            X.Js.Call("checkEditing");
+            uxOptionSelection.SetLocked(false);
+            uxDeleteOptionButton.Enable();
         }
 
         protected void deLoadOptions(object sender, DirectEventArgs e)
@@ -402,26 +433,16 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             int TypeId = int.Parse(e.ExtraParams["QuestionType"]);
             if (TypeId == 5 || TypeId == 6 || TypeId == 7)
             {
-                uxAddOptionButton.Disabled = false;
+                uxAddOptionButton.Enable();
             }
             else
             {
-                uxAddOptionButton.Disabled = true;
+                uxAddOptionButton.Disable();
             }
             if (TypeId != 0)
             {
                 uxOptionsStore.Reload();
             }
-        }
-
-        protected void deLoadFormDetails(object sender, DirectEventArgs e)
-        {
-            uxQuestionFieldsetStore.Reload();
-            uxQuestionsStore.Reload();
-            uxFieldsetsStore.Reload();
-            uxAddFieldsetButton.Disabled = false;
-            uxAddQuestionButton.Disabled = false;
-            uxOptionsStore.RemoveAll();
         }
 
         protected void deViewForm(object sender, DirectEventArgs e)
@@ -557,9 +578,19 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 GenericData.Delete<SURVEY_FORMS>(FormToDelete);
 
                 uxFormsStore.Reload();
-                uxQuestionsStore.Reload();
-                uxFieldsetsStore.Reload();
-                uxOptionsStore.Reload();
+                uxQuestionsStore.RemoveAll();
+                uxFieldsetsStore.RemoveAll();
+                uxOptionsStore.RemoveAll();
+
+                uxDeleteFormButton.Disable();
+                uxCopyFormButton.Disable();
+                uxViewFormButton.Disable();
+                uxAddFieldsetButton.Disable();
+                uxDeleteFieldsetButton.Disable();
+                uxAddQuestionButton.Disable();
+                uxDeleteQuestionButton.Disable();
+                uxAddOptionButton.Disable();
+                uxDeleteOptionButton.Disable();
             }
             
         }
@@ -619,8 +650,13 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 }
                 count++;
             }
-            uxFieldsetsStore.Reload();
+            uxFieldsetsStore.RemoveAt(uxFieldsetSelection.SelectedIndex);
             uxQuestionsStore.Reload();
+            uxQuestionFieldsetStore.Reload();
+            uxOptionsStore.Reload();
+            uxDeleteFieldsetButton.Disable();
+            uxDeleteOptionButton.Disable();
+            uxDeleteQuestionButton.Disable();
         }
 
         protected void deDeleteQuestion(object sender, DirectEventArgs e)
@@ -652,7 +688,12 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 GenericData.Delete<SURVEY_QUESTIONS>(Question);
             }
 
-            uxQuestionsStore.Reload();
+            uxDeleteQuestionButton.Disable();
+            uxDeleteOptionButton.Disable();
+            uxQuestionsStore.RemoveAt(uxQuestionSelection.SelectedIndex);
+            uxOptionsStore.RemoveAll();
+            uxAddOptionButton.Disable();
+
         }
 
         protected void deDeleteOption(object sender, DirectEventArgs e)
@@ -664,6 +705,8 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 Option = CUSTOMER_SURVEYS.GetQuestionOption(OptionId, _context);
             }
             GenericData.Delete<SURVEY_OPTIONS>(Option);
+            uxDeleteOptionButton.Disable();
+            uxOptionsStore.RemoveAt(uxOptionSelection.SelectedIndex);
         }
 
         protected void deCopyForm(object sender, DirectEventArgs e)
@@ -808,21 +851,5 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 uxCopyFormTypeStore.DataSource = FormTypes;
             }
         }
-
-        //[DirectMethod]
-        //public void dmAddToDirty()
-        //{
-        //    long isDirty = long.Parse(Session["isDirty"].ToString());
-        //    isDirty++;
-        //    Session["isDirty"] = isDirty;
-        //}
-
-    //    [DirectMethod]
-    //    public void dmSubtractFromDirty()
-    //    {
-    //        long isDirty = long.Parse(Session["isDirty"].ToString());
-    //        isDirty--;
-    //        Session["isDirty"] = isDirty;
-    //    }
     }
 }

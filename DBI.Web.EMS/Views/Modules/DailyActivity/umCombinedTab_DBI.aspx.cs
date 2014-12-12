@@ -27,7 +27,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 X.Redirect("~/Views/uxDefault.aspx");
             }
 
-            if (!X.IsAjaxRequest)
+            if (!X.IsAjaxRequest || !IsPostBack)
             {
                 Session["isDirty"] = 0;
                 GetInventoryDropDown();
@@ -152,13 +152,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         case 2:
                             if (validateComponentSecurity("SYS.DailyActivity.Approve"))
                             {
-                                X.Js.Call("parent.App.uxApproveActivityButton.enable();parent.App.uxInactiveActivityButton.enable()");
+                                X.Js.Call("enableApprove");
                             }
                             break;
                         case 3:
                             if (validateComponentSecurity("SYS.DailyActivity.Post"))
                             {
-                                X.Js.Call("parent.App.uxPostActivityButton.enable();parent.App.uxInactiveActivityButton.enable()");
+                                X.Js.Call("enablePost");
                             }
                             break;
                     }
@@ -172,13 +172,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     case 2:
                         if (validateComponentSecurity("SYS.DailyActivity.Approve"))
                         {
-                            X.Js.Call("parent.App.uxApproveActivityButton.enable();parent.App.uxInactiveActivityButton.enable()");
+                            X.Js.Call("enableApprove");
                         }
                         break;
                     case 3:
                         if (validateComponentSecurity("SYS.DailyActivity.Post"))
                         {
-                            X.Js.Call("parent.App.uxPostActivityButton.enable();parent.App.uxInactiveActivityButton.enable()");
+                            X.Js.Call("enablePost");
                         }
                         break;
                 }
@@ -947,7 +947,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 using (Entities _context = new Entities())
                 {
                     EmployeeName = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == item.PERSON_ID).Select(x => x.EMPLOYEE_NAME).Single();
-                    EquipmentName = DAILY_ACTIVITY.GetEquipmentData(_context, HeaderId).Where(x => x.EQUIPMENT_ID == item.EQUIPMENT_ID).Select(x => x.NAME).Single();
+                    EquipmentName = DAILY_ACTIVITY.GetEquipmentData(_context, HeaderId).Where(x => x.EQUIPMENT_ID == item.EQUIPMENT_ID).Select(x => x.NAME).SingleOrDefault();
                 }
 
                 ModelProxy Record = uxEmployeeStore.GetById(item.EMPLOYEE_ID);
@@ -959,8 +959,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
                 Record.Commit();
             }
-            //dmSubtractFromDirty();
             uxEmployeeStore.CommitChanges();
+            uxAddEmployeeButton.Enable();
+            X.Js.Call("checkEditing");
+            uxEmployeeSelection.SetLocked(false);
+            uxDeleteEmployeeButton.Enable();
+            uxChooseLunchHeaderButton.Enable();
+            uxChoosePerDiemButton.Enable();
         }
 
         protected void deSaveEquipment(object sender, DirectEventArgs e)
@@ -1028,8 +1033,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 Record.Set("SEGMENT1", EquipmentItem.SEGMENT1);
                 Record.Commit();
             }
-            //dmSubtractFromDirty();
             uxEquipmentStore.CommitChanges();
+            uxAddEquipmentButton.Enable();
+            uxDeleteEquipmentButton.Enable();
+            X.Js.Call("checkEditing");
+            uxEquipmentSM.SetLocked(false);
+            uxEmployeeEqStore.Reload();
         }
 
         protected void deReadTaskData(object sender, StoreReadDataEventArgs e)
@@ -1116,8 +1125,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 Record.Set("TASK_NUMBER", TaskItem.TASK_NUMBER);
                 Record.Commit();
             }
-            //dmSubtractFromDirty();
             uxProductionStore.CommitChanges();
+            uxAddProductionButton.Enable();
+            X.Js.Call("checkEditing");
+            uxProductionSelection.SetLocked(false);
+            uxDeleteProductionButton.Enable();
         }
 
         protected void deSaveWeather(object sender, DirectEventArgs e)
@@ -1168,8 +1180,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                 GenericData.Update(UpdatedWeather);
             }
-            //dmSubtractFromDirty();
             uxWeatherStore.CommitChanges();
+            uxAddWeatherButton.Enable();
+            X.Js.Call("checkEditing");
+            uxWeatherSelection.SetLocked(false);
+            uxDeleteWeatherButton.Enable();
         }
 
         protected void deSaveChemical(object sender, DirectEventArgs e)
@@ -1230,8 +1245,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                 GenericData.Update(UpdatedChemical);
             }
-            //dmSubtractFromDirty();
             uxChemicalStore.CommitChanges();
+            uxAddInventoryMixStore.Reload();
+            uxAddChemicalButton.Enable();
+            X.Js.Call("checkEditing");
+            uxChemicalSelection.SetLocked(false);
+            uxDeleteChemicalButton.Enable();
         }
 
         protected void deSaveInventory(object sender, DirectEventArgs e)
@@ -1301,10 +1320,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 UpdatedInventory.SUB_INVENTORY_ORG_ID = item.SUB_INVENTORY_ORG_ID;
                 UpdatedInventory.SUB_INVENTORY_SECONDARY_NAME = item.SUB_INVENTORY_SECONDARY_NAME;
                 UpdatedInventory.TOTAL = item.TOTAL;
-                UpdatedInventory.UNIT_OF_MEASURE = item.UNIT_OF_MEASURE;
+                UpdatedInventory.UNIT_OF_MEASURE = item.UOM_CODE;
 
                 long ChemicalMixNumber;
-                string uomCode;
                 INVENTORY_V Item;
                 string unit;
                 string InvName;
@@ -1327,8 +1345,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 Record.Set("INV_NAME", InvName);
                 Record.Commit();
             }
-            //dmSubtractFromDirty();
             uxInventoryStore.CommitChanges();
+            uxAddInventoryButton.Enable();
+            X.Js.Call("checkEditing");
+            uxInventorySelection.SetLocked(false);
+            uxDeleteInventoryButton.Enable();
         }
 
         protected void deSaveAttachment(object sender, DirectEventArgs e)
@@ -1410,6 +1431,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxAddInventoryMix.SetValue(e.ExtraParams["MixId"], e.ExtraParams["MixNumber"]);
             uxAddInventoryMixStore.ClearFilter();
 
+            var sm = uxAddInventoryMixGrid.GetSelectionModel() as RowSelectionModel;
+            sm.ClearSelection();
         }
 
         /// <summary>
@@ -1419,11 +1442,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <param name="e"></param>
         protected void deStoreItemGridValue(object sender, DirectEventArgs e)
         {
+            GetUnitOfMeasure(e.ExtraParams["uomCode"]);
             uxAddInventoryItem.SetValue(e.ExtraParams["ItemId"], e.ExtraParams["Description"]);
             uxAddInventoryItemStore.ClearFilter();
 
             uxAddInventoryItemSegment.Value = e.ExtraParams["Segment1"];
             uxAddInventoryEPA.Value = (e.ExtraParams["EPA"] == "null" ? "" : e.ExtraParams["EPA"]);
+
+            var sm = uxAddInventoryItemGrid.GetSelectionModel() as RowSelectionModel;
+            sm.ClearSelection();
         }
 
         /// <summary>
@@ -1537,11 +1564,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             e.Total = count;
         }
 
-        protected void deGetUnitOfMeasure(object sender, DirectEventArgs e)
-        {
-            GetUnitOfMeasure(e.ExtraParams["uomCode"]);
-        }
-
         /// <summary>
         /// Gets Units of Measure from DB
         /// </summary>
@@ -1643,8 +1665,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
 
             GenericData.Delete<DAILY_ACTIVITY_EMPLOYEE>(DeletedEmployee);
-            uxEmployeeGrid.GetView();
+                //uxEmployeeStore.RemoveAt(uxEmployeeSelection.SelectedIndex);
 
+            uxDeleteEmployeeButton.Disable();
+            uxChooseLunchHeaderButton.Disable();
+            uxChoosePerDiemButton.Disable();
         }
 
         [DirectMethod]
@@ -1662,7 +1687,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             if (EmployeeCheck.Count == 0)
             {
                 GenericData.Delete(DeletedEquipment);
-                uxEquipmentGrid.GetView();
+                uxEquipmentStore.Reload();
+                uxEmployeeEqStore.Reload();
+                uxDeleteEquipmentButton.Disable();
             }
             else
             {
@@ -1707,10 +1734,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             RowSelectionModel sm = uxEquipmentGrid.GetSelectionModel() as RowSelectionModel;
 
-            uxEmployeeGrid.GetView();
-            uxEquipmentStore.RemoveAt(sm.SelectedIndex);
-            uxEquipmentGrid.GetView();
+            uxEmployeeStore.Reload();
+            uxEquipmentStore.Reload();
             uxEmployeeEqStore.Reload();
+            uxDeleteEquipmentButton.Disable();
 
         }
 
@@ -1725,7 +1752,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
 
             GenericData.Delete(DeletedProduction);
-            uxProductionGrid.GetView();
+            uxDeleteProductionButton.Disable();
         }
 
         [DirectMethod]
@@ -1738,7 +1765,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 DeletedWeather = DAILY_ACTIVITY.GetWeather(_context, Weather).Single();
             }
             GenericData.Delete(DeletedWeather);
-            uxWeatherGrid.GetView();
+            uxDeleteWeatherButton.Disable();
         }
 
         [DirectMethod]
@@ -1779,7 +1806,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     }
 
                 }
-                X.Js.Call("parent.App.uxDetailsPanel.reload()");
+                uxChemicalStore.Reload();
             }
             else
             {
@@ -1806,7 +1833,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             long MixId = long.Parse(ChemicalId);
             using (Entities _context = new Entities())
             {
-                ToDelete = _context.DAILY_ACTIVITY_CHEMICAL_MIX.Where(x => x.CHEMICAL_MIX_ID == MixId).Single();
                 InventoryEntries = _context.DAILY_ACTIVITY_INVENTORY.Where(x => x.CHEMICAL_MIX_ID == MixId).ToList();
             }
 
@@ -1819,12 +1845,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 Record.Set("CHEMICAL_MIX_NUMBER", "");
                 Record.Commit();
             }
+            using (Entities _context = new Entities())
+            {
+                ToDelete = _context.DAILY_ACTIVITY_CHEMICAL_MIX.Where(x => x.CHEMICAL_MIX_ID == MixId).Single();
+            }
             RowSelectionModel sm = uxChemicalGrid.GetSelectionModel() as RowSelectionModel;
             GenericData.Delete(ToDelete);
-            uxInventoryGrid.GetView();
-            uxChemicalStore.RemoveAt(sm.SelectedIndex);
-            uxChemicalGrid.GetView();
-            uxAddInventoryMixStore.Reload();
+            uxChemicalStore.Reload();
+            uxInventoryStore.Reload();
         }
 
         [DirectMethod]
@@ -1837,7 +1865,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 DeletedInventory = DAILY_ACTIVITY.GetInventory(_context, Inventory).Single();
             }
             GenericData.Delete(DeletedInventory);
-            uxInventoryGrid.GetView();
+            uxDeleteInventoryButton.Disable();
         }
 
         [DirectMethod]
@@ -1851,22 +1879,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             GenericData.Delete(DeletedAttachment);
             uxAttachmentGrid.GetView();
+            uxDeleteAttachmentButton.Disable();
+            uxSaveAttachmentButton.Disable();            
         }
-
-        //[DirectMethod]
-        //public void dmAddToDirty()
-        //{
-        //    long isDirty = long.Parse(Session["isDirty"].ToString());
-        //    isDirty++;
-        //    Session["isDirty"] = isDirty;
-        //}
-
-        //[DirectMethod]
-        //public void dmSubtractFromDirty()
-        //{
-        //    long isDirty = long.Parse(Session["isDirty"].ToString());
-        //    isDirty--;
-        //    Session["isDirty"] = isDirty;
-        //}
     }
 }

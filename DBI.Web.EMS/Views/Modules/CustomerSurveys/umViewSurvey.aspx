@@ -5,20 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
     <title></title>
-   
-    <style type="text/css">
-        .test {
-            background-color: grey;
-        }
-        .allowBlank-field {
-            background-color: #EFF7FF !important;
-            background-image: none;
-        }
-        .testing {
-            background-color: #EFF7FF !important;
-            background-image: none;
-        }
-    </style>
+    <link href="../../../Resources/StyleSheets/main.css" rel="stylesheet" />
 </head>
 <body style="overflow:visible">
     <form id="form1" runat="server">
@@ -36,7 +23,7 @@
                             <Items>
                                 <ext:FieldSet runat="server" Title="Form Code" Margin="5" ID="uxCodeFieldset">
                                     <Items>
-                                        <ext:TextField runat="server" ID="uxFormCode" FieldLabel="Enter Form Code" AllowBlank="false" InvalidCls="allowBlank" LabelWidth="150" MsgTarget="Side" IndicatorIcon="BulletRed" >
+                                        <ext:TextField runat="server" ID="uxFormCode" FieldLabel="Enter Form Code" AllowBlank="false" InvalidCls="allowBlank" LabelWidth="150">
                                             <DirectEvents>
                                                 <Blur OnEvent="deLoadCustomer" />
                                             </DirectEvents>

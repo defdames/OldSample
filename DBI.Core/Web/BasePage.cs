@@ -63,6 +63,7 @@ namespace DBI.Core.Web
         {
             ResourceManager.GetInstance(this).Listeners.AjaxRequestException.Handler = GetExceptionHandlerScript(String.Empty);
             ResourceManager.GetInstance(this).RegisterClientScriptBlock("Localization", "Ext.override({showFailure: " + GetExceptionHandlerScript(String.Empty) + "});");
+            ResourceManager.GetInstance(this).Listeners.DocumentReady.Handler = "delete Ext.tip.Tip.prototype.minWidth;";
 
             if (Session["isDirty"] == null)
             {
@@ -242,6 +243,19 @@ namespace DBI.Core.Web
         protected void CreateDirtyMessage()
         {
             X.Msg.Alert("Unsaved Data", "You currently have unsaved data.  Please save changes before continuing").Show();
+        }
+
+        [DirectMethod]
+        public void dmSetDirty(string value)
+        {
+            if (value == "true")
+            {
+                Session["isDirty"] = 1;
+            }
+            else
+            {
+                Session["isDirty"] = 0;
+            }
         }
     }
 }

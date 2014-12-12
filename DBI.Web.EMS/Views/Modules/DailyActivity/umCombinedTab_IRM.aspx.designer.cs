@@ -841,6 +841,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Column Column5;
         
         /// <summary>
+        /// uxTotalHours control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.DisplayField uxTotalHours;
+        
+        /// <summary>
         /// DateColumn5 control.
         /// </summary>
         /// <remarks>
