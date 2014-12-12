@@ -901,7 +901,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextArea uxAddEmployeeComments;
+        protected global::Ext.Net.TriggerField uxAddEmployeeComments;
         
         /// <summary>
         /// Column59 control.
@@ -1444,6 +1444,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         protected global::Ext.Net.Column Column16;
         
         /// <summary>
+        /// uxWorkArea control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TriggerField uxWorkArea;
+        
+        /// <summary>
         /// Column17 control.
         /// </summary>
         /// <remarks>
@@ -1631,6 +1640,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Column Column25;
+        
+        /// <summary>
+        /// uxWeatherComments control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TriggerField uxWeatherComments;
         
         /// <summary>
         /// uxWeatherToolbar control.
@@ -2747,5 +2765,32 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Button uxAddAttachmentCancel;
+        
+        /// <summary>
+        /// uxCommentWindow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Window uxCommentWindow;
+        
+        /// <summary>
+        /// uxCommentField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextArea uxCommentField;
+        
+        /// <summary>
+        /// uxCommentId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Hidden uxCommentId;
     }
 }
