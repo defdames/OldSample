@@ -230,7 +230,7 @@
 
                         <ext:Label ID="uxSpace2" runat="server" Width="5" />
 
-                        <ext:Button ID="uxUpdateAllActuals" runat="server" Text="Update All Actual" Icon="BookEdit">
+                        <ext:Button ID="uxUpdateAllActuals" runat="server" Text="Update All Actuals" Icon="BookEdit">
                             <DirectEvents>
                                 <Click OnEvent="deUpdateAllActuals">
                                     <EventMask ShowMask="true" Msg="Processing..." />
@@ -494,6 +494,7 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
+                            <ext:Column ID="Column34" runat="server" DataIndex="BLANK" Text="Blank" Width="10" />
                             <ext:Column ID="Column31" runat="server" DataIndex="ADJUSTMENT" Text="Adjustment" Flex="6" />
                             <ext:Column ID="Column32" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" />
                             <ext:NumberColumn ID="NumberColumn1" runat="server" DataIndex="BLANK" Text="Blank" Flex="1" Align="Right" />
@@ -505,6 +506,7 @@
                             <ext:NumberColumn ID="uxOH" runat="server" DataIndex="OH" Text="Overhead" Flex="2" Align="Right" />
                             <ext:Column ID="Column33" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="NumberColumn8" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
+                            <ext:Column ID="Column35" runat="server" DataIndex="BLANK" Text="Blank" Width="20" />
                         </Columns>
                     </ColumnModel>
                     <DockedItems>

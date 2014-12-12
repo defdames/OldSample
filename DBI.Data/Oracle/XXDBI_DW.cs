@@ -100,15 +100,23 @@ namespace DBI.Data
         /// <param name="optionalsortDescending"></param>
         /// <param name="optionalNumOfReturnRecords"></param>
         /// <returns></returns>
-        public static List<SingleCombo> LoadedJCWeDates(long hierarchyId, bool optionalsortDescending = false, long optionalNumOfReturnRecords = long.MaxValue)
+        public static List<SingleCombo> LoadedJCWeDates(long hierarchyId, long fiscalYear, bool optionalsortDescending = false, long optionalNumOfReturnRecords = long.MaxValue)
         {
             string sortOrder = optionalsortDescending == false ? sortOrder = "ASC" : sortOrder = "DESC";
             string sql = string.Format(@"
                 SELECT '-- OVERRIDE --' AS ID_NAME FROM DUAL
-                UNION ALL
+
+                    UNION ALL
+    
                 SELECT TO_CHAR(JC_WK_DATE,'DD-Mon-YYYY') ID_NAME
-                FROM (SELECT DISTINCT JC_WK_DATE FROM APPS.XX_JOBCOST_DATES_MV WHERE HIERARCHY_ID = {0} ORDER BY JC_WK_DATE {1}) JC_DATES
-                WHERE ROWNUM <= {2}", hierarchyId, sortOrder, optionalNumOfReturnRecords);
+                FROM 
+                    (SELECT DISTINCT JC_WK_DATE 
+                     FROM APPS.XX_JOBCOST_DATES_MV
+                     WHERE HIERARCHY_ID = {0} 
+                        AND JC_WK_DATE >= (SELECT START_DATE FROM APPS.GL_PERIODS_V WHERE PERIOD_YEAR = {1} AND period_num = 1 AND PERIOD_SET_NAME = 'DBI Calendar' AND period_type = 'Month')
+                        AND JC_WK_DATE <= (SELECT END_DATE FROM APPS.GL_PERIODS_V WHERE PERIOD_YEAR = {1} AND period_num = 12 AND PERIOD_SET_NAME = 'DBI Calendar' AND period_type = 'Month') 
+                     ORDER BY JC_WK_DATE {2}) JC_DATES
+                WHERE ROWNUM <= {3}", hierarchyId, fiscalYear, sortOrder, optionalNumOfReturnRecords);
 
             using (Entities context = new Entities())
             {

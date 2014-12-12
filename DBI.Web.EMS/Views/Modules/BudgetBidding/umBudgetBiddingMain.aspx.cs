@@ -10,13 +10,13 @@ using DBI.Core.Web;
 
 namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 {
-    public partial class umBudgetBiddingMain : System.Web.UI.Page
+    public partial class umBudgetBiddingMain : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!X.IsAjaxRequest)
             {
-                if (!BasePage.validateComponentSecurity("SYS.BudgetBidding.View"))
+                if (!validateComponentSecurity("SYS.BudgetBidding.View"))
                 {
                     X.Redirect("~/Views/uxDefault.aspx");
                 }
@@ -33,7 +33,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 var allowedOrgs = BB.UserAllowedOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name));
                 using (Entities context = new Entities())
                 {
-                    var profileLEs = context.SYS_ORG_PROFILE_OPTIONS.Where(x => x.PROFILE_OPTION_ID == 23);                 
+                    SYS_PROFILE_OPTIONS profileNumber = SYS_PROFILE_OPTIONS.ProfileOption("OverheadBudgetHierarchy");
+                    var profileLEs = context.SYS_ORG_PROFILE_OPTIONS.Where(x => x.PROFILE_OPTION_ID == profileNumber.PROFILE_OPTION_ID);
                     foreach (var le in profileLEs)
                     {
                         string leName = HR.LegalEntityHierarchies().Where(x => x.ORGANIZATION_ID == le.ORGANIZATION_ID).Select(x => x.ORGANIZATION_NAME).FirstOrDefault();
@@ -105,7 +106,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                             node.Text = view.ORGANIZATION_NAME;
                             node.Leaf = leafNode;
                             if (colorNode == true)
-                            {                                
+                            {
                                 if (BB.IsRollup(view.ORGANIZATION_ID) == true)
                                 {
                                     node.Icon = Icon.PackageGreen;
@@ -135,7 +136,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
         protected void deLoadFiscalYears(object sender, StoreReadDataEventArgs e)
         {
-            uxFiscalYearStore.DataSource = PA.AllFiscalYears();
+            uxFiscalYearStore.DataSource = BB.FiscalYears();
         }
 
         protected void deLoadBudgetVersions(object sender, StoreReadDataEventArgs e)
@@ -145,7 +146,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
         protected void deSelectOrg(object sender, DirectEventArgs e)
         {
-            bool prevBlank = PreviouslyBlankBudget();     
+            bool prevBlank = PreviouslyBlankBudget();
             string nodeID = uxOrgPanel.SelectedNodes[0].NodeID;
             char[] delimChars = { ':' };
             string[] selID = nodeID.Split(delimChars);
@@ -174,7 +175,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 uxYearVersionTitle.Text = "";
                 DisableToolbar();
                 LoadBudget(prevBlank);
-            }     
+            }
         }
 
         protected void deSelectYear(object sender, DirectEventArgs e)
@@ -190,7 +191,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             bool prevBlank = PreviouslyBlankBudget();
 
             uxHidVerOK.Text = "Y";
-            LoadBudget(prevBlank);            
+            LoadBudget(prevBlank);
         }
 
         protected bool PreviouslyBlankBudget()
@@ -224,9 +225,20 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 long verID = Convert.ToInt64(uxVersion.SelectedItem.Value);
                 string verName = HttpUtility.UrlEncode(uxVersion.SelectedItem.Text);
 
+
                 if (BB.IsRollup(orgID) == false)
                 {
-                    url = "umYearBudget.aspx?hierID=" + hierarchyID + "&leOrgID=" + leOrgID + "&orgID=" + orgID + "&orgName=" + orgName + "&fiscalYear=" + fiscalYear + "&verID=" + verID + "&verName=" + verName;
+                    //FIX   
+                    if (orgID == 1210)
+                    {
+                        url = "umMonthBudget.aspx?hierID=" + hierarchyID + "&leOrgID=" + leOrgID + "&orgID=" + orgID + "&orgName=" + orgName + "&fiscalYear=" + fiscalYear + "&verID=" + verID + "&verName=" + verName;
+                    }
+                    else
+                    {
+                        url = "umYearBudget.aspx?hierID=" + hierarchyID + "&leOrgID=" + leOrgID + "&orgID=" + orgID + "&orgName=" + orgName + "&fiscalYear=" + fiscalYear + "&verID=" + verID + "&verName=" + verName;
+
+                    }
+                    //FIX   
                 }
                 else
                 {
@@ -236,7 +248,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
             else if (prevBlank == true)
             {
-                return;            
+                return;
             }
 
             uxBudgetPanel.Loader.SuspendScripting();
@@ -245,12 +257,12 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxBudgetPanel.Loader.DisableCaching = true;
             uxBudgetPanel.LoadContent();
         }
-      
+
         protected void EnableToolbar()
         {
             uxFiscalYear.Enable();
             uxVersion.Enable();
-            uxOrgSettings.Disable();  // FIX
+            uxOrgSettings.Disable();
         }
 
         protected void DisableToolbar()
@@ -258,18 +270,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxFiscalYear.Disable();
             uxVersion.Disable();
             uxOrgSettings.Disable();
-        }
-
-        protected void StandardMsgBox(string title, string msg, string msgIcon)
-        {
-            // msgIcon can be:  ERROR, INFO, QUESTION, WARNING
-            X.Msg.Show(new MessageBoxConfig()
-            {
-                Title = title,
-                Message = msg,
-                Buttons = MessageBox.Button.OK,
-                Icon = (MessageBox.Icon)Enum.Parse(typeof(MessageBox.Icon), msgIcon)
-            });
         }
     }
 }

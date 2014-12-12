@@ -31,7 +31,7 @@ namespace DBI.Data
         public decimal CATEGORY_ID { get; set; }
     
         public virtual SURVEY_QUES_CAT SURVEY_QUES_CAT { get; set; }
-        public virtual SURVEY_FORMS SURVEY_FORMS { get; set; }
         public virtual ICollection<SURVEY_RELATION> SURVEY_RELATION { get; set; }
+        public virtual SURVEY_FORMS SURVEY_FORMS { get; set; }
     }
 }

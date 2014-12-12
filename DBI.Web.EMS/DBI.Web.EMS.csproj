@@ -144,15 +144,16 @@
     <Content Include="Resources\Images\wwbnight.png" />
     <Content Include="Resources\Scripts\jquery-2.0.1.js" />
     <Content Include="Resources\Scripts\jquery-2.0.1.min.js" />
+    <Content Include="Views\Modules\BudgetBidding\umMonthBudget.aspx" />
     <Content Include="Views\Modules\BudgetBidding\Reports\umRepRollupOPCompare.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umReportCompareTo.aspx" />
     <Content Include="Views\Modules\BudgetBidding\Reports\umRepRollupOHCompare.aspx" />
-    <Content Include="Views\Modules\BudgetBidding\Reports\umRepOrgLiabilities.aspx" />
-    <Content Include="Views\Modules\BudgetBidding\Reports\umRepOrgComments.aspx" />
-    <Content Include="Views\Modules\BudgetBidding\Reports\umRepOrgAllProjects.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\Reports\umRepRollupLiab.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\Reports\umRepRollupComm.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\Reports\umRepRollupAllProjects.aspx" />
     <Content Include="Views\Modules\BudgetBidding\Reports\umRepRollupSum.aspx" />
-    <Content Include="Views\Modules\BudgetBidding\Reports\umRepDetailSheet.aspx" />
-    <Content Include="Views\Modules\BudgetBidding\Reports\umRepProject.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\Reports\umRepOrgDetailSheet.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\Reports\umRepOrgProject.aspx" />
     <Content Include="Views\Modules\BudgetBidding\Reports\umRepOrgComm.aspx" />
     <Content Include="Views\Modules\BudgetBidding\Reports\umRepOrgLiab.aspx" />
     <Content Include="Views\Modules\BudgetBidding\Reports\umRepOrgSum.aspx" />
@@ -327,6 +328,13 @@
     <Compile Include="Views\Handlers\SystemUsers.ashx.cs">
       <DependentUpon>SystemUsers.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umMonthBudget.aspx.cs">
+      <DependentUpon>umMonthBudget.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umMonthBudget.aspx.designer.cs">
+      <DependentUpon>umMonthBudget.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\BudgetBidding\Reports\umRepRollupOPCompare.aspx.cs">
       <DependentUpon>umRepRollupOPCompare.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -348,26 +356,26 @@
     <Compile Include="Views\Modules\BudgetBidding\Reports\umRepRollupOHCompare.aspx.designer.cs">
       <DependentUpon>umRepRollupOHCompare.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepOrgLiabilities.aspx.cs">
-      <DependentUpon>umRepOrgLiabilities.aspx</DependentUpon>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepRollupLiab.aspx.cs">
+      <DependentUpon>umRepRollupLiab.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepOrgLiabilities.aspx.designer.cs">
-      <DependentUpon>umRepOrgLiabilities.aspx</DependentUpon>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepRollupLiab.aspx.designer.cs">
+      <DependentUpon>umRepRollupLiab.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepOrgComments.aspx.cs">
-      <DependentUpon>umRepOrgComments.aspx</DependentUpon>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepRollupComm.aspx.cs">
+      <DependentUpon>umRepRollupComm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepOrgComments.aspx.designer.cs">
-      <DependentUpon>umRepOrgComments.aspx</DependentUpon>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepRollupComm.aspx.designer.cs">
+      <DependentUpon>umRepRollupComm.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepOrgAllProjects.aspx.cs">
-      <DependentUpon>umRepOrgAllProjects.aspx</DependentUpon>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepRollupAllProjects.aspx.cs">
+      <DependentUpon>umRepRollupAllProjects.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepOrgAllProjects.aspx.designer.cs">
-      <DependentUpon>umRepOrgAllProjects.aspx</DependentUpon>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepRollupAllProjects.aspx.designer.cs">
+      <DependentUpon>umRepRollupAllProjects.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\BudgetBidding\Reports\umRepRollupSum.aspx.cs">
       <DependentUpon>umRepRollupSum.aspx</DependentUpon>
@@ -376,19 +384,19 @@
     <Compile Include="Views\Modules\BudgetBidding\Reports\umRepRollupSum.aspx.designer.cs">
       <DependentUpon>umRepRollupSum.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepDetailSheet.aspx.cs">
-      <DependentUpon>umRepDetailSheet.aspx</DependentUpon>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepOrgDetailSheet.aspx.cs">
+      <DependentUpon>umRepOrgDetailSheet.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepDetailSheet.aspx.designer.cs">
-      <DependentUpon>umRepDetailSheet.aspx</DependentUpon>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepOrgDetailSheet.aspx.designer.cs">
+      <DependentUpon>umRepOrgDetailSheet.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepProject.aspx.cs">
-      <DependentUpon>umRepProject.aspx</DependentUpon>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepOrgProject.aspx.cs">
+      <DependentUpon>umRepOrgProject.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepProject.aspx.designer.cs">
-      <DependentUpon>umRepProject.aspx</DependentUpon>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepOrgProject.aspx.designer.cs">
+      <DependentUpon>umRepOrgProject.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\BudgetBidding\Reports\umRepOrgComm.aspx.cs">
       <DependentUpon>umRepOrgComm.aspx</DependentUpon>
@@ -1278,25 +1286,25 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Modules\BudgetBidding\Reports\umRepDetailSheet.rdlc">
+    <Content Include="Views\Modules\BudgetBidding\Reports\DetailSheet.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\Modules\BudgetBidding\Reports\umRepRollupSum.rdlc">
+    <Content Include="Views\Modules\BudgetBidding\Reports\RollupSummary.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\Modules\BudgetBidding\Reports\umRepOrgAllProjects.rdlc">
+    <Content Include="Views\Modules\BudgetBidding\Reports\AllProjects.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\Modules\BudgetBidding\Reports\umRepOrgComments.rdlc">
+    <Content Include="Views\Modules\BudgetBidding\Reports\RollupComments.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\Modules\BudgetBidding\Reports\umRepOrgLiabilities.rdlc">
+    <Content Include="Views\Modules\BudgetBidding\Reports\RollupLiabilities.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\Modules\BudgetBidding\Reports\umRepRollupOHCompare.rdlc">
+    <Content Include="Views\Modules\BudgetBidding\Reports\RollupOHCompare.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\Modules\BudgetBidding\Reports\umRepRollupOPCompare.rdlc">
+    <Content Include="Views\Modules\BudgetBidding\Reports\RollupOPCompare.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\Modules\CrossingMaintenance\Reports\MaintenanceInvoiceReport.rdlc">
@@ -1320,6 +1328,10 @@
     <Content Include="Views\Modules\BudgetBidding\Reports\umRepProject.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.rdlc" />
+    <Content Include="Views\Modules\BudgetBidding\Reports\ProjectDetail.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Views\Modules\CrossingMaintenance\Reports\PrivateCrossingReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1339,13 +1351,13 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>StateCrossingList.cs</LastGenOutput>
     </EmbeddedResource>
-    <Content Include="Views\Modules\BudgetBidding\Reports\umRepOrgComm.rdlc">
+    <Content Include="Views\Modules\BudgetBidding\Reports\Comments.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\Modules\BudgetBidding\Reports\umRepOrgLiab.rdlc">
+    <Content Include="Views\Modules\BudgetBidding\Reports\Liabilities.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\Modules\BudgetBidding\Reports\umRepOrgSum.rdlc">
+    <Content Include="Views\Modules\BudgetBidding\Reports\Summary.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\Modules\ReportTemplates\Portrait.rdlc">
