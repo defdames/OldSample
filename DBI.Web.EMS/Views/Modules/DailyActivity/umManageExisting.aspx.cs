@@ -124,6 +124,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                 Warning = "Error";
                                 WarningType += "An employee is missing a lunch entry.<br />";
                             }
+
+                            if (ValidationChecks.InventoryChemicalCheck(record.HEADER_ID, "bool"))
+                            {
+                                Warning = "Error";
+                                WarningType += "Contains Inventory without a Chemical Mix entry";
+                            }
                         }
 
                         DAILY_ACTIVITY.WarningData PerDiems = ValidationChecks.checkPerDiem(record.HEADER_ID);

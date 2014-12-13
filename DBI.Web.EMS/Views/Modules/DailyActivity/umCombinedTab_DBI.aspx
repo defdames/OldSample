@@ -535,10 +535,12 @@
 
 
         var doAddMath = function () {
-            var gallonStart = parseFloat(App.uxAddInventoryMixGrid.getSelectionModel().getSelection()[0].data.GALLON_STARTING);
-            var gallonMixed = parseFloat(App.uxAddInventoryMixGrid.getSelectionModel().getSelection()[0].data.GALLON_MIXED);
-            var gallonRemain = parseFloat(App.uxAddInventoryMixGrid.getSelectionModel().getSelection()[0].data.GALLON_REMAINING);
-            var gallonAcre = parseFloat(App.uxAddInventoryMixGrid.getSelectionModel().getSelection()[0].data.GALLON_ACRE);
+            var MixId = parseInt(App.uxAddInventoryMix.getValue());
+            var chemical = App.uxChemicalStore.getById(MixId);
+            var gallonStart = parseFloat(chemical.data.GALLON_STARTING);
+            var gallonMixed = parseFloat(chemical.data.GALLON_MIXED);
+            var gallonRemain = parseFloat(chemical.data.GALLON_REMAINING);
+            var gallonAcre = parseFloat(chemical.data.GALLON_ACRE);
 
             var gallonsUsed = gallonStart + gallonMixed - gallonRemain;
             var acresSprayed = gallonsUsed / gallonAcre;
@@ -2096,7 +2098,7 @@
                     MaxWidth="1400" MinHeight="250">
                     <Store>
                         <ext:Store runat="server"
-                            ID="uxInventoryStore" OnReadData="deGetInventory">
+                            ID="uxInventoryStore" OnReadData="deGetInventory" AutoLoad="false">
                             <Model>
                                 <ext:Model ID="Model6" runat="server" Name="Inventory" IDProperty="INVENTORY_ID" ClientIdProperty="PhantomId">
                                     <Fields>
@@ -2194,14 +2196,12 @@
                                                         </ExtraParams>
                                                     </Select>
                                                 </DirectEvents>
-                                                <Listeners>
-                                                    <Select Fn="doAddMath" />
-                                                </Listeners>
                                             </ext:GridPanel>
                                         </Component>
                                         <Listeners>
                                             <Expand Handler="this.picker.setWidth(500)" />
                                             <Collapse Handler="#{uxInventoryGrid}.columns[1].getEditor().focusInput();" />
+                                            <Change Fn="doAddMath" />
                                         </Listeners>
                                     </ext:DropDownField>
                                 </Editor>

@@ -34,6 +34,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 GetHeaderData();
                 GetEmployeeDataWithWarnings();
                 GetEquipmentDataWithWarnings();
+                GetInventoryDataWithWarnings();
                 GetFooterData();
                 GetWarnings();
 
@@ -322,6 +323,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxEquipmentStore.Data = data;
         }
 
+        
         protected void deGetEquipmentData(object sender, StoreReadDataEventArgs e)
         {
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
@@ -380,12 +382,36 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
+        protected void GetInventoryDataWithWarnings()
+        {
+            //Query and set datasource for Inventory
+            using (Entities _context = new Entities())
+            {
+                long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+                var data = DAILY_ACTIVITY.GetDBIInventoryData(_context, HeaderId).ToList();
+                uxInventoryStore.Data = data;
+
+                foreach (var item in data)
+                {
+                    if (item.CHEMICAL_MIX_ID == null)
+                    {
+                        WarningList.Add(new DAILY_ACTIVITY.WarningData()
+                        {
+                            WarningType = "Error",
+                            RecordType = item.SEGMENT1,
+                            AdditionalInformation = string.Format("Inventory item {0} has no Chemical Mix Entry", item.SEGMENT1)
+                        });
+
+                    }
+                }
+            }
+        }
         /// <summary>
         /// Get data for Inventory grid
         /// </summary>
         protected void deGetInventory(object sender, StoreReadDataEventArgs e)
         {
-            //Query and set datasource for Inventory
+
             using (Entities _context = new Entities())
             {
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
@@ -1246,11 +1272,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 GenericData.Update(UpdatedChemical);
             }
             uxChemicalStore.CommitChanges();
-            uxAddInventoryMixStore.Reload();
             uxAddChemicalButton.Enable();
+            uxDeleteChemicalButton.Enable();
             X.Js.Call("checkEditing");
             uxChemicalSelection.SetLocked(false);
-            uxDeleteChemicalButton.Enable();
+            uxAddInventoryMixStore.Reload();
         }
 
         protected void deSaveInventory(object sender, DirectEventArgs e)
@@ -1804,9 +1830,15 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         ToUpdate.CHEMICAL_MIX_NUMBER = ToUpdate.CHEMICAL_MIX_NUMBER - 1;
                         _context.SaveChanges();
                     }
-
+                    if (Updates.Count > 0)
+                    {
+                        uxInventoryStore.Reload();
+                        uxDeleteInventoryButton.Disable();
+                    }
                 }
                 uxChemicalStore.Reload();
+                uxDeleteChemicalButton.Disable();
+
             }
             else
             {
@@ -1849,10 +1881,26 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 ToDelete = _context.DAILY_ACTIVITY_CHEMICAL_MIX.Where(x => x.CHEMICAL_MIX_ID == MixId).Single();
             }
+            
+
+            //Get all records from this header where mix# is greater than the one that was deleted
+            using (Entities _context = new Entities())
+            {
+                var Updates = (from d in _context.DAILY_ACTIVITY_CHEMICAL_MIX
+                               where d.CHEMICAL_MIX_NUMBER > ToDelete.CHEMICAL_MIX_NUMBER && d.HEADER_ID == ToDelete.HEADER_ID
+                               select d).ToList();
+
+                //Loop through and update db
+                foreach (var ToUpdate in Updates)
+                {
+                    ToUpdate.CHEMICAL_MIX_NUMBER = ToUpdate.CHEMICAL_MIX_NUMBER - 1;
+                    _context.SaveChanges();
+                }
+
+            }
             RowSelectionModel sm = uxChemicalGrid.GetSelectionModel() as RowSelectionModel;
             GenericData.Delete(ToDelete);
-            uxChemicalStore.Reload();
-            uxInventoryStore.Reload();
+            X.Js.Call("parent.App.uxDetailsPanel.reload()");
         }
 
         [DirectMethod]
