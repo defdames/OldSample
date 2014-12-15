@@ -410,6 +410,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
 
         }
+
         public static DAILY_ACTIVITY.WarningData EmployeeBusinessUnitCheck(long EmployeeId)
         {
             using (Entities _context = new Entities())
@@ -508,7 +509,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                     join p in _context.PROJECTS_V on h.PROJECT_ID equals p.PROJECT_ID
                                     join em in _context.EMPLOYEES_V on e.PERSON_ID equals em.PERSON_ID
                                     where e.HEADER_ID == HeaderId
-                                    select new {e.EMPLOYEE_ID, e.PERSON_ID, em.EMPLOYEE_NAME, h.DA_DATE, e.TRAVEL_TIME, e.DRIVE_TIME, p.ORG_ID}).ToList();
+                                    select new { e.EMPLOYEE_ID, e.PERSON_ID, em.EMPLOYEE_NAME, h.DA_DATE, e.TRAVEL_TIME, e.DRIVE_TIME, p.ORG_ID }).ToList();
                 foreach (var Employee in EmployeeList)
                 {
                     var TotalMinutes = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
@@ -516,14 +517,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                         where EntityFunctions.TruncateTime(h.DA_DATE) == EntityFunctions.TruncateTime(Employee.DA_DATE) && d.PERSON_ID == Employee.PERSON_ID && h.STATUS != 5
                                         group d by new { d.PERSON_ID } into g
                                         select new { g.Key.PERSON_ID, TotalMinutes = g.Sum(d => EntityFunctions.DiffMinutes(d.TIME_IN.Value, d.TIME_OUT.Value)), TravelTime = g.Sum(d => d.TRAVEL_TIME), DriveTime = g.Sum(d => d.DRIVE_TIME) }).SingleOrDefault();
-                    
-                    if (Employee.ORG_ID == 121 && TotalMinutes != null) 
+
+                    if (Employee.ORG_ID == 121 && TotalMinutes != null)
                     {
                         decimal TotalTime = (decimal)TotalMinutes.TotalMinutes;
                         try
                         {
-                            decimal TravelDeduct = (decimal)((TotalMinutes.TravelTime == null ?0:TotalMinutes.TravelTime * 60));
-                            TotalTime = TotalTime - (decimal)(TotalMinutes.TravelTime == null ?0:TotalMinutes.TravelTime * 60) - (decimal)(TotalMinutes.DriveTime == null ?0:TotalMinutes.DriveTime * 60);
+                            decimal TravelDeduct = (decimal)((TotalMinutes.TravelTime == null ? 0 : TotalMinutes.TravelTime * 60));
+                            TotalTime = TotalTime - (decimal)(TotalMinutes.TravelTime == null ? 0 : TotalMinutes.TravelTime * 60) - (decimal)(TotalMinutes.DriveTime == null ? 0 : TotalMinutes.DriveTime * 60);
                         }
                         catch { }
                         if (TotalTime >= 308)
@@ -541,7 +542,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                     AdditionalInformation = string.Format("{0} has no lunch entered on {1}", Employee.EMPLOYEE_NAME, Employee.DA_DATE)
                                 });
                             }
-                            else if(LoggedLunches == 1)
+                            else if (LoggedLunches == 1)
                             {
                                 var LunchLength = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                                    join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
@@ -615,7 +616,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                             AdditionalInformation = string.Format("{0} has no lunch entered on {1}", Employee, HeaderDate.ToString("MM-dd-yyyy"))
                         };
                     }
-                    else if(LoggedLunches == 1)
+                    else if (LoggedLunches == 1)
                     {
                         var LunchLength = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                            join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
@@ -650,6 +651,21 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             return null;
         }
+
+        public static bool InventoryChemicalCheck(long HeaderId, string Type)
+        {
+            using (Entities _context = new Entities())
+            {
+                var count = _context.DAILY_ACTIVITY_INVENTORY.Where(x => x.HEADER_ID == HeaderId && x.CHEMICAL_MIX_ID == null).Count();
+                if (count != 0)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
+
         //public static List<EmployeeData> LunchCheck(long HeaderId)
         //{
         //    using (Entities _context = new Entities())
@@ -719,5 +735,5 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         //}
     }
 
-    
+
 }
