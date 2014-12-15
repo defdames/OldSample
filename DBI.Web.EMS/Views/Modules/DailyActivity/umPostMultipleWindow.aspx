@@ -46,7 +46,7 @@
                         </Columns>
                     </ColumnModel>
                     <SelectionModel>
-                        <ext:CheckboxSelectionModel runat="server" Mode="Multi" />
+                        <ext:CheckboxSelectionModel runat="server" Mode="Simple" />
                     </SelectionModel>
                     <BottomBar>
                         <ext:PagingToolbar runat="server" />
