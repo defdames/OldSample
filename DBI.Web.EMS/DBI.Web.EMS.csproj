@@ -1325,9 +1325,6 @@
     <Content Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\Modules\BudgetBidding\Reports\umRepProject.rdlc">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.rdlc" />
     <Content Include="Views\Modules\BudgetBidding\Reports\ProjectDetail.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
