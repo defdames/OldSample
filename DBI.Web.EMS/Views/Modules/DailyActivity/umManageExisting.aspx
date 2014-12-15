@@ -343,7 +343,16 @@
                                     <Items>
                                         <ext:Button runat="server" ID="uxCancelButton" Text="Cancel" Icon="Delete">
                                             <Listeners>
-                                                <Click Handler="#{uxTabPanel}.closeTab(#{uxDetailsPanel}); #{uxManageGrid}.getSelectionModel().deselectAll();" />
+                                                <Click Handler="#{uxTabPanel}.closeTab(#{uxDetailsPanel}); 
+                                                    #{uxManageGrid}.getSelectionModel().deselectAll(); 
+                                                    #{uxExportToPDF}.disable(); 
+                                                    #{uxExportPDFCombined}.disable(); 
+                                                    #{uxPostActivityButton}.disable(); 
+                                                    #{uxEmailPdf}.disable(); 
+                                                    #{uxEmailPDFCombined}.disable(); 
+                                                    #{uxApproveActivityButton}.disable(); 
+                                                    #{uxInactiveActivityButton}.disable(); 
+                                                    #{uxMarkAsPostedButton}.disable();" />
                                             </Listeners>
                                         </ext:Button>
                                         <ext:ToolbarSeparator runat="server" />
