@@ -343,7 +343,7 @@
                                     <Items>
                                         <ext:Button runat="server" ID="uxCancelButton" Text="Cancel" Icon="Delete">
                                             <Listeners>
-                                                <Click Handler="#{uxTabPanel}.closeTab(#{uxDetailsPanel})" />
+                                                <Click Handler="#{uxTabPanel}.closeTab(#{uxDetailsPanel}); #{uxManageGrid}.getSelectionModel().deselectAll();" />
                                             </Listeners>
                                         </ext:Button>
                                         <ext:ToolbarSeparator runat="server" />
