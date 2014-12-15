@@ -32,11 +32,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 Session["isDirty"] = 0;
                 GetInventoryDropDown();
                 GetHeaderData();
-                GetEmployeeDataWithWarnings();
-                GetEquipmentDataWithWarnings();
-                GetInventoryDataWithWarnings();
                 GetFooterData();
-                GetWarnings();
+                
 
                 uxAddWeatherWindStore.Data = StaticLists.WindDirection;
                 uxStateList.Data = StaticLists.StateList;
@@ -139,10 +136,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
              
         }
 
-        protected void GetWarnings()
+        protected void deGetWarnings(object sender, StoreReadDataEventArgs e)
         {
             int Status = GetStatus(long.Parse(Request.QueryString["HeaderId"]));
-
+            GetEmployeeWarnings();
+            GetEquipmentWarnings();
+            GetInventoryWarnings();
             if (WarningList.Count > 0)
             {
                 uxWarningStore.DataSource = WarningList;
@@ -187,7 +186,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
-        protected void GetEmployeeDataWithWarnings()
+        protected void GetEmployeeWarnings()
         {
             //Query and set datasource for employees
             List<DAILY_ACTIVITY.EmployeeDetails> data;
@@ -269,10 +268,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
 
             }
-
-            uxEmployeeStore.Data = data;
-            
-
         }
 
         /// <summary>
@@ -290,7 +285,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
-        protected void GetEquipmentDataWithWarnings()
+        protected void GetEquipmentWarnings()
         {
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
             List<DAILY_ACTIVITY.EquipmentDetails> data;
@@ -320,7 +315,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     WarningList.Add(MeterWarning);
                 }
             }
-            uxEquipmentStore.Data = data;
         }
 
         
@@ -382,15 +376,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
-        protected void GetInventoryDataWithWarnings()
+        protected void GetInventoryWarnings()
         {
             //Query and set datasource for Inventory
             using (Entities _context = new Entities())
             {
                 long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
                 var data = DAILY_ACTIVITY.GetDBIInventoryData(_context, HeaderId).ToList();
-                uxInventoryStore.Data = data;
-
+                
                 foreach (var item in data)
                 {
                     if (item.CHEMICAL_MIX_ID == null)
@@ -992,6 +985,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxDeleteEmployeeButton.Enable();
             uxChooseLunchHeaderButton.Enable();
             uxChoosePerDiemButton.Enable();
+            uxWarningStore.Reload();
         }
 
         protected void deSaveEquipment(object sender, DirectEventArgs e)
@@ -1064,6 +1058,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxDeleteEquipmentButton.Enable();
             X.Js.Call("checkEditing");
             uxEquipmentSM.SetLocked(false);
+            uxWarningStore.Reload();
             uxEmployeeEqStore.Reload();
         }
 
@@ -1277,6 +1272,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             X.Js.Call("checkEditing");
             uxChemicalSelection.SetLocked(false);
             uxAddInventoryMixStore.Reload();
+            uxWarningStore.Reload();
         }
 
         protected void deSaveInventory(object sender, DirectEventArgs e)
@@ -1376,6 +1372,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             X.Js.Call("checkEditing");
             uxInventorySelection.SetLocked(false);
             uxDeleteInventoryButton.Enable();
+            uxWarningStore.Reload();
         }
 
         protected void deSaveAttachment(object sender, DirectEventArgs e)
@@ -1696,6 +1693,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             uxDeleteEmployeeButton.Disable();
             uxChooseLunchHeaderButton.Disable();
             uxChoosePerDiemButton.Disable();
+            uxWarningStore.Reload();
         }
 
         [DirectMethod]
@@ -1713,9 +1711,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             if (EmployeeCheck.Count == 0)
             {
                 GenericData.Delete(DeletedEquipment);
-                uxEquipmentStore.Reload();
-                uxEmployeeEqStore.Reload();
+                uxEmployeeStore.Reload();
+                uxWarningStore.Reload();
                 uxDeleteEquipmentButton.Disable();
+                uxEmployeeEqStore.Reload();
+                
             }
             else
             {
@@ -1760,11 +1760,12 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             RowSelectionModel sm = uxEquipmentGrid.GetSelectionModel() as RowSelectionModel;
 
-            uxEmployeeStore.Reload();
+            uxEmployeeStore.Reload(); 
+            uxWarningStore.Reload();
+
             uxEquipmentStore.Reload();
             uxEmployeeEqStore.Reload();
             uxDeleteEquipmentButton.Disable();
-
         }
 
         [DirectMethod]
@@ -1900,7 +1901,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             RowSelectionModel sm = uxChemicalGrid.GetSelectionModel() as RowSelectionModel;
             GenericData.Delete(ToDelete);
-            X.Js.Call("parent.App.uxDetailsPanel.reload()");
+            uxWarningStore.Reload();
         }
 
         [DirectMethod]
@@ -1914,6 +1915,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             GenericData.Delete(DeletedInventory);
             uxDeleteInventoryButton.Disable();
+            uxWarningStore.Reload();
         }
 
         [DirectMethod]

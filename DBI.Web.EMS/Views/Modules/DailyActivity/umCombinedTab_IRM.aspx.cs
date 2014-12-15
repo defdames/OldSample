@@ -32,10 +32,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 Session["isDirty"] = 0;
                 GetInventoryDropDown();
                 GetHeaderData();
-                GetEmployeeDataWithWarnings();
-                GetEquipmentDataWithWarnings();
                 GetFooterData();
-                GetWarnings();
 
                 uxAddProductionSurfaceTypeStore.Data = StaticLists.SurfaceTypes;
                 uxStateList.Data = StaticLists.StateList;
@@ -99,10 +96,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
-        protected void GetWarnings()
+        protected void deGetWarnings(object sender, StoreReadDataEventArgs e)
         {
             int Status = GetStatus(long.Parse(Request.QueryString["HeaderId"]));
-
+            GetEmployeeWarnings();
+            GetEquipmentWarnings();
             if (WarningList.Count > 0)
             {
                 uxWarningStore.DataSource = WarningList;
@@ -189,7 +187,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         /// <summary>
         /// Get data for Employee/Equipment grid
         /// </summary>
-        protected void GetEmployeeDataWithWarnings()
+        protected void GetEmployeeWarnings()
         {
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
             var data = GetEmployeeData();
@@ -277,7 +275,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
         }
 
-        protected void GetEquipmentDataWithWarnings()
+        protected void GetEquipmentWarnings()
         {
             var data = GetEquipmentData();
             foreach (var item in data)
@@ -985,6 +983,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
                 Record.Commit();
             }
+            uxWarningStore.Reload();
             uxEmployeeStore.CommitChanges();
             uxAddEmployeeButton.Enable();
             X.Js.Call("checkEditing");
@@ -1058,7 +1057,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 Record.Set("SEGMENT1", EquipmentItem.SEGMENT1);
                 Record.Commit();
             }
-            
+            uxWarningStore.Reload();
             uxEquipmentStore.CommitChanges();
             uxAddEquipmentButton.Enable();
             uxDeleteEquipmentButton.Enable();
@@ -1577,6 +1576,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             GenericData.Delete<DAILY_ACTIVITY_EMPLOYEE>(DeletedEmployee);
             uxDeleteEmployeeButton.Disable();
             uxChoosePerDiemButton.Disable();
+            uxWarningStore.Reload();
 
         }
 
@@ -1595,6 +1595,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             if (EmployeeCheck.Count == 0)
             {
                 GenericData.Delete(DeletedEquipment);
+                uxWarningStore.Reload();
                 uxEquipmentStore.Reload();
                 uxEmployeeEqStore.Reload();
                 uxDeleteEquipmentButton.Disable();
@@ -1642,6 +1643,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             RowSelectionModel sm = uxEquipmentGrid.GetSelectionModel() as RowSelectionModel;
 
+            uxWarningStore.Reload();
             uxEmployeeStore.Reload();
             uxEquipmentStore.Reload();
             uxEmployeeEqStore.Reload();

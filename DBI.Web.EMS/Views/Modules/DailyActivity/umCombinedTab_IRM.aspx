@@ -795,7 +795,7 @@
                     Padding="10"
                     MaxWidth="1400">
                     <Store>
-                        <ext:Store runat="server" ID="uxWarningStore">
+                        <ext:Store runat="server" ID="uxWarningStore" OnReadData="deGetWarnings" AutoDataBind="true">
                             <Model>
                                 <ext:Model ID="Model1" runat="server">
                                     <Fields>
@@ -808,6 +808,9 @@
                             <Sorters>
                                 <ext:DataSorter Property="WarningType" Direction="ASC" />
                             </Sorters>
+                            <Proxy>
+                                <ext:PageProxy />
+                            </Proxy>
                         </ext:Store>
                     </Store>
                     <ColumnModel ID="ColumnModel1" runat="server">
@@ -828,7 +831,7 @@
                     MaxWidth="1400" MinHeight="250">
                     <Store>
                         <ext:Store runat="server"
-                            ID="uxEmployeeStore" OnReadData="deGetEmployeeData" AutoLoad="false">
+                            ID="uxEmployeeStore" OnReadData="deGetEmployeeData">
                             <Model>
                                 <ext:Model ID="Model2" runat="server" Name="Employee" IDProperty="EMPLOYEE_ID" ClientIdProperty="PhantomId">
                                     <Fields>
@@ -1034,7 +1037,7 @@
                                         ID="uxAddEmployeeLicense" Width="500" />
                                 </Editor>
                             </ext:Column>
-                            <ext:DateColumn ID="DateColumn2" runat="server" DataIndex="TIME_IN" Text="Time In" Flex="7" Format="M/d/yyyy">
+                            <ext:DateColumn ID="DateColumn2" runat="server" DataIndex="TIME_IN" Text="Date In" Flex="7" Format="M/d/yyyy">
                                 <Editor>
                                     <ext:DateField runat="server" ID="uxEmployeeTimeInDate" AllowBlank="false" InvalidCls="allowBlank" ReadOnly="true">
                                         <Validator Fn="dateTimeValidator" />
@@ -1048,7 +1051,7 @@
                                     </ext:TimeField>
                                 </Editor>
                             </ext:DateColumn>
-                            <ext:DateColumn ID="DateColumn3" runat="server" DataIndex="TIME_OUT" Text="Time Out" Flex="9" Format="M/d/yyyy">
+                            <ext:DateColumn ID="DateColumn3" runat="server" DataIndex="TIME_OUT" Text="Date Out" Flex="9" Format="M/d/yyyy">
                                 <Editor>
                                     <ext:DateField ID="uxEmployeeTimeOutDate" runat="server" AllowBlank="false" InvalidCls="allowBlank">
                                         <Validator Fn="dateTimeValidator" />
@@ -1246,7 +1249,7 @@
                     MaxWidth="1400" MinHeight="250">
                     <Store>
                         <ext:Store runat="server"
-                            ID="uxEquipmentStore" OnReadData="deGetEquipmentData" AutoLoad="false">
+                            ID="uxEquipmentStore" OnReadData="deGetEquipmentData">
                             <Model>
                                 <ext:Model ID="Model5" runat="server" Name="Equipment" IDProperty="EQUIPMENT_ID" ClientIdProperty="PhantomId">
                                     <Fields>

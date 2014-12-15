@@ -110,7 +110,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             using (Entities _context = new Entities())
             {
                 DAILY_ACTIVITY_EQUIPMENT EquipmentRecord = DAILY_ACTIVITY.GetEquipment(_context, EquipmentID).Single();
-                if (EquipmentRecord.ODOMETER_START == 0 || EquipmentRecord.ODOMETER_END == 0)
+                if (EquipmentRecord.ODOMETER_START == 0 || EquipmentRecord.ODOMETER_END == 0 || EquipmentRecord.ODOMETER_END == null || EquipmentRecord.ODOMETER_START == null)
                 {
                     string Name = (from e in _context.DAILY_ACTIVITY_EQUIPMENT
                                    join p in _context.PROJECTS_V on e.PROJECT_ID equals p.PROJECT_ID
