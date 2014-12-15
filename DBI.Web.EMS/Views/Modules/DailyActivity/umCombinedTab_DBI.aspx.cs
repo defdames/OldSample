@@ -166,7 +166,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             else
             {
-                uxWarningGrid.Hide();
                 switch (Status)
                 {
                     case 2:
@@ -1712,6 +1711,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             {
                 GenericData.Delete(DeletedEquipment);
                 uxEmployeeStore.Reload();
+                uxEquipmentStore.Reload();
                 uxWarningStore.Reload();
                 uxDeleteEquipmentButton.Disable();
                 uxEmployeeEqStore.Reload();
