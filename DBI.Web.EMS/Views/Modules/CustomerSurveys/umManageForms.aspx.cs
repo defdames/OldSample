@@ -71,6 +71,9 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 var FilteredData = GenericData.ListFilterHeader<SURVEY_QUESTIONS>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                 foreach (var item in FilteredData)
                 {
+                    item.QUESTION_TYPE_NAME = item.SURVEY_QUES_TYPES.QUESTION_TYPE_NAME;
+                    item.TITLE = item.SURVEY_RELATION.Where(x => x.QUESTION_ID == item.QUESTION_ID).Select(x => x.SURVEY_FIELDSETS.TITLE).Single();
+                    item.FIELDSET_ID = item.SURVEY_RELATION.Where(x => x.QUESTION_ID == item.QUESTION_ID).Select(x => x.SURVEY_FIELDSETS.FIELDSET_ID).Single();
                     item.ACTIVE = (item.IS_ACTIVE == "Y" ? true : false);
                     item.REQUIRED = (item.IS_REQUIRED == "Y" ? true : false);
                 }
@@ -84,14 +87,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             using (Entities _context = new Entities())
             {
                 decimal QuestionId = decimal.Parse(e.Parameters["QuestionId"]);
-                IQueryable<SURVEY_OPTIONS> data = CUSTOMER_SURVEYS.GetQuestionOptions(QuestionId, _context).Select(d => new SURVEY_OPTIONS{OPTION_ID = d.OPTION_ID, QUESTION_ID = d.QUESTION_ID, TEXT = d.SURVEY_QUESTIONS.TEXT,    ACTIVE = (d.IS_ACTIVE == "Y" ? true : false), OPTION_NAME = d.OPTION_NAME, SORT_ORDER = d.SORT_ORDER});
+                IQueryable<SURVEY_OPTIONS> data = CUSTOMER_SURVEYS.GetQuestionOptions(QuestionId, _context);
                 int count;
                 var FilteredData = GenericData.ListFilterHeader<SURVEY_OPTIONS>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                 foreach (var item in FilteredData)
                 {
                     item.ACTIVE = (item.IS_ACTIVE == "Y" ? true : false);
+                    item.TEXT = item.SURVEY_QUESTIONS.TEXT;
                 }
-                uxOptionsStore.DataSource = 
+                uxOptionsStore.DataSource = FilteredData;
                 e.Total = count;
             }
         }
@@ -121,6 +125,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 uxQuestionCategoryStore.DataSource = _context.SURVEY_QUES_CAT.ToList();
             }
         }
+
         protected void deReadQuestionFieldsets(object sender, StoreReadDataEventArgs e)
         {
             using (Entities _context = new Entities())
@@ -139,6 +144,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 uxCopyFormOrgStore.DataSource = _context.ORG_HIER_V.Distinct().Where(x => OrgsList.Contains(x.ORG_ID)).ToList();
             }
         }
+
         protected void deReadQuestionTypes(object sender, StoreReadDataEventArgs e)
         {
             using (Entities _context = new Entities())
@@ -189,7 +195,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 Record.SetId(NewForm.FORM_ID);
                 Record.Set("TYPE_ID", NewForm.TYPE_ID);
                 Record.Commit();
-                uxFormTypeStore.Reload();
+                //uxFormTypeStore.Reload();
                 uxAddFieldsetButton.Enable();
                 uxAddQuestionButton.Enable();
             }
@@ -234,6 +240,9 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             uxDeleteFormButton.Enable();
             uxCopyFormButton.Enable();
             uxViewFormButton.Enable();
+            uxFieldsetsStore.Reload();
+            uxQuestionsStore.Reload();
+            uxOptionsStore.Reload();
         }
 
         protected void deSaveFieldsets(object sender, DirectEventArgs e)

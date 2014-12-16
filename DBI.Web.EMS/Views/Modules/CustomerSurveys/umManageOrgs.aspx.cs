@@ -34,7 +34,12 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 {
                     IQueryable<CUSTOMER_SURVEY_THRESH_AMT> Amounts = CUSTOMER_SURVEYS.GetOrganizationThresholdAmounts(OrgID, _context);
                     int count;
-                    uxDollarStore.DataSource = GenericData.ListFilterHeader(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], Amounts, out count);
+                    var data = GenericData.ListFilterHeader(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], Amounts, out count);
+                    foreach (var item in data)
+                    {
+                        item.ORG_HIER = _context.ORG_HIER_V.Where(x => x.ORG_ID == item.ORG_ID).Select(x => x.ORG_HIER).Distinct().Single();
+                    }
+                    uxDollarStore.DataSource = data;
                     e.Total = count;
                 }
             }
@@ -158,9 +163,12 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
         {
             using (Entities _context = new Entities())
             {
-                decimal AmountId = decimal.Parse(e.Parameters["AmountId"]);
-                List<CUSTOMER_SURVEY_THRESHOLDS> Threshold = CUSTOMER_SURVEYS.GetThresholdPercentages(AmountId, _context).Include(x => x.CUSTOMER_SURVEY_THRESH_AMT).ToList();
-                uxThresholdStore.DataSource = Threshold;
+                if (e.Parameters["AmountId"] != null)
+                {
+                    decimal AmountId = decimal.Parse(e.Parameters["AmountId"]);
+                    List<CUSTOMER_SURVEY_THRESHOLDS> Threshold = CUSTOMER_SURVEYS.GetThresholdPercentages(AmountId, _context).Include(x => x.CUSTOMER_SURVEY_THRESH_AMT).ToList();
+                    uxThresholdStore.DataSource = Threshold;
+                }
             }
         }
 

@@ -36,7 +36,7 @@ namespace DBI.Data
             return (from q in _context.SURVEY_RELATION
                     orderby q.SORT_ORDER ascending
                     where q.FIELDSET_ID == FieldSetId
-                    select new SURVEY_QUESTIONS { QUESTION_ID = q.SURVEY_QUESTIONS.QUESTION_ID, TEXT = q.SURVEY_QUESTIONS.TEXT, ACTIVE = (q.SURVEY_QUESTIONS.IS_ACTIVE == "Y" ? true : false), REQUIRED = (q.SURVEY_QUESTIONS.IS_REQUIRED == "Y" ? true : false), TYPE_ID = q.SURVEY_QUESTIONS.TYPE_ID, SORT_ORDER = q.SURVEY_QUESTIONS.SORT_ORDER, QUESTION_TYPE_NAME = q.SURVEY_QUESTIONS.SURVEY_QUES_TYPES.QUESTION_TYPE_NAME });
+                    select q.SURVEY_QUESTIONS);
         }
 
         public static IQueryable<SURVEY_QUESTIONS> GetFieldsetQuestions(decimal FieldsetId, Entities _context)
@@ -58,7 +58,7 @@ namespace DBI.Data
                     join q in _context.SURVEY_QUESTIONS on fsr.QUESTION_ID equals q.QUESTION_ID
                     join qt in _context.SURVEY_QUES_TYPES on q.TYPE_ID equals qt.TYPE_ID
                     where fs.FORM_ID == FormId
-                    select new SURVEY_QUESTIONS { QUESTION_ID = q.QUESTION_ID, TEXT = q.TEXT, TYPE_ID = qt.TYPE_ID, QUESTION_TYPE_NAME = qt.QUESTION_TYPE_NAME, REQUIRED = (q.IS_REQUIRED == "Y" ? true : false), FIELDSET_ID = fs.FIELDSET_ID, TITLE = fs.TITLE, SORT_ORDER = q.SORT_ORDER, ACTIVE = (q.IS_ACTIVE == "Y" ? true: false) });
+                    select q);
         }
 
         public static IQueryable<SURVEY_QUESTIONS> GetFormQuestion2(decimal FormId, Entities _context)
@@ -102,7 +102,7 @@ namespace DBI.Data
                     join o in _context.ORG_HIER_V on c.ORG_ID equals o.ORG_ID
                     join f in _context.SURVEY_TYPES on c.TYPE_ID equals f.TYPE_ID
                     where c.ORG_ID == OrgID
-                    select new CUSTOMER_SURVEY_THRESH_AMT { AMOUNT_ID = c.AMOUNT_ID, HIGH_DOLLAR_AMT = c.HIGH_DOLLAR_AMT, LOW_DOLLAR_AMT = c.LOW_DOLLAR_AMT, ORG_HIER = o.ORG_HIER, TYPE_NAME = f.TYPE_NAME, TYPE_ID = f.TYPE_ID }).Distinct();
+                    select c).Distinct();
         }
 
         public static CUSTOMER_SURVEY_THRESH_AMT GetOrganizationThresholdAmount(decimal AmountId, Entities _context)
@@ -122,7 +122,7 @@ namespace DBI.Data
 
         public static IQueryable<SURVEY_CAT> GetCategories(Entities _context)
         {
-            return _context.SURVEY_CAT.Select(x => new SURVEY_CAT{CATEGORY_ID = x.CATEGORY_ID, DESCRIPTION = x.DESCRIPTION, NAME = x.NAME, NUM_FORMS = x.SURVEY_FORMS.Count});
+            return _context.SURVEY_CAT;
         }
 
         public static SURVEY_CAT GetCategory(decimal CategoryId, Entities _context)

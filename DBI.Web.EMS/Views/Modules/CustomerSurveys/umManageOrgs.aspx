@@ -45,16 +45,89 @@
 
         var cancelEditRow = function (value) {
             if (value == 'dollar') {
-                if (!App.uxDollarGrid.getSelectionModel().getSelection()[0].data.AMOUNT_ID) {
-                    App.uxDollarStore.remove(App.uxDollarGrid.getSelectionModel().getSelection()[0]);
+                if (!App.uxDollarStore.getAt(0).data.AMOUNT_ID) {
+                    App.uxDollarStore.removeAt(0);
+                }
+                else {
+                    App.uxDeleteDollarButton.enable();
+                }
+                App.uxAddDollarButton.enable();
+                App.uxDollarSelection.setLocked(false);
+            }
+            else {
+                if (!App.uxThresholdStore.getAt(0).data.THRESHOLD_ID) {
+                    App.uxThresholdStore.removeAt(0);
+                }
+                else {
+                    App.uxDeleteThresholdButton.enable();
+                }
+                App.uxAddThresholdButton.enable();
+                App.uxThresholdSelection.setLocked(false);
+            }
+            checkEditing();
+        };
+
+        var AddDollarThreshold = function () {
+            App.uxDollarStore.insert(0, new DollarThreshold());
+            App.uxDollarSelection.select(0);
+            var task = new Ext.util.DelayedTask(function () {
+                App.uxDollarRowEdit.startEdit(0, 0);
+            });
+            task.delay(300);
+
+            // Create DelayedTask and call it after 100 ms
+            task = new Ext.util.DelayedTask(function () {
+                App.uxDollarGrid.columns[1].getEditor().focusInput();
+            });
+            task.delay(400);
+        };
+
+        var AddThreshold = function () {
+            App.uxThresholdStore.insert(0, new Threshold());
+            App.uxThresholdSelection.select(0);
+            var task = new Ext.util.DelayedTask(function () {
+                App.uxThresholdRowEdit.startEdit(0, 0);
+            });
+            task.delay(300);
+
+            // Create DelayedTask and call it after 100 ms
+            task = new Ext.util.DelayedTask(function () {
+                App.uxThresholdGrid.columns[1].getEditor().focusInput();
+            });
+            task.delay(400);
+        };
+
+        var onBeforeEdit = function (value) {
+            if (value == "dollar") {
+
+                if (App.uxDollarRowEdit.editing)
+                    return false;
+                else {
+                    App.direct.dmSetDirty('true');
+                    App.uxDeleteDollarButton.disable();
+                    App.uxDollarSelection.setLocked(true);
+                    return true;
                 }
             }
             else {
-                if (!App.uxThresholdGrid.getSelectionModel().getSelection()[0].data.THRESHOLD_ID) {
-                    App.uxThresholdStore.remove(App.uxThresholdGrid.getSelectionModel().getSelection()[0]);
+                if (App.uxThresholdRowEdit.editing)
+                    return false;
+                else {
+                    App.direct.dmSetDirty('true');
+                    App.uxDeleteThresholdButton.disable();
+                    App.uxThresholdSelection.setLocked(true);
+                    return true;
                 }
             }
-            //App.direct.dmSubtractFromDirty();
+        };
+
+        var checkEditing = function () {
+            if (App.uxThresholdRowEdit.editing || App.uxDollarRowEdit.editing) {
+                App.direct.dmSetDirty('true');
+            }
+            else {
+                App.direct.dmSetDirty('false');
+            }
         };
     </script>
 </head>
@@ -163,7 +236,13 @@
                         <ext:RowEditing runat="server" ID="uxDollarRowEdit" ClicksToEdit="2" ClicksToMoveEditor="1" AutoCancel="false" ErrorSummary="false">
                             <Listeners>
                                 <CancelEdit Handler="cancelEditRow('dollar')" />
-                                <%--<BeforeEdit Handler="App.direct.dmAddToDirty()" />--%>
+                                <BeforeEdit Handler="if(onBeforeEdit('dollar')){
+                                    #{uxAddDollarButton}.disable();
+                                    return true;
+                                    }
+                                    else{
+                                    return false;
+                                    }" />
                             </Listeners>
                             <DirectEvents>
                                 <Edit OnEvent="deSaveDollar" Before="return #{uxDollarStore}.isDirty()">
@@ -175,19 +254,18 @@
                         </ext:RowEditing>
                     </Plugins>
                     <Listeners>
-                        <Select Handler="#{uxDeleteDollarButton}.enable(); #{uxAddThresholdButton}.enable(); #{uxThresholdStore}.reload();" />
+                        <Select Handler="#{uxDeleteDollarButton}.enable(); 
+                            if(!#{uxThresholdRowEdit}.editing){
+                            #{uxAddThresholdButton}.enable(); 
+                            #{uxThresholdStore}.reload();
+                            }" />
                     </Listeners>
                     <TopBar>
                         <ext:Toolbar runat="server">
                             <Items>
                                 <ext:Button runat="server" ID="uxAddDollarButton" Icon="ApplicationAdd" Text="Add" Disabled="true">
                                     <Listeners>
-                                        <Click Handler="#{uxDollarStore}.insert(0, new DollarThreshold()); #{uxDollarRowEdit}.startEdit(0, 0);
-                                                            // Create DelayedTask and call it after 100 ms
-                                                            var task = new Ext.util.DelayedTask(function(){
-                                                            #{uxDollarGrid}.columns[1].getEditor().focusInput();
-                                                            });
-                                                            task.delay(100);" />
+                                        <Click Fn="AddDollarThreshold" />
                                     </Listeners>
                                 </ext:Button>
                                 <ext:Button runat="server" ID="uxDeleteDollarButton" Icon="ApplicationDelete" Text="Delete" Disabled="true">
@@ -207,6 +285,9 @@
                     <BottomBar>
                         <ext:PagingToolbar runat="server" />
                     </BottomBar>
+                    <SelectionModel>
+                        <ext:RowSelectionModel runat="server" Mode="Single" ID="uxDollarSelection" />
+                    </SelectionModel>
                 </ext:GridPanel>
                 <ext:GridPanel runat="server" ID="uxThresholdGrid" Region="Center" Title="Threshold Percentages" PaddingSpec="10 10 30 10" MinHeight="250">
                     <Store>
@@ -214,7 +295,7 @@
                             <Model>
                                 <ext:Model runat="server" Name="Threshold" IDProperty="THRESHOLD_ID" ClientIdProperty="PhantomId">
                                     <Fields>
-                                        <ext:ModelField Name="AMOUNT_ID" />
+                                        <ext:ModelField Name="AMOUNT_ID" DefaultValue="0" />
                                         <ext:ModelField Name="LOW_DOLLAR" ServerMapping="CUSTOMER_SURVEY_THRESH_AMT.LOW_DOLLAR_AMT" />
                                         <ext:ModelField Name="HIGH_DOLLAR" ServerMapping="CUSTOMER_SURVEY_THRESH_AMT.HIGH_DOLLAR_AMT" />
                                         <ext:ModelField Name="THRESHOLD" />
@@ -230,6 +311,9 @@
                             </Proxy>
                         </ext:Store>
                     </Store>
+                    <SelectionModel>
+                        <ext:RowSelectionModel runat="server" Mode="Single" ID="uxThresholdSelection" />
+                    </SelectionModel>
                     <ColumnModel>
                         <Columns>
                             <ext:Column runat="server" Text="Low Dollar" DataIndex="LOW_DOLLAR" />
@@ -246,12 +330,7 @@
                             <Items>
                                 <ext:Button runat="server" ID="uxAddThresholdButton" Text="Add" Icon="ApplicationAdd" Disabled="true">
                                     <Listeners>
-                                        <Click Handler="#{uxThresholdStore}.insert(0, new Threshold()); #{uxThresholdRowEdit}.startEdit(0, 0);
-                                                            // Create DelayedTask and call it after 100 ms
-                                                            var task = new Ext.util.DelayedTask(function(){
-                                                            #{uxThresholdGrid}.columns[2].getEditor().focusInput();
-                                                            });
-                                                            task.delay(100);" />
+                                        <Click Fn="AddThreshold" />
                                     </Listeners>
                                 </ext:Button>
                                 <ext:Button runat="server" ID="uxDeleteThresholdButton" Text="Delete" Icon="ApplicationDelete" Disabled="true">
@@ -274,7 +353,13 @@
                     <Plugins>
                         <ext:RowEditing runat="server" ID="uxThresholdRowEdit" ClicksToEdit="2" ClicksToMoveEditor="1" ErrorSummary="false" AutoCancel="false">
                             <Listeners>
-                                <%--<BeforeEdit Handler="App.direct.dmAddToDirty()" />--%>
+                                <BeforeEdit Handler="if(onBeforeEdit('threshold')){
+                                    #{uxAddThresholdButton}.disable();
+                                    return true;
+                                    }
+                                    else{
+                                    return false;
+                                    }" />
                                 <CancelEdit Handler="cancelEditRow('threshold')" />
                             </Listeners>
                             <DirectEvents>
