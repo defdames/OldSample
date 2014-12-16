@@ -23,7 +23,7 @@
                 App.uxCommentField.focusInput();
             });
             task.delay(200);
-            
+
         };
 
         var AddEmployee = function () {
@@ -615,6 +615,27 @@
 <body>
     <ext:ResourceManager ID="ResourceManager1" runat="server" IsDynamic="False" />
     <ext:Store runat="server"
+        ID="uxEmployeeEqStore"
+        OnReadData="deReadEquipmentData"
+        AutoDataBind="true" AutoLoad="true" ClearOnPageLoad="false">
+        <Model>
+            <ext:Model ID="Model9" runat="server" IDProperty="EQUIPMENT_ID">
+                <Fields>
+                    <ext:ModelField Name="EQUIPMENT_ID" Type="Int" />
+                    <ext:ModelField Name="NAME" Type="String" />
+                    <ext:ModelField Name="SEGMENT1" Type="String" />
+                    <ext:ModelField Name="ORGANIZATION_NAME" />
+                    <ext:ModelField Name="CLASS_CODE" />
+                    <ext:ModelField Name="ODOMETER_START" />
+                    <ext:ModelField Name="ODOMETER_END" />
+                </Fields>
+            </ext:Model>
+        </Model>
+        <Proxy>
+            <ext:PageProxy />
+        </Proxy>
+    </ext:Store>
+    <ext:Store runat="server"
         ID="uxAddInventoryItemStore"
         RemoteSort="true"
         OnReadData="deReadItems"
@@ -975,30 +996,7 @@
                                         <Component>
                                             <ext:GridPanel runat="server"
                                                 ID="uxEmployeeEqGrid"
-                                                Layout="HBoxLayout">
-                                                <Store>
-                                                    <ext:Store runat="server"
-                                                        ID="uxEmployeeEqStore"
-                                                        OnReadData="deReadEquipmentData"
-                                                        AutoDataBind="true" AutoLoad="true" ClearOnPageLoad="false">
-                                                        <Model>
-                                                            <ext:Model ID="Model9" runat="server" IDProperty="EQUIPMENT_ID">
-                                                                <Fields>
-                                                                    <ext:ModelField Name="EQUIPMENT_ID" Type="Int" />
-                                                                    <ext:ModelField Name="NAME" Type="String" />
-                                                                    <ext:ModelField Name="SEGMENT1" Type="String" />
-                                                                    <ext:ModelField Name="ORGANIZATION_NAME" />
-                                                                    <ext:ModelField Name="CLASS_CODE" />
-                                                                    <ext:ModelField Name="ODOMETER_START" />
-                                                                    <ext:ModelField Name="ODOMETER_END" />
-                                                                </Fields>
-                                                            </ext:Model>
-                                                        </Model>
-                                                        <Proxy>
-                                                            <ext:PageProxy />
-                                                        </Proxy>
-                                                    </ext:Store>
-                                                </Store>
+                                                Layout="HBoxLayout" StoreID="uxEmployeeEqStore">
                                                 <ColumnModel>
                                                     <Columns>
                                                         <ext:Column ID="Column12" runat="server" Text="Name" DataIndex="NAME" Flex="15" />
