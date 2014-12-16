@@ -27,16 +27,16 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             int count;
             using (Entities _context = new Entities())
             {
-                uxCategoriesStore.DataSource = GenericData.ListFilterHeader<CUSTOMER_SURVEYS.CustomerSurveyCategoryStore>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], CUSTOMER_SURVEYS.GetCategories(_context), out count);
+                uxCategoriesStore.DataSource = GenericData.ListFilterHeader<SURVEY_CAT>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], CUSTOMER_SURVEYS.GetCategories(_context), out count);
                 e.Total = count;
             }
         }
 
         protected void deSaveCategory(object sender, DirectEventArgs e)
         {
-            ChangeRecords<CUSTOMER_SURVEYS.CustomerSurveyCategoryStore> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<CUSTOMER_SURVEYS.CustomerSurveyCategoryStore>();
+            ChangeRecords<SURVEY_CAT> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<SURVEY_CAT>();
 
-            foreach (CUSTOMER_SURVEYS.CustomerSurveyCategoryStore item in data.Created)
+            foreach (SURVEY_CAT item in data.Created)
             {
                 SURVEY_CAT ToBeSaved = new SURVEY_CAT();
                 ToBeSaved.NAME = item.NAME;
@@ -54,7 +54,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 Record.Commit();
             }
 
-            foreach (CUSTOMER_SURVEYS.CustomerSurveyCategoryStore item in data.Updated)
+            foreach (SURVEY_CAT item in data.Updated)
             {
                 SURVEY_CAT ToBeUpdated;
 
@@ -78,8 +78,8 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             using (Entities _context = new Entities())
             {
                 int count;
-                IQueryable<CUSTOMER_SURVEYS.CustomerSurveyQuestionCategoryStore> data = CUSTOMER_SURVEYS.GetQuestionCategories(_context);
-                var test = GenericData.ListFilterHeader<CUSTOMER_SURVEYS.CustomerSurveyQuestionCategoryStore>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                IQueryable<SURVEY_QUES_CAT> data = CUSTOMER_SURVEYS.GetQuestionCategories(_context);
+                var test = GenericData.ListFilterHeader<SURVEY_QUES_CAT>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
                 uxQuestionCategoryStore.DataSource = test;
                 e.Total = count;
             }
@@ -87,9 +87,9 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
         protected void deSaveQuestionCategory(object sender, DirectEventArgs e)
         {
-            ChangeRecords<CUSTOMER_SURVEYS.CustomerSurveyQuestionCategoryStore> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<CUSTOMER_SURVEYS.CustomerSurveyQuestionCategoryStore>();
+            ChangeRecords<SURVEY_QUES_CAT> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<SURVEY_QUES_CAT>();
 
-            foreach (CUSTOMER_SURVEYS.CustomerSurveyQuestionCategoryStore item in data.Created)
+            foreach (SURVEY_QUES_CAT item in data.Created)
             {
                 SURVEY_QUES_CAT NewCategory = new SURVEY_QUES_CAT();
                 NewCategory.CATEGORY_NAME = item.CATEGORY_NAME;
@@ -101,7 +101,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 Record.Commit();
             }
 
-            foreach (CUSTOMER_SURVEYS.CustomerSurveyQuestionCategoryStore item in data.Updated)
+            foreach (SURVEY_QUES_CAT item in data.Updated)
             {
                 SURVEY_QUES_CAT CategoryToEdit;
 

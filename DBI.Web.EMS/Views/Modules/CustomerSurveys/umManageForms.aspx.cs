@@ -38,7 +38,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 IQueryable<SURVEY_FORMS> FormData = CUSTOMER_SURVEYS.GetForms(_context);
                 int count;
                 List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
-                IQueryable<SURVEY_FORMS> AllData = FormData.Where(x => OrgsList.Contains((long)x.ORG_ID)).Select(x => new SURVEY_FORMS { FORM_ID = x.FORM_ID, FORMS_NAME = x.FORMS_NAME, ORG_ID = x.ORG_ID, CATEGORY_ID = x.CATEGORY_ID, TYPE_ID = x.TYPE_ID });
+                IQueryable<SURVEY_FORMS> AllData = FormData.Where(x => OrgsList.Contains((long)x.ORG_ID));
                 List<SURVEY_FORMS> Data = GenericData.ListFilterHeader<SURVEY_FORMS>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], AllData, out count);
                 foreach (SURVEY_FORMS ThisForm in Data)
                 {
@@ -68,7 +68,13 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
                 IQueryable<SURVEY_QUESTIONS> data = CUSTOMER_SURVEYS.GetFormQuestions(FormId, _context);
                 int count;
-                uxQuestionsStore.DataSource = GenericData.ListFilterHeader<SURVEY_QUESTIONS>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                var FilteredData = GenericData.ListFilterHeader<SURVEY_QUESTIONS>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                foreach (var item in FilteredData)
+                {
+                    item.ACTIVE = (item.IS_ACTIVE == "Y" ? true : false);
+                    item.REQUIRED = (item.IS_REQUIRED == "Y" ? true : false);
+                }
+                uxQuestionsStore.DataSource = FilteredData;
                 e.Total = count;
             }
         }
@@ -78,9 +84,14 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             using (Entities _context = new Entities())
             {
                 decimal QuestionId = decimal.Parse(e.Parameters["QuestionId"]);
-                IQueryable<SURVEY_OPTIONS> data = CUSTOMER_SURVEYS.GetQuestionOptions(QuestionId, _context).Select(d => new SURVEY_OPTIONS{OPTION_ID = d.OPTION_ID, QUESTION_ID = d.QUESTION_ID, TEXT = d.SURVEY_QUESTIONS.TEXT, ACTIVE = (d.IS_ACTIVE == "Y" ? true : false), OPTION_NAME = d.OPTION_NAME, SORT_ORDER = d.SORT_ORDER});
+                IQueryable<SURVEY_OPTIONS> data = CUSTOMER_SURVEYS.GetQuestionOptions(QuestionId, _context).Select(d => new SURVEY_OPTIONS{OPTION_ID = d.OPTION_ID, QUESTION_ID = d.QUESTION_ID, TEXT = d.SURVEY_QUESTIONS.TEXT,    ACTIVE = (d.IS_ACTIVE == "Y" ? true : false), OPTION_NAME = d.OPTION_NAME, SORT_ORDER = d.SORT_ORDER});
                 int count;
-                uxOptionsStore.DataSource = GenericData.ListFilterHeader<SURVEY_OPTIONS>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                var FilteredData = GenericData.ListFilterHeader<SURVEY_OPTIONS>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                foreach (var item in FilteredData)
+                {
+                    item.ACTIVE = (item.IS_ACTIVE == "Y" ? true : false);
+                }
+                uxOptionsStore.DataSource = 
                 e.Total = count;
             }
         }
@@ -91,9 +102,14 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             {
                 long FormId = long.Parse(e.Parameters["FormId"]);
                 IQueryable<SURVEY_FIELDSETS> data = CUSTOMER_SURVEYS.GetFormFieldSets(FormId, _context);
-
+                
                 int count;
-                uxFieldsetsStore.DataSource = GenericData.ListFilterHeader<SURVEY_FIELDSETS>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                var FilteredData = GenericData.ListFilterHeader<SURVEY_FIELDSETS>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                foreach (var item in FilteredData)
+                {
+                    item.ACTIVE = (item.IS_ACTIVE == "Y" ? true : false);
+                }
+                uxFieldsetsStore.DataSource = FilteredData;
                 e.Total = count;
             }
         }

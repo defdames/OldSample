@@ -260,12 +260,12 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
 
         protected byte[] generatePDF(decimal FormId, decimal CompletionId)
         {
-            List<CUSTOMER_SURVEYS.CustomerSurveyQuestions> FormToGenerate;
-            List<CUSTOMER_SURVEYS.CustomerSurveyFieldsets> Fieldsets;
+            List<SURVEY_QUESTIONS> FormToGenerate;
+            List<SURVEY_FIELDSETS> Fieldsets;
             byte[] result;
             using (Entities _context = new Entities())
             {
-                Fieldsets = CUSTOMER_SURVEYS.GetFormFieldSets(FormId, _context).Where(x => x.IS_ACTIVE == true).OrderBy(x => x.SORT_ORDER).ToList();
+                Fieldsets = CUSTOMER_SURVEYS.GetFormFieldSets(FormId, _context).Where(x => x.ACTIVE == true).OrderBy(x => x.SORT_ORDER).ToList();
                 
             }
             using (MemoryStream PdfStream = new MemoryStream())
@@ -294,7 +294,7 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
                 HeaderTable.AddCell(HeaderImage);
                 ExportedPDF.Add(HeaderTable);
 
-                foreach (CUSTOMER_SURVEYS.CustomerSurveyFieldsets Fieldset in Fieldsets)
+                foreach (SURVEY_FIELDSETS Fieldset in Fieldsets)
                 {
                     PdfPTable FieldsetTable = new PdfPTable(1);
                     FieldsetTable.SpacingBefore = 5f;
@@ -311,7 +311,7 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
                     {
                         FormToGenerate = CUSTOMER_SURVEYS.GetFieldsetQuestionsForGrid(Fieldset.FIELDSET_ID, _context).OrderBy(x => x.SORT_ORDER).ToList();
                     }
-                    foreach (CUSTOMER_SURVEYS.CustomerSurveyQuestions Question in FormToGenerate)
+                    foreach (SURVEY_QUESTIONS Question in FormToGenerate)
                     {
                         PdfPTable Table = new PdfPTable(2);
                         Table.DefaultCell.Border = PdfPCell.NO_BORDER;

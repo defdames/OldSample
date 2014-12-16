@@ -28,7 +28,7 @@ namespace DBI.Data
             return (from f in _context.SURVEY_FIELDSETS
                     orderby f.SORT_ORDER ascending
                     where f.FORM_ID == FormId
-                    select new SURVEY_FIELDSETS { FIELDSET_ID = f.FIELDSET_ID, FORM_ID = f.FORM_ID, ACTIVE = (f.IS_ACTIVE == "Y" ? true : false), SORT_ORDER = f.SORT_ORDER, TITLE = f.TITLE, CATEGORY_ID = f.CATEGORY_ID });
+                    select f);
         }
 
         public static IQueryable<SURVEY_QUESTIONS> GetFieldsetQuestionsForGrid(decimal FieldSetId, Entities _context)

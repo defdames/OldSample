@@ -145,13 +145,13 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
         protected void deReadCompletions(object sender, StoreReadDataEventArgs e)
         {
-            IQueryable<CUSTOMER_SURVEYS.CustomerSurveyCompletions> Completions;
+            IQueryable<SURVEY_FORMS_COMP> Completions;
             using (Entities _context = new Entities())
             {
                 long ProjectId = long.Parse(e.Parameters["ProjectId"]);
                 Completions = CUSTOMER_SURVEYS.GetCompletionStore(ProjectId, _context);
                 int count;
-                var data = GenericData.ListFilterHeader<CUSTOMER_SURVEYS.CustomerSurveyCompletions>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], Completions, out count);
+                var data = GenericData.ListFilterHeader<SURVEY_FORMS_COMP>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], Completions, out count);
                 uxCompletedStore.DataSource = data;
                 e.Total = count;
             }
