@@ -1122,7 +1122,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 {
                     UpdatedProduction = DAILY_ACTIVITY.GetProduction(_context, (long)item.PRODUCTION_ID).Single();
                 }
-                UpdatedProduction.POLE_FROM = item.POLE_TO;
+                UpdatedProduction.POLE_FROM = item.POLE_FROM;
                 UpdatedProduction.POLE_TO = item.POLE_TO;
                 UpdatedProduction.QUANTITY = item.QUANTITY;
                 UpdatedProduction.ACRES_MILE = item.ACRES_MILE;
@@ -1562,6 +1562,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 //uxAddInventoryItem.Clear();
                 uxAddInventorySubStore.DataSource = data;
                 uxAddInventorySubStore.DataBind();
+
             }
         }
 
@@ -1899,9 +1900,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 }
 
             }
-            RowSelectionModel sm = uxChemicalGrid.GetSelectionModel() as RowSelectionModel;
             GenericData.Delete(ToDelete);
             uxWarningStore.Reload();
+            uxChemicalStore.Reload();
         }
 
         [DirectMethod]
