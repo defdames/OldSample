@@ -144,6 +144,7 @@
     <Content Include="Resources\Images\wwbnight.png" />
     <Content Include="Resources\Scripts\jquery-2.0.1.js" />
     <Content Include="Resources\Scripts\jquery-2.0.1.min.js" />
+    <Content Include="Views\Modules\BudgetBidding\umEditMonthRow.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umMonthBudget.aspx" />
     <Content Include="Views\Modules\BudgetBidding\Reports\umRepRollupOPCompare.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umReportCompareTo.aspx" />
@@ -327,6 +328,13 @@
     </Compile>
     <Compile Include="Views\Handlers\SystemUsers.ashx.cs">
       <DependentUpon>SystemUsers.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umEditMonthRow.aspx.cs">
+      <DependentUpon>umEditMonthRow.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umEditMonthRow.aspx.designer.cs">
+      <DependentUpon>umEditMonthRow.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\BudgetBidding\umMonthBudget.aspx.cs">
       <DependentUpon>umMonthBudget.aspx</DependentUpon>
@@ -1325,8 +1333,6 @@
     <Content Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\Modules\BudgetBidding\Reports\umRepProject.rdlc">
-    </EmbeddedResource>
     <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.rdlc" />
     <Content Include="Views\Modules\BudgetBidding\Reports\ProjectDetail.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

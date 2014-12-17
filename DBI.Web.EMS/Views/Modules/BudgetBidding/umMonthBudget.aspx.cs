@@ -21,52 +21,225 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     X.Redirect("~/Views/uxDefault.aspx");
                 }
 
+                uxHidOrgID.Text = "425";//Request.QueryString["OrgID"];
+                uxHidYear.Text = Request.QueryString["fiscalYear"];
+                uxHidVer.Text = Request.QueryString["verID"];
                 uxHidBudBidID.Text = "0";
                 uxHidDetailSheetID.Text = "0";
             }
         }
 
-        protected void deLoadSummaryActions(object sender, StoreReadDataEventArgs e)
-        {
-            //long orgID = long.Parse(Request.QueryString["OrgID"]);
-            //long yearID = long.Parse(Request.QueryString["fiscalYear"]);
-            //long verID = long.Parse(Request.QueryString["verID"]);
 
-            //uxActionsStore.DataSource = BB.YearSummaryProjectActions(orgID, yearID, verID);
+
+        // Project Grid
+        protected void deLoadProjectActions(object sender, StoreReadDataEventArgs e)
+        {
+            long orgID = long.Parse(Request.QueryString["OrgID"]);
+            long yearID = long.Parse(Request.QueryString["fiscalYear"]);
+            long verID = long.Parse(Request.QueryString["verID"]);
+
+            uxProjectActionsStore.DataSource = BBMonthSummary.ProjectActions(orgID, yearID, verID);
         }
 
-        protected void deChooseSummaryAction(object sender, DirectEventArgs e)
+        protected void deChooseProjectAction(object sender, DirectEventArgs e)
         {
-            //string selectedAction = uxActions.Text;
+            string selectedAction = uxProjectActions.Text;
 
-            //switch (selectedAction)
-            //{
-            //    case "Add a New Project":
-            //        AddNewProject();
-            //        break;
+            switch (selectedAction)
+            {
+                case "Add a New Project":
+                    //AddNewProject();
+                    break;
 
-            //    case "View Selected Project":
-            //        EditSelectedProject();
-            //        break;
+                case "Edit Selected Project":
+                    //EditSelectedProject();
+                    break;
 
-            //    case "Edit Selected Project":
-            //        EditSelectedProject();
-            //        break;
+                case "Copy Selected Project":
+                    //CopySelectedProject();
+                    break;
 
-            //    case "Copy Selected Project":
-            //        CopySelectedProject();
-            //        break;
+                case "Delete Selected Project":
+                    //DeleteSelectedProject();
+                    break;
 
-            //    case "Delete Selected Project":
-            //        DeleteSelectedProject();
-            //        break;
+                case "Refresh Projects":
+                    //RefreshProjects();
+                    break;
+            }
 
-            //    case "Refresh Data":
-            //        RefreshData();
-            //        break;
-            //}
+            uxProjectActions.Clear();
+        }
 
-            //uxActions.Clear();
+        protected void deReadProjectGridData(object sender, StoreReadDataEventArgs e)
+        {
+            long orgID = Convert.ToInt64(uxHidOrgID.Text);
+            long yearID = Convert.ToInt64(uxHidYear.Text);
+            long verID = Convert.ToInt64(uxHidVer.Text);
+
+            uxProjectsStore.DataSource = BBMonthSummary.ProjectGrid.Data(orgID, yearID, verID);
+        }
+
+        protected void deSelectProject(object sender, DirectEventArgs e)
+        {
+            string budBidprojectID = e.ExtraParams["BudBidProjectID"];
+            uxHidBudBidID.Text = budBidprojectID;
+            uxTasksStore.Reload();
+            uxComments.Text = "";
+            if (budBidprojectID == "0")
+            {
+                uxTasks.Disable();
+                uxHidDetailSheetID.Text = "0";
+                uxMonthDetailStore.Reload();
+            }
+            else
+            {
+                uxTasks.Enable();                
+            }
+        }
+
+        
+
+        // Task Grid
+        protected void deLoadTaskActions(object sender, StoreReadDataEventArgs e)
+        {
+            long orgID = long.Parse(Request.QueryString["OrgID"]);
+            long yearID = long.Parse(Request.QueryString["fiscalYear"]);
+            long verID = long.Parse(Request.QueryString["verID"]);
+
+            uxTaskActionsStore.DataSource = BBMonthSummary.TaskActions(orgID, yearID, verID);
+        }
+
+        protected void deChooseTaskAction(object sender, DirectEventArgs e)
+        {
+            string selectedAction = uxTaskActions.Text;
+
+            switch (selectedAction)
+            {
+                case "Add a New Task":
+                    //AddNewTask();
+                    break;
+
+                case "Auto-Generate Tasks":
+                    //AutoGenerateTasks
+                    break;
+
+                case "Edit Selected Task":
+                    //EditSelectedTask();
+                    break;
+
+                case "Copy Selected Task":
+                    //CopySelectedTask();
+                    break;
+
+                case "Delete Selected Task":
+                    //DeleteSelectedTask();
+                    break;
+
+                case "Refresh Tasks":
+                    //RefreshTasks();
+                    break;
+            }
+
+            uxTaskActions.Clear();
+        }
+
+        protected void deReadTaskGridData(object sender, StoreReadDataEventArgs e)
+        {
+            long budBidID = Convert.ToInt64(uxHidBudBidID.Text);
+
+            if (budBidID == 0)
+            {
+                uxTasksStore.RemoveAll();
+            }
+            else
+            {
+                uxTasksStore.DataSource = BBMonthSummary.TaskGrid.Data(budBidID);
+            }          
+        }
+
+        protected void deSelectTask(object sender, DirectEventArgs e)
+        {
+            string detailSheetID = e.ExtraParams["DetailSheetID"];
+            uxHidDetailSheetID.Text = detailSheetID;
+
+            if (Convert.ToInt64(detailSheetID) == 0)
+            {
+                long budBidprojectID = Convert.ToInt64(uxHidBudBidID.Text);
+                uxComments.Text = BBMonthSummary.Comments.Data(budBidprojectID);
+            }
+            else
+            {
+                uxComments.Text = BBDetail.Sheet.MainTabField.Comment(Convert.ToInt64(detailSheetID));
+            }
+            uxMonthDetailStore.Reload();
+        }
+
+
+
+        // Main Grid
+        protected void deReadMainGridData(object sender, StoreReadDataEventArgs e)
+        {
+            string orgID = uxHidOrgID.Text;
+            string budBidProjectID = uxHidBudBidID.Text;
+            string detailSheetID = uxHidDetailSheetID.Text;
+            long yearID = Convert.ToInt64(uxHidYear.Text);
+            long verID = Convert.ToInt64(uxHidVer.Text);
+            long weMonth = 1;  //FIX!
+
+            uxMonthDetailStore.DataSource = BBMonthSummary.MainGrid.Data(yearID, verID, weMonth, orgID, budBidProjectID, detailSheetID);
+        }
+
+
+
+
+
+
+
+
+
+
+
+        protected void EditSelectedRow()
+        {
+            string hierID = Request.QueryString["hierID"];
+            string leOrgID = Request.QueryString["leOrgID"];
+            long orgID = Convert.ToInt64(Request.QueryString["orgID"]);
+            long yearID = Convert.ToInt64(Request.QueryString["fiscalYear"]);
+            long verID = long.Parse(Request.QueryString["verID"]);
+            string verName = HttpUtility.UrlEncode(Request.QueryString["verName"]);
+
+            string url = "/Views/Modules/BudgetBidding/umEditMonthRow.aspx?hierID=" + hierID + "&leOrgID=" + leOrgID + "&orgID=" + orgID + "&yearID=" + yearID + "&verName=" + verName;
+
+            Window win = new Window
+            {
+                ID = "uxDetailLineMaintenance",
+                Height = 465,
+                Width = 500,
+                Title = "Update All Actuals",
+                Modal = true,
+                Resizable = false,
+                CloseAction = CloseAction.Destroy,
+                Closable = false,
+                Loader = new ComponentLoader
+                {
+                    Mode = LoadMode.Frame,
+                    DisableCaching = true,
+                    Url = url,
+                    AutoLoad = true,
+                    LoadMask =
+                    {
+                        ShowMask = true
+                    }
+                }
+            };
+            win.Render(this.Form);
+            win.Show();
+        }
+        [DirectMethod]
+        public void CloseUpdateAllActualsWindow()
+        {
+            uxMonthDetailStore.Reload();
         }
 
         protected void deLoadSummaryReports(object sender, StoreReadDataEventArgs e)
@@ -164,93 +337,19 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
         protected void deUpdateAllActuals(object sender, DirectEventArgs e)
         {
-            //string hierID = Request.QueryString["hierID"];
-            //string leOrgID = Request.QueryString["leOrgID"];
-            //long orgID = Convert.ToInt64(Request.QueryString["orgID"]);
-            //long yearID = Convert.ToInt64(Request.QueryString["fiscalYear"]);
-            //long verID = long.Parse(Request.QueryString["verID"]);
-            //string verName = HttpUtility.UrlEncode(Request.QueryString["verName"]);
 
-            //if (BB.CountAllProjects(orgID, yearID, verID) == 0)
-            //{
-            //    StandardMsgBox("Update All Projects", "There are no projects to update.", "INFO");
-            //    return;
-            //}
-
-            //string url = "/Views/Modules/BudgetBidding/umUpdateAllActuals.aspx?hierID=" + hierID + "&leOrgID=" + leOrgID + "&orgID=" + orgID + "&yearID=" + yearID + "&verName=" + verName;
-
-            //Window win = new Window
-            //{
-            //    ID = "uxUpdateAllActualsForm",
-            //    Height = 210,
-            //    Width = 400,
-            //    Title = "Update All Actuals",
-            //    Modal = true,
-            //    Resizable = false,
-            //    CloseAction = CloseAction.Destroy,
-            //    Closable = false,
-            //    Loader = new ComponentLoader
-            //    {
-            //        Mode = LoadMode.Frame,
-            //        DisableCaching = true,
-            //        Url = url,
-            //        AutoLoad = true,
-            //        LoadMask =
-            //        {
-            //            ShowMask = true
-            //        }
-            //    }
-            //};
-            //win.Render(this.Form);
-            //win.Show();
         }
 
-        protected void deReadProjectGridData(object sender, StoreReadDataEventArgs e)
+        protected void StandardMsgBox(string title, string msg, string msgIcon)
         {
-            //if (uxHidBudBidID.Text == "") { return; }
-
-            //long orgID = Convert.ToInt64(1210);
-            long orgID = Convert.ToInt64(425);
-
-            uxSummaryProjectStore.DataSource = BBMonthSummary.ProjectGrid.Data(orgID, 2014, 4);
-        }
-
-        protected void deReadTaskDetailGridData(object sender, StoreReadDataEventArgs e)
-        {
-            long budBidID = Convert.ToInt64(uxHidBudBidID.Text);
-            uxSummaryTaskDetailStore.DataSource = BBMonthSummary.TaskDetailGrid.Data(budBidID);
-        }
-
-        protected void deSelectProject(object sender, DirectEventArgs e)
-        {
-            string budBidprojectID = e.ExtraParams["BudBidProjectID"];
-            uxHidBudBidID.Text = budBidprojectID;
-            uxSummaryTaskDetailStore.Reload();
-            uxComments.Text = "";
-        }
-
-        protected void deSelectTaskDetail(object sender, DirectEventArgs e)
-        {
-            string detailSheetID = e.ExtraParams["DetailSheetID"];
-            uxHidDetailSheetID.Text = detailSheetID;
-
-            if (Convert.ToInt64(detailSheetID) == 9999)
+            // msgIcon can be:  ERROR, INFO, QUESTION, WARNING
+            X.Msg.Show(new MessageBoxConfig()
             {
-                long budBidprojectID = Convert.ToInt64(uxHidBudBidID.Text);
-                uxComments.Text = BBMonthSummary.Project.Comments(budBidprojectID); 
-            }
-            else
-            {
-                uxComments.Text = BBDetail.Sheet.MainTabField.Comment(Convert.ToInt64(detailSheetID)); 
-            }
-            uxMonthDetailStore.Reload();
-        }
-
-        protected void deReadMonthDetailGridData(object sender, StoreReadDataEventArgs e)
-        {
-            //long detailSheetID = 48497;
-            long detailSheetID = Convert.ToInt64(uxHidDetailSheetID.Text);
-            uxMonthDetailStore.DataSource = BBMonthSummary.TaskDetail.Data(detailSheetID, 1);
+                Title = title,
+                Message = msg,
+                Buttons = MessageBox.Button.OK,
+                Icon = (MessageBox.Icon)Enum.Parse(typeof(MessageBox.Icon), msgIcon)
+            });
         }
     }
 }

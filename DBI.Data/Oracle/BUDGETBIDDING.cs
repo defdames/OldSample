@@ -3691,6 +3691,69 @@ namespace DBI.Data
 
     public class BBMonthSummary
     {
+        public static List<SingleCombo> ProjectActions(long orgID, long yearID, long verID)
+        {
+            List<SingleCombo> comboItems = new List<SingleCombo>();
+            //bool readOnly = BB.IsReadOnly(orgID, yearID, verID);
+
+            //if (readOnly == false) { comboItems.Add(new SingleCombo { ID_NAME = "Add a New Project" }); }
+
+            //if (readOnly == false)
+            //{
+            //    comboItems.Add(new SingleCombo { ID_NAME = "Edit Selected Project" });
+            //}
+            //else
+            //{
+            //    comboItems.Add(new SingleCombo { ID_NAME = "View Selected Project" });
+            //}
+
+            //if (readOnly == false) { comboItems.Add(new SingleCombo { ID_NAME = "Copy Selected Project" }); }
+
+            //if (readOnly == false) { comboItems.Add(new SingleCombo { ID_NAME = "Delete Selected Project" }); }
+
+            //comboItems.Add(new SingleCombo { ID_NAME = "Refresh Data" });
+
+            comboItems.Add(new SingleCombo { ID_NAME = "Add a New Project" });
+            comboItems.Add(new SingleCombo { ID_NAME = "Edit Selected Project" });
+            comboItems.Add(new SingleCombo { ID_NAME = "Copy Selected Project" });
+            comboItems.Add(new SingleCombo { ID_NAME = "Delete Selected Project" });
+            comboItems.Add(new SingleCombo { ID_NAME = "Refresh Projects" });
+
+            return comboItems;
+        }
+
+        public static List<SingleCombo> TaskActions(long orgID, long yearID, long verID)
+        {
+            List<SingleCombo> comboItems = new List<SingleCombo>();
+            //bool readOnly = BB.IsReadOnly(orgID, yearID, verID);
+
+            //if (readOnly == false) { comboItems.Add(new SingleCombo { ID_NAME = "Add a New Project" }); }
+
+            //if (readOnly == false)
+            //{
+            //    comboItems.Add(new SingleCombo { ID_NAME = "Edit Selected Project" });
+            //}
+            //else
+            //{
+            //    comboItems.Add(new SingleCombo { ID_NAME = "View Selected Project" });
+            //}
+
+            //if (readOnly == false) { comboItems.Add(new SingleCombo { ID_NAME = "Copy Selected Project" }); }
+
+            //if (readOnly == false) { comboItems.Add(new SingleCombo { ID_NAME = "Delete Selected Project" }); }
+
+            //comboItems.Add(new SingleCombo { ID_NAME = "Refresh Data" });
+
+            comboItems.Add(new SingleCombo { ID_NAME = "Add a New Task" });
+            comboItems.Add(new SingleCombo { ID_NAME = "Auto-Generate Tasks" });
+            comboItems.Add(new SingleCombo { ID_NAME = "Edit Selected Task" });
+            comboItems.Add(new SingleCombo { ID_NAME = "Copy Selected Task" });
+            comboItems.Add(new SingleCombo { ID_NAME = "Delete Selected Task" });
+            comboItems.Add(new SingleCombo { ID_NAME = "Refresh Tasks" });
+
+            return comboItems;
+        }
+
         public class ProjectGrid
         {
             #region Fields
@@ -3701,11 +3764,10 @@ namespace DBI.Data
             }
             #endregion
 
-
             public static List<Fields> Data(long orgID, long yearID, long verID)
             {
                 string sql = string.Format(@"
-                    SELECT 9999 ID, '* ALL PROJECTS *' NAME
+                    SELECT 0 ID, '* ALL PROJECTS *' NAME
                     FROM DUAL
                     
                     UNION ALL                    
@@ -3722,7 +3784,7 @@ namespace DBI.Data
             }
         }
 
-        public class TaskDetailGrid
+        public class TaskGrid
         {
             #region Fields
             public class Fields
@@ -3732,15 +3794,14 @@ namespace DBI.Data
             }
             #endregion
 
-
             public static List<Fields> Data(long projectID)
             {
                 string sql = string.Format(@"
-                    SELECT {0} ID, '* ALL TASKS/DETAIL SHEETS *' NAME
+                    SELECT 0 ID, '* ALL TASKS/DETAIL SHEETS *' NAME
                     FROM DUAL
                     
-                    UNION ALL                    
-                    
+                    UNION ALL
+
                     SELECT DETAIL_TASK_ID ID, DETAIL_NAME NAME
                     FROM BUD_BID_DETAIL_TASK
                     WHERE PROJECT_ID = {0} AND DETAIL_NAME <> 'SYS_PROJECT' AND MODIFIED_BY <> 'TEMP'
@@ -3753,9 +3814,9 @@ namespace DBI.Data
             }
         }
 
-        public class Project
+        public class Comments
         {
-            public static string Comments(long budBidProjectID)
+            public static string Data(long budBidProjectID)
             {
                 string sql = string.Format(@"
                     SELECT BUD_BID_PROJECTS.COMMENTS
@@ -3769,7 +3830,7 @@ namespace DBI.Data
             }
         }
 
-        public class TaskDetail
+        public class MainGrid
         {
             #region Fields
             public class Fields
@@ -3845,43 +3906,78 @@ namespace DBI.Data
             }
             #endregion
 
-            public static List<Fields> Data(long detailSheetID, long weMonth)
+            public static List<Fields> Data(long yearID, long verID, long weMonth, string orgID, string budBidProjectID, string detailSheetID)
             {
+                if (orgID == "0") { orgID = "%"; }
+                if (budBidProjectID == "0") { budBidProjectID = "%"; }
+                if (detailSheetID == "0") { detailSheetID = "%"; }
+
                 // Start of query
                 string start = string.Format(@"
                     WITH
                         BUDGET_LINES AS (
-                            SELECT * FROM BUD_BID_LINES
+                            SELECT LINE_ID,
+                                LINE_DESC,
+                                TOTAL
+                            FROM BUD_BID_LINES
                         ),
                         BUDGET_NUMS AS (
-                            SELECT *
+                            SELECT LINE_ID,
+                                SUM(NOV) NOV,
+                                SUM(DEC) DEC,
+                                SUM(JAN) JAN,
+                                SUM(FEB) FEB,
+                                SUM(MAR) MAR,
+                                SUM(APR) APR,
+                                SUM(MAY) MAY,
+                                SUM(JUN) JUN,
+                                SUM(JUL) JUL,
+                                SUM(AUG) AUG,
+                                SUM(SEP) SEP,
+                                SUM(OCT) OCT
                             FROM BUD_BID_BUDGET_NUM
-                            WHERE DETAIL_TASK_ID = {0}
+                            LEFT JOIN BUD_BID_PROJECTS ON BUD_BID_BUDGET_NUM.PROJECT_ID = BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID
+                            WHERE BUD_BID_PROJECTS.ORG_ID LIKE '{2}' AND BUD_BID_BUDGET_NUM.PROJECT_ID LIKE '{3}' AND BUD_BID_BUDGET_NUM.DETAIL_TASK_ID LIKE '{4}' AND BUD_BID_PROJECTS.YEAR_ID = {0} AND BUD_BID_PROJECTS.VER_ID = {1}
+                            GROUP BY LINE_ID
                         ),
                         ACTUAL_NUMS AS (
-                            SELECT *
+                            SELECT LINE_ID,
+                                SUM(NOV) NOV,
+                                SUM(DEC) DEC,
+                                SUM(JAN) JAN,
+                                SUM(FEB) FEB,
+                                SUM(MAR) MAR,
+                                SUM(APR) APR,
+                                SUM(MAY) MAY,
+                                SUM(JUN) JUN,
+                                SUM(JUL) JUL,
+                                SUM(AUG) AUG,
+                                SUM(SEP) SEP,
+                                SUM(OCT) OCT
                             FROM BUD_BID_ACTUAL_NUM
-                            WHERE DETAIL_TASK_ID = {0}
+                            LEFT JOIN BUD_BID_PROJECTS ON BUD_BID_ACTUAL_NUM.PROJECT_ID = BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID
+                            WHERE BUD_BID_PROJECTS.ORG_ID LIKE '{2}' AND BUD_BID_ACTUAL_NUM.PROJECT_ID LIKE '{3}' AND BUD_BID_ACTUAL_NUM.DETAIL_TASK_ID LIKE '{4}' AND BUD_BID_PROJECTS.YEAR_ID = {0} AND BUD_BID_PROJECTS.VER_ID = {1}
+                            GROUP BY LINE_ID
                         )
 
                         SELECT BUDGET_LINES.LINE_ID,
                             BUDGET_LINES.TOTAL,
-                            BUDGET_LINES.LINE_DESC,", detailSheetID);
+                            BUDGET_LINES.LINE_DESC,", yearID, verID, orgID, budBidProjectID, detailSheetID);
                 
                 string[] monthName = { "NOV", "DEC", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT" };
 
 
                 // Reforecast column calculation
-                string reforecast ="0";
+                string reforecast ="SUM(0)";
                 for (int i = 0; i <= 11; i++)
                 {
                     if (weMonth - 1 >= i)
                     {
-                        reforecast = reforecast + " + NVL(BUDGET_NUMS." + monthName[i] + ", 0)";
+                        reforecast = reforecast + " + SUM(NVL(BUDGET_NUMS." + monthName[i] + ", 0))";
                     }
                     else
                     {
-                        reforecast = reforecast + " + NVL(ACTUAL_NUMS." + monthName[i] + ", 0)";
+                        reforecast = reforecast + " + SUM(NVL(ACTUAL_NUMS." + monthName[i] + ", 0))";
                     }
                 }
                 reforecast = reforecast + " REFORECAST,";
@@ -3891,12 +3987,12 @@ namespace DBI.Data
                 string monthDetail = "";
                 for (int i = 0; i <= 11; i++)
                 {
-                    monthDetail = monthDetail + "NVL(BUDGET_NUMS." + monthName[i] + ", 0) " + monthName[i] + "_BUDGET, NVL(ACTUAL_NUMS." + monthName[i] + ", 0) " + monthName[i] + "_ACTUAL, NVL(BUDGET_NUMS." + monthName[i] + ", 0) - NVL(ACTUAL_NUMS." + monthName[i] + ", 0) " + monthName[i] + "_VAR, ";
+                    monthDetail = monthDetail + "SUM(NVL(BUDGET_NUMS." + monthName[i] + ", 0)) " + monthName[i] + "_BUDGET, SUM(NVL(ACTUAL_NUMS." + monthName[i] + ", 0)) " + monthName[i] + "_ACTUAL, SUM(NVL(BUDGET_NUMS." + monthName[i] + ", 0)) - SUM(NVL(ACTUAL_NUMS." + monthName[i] + ", 0)) " + monthName[i] + "_VAR, ";
 
-                    string monthDetailYTD = "0";
+                    string monthDetailYTD = "SUM(0)";
                     for (int a = 0; a <= i; a++)
                     {
-                        monthDetailYTD = monthDetailYTD + " + NVL(ACTUAL_NUMS." + monthName[a] + ", 0)";
+                        monthDetailYTD = monthDetailYTD + " + SUM(NVL(ACTUAL_NUMS." + monthName[a] + ", 0))";
                     }
                     monthDetailYTD = monthDetailYTD + " " + monthName[i] + "_YTD, ";
                     monthDetail = monthDetail + monthDetailYTD;
@@ -3904,20 +4000,20 @@ namespace DBI.Data
 
 
                 // Total Plan
-                string totalPlan = "0";
+                string totalPlan = "SUM(0)";
                 for (int i = 0; i <= 11; i++)
                 {
-                    totalPlan = totalPlan + " + NVL(BUDGET_NUMS." + monthName[i] + ", 0)";
+                    totalPlan = totalPlan + " + SUM(NVL(BUDGET_NUMS." + monthName[i] + ", 0))";
                 }
                 string varPlan = totalPlan;
                 totalPlan = totalPlan + " TOTAL_PLAN,";
 
 
                 // Total Actual
-                string totalActual = "0";
+                string totalActual = "SUM(0)";
                 for (int i = 0; i <= 11; i++)
                 {
-                    totalActual = totalActual + " + NVL(ACTUAL_NUMS." + monthName[i] + ", 0)";
+                    totalActual = totalActual + " + SUM(NVL(ACTUAL_NUMS." + monthName[i] + ", 0))";
                 }
                 string varActual = totalActual;
                 totalActual = totalActual + " TOTAL_ACTUAL,";
@@ -3929,10 +4025,11 @@ namespace DBI.Data
 
                 // End of query
                 string end = string.Format(@"                            
-                        FROM BUDGET_LINES
-                        LEFT JOIN BUDGET_NUMS ON BUDGET_LINES.LINE_ID = BUDGET_NUMS.LINE_ID
-                        LEFT JOIN ACTUAL_NUMS ON BUDGET_LINES.LINE_ID = ACTUAL_NUMS.LINE_ID
-                        ORDER BY BUDGET_NUMS.LINE_ID");
+                    FROM BUDGET_LINES
+                    LEFT JOIN BUDGET_NUMS ON BUDGET_LINES.LINE_ID = BUDGET_NUMS.LINE_ID
+                    LEFT JOIN ACTUAL_NUMS ON BUDGET_LINES.LINE_ID = ACTUAL_NUMS.LINE_ID
+                    GROUP BY BUDGET_LINES.LINE_ID, BUDGET_LINES.TOTAL, BUDGET_LINES.LINE_DESC
+                    ORDER BY BUDGET_LINES.LINE_ID");
 
                 string sql = start + reforecast + monthDetail + totalPlan + totalActual + totalVar + end;
 
@@ -3940,6 +4037,53 @@ namespace DBI.Data
                 {
                     return context.Database.SqlQuery<Fields>(sql).ToList();
                 }
+            }
+
+            public class BudgetLine
+            {
+                #region Fields
+                public class Fields
+                {
+                    public long BUDGET_NUM_ID { get; set; }
+                    public long PROJECT_ID { get; set; }
+                    public long DETAIL_TASK_ID { get; set; }
+                    public long LINE_ID { get; set; }
+                    public string MONTH { get; set; }
+                    public decimal AMOUNT { get; set; }
+                }
+                #endregion
+
+                public static List<Fields> Data(bool budget, long budBidProjectID, long detailSheetID, long lineID)
+                {
+                    string tableName;
+                    if (budget == true)
+                    {
+                        tableName = "BUD_BID_BUDGET_NUM";
+                    }
+                    else
+                    {
+                        tableName = "BUD_BID_ACTUAL_NUM";
+                    }
+
+                    string sql = string.Format(@"
+                        SELECT BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, LINE_ID, MONTH, NVL(AMOUNT, 0) AMOUNT
+                        FROM (SELECT BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, LINE_ID, NOV, DEC, JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT FROM {0})
+                        UNPIVOT INCLUDE NULLS (AMOUNT FOR MONTH IN (NOV, DEC, JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT))
+                        WHERE PROJECT_ID = {1} AND DETAIL_TASK_ID = {2} AND LINE_ID = {3}", tableName, budBidProjectID, detailSheetID, lineID);
+
+                    using (Entities context = new Entities())
+                    {
+                        return context.Database.SqlQuery<Fields>(sql).ToList();
+                    }
+                }
+            }
+
+            public static List<DoubleComboLongID> BudgetsOrActuals()
+            {
+                List<DoubleComboLongID> comboItem = new List<DoubleComboLongID>();
+                comboItem.Add(new DoubleComboLongID { ID = 1, ID_NAME = "Budgets" });
+                comboItem.Add(new DoubleComboLongID { ID = 2, ID_NAME = "Actuals" });
+                return comboItem;
             }
         }
     }
