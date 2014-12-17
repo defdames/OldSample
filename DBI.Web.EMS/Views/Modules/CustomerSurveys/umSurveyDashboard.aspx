@@ -59,6 +59,7 @@
                                                 <ext:ModelField Name="PERCENTAGE" />
                                                 <ext:ModelField Name="THRESHOLD" />
                                                 <ext:ModelField Name="THRESHOLD_ID" />
+                                                <ext:ModelField Name="TYPE_NAME" />
                                                 <ext:ModelField Name="PROJECT_ID" />
                                                 <ext:ModelField Name="ORG_ID" />
                                             </Fields>
@@ -78,13 +79,14 @@
                             <ColumnModel>
                                 <Columns>
                                     <ext:Column ID="Column1" runat="server" Text="Project Number" DataIndex="PROJECT_NUMBER" Flex="20" />
-                                    <ext:Column ID="Column2" runat="server" Text="Project Name" DataIndex="PROJECT_NAME" Flex="40" />
-                                    <ext:Column ID="Column3" runat="server" Text="Current %" DataIndex="PERCENTAGE" Flex="30">
+                                    <ext:Column ID="Column2" runat="server" Text="Project Name" DataIndex="PROJECT_NAME" Flex="30" />
+                                    <ext:Column ID="Column3" runat="server" Text="Current %" DataIndex="PERCENTAGE" Flex="15">
                                         <Renderer Fn="percentage" />
                                     </ext:Column>
-                                    <ext:Column ID="Column4" runat="server" Text="Threshold %" DataIndex="THRESHOLD" Flex="30">
+                                    <ext:Column ID="Column4" runat="server" Text="Threshold %" DataIndex="THRESHOLD" Flex="15">
                                         <Renderer Fn="percentage" />
                                     </ext:Column>
+                                    <ext:Column runat="server" Text="Form Type" DataIndex="TYPE_NAME" Flex="20" />
                                 </Columns>
                             </ColumnModel>
                             <Plugins>
@@ -133,6 +135,9 @@
                             <BottomBar>
                                 <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
                             </BottomBar>
+                            <Listeners>
+                                <Select Handler="#{uxEmailPDFSurveyButton}.enable(); #{uxEmailSurveyButton}.enable(); #{uxPrintPDFButton}.enable()" />
+                            </Listeners>
                         </ext:GridPanel>
                     </Items>
                 </ext:TabPanel>

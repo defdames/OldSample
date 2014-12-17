@@ -170,7 +170,7 @@
                     </DirectEvents>
                     
                 </ext:TreePanel>
-                <ext:GridPanel runat="server" ID="uxDollarGrid" Title="Dollar Threshold" Region="North" PaddingSpec="10 10 30 10" MinHeight="250">
+                <ext:GridPanel runat="server" ID="uxDollarGrid" Title="Dollar Threshold" Region="North" PaddingSpec="10 10 30 10" MinHeight="250" SelectionMemory="false">
                     <Store>
                         <ext:Store runat="server" ID="uxDollarStore" AutoLoad="false" AutoDataBind="true" OnReadData="deReadDollars" PageSize="10">
                             <Model>
@@ -263,6 +263,7 @@
                             if(!#{uxThresholdRowEdit}.editing){
                             #{uxAddThresholdButton}.enable(); 
                             #{uxThresholdStore}.reload();
+                            #{uxDeleteThresholdButton}.disable();
                             }" />
                     </Listeners>
                     <TopBar>
@@ -294,7 +295,7 @@
                         <ext:RowSelectionModel runat="server" Mode="Single" ID="uxDollarSelection" />
                     </SelectionModel>
                 </ext:GridPanel>
-                <ext:GridPanel runat="server" ID="uxThresholdGrid" Region="Center" Title="Threshold Percentages" PaddingSpec="10 10 30 10" MinHeight="250">
+                <ext:GridPanel runat="server" ID="uxThresholdGrid" Region="Center" Title="Threshold Percentages" PaddingSpec="10 10 30 10" MinHeight="250" SelectionMemory="false">
                     <Store>
                         <ext:Store runat="server" ID="uxThresholdStore" AutoDataBind="true" AutoLoad="false" OnReadData="deReadThresholds">
                             <Model>

@@ -161,6 +161,9 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                     uxDashboardStore.DataSource = Source;
                     e.Total = count;
                 }
+                uxEmailPDFSurveyButton.Disable();
+                uxEmailSurveyButton.Disable();
+                uxPrintPDFButton.Disable();
             }
 
         }
@@ -182,7 +185,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 SURVEY_FORMS_COMP NewFormToSubmit = new SURVEY_FORMS_COMP();
                 using (Entities _context = new Entities())
                 {
-                    NewFormToSubmit.FORM_ID = CUSTOMER_SURVEYS.GetFormIdByOrg(RowData[0].ORG_ID, _context);
+                    NewFormToSubmit.FORM_ID = CUSTOMER_SURVEYS.GetFormIdByThreshold(RowData[0].ORG_ID, RowData[0].THRESHOLD_ID, _context);
                     NewFormToSubmit.PROJECT_ID = RowData[0].PROJECT_ID;
                     NewFormToSubmit.THRESHOLD_ID = RowData[0].THRESHOLD_ID;
                     NewFormToSubmit.CREATE_DATE = DateTime.Now;
@@ -214,6 +217,7 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
                 //smtp.SendMessage(User.Identity.Name + "@dbiservices.com", Subject, Message, IsHtml, MailAttachment);
                 smtp.Send(EmailMessage);
                 X.Msg.Alert("Email sent", string.Format("Message has been sent to {0}", ToAddress)).Show();
+                uxDashboardStore.Reload();
             }
             else
             {
@@ -265,7 +269,7 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
             byte[] result;
             using (Entities _context = new Entities())
             {
-                Fieldsets = CUSTOMER_SURVEYS.GetFormFieldSets(FormId, _context).Where(x => x.ACTIVE == true).OrderBy(x => x.SORT_ORDER).ToList();
+                Fieldsets = CUSTOMER_SURVEYS.GetFormFieldSets(FormId, _context).Where(x => x.IS_ACTIVE == "Y").OrderBy(x => x.SORT_ORDER).ToList();
                 
             }
             using (MemoryStream PdfStream = new MemoryStream())
@@ -310,6 +314,10 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
                     using (Entities _context = new Entities())
                     {
                         FormToGenerate = CUSTOMER_SURVEYS.GetFieldsetQuestionsForGrid(Fieldset.FIELDSET_ID, _context).OrderBy(x => x.SORT_ORDER).ToList();
+                        foreach (var item in FormToGenerate)
+                        {
+                            item.QUESTION_TYPE_NAME = item.SURVEY_QUES_TYPES.QUESTION_TYPE_NAME;
+                        }
                     }
                     foreach (SURVEY_QUESTIONS Question in FormToGenerate)
                     {

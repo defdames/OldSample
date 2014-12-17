@@ -81,7 +81,7 @@ namespace DBI.Data
                 .Where(x => x.job_cost.LEVEL_SORT == 8)
                 .Where(x => x.job_cost.BGT_GREC >= x.threshold.LOW_DOLLAR_AMT && x.job_cost.BGT_GREC <= x.threshold.HIGH_DOLLAR_AMT)
                 .Join(_context.CUSTOMER_SURVEY_THRESHOLDS, tham => tham.threshold.AMOUNT_ID, th => th.AMOUNT_ID, (tham, th) => new { job_cost = tham, threshold = th })
-                .Select(x => new Threshold { PROJECT_NAME = x.job_cost.job_cost.PROJECT_NAME, PROJECT_NUMBER = x.job_cost.job_cost.PROJECT_NUMBER, PERCENTAGE = (x.job_cost.job_cost.BGT_GREC == 0 ? 0 : Math.Round((double)(x.job_cost.job_cost.FY_GREC / x.job_cost.job_cost.BGT_GREC * 100))), THRESHOLD = (double)x.threshold.THRESHOLD, THRESHOLD_ID = x.threshold.THRESHOLD_ID, ORG_ID = (long)x.job_cost.job_cost.DIVISION_ID, PROJECT_ID = (long)x.job_cost.job_cost.PROJECT_ID })
+                .Select(x => new Threshold { PROJECT_NAME = x.job_cost.job_cost.PROJECT_NAME, PROJECT_NUMBER = x.job_cost.job_cost.PROJECT_NUMBER, TYPE_NAME = x.job_cost.threshold.SURVEY_TYPES.TYPE_NAME  ,PERCENTAGE = (x.job_cost.job_cost.BGT_GREC == 0 ? 0 : Math.Round((double)(x.job_cost.job_cost.FY_GREC / x.job_cost.job_cost.BGT_GREC * 100))), THRESHOLD = (double)x.threshold.THRESHOLD, THRESHOLD_ID = x.threshold.THRESHOLD_ID, ORG_ID = (long)x.job_cost.job_cost.DIVISION_ID, PROJECT_ID = (long)x.job_cost.job_cost.PROJECT_ID })
                 .Where(x => x.PERCENTAGE > (x.THRESHOLD - 5));
 
             var filtereddata = (from d in data
@@ -140,6 +140,7 @@ namespace DBI.Data
             public string PROJECT_NAME { get; set; }
             public double THRESHOLD { get; set; }
             public decimal THRESHOLD_ID { get; set; }
+            public string TYPE_NAME { get; set; }
             public long PROJECT_ID { get; set; }
             public long ORG_ID { get; set; }
         }

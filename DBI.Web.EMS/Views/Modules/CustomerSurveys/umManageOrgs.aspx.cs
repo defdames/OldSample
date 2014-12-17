@@ -261,6 +261,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             //dmSubtractFromDirty();
             uxDollarGrid.GetView().Refresh();
             uxCompanySelectionModel.SetLocked(false);
+            uxDollarSelection.SetLocked(false);
             X.Js.Call("checkEditing");
             uxThresholdStore.Reload();
         }
@@ -284,6 +285,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             {
                 GenericData.Delete<CUSTOMER_SURVEY_THRESH_AMT>(ToBeDeleted);
                 uxDollarStore.Reload();
+                uxDeleteDollarButton.Disable();
             }
 
 
@@ -300,6 +302,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
             GenericData.Delete<CUSTOMER_SURVEY_THRESHOLDS>(ToBeDeleted);
             uxThresholdStore.Reload();
+            uxDeleteThresholdButton.Disable();
         }
 
         protected void deLoadThresholdForm(object sender, DirectEventArgs e)
@@ -320,8 +323,12 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             {
                 uxDollarStore.Reload();
                 uxAddDollarButton.Enable();
+                uxDeleteDollarButton.Disable();
+                uxDeleteThresholdButton.Disable();
+                uxThresholdStore.RemoveAll();
             }
         }
+
         //[DirectMethod]
         //public void dmAddToDirty()
         //{

@@ -34,7 +34,6 @@ namespace DBI.Data
         public static IQueryable<SURVEY_QUESTIONS> GetFieldsetQuestionsForGrid(decimal FieldSetId, Entities _context)
         {
             return (from q in _context.SURVEY_RELATION
-                    orderby q.SORT_ORDER ascending
                     where q.FIELDSET_ID == FieldSetId
                     select q.SURVEY_QUESTIONS);
         }
@@ -120,6 +119,14 @@ namespace DBI.Data
             return _context.CUSTOMER_SURVEY_THRESHOLDS.Where(x => x.THRESHOLD_ID == ThresholdId).Single();
         }
 
+        public static decimal GetFormIdByThreshold(decimal OrgId, decimal Threshold, Entities _context)
+        {
+            return (from d in _context.SURVEY_FORMS
+                    join a in _context.CUSTOMER_SURVEY_THRESH_AMT on d.TYPE_ID equals a.TYPE_ID
+                    join t in _context.CUSTOMER_SURVEY_THRESHOLDS on a.AMOUNT_ID equals t.AMOUNT_ID
+                    where d.ORG_ID == OrgId && t.THRESHOLD_ID == Threshold
+                    select d.FORM_ID).Single();
+        }
         public static IQueryable<SURVEY_CAT> GetCategories(Entities _context)
         {
             return _context.SURVEY_CAT;
@@ -177,7 +184,9 @@ namespace DBI.Data
                     join a in _context.SURVEY_FORMS_ANS on d.COMPLETION_ID equals a.COMPLETION_ID
                     join p in _context.PROJECTS_V on d.PROJECT_ID equals p.PROJECT_ID
                     where d.PROJECT_ID == ProjectId
-                    select new SURVEY_FORMS_COMP { COMPLETION_ID = d.COMPLETION_ID, FORM_ID = f.FORM_ID, LONG_NAME = p.LONG_NAME, FILLED_BY = d.FILLED_BY, FILLED_ON = d.FILLED_ON, FORMS_NAME = f.FORMS_NAME }).Distinct();
+                    select d).Distinct();
+
+            //new CustomerSurveyCompletions { COMPLETION_ID = d.COMPLETION_ID, FORM_ID = f.FORM_ID, LONG_NAME = p.LONG_NAME, FILLED_BY = d.FILLED_BY, FILLED_ON = d.FILLED_ON, FORMS_NAME = f.FORMS_NAME }
         }
 
         public static IQueryable<SURVEY_QUES_CAT> GetQuestionCategories(Entities _context)

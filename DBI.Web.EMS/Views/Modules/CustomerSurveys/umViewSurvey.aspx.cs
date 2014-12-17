@@ -217,7 +217,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
         {
             using (Entities _context = new Entities())
             {
-                List<SURVEY_FIELDSETS> Fieldsets = CUSTOMER_SURVEYS.GetFormFieldSets(FormId, _context).Where(x => x.ACTIVE == true).OrderBy(x => x.SORT_ORDER).ToList();
+                List<SURVEY_FIELDSETS> Fieldsets = CUSTOMER_SURVEYS.GetFormFieldSets(FormId, _context).Where(x => x.IS_ACTIVE == "Y").OrderBy(x => x.SORT_ORDER).ToList();
 
                 string FilledBy = CUSTOMER_SURVEYS.GetFormCompletion(_context).Where(x => x.COMPLETION_ID == CompletionId && x.FILLED_ON == null).Select(x => x.FILLED_BY).SingleOrDefault();
                 if (!string.IsNullOrEmpty(FilledBy))

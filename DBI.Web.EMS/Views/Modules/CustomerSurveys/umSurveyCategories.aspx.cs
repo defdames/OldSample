@@ -166,6 +166,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             {
                 GenericData.Delete<SURVEY_CAT>(ToBeDeleted);
                 uxCategoriesStore.Reload();
+                uxDeleteCategoryButton.Disable();
             }
         }
 
@@ -192,6 +193,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             {
                 GenericData.Delete<SURVEY_QUES_CAT>(ToBeDeleted);
                 uxQuestionCategoryStore.Reload();
+                uxDeleteQuestionCategoryButton.Disable();
             }
 
         }
