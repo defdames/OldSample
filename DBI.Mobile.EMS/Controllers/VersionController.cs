@@ -19,10 +19,10 @@ namespace DBI.Mobile.EMS.Controllers
             if (id == "production")
             {
                 Version ver = new Version();
-                ver.number = "1.0.T141119";
+                ver.number = "1.0.T141217";
                 ver.mandatory = true;
                 ver.install_url = "itms-services://?action=download-manifest&url=https://emsmobiletest.dbiservices.com/iems/iEMS.plist";
-                ver.descriptionText = "NEW FEATURES! Organization Security, and EMSv2 Security is now enabled. QR Scanner has been added to equipment lookup and attachments are now supported on all DAR sheets (Limit of 3).";
+                ver.descriptionText = "Bug fixes and performance improvements";
 
                 RootObject root = new RootObject();
                 root.version = ver;
