@@ -283,6 +283,7 @@
                 return "";
             }
         };
+
         var onShow = function (toolTip, grid) {
             var view = grid.getView(),
 				store = grid.getStore(),
