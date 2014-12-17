@@ -182,15 +182,16 @@ namespace DBI.Data
 
         public static IQueryable<SURVEY_QUES_CAT> GetQuestionCategories(Entities _context)
         {
-            return(from c in _context.SURVEY_QUES_CAT
-                   join f in _context.SURVEY_FIELDSETS on c.CATEGORY_ID equals f.CATEGORY_ID into cf
-                   from subdata in cf.DefaultIfEmpty()
-                   join r in _context.SURVEY_RELATION on subdata.FIELDSET_ID equals r.FIELDSET_ID into fr
-                   from secondsub in fr.DefaultIfEmpty()
-                   join q in _context.SURVEY_QUESTIONS on secondsub.QUESTION_ID equals q.QUESTION_ID into rq
-                   from thirdsub in rq.DefaultIfEmpty()
-                   group new {c, thirdsub} by new{c.CATEGORY_ID, c.CATEGORY_NAME} into qc
-                   select new SURVEY_QUES_CAT{CATEGORY_ID = qc.Key.CATEGORY_ID, CATEGORY_NAME = qc.Key.CATEGORY_NAME, NUM_QUESTIONS = qc.Count(x => x.thirdsub.QUESTION_ID != null)});
+            return _context.SURVEY_QUES_CAT;
+            //return(from c in _context.SURVEY_QUES_CAT
+            //       join f in _context.SURVEY_FIELDSETS on c.CATEGORY_ID equals f.CATEGORY_ID into cf
+            //       from subdata in cf.DefaultIfEmpty()
+            //       join r in _context.SURVEY_RELATION on subdata.FIELDSET_ID equals r.FIELDSET_ID into fr
+            //       from secondsub in fr.DefaultIfEmpty()
+            //       join q in _context.SURVEY_QUESTIONS on secondsub.QUESTION_ID equals q.QUESTION_ID into rq
+            //       from thirdsub in rq.DefaultIfEmpty()
+            //       group new {c, thirdsub} by new{c.CATEGORY_ID, c.CATEGORY_NAME} into qc
+            //       select new SURVEY_QUES_CAT{CATEGORY_ID = qc.Key.CATEGORY_ID, CATEGORY_NAME = qc.Key.CATEGORY_NAME, NUM_QUESTIONS = qc.Count(x => x.thirdsub.QUESTION_ID != null)});
         }
 
         public static SURVEY_QUES_CAT GetQuestionCategory(decimal CategoryId, Entities _context)

@@ -203,9 +203,10 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 GenericData.Update<CUSTOMER_SURVEY_THRESHOLDS>(Threshold);
             }
 
-
+            uxCompanySelectionModel.SetLocked(false);
             uxThresholdStore.Reload();
             uxThresholdForm.Reset();
+            X.Js.Call("checkEditing");
             //dmSubtractFromDirty();
         }
 
@@ -259,6 +260,8 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             }
             //dmSubtractFromDirty();
             uxDollarGrid.GetView().Refresh();
+            uxCompanySelectionModel.SetLocked(false);
+            X.Js.Call("checkEditing");
             uxThresholdStore.Reload();
         }
 
@@ -311,6 +314,14 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             }
         }
 
+        protected void deLoadDollarStore(object sender, DirectEventArgs e)
+        {
+            if (long.Parse(Session["isDirty"].ToString()) == 0)
+            {
+                uxDollarStore.Reload();
+                uxAddDollarButton.Enable();
+            }
+        }
         //[DirectMethod]
         //public void dmAddToDirty()
         //{

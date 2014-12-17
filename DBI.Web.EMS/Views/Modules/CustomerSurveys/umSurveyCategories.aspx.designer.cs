@@ -40,6 +40,42 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.Store uxCategoriesStore;
         
         /// <summary>
+        /// uxCategoryName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column uxCategoryName;
+        
+        /// <summary>
+        /// uxCategoryNameField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxCategoryNameField;
+        
+        /// <summary>
+        /// uxCategoryDescription control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column uxCategoryDescription;
+        
+        /// <summary>
+        /// uxCategoryDescriptionField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxCategoryDescriptionField;
+        
+        /// <summary>
         /// uxFormTypeRowEdit control.
         /// </summary>
         /// <remarks>
@@ -92,6 +128,24 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Store uxQuestionCategoryStore;
+        
+        /// <summary>
+        /// uxQuestionCategoryName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Column uxQuestionCategoryName;
+        
+        /// <summary>
+        /// uxQuestionCategoryNameField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxQuestionCategoryNameField;
         
         /// <summary>
         /// uxQuestionCategoryRowEdit control.

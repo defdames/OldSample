@@ -10,14 +10,11 @@
 
         var AddQuestionCategory = function () {
             App.uxQuestionCategoryStore.insert(0, new QuestionCategory());
-            if (App.uxQuestionCategorySelection.isLocked()) {
-                //App.uxQuestionCategorySelection.setLocked(false);
-            }
             App.uxQuestionCategorySelection.select(0);
             var task = new Ext.util.DelayedTask(function () {
                 App.uxQuestionCategoryRowEdit.startEdit(0, 0);
             });
-            task.delay(300);
+            task.delay(100);
 
             // Create DelayedTask and call it after 100 ms
             task = new Ext.util.DelayedTask(function () {
@@ -28,13 +25,11 @@
 
         var AddFormCategory = function () {
             App.uxCategoriesStore.insert(0, new FormType());
-            //App.uxCategorySelection.setLocked(true);
-            //App.uxCategorySelection.setLocked(false);
             App.uxCategorySelection.select(0);
             var task = new Ext.util.DelayedTask(function () {
                 App.uxFormTypeRowEdit.startEdit(0, 0);
             });
-            task.delay(300);
+            task.delay(100);
 
             // Create DelayedTask and call it after 100 ms
             task = new Ext.util.DelayedTask(function () {
@@ -45,24 +40,24 @@
 
         var cancelEditRow = function (value) {
             if (value == "formtype") {
-                if (!App.uxCategoryGrid.getSelectionModel().getSelection()[0].data.CATEGORY_ID) {
-                    App.uxCategoriesStore.remove(App.uxCategoryGrid.getSelectionModel().getSelection()[0]);
-                    var task = new Ext.util.DelayedTask(function () {
-                        //App.uxCategorySelection.setLocked(false);
-                    });
-                    task.delay(100);
+                if (!App.uxCategoryStore.getAt(0).data.CATEGORY_ID) {
+                    App.uxCategoryStore.removeAt(0);
+                }
+                else {
+                    App.uxDeleteCategoryButton.enable();
+                    App.uxCategorySelection.setLocked(false);
                 }
             }
             else {
-                if (!App.uxQuestionCategoryGrid.getSelectionModel().getSelection()[0].data.CATEGORY_ID) {
-                    App.uxQuestionCategoryStore.remove(App.uxQuestionCategoryGrid.getSelectionModel().getSelection()[0]);
-                    var task = new Ext.util.DelayedTask(function () {
-                        //App.uxQuestionCategorySelection.setLocked(false);
-                    });
-                    task.delay(100);
+                if (!App.uxQuestionCategoryStore.getAt(0).data.CATEGORY_ID) {
+                    App.uxQuestionCategoryStore.removeAt(0);
+                }
+                else {
+                    App.uxDeleteQuestionCategoryButton.enable();
+                    App.uxQuestionCategorySelection.setLocked(false);
                 }
             }
-            //App.direct.dmSubtractFromDirty();
+            checkEditing();
         };
 
         var deleteQuestionCategory = function () {
@@ -70,7 +65,6 @@
 
             Ext.Msg.confirm('Really Delete?', 'Do you really want to delete this Question Category?', function (e) {
                 if (e == 'yes') {
-                    App.uxQuestionCategoryStore.remove(QuestionCategoryRecord);
                     if (QuestionCategoryRecord[0].data.CATEGORY_ID) {
                         App.direct.dmDeleteQuestionCategory(QuestionCategoryRecord[0].data.CATEGORY_ID);
                     }
@@ -81,29 +75,49 @@
         var deleteFormType = function () {
             var FormTypeRecord = App.uxCategoryGrid.getSelectionModel().getSelection();
 
-            Ext.Msg.confirm('Really Delete?', 'Do you really want to delete this employee?', function (e) {
+            Ext.Msg.confirm('Really Delete?', 'Do you really want to delete this Category?', function (e) {
                 if (e == 'yes') {
-                    App.uxCategorieStore.remove(FormTypeRecord);
                     if (FormTypeRecord[0].data.CATEGORY_ID) {
-                        App.direct.dmDeleteFormType(FormTypeRecord[0].data.CATEGORY_ID);
+                        App.direct.dmDeleteCategory(FormTypeRecord[0].data.CATEGORY_ID);
+                    }
+                    else {
+                        App.uxCategoriesStore.removeAt(0);
                     }
                 }
             });
         };
 
-
-
         var onBeforeEdit = function (value) {
-            switch (value) {
-                case 'formtype':
-                    //App.uxCategoryGrid.getSelectionModel().setLocked(true);
-                    break;
-                default:
-                    //App.uxQuestionCategoryGrid.getSelectionModel().setLocked(true);
-                    break;
+            if (value == "formtype") {
+                if (App.uxFormTypeRowEdit.editing)
+                    return false;
+                else {
+                    App.direct.dmSetDirty('true');
+                    App.uxDeleteCategoryButton.disable();
+                    App.uxCategorySelection.setLocked(true);
+                    return true;
+                }
             }
-            //App.direct.dmAddToDirty();
-        }
+            else {
+                if (App.uxQuestionCategoryRowEdit.editing)
+                    return false;
+                else {
+                    App.direct.dmSetDirty('true');
+                    App.uxDeleteQuestionCategoryButton.disable();
+                    App.uxQuestionCategorySelection.setLocked(true);
+                    return true;
+                }
+            }
+        };
+
+        var checkEditing = function () {
+            if (App.uxFormTypeRowEdit.editing || App.uxQuestionCategoryRowEdit.editing) {
+                App.direct.dmSetDirty('true');
+            }
+            else {
+                App.direct.dmSetDirty('false');
+            }
+        };
     </script>
 </head>
 <body>
@@ -118,8 +132,8 @@
                                 <ext:Model runat="server" Name="FormType" IDProperty="CATEGORY_ID" ClientIdProperty="PhantomId">
                                     <Fields>
                                         <ext:ModelField Name="CATEGORY_ID" Type="Int" />
-                                        <ext:ModelField Name="NAME" Type="String" />
-                                        <ext:ModelField Name="DESCRIPTION" Type="String" />
+                                        <ext:ModelField Name="NAME" />
+                                        <ext:ModelField Name="DESCRIPTION" />
                                         <ext:ModelField Name="NUM_FORMS" Type="Int" />
                                     </Fields>
                                 </ext:Model>
@@ -132,16 +146,16 @@
                             </Sorters>
                         </ext:Store>
                     </Store>
-                    <ColumnModel>
+                    <ColumnModel runat="server">
                         <Columns>
-                            <ext:Column runat="server" Text="Category Name" DataIndex="NAME" Flex="25">
+                            <ext:Column runat="server" ID="uxCategoryName" Text="Category Name" DataIndex="NAME" Flex="25">
                                 <Editor>
-                                    <ext:TextField runat="server" AllowBlank="false" InvalidCls="allowBlank" />
+                                    <ext:TextField runat="server" ID="uxCategoryNameField" AllowBlank="false" InvalidCls="allowBlank" />
                                 </Editor>
                             </ext:Column>
-                            <ext:Column runat="server" Text="Category Description" DataIndex="DESCRIPTION" Flex="50">
+                            <ext:Column runat="server" ID="uxCategoryDescription" Text="Category Description" DataIndex="DESCRIPTION" Flex="50">
                                 <Editor>
-                                    <ext:TextField runat="server" AllowBlank="false" InvalidCls="allowBlank" />
+                                    <ext:TextField runat="server" ID="uxCategoryDescriptionField" AllowBlank="false" InvalidCls="allowBlank" />
                                 </Editor>
                             </ext:Column>
                             <ext:Column runat="server" Text="Number of Forms" DataIndex="NUM_FORMS" Flex="25" />
@@ -149,15 +163,16 @@
                     </ColumnModel>
                     <Plugins>
                         <ext:FilterHeader runat="server" Remote="true" />
-                        <ext:RowEditing runat="server" ClicksToEdit="2" AutoCancel="false" ClicksToMoveEditor="10" ErrorSummary="false" ID="uxFormTypeRowEdit">
+                        <ext:RowEditing runat="server" AutoCancel="false" ErrorSummary="false" ID="uxFormTypeRowEdit">
                             <Listeners>
                                 <CancelEdit Handler="cancelEditRow('formtype')" />
-                                <BeforeEdit Handler="
-                                    if(!#{uxFormTypeRowEdit}.editor.isVisible()){
-                                                    onBeforeEdit('formtype')
-                                                    }else{
-                                                    return false;
-                                                    }" />
+                                <BeforeEdit Handler="if(onBeforeEdit('formtype')){
+                                    #{uxAddCategoryButton}.disable();
+                                    return true;
+                                    }
+                                    else{
+                                    return false;
+                                    }" />
                             </Listeners>
                             <DirectEvents>
                                 <Edit OnEvent="deSaveCategory">
@@ -191,7 +206,7 @@
                         <Select Handler="#{uxDeleteCategoryButton}.enable()" />
                     </Listeners>
                     <SelectionModel>
-                        <ext:RowSelectionModel Mode="Single" ID="uxCategorySelection" />
+                        <ext:RowSelectionModel runat="server" Mode="Single" ID="uxCategorySelection" />
                     </SelectionModel>
                 </ext:GridPanel>
                 <ext:GridPanel ID="uxQuestionCategoryGrid" runat="server" Title="Question Categories" Region="North" Height="350">
@@ -214,11 +229,11 @@
                             </Sorters>
                         </ext:Store>
                     </Store>
-                    <ColumnModel>
+                    <ColumnModel runat="server">
                         <Columns>
-                            <ext:Column runat="server" DataIndex="CATEGORY_NAME" Text="Name" Flex="1">
+                            <ext:Column runat="server" ID="uxQuestionCategoryName" DataIndex="CATEGORY_NAME" Text="Name" Flex="1">
                                 <Editor>
-                                    <ext:TextField runat="server" AllowBlank="false" InvalidCls="allowBlank" />
+                                    <ext:TextField runat="server" ID="uxQuestionCategoryNameField" AllowBlank="false" InvalidCls="allowBlank" />
                                 </Editor>
                             </ext:Column>
                             <ext:Column runat="server" DataIndex="NUM_QUESTIONS" Text="Number of Questions" Flex="1" />
@@ -226,14 +241,16 @@
                     </ColumnModel>
                     <Plugins>
                         <ext:FilterHeader runat="server" Remote="true" />
-                        <ext:RowEditing runat="server" ID="uxQuestionCategoryRowEdit" AutoCancel="false" ClicksToEdit="2" ClicksToMoveEditor="10" ErrorSummary="false">
+                        <ext:RowEditing runat="server" ID="uxQuestionCategoryRowEdit" AutoCancel="false" ErrorSummary="false">
                             <Listeners>
                                 <CancelEdit Handler="cancelEditRow('questioncat')" />
-                                <BeforeEdit Handler="if(!#{uxQuestionCategoryRowEdit}.editor.isVisible()){
-                                                    onBeforeEdit('questioncat')
-                                                    }else{
-                                                    return false;
-                                                    }" />
+                                <BeforeEdit Handler="if(onBeforeEdit('questioncat')){
+                                    #{uxAddQuestionCategoryButton}.disable();
+                                    return true;
+                                    }
+                                    else{
+                                    return false;
+                                    }" />
                             </Listeners>
                             <DirectEvents>
                                 <Edit OnEvent="deSaveQuestionCategory" Before="return #{uxQuestionCategoryStore}.isDirty();">
@@ -267,7 +284,7 @@
                         <Select Handler="#{uxDeleteQuestionCategoryButton}.enable()" />
                     </Listeners>
                     <SelectionModel>
-                        <ext:RowSelectionModel Mode="Single" ID="uxQuestionCategorySelection" />
+                        <ext:RowSelectionModel runat="server" Mode="Single" ID="uxQuestionCategorySelection" />
                     </SelectionModel>
                 </ext:GridPanel>
             </Items>

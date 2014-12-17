@@ -53,6 +53,7 @@
                 }
                 App.uxAddDollarButton.enable();
                 App.uxDollarSelection.setLocked(false);
+                App.uxCompanySelectionModel.setLocked(false);
             }
             else {
                 if (!App.uxThresholdStore.getAt(0).data.THRESHOLD_ID) {
@@ -63,6 +64,7 @@
                 }
                 App.uxAddThresholdButton.enable();
                 App.uxThresholdSelection.setLocked(false);
+                App.uxCompanySelectionModel.setLocked(false);
             }
             checkEditing();
         };
@@ -92,7 +94,7 @@
 
             // Create DelayedTask and call it after 100 ms
             task = new Ext.util.DelayedTask(function () {
-                App.uxThresholdGrid.columns[1].getEditor().focusInput();
+                App.uxThresholdGrid.columns[2].getEditor().focusInput();
             });
             task.delay(400);
         };
@@ -106,6 +108,7 @@
                     App.direct.dmSetDirty('true');
                     App.uxDeleteDollarButton.disable();
                     App.uxDollarSelection.setLocked(true);
+                    App.uxCompanySelectionModel.setLocked(true);
                     return true;
                 }
             }
@@ -116,6 +119,7 @@
                     App.direct.dmSetDirty('true');
                     App.uxDeleteThresholdButton.disable();
                     App.uxThresholdSelection.setLocked(true);
+                    App.uxCompanySelectionModel.setLocked(true);
                     return true;
                 }
             }
@@ -161,9 +165,10 @@
                     <SelectionModel>
                         <ext:TreeSelectionModel ID="uxCompanySelectionModel" runat="server" Mode="Single" />
                     </SelectionModel>
-                    <Listeners>
-                        <ItemClick Handler="#{uxDollarStore}.reload(); #{uxAddDollarButton}.enable();" />
-                    </Listeners>
+                    <DirectEvents>
+                        <ItemClick OnEvent="deLoadDollarStore" />
+                    </DirectEvents>
+                    
                 </ext:TreePanel>
                 <ext:GridPanel runat="server" ID="uxDollarGrid" Title="Dollar Threshold" Region="North" PaddingSpec="10 10 30 10" MinHeight="250">
                     <Store>

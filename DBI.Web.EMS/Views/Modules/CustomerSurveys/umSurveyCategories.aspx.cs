@@ -27,7 +27,12 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             int count;
             using (Entities _context = new Entities())
             {
-                uxCategoriesStore.DataSource = GenericData.ListFilterHeader<SURVEY_CAT>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], CUSTOMER_SURVEYS.GetCategories(_context), out count);
+                var FilteredData = GenericData.ListFilterHeader<SURVEY_CAT>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], CUSTOMER_SURVEYS.GetCategories(_context), out count);
+                foreach (var item in FilteredData)
+                {
+                    item.NUM_FORMS = item.SURVEY_FORMS.Count;
+                }
+                uxCategoriesStore.DataSource = FilteredData;
                 e.Total = count;
             }
         }
@@ -48,9 +53,10 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
                 GenericData.Insert<SURVEY_CAT>(ToBeSaved);
 
-                ModelProxy Record = uxQuestionCategoryStore.GetByInternalId(item.PhantomId);
+                ModelProxy Record = uxCategoriesStore.GetByInternalId(item.PhantomId);
                 Record.CreateVariable = true;
                 Record.SetId(ToBeSaved.CATEGORY_ID);
+                Record.Set("NUM_FORMS", "0");
                 Record.Commit();
             }
 
@@ -71,6 +77,10 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             }
             //dmSubtractFromDirty();
             uxCategoriesStore.CommitChanges();
+            uxCategorySelection.SetLocked(false);
+            uxAddCategoryButton.Enable();
+            uxDeleteCategoryButton.Enable();
+            X.Js.Call("checkEditing");
         }
 
         protected void deReadQuestionCategories(object sender, StoreReadDataEventArgs e)
@@ -79,8 +89,21 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             {
                 int count;
                 IQueryable<SURVEY_QUES_CAT> data = CUSTOMER_SURVEYS.GetQuestionCategories(_context);
-                var test = GenericData.ListFilterHeader<SURVEY_QUES_CAT>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
-                uxQuestionCategoryStore.DataSource = test;
+                var FilteredData = GenericData.ListFilterHeader<SURVEY_QUES_CAT>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                foreach (var item in FilteredData)
+                {
+                    item.NUM_QUESTIONS = (from c in _context.SURVEY_QUES_CAT
+                                          join f in _context.SURVEY_FIELDSETS on c.CATEGORY_ID equals f.CATEGORY_ID into cf
+                                          from subdata in cf.DefaultIfEmpty()
+                                          join r in _context.SURVEY_RELATION on subdata.FIELDSET_ID equals r.FIELDSET_ID into fr
+                                          from secondsub in fr.DefaultIfEmpty()
+                                          join q in _context.SURVEY_QUESTIONS on secondsub.QUESTION_ID equals q.QUESTION_ID into rq
+                                          from thirdsub in rq.DefaultIfEmpty()
+                                          group new { c, thirdsub } by new { c.CATEGORY_ID, c.CATEGORY_NAME } into qc
+                                          where qc.Key.CATEGORY_ID == item.CATEGORY_ID
+                                          select qc.Count(x => x.thirdsub.QUESTION_ID != null)).Single();
+                }
+                uxQuestionCategoryStore.DataSource = FilteredData;
                 e.Total = count;
             }
         }
@@ -98,6 +121,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 ModelProxy Record = uxQuestionCategoryStore.GetByInternalId(item.PhantomId);
                 Record.CreateVariable = true;
                 Record.SetId(NewCategory.CATEGORY_ID);
+                Record.Set("NUM_QUESTIONS", "0");
                 Record.Commit();
             }
 
@@ -116,6 +140,10 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             }
             //dmSubtractFromDirty();
             uxQuestionCategoryStore.CommitChanges();
+            uxQuestionCategorySelection.SetLocked(false);
+            uxDeleteQuestionCategoryButton.Enable();
+            uxAddQuestionCategoryButton.Enable();
+            X.Js.Call("checkEditing");
         }
 
         [DirectMethod]
@@ -132,11 +160,12 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             if (FormCount > 0)
             {
                 X.Msg.Alert("Error", "This Category has forms within it.  Please remove any existing forms before deleting the Category").Show();
-                uxCategoriesStore.Reload();
+                
             }
             else
             {
                 GenericData.Delete<SURVEY_CAT>(ToBeDeleted);
+                uxCategoriesStore.Reload();
             }
         }
 
@@ -157,29 +186,14 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             if (FieldsetCount > 0)
             {
                 X.Msg.Alert("Error", "This Category has fieldsets within it.  Please remove any associated fieldsets, or change the fieldset to another Question Category before deleting").Show();
-                uxQuestionCategoryStore.Reload();
+                
             }
             else
             {
                 GenericData.Delete<SURVEY_QUES_CAT>(ToBeDeleted);
+                uxQuestionCategoryStore.Reload();
             }
 
         }
-
-        //[DirectMethod]
-        //public void dmAddToDirty()
-        //{
-        //    long isDirty = long.Parse(Session["isDirty"].ToString());
-        //    isDirty++;
-        //    Session["isDirty"] = isDirty;
-        //}
-
-        //[DirectMethod]
-        //public void dmSubtractFromDirty()
-        //{
-        //    long isDirty = long.Parse(Session["isDirty"].ToString());
-        //    isDirty--;
-        //    Session["isDirty"] = isDirty;
-        //}
     }
 }
