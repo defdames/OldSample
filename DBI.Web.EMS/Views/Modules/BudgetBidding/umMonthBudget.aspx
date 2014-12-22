@@ -169,37 +169,6 @@
                 <ext:Toolbar ID="uxMainToolbar" runat="server" Region="North">
                     <Items>
                         <ext:ToolbarFill />
-
-                        <ext:ComboBox ID="uxActions"
-                            runat="server"
-                            ValueField="ID_NAME"
-                            DisplayField="ID_NAME"
-                            Width="200"
-                            EmptyText="-- Actions --"
-                            Editable="false">
-                            <Store>
-                                <ext:Store ID="uxActionsStore" runat="server" OnReadData="deLoadSummaryActions" AutoLoad="false">
-                                    <Model>
-                                        <ext:Model ID="Model4" runat="server">
-                                            <Fields>
-                                                <ext:ModelField Name="ID_NAME" />
-                                            </Fields>
-                                        </ext:Model>
-                                    </Model>
-                                    <Proxy>
-                                        <ext:PageProxy />
-                                    </Proxy>
-                                </ext:Store>
-                            </Store>
-                            <DirectEvents>
-                                <Select OnEvent="deChooseSummaryAction">
-                                    <EventMask ShowMask="true" Msg="Processing..." />
-                                </Select>
-                            </DirectEvents>
-                        </ext:ComboBox>
-
-                        <ext:Label ID="uxSpace1" runat="server" Width="10" />
-
                         <ext:ComboBox ID="uxSummaryReports"
                             runat="server"
                             ValueField="ID_NAME"
@@ -242,18 +211,54 @@
 
 
                 <%-------------------------------------------------- Top Panel --------------------------------------------------%>
-                <ext:FieldContainer ID="FieldContainer3"
+                <ext:Panel ID="FieldContainer31"
                     runat="server"
                     Region="North"
                     Layout="HBoxLayout">
                     <Items>
-                        <ext:GridPanel ID="uxProjects" runat="server" Flex="1" Height="190" HideHeaders="false">
+                        <ext:GridPanel ID="uxProjects" runat="server" Flex="1" Height="220" HideHeaders="false">
+                            <TopBar>
+
+                                <ext:Toolbar ID="Toolbar1" runat="server">
+                                    <Items>
+                                        <ext:ToolbarFill />
+                                        <ext:ComboBox ID="uxProjectActions"
+                                            runat="server"
+                                            ValueField="ID_NAME"
+                                            DisplayField="ID_NAME"
+                                            Width="200"
+                                            EmptyText="-- Actions --"
+                                            Editable="false">
+                                            <Store>
+                                                <ext:Store ID="uxProjectActionsStore" runat="server" OnReadData="deLoadProjectActions" AutoLoad="false">
+                                                    <Model>
+                                                        <ext:Model ID="Model4" runat="server">
+                                                            <Fields>
+                                                                <ext:ModelField Name="ID_NAME" />
+                                                            </Fields>
+                                                        </ext:Model>
+                                                    </Model>
+                                                    <Proxy>
+                                                        <ext:PageProxy />
+                                                    </Proxy>
+                                                </ext:Store>
+                                            </Store>
+                                            <DirectEvents>
+                                                <Select OnEvent="deChooseProjectAction">
+                                                    <EventMask ShowMask="true" Msg="Processing..." />
+                                                </Select>
+                                            </DirectEvents>
+                                        </ext:ComboBox>
+                                        <ext:Label ID="uxSpace1" runat="server" Width="10" />
+                                    </Items>
+                                </ext:Toolbar>
+                            </TopBar>
                             <SelectionModel>
-                                <ext:RowSelectionModel ID="RowSelectionModel2" runat="server" AllowDeselect="false" Mode="Single" />
+                                <ext:RowSelectionModel ID="rowSelectionProject" runat="server" AllowDeselect="false" Mode="Single" />
                             </SelectionModel>
                             <Store>
                                 <ext:Store runat="server"
-                                    ID="uxSummaryProjectStore"
+                                    ID="uxProjectsStore"
                                     OnReadData="deReadProjectGridData"
                                     AutoDataBind="true"
                                     WarningOnDirty="false">
@@ -268,6 +273,9 @@
                                     <Proxy>
                                         <ext:PageProxy />
                                     </Proxy>
+                                    <Listeners>
+                                        <Load Handler="#{rowSelectionProject}.select(0)" />
+                                    </Listeners>
                                 </ext:Store>
                             </Store>
                             <ColumnModel>
@@ -284,16 +292,53 @@
                                 </Select>
                             </DirectEvents>
                         </ext:GridPanel>
-                        <ext:GridPanel ID="uxTaskDetail" runat="server" Flex="1" Height="190" HideHeaders="false">
+
+                        <ext:GridPanel ID="uxTasks" runat="server" Flex="1" Height="220" HideHeaders="false">
+                            <TopBar>
+                                <ext:Toolbar ID="Toolbar2" runat="server">
+                                    <Items>
+                                        <ext:ToolbarFill />
+                                        <ext:ComboBox ID="uxTaskActions"
+                                            runat="server"
+                                            ValueField="ID_NAME"
+                                            DisplayField="ID_NAME"
+                                            Width="200"
+                                            EmptyText="-- Actions --"
+                                            Editable="false">
+                                            <Store>
+                                                <ext:Store ID="uxTaskActionsStore" runat="server" OnReadData="deLoadTaskActions" AutoLoad="false">
+                                                    <Model>
+                                                        <ext:Model ID="Model5" runat="server">
+                                                            <Fields>
+                                                                <ext:ModelField Name="ID_NAME" />
+                                                            </Fields>
+                                                        </ext:Model>
+                                                    </Model>
+                                                    <Proxy>
+                                                        <ext:PageProxy />
+                                                    </Proxy>
+                                                </ext:Store>
+                                            </Store>
+                                            <DirectEvents>
+                                                <Select OnEvent="deChooseTaskAction">
+                                                    <EventMask ShowMask="true" Msg="Processing..." />
+                                                </Select>
+                                            </DirectEvents>
+                                        </ext:ComboBox>
+                                        <ext:Label ID="Label1" runat="server" Width="10" />
+                                    </Items>
+                                </ext:Toolbar>
+                            </TopBar>
                             <SelectionModel>
-                                <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" AllowDeselect="false" Mode="Single" />
+                                <ext:RowSelectionModel ID="rowSelectionTask" runat="server" AllowDeselect="false" Mode="Single" />
                             </SelectionModel>
                             <Store>
                                 <ext:Store runat="server"
-                                    ID="uxSummaryTaskDetailStore"
-                                    OnReadData="deReadTaskDetailGridData"
+                                    ID="uxTasksStore"
+                                    OnReadData="deReadTaskGridData"
                                     AutoDataBind="true"
-                                    WarningOnDirty="false">
+                                    WarningOnDirty="false"
+                                    AutoLoad="false">
                                     <Model>
                                         <ext:Model ID="Model1" runat="server">
                                             <Fields>
@@ -305,6 +350,9 @@
                                     <Proxy>
                                         <ext:PageProxy />
                                     </Proxy>
+                                    <Listeners>
+                                        <Load Handler="#{rowSelectionTask}.select(0)" />
+                                    </Listeners>
                                 </ext:Store>
                             </Store>
                             <ColumnModel>
@@ -313,16 +361,16 @@
                                 </Columns>
                             </ColumnModel>
                             <DirectEvents>
-                                <Select OnEvent="deSelectTaskDetail">
+                                <Select OnEvent="deSelectTask">
                                     <ExtraParams>
-                                        <ext:Parameter Name="DetailSheetID" Value="#{uxTaskDetail}.getSelectionModel().getSelection()[0].data.ID" Mode="Raw" />
+                                        <ext:Parameter Name="DetailSheetID" Value="#{uxTasks}.getSelectionModel().getSelection()[0].data.ID" Mode="Raw" />
                                     </ExtraParams>
                                     <EventMask ShowMask="true" />
                                 </Select>
                             </DirectEvents>
                         </ext:GridPanel>
                     </Items>
-                </ext:FieldContainer>
+                </ext:Panel>
 
 
                 <%-------------------------------------------------- Middle Panel --------------------------------------------------%>
@@ -333,9 +381,8 @@
                     <Store>
                         <ext:Store runat="server"
                             ID="uxMonthDetailStore"
-                            OnReadData="deReadMonthDetailGridData"
-                            AutoDataBind="true"
-                            WarningOnDirty="false">
+                            OnReadData="deReadMainGridData"
+                            AutoLoad="false">
                             <Model>
                                 <ext:Model ID="Model3" runat="server">
                                     <Fields>
@@ -642,13 +689,14 @@
                 <ext:Hidden ID="uxHidProjectNumID" runat="server" />
                 <ext:Hidden ID="uxHidType" runat="server" />
                 <ext:Hidden ID="uxHidStatusID" runat="server" />
-                <ext:Hidden ID="uxHidPrevYear" runat="server" />
-                <ext:Hidden ID="uxHidPrevVer" runat="server" />
+                <ext:Hidden ID="uxHidYear" runat="server" />
+                <ext:Hidden ID="uxHidVer" runat="server" />
                 <ext:Hidden ID="uxHidFormEnabled" runat="server" />
                 <ext:Hidden ID="uxHidOldBudBidID" runat="server" />
                 <ext:Hidden ID="uxHidDetailSheetID" runat="server" />
                 <ext:Hidden ID="uxHidDetailSheetOrder" runat="server" />
                 <ext:Hidden ID="uxHidDetailSheetName" runat="server" />
+                <ext:Hidden ID="uxHidOrgID" runat="server" />
                 <%-- Uncomment to Use --%>
                 <%-------------------------------------------------- Diagnostic Panel --------------------------------------------------%>
             </Items>
