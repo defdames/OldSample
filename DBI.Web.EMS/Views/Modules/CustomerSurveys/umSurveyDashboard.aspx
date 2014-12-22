@@ -95,7 +95,7 @@
                             <TopBar>
                                 <ext:Toolbar ID="Toolbar1" runat="server">
                                     <Items>
-                                        <ext:Button runat="server" ID="uxEmailSurveyButton" Text="Email Survey Link" Icon="EmailLink">
+                                        <ext:Button runat="server" ID="uxEmailSurveyButton" Text="Email Survey Link" Icon="EmailLink" Disabled="true">
                                             <DirectEvents>
                                                 <Click OnEvent="deEmailLink">
                                                     <ExtraParams>
@@ -105,7 +105,7 @@
                                                 </Click>
                                             </DirectEvents>
                                         </ext:Button>
-                                        <ext:Button runat="server" ID="uxEmailPDFSurveyButton" Text="Email PDF Survey" Icon="EmailAttach">
+                                        <ext:Button runat="server" ID="uxEmailPDFSurveyButton" Text="Email PDF Survey" Icon="EmailAttach" Disabled="true">
                                             <DirectEvents>
                                                 <Click OnEvent="deEmailPDF" IsUpload="true">
                                                     <ExtraParams>
@@ -115,7 +115,7 @@
                                                 </Click>
                                             </DirectEvents>
                                         </ext:Button>
-                                        <ext:Button runat="server" ID="uxPrintPDFButton" Text="Print PDF" Icon="PageWhiteAcrobat">
+                                        <ext:Button runat="server" ID="uxPrintPDFButton" Text="Print PDF" Icon="PageWhiteAcrobat" Disabled="true">
                                             <DirectEvents>
                                                 <Click OnEvent="dePrintPDF" IsUpload="true">
                                                     <ExtraParams>
