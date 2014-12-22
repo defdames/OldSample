@@ -2093,14 +2093,18 @@
             <PropertyRef Name="PROCESSES_ID" />
           </Key>
           <Property Name="PROCESSES_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="PROCESS_NAME" Type="varchar2" MaxLength="100" />
-          <Property Name="RUNTIME" Type="date" />
+          <Property Name="PROCESS_TYPE" Type="varchar2" MaxLength="50" />
+          <Property Name="MINUTES" Type="varchar2" MaxLength="50" />
+          <Property Name="HOURS" Type="varchar2" MaxLength="50" />
+          <Property Name="DAYS" Type="varchar2" MaxLength="50" />
+          <Property Name="WEEKS" Type="varchar2" MaxLength="50" />
+          <Property Name="MONTHS" Type="varchar2" MaxLength="50" />
+          <Property Name="URL" Type="clob" />
           <Property Name="DESCRIPTION" Type="clob" />
-          <Property Name="RUN_STATUS" Type="varchar2" MaxLength="20" />
-          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="CREATE_DATE" Type="date" />
-          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFY_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
         </EntityType>
         <EntityType Name="SURVEY_CAT">
           <Key>
@@ -8532,14 +8536,18 @@
             <PropertyRef Name="PROCESSES_ID" />
           </Key>
           <Property Type="Decimal" Name="PROCESSES_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="String" Name="PROCESS_NAME" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="RUNTIME" />
+          <Property Type="String" Name="PROCESS_TYPE" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MINUTES" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="HOURS" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="DAYS" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="WEEKS" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MONTHS" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="URL" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="DESCRIPTION" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="RUN_STATUS" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="CREATE_DATE" />
-          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="MODIFY_DATE" />
+          <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -11389,14 +11397,18 @@
           <EntitySetMapping Name="PROCESSES">
             <EntityTypeMapping TypeName="OracleModel.PROCESS">
               <MappingFragment StoreEntitySet="PROCESSES">
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
                 <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="RUN_STATUS" ColumnName="RUN_STATUS" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
                 <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
-                <ScalarProperty Name="RUNTIME" ColumnName="RUNTIME" />
-                <ScalarProperty Name="PROCESS_NAME" ColumnName="PROCESS_NAME" />
+                <ScalarProperty Name="URL" ColumnName="URL" />
+                <ScalarProperty Name="MONTHS" ColumnName="MONTHS" />
+                <ScalarProperty Name="WEEKS" ColumnName="WEEKS" />
+                <ScalarProperty Name="DAYS" ColumnName="DAYS" />
+                <ScalarProperty Name="HOURS" ColumnName="HOURS" />
+                <ScalarProperty Name="MINUTES" ColumnName="MINUTES" />
+                <ScalarProperty Name="PROCESS_TYPE" ColumnName="PROCESS_TYPE" />
                 <ScalarProperty Name="PROCESSES_ID" ColumnName="PROCESSES_ID" />
               </MappingFragment>
             </EntityTypeMapping>
