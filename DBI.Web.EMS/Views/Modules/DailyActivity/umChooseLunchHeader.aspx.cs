@@ -28,6 +28,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             long EmployeeId = long.Parse(Request.QueryString["EmployeeId"]);
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
+            string BadProject = string.Empty;
             using (Entities _context = new Entities())
             {
                 DateTime HeaderDate = (from d in _context.DAILY_ACTIVITY_HEADER
@@ -37,7 +38,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 long PersonId = _context.DAILY_ACTIVITY_EMPLOYEE.Where(x => x.EMPLOYEE_ID == EmployeeId).Select(x => x.PERSON_ID).Single();
                 List<DAILY_ACTIVITY_HEADER> HeaderList = (from em in _context.DAILY_ACTIVITY_EMPLOYEE
                                                           join d in _context.DAILY_ACTIVITY_HEADER on em.HEADER_ID equals d.HEADER_ID
-                                                          where em.PERSON_ID == PersonId && EntityFunctions.TruncateTime(d.DA_DATE) == EntityFunctions.TruncateTime(HeaderDate)
+                                                          where em.PERSON_ID == PersonId && EntityFunctions.TruncateTime(d.DA_DATE) == EntityFunctions.TruncateTime(HeaderDate) && d.STATUS != 5
                                                           select d).ToList();
                 List<LunchInfo> LunchList = new List<LunchInfo>();
                 foreach (DAILY_ACTIVITY_HEADER Header in HeaderList)
@@ -54,22 +55,27 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     else
                     {
                         TaskInfo = _context.PA_TASKS_V.Where(x => (x.PROJECT_ID == Header.PROJECT_ID) && (x.TASK_NUMBER == "9999")).SingleOrDefault();
-                        if (TaskInfo == null)
-                        {
-                            X.Js.Call(string.Format("parent.App.direct.dmShowLunchTaskError('{0}');parent.App.uxPlaceholderWindow.hide()", ProjectName));
-                        }
                     }
-                    LunchList.Add(new LunchInfo
+                    if (TaskInfo != null)
                     {
-                        HeaderId = Header.HEADER_ID,
-                        ProjectName = ProjectName,
-                        TaskName = TaskInfo.DESCRIPTION,
-                        TaskNumber = TaskInfo.TASK_NUMBER,
-                        TaskId = TaskInfo.TASK_ID.ToString()
-                    });
-                
+                        LunchList.Add(new LunchInfo
+                        {
+                            HeaderId = Header.HEADER_ID,
+                            ProjectName = ProjectName,
+                            TaskName = TaskInfo.DESCRIPTION,
+                            TaskNumber = TaskInfo.TASK_NUMBER,
+                            TaskId = TaskInfo.TASK_ID.ToString()
+                        });
+                    }
+                    else
+                    {
+                        BadProject = ProjectName;
+                    }
                 }
-                
+                if (LunchList.Count == 0)
+                {
+                    X.Js.Call(string.Format("parent.App.direct.dmShowLunchTaskError('{0}');parent.App.uxPlaceholderWindow.hide()",BadProject));
+                }
                 uxLunchHeaderStore.DataSource = LunchList;
 
             }
@@ -104,9 +110,9 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 DateTime HeaderDate = _context.DAILY_ACTIVITY_HEADER.Where(x => x.HEADER_ID == HeaderId).Select(x => (DateTime)x.DA_DATE).Single();
                 //Check for existing lunch
                 ExistingLunchQuery = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
-                                 join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
-                                 where d.PERSON_ID == PersonId && EntityFunctions.TruncateTime(h.DA_DATE) == EntityFunctions.TruncateTime(HeaderDate) && d.LUNCH == "Y"
-                                 select d);
+                                      join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
+                                      where d.PERSON_ID == PersonId && EntityFunctions.TruncateTime(h.DA_DATE) == EntityFunctions.TruncateTime(HeaderDate) && d.LUNCH == "Y"
+                                      select d);
                 EmployeeToUpdate = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                     where d.HEADER_ID == ChosenLunch && d.PERSON_ID == PersonId
                                     select d).Single();
