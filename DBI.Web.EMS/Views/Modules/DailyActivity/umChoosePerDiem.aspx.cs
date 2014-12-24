@@ -27,6 +27,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
         protected void FillComboBox(long HeaderId, long EmployeeId)
         {
+            string BadProject = string.Empty;
             using (Entities _context = new Entities()){
 
                 long PersonId = _context.DAILY_ACTIVITY_EMPLOYEE.Where(x => x.EMPLOYEE_ID == EmployeeId).Select(x => x.PERSON_ID).Single();
@@ -36,7 +37,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 
                 List<DAILY_ACTIVITY_HEADER> HeaderComboStore = (from d in _context.DAILY_ACTIVITY_EMPLOYEE
                                                        join h in _context.DAILY_ACTIVITY_HEADER on d.HEADER_ID equals h.HEADER_ID
-                                                       where h.DA_DATE == HeaderDate && d.PERSON_ID == PersonId
+                                                       where h.DA_DATE == HeaderDate && d.PERSON_ID == PersonId && h.STATUS != 5
                                                        select h).ToList();
                 
                 List<LunchInfo> ComboList = new List<LunchInfo>();
@@ -53,16 +54,27 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     }
                     else
                     {
-                        TaskInfo = _context.PA_TASKS_V.Where(x => (x.PROJECT_ID == Header.PROJECT_ID) && (x.TASK_NUMBER == "9999")).Single();
+                        TaskInfo = _context.PA_TASKS_V.Where(x => (x.PROJECT_ID == Header.PROJECT_ID) && (x.TASK_NUMBER == "9999")).SingleOrDefault();
                     }
-                    ComboList.Add(new LunchInfo
+                    if (TaskInfo != null)
                     {
-                        HeaderId = Header.HEADER_ID,
-                        ProjectName = ProjectName,
-                        TaskName = TaskInfo.DESCRIPTION,
-                        TaskNumber = TaskInfo.TASK_NUMBER,
-                        TaskId = TaskInfo.TASK_ID.ToString()
-                    });
+                        ComboList.Add(new LunchInfo
+                        {
+                            HeaderId = Header.HEADER_ID,
+                            ProjectName = ProjectName,
+                            TaskName = TaskInfo.DESCRIPTION,
+                            TaskNumber = TaskInfo.TASK_NUMBER,
+                            TaskId = TaskInfo.TASK_ID.ToString()
+                        });
+                    }
+                    else
+                    {
+                        BadProject = ProjectName;
+                    }
+                }
+                if (ComboList.Count == 0)
+                {
+                    X.Js.Call(string.Format("parent.App.direct.dmShowLunchTaskError('{0}');parent.App.uxPlaceholderWindow.hide()", BadProject));
                 }
                 uxChoosePerDiemHeaderIdStore.DataSource = ComboList;
             }
