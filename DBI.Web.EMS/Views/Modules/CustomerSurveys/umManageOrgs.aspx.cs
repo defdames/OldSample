@@ -33,12 +33,13 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 using (Entities _context = new Entities())
                 {
                     IQueryable<CUSTOMER_SURVEY_THRESH_AMT> Amounts = CUSTOMER_SURVEYS.GetOrganizationThresholdAmounts(OrgID, _context);
-                    int count;
-                    var data = GenericData.ListFilterHeader(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], Amounts, out count);
-                    foreach (var item in data)
+                    foreach (var item in Amounts)
                     {
                         item.ORG_HIER = _context.ORG_HIER_V.Where(x => x.ORG_ID == item.ORG_ID).Select(x => x.ORG_HIER).Distinct().Single();
                     }
+                    int count;
+                    var data = GenericData.ListFilterHeader(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], Amounts, out count);
+                    
                     uxDollarStore.DataSource = data;
                     e.Total = count;
                 }

@@ -62,6 +62,7 @@
                                                 <ext:ModelField Name="TYPE_NAME" />
                                                 <ext:ModelField Name="PROJECT_ID" />
                                                 <ext:ModelField Name="ORG_ID" />
+                                                <ext:ModelField Name="TYPE_ID" />
                                             </Fields>
                                         </ext:Model>
                                     </Model>

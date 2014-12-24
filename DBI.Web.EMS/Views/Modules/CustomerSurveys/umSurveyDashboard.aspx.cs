@@ -210,7 +210,7 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
 
                 var smtp = new SmtpClient("owa.dbiservices.com");
 #if DEBUG
-                smtp.Credentials = new System.Net.NetworkCredential("gene.lapointe@dbiservices.com", "Monkey1!");
+                smtp.Credentials = new System.Net.NetworkCredential("gene.lapointe@dbiservices.com", "Monkey2@");
 #endif
                 MailMessage EmailMessage = new MailMessage(User.Identity.Name + "@dbiservices.com", User.Identity.Name + "@dbiservices.com", Subject, Message);
                 EmailMessage.IsBodyHtml = true;
@@ -232,7 +232,7 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
             //Get form for Organization
             using (Entities _context = new Entities())
             {
-                FormId = CUSTOMER_SURVEYS.GetFormIdByOrg(RowData[0].ORG_ID, _context);
+                FormId = CUSTOMER_SURVEYS.GetFormIdByOrg(RowData[0].ORG_ID, RowData[0].TYPE_ID, _context);
             }
 
             //generate code to tie back to customer
@@ -497,25 +497,27 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
             //Get form for Organization
             using (Entities _context = new Entities())
             {
-                FormId = CUSTOMER_SURVEYS.GetFormIdByOrg(RowData[0].ORG_ID, _context);
+                FormId = CUSTOMER_SURVEYS.GetFormIdByThreshold(RowData[0].ORG_ID, RowData[0].THRESHOLD_ID, _context);
                 ToAddress = CUSTOMER_SURVEYS.GetProjectContacts(RowData[0].PROJECT_ID, _context).Select(x => x.EMAIL_ADDRESS).SingleOrDefault();
             }
 
             //generate code to tie back to customer
             SURVEY_FORMS_COMP NewFormToSubmit = new SURVEY_FORMS_COMP();
             
-            NewFormToSubmit.FORM_ID = FormId;
-            NewFormToSubmit.PROJECT_ID = RowData[0].PROJECT_ID;
-            NewFormToSubmit.THRESHOLD_ID = RowData[0].THRESHOLD_ID;
-            NewFormToSubmit.CREATE_DATE = DateTime.Now;
-            NewFormToSubmit.MODIFY_DATE = DateTime.Now;
-            NewFormToSubmit.CREATED_BY = User.Identity.Name;
-            NewFormToSubmit.MODIFIED_BY = User.Identity.Name;
             
-            GenericData.Insert<SURVEY_FORMS_COMP>(NewFormToSubmit);
 
             if (ToAddress != null)
             {
+                NewFormToSubmit.FORM_ID = FormId;
+                NewFormToSubmit.PROJECT_ID = RowData[0].PROJECT_ID;
+                NewFormToSubmit.THRESHOLD_ID = RowData[0].THRESHOLD_ID;
+                NewFormToSubmit.CREATE_DATE = DateTime.Now;
+                NewFormToSubmit.MODIFY_DATE = DateTime.Now;
+                NewFormToSubmit.CREATED_BY = User.Identity.Name;
+                NewFormToSubmit.MODIFIED_BY = User.Identity.Name;
+
+                GenericData.Insert<SURVEY_FORMS_COMP>(NewFormToSubmit);
+
                 //Get questions
                 byte[] PdfStream = generatePDF(FormId, NewFormToSubmit.COMPLETION_ID);
 
@@ -526,7 +528,7 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
                 Attachment MailAttachment = new Attachment(new MemoryStream(PdfStream), "customer-satisfaction-survey.pdf");
                 var smtp = new SmtpClient("owa.dbiservices.com");
 #if DEBUG
-                smtp.Credentials = new System.Net.NetworkCredential("gene.lapointe@dbiservices.com", "Monkey1!");
+                smtp.Credentials = new System.Net.NetworkCredential("gene.lapointe@dbiservices.com", "Monkey2@");
 #endif
                 MailMessage EmailMessage = new MailMessage(User.Identity.Name + "@dbiservices.com", User.Identity.Name + "@dbiservices.com", Subject, Message);
                 EmailMessage.Attachments.Add(MailAttachment);
