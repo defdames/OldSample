@@ -327,6 +327,8 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 uxDeleteDollarButton.Disable();
                 uxDeleteThresholdButton.Disable();
                 uxThresholdStore.RemoveAll();
+                var selectionModel = uxDollarGrid.GetSelectionModel() as RowSelectionModel;
+                selectionModel.DeselectAll();
             }
         }
 

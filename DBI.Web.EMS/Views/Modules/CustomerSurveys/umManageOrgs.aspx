@@ -212,7 +212,7 @@
                                     <ext:NumberField runat="server" ID="uxHighDollarField" AllowBlank="false" InvalidCls="allowBlank" MinValue="1" Vtype="numberrange" StartNumberField="uxLowDollarField" />
                                 </Editor>
                             </ext:Column>
-                            <ext:Column ID="Column1" runat="server" Text="Type Name" DataIndex="TYPE_ID" AllowBlank="false" InvalidCls="allowBlank">
+                            <ext:Column ID="Column1" runat="server" Text="Form Target" DataIndex="TYPE_ID" AllowBlank="false" InvalidCls="allowBlank">
                                 <Editor>
                                     <ext:ComboBox runat="server" ID="uxFormTypeCombo" DisplayField="TYPE_NAME" ValueField="TYPE_ID" AllowBlank="false" InvalidCls="allowBlank">
                                         <Store>
