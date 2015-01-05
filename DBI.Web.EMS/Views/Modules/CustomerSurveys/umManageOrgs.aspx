@@ -166,7 +166,7 @@
                         <ext:TreeSelectionModel ID="uxCompanySelectionModel" runat="server" Mode="Single" />
                     </SelectionModel>
                     <DirectEvents>
-                        <ItemClick OnEvent="deLoadDollarStore" />
+                        <ItemClick OnEvent="deLoadDollarStore" Before="return record.isLeaf()" />
                     </DirectEvents>
                     
                 </ext:TreePanel>
