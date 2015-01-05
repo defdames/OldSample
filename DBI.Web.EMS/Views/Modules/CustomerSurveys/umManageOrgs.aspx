@@ -166,7 +166,7 @@
                         <ext:TreeSelectionModel ID="uxCompanySelectionModel" runat="server" Mode="Single" />
                     </SelectionModel>
                     <DirectEvents>
-                        <ItemClick OnEvent="deLoadDollarStore" Before="return record.isLeaf()" />
+                        <ItemClick OnEvent="deLoadDollarStore" Before="#{uxAddDollarButton}.disable(); #{uxAddThresholdButton}.disable(); return record.isLeaf()" />
                     </DirectEvents>
                     
                 </ext:TreePanel>
@@ -214,7 +214,7 @@
                             </ext:Column>
                             <ext:Column ID="Column1" runat="server" Text="Form Target" DataIndex="TYPE_ID" AllowBlank="false" InvalidCls="allowBlank">
                                 <Editor>
-                                    <ext:ComboBox runat="server" ID="uxFormTypeCombo" DisplayField="TYPE_NAME" ValueField="TYPE_ID" AllowBlank="false" InvalidCls="allowBlank">
+                                    <ext:ComboBox runat="server" ID="uxFormTypeCombo" DisplayField="TYPE_NAME" ValueField="TYPE_ID" AllowBlank="false" InvalidCls="allowBlank" ForceSelection="true" TypeAhead="true" QueryMode="Local">
                                         <Store>
                                             <ext:Store runat="server" ID="uxFormTypeStore" OnReadData="deReadFormTypes" AutoDataBind="true">
                                                 <Model>

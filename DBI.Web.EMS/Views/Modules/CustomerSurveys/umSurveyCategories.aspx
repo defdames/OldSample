@@ -40,8 +40,8 @@
 
         var cancelEditRow = function (value) {
             if (value == "formtype") {
-                if (!App.uxCategoryStore.getAt(0).data.CATEGORY_ID) {
-                    App.uxCategoryStore.removeAt(0);
+                if (!App.uxCategoriesStore.getAt(0).data.CATEGORY_ID) {
+                    App.uxCategoriesStore.removeAt(0);
                 }
                 else {
                     App.uxDeleteCategoryButton.enable();

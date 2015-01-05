@@ -332,6 +332,11 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             uxFieldsetSelection.SetLocked(false);
             uxQuestionFieldsetStore.Reload();
             uxFieldsetsStore.Reload();
+            uxAddFormButton.Enable();
+            uxCopyFormButton.Enable();
+            uxViewFormButton.Enable();
+            uxDeleteFormButton.Enable();
+            uxFormSelection.SetLocked(false);
         }
 
         protected void deSaveQuestions(object sender, DirectEventArgs e)
@@ -828,12 +833,17 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             uxCopyForm.Reset();
         }
 
-        protected void CreateWindow(string LoaderUrl)
+        protected void deCreateTargetWindow(object sender, DirectEventArgs e)
+        {
+            CreateWindow("/Views/Modules/CustomerSurveys/umEditFormTarget.aspx", "Add Form Target");
+        }
+
+        protected void CreateWindow(string LoaderUrl, string Title)
         {
             Window win = new Window()
             {
                 ID = "uxPlaceholderWindow",
-                Title = "View Survey",
+                Title = Title,
                 Width = 600,
                 Modal = true,
                 Resizable = false,

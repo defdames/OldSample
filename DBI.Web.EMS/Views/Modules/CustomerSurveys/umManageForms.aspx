@@ -136,6 +136,11 @@
                         App.uxDeleteFieldsetButton.enable();
                     App.uxAddFieldsetButton.enable();
                     App.uxFieldsetSelection.setLocked(false);
+                    App.uxFormSelection.setLocked(true);
+                    App.uxAddFormButton.enable();
+                    App.uxDeleteFormButton.enable();
+                    App.uxViewFormButton.enable();
+                    App.uxCopyFormButton.enable();
                     break;
                 case 'question':
                     if (!App.uxQuestionsStore.getAt(0).data.QUESTION_ID)
@@ -178,6 +183,11 @@
                         App.direct.dmSetDirty('true');
                         App.uxDeleteFieldsetButton.disable();
                         App.uxFieldsetSelection.setLocked(true);
+                        App.uxFormSelection.setLocked(true);
+                        App.uxAddFormButton.disable();
+                        App.uxDeleteFormButton.disable();
+                        App.uxViewFormButton.disable();
+                        App.uxCopyFormButton.disable();
                         return true;
                     }
                     break;
@@ -315,7 +325,7 @@
                                             <ext:Column runat="server" DataIndex="TYPE_ID" Text="Form Target Type" Flex="1">
                                                 <Renderer Fn="FormTypeRenderer" />
                                                 <Editor>
-                                                    <ext:ComboBox runat="server" ID="uxFormTypeCombo" Editable="true" ForceSelection="false" TypeAhead="true" QueryMode="Local" ValueField="TYPE_ID" DisplayField="TYPE_NAME" AllowBlank="false" EmptyText="Choose Target Type" InvalidCls="allowBlank">
+                                                    <ext:ComboBox runat="server" ID="uxFormTypeCombo" Editable="true" ForceSelection="true" TypeAhead="true" QueryMode="Local" ValueField="TYPE_ID" DisplayField="TYPE_NAME" AllowBlank="false" EmptyText="Choose Target Type" InvalidCls="allowBlank">
                                                         <Store>
                                                             <ext:Store runat="server" ID="uxFormTypeStore" OnReadData="deReadFormTypes" AutoDataBind="true">
                                                                 <Model>
@@ -394,6 +404,12 @@
                                                     <Listeners>
                                                         <Click Handler="#{uxCopyFormWindow}.show()" />
                                                     </Listeners>
+                                                </ext:Button>
+                                                <ext:ToolbarSeparator runat="server" />
+                                                <ext:Button runat="server" ID="uxAddTargetButton" Text="Add Form Target" Icon="ApplicationFormAdd">
+                                                    <DirectEvents>
+                                                        <Click OnEvent="deCreateTargetWindow" />
+                                                    </DirectEvents>
                                                 </ext:Button>
                                             </Items>
                                         </ext:Toolbar>
