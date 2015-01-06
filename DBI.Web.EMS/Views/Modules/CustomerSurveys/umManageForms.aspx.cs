@@ -38,9 +38,9 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 IQueryable<SURVEY_FORMS> FormData = CUSTOMER_SURVEYS.GetForms(_context);
                 int count;
                 List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
-                IQueryable<CUSTOMER_SURVEYS.CustomerSurveyForms> AllData = FormData.Where(x => OrgsList.Contains((long)x.ORG_ID)).Select(x => new CUSTOMER_SURVEYS.CustomerSurveyForms { FORM_ID = x.FORM_ID, FORMS_NAME = x.FORMS_NAME, ORG_ID = x.ORG_ID, CATEGORY_ID = x.CATEGORY_ID, TYPE_ID = x.TYPE_ID });
-                List<CUSTOMER_SURVEYS.CustomerSurveyForms> Data = GenericData.ListFilterHeader<CUSTOMER_SURVEYS.CustomerSurveyForms>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], AllData, out count);
-                foreach (CUSTOMER_SURVEYS.CustomerSurveyForms ThisForm in Data)
+                IQueryable<SURVEY_FORMS> AllData = FormData.Where(x => OrgsList.Contains((long)x.ORG_ID));
+                List<SURVEY_FORMS> Data = GenericData.ListFilterHeader<SURVEY_FORMS>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], AllData, out count);
+                foreach (SURVEY_FORMS ThisForm in Data)
                 {
                     var NumQuestions = (from f in _context.SURVEY_FORMS
                                         join fs in _context.SURVEY_FIELDSETS on f.FORM_ID equals fs.FORM_ID
@@ -66,9 +66,18 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                     FormId = long.Parse(e.Parameters["FormId"]);
                 }
 
-                IQueryable<CUSTOMER_SURVEYS.CustomerSurveyQuestions> data = CUSTOMER_SURVEYS.GetFormQuestions(FormId, _context);
+                IQueryable<SURVEY_QUESTIONS> data = CUSTOMER_SURVEYS.GetFormQuestions(FormId, _context);
                 int count;
-                uxQuestionsStore.DataSource = GenericData.ListFilterHeader<CUSTOMER_SURVEYS.CustomerSurveyQuestions>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                var FilteredData = GenericData.ListFilterHeader<SURVEY_QUESTIONS>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                foreach (var item in FilteredData)
+                {
+                    item.QUESTION_TYPE_NAME = item.SURVEY_QUES_TYPES.QUESTION_TYPE_NAME;
+                    item.TITLE = item.SURVEY_RELATION.Where(x => x.QUESTION_ID == item.QUESTION_ID).Select(x => x.SURVEY_FIELDSETS.TITLE).Single();
+                    item.FIELDSET_ID = item.SURVEY_RELATION.Where(x => x.QUESTION_ID == item.QUESTION_ID).Select(x => x.SURVEY_FIELDSETS.FIELDSET_ID).Single();
+                    item.ACTIVE = (item.IS_ACTIVE == "Y" ? true : false);
+                    item.REQUIRED = (item.IS_REQUIRED == "Y" ? true : false);
+                }
+                uxQuestionsStore.DataSource = FilteredData;
                 e.Total = count;
             }
         }
@@ -78,9 +87,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             using (Entities _context = new Entities())
             {
                 decimal QuestionId = decimal.Parse(e.Parameters["QuestionId"]);
-                IQueryable<CUSTOMER_SURVEYS.CustomerSurveyOptions> data = CUSTOMER_SURVEYS.GetQuestionOptions(QuestionId, _context).Select(d => new CUSTOMER_SURVEYS.CustomerSurveyOptions{OPTION_ID = d.OPTION_ID, QUESTION_ID = d.QUESTION_ID, TEXT = d.SURVEY_QUESTIONS.TEXT, IS_ACTIVE = (d.IS_ACTIVE == "Y" ? true : false), OPTION_NAME = d.OPTION_NAME, SORT_ORDER = d.SORT_ORDER});
+                IQueryable<SURVEY_OPTIONS> data = CUSTOMER_SURVEYS.GetQuestionOptions(QuestionId, _context);
                 int count;
-                uxOptionsStore.DataSource = GenericData.ListFilterHeader<CUSTOMER_SURVEYS.CustomerSurveyOptions>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                var FilteredData = GenericData.ListFilterHeader<SURVEY_OPTIONS>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                foreach (var item in FilteredData)
+                {
+                    item.ACTIVE = (item.IS_ACTIVE == "Y" ? true : false);
+                    item.TEXT = item.SURVEY_QUESTIONS.TEXT;
+                }
+                uxOptionsStore.DataSource = FilteredData;
                 e.Total = count;
             }
         }
@@ -90,10 +105,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             using (Entities _context = new Entities())
             {
                 long FormId = long.Parse(e.Parameters["FormId"]);
-                IQueryable<CUSTOMER_SURVEYS.CustomerSurveyFieldsets> data = CUSTOMER_SURVEYS.GetFormFieldSets(FormId, _context);
-
+                IQueryable<SURVEY_FIELDSETS> data = CUSTOMER_SURVEYS.GetFormFieldSets(FormId, _context);
+                
                 int count;
-                uxFieldsetsStore.DataSource = GenericData.ListFilterHeader<CUSTOMER_SURVEYS.CustomerSurveyFieldsets>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                var FilteredData = GenericData.ListFilterHeader<SURVEY_FIELDSETS>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
+                foreach (var item in FilteredData)
+                {
+                    item.ACTIVE = (item.IS_ACTIVE == "Y" ? true : false);
+                }
+                uxFieldsetsStore.DataSource = FilteredData;
                 e.Total = count;
             }
         }
@@ -105,6 +125,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 uxQuestionCategoryStore.DataSource = _context.SURVEY_QUES_CAT.ToList();
             }
         }
+
         protected void deReadQuestionFieldsets(object sender, StoreReadDataEventArgs e)
         {
             using (Entities _context = new Entities())
@@ -123,6 +144,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 uxCopyFormOrgStore.DataSource = _context.ORG_HIER_V.Distinct().Where(x => OrgsList.Contains(x.ORG_ID)).ToList();
             }
         }
+
         protected void deReadQuestionTypes(object sender, StoreReadDataEventArgs e)
         {
             using (Entities _context = new Entities())
@@ -143,8 +165,8 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
         protected void deSaveForm(object sender, DirectEventArgs e)
         {
             
-            ChangeRecords<CUSTOMER_SURVEYS.CustomerSurveyForms> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<CUSTOMER_SURVEYS.CustomerSurveyForms>();
-            foreach (CUSTOMER_SURVEYS.CustomerSurveyForms CreatedForm in data.Created)
+            ChangeRecords<SURVEY_FORMS> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<SURVEY_FORMS>();
+            foreach (SURVEY_FORMS CreatedForm in data.Created)
             {
                 SURVEY_FORMS NewForm = new SURVEY_FORMS();
                 NewForm.FORMS_NAME = CreatedForm.FORMS_NAME;
@@ -173,12 +195,12 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 Record.SetId(NewForm.FORM_ID);
                 Record.Set("TYPE_ID", NewForm.TYPE_ID);
                 Record.Commit();
-                uxFormTypeStore.Reload();
+                //uxFormTypeStore.Reload();
                 uxAddFieldsetButton.Enable();
                 uxAddQuestionButton.Enable();
             }
 
-            foreach (CUSTOMER_SURVEYS.CustomerSurveyForms UpdatedForm in data.Updated)
+            foreach (SURVEY_FORMS UpdatedForm in data.Updated)
             {
                 SURVEY_FORMS ToBeUpdated;
                 using (Entities _context = new Entities())
@@ -218,13 +240,16 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             uxDeleteFormButton.Enable();
             uxCopyFormButton.Enable();
             uxViewFormButton.Enable();
+            uxFieldsetsStore.Reload();
+            uxQuestionsStore.Reload();
+            uxOptionsStore.Reload();
         }
 
         protected void deSaveFieldsets(object sender, DirectEventArgs e)
         {
-            ChangeRecords <CUSTOMER_SURVEYS.CustomerSurveyFieldsets> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<CUSTOMER_SURVEYS.CustomerSurveyFieldsets>();
+            ChangeRecords <SURVEY_FIELDSETS> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<SURVEY_FIELDSETS>();
 
-            foreach (CUSTOMER_SURVEYS.CustomerSurveyFieldsets NewFieldset in data.Created)
+            foreach (SURVEY_FIELDSETS NewFieldset in data.Created)
             {
                 SURVEY_QUES_CAT NewCategory;
                 SURVEY_FIELDSETS ToBeAdded = new SURVEY_FIELDSETS();
@@ -235,7 +260,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 ToBeAdded.MODIFIED_BY = User.Identity.Name;
                 ToBeAdded.SORT_ORDER = NewFieldset.SORT_ORDER;
                 ToBeAdded.FORM_ID = decimal.Parse(e.ExtraParams["FormId"]);
-                ToBeAdded.IS_ACTIVE = (NewFieldset.IS_ACTIVE == true ? "Y" : "N");
+                ToBeAdded.IS_ACTIVE = (NewFieldset.ACTIVE == true ? "Y" : "N");
 
                 if (NewFieldset.CATEGORY_ID == null)
                 {
@@ -263,7 +288,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 uxQuestionCategoryStore.Reload();
             }
 
-            foreach (CUSTOMER_SURVEYS.CustomerSurveyFieldsets UpdatedFieldset in data.Updated)
+            foreach (SURVEY_FIELDSETS UpdatedFieldset in data.Updated)
             {
                 SURVEY_QUES_CAT NewCategory;
                 SURVEY_FIELDSETS ToBeUpdated;
@@ -271,7 +296,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 {
                     ToBeUpdated = CUSTOMER_SURVEYS.GetFieldsets(_context).Where(x => x.FIELDSET_ID == UpdatedFieldset.FIELDSET_ID).Single();
                     ToBeUpdated.TITLE = UpdatedFieldset.TITLE;
-                    ToBeUpdated.IS_ACTIVE = (UpdatedFieldset.IS_ACTIVE == true ? "Y" : "N");
+                    ToBeUpdated.IS_ACTIVE = (UpdatedFieldset.ACTIVE == true ? "Y" : "N");
                     ToBeUpdated.SORT_ORDER = UpdatedFieldset.SORT_ORDER;
                     ToBeUpdated.FORM_ID = decimal.Parse(e.ExtraParams["FormId"]);
                     ToBeUpdated.MODIFIED_BY = User.Identity.Name;
@@ -307,13 +332,18 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             uxFieldsetSelection.SetLocked(false);
             uxQuestionFieldsetStore.Reload();
             uxFieldsetsStore.Reload();
+            uxAddFormButton.Enable();
+            uxCopyFormButton.Enable();
+            uxViewFormButton.Enable();
+            uxDeleteFormButton.Enable();
+            uxFormSelection.SetLocked(false);
         }
 
         protected void deSaveQuestions(object sender, DirectEventArgs e)
         {
-            ChangeRecords<CUSTOMER_SURVEYS.CustomerSurveyQuestions> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<CUSTOMER_SURVEYS.CustomerSurveyQuestions>();
+            ChangeRecords<SURVEY_QUESTIONS> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<SURVEY_QUESTIONS>();
 
-            foreach (CUSTOMER_SURVEYS.CustomerSurveyQuestions NewQuestion in data.Created)
+            foreach (SURVEY_QUESTIONS NewQuestion in data.Created)
             {
                 SURVEY_QUESTIONS ToBeAdded = new SURVEY_QUESTIONS();
                 ToBeAdded.TEXT = NewQuestion.TEXT;
@@ -323,8 +353,8 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 ToBeAdded.CREATE_DATE = DateTime.Now;
                 ToBeAdded.MODIFIED_BY = User.Identity.Name;
                 ToBeAdded.MODIFY_DATE = DateTime.Now;
-                ToBeAdded.IS_ACTIVE = (NewQuestion.IS_ACTIVE == true ? "Y" : "N");
-                ToBeAdded.IS_REQUIRED = (NewQuestion.IS_REQUIRED == true ? "Y" : "N");
+                ToBeAdded.IS_ACTIVE = (NewQuestion.ACTIVE == true ? "Y" : "N");
+                ToBeAdded.IS_REQUIRED = (NewQuestion.REQUIRED == true ? "Y" : "N");
                 GenericData.Insert<SURVEY_QUESTIONS>(ToBeAdded);
 
                 SURVEY_RELATION FieldsetToAdd = new SURVEY_RELATION();
@@ -347,20 +377,20 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 }
             }
 
-            foreach (CUSTOMER_SURVEYS.CustomerSurveyQuestions UpdatedQuestion in data.Updated)
+            foreach (SURVEY_QUESTIONS UpdatedQuestion in data.Updated)
             {
                 SURVEY_QUESTIONS ToBeUpdated;
                 SURVEY_RELATION FieldsetToUpdate;
                 using (Entities _context = new Entities())
                 {
                     ToBeUpdated = CUSTOMER_SURVEYS.GetQuestion(UpdatedQuestion.QUESTION_ID, _context);
-                    ToBeUpdated.IS_REQUIRED = (UpdatedQuestion.IS_REQUIRED == true ? "Y" : "N");
+                    ToBeUpdated.IS_REQUIRED = (UpdatedQuestion.REQUIRED == true ? "Y" : "N");
                     ToBeUpdated.SORT_ORDER = UpdatedQuestion.SORT_ORDER;
                     ToBeUpdated.TEXT = UpdatedQuestion.TEXT;
                     ToBeUpdated.MODIFIED_BY = User.Identity.Name;
                     ToBeUpdated.MODIFY_DATE = DateTime.Now;
                     ToBeUpdated.TYPE_ID = UpdatedQuestion.TYPE_ID;
-                    ToBeUpdated.IS_ACTIVE = (UpdatedQuestion.IS_ACTIVE == true ? "Y" : "N");
+                    ToBeUpdated.IS_ACTIVE = (UpdatedQuestion.ACTIVE == true ? "Y" : "N");
 
                     FieldsetToUpdate = CUSTOMER_SURVEYS.GetRelationshipEntry(UpdatedQuestion.QUESTION_ID, _context);
                     FieldsetToUpdate.FIELDSET_ID = UpdatedQuestion.FIELDSET_ID;
@@ -386,15 +416,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
         protected void deSaveOptions(object sender, DirectEventArgs e)
         {
-            ChangeRecords<CUSTOMER_SURVEYS.CustomerSurveyOptions> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<CUSTOMER_SURVEYS.CustomerSurveyOptions>();
-            foreach (CUSTOMER_SURVEYS.CustomerSurveyOptions NewOption in data.Created)
+            ChangeRecords<SURVEY_OPTIONS> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<SURVEY_OPTIONS>();
+            foreach (SURVEY_OPTIONS NewOption in data.Created)
             {
                 SURVEY_OPTIONS ToBeAdded = new SURVEY_OPTIONS();
                 ToBeAdded.QUESTION_ID = decimal.Parse(e.ExtraParams["QuestionId"]);
                 ToBeAdded.OPTION_NAME = NewOption.OPTION_NAME;
                 ToBeAdded.SORT_ORDER = NewOption.SORT_ORDER;
                 ToBeAdded.CREATE_DATE = DateTime.Now;
-                ToBeAdded.IS_ACTIVE = (NewOption.IS_ACTIVE == true ? "Y" : "N");
+                ToBeAdded.IS_ACTIVE = (NewOption.ACTIVE == true ? "Y" : "N");
                 ToBeAdded.MODIFY_DATE = DateTime.Now;
                 ToBeAdded.CREATED_BY = User.Identity.Name;
                 ToBeAdded.MODIFIED_BY = User.Identity.Name;
@@ -406,13 +436,13 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 Record.SetId(ToBeAdded.OPTION_ID);
                 Record.Commit();
             }
-            foreach (CUSTOMER_SURVEYS.CustomerSurveyOptions UpdatedOption in data.Updated)
+            foreach (SURVEY_OPTIONS UpdatedOption in data.Updated)
             {
                 SURVEY_OPTIONS ToUpdate;
                 using (Entities _context = new Entities())
                 {
                     ToUpdate = CUSTOMER_SURVEYS.GetQuestionOption(UpdatedOption.OPTION_ID, _context);
-                    ToUpdate.IS_ACTIVE = (UpdatedOption.IS_ACTIVE == true ? "Y" : "N");
+                    ToUpdate.IS_ACTIVE = (UpdatedOption.ACTIVE == true ? "Y" : "N");
                     ToUpdate.OPTION_NAME = UpdatedOption.OPTION_NAME;
                     ToUpdate.SORT_ORDER = UpdatedOption.SORT_ORDER;
                     ToUpdate.MODIFIED_BY = User.Identity.Name;
@@ -803,12 +833,17 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             uxCopyForm.Reset();
         }
 
-        protected void CreateWindow(string LoaderUrl)
+        protected void deCreateTargetWindow(object sender, DirectEventArgs e)
+        {
+            CreateWindow("/Views/Modules/CustomerSurveys/umEditFormTarget.aspx", "Add Form Target");
+        }
+
+        protected void CreateWindow(string LoaderUrl, string Title)
         {
             Window win = new Window()
             {
                 ID = "uxPlaceholderWindow",
-                Title = "View Survey",
+                Title = Title,
                 Width = 600,
                 Modal = true,
                 Resizable = false,

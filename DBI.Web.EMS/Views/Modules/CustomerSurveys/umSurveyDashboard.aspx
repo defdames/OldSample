@@ -59,8 +59,10 @@
                                                 <ext:ModelField Name="PERCENTAGE" />
                                                 <ext:ModelField Name="THRESHOLD" />
                                                 <ext:ModelField Name="THRESHOLD_ID" />
+                                                <ext:ModelField Name="TYPE_NAME" />
                                                 <ext:ModelField Name="PROJECT_ID" />
                                                 <ext:ModelField Name="ORG_ID" />
+                                                <ext:ModelField Name="TYPE_ID" />
                                             </Fields>
                                         </ext:Model>
                                     </Model>
@@ -78,13 +80,14 @@
                             <ColumnModel>
                                 <Columns>
                                     <ext:Column ID="Column1" runat="server" Text="Project Number" DataIndex="PROJECT_NUMBER" Flex="20" />
-                                    <ext:Column ID="Column2" runat="server" Text="Project Name" DataIndex="PROJECT_NAME" Flex="40" />
-                                    <ext:Column ID="Column3" runat="server" Text="Current %" DataIndex="PERCENTAGE" Flex="30">
+                                    <ext:Column ID="Column2" runat="server" Text="Project Name" DataIndex="PROJECT_NAME" Flex="30" />
+                                    <ext:Column ID="Column3" runat="server" Text="Current %" DataIndex="PERCENTAGE" Flex="15">
                                         <Renderer Fn="percentage" />
                                     </ext:Column>
-                                    <ext:Column ID="Column4" runat="server" Text="Threshold %" DataIndex="THRESHOLD" Flex="30">
+                                    <ext:Column ID="Column4" runat="server" Text="Threshold %" DataIndex="THRESHOLD" Flex="15">
                                         <Renderer Fn="percentage" />
                                     </ext:Column>
+                                    <ext:Column runat="server" Text="Form Type" DataIndex="TYPE_NAME" Flex="20" />
                                 </Columns>
                             </ColumnModel>
                             <Plugins>
@@ -93,7 +96,7 @@
                             <TopBar>
                                 <ext:Toolbar ID="Toolbar1" runat="server">
                                     <Items>
-                                        <ext:Button runat="server" ID="uxEmailSurveyButton" Text="Email Survey Link" Icon="EmailLink">
+                                        <ext:Button runat="server" ID="uxEmailSurveyButton" Text="Email Survey Link" Icon="EmailLink" Disabled="true">
                                             <DirectEvents>
                                                 <Click OnEvent="deEmailLink">
                                                     <ExtraParams>
@@ -103,7 +106,7 @@
                                                 </Click>
                                             </DirectEvents>
                                         </ext:Button>
-                                        <ext:Button runat="server" ID="uxEmailPDFSurveyButton" Text="Email PDF Survey" Icon="EmailAttach">
+                                        <ext:Button runat="server" ID="uxEmailPDFSurveyButton" Text="Email PDF Survey" Icon="EmailAttach" Disabled="true">
                                             <DirectEvents>
                                                 <Click OnEvent="deEmailPDF" IsUpload="true">
                                                     <ExtraParams>
@@ -113,7 +116,7 @@
                                                 </Click>
                                             </DirectEvents>
                                         </ext:Button>
-                                        <ext:Button runat="server" ID="uxPrintPDFButton" Text="Print PDF" Icon="PageWhiteAcrobat">
+                                        <ext:Button runat="server" ID="uxPrintPDFButton" Text="Print PDF" Icon="PageWhiteAcrobat" Disabled="true">
                                             <DirectEvents>
                                                 <Click OnEvent="dePrintPDF" IsUpload="true">
                                                     <ExtraParams>
@@ -133,6 +136,9 @@
                             <BottomBar>
                                 <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
                             </BottomBar>
+                            <Listeners>
+                                <Select Handler="#{uxEmailPDFSurveyButton}.enable(); #{uxEmailSurveyButton}.enable(); #{uxPrintPDFButton}.enable()" />
+                            </Listeners>
                         </ext:GridPanel>
                     </Items>
                 </ext:TabPanel>

@@ -136,6 +136,11 @@
                         App.uxDeleteFieldsetButton.enable();
                     App.uxAddFieldsetButton.enable();
                     App.uxFieldsetSelection.setLocked(false);
+                    App.uxFormSelection.setLocked(true);
+                    App.uxAddFormButton.enable();
+                    App.uxDeleteFormButton.enable();
+                    App.uxViewFormButton.enable();
+                    App.uxCopyFormButton.enable();
                     break;
                 case 'question':
                     if (!App.uxQuestionsStore.getAt(0).data.QUESTION_ID)
@@ -178,6 +183,11 @@
                         App.direct.dmSetDirty('true');
                         App.uxDeleteFieldsetButton.disable();
                         App.uxFieldsetSelection.setLocked(true);
+                        App.uxFormSelection.setLocked(true);
+                        App.uxAddFormButton.disable();
+                        App.uxDeleteFormButton.disable();
+                        App.uxViewFormButton.disable();
+                        App.uxCopyFormButton.disable();
                         return true;
                     }
                     break;
@@ -315,7 +325,7 @@
                                             <ext:Column runat="server" DataIndex="TYPE_ID" Text="Form Target Type" Flex="1">
                                                 <Renderer Fn="FormTypeRenderer" />
                                                 <Editor>
-                                                    <ext:ComboBox runat="server" ID="uxFormTypeCombo" Editable="true" ForceSelection="false" TypeAhead="true" QueryMode="Local" ValueField="TYPE_ID" DisplayField="TYPE_NAME" AllowBlank="false" EmptyText="Choose Target Type" InvalidCls="allowBlank">
+                                                    <ext:ComboBox runat="server" ID="uxFormTypeCombo" Editable="true" ForceSelection="true" TypeAhead="true" QueryMode="Local" ValueField="TYPE_ID" DisplayField="TYPE_NAME" AllowBlank="false" EmptyText="Choose Target Type" InvalidCls="allowBlank">
                                                         <Store>
                                                             <ext:Store runat="server" ID="uxFormTypeStore" OnReadData="deReadFormTypes" AutoDataBind="true">
                                                                 <Model>
@@ -395,6 +405,12 @@
                                                         <Click Handler="#{uxCopyFormWindow}.show()" />
                                                     </Listeners>
                                                 </ext:Button>
+                                                <ext:ToolbarSeparator runat="server" />
+                                                <ext:Button runat="server" ID="uxAddTargetButton" Text="Add Form Target" Icon="ApplicationFormAdd">
+                                                    <DirectEvents>
+                                                        <Click OnEvent="deCreateTargetWindow" />
+                                                    </DirectEvents>
+                                                </ext:Button>
                                             </Items>
                                         </ext:Toolbar>
                                     </TopBar>
@@ -436,7 +452,7 @@
                                                         <ext:ModelField Name="TITLE" Type="String" />
                                                         <ext:ModelField Name="CATEGORY_ID" Type="Int" UseNull="true" />
                                                         <ext:ModelField Name="SORT_ORDER" Type="Int" />
-                                                        <ext:ModelField Name="IS_ACTIVE" Type="Boolean" />
+                                                        <ext:ModelField Name="ACTIVE" Type="Boolean" />
                                                     </Fields>
                                                 </ext:Model>
                                             </Model>
@@ -488,7 +504,7 @@
                                                     </ext:ComboBox>
                                                 </Editor>
                                             </ext:Column>
-                                            <ext:CheckColumn runat="server" DataIndex="IS_ACTIVE" Text="Active" Flex="10" Editable="true" />
+                                            <ext:CheckColumn runat="server" DataIndex="ACTIVE" Text="Active" Flex="10" Editable="true" />
                                         </Columns>
                                     </ColumnModel>
                                     <Plugins>
@@ -561,8 +577,8 @@
                                                         <ext:ModelField Name="TYPE_ID" Type="Int" />
                                                         <ext:ModelField Name="FIELDSET_ID" Type="Int" />
                                                         <ext:ModelField Name="TITLE" Type="String" />
-                                                        <ext:ModelField Name="IS_REQUIRED" Type="Boolean" />
-                                                        <ext:ModelField Name="IS_ACTIVE" Type="Boolean" />
+                                                        <ext:ModelField Name="REQUIRED" Type="Boolean" />
+                                                        <ext:ModelField Name="ACTIVE" Type="Boolean" />
                                                         <ext:ModelField Name="SORT_ORDER" Type="Int" />
                                                     </Fields>
                                                 </ext:Model>
@@ -638,8 +654,8 @@
                                                     </ext:ComboBox>
                                                 </Editor>
                                             </ext:Column>
-                                            <ext:CheckColumn runat="server" DataIndex="IS_REQUIRED" Text="Required" Editable="true" Flex="8" />
-                                            <ext:CheckColumn runat="server" DataIndex="IS_ACTIVE" Text="Active" Editable="true" Flex="8" />
+                                            <ext:CheckColumn runat="server" DataIndex="REQUIRED" Text="Required" Editable="true" Flex="8" />
+                                            <ext:CheckColumn runat="server" DataIndex="ACTIVE" Text="Active" Editable="true" Flex="8" />
                                             <ext:Column runat="server" DataIndex="SORT_ORDER" Text="Sort Order" Flex="8">
                                                 <Editor>
                                                     <ext:NumberField runat="server" AllowBlank="false" InvalidCls="allowBlank" />
@@ -724,7 +740,7 @@
                                                         <ext:ModelField Name="TEXT" Type="String" />
                                                         <ext:ModelField Name="OPTION_NAME" Type="String" />
                                                         <ext:ModelField Name="SORT_ORDER" Type="Int" />
-                                                        <ext:ModelField Name="IS_ACTIVE" Type="Boolean" />
+                                                        <ext:ModelField Name="ACTIVE" Type="Boolean" />
                                                     </Fields>
                                                 </ext:Model>
                                             </Model>
@@ -752,7 +768,7 @@
                                                     <ext:NumberField runat="server" AllowBlank="false" InvalidCls="allowBlank" />
                                                 </Editor>
                                             </ext:Column>
-                                            <ext:CheckColumn runat="server" DataIndex="IS_ACTIVE" Text="Active" Editable="true" Flex="10" />
+                                            <ext:CheckColumn runat="server" DataIndex="ACTIVE" Text="Active" Editable="true" Flex="10" />
                                         </Columns>
                                     </ColumnModel>
                                     <Plugins>

@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DBI.Web.EMS.PublicPages {
+namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
     
     
-    public partial class umViewSurvey {
+    public partial class umEditFormTarget {
         
         /// <summary>
         /// form1 control.
@@ -22,66 +22,39 @@ namespace DBI.Web.EMS.PublicPages {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// uxCompletedContainer control.
+        /// uxTargetForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Container uxCompletedContainer;
+        protected global::Ext.Net.FormPanel uxTargetForm;
         
         /// <summary>
-        /// uxCompletedPanel control.
+        /// uxTargetName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Panel uxCompletedPanel;
+        protected global::Ext.Net.TextField uxTargetName;
         
         /// <summary>
-        /// Image1 control.
+        /// uxSaveTargetButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Image Image1;
+        protected global::Ext.Net.Button uxSaveTargetButton;
         
         /// <summary>
-        /// uxSurveyContainer control.
+        /// uxCancelButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Container uxSurveyContainer;
-        
-        /// <summary>
-        /// uxSurveyDisplay control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FormPanel uxSurveyDisplay;
-        
-        /// <summary>
-        /// uxSubmitSurveyButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxSubmitSurveyButton;
-        
-        /// <summary>
-        /// uxCancelSurveyButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxCancelSurveyButton;
+        protected global::Ext.Net.Button uxCancelButton;
     }
 }
