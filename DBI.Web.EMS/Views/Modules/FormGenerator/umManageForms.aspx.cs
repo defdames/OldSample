@@ -484,7 +484,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             uxSurveyPanel.Title = "Preview Survey";
             uxSurveyPanel.Loader = new ComponentLoader
             {
-                Url = "/Views/Modules/CustomerSurveys/umViewSurvey.aspx?FormId=" + e.ExtraParams["FormId"],
+                Url = "/Views/Modules/FormGenerator/umViewSurvey.aspx?FormId=" + e.ExtraParams["FormId"],
                 Mode = LoadMode.Frame,
                 AutoLoad = true
             };

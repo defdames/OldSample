@@ -589,7 +589,7 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
             uxSurveyPanel.Title = "Preview Survey";
             uxSurveyPanel.Loader = new ComponentLoader
             {
-                Url = "/Views/Modules/CustomerSurveys/umViewSurvey.aspx?FormId=" + FormId  + "&CompletionId="+ NewComp.COMPLETION_ID,
+                Url = "/Views/Modules/FormGenerator/umViewSurvey.aspx?FormId=" + FormId  + "&CompletionId="+ NewComp.COMPLETION_ID,
                 Mode = LoadMode.Frame,
                 AutoLoad = true
             };
