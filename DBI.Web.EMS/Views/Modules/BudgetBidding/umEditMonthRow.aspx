@@ -92,7 +92,7 @@
                         </ext:ComboBox>
                     </Items>
                 </ext:Toolbar>
-                <ext:GridPanel ID="GridPanel3" runat="server" Flex="1" Title="Account Totals" Header="true" Padding="5" Region="Center" Frame="true" Margins="5 5 5 0">
+                <ext:GridPanel ID="GridPanel3" runat="server" Flex="1" Title=" " Header="true" Padding="5" Region="Center" Frame="true" Margins="5 5 5 0">
                     <KeyMap ID="KeyMap1" runat="server">
                         <Binding>
                             <ext:KeyBinding Handler="#{uxSaveDetailLineButton}.fireEvent('click');">
@@ -110,7 +110,7 @@
                             <Model>
                                 <ext:Model ID="Model4" runat="server" IDProperty="BUDGET_DETAIL_ID">
                                     <Fields>
-                                        <ext:ModelField Name="BUDGET_NUM_ID"></ext:ModelField>
+                                        <ext:ModelField Name="ID_FIELD"></ext:ModelField>
                                         <ext:ModelField Name="PROJECT_ID"></ext:ModelField>
                                         <ext:ModelField Name="DETAIL_TASK_ID"></ext:ModelField>
                                         <ext:ModelField Name="LINE_ID"></ext:ModelField>
@@ -171,6 +171,9 @@
                                     <EventMask ShowMask="true"></EventMask>
                                     <ExtraParams>
                                         <ext:Parameter Name="Values" Value="Ext.encode(#{GridPanel3}.getRowsValues())" Mode="Raw" />
+                                        <ext:Parameter Name="IDField" Value="#{GridPanel3}.getSelectionModel().getSelection()[0].data.ID_FIELD" Mode="Raw" />
+                                        <ext:Parameter Name="Project" Value="#{GridPanel3}.getSelectionModel().getSelection()[0].data.PROJECT_ID" Mode="Raw" />
+                                        <ext:Parameter Name="DetailTask" Value="#{GridPanel3}.getSelectionModel().getSelection()[0].data.DETAIL_TASK_ID" Mode="Raw" />
                                     </ExtraParams>
                                 </Click>
                             </DirectEvents>

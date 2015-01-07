@@ -843,7 +843,7 @@ namespace DBI.Data
                                 WHERE BUD_BID_PROJECTS.ORG_ID = {1} AND BUD_BID_PROJECTS.YEAR_ID = {2} AND BUD_BID_PROJECTS.VER_ID = {3} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT')       
                             PIVOT(
                                 SUM(NOV) FOR (LINE_ID)
-                                IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                                IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))
                         ),
                         PREV_OP AS (                        
                             SELECT BUD_BID_PROJECTS.PROJECT_ID, NOV PREV_OP  
@@ -933,7 +933,7 @@ namespace DBI.Data
                                     WHERE BUD_BID_PROJECTS.ORG_ID = {0} AND BUD_BID_PROJECTS.YEAR_ID = {1} AND BUD_BID_PROJECTS.VER_ID = {2} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT')       
                                 PIVOT(
                                     SUM(NOV) FOR (LINE_ID)
-                                    IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                                    IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))
                             ),
                             PREV_OP AS (                       
                               SELECT BUD_BID_PROJECTS.PROJECT_ID, NOV PREV_OP  
@@ -1303,7 +1303,7 @@ namespace DBI.Data
                         WHERE BUD_BID_DETAIL_TASK.PROJECT_ID = {0} AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT'  )
                     PIVOT(
                         SUM(NOV) FOR (LINE_ID)
-                        IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))", projectID);
+                        IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))", projectID);
 
                 using (Entities context = new Entities())
                 {
@@ -1364,7 +1364,7 @@ namespace DBI.Data
                         WHERE BUD_BID_DETAIL_TASK.PROJECT_ID = {0} AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT')
                     PIVOT(
                         SUM(NOV) FOR (LINE_ID)
-                        IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))", budBidProjectID);
+                        IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))", budBidProjectID);
 
                 Fields data;
                 using (Entities context = new Entities())
@@ -1955,7 +1955,7 @@ namespace DBI.Data
                         WHERE BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = {0})
                     PIVOT(
                         SUM(NOV) FOR (LINE_ID)
-                        IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))", detailSheetID);
+                        IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))", detailSheetID);
 
                     Fields data;
                     using (Entities context = new Entities())
@@ -2289,7 +2289,7 @@ namespace DBI.Data
                                 WHERE PROJECT_ID = {0})
                             PIVOT(
                                 SUM(NOV) FOR (LINE_ID)
-                                IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                                IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))
                         )         
                     SELECT TASKS.PROJECT_ID,
                         TASKS.DETAIL_TASK_ID,
@@ -2632,7 +2632,7 @@ namespace DBI.Data
                                     WHERE BUD_BID_PROJECTS.YEAR_ID = {1} AND BUD_BID_PROJECTS.VER_ID = {2} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT')       
                                 PIVOT(
                                     SUM(NOV) FOR (LINE_ID)
-                                    IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                                    IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))
                             ),
                             PREV_OP AS (       
                   
@@ -2667,7 +2667,7 @@ namespace DBI.Data
                                         WHERE BUD_BID_PROJECTS.YEAR_ID = {1} AND BUD_BID_PROJECTS.VER_ID = {2} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT')       
                                     PIVOT(
                                         SUM(NOV) FOR (LINE_ID)
-                                        IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                                        IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))
                                 ) BUDGET_LINE_AMOUNTS ON CUR_PROJECT_INFO_WITH_STATUS.BUD_BID_PROJECTS_ID = BUDGET_LINE_AMOUNTS.PROJECT_ID
                     
                                 LEFT OUTER JOIN 
@@ -2788,7 +2788,7 @@ namespace DBI.Data
                                 WHERE BUD_BID_PROJECTS.YEAR_ID = {0} AND BUD_BID_PROJECTS.VER_ID = {1} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT')       
                             PIVOT(
                                 SUM(NOV) FOR (LINE_ID)
-                                IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                                IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))
                         ),
                         PREV_OP AS ( 
 
@@ -2823,7 +2823,7 @@ namespace DBI.Data
                                     WHERE BUD_BID_PROJECTS.YEAR_ID = {0} AND BUD_BID_PROJECTS.VER_ID = {1} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT')       
                                 PIVOT(
                                     SUM(NOV) FOR (LINE_ID)
-                                    IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                                    IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))
                             ) BUDGET_LINE_AMOUNTS ON CUR_PROJECT_INFO_WITH_STATUS.BUD_BID_PROJECTS_ID = BUDGET_LINE_AMOUNTS.PROJECT_ID
                     
                             LEFT OUTER JOIN 
@@ -2982,7 +2982,7 @@ namespace DBI.Data
                                 WHERE BUD_BID_PROJECTS.YEAR_ID = {2} AND BUD_BID_PROJECTS.VER_ID = {3} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT')       
                             PIVOT(
                                 SUM(NOV) FOR (LINE_ID)
-                                IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                                IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))
                         ),
                         PREV_OP AS (                        
                             SELECT BUD_BID_PROJECTS.PROJECT_ID, NOV PREV_OP  
@@ -3143,7 +3143,7 @@ namespace DBI.Data
                                 WHERE BUD_BID_PROJECTS.YEAR_ID = {2} AND BUD_BID_PROJECTS.VER_ID = {3} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT')       
                             PIVOT(
                                 SUM(NOV) FOR (LINE_ID)
-                                IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                                IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))
                         ),
                         PREV_OP AS (                        
                             SELECT BUD_BID_PROJECTS.PROJECT_ID, NOV PREV_OP  
@@ -3274,7 +3274,7 @@ namespace DBI.Data
                                     WHERE BUD_BID_PROJECTS.YEAR_ID = {1} AND BUD_BID_PROJECTS.VER_ID = {2} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT')       
                                 PIVOT(
                                     SUM(NOV) FOR (LINE_ID)
-                                    IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                                    IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))
                             ),
                             PREV_OP AS (       
                                   SELECT BUD_BID_PROJECTS.ORG_ID, SUM(NOV) PREV_OP                                         
@@ -3398,7 +3398,7 @@ namespace DBI.Data
                                     WHERE BUD_BID_PROJECTS.YEAR_ID = {1} AND BUD_BID_PROJECTS.VER_ID = {2} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT')       
                                 PIVOT(
                                     SUM(NOV) FOR (LINE_ID)
-                                    IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                                    IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))
                             ),
                             PREV_OP AS (       
                                   SELECT BUD_BID_PROJECTS.ORG_ID, SUM(NOV) PREV_OP                                         
@@ -3552,7 +3552,7 @@ namespace DBI.Data
                         WHERE BUD_BID_DETAIL_TASK.PROJECT_ID = {0} AND BUD_BID_DETAIL_TASK.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT'  )
                     PIVOT(
                         SUM(NOV) FOR (LINE_ID)
-                        IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))", projectID);
+                        IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))", projectID);
 
                     using (Entities context = new Entities())
                     {
@@ -3585,7 +3585,7 @@ namespace DBI.Data
                         WHERE BUD_BID_DETAIL_TASK.PROJECT_ID = {0} AND BUD_BID_DETAIL_TASK.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT'  )
                     PIVOT(
                         SUM(NOV) FOR (LINE_ID)
-                        IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))", projectID);
+                        IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))", projectID);
 
                     using (Entities context = new Entities())
                     {
@@ -3626,7 +3626,7 @@ namespace DBI.Data
                                 WHERE PROJECT_ID = {0})
                             PIVOT(
                                 SUM(NOV) FOR (LINE_ID)
-                                IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                                IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))
                         )         
                     SELECT TASKS.PROJECT_ID,
                         TASKS.DETAIL_TASK_ID,
@@ -4044,7 +4044,7 @@ namespace DBI.Data
                 #region Fields
                 public class Fields
                 {
-                    public long BUDGET_NUM_ID { get; set; }
+                    public long ID_FIELD { get; set; }
                     public long PROJECT_ID { get; set; }
                     public long DETAIL_TASK_ID { get; set; }
                     public long LINE_ID { get; set; }
@@ -4056,20 +4056,23 @@ namespace DBI.Data
                 public static List<Fields> Data(bool budget, long budBidProjectID, long detailSheetID, long lineID)
                 {
                     string tableName;
+                    string idField;
                     if (budget == true)
                     {
                         tableName = "BUD_BID_BUDGET_NUM";
+                        idField = "BUDGET_NUM_ID";
                     }
                     else
                     {
                         tableName = "BUD_BID_ACTUAL_NUM";
+                        idField = "ACTUAL_NUM_ID";
                     }
 
                     string sql = string.Format(@"
-                        SELECT BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, LINE_ID, MONTH, NVL(AMOUNT, 0) AMOUNT
-                        FROM (SELECT BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, LINE_ID, NOV, DEC, JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT FROM {0})
+                        SELECT {1} ID_FIELD, PROJECT_ID, DETAIL_TASK_ID, LINE_ID, MONTH, NVL(AMOUNT, 0) AMOUNT
+                        FROM (SELECT {1}, PROJECT_ID, DETAIL_TASK_ID, LINE_ID, NOV, DEC, JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT FROM {0})
                         UNPIVOT INCLUDE NULLS (AMOUNT FOR MONTH IN (NOV, DEC, JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT))
-                        WHERE PROJECT_ID = {1} AND DETAIL_TASK_ID = {2} AND LINE_ID = {3}", tableName, budBidProjectID, detailSheetID, lineID);
+                        WHERE PROJECT_ID = {2} AND DETAIL_TASK_ID = {3} AND LINE_ID = {4}", tableName, idField, budBidProjectID, detailSheetID, lineID);
 
                     using (Entities context = new Entities())
                     {

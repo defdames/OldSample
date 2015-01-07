@@ -21,10 +21,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     X.Redirect("~/Views/uxDefault.aspx");
                 }
 
-                uxHidOrgID.Text = "425";//Request.QueryString["OrgID"];
-                uxHidYear.Text = Request.QueryString["fiscalYear"];
-                uxHidVer.Text = Request.QueryString["verID"];
                 uxHidBudBidID.Text = "0";
+                uxHidProjectNumID.Text = "0";
                 uxHidDetailSheetID.Text = "0";
             }
         }
@@ -34,7 +32,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         // Project Grid
         protected void deLoadProjectActions(object sender, StoreReadDataEventArgs e)
         {
-            long orgID = long.Parse(Request.QueryString["OrgID"]);
+            long orgID = long.Parse(Request.QueryString["orgID"]);
             long yearID = long.Parse(Request.QueryString["fiscalYear"]);
             long verID = long.Parse(Request.QueryString["verID"]);
 
@@ -48,7 +46,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             switch (selectedAction)
             {
                 case "Add a New Project":
-                    //AddNewProject();
+                    AddNewProject();
                     break;
 
                 case "Edit Selected Project":
@@ -73,9 +71,9 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
         protected void deReadProjectGridData(object sender, StoreReadDataEventArgs e)
         {
-            long orgID = Convert.ToInt64(uxHidOrgID.Text);
-            long yearID = Convert.ToInt64(uxHidYear.Text);
-            long verID = Convert.ToInt64(uxHidVer.Text);
+            long orgID = Convert.ToInt64(Request.QueryString["orgID"]);
+            long yearID = Convert.ToInt64(Request.QueryString["fiscalYear"]);
+            long verID = Convert.ToInt64(Request.QueryString["verID"]);
 
             uxProjectsStore.DataSource = BBMonthSummary.ProjectGrid.Data(orgID, yearID, verID);
         }
@@ -84,12 +82,14 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         {
             string budBidprojectID = e.ExtraParams["BudBidProjectID"];
             uxHidBudBidID.Text = budBidprojectID;
+
             uxTasksStore.Reload();
+            uxHidDetailSheetID.Text = "0";
             uxComments.Text = "";
+
             if (budBidprojectID == "0")
             {
                 uxTasks.Disable();
-                uxHidDetailSheetID.Text = "0";
                 uxMonthDetailStore.Reload();
             }
             else
@@ -98,7 +98,54 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             }
         }
 
+        protected void AddNewProject()
+        {
+            long orgID = Convert.ToInt64(Request.QueryString["orgID"]);
+            string orgName = HttpUtility.UrlEncode(Request.QueryString["orgName"]);
+            long yearID = Convert.ToInt64(Request.QueryString["fiscalYear"]);
+            long verID = long.Parse(Request.QueryString["verID"]);
+            string budBidID = "0";
+            string projectID = "0";
+
+            string url = "/Views/Modules/BudgetBidding/umAddEditMonthProject.aspx?orgID=" + orgID + " &orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&budBidID=" + budBidID + "&projectNumID=" + projectID;
+            
+            Window win = new Window
+            {
+                ID = "uxAddEditProjectForm",
+                Height = 210,
+                Width = 600,
+                Title = "Add New Project",
+                Modal = true,
+                Resizable = false,
+                CloseAction = CloseAction.Destroy,
+                Closable = false,
+                Loader = new ComponentLoader
+                {
+                    Mode = LoadMode.Frame,
+                    DisableCaching = true,
+                    Url = url,
+                    AutoLoad = true,
+                    LoadMask =
+                    {
+                        ShowMask = true
+                    }
+                }
+            };
+            win.Render(this.Form);
+            win.Show();
+        }
+
+        [DirectMethod]
+        public void CloseAddEditProjectWindow()
+        {
+            uxProjectsStore.Reload();
+            uxTaskActionsStore.Reload();
+            uxMonthDetailStore.Reload();
+
+            //CalcSummaryTotals();
+        }
         
+
 
         // Task Grid
         protected void deLoadTaskActions(object sender, StoreReadDataEventArgs e)
@@ -172,6 +219,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             {
                 uxComments.Text = BBDetail.Sheet.MainTabField.Comment(Convert.ToInt64(detailSheetID));
             }
+
             uxMonthDetailStore.Reload();
         }
 
@@ -180,11 +228,11 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         // Main Grid
         protected void deReadMainGridData(object sender, StoreReadDataEventArgs e)
         {
-            string orgID = uxHidOrgID.Text;
+            string orgID = Request.QueryString["orgID"];
+            long yearID = Convert.ToInt64(Request.QueryString["fiscalYear"]);
+            long verID = long.Parse(Request.QueryString["verID"]);
             string budBidProjectID = uxHidBudBidID.Text;
             string detailSheetID = uxHidDetailSheetID.Text;
-            long yearID = Convert.ToInt64(uxHidYear.Text);
-            long verID = Convert.ToInt64(uxHidVer.Text);
             long weMonth = 1;  //FIX!
 
             uxMonthDetailStore.DataSource = BBMonthSummary.MainGrid.Data(yearID, verID, weMonth, orgID, budBidProjectID, detailSheetID);
@@ -200,23 +248,31 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
 
 
-        protected void EditSelectedRow()
+        protected void deEditSelectedRow(object sender, DirectEventArgs e)
         {
-            string hierID = Request.QueryString["hierID"];
-            string leOrgID = Request.QueryString["leOrgID"];
-            long orgID = Convert.ToInt64(Request.QueryString["orgID"]);
-            long yearID = Convert.ToInt64(Request.QueryString["fiscalYear"]);
-            long verID = long.Parse(Request.QueryString["verID"]);
-            string verName = HttpUtility.UrlEncode(Request.QueryString["verName"]);
+            string budBidProjectID = uxHidBudBidID.Text;
+            string detailSheetID = uxHidDetailSheetID.Text;
 
-            string url = "/Views/Modules/BudgetBidding/umEditMonthRow.aspx?hierID=" + hierID + "&leOrgID=" + leOrgID + "&orgID=" + orgID + "&yearID=" + yearID + "&verName=" + verName;
+
+            if (detailSheetID == "0") { return; }
+
+            string lineID = e.ExtraParams["LineID"];
+            string lineDesc = e.ExtraParams["LineDesc"];
+            //string hierID = Request.QueryString["hierID"];
+            //string leOrgID = Request.QueryString["leOrgID"];
+            //long orgID = Convert.ToInt64(Request.QueryString["orgID"]);
+            //long yearID = Convert.ToInt64(Request.QueryString["fiscalYear"]);
+            //long verID = long.Parse(Request.QueryString["verID"]);
+            //string verName = HttpUtility.UrlEncode(Request.QueryString["verName"]);
+
+            string url = "/Views/Modules/BudgetBidding/umEditMonthRow.aspx?budBidProjectID=" + budBidProjectID + "&detailSheetID=" + detailSheetID + "&lineID=" + lineID;
 
             Window win = new Window
             {
                 ID = "uxDetailLineMaintenance",
                 Height = 465,
                 Width = 500,
-                Title = "Update All Actuals",
+                Title = lineDesc,
                 Modal = true,
                 Resizable = false,
                 CloseAction = CloseAction.Destroy,
