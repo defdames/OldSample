@@ -161,6 +161,9 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                     uxDashboardStore.DataSource = Source;
                     e.Total = count;
                 }
+                uxEmailPDFSurveyButton.Disable();
+                uxEmailSurveyButton.Disable();
+                uxPrintPDFButton.Disable();
             }
 
         }
@@ -182,7 +185,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 SURVEY_FORMS_COMP NewFormToSubmit = new SURVEY_FORMS_COMP();
                 using (Entities _context = new Entities())
                 {
-                    NewFormToSubmit.FORM_ID = CUSTOMER_SURVEYS.GetFormIdByOrg(RowData[0].ORG_ID, _context);
+                    NewFormToSubmit.FORM_ID = CUSTOMER_SURVEYS.GetFormIdByThreshold(RowData[0].ORG_ID, RowData[0].THRESHOLD_ID, _context);
                     NewFormToSubmit.PROJECT_ID = RowData[0].PROJECT_ID;
                     NewFormToSubmit.THRESHOLD_ID = RowData[0].THRESHOLD_ID;
                     NewFormToSubmit.CREATE_DATE = DateTime.Now;
@@ -207,13 +210,14 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
 
                 var smtp = new SmtpClient("owa.dbiservices.com");
 #if DEBUG
-                smtp.Credentials = new System.Net.NetworkCredential("gene.lapointe@dbiservices.com", "Monkey1!");
+                smtp.Credentials = new System.Net.NetworkCredential("gene.lapointe@dbiservices.com", "Monkey2@");
 #endif
                 MailMessage EmailMessage = new MailMessage(User.Identity.Name + "@dbiservices.com", User.Identity.Name + "@dbiservices.com", Subject, Message);
                 EmailMessage.IsBodyHtml = true;
                 //smtp.SendMessage(User.Identity.Name + "@dbiservices.com", Subject, Message, IsHtml, MailAttachment);
                 smtp.Send(EmailMessage);
                 X.Msg.Alert("Email sent", string.Format("Message has been sent to {0}", ToAddress)).Show();
+                uxDashboardStore.Reload();
             }
             else
             {
@@ -228,7 +232,7 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
             //Get form for Organization
             using (Entities _context = new Entities())
             {
-                FormId = CUSTOMER_SURVEYS.GetFormIdByOrg(RowData[0].ORG_ID, _context);
+                FormId = CUSTOMER_SURVEYS.GetFormIdByOrg(RowData[0].ORG_ID, RowData[0].TYPE_ID, _context);
             }
 
             //generate code to tie back to customer
@@ -260,12 +264,12 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
 
         protected byte[] generatePDF(decimal FormId, decimal CompletionId)
         {
-            List<CUSTOMER_SURVEYS.CustomerSurveyQuestions> FormToGenerate;
-            List<CUSTOMER_SURVEYS.CustomerSurveyFieldsets> Fieldsets;
+            List<SURVEY_QUESTIONS> FormToGenerate;
+            List<SURVEY_FIELDSETS> Fieldsets;
             byte[] result;
             using (Entities _context = new Entities())
             {
-                Fieldsets = CUSTOMER_SURVEYS.GetFormFieldSets(FormId, _context).Where(x => x.IS_ACTIVE == true).OrderBy(x => x.SORT_ORDER).ToList();
+                Fieldsets = CUSTOMER_SURVEYS.GetFormFieldSets(FormId, _context).Where(x => x.IS_ACTIVE == "Y").OrderBy(x => x.SORT_ORDER).ToList();
                 
             }
             using (MemoryStream PdfStream = new MemoryStream())
@@ -294,7 +298,7 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
                 HeaderTable.AddCell(HeaderImage);
                 ExportedPDF.Add(HeaderTable);
 
-                foreach (CUSTOMER_SURVEYS.CustomerSurveyFieldsets Fieldset in Fieldsets)
+                foreach (SURVEY_FIELDSETS Fieldset in Fieldsets)
                 {
                     PdfPTable FieldsetTable = new PdfPTable(1);
                     FieldsetTable.SpacingBefore = 5f;
@@ -310,8 +314,12 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
                     using (Entities _context = new Entities())
                     {
                         FormToGenerate = CUSTOMER_SURVEYS.GetFieldsetQuestionsForGrid(Fieldset.FIELDSET_ID, _context).OrderBy(x => x.SORT_ORDER).ToList();
+                        foreach (var item in FormToGenerate)
+                        {
+                            item.QUESTION_TYPE_NAME = item.SURVEY_QUES_TYPES.QUESTION_TYPE_NAME;
+                        }
                     }
-                    foreach (CUSTOMER_SURVEYS.CustomerSurveyQuestions Question in FormToGenerate)
+                    foreach (SURVEY_QUESTIONS Question in FormToGenerate)
                     {
                         PdfPTable Table = new PdfPTable(2);
                         Table.DefaultCell.Border = PdfPCell.NO_BORDER;
@@ -489,25 +497,27 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
             //Get form for Organization
             using (Entities _context = new Entities())
             {
-                FormId = CUSTOMER_SURVEYS.GetFormIdByOrg(RowData[0].ORG_ID, _context);
+                FormId = CUSTOMER_SURVEYS.GetFormIdByThreshold(RowData[0].ORG_ID, RowData[0].THRESHOLD_ID, _context);
                 ToAddress = CUSTOMER_SURVEYS.GetProjectContacts(RowData[0].PROJECT_ID, _context).Select(x => x.EMAIL_ADDRESS).SingleOrDefault();
             }
 
             //generate code to tie back to customer
             SURVEY_FORMS_COMP NewFormToSubmit = new SURVEY_FORMS_COMP();
             
-            NewFormToSubmit.FORM_ID = FormId;
-            NewFormToSubmit.PROJECT_ID = RowData[0].PROJECT_ID;
-            NewFormToSubmit.THRESHOLD_ID = RowData[0].THRESHOLD_ID;
-            NewFormToSubmit.CREATE_DATE = DateTime.Now;
-            NewFormToSubmit.MODIFY_DATE = DateTime.Now;
-            NewFormToSubmit.CREATED_BY = User.Identity.Name;
-            NewFormToSubmit.MODIFIED_BY = User.Identity.Name;
             
-            GenericData.Insert<SURVEY_FORMS_COMP>(NewFormToSubmit);
 
             if (ToAddress != null)
             {
+                NewFormToSubmit.FORM_ID = FormId;
+                NewFormToSubmit.PROJECT_ID = RowData[0].PROJECT_ID;
+                NewFormToSubmit.THRESHOLD_ID = RowData[0].THRESHOLD_ID;
+                NewFormToSubmit.CREATE_DATE = DateTime.Now;
+                NewFormToSubmit.MODIFY_DATE = DateTime.Now;
+                NewFormToSubmit.CREATED_BY = User.Identity.Name;
+                NewFormToSubmit.MODIFIED_BY = User.Identity.Name;
+
+                GenericData.Insert<SURVEY_FORMS_COMP>(NewFormToSubmit);
+
                 //Get questions
                 byte[] PdfStream = generatePDF(FormId, NewFormToSubmit.COMPLETION_ID);
 
@@ -518,7 +528,7 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
                 Attachment MailAttachment = new Attachment(new MemoryStream(PdfStream), "customer-satisfaction-survey.pdf");
                 var smtp = new SmtpClient("owa.dbiservices.com");
 #if DEBUG
-                smtp.Credentials = new System.Net.NetworkCredential("gene.lapointe@dbiservices.com", "Monkey1!");
+                smtp.Credentials = new System.Net.NetworkCredential("gene.lapointe@dbiservices.com", "Monkey2@");
 #endif
                 MailMessage EmailMessage = new MailMessage(User.Identity.Name + "@dbiservices.com", User.Identity.Name + "@dbiservices.com", Subject, Message);
                 EmailMessage.Attachments.Add(MailAttachment);
@@ -579,7 +589,7 @@ take a few moments to complete this brief survey to help us help you.</p><p>Plea
             uxSurveyPanel.Title = "Preview Survey";
             uxSurveyPanel.Loader = new ComponentLoader
             {
-                Url = "/Views/Modules/CustomerSurveys/umViewSurvey.aspx?FormId=" + FormId  + "&CompletionId="+ NewComp.COMPLETION_ID,
+                Url = "/Views/Modules/FormGenerator/umViewSurvey.aspx?FormId=" + FormId  + "&CompletionId="+ NewComp.COMPLETION_ID,
                 Mode = LoadMode.Frame,
                 AutoLoad = true
             };
