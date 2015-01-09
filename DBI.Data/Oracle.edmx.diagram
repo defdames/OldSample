@@ -108,7 +108,6 @@
         <AssociationConnector Association="OracleModel.FK_ACTUAL_NUM_DETAIL_TASK_ID" />
         <AssociationConnector Association="OracleModel.FK_BUDGET_NUM_DETAIL_TASK_ID" />
         <EntityTypeShape EntityType="OracleModel.SYS_ORG_PROFILE_OPTIONS" Width="1.5" PointX="19.125" PointY="20.25" />
-        <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" Width="1.5" PointX="15.625" PointY="0.875" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_INVOICE" Width="1.5" PointX="32.5" PointY="2.25" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_SUPP_INVOICE" Width="1.5" PointX="35.5" PointY="3.75" />
         <EntityTypeShape EntityType="OracleModel.CUSTOMER_SURVEY_THRESHOLDS" Width="1.5" PointX="44" PointY="54.375" />
@@ -161,6 +160,12 @@
         <AssociationConnector Association="OracleModel.FK_FORMS_COMP_FORM_ID" />
         <AssociationConnector Association="OracleModel.FK_FORMS_TYPES_ID" />
         <EntityTypeShape EntityType="OracleModel.PROCESS" Width="1.5" PointX="14.25" PointY="147.875" />
+        <EntityTypeShape EntityType="OracleModel.LEADS_COMMENTS" Width="1.5" PointX="1.8384577137597173" PointY="8.4196313211785778" />
+        <EntityTypeShape EntityType="OracleModel.LEADS_CONTACTS" Width="1.5" PointX="1.4717363349496091" PointY="9.5537683263205775" />
+        <EntityTypeShape EntityType="OracleModel.LEADS_MANAGE_MAIN" Width="1.5" PointX="0.05236321317607686" PointY="29.765966265353359" />
+        <AssociationConnector Association="OracleModel.FK_MAIN_COMMENT_LEAD_ID" />
+        <AssociationConnector Association="OracleModel.FK_MAIN_LEAD_ID" />
+        <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" Width="1.5" PointX="2.6974657954170675" PointY="0.70435236427204329" />
         </Diagram>
       <Diagram DiagramId="e84dee89c5a844eb84c350f94a998eb6" Name="OVERHEAD" >
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" Width="4.25" PointX="2.75" PointY="0.75" />

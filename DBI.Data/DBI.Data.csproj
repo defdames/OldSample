@@ -256,6 +256,15 @@
     <Compile Include="JOB_TITLE_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="LEADS_COMMENTS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LEADS_CONTACTS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LEADS_MANAGE_MAIN.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="MBL_EMPLOYEE_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
