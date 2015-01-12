@@ -92,7 +92,6 @@ namespace DBI.Data
         public DbSet<CROSSING_SUB_DIVISION> CROSSING_SUB_DIVISION { get; set; }
         public DbSet<BUD_BID_ACTUAL_NUM> BUD_BID_ACTUAL_NUM { get; set; }
         public DbSet<BUD_BID_BUDGET_NUM> BUD_BID_BUDGET_NUM { get; set; }
-        public DbSet<BUD_BID_DETAIL_TASK> BUD_BID_DETAIL_TASK { get; set; }
         public DbSet<SYS_ORG_PROFILE_OPTIONS> SYS_ORG_PROFILE_OPTIONS { get; set; }
         public DbSet<CROSSING_INVOICE> CROSSING_INVOICE { get; set; }
         public DbSet<CROSSING_SUPP_INVOICE> CROSSING_SUPP_INVOICE { get; set; }
@@ -137,6 +136,7 @@ namespace DBI.Data
         public DbSet<LEADS_COMMENTS> LEADS_COMMENTS { get; set; }
         public DbSet<LEADS_CONTACTS> LEADS_CONTACTS { get; set; }
         public DbSet<LEADS_MANAGE_MAIN> LEADS_MANAGE_MAIN { get; set; }
+        public DbSet<BUD_BID_DETAIL_TASK> BUD_BID_DETAIL_TASK { get; set; }
         public DbSet<OVERHEAD_BUDGET_TYPE> OVERHEAD_BUDGET_TYPE { get; set; }
     }
 }
