@@ -16,7 +16,7 @@
         <ext:ResourceManager runat="server" IsDynamic="false" />
         <ext:Viewport runat="server" Cls="test" >
             <Items>
-                <ext:Container ID="uxCompletedContainer" runat="server" AutoScroll="true" Hidden="true">
+                <ext:Container ID="uxCompletedContainer" runat="server" AutoScroll="true">
                     <Items>
                         <ext:Panel runat="server" ID="uxCompletedPanel" AutoScroll="true" MaxWidth="1000" BodyPadding="10" Flex="500" Height="1000" Layout="HBoxLayout">
                             <Items>
@@ -34,12 +34,12 @@
                         <ext:HBoxLayoutConfig Pack="Center" ReserveScrollbar="true" />
                     </LayoutConfig>
                 </ext:Container>
-                <ext:Container runat="server" AutoScroll="true" ID="uxSurveyContainer" Hidden="true">
+                <ext:Container runat="server" AutoScroll="true" ID="uxSurveyContainer">
                     <Items>
-                        <ext:FormPanel runat="server" ID="uxSurveyDisplay" Layout="FormLayout" MaxWidth="1000" BodyPadding="10" Flex="500" ManageHeight="true">
-                            <Items>
-                                <ext:Image ID="Image2" runat="server" ImageUrl="/Resources/Images/dbis_black_logo.png" MaxWidth="250" MaxHeight="154" StyleSpec="text-align: center" />                       
-                            </Items>
+                        <ext:FormPanel runat="server" ID="uxSurveyDisplay" Layout="FormLayout" MaxWidth="1000" BodyPadding="10" Flex="500">
+                            <%--<Items>
+                                <ext:Image ID="Image2" runat="server" ImageUrl="/Resources/Images/dbis_black_logo.png" MaxWidth="250" MaxHeight="154" />                       
+                            </Items>--%>
                             <Buttons>
                                 <ext:Button runat="server" ID="uxSubmitSurveyButton" Text="Submit" Icon="Add" Disabled="true">
                                     <DirectEvents>

@@ -12,20 +12,16 @@ namespace DBI.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class PROCESS
+    public partial class LEADS_CONTACTS
     {
-        public decimal PROCESSES_ID { get; set; }
-        public string PROCESS_TYPE { get; set; }
-        public string MINUTES { get; set; }
-        public string HOURS { get; set; }
-        public string DAYS { get; set; }
-        public string WEEKS { get; set; }
-        public string MONTHS { get; set; }
-        public string URL { get; set; }
-        public string DESCRIPTION { get; set; }
+        public decimal CONTACT_ID { get; set; }
+        public decimal LEAD_ID { get; set; }
+        public Nullable<decimal> PERSON_ID { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string CREATED_BY { get; set; }
         public string MODIFIED_BY { get; set; }
+    
+        public virtual LEADS_MANAGE_MAIN LEADS_MANAGE_MAIN { get; set; }
     }
 }

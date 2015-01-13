@@ -157,6 +157,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.Button uxDeleteDollarButton;
         
         /// <summary>
+        /// uxDollarSelection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel uxDollarSelection;
+        
+        /// <summary>
         /// uxThresholdGrid control.
         /// </summary>
         /// <remarks>
@@ -173,6 +182,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Store uxThresholdStore;
+        
+        /// <summary>
+        /// uxThresholdSelection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel uxThresholdSelection;
         
         /// <summary>
         /// uxAddThresholdButton control.
