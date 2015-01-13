@@ -22,6 +22,18 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             long HeaderId = long.Parse(Request.QueryString["HeaderId"]);
             long EmployeeId = long.Parse(Request.QueryString["EmployeeId"]);
+            using (Entities _context = new Entities())
+            {
+                var currentLunch = _context.DAILY_ACTIVITY_EMPLOYEE.Where(x => x.EMPLOYEE_ID == EmployeeId).SingleOrDefault();
+                if (currentLunch.LUNCH_TASK_ID != null)
+                {
+                    var project = _context.PA_TASKS_V.Where(x => x.TASK_ID == currentLunch.LUNCH_TASK_ID).Select(x => x.PROJECT_ID).Single();
+                    var projectName = _context.PROJECTS_V.Where(x => x.PROJECT_ID == project).Select(x => x.LONG_NAME).Single();
+
+                    uxChoosePerDiemHeaderId.SetValue(HeaderId.ToString(), projectName);
+                    uxChoosePerDiemTask.SetValue(currentLunch.LUNCH_TASK_ID.ToString());
+                }
+            }
             FillComboBox(HeaderId, EmployeeId);
         }
 
@@ -77,6 +89,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     X.Js.Call(string.Format("parent.App.direct.dmShowLunchTaskError('{0}');parent.App.uxPlaceholderWindow.hide()", BadProject));
                 }
                 uxChoosePerDiemHeaderIdStore.DataSource = ComboList;
+                
             }
         }
 
@@ -120,7 +133,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 GenericData.Update<DAILY_ACTIVITY_EMPLOYEE>(Record);
             }
 
-            X.Js.Call("parent.App.uxDetailsPanel.reload(); parent.App.uxPlaceholderWindow.close()");
+            X.Js.Call("parent.frames[0].App.uxWarningStore.reload(); parent.frames[0].App.uxEmployeeStore.reload(); parent.App.uxPlaceholderWindow.close()");
 
         }
 
