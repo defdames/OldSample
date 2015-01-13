@@ -32,18 +32,35 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
         protected void deLoadDetailLinesStore(object sender, StoreReadDataEventArgs e)
         {
-            uxDetailStore.DataSource = BBMonthSummary.MainGrid.BudgetLine.Data(true, 48370, 49165, 6);
+            long lineID = Convert.ToInt64(Request.QueryString["lineID"]);
+            long budBidProjectID = Convert.ToInt64(Request.QueryString["budBidProjectID"]);
+            long detailSheetID = Convert.ToInt64(Request.QueryString["detailSheetID"]);
+
+            bool budgetNums;
+            if (uxBudgetsOrActuals.Text == "Budgets")
+            {
+                budgetNums = true;
+            }
+            else
+            {
+                budgetNums = false;
+            }
+            
+
+            uxDetailStore.DataSource = BBMonthSummary.MainGrid.BudgetLine.Data(budgetNums, budBidProjectID, detailSheetID, lineID);
         }
 
         protected void deSaveDetailLine(object sender, DirectEventArgs e)
         {
             string json = e.ExtraParams["Values"];
             List<BBMonthSummary.MainGrid.BudgetLine.Fields> _gridValues = JSON.Deserialize<List<BBMonthSummary.MainGrid.BudgetLine.Fields>>(json);
+
+            long budgetNumID = Convert.ToInt64(e.ExtraParams["IDField"]);
             
             BUD_BID_BUDGET_NUM data;
             using (Entities context = new Entities())
             {
-                data = context.BUD_BID_BUDGET_NUM.Where(x => x.BUDGET_NUM_ID == 207565).Single();
+                data = context.BUD_BID_BUDGET_NUM.Where(x => x.BUDGET_NUM_ID == budgetNumID).Single();
             }
 
             foreach (BBMonthSummary.MainGrid.BudgetLine.Fields _detail in _gridValues)
@@ -103,13 +120,38 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             data.MODIFY_DATE = DateTime.Now;
             data.MODIFIED_BY = HttpContext.Current.User.Identity.Name;
 
-            GenericData.Update<BUD_BID_BUDGET_NUM>(data);    
-        
+            GenericData.Update<BUD_BID_BUDGET_NUM>(data);
+            
+            // Calculate total lines
+            long projectID = Convert.ToInt64(e.ExtraParams["Project"]);
+            long taskDetailID = Convert.ToInt64(e.ExtraParams["DetailTask"]);
+            
+            // Update Gross Receipts
+            BUD_BID_BUDGET_NUM data1;
+            using (Entities context = new Entities())
+            {
+                data1 = context.BUD_BID_BUDGET_NUM.Where(x => x.PROJECT_ID == projectID && x.DETAIL_TASK_ID == taskDetailID && x.LINE_ID == 60).Single();
+            }
+
+            data1.NOV = 9;
+
+            //GenericData.Update<BUD_BID_BUDGET_NUM>(data);
+
+            // Update Gross Revenue
+
+            // Total
+
+            // Total Directs
+
+            // Operating Profit
+
+            // Net Contribution
+
         }
 
         protected void deSelectBudgetsOrActuals(object sender, DirectEventArgs e)
         {
-
+            uxDetailStore.Reload();
         }
     }
 }

@@ -931,7 +931,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         }
         protected List<BUD_BID_ACTUAL_NUM> ProjectFormStartData(bool insert, long budBidID, long detailTaskID = 0)
         {
-            long[] arrLineNum = { 6, 7, 8, 9, 10 };
+            long[] arrLineNum = { 60, 80, 100, 300, 320 };
             Ext.Net.TextField[] arrControl = { uxSGrossRec, uxSMatUsage, uxSGrossRev, uxSDirects, uxSOP };
             List<BUD_BID_ACTUAL_NUM> data;
 
@@ -1000,7 +1000,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         }
         protected List<BUD_BID_BUDGET_NUM> ProjectFormEndData(bool insert, long budBidID, long detailTaskID = 0)
         {
-            long[] arrLineNum = { 6, 7, 8, 9, 10 };
+            long[] arrLineNum = { 60, 80, 100, 300, 320 };
             Ext.Net.TextField[] arrControl = { uxEGrossRec, uxEMatUsage, uxEGrossRev, uxEDirects, uxEOP };
             List<BUD_BID_BUDGET_NUM> data;
 
