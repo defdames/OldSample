@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umAddEditMonthProject.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.BudgetBidding.umAddEditMonthProject" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="umAddEditMonthTask.aspx.cs" Inherits="DBI.Web.EMS.Views.Modules.BudgetBidding.umAddEditMonthTask" %>
 
 <!DOCTYPE html>
 
@@ -7,12 +7,12 @@
     <title></title>
     <script type="text/javascript">
         var closeCancel = function () {
-            parent.Ext.getCmp('uxAddEditProjectForm').close();
+            parent.Ext.getCmp('uxAddEditTaskForm').close();
         }
         var closeUpdate = function () {
-            parent.App.direct.CloseAddEditProjectWindow();
+            parent.App.direct.CloseAddEditTaskWindow();
             //parent.App.uxSummaryGridStore.reload();
-            parent.Ext.getCmp('uxAddEditProjectForm').close();
+            parent.Ext.getCmp('uxAddEditTaskForm').close();
         }
     </script>
 </head>
@@ -33,30 +33,30 @@
                             runat="server"
                             Layout="HBoxLayout">
                             <Items>
-                                <ext:Label ID="Label1" runat="server" Width="120" Text="Project Number:" />
-                                <ext:DropDownField ID="uxProjectNum" runat="server" Width="110" Mode="ValueText" Editable="false" FieldStyle="background-color: #EFF7FF; background-image: none;">
+                                <ext:Label ID="Label1" runat="server" Width="120" Text="Task Number:" />
+                                <ext:DropDownField ID="uxTaskNum" runat="server" Width="110" Mode="ValueText" Editable="false" FieldStyle="background-color: #EFF7FF; background-image: none;">
                                     <Listeners>
                                         <Expand Handler="this.picker.setWidth(500);" />
                                     </Listeners>
                                     <Component>
                                         <ext:GridPanel runat="server"
-                                            ID="uxProjectList"
+                                            ID="uxTaskList"
                                             Width="500"
                                             Layout="HBoxLayout"
                                             Frame="true"
                                             ForceFit="true">
                                             <Store>
                                                 <ext:Store runat="server"
-                                                    ID="uxProjectNumStore"
+                                                    ID="uxTaskNumStore"
                                                     PageSize="10"
                                                     RemoteSort="true"
-                                                    OnReadData="deLoadProjectDropdown">
+                                                    OnReadData="deLoadTaskDropdown">
                                                     <Model>
                                                         <ext:Model ID="Model7" runat="server">
                                                             <Fields>
-                                                                <ext:ModelField Name="PROJECT_ID" />
-                                                                <ext:ModelField Name="PROJECT_NUM" Type="String" />
-                                                                <ext:ModelField Name="PROJECT_NAME" />
+                                                                <ext:ModelField Name="TASK_ID" />
+                                                                <ext:ModelField Name="TASK_NUMBER" Type="String" />
+                                                                <ext:ModelField Name="DESCRIPTION" />
                                                                 <ext:ModelField Name="TYPE" />
                                                                 <ext:ModelField Name="ORDERKEY" />
                                                             </Fields>
@@ -69,8 +69,8 @@
                                             </Store>
                                             <ColumnModel>
                                                 <Columns>
-                                                    <ext:Column ID="Column13" runat="server" Text="Project Number" DataIndex="PROJECT_NUM" Flex="1" />
-                                                    <ext:Column ID="Column14" runat="server" Text="Project Long Name" DataIndex="PROJECT_NAME" Flex="3" />
+                                                    <ext:Column ID="Column13" runat="server" Text="Task Number" DataIndex="TASK_NUMBER" Flex="1" />
+                                                    <ext:Column ID="Column14" runat="server" Text="Task Description" DataIndex="DESCRIPTION" Flex="3" />
                                                 </Columns>
                                             </ColumnModel>
                                             <BottomBar>
@@ -80,18 +80,18 @@
                                                 <ext:RowSelectionModel ID="RowSelectionModel3" runat="server" Mode="Single" />
                                             </SelectionModel>
                                             <DirectEvents>
-                                                <SelectionChange OnEvent="deSelectProject">
+                                                <SelectionChange OnEvent="deSelectTask">
                                                     <ExtraParams>
-                                                        <ext:Parameter Name="ProjectID" Value="#{uxProjectList}.getSelectionModel().getSelection()[0].data.PROJECT_ID" Mode="Raw" />
-                                                        <ext:Parameter Name="ProjectNum" Value="#{uxProjectList}.getSelectionModel().getSelection()[0].data.PROJECT_NUM" Mode="Raw" />
-                                                        <ext:Parameter Name="ProjectName" Value="#{uxProjectList}.getSelectionModel().getSelection()[0].data.PROJECT_NAME" Mode="Raw" />
-                                                        <ext:Parameter Name="Type" Value="#{uxProjectList}.getSelectionModel().getSelection()[0].data.TYPE" Mode="Raw" />
+                                                        <ext:Parameter Name="TaskID" Value="#{uxTaskList}.getSelectionModel().getSelection()[0].data.TASK_ID" Mode="Raw" />
+                                                        <ext:Parameter Name="TaskNum" Value="#{uxTaskList}.getSelectionModel().getSelection()[0].data.TASK_NUMBER" Mode="Raw" />
+                                                        <ext:Parameter Name="TaskName" Value="#{uxTaskList}.getSelectionModel().getSelection()[0].data.DESCRIPTION" Mode="Raw" />
+                                                        <%--<ext:Parameter Name="Type" Value="#{uxProjectList}.getSelectionModel().getSelection()[0].data.TYPE" Mode="Raw" />--%>
                                                     </ExtraParams>
                                                     <EventMask ShowMask="true" />
                                                 </SelectionChange>
                                             </DirectEvents>
                                             <Plugins>
-                                                <ext:FilterHeader runat="server" ID="uxProjectFilter" Remote="true" />
+                                                <ext:FilterHeader runat="server" ID="uxTaskFilter" Remote="true" />
                                             </Plugins>
                                         </ext:GridPanel>
                                     </Component>
@@ -104,8 +104,8 @@
                             runat="server"
                             Layout="HBoxLayout">
                             <Items>
-                                <ext:Label ID="Label7" runat="server" Width="120" Text="Project Long Name:" />
-                                <ext:TextField ID="uxProjectName" runat="server" Width="380" ReadOnly="true" SelectOnFocus="true" MaxLength="200" EnforceMaxLength="true" FieldStyle="background-color: #EFF7FF; background-image: none;">
+                                <ext:Label ID="Label7" runat="server" Width="120" Text="Description:" />
+                                <ext:TextField ID="uxTaskName" runat="server" Width="380" ReadOnly="true" SelectOnFocus="true" MaxLength="200" EnforceMaxLength="true" FieldStyle="background-color: #EFF7FF; background-image: none;">
                                     <DirectEvents>
                                         <Change OnEvent="deCheckAllowSave" />
                                     </DirectEvents>
@@ -154,7 +154,6 @@
                 <ext:Hidden ID="uxHidProjectNumID" runat="server" />
                 <ext:Hidden ID="uxHidType" runat="server" />--%>
 
-
                 <ext:FormPanel ID="FormPanel2"
                     runat="server"
                     Region="South"
@@ -172,12 +171,33 @@
                                 <ext:TextField ID="uxHidProjectNum" runat="server" Width="100" />
                                 <ext:TextField ID="uxHidProjectName" runat="server" Width="100" />
                                 <ext:TextField ID="uxHidType" runat="server" Width="100" />
-                                <ext:TextField ID="uxHidDetailSheetID" runat="server" Width="100" />
+                            </Items>
+                        </ext:FieldContainer>
+                    </Items>
+                </ext:FormPanel>
+
+                <ext:FormPanel ID="FormPanel3"
+                    runat="server"
+                    Region="South"
+                    BodyPadding="20"
+                    Height="120"
+                    Disabled="false"
+                    Visible="true">
+                    <Items>
+                        <ext:FieldContainer ID="FieldContainer5"
+                            runat="server"
+                            Layout="HBoxLayout">
+                            <Items>
+                                <ext:TextField ID="uxHidDetailTaskID" runat="server" Width="100" />
+                                <ext:TextField ID="uxHidDetailID" runat="server" Width="100" />
+                                <ext:TextField ID="uxHidDetailName" runat="server" Width="100" />
+                                <ext:TextField ID="uxHidDetailType" runat="server" Width="100" />
                                 <ext:TextField ID="uxHidAddNew" runat="server" Width="100" />
                             </Items>
                         </ext:FieldContainer>
                     </Items>
                 </ext:FormPanel>
+
 
             </Items>
         </ext:Viewport>

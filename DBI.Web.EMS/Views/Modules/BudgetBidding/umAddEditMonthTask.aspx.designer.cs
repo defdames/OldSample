@@ -10,7 +10,7 @@
 namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
     
     
-    public partial class umAddEditMonthProject {
+    public partial class umAddEditMonthTask {
         
         /// <summary>
         /// Head1 control.
@@ -76,31 +76,31 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Label Label1;
         
         /// <summary>
-        /// uxProjectNum control.
+        /// uxTaskNum control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.DropDownField uxProjectNum;
+        protected global::Ext.Net.DropDownField uxTaskNum;
         
         /// <summary>
-        /// uxProjectList control.
+        /// uxTaskList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.GridPanel uxProjectList;
+        protected global::Ext.Net.GridPanel uxTaskList;
         
         /// <summary>
-        /// uxProjectNumStore control.
+        /// uxTaskNumStore control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Store uxProjectNumStore;
+        protected global::Ext.Net.Store uxTaskNumStore;
         
         /// <summary>
         /// Model7 control.
@@ -148,13 +148,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.RowSelectionModel RowSelectionModel3;
         
         /// <summary>
-        /// uxProjectFilter control.
+        /// uxTaskFilter control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.FilterHeader uxProjectFilter;
+        protected global::Ext.Net.FilterHeader uxTaskFilter;
         
         /// <summary>
         /// Label5 control.
@@ -184,13 +184,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Label Label7;
         
         /// <summary>
-        /// uxProjectName control.
+        /// uxTaskName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxProjectName;
+        protected global::Ext.Net.TextField uxTaskName;
         
         /// <summary>
         /// Label2 control.
@@ -328,13 +328,58 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.TextField uxHidType;
         
         /// <summary>
-        /// uxHidDetailSheetID control.
+        /// FormPanel3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.TextField uxHidDetailSheetID;
+        protected global::Ext.Net.FormPanel FormPanel3;
+        
+        /// <summary>
+        /// FieldContainer5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.FieldContainer FieldContainer5;
+        
+        /// <summary>
+        /// uxHidDetailTaskID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxHidDetailTaskID;
+        
+        /// <summary>
+        /// uxHidDetailID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxHidDetailID;
+        
+        /// <summary>
+        /// uxHidDetailName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxHidDetailName;
+        
+        /// <summary>
+        /// uxHidDetailType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxHidDetailType;
         
         /// <summary>
         /// uxHidAddNew control.

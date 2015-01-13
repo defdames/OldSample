@@ -144,6 +144,7 @@
     <Content Include="Resources\Images\wwbnight.png" />
     <Content Include="Resources\Scripts\jquery-2.0.1.js" />
     <Content Include="Resources\Scripts\jquery-2.0.1.min.js" />
+    <Content Include="Views\Modules\BudgetBidding\umAddEditMonthTask.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umAddEditMonthProject.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umEditMonthRow.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umMonthBudget.aspx" />
@@ -329,6 +330,13 @@
     </Compile>
     <Compile Include="Views\Handlers\SystemUsers.ashx.cs">
       <DependentUpon>SystemUsers.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umAddEditMonthTask.aspx.cs">
+      <DependentUpon>umAddEditMonthTask.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umAddEditMonthTask.aspx.designer.cs">
+      <DependentUpon>umAddEditMonthTask.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\BudgetBidding\umAddEditMonthProject.aspx.cs">
       <DependentUpon>umAddEditMonthProject.aspx</DependentUpon>
