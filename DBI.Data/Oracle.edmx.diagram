@@ -161,11 +161,11 @@
         <EntityTypeShape EntityType="OracleModel.LEADS_MANAGE_MAIN" Width="1.5" PointX="0.05236321317607686" PointY="29.765966265353359" />
         <AssociationConnector Association="OracleModel.FK_MAIN_COMMENT_LEAD_ID" />
         <AssociationConnector Association="OracleModel.FK_MAIN_LEAD_ID" />
-        <EntityTypeShape EntityType="OracleModel.BUD_BID_DETAIL_TASK" Width="1.5" PointX="3.0534617803308466" PointY="8.3737973311793983" />
+        <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" Width="1.5" PointX="1.7708758533796649" PointY="23.729591604196276" />
+        <EntityTypeShape EntityType="OracleModel.BUD_BID_DETAIL_TASK" Width="1.5" PointX="2.7549842534377165" PointY="6.7966361077486708" />
         <AssociationConnector Association="OracleModel.FK_ACTUAL_NUM_DETAIL_TASK_ID" />
         <AssociationConnector Association="OracleModel.FK_BUDGET_NUM_DETAIL_TASK_ID" />
         <AssociationConnector Association="OracleModel.FK_DETAIL_DETAIL_TASK_ID" />
-        <EntityTypeShape EntityType="OracleModel.OVERHEAD_BUDGET_TYPE" Width="1.5" PointX="1.7708758533796649" PointY="23.729591604196276" />
         </Diagram>
       <Diagram DiagramId="e84dee89c5a844eb84c350f94a998eb6" Name="OVERHEAD" >
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" Width="4.25" PointX="2.75" PointY="0.75" />

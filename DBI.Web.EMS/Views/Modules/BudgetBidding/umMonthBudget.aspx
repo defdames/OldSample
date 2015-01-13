@@ -59,16 +59,6 @@
         }
     </style>
     <script type="text/javascript">
-        var isEditAdjustmentAllowed = function (e) {
-            if (e.originalValue == 12345678910) {
-                return false;
-            }
-        }
-        var editAdjustment = function (editor, e) {
-            if (e.originalValue != e.value) {
-                SaveRecord.deSaveAdjustments(e.record.data.ADJ_ID, e.field, e.value);
-            }
-        }
         Ext.util.Format.CurrencyFactory = function (dp, dSeparator, tSeparator, symbol, red) {
             return function (n) {
                 if (n == 12345678910) {
@@ -94,48 +84,15 @@
                 return Ext.String.format(template, (n >= 0 || red == false) ? "black" : "red", r);
             };
         };
-        // EXAMPLE
-        //var colorErrors = function (value, metadata, record) {
-        //    if (record.data.WARNING == "Error") {
-        //        metadata.style = "background-color: red;";
-        //    }
-        //    else if (record.data.WARNING == "Warning") {
-        //        metadata.style = "background-color: yellow;";
-        //    }
-        //    return value;
-        //};
-        var colorProjectOverride = function (value, metadata, record) {
-            if (record.data.TYPE == "OVERRIDE") {
-                metadata.style = "background-color: #FFFF99;";
+        var colorTotalLineName = function (value, metadata, record) {
+            if (record.data.TOTAL == "Y") {
+                metadata.style = "background-color: #E0E0D1;";
             }
             return value;
         };
-        var colorCompareOverride = function (value, metadata, record) {
-            if (record.data.COMPARE_PRJ_OVERRIDE == "Y") {
-                metadata.style = "background-color: #FFFF99;";
-            }
-
-            var template = '<span style="color:{0};">{1}</span>';
-
-            var dp = 2;
-            var dSeparator = ".";
-            var tSeparator = ",";
-            var symbol = '';
-            var red = false;
-
-            var m = /(\d+)(?:(\.\d+)|)/.exec(value + ""),
-                x = m[1].length > 3 ? m[1].length % 3 : 0;
-            var r = (value < 0 ? '-' : '') // preserve minus sign
-                    + (x ? m[1].substr(0, x) + tSeparator : "")
-                    + m[1].substr(x).replace(/(\d{3})(?=\d)/g, "$1" + tSeparator)
-                    + (dp ? dSeparator + (+m[2] || 0).toFixed(dp).substr(2) : "")
-                    + symbol;
-
-            return Ext.String.format(template, (value >= 0 || red == false) ? "black" : "red", r);
-        };
-        var colorWEOverride = function (value, metadata, record) {
-            if (record.data.WE_OVERRIDE == "Y") {
-                metadata.style = "background-color: #FFFF99;";
+        var colorTotalLineNumber = function (value, metadata, record) {
+            if (record.data.TOTAL == "Y") {
+                metadata.style = "background-color: #E0E0D1;";
             }
 
             var template = '<span style="color:{0};">{1}</span>';
@@ -265,8 +222,11 @@
                                     <Model>
                                         <ext:Model ID="Model2" runat="server">
                                             <Fields>
-                                                <ext:ModelField Name="ID" />
-                                                <ext:ModelField Name="NAME" />
+                                                <ext:ModelField Name="BUD_BID_PROJECTS_ID" />
+                                                <ext:ModelField Name="PROJECT_ID" />
+                                                <ext:ModelField Name="PROJECT_NUM" />
+                                                <ext:ModelField Name="PROJECT_NAME" />
+                                                <ext:ModelField Name="TYPE" />
                                             </Fields>
                                         </ext:Model>
                                     </Model>
@@ -280,13 +240,17 @@
                             </Store>
                             <ColumnModel>
                                 <Columns>
-                                    <ext:Column ID="Column12" runat="server" DataIndex="NAME" Text="Projects" Flex="1" />
+                                    <ext:Column ID="Column12" runat="server" DataIndex="PROJECT_NAME" Text="Projects" Flex="1" />
                                 </Columns>
                             </ColumnModel>
                             <DirectEvents>
                                 <Select OnEvent="deSelectProject">
                                     <ExtraParams>
-                                        <ext:Parameter Name="BudBidProjectID" Value="#{uxProjects}.getSelectionModel().getSelection()[0].data.ID" Mode="Raw" />
+                                        <ext:Parameter Name="BudBidProjectID" Value="#{uxProjects}.getSelectionModel().getSelection()[0].data.BUD_BID_PROJECTS_ID" Mode="Raw" />
+                                        <ext:Parameter Name="ProjectID" Value="#{uxProjects}.getSelectionModel().getSelection()[0].data.PROJECT_ID" Mode="Raw" />
+                                        <ext:Parameter Name="ProjectNum" Value="#{uxProjects}.getSelectionModel().getSelection()[0].data.PROJECT_NUM" Mode="Raw" />
+                                        <ext:Parameter Name="ProjectName" Value="#{uxProjects}.getSelectionModel().getSelection()[0].data.PROJECT_NAME" Mode="Raw" />
+                                        <ext:Parameter Name="Type" Value="#{uxProjects}.getSelectionModel().getSelection()[0].data.TYPE" Mode="Raw" />
                                     </ExtraParams>
                                     <EventMask ShowMask="true" />
                                 </Select>
@@ -342,8 +306,9 @@
                                     <Model>
                                         <ext:Model ID="Model1" runat="server">
                                             <Fields>
-                                                <ext:ModelField Name="ID" />
-                                                <ext:ModelField Name="NAME" />
+                                                <ext:ModelField Name="DETAIL_TASK_ID" />
+                                                <ext:ModelField Name="DETAIL_ID" />
+                                                <ext:ModelField Name="DESCRIPITION" />
                                             </Fields>
                                         </ext:Model>
                                     </Model>
@@ -357,13 +322,15 @@
                             </Store>
                             <ColumnModel>
                                 <Columns>
-                                    <ext:Column ID="Column1" runat="server" DataIndex="NAME" Text="Tasks/Detail Sheets" Flex="1" />
+                                    <ext:Column ID="Column1" runat="server" DataIndex="DESCRIPITION" Text="Tasks/Detail Sheets" Flex="1" />
                                 </Columns>
                             </ColumnModel>
                             <DirectEvents>
                                 <Select OnEvent="deSelectTask">
                                     <ExtraParams>
-                                        <ext:Parameter Name="DetailSheetID" Value="#{uxTasks}.getSelectionModel().getSelection()[0].data.ID" Mode="Raw" />
+                                        <ext:Parameter Name="DetailTaskID" Value="#{uxTasks}.getSelectionModel().getSelection()[0].data.DETAIL_TASK_ID" Mode="Raw" />
+                                        <ext:Parameter Name="DetailID" Value="#{uxTasks}.getSelectionModel().getSelection()[0].data.DETAIL_ID" Mode="Raw" />
+                                        <ext:Parameter Name="DetailName" Value="#{uxTasks}.getSelectionModel().getSelection()[0].data.DESCRIPITION" Mode="Raw" />
                                     </ExtraParams>
                                     <EventMask ShowMask="true" />
                                 </Select>
@@ -451,175 +418,175 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column ID="Column2" runat="server" DataIndex="LINE_DESC" Text="" Width="160" />
+                            <ext:Column ID="Column2" runat="server" DataIndex="LINE_DESC" Text="" Width="160">
+                                <Renderer Fn="colorTotalLineName" />
+                            </ext:Column>
                             <ext:NumberColumn ID="NumberColumn6" runat="server" DataIndex="REFORECAST" Text="Reforecast" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn1" runat="server" DataIndex="NOV_BUDGET" Text="Nov - Budget" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn2" runat="server" DataIndex="NOV_ACTUAL" Text="Nov - Actual" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn3" runat="server" DataIndex="NOV_VAR" Text="Nov - Variance" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn4" runat="server" DataIndex="NOV_YTD" Text="Nov - YTD" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn5" runat="server" DataIndex="DEC_BUDGET" Text="Dec - Budget" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn7" runat="server" DataIndex="DEC_ACTUAL" Text="Dec - Actual" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn8" runat="server" DataIndex="DEC_VAR" Text="Dec - Variance" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn9" runat="server" DataIndex="DEC_YTD" Text="Dec - YTD" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn10" runat="server" DataIndex="JAN_BUDGET" Text="Jan - Budget" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn11" runat="server" DataIndex="JAN_ACTUAL" Text="Jan - Actual" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn12" runat="server" DataIndex="JAN_VAR" Text="Jan - Variance" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn13" runat="server" DataIndex="JAN_YTD" Text="Jan - YTD" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn14" runat="server" DataIndex="FEB_BUDGET" Text="Feb - Budget" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn15" runat="server" DataIndex="FEB_ACTUAL" Text="Feb - Actual" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn16" runat="server" DataIndex="FEB_VAR" Text="Feb - Variance" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn17" runat="server" DataIndex="FEB_YTD" Text="Feb - YTD" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn18" runat="server" DataIndex="MAR_BUDGET" Text="Mar - Budget" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn19" runat="server" DataIndex="MAR_ACTUAL" Text="Mar - Actual" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn20" runat="server" DataIndex="MAR_VAR" Text="Mar - Variance" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn21" runat="server" DataIndex="MAR_YTD" Text="Mar - YTD" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn22" runat="server" DataIndex="APR_BUDGET" Text="Apr - Budget" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn23" runat="server" DataIndex="APR_ACTUAL" Text="Apr - Actual" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn24" runat="server" DataIndex="APR_VAR" Text="Apr - Variance" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn25" runat="server" DataIndex="APR_YTD" Text="Apr - YTD" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn26" runat="server" DataIndex="MAY_BUDGET" Text="May - Budget" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn27" runat="server" DataIndex="MAY_ACTUAL" Text="May - Actual" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn28" runat="server" DataIndex="MAY_VAR" Text="May - Variance" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn29" runat="server" DataIndex="MAY_YTD" Text="May - YTD" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn30" runat="server" DataIndex="JUN_BUDGET" Text="Jun - Budget" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn31" runat="server" DataIndex="JUN_ACTUAL" Text="Jun - Actual" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn32" runat="server" DataIndex="JUN_VAR" Text="Jun - Variance" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn33" runat="server" DataIndex="JUN_YTD" Text="Jun - YTD" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn34" runat="server" DataIndex="JUL_BUDGET" Text="Jul - Budget" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn35" runat="server" DataIndex="JUL_ACTUAL" Text="Jul - Actual" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn36" runat="server" DataIndex="JUL_VAR" Text="Jul - Variance" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn37" runat="server" DataIndex="JUL_YTD" Text="Jul - YTD" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn38" runat="server" DataIndex="AUG_BUDGET" Text="Aug - Budget" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn39" runat="server" DataIndex="AUG_ACTUAL" Text="Aug - Actual" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn40" runat="server" DataIndex="AUG_VAR" Text="Aug - Variance" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn41" runat="server" DataIndex="AUG_YTD" Text="Aug - YTD" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn42" runat="server" DataIndex="SEP_BUDGET" Text="Sep - Budget" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn43" runat="server" DataIndex="SEP_ACTUAL" Text="Sep - Actual" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn44" runat="server" DataIndex="SEP_VAR" Text="Sep - Variance" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn45" runat="server" DataIndex="SEP_YTD" Text="Sep - YTD" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn46" runat="server" DataIndex="OCT_BUDGET" Text="Oct - Budget" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn47" runat="server" DataIndex="OCT_ACTUAL" Text="Oct - Actual" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn48" runat="server" DataIndex="OCT_VAR" Text="Oct - Variance" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn49" runat="server" DataIndex="OCT_YTD" Text="Oct - YTD" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn50" runat="server" DataIndex="TOTAL_PLAN" Text="Total Plan" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn51" runat="server" DataIndex="TOTAL_ACTUAL" Text="Total Actual" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn52" runat="server" DataIndex="TOTAL_VAR" Text="Variance" Width="110" Align="Right">
-                                <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                         </Columns>
                     </ColumnModel>
-                    <%--                    <DirectEvents>
-                        <Select OnEvent="deSelectDetailSheet">
+                    <DirectEvents>
+                        <ItemDblClick OnEvent="deEditSelectedRow">
                             <ExtraParams>
-                                <ext:Parameter Name="DetailSheetID" Value="#{uxDetailSheets}.getSelectionModel().getSelection()[0].data.DETAIL_TASK_ID" Mode="Raw" />
-                                <ext:Parameter Name="DetailSheetOrder" Value="#{uxDetailSheets}.getSelectionModel().getSelection()[0].data.SHEET_ORDER" Mode="Raw" />
-                                <ext:Parameter Name="DetailSheetName" Value="#{uxDetailSheets}.getSelectionModel().getSelection()[0].data.DETAIL_NAME" Mode="Raw" />
+                                <ext:Parameter Name="LineID" Value="#{uxMonthDetail}.getSelectionModel().getSelection()[0].data.LINE_ID" Mode="Raw" />
+                                <ext:Parameter Name="LineDesc" Value="#{uxMonthDetail}.getSelectionModel().getSelection()[0].data.LINE_DESC" Mode="Raw" />
                             </ExtraParams>
-                            <EventMask ShowMask="true" />
-                        </Select>
-                    </DirectEvents>--%>
+                        </ItemDblClick>
+                    </DirectEvents>
                 </ext:GridPanel>
 
 
@@ -642,63 +609,37 @@
                     </Items>
                 </ext:FormPanel>
 
+                <%--<ext:Hidden ID="uxHidBudBidID" runat="server" />
+                <ext:Hidden ID="uxHidProjectNumID" runat="server" />
+                <ext:Hidden ID="uxHidType" runat="server" />
+                <ext:Hidden ID="uxHidDetailSheetID" runat="server" />--%>
 
-                <%-------------------------------------------------- Diagnostic Panel --------------------------------------------------%>
-                <%-- Uncomment to Use --%>
-                <%--<ext:FormPanel ID="FormPanel1"
+                <ext:FormPanel ID="FormPanel2"
                     runat="server"
-                    Region="East"
-                    Width="130"
-                    AutoScroll="true"
-                    BodyPadding="10">
+                    Region="South"
+                    BodyPadding="20"
+                    Height="120"
+                    Disabled="false">
                     <Items>
-                        <ext:FieldContainer ID="FieldContainer20"
+                        <ext:FieldContainer ID="FieldContainer2"
                             runat="server"
-                            Layout="VBoxLayout">
+                            Layout="HBoxLayout">
                             <Items>
-                                <ext:Label ID="Label42" runat="server" Width="100" Text="uxHidBudBidID" Cls="labelCenterAlign" />
                                 <ext:TextField ID="uxHidBudBidID" runat="server" Width="100" />
-                                <ext:Label ID="Label43" runat="server" Width="100" Text="uxHidProjectNumID" Cls="labelCenterAlign" />
-                                <ext:TextField ID="uxHidProjectNumID" runat="server" Width="100" />
-                                <ext:Label ID="Label44" runat="server" Width="100" Text="uxHidType" Cls="labelCenterAlign" />
+                                <ext:TextField ID="uxHidProjectID" runat="server" Width="100" />
+                                <ext:TextField ID="uxHidProjectNum" runat="server" Width="100" />
+                                <ext:TextField ID="uxHidProjectName" runat="server" Width="100" />
                                 <ext:TextField ID="uxHidType" runat="server" Width="100" />
-                                <ext:Label ID="Label45" runat="server" Width="100" Text="uxHidStatusID" Cls="labelCenterAlign" />
-                                <ext:TextField ID="uxHidStatusID" runat="server" Width="100" />
-                                <ext:Label ID="Label46" runat="server" Width="100" Text="uxHidPrevYear" Cls="labelCenterAlign" />
-                                <ext:TextField ID="uxHidPrevYear" runat="server" Width="100" />
-                                <ext:Label ID="Label47" runat="server" Width="100" Text="uxHidPrevVer" Cls="labelCenterAlign" />
-                                <ext:TextField ID="uxHidPrevVer" runat="server" Width="100" />
-                                <ext:Label ID="Label19" runat="server" Width="100" Text="uxHidFormEnabled" Cls="labelCenterAlign" />
-                                <ext:TextField ID="uxHidFormEnabled" runat="server" Width="100" />
-                                <ext:Label ID="Label9" runat="server" Width="100" Text="uxHidOldBudBidID" Cls="labelCenterAlign" />
-                                <ext:TextField ID="uxHidOldBudBidID" runat="server" Width="100" />
-                                <ext:Label ID="Label22" runat="server" Width="100" Text="uxHidDetailSheetID" Cls="labelCenterAlign" />
-                                <ext:TextField ID="uxHidDetailSheetID" runat="server" Width="100" />
-                                <ext:Label ID="Label24" runat="server" Width="100" Text="uxHidDetailSheetOrder" Cls="labelCenterAlign" />
-                                <ext:TextField ID="uxHidDetailSheetOrder" runat="server" Width="100" />
-                                <ext:Label ID="Label33" runat="server" Width="100" Text="uxHidDetailSheetName" Cls="labelCenterAlign" />
-                                <ext:TextField ID="uxHidDetailSheetName" runat="server" Width="100" />
+                                <ext:Label ID="Label2" runat="server" Width="50" Text="" />
+                                <ext:TextField ID="uxHidDetailTaskID" runat="server" Width="100" />
+                                <ext:TextField ID="uxHidDetailID" runat="server" Width="100" />
+                                <ext:TextField ID="uxHidDetailName" runat="server" Width="100" />
+                                <ext:TextField ID="uxHidDetailType" runat="server" Width="100" />
                             </Items>
                         </ext:FieldContainer>
                     </Items>
-                </ext:FormPanel>--%>
-                <%-- Uncomment to Use --%>
+                </ext:FormPanel>
 
-                <%-- Uncomment to Use --%>
-                <ext:Hidden ID="uxHidBudBidID" runat="server" />
-                <ext:Hidden ID="uxHidProjectNumID" runat="server" />
-                <ext:Hidden ID="uxHidType" runat="server" />
-                <ext:Hidden ID="uxHidStatusID" runat="server" />
-                <ext:Hidden ID="uxHidYear" runat="server" />
-                <ext:Hidden ID="uxHidVer" runat="server" />
-                <ext:Hidden ID="uxHidFormEnabled" runat="server" />
-                <ext:Hidden ID="uxHidOldBudBidID" runat="server" />
-                <ext:Hidden ID="uxHidDetailSheetID" runat="server" />
-                <ext:Hidden ID="uxHidDetailSheetOrder" runat="server" />
-                <ext:Hidden ID="uxHidDetailSheetName" runat="server" />
-                <ext:Hidden ID="uxHidOrgID" runat="server" />
-                <%-- Uncomment to Use --%>
-                <%-------------------------------------------------- Diagnostic Panel --------------------------------------------------%>
             </Items>
         </ext:Viewport>
     </form>

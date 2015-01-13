@@ -631,7 +631,7 @@
                             Layout="HBoxLayout">
                             <Items>
                                 <ext:Label ID="Label7" runat="server" Width="120" Text="Project Long Name:" />
-                                <ext:TextField ID="uxProjectName" runat="server" Width="380" ReadOnly="true" SelectOnFocus="true" MaxLength="200" EnforceMaxLength="true">
+                                <ext:TextField ID="uxProjectName" runat="server" Width="380" ReadOnly="true" SelectOnFocus="true" MaxLength="200" EnforceMaxLength="true" FieldStyle="background-color: #EFF7FF; background-image: none;">
                                     <DirectEvents>
                                         <Change OnEvent="deCheckAllowSave" />
                                     </DirectEvents>

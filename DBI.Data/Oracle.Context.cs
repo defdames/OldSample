@@ -136,7 +136,7 @@ namespace DBI.Data
         public DbSet<LEADS_COMMENTS> LEADS_COMMENTS { get; set; }
         public DbSet<LEADS_CONTACTS> LEADS_CONTACTS { get; set; }
         public DbSet<LEADS_MANAGE_MAIN> LEADS_MANAGE_MAIN { get; set; }
-        public DbSet<BUD_BID_DETAIL_TASK> BUD_BID_DETAIL_TASK { get; set; }
         public DbSet<OVERHEAD_BUDGET_TYPE> OVERHEAD_BUDGET_TYPE { get; set; }
+        public DbSet<BUD_BID_DETAIL_TASK> BUD_BID_DETAIL_TASK { get; set; }
     }
 }

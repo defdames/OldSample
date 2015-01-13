@@ -801,7 +801,6 @@ namespace DBI.Data
                 public decimal LIABILITY_OP { get; set; }
             }
             #endregion
-
             
             public static List<Fields> Data(string orgName, long orgID, long yearID, long verID, long prevYearID, long prevVerID)
             {
@@ -843,7 +842,7 @@ namespace DBI.Data
                                 WHERE BUD_BID_PROJECTS.ORG_ID = {1} AND BUD_BID_PROJECTS.YEAR_ID = {2} AND BUD_BID_PROJECTS.VER_ID = {3} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT')       
                             PIVOT(
                                 SUM(NOV) FOR (LINE_ID)
-                                IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                                IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))
                         ),
                         PREV_OP AS (                        
                             SELECT BUD_BID_PROJECTS.PROJECT_ID, NOV PREV_OP  
@@ -933,7 +932,7 @@ namespace DBI.Data
                                     WHERE BUD_BID_PROJECTS.ORG_ID = {0} AND BUD_BID_PROJECTS.YEAR_ID = {1} AND BUD_BID_PROJECTS.VER_ID = {2} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT')       
                                 PIVOT(
                                     SUM(NOV) FOR (LINE_ID)
-                                    IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                                    IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))
                             ),
                             PREV_OP AS (                       
                               SELECT BUD_BID_PROJECTS.PROJECT_ID, NOV PREV_OP  
@@ -1303,7 +1302,7 @@ namespace DBI.Data
                         WHERE BUD_BID_DETAIL_TASK.PROJECT_ID = {0} AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT'  )
                     PIVOT(
                         SUM(NOV) FOR (LINE_ID)
-                        IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))", projectID);
+                        IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))", projectID);
 
                 using (Entities context = new Entities())
                 {
@@ -1319,7 +1318,7 @@ namespace DBI.Data
                     LEFT JOIN BUD_BID_ACTUAL_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_ACTUAL_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_ACTUAL_NUM.DETAIL_TASK_ID
                     WHERE BUD_BID_DETAIL_TASK.PROJECT_ID = {0} AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT'
                     ORDER BY LINE_ID", budBidProjectID);
-                long[] lineNum = { 6, 7, 8, 9, 10 };
+                long[] lineNum = { 60, 80, 100, 300, 320 };
                 decimal[] startNum = { sGrossRec, sMaterial, sGrossRev, sDirects, sOP };
 
                 List<BUD_BID_ACTUAL_NUM> data;
@@ -1364,7 +1363,7 @@ namespace DBI.Data
                         WHERE BUD_BID_DETAIL_TASK.PROJECT_ID = {0} AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT')
                     PIVOT(
                         SUM(NOV) FOR (LINE_ID)
-                        IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))", budBidProjectID);
+                        IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))", budBidProjectID);
 
                 Fields data;
                 using (Entities context = new Entities())
@@ -1394,7 +1393,7 @@ namespace DBI.Data
                     LEFT JOIN BUD_BID_BUDGET_NUM ON BUD_BID_DETAIL_TASK.PROJECT_ID = BUD_BID_BUDGET_NUM.PROJECT_ID AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = BUD_BID_BUDGET_NUM.DETAIL_TASK_ID
                     WHERE BUD_BID_DETAIL_TASK.PROJECT_ID = {0} AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT'
                     ORDER BY LINE_ID", budBidProjectID);
-                long[] lineNum = { 6, 7, 8, 9, 10 };
+                long[] lineNum = { 60, 80, 100, 300, 320 };
                 decimal[] endNum = { eGrossRec, eMaterial, eGrossRev, eDirects, eOP };
 
                 List<BUD_BID_BUDGET_NUM> data;
@@ -1640,7 +1639,7 @@ namespace DBI.Data
 
                 long newDetailID = Convert.ToInt64(detailData.DETAIL_TASK_ID);
 
-                long[] arrLineNum = { 6, 7, 8, 9, 10 };
+                long[] arrLineNum = { 60, 80, 100, 300, 320 };
                 List<BUD_BID_BUDGET_NUM> budNumsData = new List<BUD_BID_BUDGET_NUM>();
                 for (int i = 0; i <= 4; i++)
                 {
@@ -1955,7 +1954,7 @@ namespace DBI.Data
                         WHERE BUD_BID_DETAIL_TASK.DETAIL_TASK_ID = {0})
                     PIVOT(
                         SUM(NOV) FOR (LINE_ID)
-                        IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))", detailSheetID);
+                        IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))", detailSheetID);
 
                     Fields data;
                     using (Entities context = new Entities())
@@ -1979,7 +1978,7 @@ namespace DBI.Data
 
                 public static void DBUpdate(long detailSheetID, decimal eGrossRec, decimal eMaterial, decimal eGrossRev, decimal eDirects, decimal eOP)
                 {
-                    long[] lineNum = { 6, 7, 8, 9, 10 };
+                    long[] lineNum = { 60, 80, 100, 300, 320 };
                     decimal[] endNum = { eGrossRec, eMaterial, eGrossRev, eDirects, eOP };
 
                     List<BUD_BID_BUDGET_NUM> data;
@@ -2289,7 +2288,7 @@ namespace DBI.Data
                                 WHERE PROJECT_ID = {0})
                             PIVOT(
                                 SUM(NOV) FOR (LINE_ID)
-                                IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                                IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))
                         )         
                     SELECT TASKS.PROJECT_ID,
                         TASKS.DETAIL_TASK_ID,
@@ -2632,7 +2631,7 @@ namespace DBI.Data
                                     WHERE BUD_BID_PROJECTS.YEAR_ID = {1} AND BUD_BID_PROJECTS.VER_ID = {2} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT')       
                                 PIVOT(
                                     SUM(NOV) FOR (LINE_ID)
-                                    IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                                    IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))
                             ),
                             PREV_OP AS (       
                   
@@ -2667,7 +2666,7 @@ namespace DBI.Data
                                         WHERE BUD_BID_PROJECTS.YEAR_ID = {1} AND BUD_BID_PROJECTS.VER_ID = {2} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT')       
                                     PIVOT(
                                         SUM(NOV) FOR (LINE_ID)
-                                        IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                                        IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))
                                 ) BUDGET_LINE_AMOUNTS ON CUR_PROJECT_INFO_WITH_STATUS.BUD_BID_PROJECTS_ID = BUDGET_LINE_AMOUNTS.PROJECT_ID
                     
                                 LEFT OUTER JOIN 
@@ -2788,7 +2787,7 @@ namespace DBI.Data
                                 WHERE BUD_BID_PROJECTS.YEAR_ID = {0} AND BUD_BID_PROJECTS.VER_ID = {1} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT')       
                             PIVOT(
                                 SUM(NOV) FOR (LINE_ID)
-                                IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                                IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))
                         ),
                         PREV_OP AS ( 
 
@@ -2823,7 +2822,7 @@ namespace DBI.Data
                                     WHERE BUD_BID_PROJECTS.YEAR_ID = {0} AND BUD_BID_PROJECTS.VER_ID = {1} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT')       
                                 PIVOT(
                                     SUM(NOV) FOR (LINE_ID)
-                                    IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                                    IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))
                             ) BUDGET_LINE_AMOUNTS ON CUR_PROJECT_INFO_WITH_STATUS.BUD_BID_PROJECTS_ID = BUDGET_LINE_AMOUNTS.PROJECT_ID
                     
                             LEFT OUTER JOIN 
@@ -2982,7 +2981,7 @@ namespace DBI.Data
                                 WHERE BUD_BID_PROJECTS.YEAR_ID = {2} AND BUD_BID_PROJECTS.VER_ID = {3} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT')       
                             PIVOT(
                                 SUM(NOV) FOR (LINE_ID)
-                                IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                                IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))
                         ),
                         PREV_OP AS (                        
                             SELECT BUD_BID_PROJECTS.PROJECT_ID, NOV PREV_OP  
@@ -3143,7 +3142,7 @@ namespace DBI.Data
                                 WHERE BUD_BID_PROJECTS.YEAR_ID = {2} AND BUD_BID_PROJECTS.VER_ID = {3} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT')       
                             PIVOT(
                                 SUM(NOV) FOR (LINE_ID)
-                                IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                                IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))
                         ),
                         PREV_OP AS (                        
                             SELECT BUD_BID_PROJECTS.PROJECT_ID, NOV PREV_OP  
@@ -3274,7 +3273,7 @@ namespace DBI.Data
                                     WHERE BUD_BID_PROJECTS.YEAR_ID = {1} AND BUD_BID_PROJECTS.VER_ID = {2} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT')       
                                 PIVOT(
                                     SUM(NOV) FOR (LINE_ID)
-                                    IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                                    IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))
                             ),
                             PREV_OP AS (       
                                   SELECT BUD_BID_PROJECTS.ORG_ID, SUM(NOV) PREV_OP                                         
@@ -3398,7 +3397,7 @@ namespace DBI.Data
                                     WHERE BUD_BID_PROJECTS.YEAR_ID = {1} AND BUD_BID_PROJECTS.VER_ID = {2} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT')       
                                 PIVOT(
                                     SUM(NOV) FOR (LINE_ID)
-                                    IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                                    IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))
                             ),
                             PREV_OP AS (       
                                   SELECT BUD_BID_PROJECTS.ORG_ID, SUM(NOV) PREV_OP                                         
@@ -3552,7 +3551,7 @@ namespace DBI.Data
                         WHERE BUD_BID_DETAIL_TASK.PROJECT_ID = {0} AND BUD_BID_DETAIL_TASK.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT'  )
                     PIVOT(
                         SUM(NOV) FOR (LINE_ID)
-                        IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))", projectID);
+                        IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))", projectID);
 
                     using (Entities context = new Entities())
                     {
@@ -3585,7 +3584,7 @@ namespace DBI.Data
                         WHERE BUD_BID_DETAIL_TASK.PROJECT_ID = {0} AND BUD_BID_DETAIL_TASK.MODIFIED_BY <> 'TEMP' AND BUD_BID_DETAIL_TASK.DETAIL_NAME = 'SYS_PROJECT'  )
                     PIVOT(
                         SUM(NOV) FOR (LINE_ID)
-                        IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))", projectID);
+                        IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))", projectID);
 
                     using (Entities context = new Entities())
                     {
@@ -3626,7 +3625,7 @@ namespace DBI.Data
                                 WHERE PROJECT_ID = {0})
                             PIVOT(
                                 SUM(NOV) FOR (LINE_ID)
-                                IN (6 GROSS_REC, 7 MAT_USAGE, 8 GROSS_REV, 9 DIR_EXP, 10 OP))
+                                IN (60 GROSS_REC, 80 MAT_USAGE, 100 GROSS_REV, 300 DIR_EXP, 320 OP))
                         )         
                     SELECT TASKS.PROJECT_ID,
                         TASKS.DETAIL_TASK_ID,
@@ -3694,29 +3693,19 @@ namespace DBI.Data
         public static List<SingleCombo> ProjectActions(long orgID, long yearID, long verID)
         {
             List<SingleCombo> comboItems = new List<SingleCombo>();
-            //bool readOnly = BB.IsReadOnly(orgID, yearID, verID);
+            bool readOnly = BB.IsReadOnly(orgID, yearID, verID);
 
-            //if (readOnly == false) { comboItems.Add(new SingleCombo { ID_NAME = "Add a New Project" }); }
-
-            //if (readOnly == false)
-            //{
-            //    comboItems.Add(new SingleCombo { ID_NAME = "Edit Selected Project" });
-            //}
-            //else
-            //{
-            //    comboItems.Add(new SingleCombo { ID_NAME = "View Selected Project" });
-            //}
-
-            //if (readOnly == false) { comboItems.Add(new SingleCombo { ID_NAME = "Copy Selected Project" }); }
-
-            //if (readOnly == false) { comboItems.Add(new SingleCombo { ID_NAME = "Delete Selected Project" }); }
-
-            //comboItems.Add(new SingleCombo { ID_NAME = "Refresh Data" });
-
-            comboItems.Add(new SingleCombo { ID_NAME = "Add a New Project" });
-            comboItems.Add(new SingleCombo { ID_NAME = "Edit Selected Project" });
-            comboItems.Add(new SingleCombo { ID_NAME = "Copy Selected Project" });
-            comboItems.Add(new SingleCombo { ID_NAME = "Delete Selected Project" });
+            if (readOnly == false) { comboItems.Add(new SingleCombo { ID_NAME = "Add a New Project" }); }
+            if (readOnly == false)
+            {
+                comboItems.Add(new SingleCombo { ID_NAME = "Edit Selected Project" });
+            }
+            else
+            {
+                comboItems.Add(new SingleCombo { ID_NAME = "View Selected Project" });
+            }
+            if (readOnly == false) { comboItems.Add(new SingleCombo { ID_NAME = "Copy Selected Project" }); }
+            if (readOnly == false) { comboItems.Add(new SingleCombo { ID_NAME = "Delete Selected Project" }); }
             comboItems.Add(new SingleCombo { ID_NAME = "Refresh Projects" });
 
             return comboItems;
@@ -3755,27 +3744,85 @@ namespace DBI.Data
         }
 
         public class ProjectGrid
-        {
+        {             
             #region Fields
             public class Fields
             {
-                public long ID { get; set; }
-                public string NAME { get; set; }
+                public long BUD_BID_PROJECTS_ID { get; set; }
+                public string PROJECT_ID { get; set; }
+                public string PROJECT_NUM { get; set; }
+                public string TYPE { get; set; }
+                public string PROJECT_NAME { get; set; }
+                public string STATUS { get; set; }               
+                public string COMPARE_PRJ_OVERRIDE { get; set; }
+                public string WE_OVERRIDE { get; set; }
             }
             #endregion
 
-            public static List<Fields> Data(long orgID, long yearID, long verID)
+            public static List<Fields> Data(string orgName, long orgID, long yearID, long verID)
             {
                 string sql = string.Format(@"
-                    SELECT 0 ID, '* ALL PROJECTS *' NAME
-                    FROM DUAL
-                    
-                    UNION ALL                    
-                    
-                    SELECT BUD_BID_PROJECTS_ID ID, PRJ_NAME NAME
-                    FROM BUD_BID_PROJECTS
-                    WHERE ORG_ID = {0} AND YEAR_ID = {1} AND VER_ID = {2} AND MODIFIED_BY <> 'TEMP'
-                    ORDER BY NAME", orgID, yearID, verID);
+                    SELECT * FROM (
+
+                        WITH
+                            CUR_PROJECT_INFO_WITH_STATUS AS(
+                                SELECT BUD_BID_STATUS.STATUS_ID, BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID, BUD_BID_PROJECTS.PROJECT_ID, BUD_BID_PROJECTS.TYPE, BUD_BID_PROJECTS.PRJ_NAME, BUD_BID_STATUS.STATUS,
+                                    BUD_BID_PROJECTS.ACRES, BUD_BID_PROJECTS.DAYS, BUD_BID_PROJECTS.COMPARE_PRJ_OVERRIDE, BUD_BID_PROJECTS.COMPARE_PRJ_AMOUNT, BUD_BID_PROJECTS.WE_OVERRIDE, BUD_BID_PROJECTS.COMMENTS,
+                                    BUD_BID_PROJECTS.LIABILITY, BUD_BID_PROJECTS.LIABILITY_OP
+                                FROM BUD_BID_PROJECTS
+                                INNER JOIN BUD_BID_STATUS
+                                ON BUD_BID_PROJECTS.STATUS_ID = BUD_BID_STATUS.STATUS_ID
+                                WHERE BUD_BID_PROJECTS.ORG_ID = {1} AND BUD_BID_PROJECTS.YEAR_ID = {2} AND BUD_BID_PROJECTS.VER_ID = {3} AND BUD_BID_PROJECTS.MODIFIED_BY <> 'TEMP'
+                            ),     
+                            ORACLE_PROJECT_NAMES AS (
+                                SELECT '{1}' AS PROJECT_ID, 'N/A' AS PROJECT_NUM, '{0} (Org)' AS PROJECT_NAME, 'ORG' AS TYPE
+                                FROM DUAL
+                                    UNION ALL
+                                SELECT CAST(PROJECTS_V.PROJECT_ID AS varchar(20)) AS PROJECT_ID, PROJECTS_V.SEGMENT1 AS PROJECT_NUM, PROJECTS_V.LONG_NAME AS PROJECT_NAME, 'PROJECT' AS TYPE
+                                FROM PROJECTS_V
+                                LEFT JOIN PA.PA_PROJECT_CLASSES
+                                ON PROJECTS_V.PROJECT_ID = PA.PA_PROJECT_CLASSES.PROJECT_ID
+                                WHERE PROJECTS_V.PROJECT_STATUS_CODE = 'APPROVED' AND PROJECTS_V.PROJECT_TYPE <> 'TRUCK ' || CHR(38) || ' EQUIPMENT' AND PA.PA_PROJECT_CLASSES.CLASS_CATEGORY = 'Job Cost Rollup' AND PROJECTS_V.CARRYING_OUT_ORGANIZATION_ID = {1}
+                                    UNION ALL
+                                SELECT CONCAT('Various - ', PA.PA_PROJECT_CLASSES.CLASS_CODE) AS PROJECT_ID, 'N/A' AS PROJECT_NUM, CONCAT('Various - ', PA.PA_PROJECT_CLASSES.CLASS_CODE) AS PROJECT_NAME, 'ROLLUP' AS TYPE
+                                FROM PROJECTS_V
+                                LEFT JOIN PA.PA_PROJECT_CLASSES
+                                ON PROJECTS_V.PROJECT_ID = PA.PA_PROJECT_CLASSES.PROJECT_ID
+                                WHERE PROJECTS_V.PROJECT_STATUS_CODE = 'APPROVED' AND PROJECTS_V.PROJECT_TYPE <> 'TRUCK ' || CHR(38) || ' EQUIPMENT' AND PA.PA_PROJECT_CLASSES.CLASS_CATEGORY = 'Job Cost Rollup'
+                                AND PA.PA_PROJECT_CLASSES.CLASS_CODE <> 'None' AND PROJECTS_V.CARRYING_OUT_ORGANIZATION_ID = {1}
+                                GROUP BY CONCAT('Various - ', PA.PA_PROJECT_CLASSES.CLASS_CODE) 
+                            )
+
+                        SELECT 'A' PROJECT_SORT,
+                            0 BUD_BID_PROJECTS_ID,
+                            '0' PROJECT_ID,
+                            '0' PROJECT_NUM,
+                            '0' TYPE,
+                            '* ALL PROJECTS *' PROJECT_NAME,
+                            '0' STATUS,
+                            '0' COMPARE_PRJ_OVERRIDE,
+                            '0' WE_OVERRIDE
+                        FROM DUAL
+                                    
+                        UNION ALL  
+
+                        SELECT CASE WHEN CUR_PROJECT_INFO_WITH_STATUS.STATUS_ID = 45 THEN 'Z' ELSE 'A' END PROJECT_SORT,
+                            CUR_PROJECT_INFO_WITH_STATUS.BUD_BID_PROJECTS_ID BUD_BID_PROJECTS_ID,
+                            CUR_PROJECT_INFO_WITH_STATUS.PROJECT_ID PROJECT_ID, 
+                            CASE WHEN CUR_PROJECT_INFO_WITH_STATUS.TYPE = 'OVERRIDE' THEN '-- OVERRIDE --'
+                                WHEN CUR_PROJECT_INFO_WITH_STATUS.TYPE = 'ORG' THEN 'N/A'
+                                WHEN CUR_PROJECT_INFO_WITH_STATUS.TYPE = 'ROLLUP' THEN 'N/A'
+                                ELSE ORACLE_PROJECT_NAMES.PROJECT_NUM END PROJECT_NUM,                       
+                            CUR_PROJECT_INFO_WITH_STATUS.TYPE TYPE,
+                            CASE WHEN CUR_PROJECT_INFO_WITH_STATUS.TYPE = 'OVERRIDE' THEN CUR_PROJECT_INFO_WITH_STATUS.PRJ_NAME ELSE ORACLE_PROJECT_NAMES.PROJECT_NAME END PROJECT_NAME,
+                            CUR_PROJECT_INFO_WITH_STATUS.STATUS STATUS,              
+                            CUR_PROJECT_INFO_WITH_STATUS.COMPARE_PRJ_OVERRIDE COMPARE_PRJ_OVERRIDE,
+                            CUR_PROJECT_INFO_WITH_STATUS.WE_OVERRIDE WE_OVERRIDE                       
+                        FROM CUR_PROJECT_INFO_WITH_STATUS
+                        LEFT OUTER JOIN ORACLE_PROJECT_NAMES ON CUR_PROJECT_INFO_WITH_STATUS.PROJECT_ID = ORACLE_PROJECT_NAMES.PROJECT_ID AND CUR_PROJECT_INFO_WITH_STATUS.TYPE = ORACLE_PROJECT_NAMES.TYPE
+                        
+                    )
+                    ORDER BY PROJECT_SORT, LOWER(PROJECT_NAME)", orgName, orgID, yearID, verID);
 
                 using (Entities context = new Entities())
                 {
@@ -3789,23 +3836,71 @@ namespace DBI.Data
             #region Fields
             public class Fields
             {
-                public long ID { get; set; }
-                public string NAME { get; set; }
+                public long DETAIL_TASK_ID { get; set; }
+                public string DESCRIPITION { get; set; }
+                public long DETAIL_ID { get; set; }
+            }
+            #endregion
+
+            public static List<Fields> Data(long projectID)  //FIX SHEET ORDER SB DETAIL_ID
+            {
+                string sql = string.Format(@"
+                    WITH 
+                    ORACLE_TASK_NAMES AS (
+                        SELECT CAST(TASK_ID AS VARCHAR(20)) AS TASK_ID,
+                            TASK_NUMBER AS TASK_NUMBER,
+                            DESCRIPTION AS DESCRIPTION
+                        FROM APPS.PA_TASKS
+                        WHERE PROJECT_ID = {0}
+                    )
+                    SELECT 0 DETAIL_TASK_ID,
+                        '* ALL TASKS/DETAIL SHEETS *' DESCRIPITION,
+                        0 DETAIL_ID
+                    FROM DUAL                    
+                    UNION ALL
+                    SELECT DETAIL_TASK_ID, 
+                        DETAIL_NAME DESCRIPITION, 
+                        SHEET_ORDER DETAIL_ID
+                    FROM BUD_BID_DETAIL_TASK
+                    LEFT JOIN ORACLE_TASK_NAMES ON BUD_BID_DETAIL_TASK.SHEET_ORDER = ORACLE_TASK_NAMES.TASK_ID
+                    WHERE PROJECT_ID = {0} AND DETAIL_NAME <> 'SYS_PROJECT'
+                    ORDER BY DESCRIPITION", projectID);
+
+                using (Entities context = new Entities())
+                {
+                    return context.Database.SqlQuery<Fields>(sql).ToList();
+                }
+            }
+        }
+
+        public class Tasks
+        {
+            #region Fields
+            public class Fields
+            {
+                public string TASK_ID { get; set; }
+                public string TASK_NUMBER { get; set; }
+                public string DESCRIPTION { get; set; }
+                public string ORDERKEY { get; set; }
             }
             #endregion
 
             public static List<Fields> Data(long projectID)
-            {
-                string sql = string.Format(@"
-                    SELECT 0 ID, '* ALL TASKS/DETAIL SHEETS *' NAME
+            {            
+                string sql = string.Format(@"                    
+                    SELECT TO_CHAR(SYSDATE, 'YYMMDDHH24MISS') AS TASK_ID,
+                        'N/A' AS TASK_NUMBER,
+                        '-- OVERRIDE --' AS DESCRIPTION,
+                        'ID1' AS ORDERKEY
                     FROM DUAL
-                    
-                    UNION ALL
-
-                    SELECT DETAIL_TASK_ID ID, DETAIL_NAME NAME
-                    FROM BUD_BID_DETAIL_TASK
-                    WHERE PROJECT_ID = {0} AND DETAIL_NAME <> 'SYS_PROJECT' AND MODIFIED_BY <> 'TEMP'
-                    ORDER BY NAME", projectID);
+                        UNION ALL
+                    SELECT CAST(TASK_ID AS VARCHAR(20)) AS TASK_ID,
+                        TASK_NUMBER AS TASK_NUMBER,
+                        DESCRIPTION AS DESCRIPTION,
+                        'ID2' AS ORDERKEY
+                    FROM APPS.PA_TASKS
+                    WHERE PROJECT_ID = {0} AND (SYSDATE BETWEEN START_DATE AND NVL(COMPLETION_DATE, '31-DEC-4712'))
+                    ORDER BY ORDERKEY, TASK_NUMBER", projectID);
 
                 using (Entities context = new Entities())
                 {
@@ -4044,7 +4139,7 @@ namespace DBI.Data
                 #region Fields
                 public class Fields
                 {
-                    public long BUDGET_NUM_ID { get; set; }
+                    public long ID_FIELD { get; set; }
                     public long PROJECT_ID { get; set; }
                     public long DETAIL_TASK_ID { get; set; }
                     public long LINE_ID { get; set; }
@@ -4056,20 +4151,23 @@ namespace DBI.Data
                 public static List<Fields> Data(bool budget, long budBidProjectID, long detailSheetID, long lineID)
                 {
                     string tableName;
+                    string idField;
                     if (budget == true)
                     {
                         tableName = "BUD_BID_BUDGET_NUM";
+                        idField = "BUDGET_NUM_ID";
                     }
                     else
                     {
                         tableName = "BUD_BID_ACTUAL_NUM";
+                        idField = "ACTUAL_NUM_ID";
                     }
 
                     string sql = string.Format(@"
-                        SELECT BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, LINE_ID, MONTH, NVL(AMOUNT, 0) AMOUNT
-                        FROM (SELECT BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, LINE_ID, NOV, DEC, JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT FROM {0})
+                        SELECT {1} ID_FIELD, PROJECT_ID, DETAIL_TASK_ID, LINE_ID, MONTH, NVL(AMOUNT, 0) AMOUNT
+                        FROM (SELECT {1}, PROJECT_ID, DETAIL_TASK_ID, LINE_ID, NOV, DEC, JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT FROM {0})
                         UNPIVOT INCLUDE NULLS (AMOUNT FOR MONTH IN (NOV, DEC, JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT))
-                        WHERE PROJECT_ID = {1} AND DETAIL_TASK_ID = {2} AND LINE_ID = {3}", tableName, budBidProjectID, detailSheetID, lineID);
+                        WHERE PROJECT_ID = {2} AND DETAIL_TASK_ID = {3} AND LINE_ID = {4}", tableName, idField, budBidProjectID, detailSheetID, lineID);
 
                     using (Entities context = new Entities())
                     {
