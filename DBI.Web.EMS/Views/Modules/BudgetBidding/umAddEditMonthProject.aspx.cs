@@ -21,30 +21,35 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     X.Redirect("~/Views/uxDefault.aspx");
                 }
 
-                uxHidAddNew.Text = Request.QueryString["addNew"];
+                bool addNew = Convert.ToBoolean(Request.QueryString["addNew"]);
+                uxHidAddNew.Text = addNew.ToString();
 
-                if (uxHidAddNew.Text == "True")
+                if (addNew == true)
                 {
                     uxHidBudBidID.Text = "";
                     uxHidProjectID.Text = "";
                     uxHidProjectNum.Text = "";
                     uxHidProjectName.Text = "";
                     uxHidType.Text = "";
-                    uxHidDetailSheetID.Text = "";
                 }
                 else
                 {
-                    uxHidBudBidID.Text = Request.QueryString["budBidID"];
-                    uxHidProjectID.Text = Request.QueryString["projectID"];
-                    uxHidProjectNum.Text = Request.QueryString["projectNum"];
-                    uxHidProjectName.Text = Request.QueryString["projectName"];
-                    uxHidType.Text = Request.QueryString["projectType"];
-                    uxHidDetailSheetID.Text = Request.QueryString["detailSheetID"];
+                    string budBBidID = Request.QueryString["budBidID"];
+                    string projectID = Request.QueryString["projectID"];
+                    string projectNum = Request.QueryString["projectNum"];
+                    string projectName = Request.QueryString["projectName"];
+                    string projectType = Request.QueryString["projectType"];
 
-                    uxProjectNum.SetValue(uxHidProjectID.Text, uxHidProjectNum.Text);
-                    uxProjectName.Text = uxHidProjectName.Text;
+                    uxHidBudBidID.Text = budBBidID;
+                    uxHidProjectID.Text = projectID;
+                    uxHidProjectNum.Text = projectNum;
+                    uxHidProjectName.Text = projectName;
+                    uxHidType.Text = projectType;
 
-                    if (uxHidType.Text == "OVERRIDE") { uxProjectName.ReadOnly = false; }
+                    uxProjectNum.SetValue(projectID, projectNum);
+                    uxProjectName.Text = projectName;
+
+                    if (projectType == "OVERRIDE") { uxProjectName.ReadOnly = false; }
                     uxSave.Enable();
                 }
             }
@@ -103,14 +108,16 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             }
         }
         
+
+
         // Save project
         protected void deSave(object sender, DirectEventArgs e)
         {
             long orgID = long.Parse(Request.QueryString["orgID"]);
             long yearID = long.Parse(Request.QueryString["yearID"]);
             long verID = long.Parse(Request.QueryString["verID"]);
-            string projectID = uxHidProjectID.Text;
-            long budBidID = uxHidBudBidID.Text == "" ? 0 : Convert.ToInt64(uxHidBudBidID.Text);            
+            long budBidID = uxHidBudBidID.Text == "" ? 0 : Convert.ToInt64(uxHidBudBidID.Text);           
+            string projectID = uxHidProjectID.Text; 
 
             if (BBProject.Count(orgID, yearID, verID, projectID, budBidID) == 0)
             {
@@ -146,10 +153,10 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             // Get newly created detail sheet id from BUD_BID_DETAIL_TASK table
             long detailTaskID = Convert.ToInt64(taskData.DETAIL_TASK_ID);
 
-            List<BUD_BID_ACTUAL_NUM> startData = ProjectFormStartData(true, budBidID, detailTaskID);
+            List<BUD_BID_ACTUAL_NUM> startData = ProjectFormStartData(budBidID, detailTaskID);
             GenericData.Insert<BUD_BID_ACTUAL_NUM>(startData);
 
-            List<BUD_BID_BUDGET_NUM> endData = ProjectFormEndData(true, budBidID, detailTaskID);
+            List<BUD_BID_BUDGET_NUM> endData = ProjectFormEndData(budBidID, detailTaskID);
             GenericData.Insert<BUD_BID_BUDGET_NUM>(endData);
         }
         protected void SaveUpdateExistingRecord()
@@ -232,79 +239,69 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
             return data;
         }
-        protected List<BUD_BID_ACTUAL_NUM> ProjectFormStartData(bool insert, long budBidID, long detailTaskID = 0)
+        protected List<BUD_BID_ACTUAL_NUM> ProjectFormStartData(long budBidID, long detailTaskID)
         {
             long[] arrLineNum = { 20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220, 240, 260, 280, 300, 320, 340, 360 };
-            List<BUD_BID_ACTUAL_NUM> data = null;
+            List<BUD_BID_ACTUAL_NUM> data = new List<BUD_BID_ACTUAL_NUM>();
 
-            if (insert == true)
+            for (int i = 0; i <= 17; i++)
             {
-                data = new List<BUD_BID_ACTUAL_NUM>();
-
-                for (int i = 0; i <= 17; i++)
+                data.Add(new BUD_BID_ACTUAL_NUM
                 {
-                    data.Add(new BUD_BID_ACTUAL_NUM
-                    {
-                        PROJECT_ID = budBidID,
-                        DETAIL_TASK_ID = detailTaskID,
-                        LINE_ID = arrLineNum[i],
-                        NOV = 0,
-                        DEC = 0,
-                        JAN = 0,
-                        FEB = 0,
-                        MAR = 0,
-                        APR = 0,
-                        MAY = 0,
-                        JUN = 0,
-                        JUL = 0,
-                        AUG = 0,
-                        SEP = 0,
-                        OCT = 0,
-                        CREATE_DATE = DateTime.Now,
-                        CREATED_BY = User.Identity.Name,
-                        MODIFY_DATE = DateTime.Now,
-                        MODIFIED_BY = User.Identity.Name,
-                    });
-                }
-            }           
+                    PROJECT_ID = budBidID,
+                    DETAIL_TASK_ID = detailTaskID,
+                    LINE_ID = arrLineNum[i],
+                    NOV = 0,
+                    DEC = 0,
+                    JAN = 0,
+                    FEB = 0,
+                    MAR = 0,
+                    APR = 0,
+                    MAY = 0,
+                    JUN = 0,
+                    JUL = 0,
+                    AUG = 0,
+                    SEP = 0,
+                    OCT = 0,
+                    CREATE_DATE = DateTime.Now,
+                    CREATED_BY = User.Identity.Name,
+                    MODIFY_DATE = DateTime.Now,
+                    MODIFIED_BY = User.Identity.Name,
+                });
+            }
 
             return data;
         }
-        protected List<BUD_BID_BUDGET_NUM> ProjectFormEndData(bool insert, long budBidID, long detailTaskID = 0)
+        protected List<BUD_BID_BUDGET_NUM> ProjectFormEndData(long budBidID, long detailTaskID)
         {
             long[] arrLineNum = { 20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220, 240, 260, 280, 300, 320, 340, 360 };
-            List<BUD_BID_BUDGET_NUM> data = null;
+            List<BUD_BID_BUDGET_NUM> data = new List<BUD_BID_BUDGET_NUM>();
 
-            if (insert == true)
+            for (int i = 0; i <= 17; i++)
             {
-                data = new List<BUD_BID_BUDGET_NUM>();
-
-                for (int i = 0; i <= 17; i++)
+                data.Add(new BUD_BID_BUDGET_NUM
                 {
-                    data.Add(new BUD_BID_BUDGET_NUM
-                    {
-                        PROJECT_ID = budBidID,
-                        DETAIL_TASK_ID = detailTaskID,
-                        LINE_ID = arrLineNum[i],
-                        NOV = 0,
-                        DEC = 0,
-                        JAN = 0,
-                        FEB = 0,
-                        MAR = 0,
-                        APR = 0,
-                        MAY = 0,
-                        JUN = 0,
-                        JUL = 0,
-                        AUG = 0,
-                        SEP = 0,
-                        OCT = 0,
-                        CREATE_DATE = DateTime.Now,
-                        CREATED_BY = User.Identity.Name,
-                        MODIFY_DATE = DateTime.Now,
-                        MODIFIED_BY = User.Identity.Name,
-                    });
-                }
-            }           
+                    PROJECT_ID = budBidID,
+                    DETAIL_TASK_ID = detailTaskID,
+                    LINE_ID = arrLineNum[i],
+                    NOV = 0,
+                    DEC = 0,
+                    JAN = 0,
+                    FEB = 0,
+                    MAR = 0,
+                    APR = 0,
+                    MAY = 0,
+                    JUN = 0,
+                    JUL = 0,
+                    AUG = 0,
+                    SEP = 0,
+                    OCT = 0,
+                    CREATE_DATE = DateTime.Now,
+                    CREATED_BY = User.Identity.Name,
+                    MODIFY_DATE = DateTime.Now,
+                    MODIFIED_BY = User.Identity.Name,
+                });
+            }      
 
             return data;
         }
@@ -322,19 +319,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 Buttons = MessageBox.Button.OK,
                 Icon = (MessageBox.Icon)Enum.Parse(typeof(MessageBox.Icon), msgIcon)
             });
-        }
-        protected decimal ForceToDecimal(string number)
-        {
-            decimal amount;
-            decimal.TryParse(number, out amount);
-            return amount;
-        }
-        protected decimal ForceToDecimal(string number, decimal lowRange, decimal highRange)
-        {
-            decimal amount;
-            decimal.TryParse(number, out amount);
-            if (amount < lowRange || amount > highRange) { amount = 0; }
-            return amount;
         }
     }
 }

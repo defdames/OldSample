@@ -26,25 +26,36 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 uxHidProjectNum.Text = Request.QueryString["projectNum"];
                 uxHidProjectName.Text = Request.QueryString["projectName"];
                 uxHidType.Text = Request.QueryString["projectType"];
-                uxHidAddNew.Text = Request.QueryString["addNew"];
 
-                if (uxHidAddNew.Text == "True")
+                bool addNew = Convert.ToBoolean(Request.QueryString["addNew"]);
+                uxHidAddNew.Text = addNew.ToString();
+
+                if (addNew == true)
                 {
                 
                     uxHidDetailTaskID.Text="";
                     uxHidDetailID.Text = "";
                     uxHidDetailName.Text = "";
+                    uxHidDetailType.Text = "";
                 }
                 else
                 {
-                    uxHidDetailTaskID.Text = Request.QueryString["detailTaskID"];
-                    uxHidDetailID.Text = Request.QueryString["detailID"];
-                    uxHidDetailName.Text = Request.QueryString["detailName"];
+                    string detailTaskID = Request.QueryString["detailTaskID"];
+                    string detailID = Request.QueryString["detailID"];
+                    string detailNum = Request.QueryString["detailNumber"];
+                    string detailName = Request.QueryString["detailName"];
+                    string detailType = Request.QueryString["detailType"];
 
-                    uxTaskNum.SetValue(uxHidDetailTaskID.Text, uxHidDetailID.Text);
+                    uxHidDetailTaskID.Text = detailTaskID;
+                    uxHidDetailID.Text = detailID;
+                    uxHidDetailNum.Text = detailNum;
+                    uxHidDetailName.Text = detailName;
+                    uxHidDetailType.Text = detailType;
+
+                    uxTaskNum.SetValue(detailTaskID, detailNum);
                     uxTaskName.Text = uxHidDetailName.Text;
 
-                    if (uxHidType.Text == "OVERRIDE") { uxTaskName.ReadOnly = false; }
+                    if (detailType == "OVERRIDE") { uxTaskName.ReadOnly = false; }
                     uxSave.Enable();
                 }
             }
@@ -63,13 +74,14 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         protected void deSelectTask(object sender, DirectEventArgs e)
         {
             string taskID = e.ExtraParams["TaskID"];
-            string taskType = "PROJECT";// e.ExtraParams["Type"];
+            string taskType = e.ExtraParams["Type"];
             string taskNum = taskType == "OVERRIDE" ? "-- OVERRIDE --" : e.ExtraParams["TaskNum"];
             string taskName = taskType == "OVERRIDE" ? null : e.ExtraParams["TaskName"];
 
             uxTaskNum.SetValue(taskID, taskNum);
-            uxTaskName.Text = taskName;
+            uxTaskName.Text = taskName;            
             uxHidDetailID.Text = taskID;
+            uxHidDetailNum.Text = taskNum;
             uxHidDetailName.Text = uxTaskName.Text;
             uxHidDetailType.Text = taskType;
 
@@ -105,14 +117,15 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         // Save task
         protected void deSave(object sender, DirectEventArgs e)
         {
-            //long orgID = long.Parse(Request.QueryString["orgID"]);
-            //long yearID = long.Parse(Request.QueryString["yearID"]);
-            //long verID = long.Parse(Request.QueryString["verID"]);
-            //string projectID = uxHidProjectID.Text;
-            //long budBidID = uxHidBudBidID.Text == "" ? 0 : Convert.ToInt64(uxHidBudBidID.Text);
+            long orgID = long.Parse(Request.QueryString["orgID"]);
+            long yearID = long.Parse(Request.QueryString["yearID"]);
+            long verID = long.Parse(Request.QueryString["verID"]);
+            long budBidID = Convert.ToInt64(uxHidBudBidID.Text);
+            long detailTaskID = uxHidDetailTaskID.Text == "" ? 0 : Convert.ToInt64(uxHidDetailTaskID.Text);
+            long detailID = Convert.ToInt64(uxHidDetailID.Text);     
 
-            //if (BBProject.Count(orgID, yearID, verID, projectID, budBidID) == 0)
-            //{
+            if (BBMonthSummary.Tasks.Count(orgID, yearID, verID, budBidID, detailID, detailTaskID) == 0)
+            {
                 if (uxHidAddNew.Text == "True")
                 {
                     SaveInsertNewRecord();
@@ -121,12 +134,12 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 {
                     SaveUpdateExistingRecord();
                 }
-            //}
-            //else
-            //{
-            //    StandardMsgBox("Exists", "This project already exists.  Please select a different project or edit/delete the existing one.", "INFO");
-            //    return;
-            //}
+            }
+            else
+            {
+                StandardMsgBox("Exists", "This task already exists.  Please select a different task or edit/delete the existing one.", "INFO");
+                return;
+            }
 
             X.Js.Call("closeUpdate");
         }
@@ -160,9 +173,18 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             if (insert == true)
             {
                 data = new BUD_BID_DETAIL_TASK();
-
+                data.TASK_ID = uxHidDetailID.Text;
+                if (uxTaskNum.Text == "-- OVERRIDE --")
+                {
+                    data.DETAIL_NAME = uxTaskName.Text;
+                }
+                else
+                {
+                    data.DETAIL_NAME = null;
+                }
                 data.PROJECT_ID = Convert.ToInt64(uxHidBudBidID.Text);
-                data.DETAIL_NAME = uxTaskName.Text;
+                data.TASK_ID = uxHidDetailID.Text;
+                data.TASK_TYPE = uxHidDetailType.Text;
                 data.SHEET_ORDER = 0;
                 data.CREATE_DATE = DateTime.Now;
                 data.CREATED_BY = User.Identity.Name;
@@ -177,7 +199,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     data = context.BUD_BID_DETAIL_TASK.Where(x => x.DETAIL_TASK_ID == detailTaskID).Single();
                 }
 
-                data.DETAIL_NAME = uxTaskName.Text;
+                data.TASK_ID = uxHidDetailID.Text;
                 if (uxTaskNum.Text == "-- OVERRIDE --")
                 {
                     data.DETAIL_NAME = uxTaskName.Text;
@@ -186,6 +208,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 {
                     data.DETAIL_NAME = null;
                 }
+                data.TASK_TYPE = uxHidDetailType.Text;
                 data.MODIFY_DATE = DateTime.Now;
                 data.MODIFIED_BY = User.Identity.Name;
             }

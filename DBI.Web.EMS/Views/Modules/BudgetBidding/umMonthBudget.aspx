@@ -113,6 +113,15 @@
 
             return Ext.String.format(template, (value >= 0 || red == false) ? "black" : "red", r);
         };
+        var colorOverride = function (value, metadata, record) {
+            if (record.data.TYPE == "OVERRIDE") {
+                metadata.style = "background-color: #FFFF99;";
+            }
+            else if (record.data.TYPE == "NA") {
+                metadata.style = "font-weight: bold; background-color: #000000; color: white;";
+            }
+            return value;
+        };
     </script>
 </head>
 <body>
@@ -227,6 +236,7 @@
                                                 <ext:ModelField Name="PROJECT_NUM" />
                                                 <ext:ModelField Name="PROJECT_NAME" />
                                                 <ext:ModelField Name="TYPE" />
+                                                <ext:ModelField Name="DISPLAY_PROJECT_NUM" />
                                             </Fields>
                                         </ext:Model>
                                     </Model>
@@ -240,7 +250,10 @@
                             </Store>
                             <ColumnModel>
                                 <Columns>
-                                    <ext:Column ID="Column12" runat="server" DataIndex="PROJECT_NAME" Text="Projects" Flex="1" />
+                                    <ext:Column ID="Column12" runat="server" DataIndex="DISPLAY_PROJECT_NUM" Text="Project Number" Flex="1" />
+                                    <ext:Column ID="Column4" runat="server" DataIndex="PROJECT_NAME" Text="Project Name" Flex="4">
+                                        <Renderer Fn="colorOverride" />
+                                    </ext:Column>
                                 </Columns>
                             </ColumnModel>
                             <DirectEvents>
@@ -308,7 +321,10 @@
                                             <Fields>
                                                 <ext:ModelField Name="DETAIL_TASK_ID" />
                                                 <ext:ModelField Name="DETAIL_ID" />
-                                                <ext:ModelField Name="DESCRIPITION" />
+                                                <ext:ModelField Name="DETAIL_NUM" />
+                                                <ext:ModelField Name="DESCRIPTION" />
+                                                <ext:ModelField Name="TYPE" />
+                                                <ext:ModelField Name="DISPLAY_TASK_NUM" />
                                             </Fields>
                                         </ext:Model>
                                     </Model>
@@ -322,7 +338,10 @@
                             </Store>
                             <ColumnModel>
                                 <Columns>
-                                    <ext:Column ID="Column1" runat="server" DataIndex="DESCRIPITION" Text="Tasks/Detail Sheets" Flex="1" />
+                                    <ext:Column ID="Column1" runat="server" DataIndex="DISPLAY_TASK_NUM" Text="Task Number" Flex="1" />
+                                    <ext:Column ID="Column3" runat="server" DataIndex="DESCRIPTION" Text="Task Name" Flex="4">
+                                        <Renderer Fn="colorOverride" />
+                                    </ext:Column>
                                 </Columns>
                             </ColumnModel>
                             <DirectEvents>
@@ -330,7 +349,9 @@
                                     <ExtraParams>
                                         <ext:Parameter Name="DetailTaskID" Value="#{uxTasks}.getSelectionModel().getSelection()[0].data.DETAIL_TASK_ID" Mode="Raw" />
                                         <ext:Parameter Name="DetailID" Value="#{uxTasks}.getSelectionModel().getSelection()[0].data.DETAIL_ID" Mode="Raw" />
-                                        <ext:Parameter Name="DetailName" Value="#{uxTasks}.getSelectionModel().getSelection()[0].data.DESCRIPITION" Mode="Raw" />
+                                        <ext:Parameter Name="DetailNum" Value="#{uxTasks}.getSelectionModel().getSelection()[0].data.DETAIL_NUM" Mode="Raw" />
+                                        <ext:Parameter Name="DetailName" Value="#{uxTasks}.getSelectionModel().getSelection()[0].data.DESCRIPTION" Mode="Raw" />
+                                        <ext:Parameter Name="Type" Value="#{uxTasks}.getSelectionModel().getSelection()[0].data.TYPE" Mode="Raw" />
                                     </ExtraParams>
                                     <EventMask ShowMask="true" />
                                 </Select>
@@ -609,12 +630,18 @@
                     </Items>
                 </ext:FormPanel>
 
-                <%--<ext:Hidden ID="uxHidBudBidID" runat="server" />
-                <ext:Hidden ID="uxHidProjectNumID" runat="server" />
+                <ext:Hidden ID="uxHidBudBidID" runat="server" />
+                <ext:Hidden ID="uxHidProjectID" runat="server" />
+                <ext:Hidden ID="uxHidProjectNum" runat="server" />
+                <ext:Hidden ID="uxHidProjectName" runat="server" />
                 <ext:Hidden ID="uxHidType" runat="server" />
-                <ext:Hidden ID="uxHidDetailSheetID" runat="server" />--%>
+                <ext:Hidden ID="uxHidDetailTaskID" runat="server" />
+                <ext:Hidden ID="uxHidDetailID" runat="server" />
+                <ext:Hidden ID="uxHidDetailNum" runat="server" />
+                <ext:Hidden ID="uxHidDetailName" runat="server" />
+                <ext:Hidden ID="uxHidDetailType" runat="server" />
 
-                <ext:FormPanel ID="FormPanel2"
+                <%--<ext:FormPanel ID="FormPanel2"
                     runat="server"
                     Region="South"
                     BodyPadding="20"
@@ -633,13 +660,13 @@
                                 <ext:Label ID="Label2" runat="server" Width="50" Text="" />
                                 <ext:TextField ID="uxHidDetailTaskID" runat="server" Width="100" />
                                 <ext:TextField ID="uxHidDetailID" runat="server" Width="100" />
+                                <ext:TextField ID="uxHidDetailNum" runat="server" Width="100" />
                                 <ext:TextField ID="uxHidDetailName" runat="server" Width="100" />
                                 <ext:TextField ID="uxHidDetailType" runat="server" Width="100" />
                             </Items>
                         </ext:FieldContainer>
                     </Items>
-                </ext:FormPanel>
-
+                </ext:FormPanel>--%>
             </Items>
         </ext:Viewport>
     </form>

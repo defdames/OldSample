@@ -85,7 +85,7 @@
                                                         <ext:Parameter Name="TaskID" Value="#{uxTaskList}.getSelectionModel().getSelection()[0].data.TASK_ID" Mode="Raw" />
                                                         <ext:Parameter Name="TaskNum" Value="#{uxTaskList}.getSelectionModel().getSelection()[0].data.TASK_NUMBER" Mode="Raw" />
                                                         <ext:Parameter Name="TaskName" Value="#{uxTaskList}.getSelectionModel().getSelection()[0].data.DESCRIPTION" Mode="Raw" />
-                                                        <%--<ext:Parameter Name="Type" Value="#{uxProjectList}.getSelectionModel().getSelection()[0].data.TYPE" Mode="Raw" />--%>
+                                                        <ext:Parameter Name="Type" Value="#{uxTaskList}.getSelectionModel().getSelection()[0].data.TYPE" Mode="Raw" />
                                                     </ExtraParams>
                                                     <EventMask ShowMask="true" />
                                                 </SelectionChange>
@@ -190,6 +190,7 @@
                             <Items>
                                 <ext:TextField ID="uxHidDetailTaskID" runat="server" Width="100" />
                                 <ext:TextField ID="uxHidDetailID" runat="server" Width="100" />
+                                <ext:TextField ID="uxHidDetailNum" runat="server" Width="100" />
                                 <ext:TextField ID="uxHidDetailName" runat="server" Width="100" />
                                 <ext:TextField ID="uxHidDetailType" runat="server" Width="100" />
                                 <ext:TextField ID="uxHidAddNew" runat="server" Width="100" />

@@ -364,6 +364,15 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.TextField uxHidDetailID;
         
         /// <summary>
+        /// uxHidDetailNum control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.TextField uxHidDetailNum;
+        
+        /// <summary>
         /// uxHidDetailName control.
         /// </summary>
         /// <remarks>

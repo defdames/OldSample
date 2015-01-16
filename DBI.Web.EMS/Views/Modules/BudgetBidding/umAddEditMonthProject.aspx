@@ -172,7 +172,6 @@
                                 <ext:TextField ID="uxHidProjectNum" runat="server" Width="100" />
                                 <ext:TextField ID="uxHidProjectName" runat="server" Width="100" />
                                 <ext:TextField ID="uxHidType" runat="server" Width="100" />
-                                <ext:TextField ID="uxHidDetailSheetID" runat="server" Width="100" />
                                 <ext:TextField ID="uxHidAddNew" runat="server" Width="100" />
                             </Items>
                         </ext:FieldContainer>

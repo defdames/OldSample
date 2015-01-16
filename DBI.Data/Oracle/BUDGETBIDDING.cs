@@ -155,7 +155,7 @@ namespace DBI.Data
         
         public static List<SingleCombo> FiscalYears() // Lenny should have this same code.  Remove from here once it's merged in.
         {
-            string sql = "SELECT DISTINCT TO_CHAR(END_DATE, 'YYYY') ID_NAME FROM APPS.GL_PERIODS_V ORDER BY ID_NAME";
+            string sql = "SELECT DISTINCT TO_CHAR(END_DATE, 'YYYY') ID_NAME FROM APPS.GL_PERIODS_V ORDER BY ID_NAME DESC";
             using (Entities context = new Entities())
             {
                 return context.Database.SqlQuery<SingleCombo>(sql).ToList();
@@ -165,13 +165,13 @@ namespace DBI.Data
         public static List<DoubleComboLongID> BudgetVersions()
         {
             List<DoubleComboLongID> comboItem = new List<DoubleComboLongID>();
-            comboItem.Add(new DoubleComboLongID { ID = 1, ID_NAME = "Bid" });
-            comboItem.Add(new DoubleComboLongID { ID = 2, ID_NAME = "First Draft" });
-            comboItem.Add(new DoubleComboLongID { ID = 3, ID_NAME = "Final Draft" });
-            comboItem.Add(new DoubleComboLongID { ID = 4, ID_NAME = "1st Reforecast" });
-            comboItem.Add(new DoubleComboLongID { ID = 5, ID_NAME = "2nd Reforecast" });
-            comboItem.Add(new DoubleComboLongID { ID = 6, ID_NAME = "3rd Reforecast" });
             comboItem.Add(new DoubleComboLongID { ID = 7, ID_NAME = "4th Reforecast" });
+            comboItem.Add(new DoubleComboLongID { ID = 6, ID_NAME = "3rd Reforecast" });
+            comboItem.Add(new DoubleComboLongID { ID = 5, ID_NAME = "2nd Reforecast" });
+            comboItem.Add(new DoubleComboLongID { ID = 4, ID_NAME = "1st Reforecast" });
+            comboItem.Add(new DoubleComboLongID { ID = 3, ID_NAME = "Final Draft" });
+            comboItem.Add(new DoubleComboLongID { ID = 2, ID_NAME = "First Draft" });
+            //comboItem.Add(new DoubleComboLongID { ID = 1, ID_NAME = "Bid" });
             return comboItem;
         }
         
@@ -3690,6 +3690,24 @@ namespace DBI.Data
 
     public class BBMonthSummary
     {
+        public static bool TaskStillExists(long detailTaskID)
+        {
+            decimal returnedID;
+            using (Entities context = new Entities())
+            {
+                returnedID = context.BUD_BID_DETAIL_TASK.Where(x => x.DETAIL_TASK_ID == detailTaskID).Select(x => x.DETAIL_TASK_ID).SingleOrDefault();
+            }
+
+            if (returnedID != 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public static List<SingleCombo> ProjectActions(long orgID, long yearID, long verID)
         {
             List<SingleCombo> comboItems = new List<SingleCombo>();
@@ -3714,30 +3732,20 @@ namespace DBI.Data
         public static List<SingleCombo> TaskActions(long orgID, long yearID, long verID)
         {
             List<SingleCombo> comboItems = new List<SingleCombo>();
-            //bool readOnly = BB.IsReadOnly(orgID, yearID, verID);
+            bool readOnly = BB.IsReadOnly(orgID, yearID, verID);
 
-            //if (readOnly == false) { comboItems.Add(new SingleCombo { ID_NAME = "Add a New Project" }); }
-
-            //if (readOnly == false)
-            //{
-            //    comboItems.Add(new SingleCombo { ID_NAME = "Edit Selected Project" });
-            //}
-            //else
-            //{
-            //    comboItems.Add(new SingleCombo { ID_NAME = "View Selected Project" });
-            //}
-
-            //if (readOnly == false) { comboItems.Add(new SingleCombo { ID_NAME = "Copy Selected Project" }); }
-
-            //if (readOnly == false) { comboItems.Add(new SingleCombo { ID_NAME = "Delete Selected Project" }); }
-
-            //comboItems.Add(new SingleCombo { ID_NAME = "Refresh Data" });
-
-            comboItems.Add(new SingleCombo { ID_NAME = "Add a New Task" });
-            comboItems.Add(new SingleCombo { ID_NAME = "Auto-Generate Tasks" });
-            comboItems.Add(new SingleCombo { ID_NAME = "Edit Selected Task" });
-            comboItems.Add(new SingleCombo { ID_NAME = "Copy Selected Task" });
-            comboItems.Add(new SingleCombo { ID_NAME = "Delete Selected Task" });
+            if (readOnly == false) { comboItems.Add(new SingleCombo { ID_NAME = "Add a New Task" }); }
+            if (readOnly == false) { comboItems.Add(new SingleCombo { ID_NAME = "Auto-Generate Tasks" }); }
+            if (readOnly == false)
+            {
+                comboItems.Add(new SingleCombo { ID_NAME = "Edit Selected Task" });
+            }
+            else
+            {
+                comboItems.Add(new SingleCombo { ID_NAME = "View Selected Task" });
+            }
+            if (readOnly == false) { comboItems.Add(new SingleCombo { ID_NAME = "Copy Selected Task" }); }
+            if (readOnly == false) { comboItems.Add(new SingleCombo { ID_NAME = "Delete Selected Task" }); }
             comboItems.Add(new SingleCombo { ID_NAME = "Refresh Tasks" });
 
             return comboItems;
@@ -3751,11 +3759,9 @@ namespace DBI.Data
                 public long BUD_BID_PROJECTS_ID { get; set; }
                 public string PROJECT_ID { get; set; }
                 public string PROJECT_NUM { get; set; }
-                public string TYPE { get; set; }
                 public string PROJECT_NAME { get; set; }
-                public string STATUS { get; set; }               
-                public string COMPARE_PRJ_OVERRIDE { get; set; }
-                public string WE_OVERRIDE { get; set; }
+                public string TYPE { get; set; }
+                public string DISPLAY_PROJECT_NUM { get; set; }
             }
             #endregion
 
@@ -3794,30 +3800,29 @@ namespace DBI.Data
                             )
 
                         SELECT 'A' PROJECT_SORT,
+                            NULL DISPLAY_PROJECT_NUM,
                             0 BUD_BID_PROJECTS_ID,
                             '0' PROJECT_ID,
                             '0' PROJECT_NUM,
-                            '0' TYPE,
                             '* ALL PROJECTS *' PROJECT_NAME,
-                            '0' STATUS,
-                            '0' COMPARE_PRJ_OVERRIDE,
-                            '0' WE_OVERRIDE
+                            'NA' TYPE
                         FROM DUAL
                                     
                         UNION ALL  
 
-                        SELECT CASE WHEN CUR_PROJECT_INFO_WITH_STATUS.STATUS_ID = 45 THEN 'Z' ELSE 'A' END PROJECT_SORT,
+                        SELECT CASE WHEN CUR_PROJECT_INFO_WITH_STATUS.STATUS_ID = 45 THEN 'Z' ELSE 'A' END PROJECT_SORT,                            
+                            CASE WHEN CUR_PROJECT_INFO_WITH_STATUS.TYPE = 'OVERRIDE' THEN 'OVERRIDE'
+                                WHEN CUR_PROJECT_INFO_WITH_STATUS.TYPE = 'ORG' THEN 'N/A'
+                                WHEN CUR_PROJECT_INFO_WITH_STATUS.TYPE = 'ROLLUP' THEN 'N/A'
+                                ELSE ORACLE_PROJECT_NAMES.PROJECT_NUM END DISPLAY_PROJECT_NUM,   
                             CUR_PROJECT_INFO_WITH_STATUS.BUD_BID_PROJECTS_ID BUD_BID_PROJECTS_ID,
                             CUR_PROJECT_INFO_WITH_STATUS.PROJECT_ID PROJECT_ID, 
                             CASE WHEN CUR_PROJECT_INFO_WITH_STATUS.TYPE = 'OVERRIDE' THEN '-- OVERRIDE --'
                                 WHEN CUR_PROJECT_INFO_WITH_STATUS.TYPE = 'ORG' THEN 'N/A'
                                 WHEN CUR_PROJECT_INFO_WITH_STATUS.TYPE = 'ROLLUP' THEN 'N/A'
                                 ELSE ORACLE_PROJECT_NAMES.PROJECT_NUM END PROJECT_NUM,                       
-                            CUR_PROJECT_INFO_WITH_STATUS.TYPE TYPE,
                             CASE WHEN CUR_PROJECT_INFO_WITH_STATUS.TYPE = 'OVERRIDE' THEN CUR_PROJECT_INFO_WITH_STATUS.PRJ_NAME ELSE ORACLE_PROJECT_NAMES.PROJECT_NAME END PROJECT_NAME,
-                            CUR_PROJECT_INFO_WITH_STATUS.STATUS STATUS,              
-                            CUR_PROJECT_INFO_WITH_STATUS.COMPARE_PRJ_OVERRIDE COMPARE_PRJ_OVERRIDE,
-                            CUR_PROJECT_INFO_WITH_STATUS.WE_OVERRIDE WE_OVERRIDE                       
+                            CUR_PROJECT_INFO_WITH_STATUS.TYPE TYPE                             
                         FROM CUR_PROJECT_INFO_WITH_STATUS
                         LEFT OUTER JOIN ORACLE_PROJECT_NAMES ON CUR_PROJECT_INFO_WITH_STATUS.PROJECT_ID = ORACLE_PROJECT_NAMES.PROJECT_ID AND CUR_PROJECT_INFO_WITH_STATUS.TYPE = ORACLE_PROJECT_NAMES.TYPE
                         
@@ -3837,34 +3842,60 @@ namespace DBI.Data
             public class Fields
             {
                 public long DETAIL_TASK_ID { get; set; }
-                public string DESCRIPITION { get; set; }
-                public long DETAIL_ID { get; set; }
+                public string DETAIL_ID { get; set; }
+                public string DETAIL_NUM { get; set; }
+                public string DESCRIPTION { get; set; }
+                public string TYPE { get; set; }
+                public string DISPLAY_TASK_NUM { get; set; }
             }
             #endregion
 
-            public static List<Fields> Data(long projectID)  //FIX SHEET ORDER SB DETAIL_ID
+            public static List<Fields> Data(long projectID)
             {
                 string sql = string.Format(@"
-                    WITH 
+                WITH 
                     ORACLE_TASK_NAMES AS (
                         SELECT CAST(TASK_ID AS VARCHAR(20)) AS TASK_ID,
                             TASK_NUMBER AS TASK_NUMBER,
                             DESCRIPTION AS DESCRIPTION
-                        FROM APPS.PA_TASKS
+                        FROM APPS.PA_TASKS          
+                    ),
+                    BUDGET_TASK_INFO AS (
+                        SELECT PROJECT_ID,
+                            DETAIL_TASK_ID, 
+                            TASK_ID,
+                            NVL(DETAIL_NAME, 'BLANK') DETAIL_NAME,
+                            TASK_TYPE TYPE
+                        FROM BUD_BID_DETAIL_TASK
                         WHERE PROJECT_ID = {0}
-                    )
-                    SELECT 0 DETAIL_TASK_ID,
-                        '* ALL TASKS/DETAIL SHEETS *' DESCRIPITION,
-                        0 DETAIL_ID
+                    )          
+                        
+                    SELECT 'A' DETAIL_SORT,
+                        NULL DISPLAY_TASK_NUM,
+                        0 DETAIL_TASK_ID,
+                        '0' DETAIL_ID,
+                        '0' DETAIL_NUM,
+                        '* ALL TASKS/DETAIL SHEETS *' DESCRIPTION,
+                        'NA' TYPE
                     FROM DUAL                    
                     UNION ALL
-                    SELECT DETAIL_TASK_ID, 
-                        DETAIL_NAME DESCRIPITION, 
-                        SHEET_ORDER DETAIL_ID
-                    FROM BUD_BID_DETAIL_TASK
-                    LEFT JOIN ORACLE_TASK_NAMES ON BUD_BID_DETAIL_TASK.SHEET_ORDER = ORACLE_TASK_NAMES.TASK_ID
-                    WHERE PROJECT_ID = {0} AND DETAIL_NAME <> 'SYS_PROJECT'
-                    ORDER BY DESCRIPITION", projectID);
+                    SELECT 'Z' DETAIL_SORT,
+                        CASE WHEN BUDGET_TASK_INFO.TYPE = 'OVERRIDE' THEN 'OVERRIDE'
+                            WHEN BUDGET_TASK_INFO.TYPE = 'ORG' THEN 'N/A'
+                            WHEN BUDGET_TASK_INFO.TYPE = 'ROLLUP' THEN 'N/A'
+                            ELSE ORACLE_TASK_NAMES.TASK_NUMBER END DISPLAY_TASK_NUM, 
+                        BUDGET_TASK_INFO.DETAIL_TASK_ID DETAIL_TASK_ID, 
+                        BUDGET_TASK_INFO.TASK_ID DETAIL_ID,
+                        CASE WHEN BUDGET_TASK_INFO.TYPE = 'OVERRIDE' THEN '-- OVERRIDE --'
+                            WHEN BUDGET_TASK_INFO.TYPE = 'ORG' THEN 'N/A'
+                            WHEN BUDGET_TASK_INFO.TYPE = 'ROLLUP' THEN 'N/A'
+                            ELSE ORACLE_TASK_NAMES.TASK_NUMBER END DETAIL_NUM,     
+                        CASE WHEN BUDGET_TASK_INFO.TYPE = 'OVERRIDE' THEN BUDGET_TASK_INFO.DETAIL_NAME ELSE ORACLE_TASK_NAMES.DESCRIPTION END DESCRIPTION,
+                        BUDGET_TASK_INFO.TYPE TYPE
+                    FROM BUDGET_TASK_INFO
+                    LEFT JOIN ORACLE_TASK_NAMES ON BUDGET_TASK_INFO.TASK_ID = ORACLE_TASK_NAMES.TASK_ID
+                    WHERE BUDGET_TASK_INFO.PROJECT_ID = {0} AND BUDGET_TASK_INFO.DETAIL_NAME <> 'SYS_PROJECT'
+                    ORDER BY DETAIL_SORT, DETAIL_NUM", projectID);
 
                 using (Entities context = new Entities())
                 {
@@ -3875,12 +3906,46 @@ namespace DBI.Data
 
         public class Tasks
         {
+            public static long Count(long orgID, long yearID, long verID, long budBidProjectID, long detailID, long detailTaskID)
+            {
+                string sql = string.Format(@"
+                    SELECT COUNT(BUD_BID_DETAIL_TASK.DETAIL_TASK_ID) COUNT
+                    FROM BUD_BID_PROJECTS
+                    LEFT JOIN BUD_BID_DETAIL_TASK ON BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = BUD_BID_DETAIL_TASK.PROJECT_ID
+                    WHERE BUD_BID_PROJECTS.ORG_ID = {0} AND BUD_BID_PROJECTS.YEAR_ID = {1} AND BUD_BID_PROJECTS.VER_ID = {2} AND BUD_BID_PROJECTS.BUD_BID_PROJECTS_ID = {3} 
+                        AND BUD_BID_DETAIL_TASK.TASK_ID = {4} AND BUD_BID_DETAIL_TASK.DETAIL_TASK_ID <> {5}", orgID, yearID, verID, budBidProjectID, detailID, detailTaskID);
+
+                using (Entities context = new Entities())
+                {
+                    return context.Database.SqlQuery<long>(sql).SingleOrDefault();
+                }
+            }
+
+            public static void DBDelete(long detailTaskID)
+            {
+                List<BUD_BID_ACTUAL_NUM> actualData;
+                List<BUD_BID_BUDGET_NUM> budgetData;
+                List<BUD_BID_DETAIL_TASK> taskInfoData;
+
+                using (Entities context = new Entities())
+                {
+                    actualData = context.BUD_BID_ACTUAL_NUM.Where(x => x.DETAIL_TASK_ID == detailTaskID).ToList();
+                    budgetData = context.BUD_BID_BUDGET_NUM.Where(x => x.DETAIL_TASK_ID == detailTaskID).ToList();
+                    taskInfoData = context.BUD_BID_DETAIL_TASK.Where(x => x.DETAIL_TASK_ID == detailTaskID).ToList();
+                }
+
+                GenericData.Delete<BUD_BID_ACTUAL_NUM>(actualData);
+                GenericData.Delete<BUD_BID_BUDGET_NUM>(budgetData);
+                GenericData.Delete<BUD_BID_DETAIL_TASK>(taskInfoData);
+            }
+
             #region Fields
             public class Fields
             {
                 public string TASK_ID { get; set; }
                 public string TASK_NUMBER { get; set; }
                 public string DESCRIPTION { get; set; }
+                public string TYPE { get; set; }
                 public string ORDERKEY { get; set; }
             }
             #endregion
@@ -3891,12 +3956,14 @@ namespace DBI.Data
                     SELECT TO_CHAR(SYSDATE, 'YYMMDDHH24MISS') AS TASK_ID,
                         'N/A' AS TASK_NUMBER,
                         '-- OVERRIDE --' AS DESCRIPTION,
+                        'OVERRIDE' AS TYPE,
                         'ID1' AS ORDERKEY
                     FROM DUAL
                         UNION ALL
                     SELECT CAST(TASK_ID AS VARCHAR(20)) AS TASK_ID,
                         TASK_NUMBER AS TASK_NUMBER,
                         DESCRIPTION AS DESCRIPTION,
+                        'TASK' AS TYPE,
                         'ID2' AS ORDERKEY
                     FROM APPS.PA_TASKS
                     WHERE PROJECT_ID = {0} AND (SYSDATE BETWEEN START_DATE AND NVL(COMPLETION_DATE, '31-DEC-4712'))

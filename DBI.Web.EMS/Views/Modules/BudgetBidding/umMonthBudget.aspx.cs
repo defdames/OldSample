@@ -92,12 +92,14 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxHidProjectNum.Text = projectNum;
             uxHidProjectName.Text = projectName;
             uxHidType.Text = projectType;
-            uxHidDetailTaskID.Text = "0";
-            uxHidDetailID.Text = "0";
+
+            uxHidDetailTaskID.Text = "";
+            uxHidDetailID.Text = "";
             uxHidDetailName.Text = "";
+            uxHidDetailType.Text = "";
  
             uxTasksStore.Reload();
-            uxComments.Text = "";
+            uxComments.Text = BBMonthSummary.Comments.Data(Convert.ToInt64(budBidprojectID));
 
             if (budBidprojectID == "0")
             {
@@ -152,8 +154,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             string projectNumber = uxHidProjectNum.Text;
             string projectName = HttpUtility.UrlEncode(uxHidProjectName.Text);
             string projectType = uxHidType.Text;
-            string detailSheetID = uxHidDetailTaskID.Text;
-            string url = "/Views/Modules/BudgetBidding/umAddEditMonthProject.aspx?orgID=" + orgID + " &orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&budBidID=" + budBidID + "&projectID=" + projectID + "&projectNum=" + projectNumber + "&projectName=" + projectName + "&projectType=" + projectType + "&detailSheetID=" + detailSheetID + "&addNew=" + addNew;
+            string url = "/Views/Modules/BudgetBidding/umAddEditMonthProject.aspx?orgID=" + orgID + " &orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&budBidID=" + budBidID + "&projectID=" + projectID + "&projectNum=" + projectNumber + "&projectName=" + projectName + "&projectType=" + projectType + "&addNew=" + addNew;
             
             Window win = new Window
             {
@@ -207,7 +208,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             }
 
             BBProject.DBDelete(budBidID);
-            uxHidBudBidID.Text = "0";
+            uxHidBudBidID.Text = "0";  // This is in here for task grid refresh.
             uxProjectsStore.Reload();
             uxTasksStore.Reload();
             uxMonthDetailStore.Reload();
@@ -215,7 +216,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
         protected void RefreshProjects()
         {
-            uxHidBudBidID.Text = "0";
+            uxHidBudBidID.Text = "0";  // This is in here for task grid refresh.
             uxProjectsStore.Reload();
             uxTasksStore.Reload();
             uxMonthDetailStore.Reload();
@@ -279,26 +280,21 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
         protected void deReadTaskGridData(object sender, StoreReadDataEventArgs e)
         {
-            long budBidID = Convert.ToInt64(uxHidBudBidID.Text);
-
-            if (budBidID == 0)
-            {
-                uxTasksStore.RemoveAll();
-            }
-            else
-            {
-                uxTasksStore.DataSource = BBMonthSummary.TaskGrid.Data(budBidID);
-            }          
+            uxTasksStore.DataSource = BBMonthSummary.TaskGrid.Data(Convert.ToInt64(uxHidBudBidID.Text));        
         }
 
         protected void deSelectTask(object sender, DirectEventArgs e)
         {
             string detailTaskID = e.ExtraParams["DetailTaskID"];
             string detailID = e.ExtraParams["DetailID"];
+            string detailNum = e.ExtraParams["DetailNum"];
             string detailName = e.ExtraParams["DetailName"];
+            string type = e.ExtraParams["Type"];
             uxHidDetailTaskID.Text = detailTaskID;
             uxHidDetailID.Text = detailID;
+            uxHidDetailNum.Text = detailNum;
             uxHidDetailName.Text = detailName;
+            uxHidDetailType.Text = type;
 
             if (Convert.ToInt64(detailTaskID) == 0)
             {
@@ -339,11 +335,11 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     return;
                 }
 
-                //if (BB.ProjectStillExists(budBidID) == false)
-                //{
-                //    StandardMsgBox("Edit", "Task has been deleted or has changed.  Please refresh tasks.", "INFO");
-                //    return;
-                //}
+                if (BBMonthSummary.TaskStillExists(detailTaskID) == false)
+                {
+                    StandardMsgBox("Edit", "Task has been deleted or has changed.  Please refresh tasks.", "INFO");
+                    return;
+                }
 
                 windowTitle = "Edit Task";
             }
@@ -354,12 +350,14 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
             string projectID = uxHidProjectID.Text;
             string projectNumber = uxHidProjectNum.Text;
-            string projectType = uxHidType.Text;
             string projectName = HttpUtility.UrlEncode(uxHidProjectName.Text);
+            string projectType = uxHidType.Text;
             string detailID = uxHidDetailID.Text;
+            string detailNumber = uxHidDetailNum.Text;
             string detailName = uxHidDetailName.Text;
+            string detailType = uxHidDetailType.Text;
 
-            string url = "/Views/Modules/BudgetBidding/umAddEditMonthTask.aspx?orgID=" + orgID + " &orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&budBidID=" + budBidID + "&projectID=" + projectID + "&projectNum=" + projectNumber + "&projectName=" + projectName + "&projectType=" + projectType + "&detailTaskID=" + detailTaskID + "&detailID=" + detailID + "&detailName=" + detailName + "&addNew=" + addNew;
+            string url = "/Views/Modules/BudgetBidding/umAddEditMonthTask.aspx?orgID=" + orgID + " &orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&budBidID=" + budBidID + "&projectID=" + projectID + "&projectNum=" + projectNumber + "&projectName=" + projectName + "&projectType=" + projectType + "&detailTaskID=" + detailTaskID + "&detailID=" + detailID + "&detailNumber=" + detailNumber + "&detailName=" + detailName + "&detailType=" + detailType + "&addNew=" + addNew;
 
             Window win = new Window
             {
@@ -389,34 +387,32 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
         protected void DeleteSelectedTask()
         {
-            //if (uxHidBudBidID.Text == "0")
-            //{
-            //    StandardMsgBox("Delete", "A task must be selected before it can be deleted.", "INFO");
-            //    return;
-            //}
+            if (uxHidDetailTaskID.Text == "0")
+            {
+                StandardMsgBox("Delete", "A task must be selected before it can be deleted.", "INFO");
+                return;
+            }
 
-            //X.MessageBox.Confirm("Delete", "Are you sure you want to delete the selected task? Once it's been deleted it cannot be retrieved.", new MessageBoxButtonsConfig
-            //{
-            //    Yes = new MessageBoxButtonConfig { Handler = "App.direct.DeleteSelectedTaskContiued()", Text = "Yes" },
-            //    No = new MessageBoxButtonConfig { Text = "No" }
-            //}).Show();
+            X.MessageBox.Confirm("Delete", "Are you sure you want to delete the selected task? Once it's been deleted it cannot be retrieved.", new MessageBoxButtonsConfig
+            {
+                Yes = new MessageBoxButtonConfig { Handler = "App.direct.DeleteSelectedTaskContiued()", Text = "Yes" },
+                No = new MessageBoxButtonConfig { Text = "No" }
+            }).Show();
         }
         [DirectMethod]
         public void DeleteSelectedTaskContiued()
         {
-            //long budBidID = Convert.ToInt64(uxHidBudBidID.Text);
+            long detailTaskID = Convert.ToInt64(uxHidDetailTaskID.Text);
 
-            //if (BB.ProjectStillExists(budBidID) == false)
-            //{
-            //    StandardMsgBox("Delete", "Task has already been deleted or has changed.  Please refresh summary", "INFO");
-            //    return;
-            //}
+            if (BBMonthSummary.TaskStillExists(detailTaskID) == false)
+            {
+                StandardMsgBox("Delete", "Task has already been deleted or has changed.  Please refresh summary", "INFO");
+                return;
+            }
 
-            //BBProject.DBDelete(budBidID);
-            //uxHidBudBidID.Text = "0";
-            //uxProjectsStore.Reload();
-            //uxTasksStore.Reload();
-            //uxMonthDetailStore.Reload();
+            BBMonthSummary.Tasks.DBDelete(detailTaskID);
+            uxTasksStore.Reload();
+            uxMonthDetailStore.Reload();
         }
 
         protected void RefreshTasks()
@@ -450,16 +446,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxMonthDetailStore.DataSource = BBMonthSummary.MainGrid.Data(yearID, verID, weMonth, orgID, budBidProjectID, detailSheetID);
         }
 
-
-
-
-
-
-
-
-
-
-
         protected void deEditSelectedRow(object sender, DirectEventArgs e)
         {
             string budBidProjectID = uxHidBudBidID.Text;
@@ -468,7 +454,16 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
             if (detailSheetID == "0") { return; }
 
+            string[] arrLineNum = { "60", "100", "160", "300", "320", "360" };
             string lineID = e.ExtraParams["LineID"];
+
+
+            int pos = Array.IndexOf(arrLineNum, lineID);
+            if (pos > -1)
+            {
+                return;
+            }
+
             string lineDesc = e.ExtraParams["LineDesc"];
             //string hierID = Request.QueryString["hierID"];
             //string leOrgID = Request.QueryString["leOrgID"];
