@@ -22,6 +22,17 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                 }
 
                 uxBudgetsOrActuals.Text = "Budgets";
+
+                bool showActualDropdown = Convert.ToBoolean(Request.QueryString["showActualDropdown"]);
+
+                if (showActualDropdown == true)
+                {
+                    Toolbar1.Show();
+                }
+                else
+                {
+                    Toolbar1.Hide();
+                }
             }
         }
 
@@ -122,31 +133,103 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
             GenericData.Update<BUD_BID_BUDGET_NUM>(data);
             
-            // Calculate total lines
+            // Calculate and update total lines
             long projectID = Convert.ToInt64(e.ExtraParams["Project"]);
             long taskDetailID = Convert.ToInt64(e.ExtraParams["DetailTask"]);
-            
-            // Update Gross Receipts
-            BUD_BID_BUDGET_NUM data1;
+            string modifiedDate = DateTime.Now.ToString("dd-MMM-yy");
+            string modifiedBy = HttpContext.Current.User.Identity.Name;
+
+            string sqlStart = string.Format(@"
+                SELECT BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, LINE_ID, SUM(NOV) NOV, SUM(DEC) DEC, SUM(JAN) JAN, SUM(FEB) FEB, SUM(MAR) MAR, SUM(APR) APR, SUM(MAY) MAY, SUM(JUN) JUN, SUM(JUL) JUL, SUM(AUG) AUG, SUM(SEP) SEP, SUM(OCT) OCT, CREATE_DATE, CREATED_BY, TO_DATE('{0}', 'DD-Mon-YYYY')  MODIFY_DATE, '{1}' MODIFIED_BY       
+                FROM
+                (", modifiedDate, modifiedBy);
+
+            string totalLineID = "60";
+            string sqlGrossRec = string.Format(@"            
+                SELECT (SELECT BUDGET_NUM_ID FROM BUD_BID_BUDGET_NUM WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND LINE_ID = {2}) BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, {2} LINE_ID, SUM(NOV) NOV, SUM(DEC) DEC, SUM(JAN) JAN, SUM(FEB) FEB, SUM(MAR) MAR, SUM(APR) APR, SUM(MAY) MAY, SUM(JUN) JUN, SUM(JUL) JUL, SUM(AUG) AUG, SUM(SEP) SEP, SUM(OCT) OCT, CREATE_DATE, CREATED_BY, TO_DATE('{3}', 'DD-Mon-YYYY')  MODIFY_DATE, '{4}' MODIFIED_BY
+                FROM BUD_BID_BUDGET_NUM
+                WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND LINE_ID IN (20, 40)
+                GROUP BY BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, LINE_ID, CREATE_DATE, CREATED_BY, MODIFY_DATE, MODIFIED_BY", projectID, taskDetailID, totalLineID, modifiedDate, modifiedBy);
+
+            totalLineID = "100";
+            string sqlGrossRev = string.Format(@"                    
+                SELECT (SELECT BUDGET_NUM_ID FROM BUD_BID_BUDGET_NUM WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND LINE_ID = {2}) BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, {2} LINE_ID, SUM(NOV) NOV, SUM(DEC) DEC, SUM(JAN) JAN, SUM(FEB) FEB, SUM(MAR) MAR, SUM(APR) APR, SUM(MAY) MAY, SUM(JUN) JUN, SUM(JUL) JUL, SUM(AUG) AUG, SUM(SEP) SEP, SUM(OCT) OCT, CREATE_DATE, CREATED_BY, TO_DATE('{3}', 'DD-Mon-YYYY')  MODIFY_DATE, '{4}' MODIFIED_BY
+                FROM BUD_BID_BUDGET_NUM
+                WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND LINE_ID IN (20, 40)
+                GROUP BY BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, LINE_ID, CREATE_DATE, CREATED_BY, MODIFY_DATE, MODIFIED_BY
+                    UNION ALL
+                SELECT (SELECT BUDGET_NUM_ID FROM BUD_BID_BUDGET_NUM WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND LINE_ID = {2}) BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, {2} LINE_ID, -1 * SUM(NOV) NOV, -1 * SUM(DEC) DEC, -1 * SUM(JAN) JAN, -1 * SUM(FEB) FEB, -1 * SUM(MAR) MAR, -1 * SUM(APR) APR, -1 * SUM(MAY) MAY, -1 * SUM(JUN) JUN, -1 * SUM(JUL) JUL, -1 * SUM(AUG) AUG, -1 * SUM(SEP) SEP, -1 * SUM(OCT) OCT, CREATE_DATE, CREATED_BY, TO_DATE('{3}', 'DD-Mon-YYYY')  MODIFY_DATE, '{4}' MODIFIED_BY
+                FROM BUD_BID_BUDGET_NUM
+                WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND LINE_ID IN (80)
+                GROUP BY BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, LINE_ID, CREATE_DATE, CREATED_BY, MODIFY_DATE, MODIFIED_BY", projectID, taskDetailID, totalLineID, modifiedDate, modifiedBy);
+
+            totalLineID = "160";
+            string sqlTotal = string.Format(@"            
+                SELECT (SELECT BUDGET_NUM_ID FROM BUD_BID_BUDGET_NUM WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND LINE_ID = {2}) BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, {2} LINE_ID, SUM(NOV) NOV, SUM(DEC) DEC, SUM(JAN) JAN, SUM(FEB) FEB, SUM(MAR) MAR, SUM(APR) APR, SUM(MAY) MAY, SUM(JUN) JUN, SUM(JUL) JUL, SUM(AUG) AUG, SUM(SEP) SEP, SUM(OCT) OCT, CREATE_DATE, CREATED_BY, TO_DATE('{3}', 'DD-Mon-YYYY')  MODIFY_DATE, '{4}' MODIFIED_BY
+                FROM BUD_BID_BUDGET_NUM
+                WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND LINE_ID IN (120, 140)
+                GROUP BY BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, LINE_ID, CREATE_DATE, CREATED_BY, MODIFY_DATE, MODIFIED_BY", projectID, taskDetailID, totalLineID, modifiedDate, modifiedBy);
+
+            totalLineID = "300";
+            string sqlTotalDirects = string.Format(@"            
+                SELECT (SELECT BUDGET_NUM_ID FROM BUD_BID_BUDGET_NUM WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND LINE_ID = {2}) BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, {2} LINE_ID, SUM(NOV) NOV, SUM(DEC) DEC, SUM(JAN) JAN, SUM(FEB) FEB, SUM(MAR) MAR, SUM(APR) APR, SUM(MAY) MAY, SUM(JUN) JUN, SUM(JUL) JUL, SUM(AUG) AUG, SUM(SEP) SEP, SUM(OCT) OCT, CREATE_DATE, CREATED_BY, TO_DATE('{3}', 'DD-Mon-YYYY')  MODIFY_DATE, '{4}' MODIFIED_BY
+                FROM BUD_BID_BUDGET_NUM
+                WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND LINE_ID IN (120, 140, 180, 200, 220, 240, 260, 280)
+                GROUP BY BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, LINE_ID, CREATE_DATE, CREATED_BY, MODIFY_DATE, MODIFIED_BY", projectID, taskDetailID, totalLineID, modifiedDate, modifiedBy);
+
+            totalLineID = "320";
+            string sqlOP = string.Format(@"                    
+                SELECT (SELECT BUDGET_NUM_ID FROM BUD_BID_BUDGET_NUM WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND LINE_ID = {2}) BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, {2} LINE_ID, SUM(NOV) NOV, SUM(DEC) DEC, SUM(JAN) JAN, SUM(FEB) FEB, SUM(MAR) MAR, SUM(APR) APR, SUM(MAY) MAY, SUM(JUN) JUN, SUM(JUL) JUL, SUM(AUG) AUG, SUM(SEP) SEP, SUM(OCT) OCT, CREATE_DATE, CREATED_BY, TO_DATE('{3}', 'DD-Mon-YYYY')  MODIFY_DATE, '{4}' MODIFIED_BY
+                FROM BUD_BID_BUDGET_NUM
+                WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND LINE_ID IN (20, 40)
+                GROUP BY BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, LINE_ID, CREATE_DATE, CREATED_BY, MODIFY_DATE, MODIFIED_BY
+                    UNION ALL
+                SELECT (SELECT BUDGET_NUM_ID FROM BUD_BID_BUDGET_NUM WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND LINE_ID = {2}) BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, {2} LINE_ID, -1 * SUM(NOV) NOV, -1 * SUM(DEC) DEC, -1 * SUM(JAN) JAN, -1 * SUM(FEB) FEB, -1 * SUM(MAR) MAR, -1 * SUM(APR) APR, -1 * SUM(MAY) MAY, -1 * SUM(JUN) JUN, -1 * SUM(JUL) JUL, -1 * SUM(AUG) AUG, -1 * SUM(SEP) SEP, -1 * SUM(OCT) OCT, CREATE_DATE, CREATED_BY, TO_DATE('{3}', 'DD-Mon-YYYY')  MODIFY_DATE, '{4}' MODIFIED_BY
+                FROM BUD_BID_BUDGET_NUM
+                WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND LINE_ID IN (80)
+                GROUP BY BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, LINE_ID, CREATE_DATE, CREATED_BY, MODIFY_DATE, MODIFIED_BY
+                    UNION ALL
+                SELECT (SELECT BUDGET_NUM_ID FROM BUD_BID_BUDGET_NUM WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND LINE_ID = {2}) BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, {2} LINE_ID, -1 * SUM(NOV) NOV, -1 * SUM(DEC) DEC, -1 * SUM(JAN) JAN, -1 * SUM(FEB) FEB, -1 * SUM(MAR) MAR, -1 * SUM(APR) APR, -1 * SUM(MAY) MAY, -1 * SUM(JUN) JUN, -1 * SUM(JUL) JUL, -1 * SUM(AUG) AUG, -1 * SUM(SEP) SEP, -1 * SUM(OCT) OCT, CREATE_DATE, CREATED_BY, TO_DATE('{3}', 'DD-Mon-YYYY')  MODIFY_DATE, '{4}' MODIFIED_BY
+                FROM BUD_BID_BUDGET_NUM
+                WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND LINE_ID IN (120, 140, 180, 200, 220, 240, 260, 280)
+                GROUP BY BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, LINE_ID, CREATE_DATE, CREATED_BY, MODIFY_DATE, MODIFIED_BY", projectID, taskDetailID, totalLineID, modifiedDate, modifiedBy);
+
+            totalLineID = "360";
+            string sqlNetCont = string.Format(@"                    
+                SELECT (SELECT BUDGET_NUM_ID FROM BUD_BID_BUDGET_NUM WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND LINE_ID = {2}) BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, {2} LINE_ID, SUM(NOV) NOV, SUM(DEC) DEC, SUM(JAN) JAN, SUM(FEB) FEB, SUM(MAR) MAR, SUM(APR) APR, SUM(MAY) MAY, SUM(JUN) JUN, SUM(JUL) JUL, SUM(AUG) AUG, SUM(SEP) SEP, SUM(OCT) OCT, CREATE_DATE, CREATED_BY, TO_DATE('{3}', 'DD-Mon-YYYY')  MODIFY_DATE, '{4}' MODIFIED_BY
+                FROM BUD_BID_BUDGET_NUM
+                WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND LINE_ID IN (20, 40)
+                GROUP BY BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, LINE_ID, CREATE_DATE, CREATED_BY, MODIFY_DATE, MODIFIED_BY
+                    UNION ALL
+                SELECT (SELECT BUDGET_NUM_ID FROM BUD_BID_BUDGET_NUM WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND LINE_ID = {2}) BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, {2} LINE_ID, -1 * SUM(NOV) NOV, -1 * SUM(DEC) DEC, -1 * SUM(JAN) JAN, -1 * SUM(FEB) FEB, -1 * SUM(MAR) MAR, -1 * SUM(APR) APR, -1 * SUM(MAY) MAY, -1 * SUM(JUN) JUN, -1 * SUM(JUL) JUL, -1 * SUM(AUG) AUG, -1 * SUM(SEP) SEP, -1 * SUM(OCT) OCT, CREATE_DATE, CREATED_BY, TO_DATE('{3}', 'DD-Mon-YYYY')  MODIFY_DATE, '{4}' MODIFIED_BY
+                FROM BUD_BID_BUDGET_NUM
+                WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND LINE_ID IN (80)
+                GROUP BY BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, LINE_ID, CREATE_DATE, CREATED_BY, MODIFY_DATE, MODIFIED_BY
+                    UNION ALL
+                SELECT (SELECT BUDGET_NUM_ID FROM BUD_BID_BUDGET_NUM WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND LINE_ID = {2}) BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, {2} LINE_ID, -1 * SUM(NOV) NOV, -1 * SUM(DEC) DEC, -1 * SUM(JAN) JAN, -1 * SUM(FEB) FEB, -1 * SUM(MAR) MAR, -1 * SUM(APR) APR, -1 * SUM(MAY) MAY, -1 * SUM(JUN) JUN, -1 * SUM(JUL) JUL, -1 * SUM(AUG) AUG, -1 * SUM(SEP) SEP, -1 * SUM(OCT) OCT, CREATE_DATE, CREATED_BY, TO_DATE('{3}', 'DD-Mon-YYYY')  MODIFY_DATE, '{4}' MODIFIED_BY
+                FROM BUD_BID_BUDGET_NUM
+                WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND LINE_ID IN (120, 140, 180, 200, 220, 240, 260, 280)
+                GROUP BY BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, LINE_ID, CREATE_DATE, CREATED_BY, MODIFY_DATE, MODIFIED_BY
+                    UNION ALL
+                SELECT (SELECT BUDGET_NUM_ID FROM BUD_BID_BUDGET_NUM WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND LINE_ID = {2}) BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, {2} LINE_ID, -1 * SUM(NOV) NOV, -1 * SUM(DEC) DEC, -1 * SUM(JAN) JAN, -1 * SUM(FEB) FEB, -1 * SUM(MAR) MAR, -1 * SUM(APR) APR, -1 * SUM(MAY) MAY, -1 * SUM(JUN) JUN, -1 * SUM(JUL) JUL, -1 * SUM(AUG) AUG, -1 * SUM(SEP) SEP, -1 * SUM(OCT) OCT, CREATE_DATE, CREATED_BY, TO_DATE('{3}', 'DD-Mon-YYYY')  MODIFY_DATE, '{4}' MODIFIED_BY
+                FROM BUD_BID_BUDGET_NUM
+                WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND LINE_ID IN (340)
+                GROUP BY BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, LINE_ID, CREATE_DATE, CREATED_BY, MODIFY_DATE, MODIFIED_BY", projectID, taskDetailID, totalLineID, modifiedDate, modifiedBy);
+
+            string sqlEnd = string.Format(@"
+                )
+                GROUP BY BUDGET_NUM_ID, PROJECT_ID, DETAIL_TASK_ID, LINE_ID, CREATE_DATE, CREATED_BY, MODIFY_DATE, MODIFIED_BY
+                ORDER BY LINE_ID", modifiedDate, modifiedBy);
+
+            string sql = sqlStart + sqlGrossRec + " UNION ALL " + sqlGrossRev + " UNION ALL " + sqlTotal + " UNION ALL " + sqlTotalDirects + " UNION ALL " + sqlOP + " UNION ALL " + sqlNetCont + sqlEnd;
+
+            List<BUD_BID_BUDGET_NUM> totalData;
             using (Entities context = new Entities())
             {
-                data1 = context.BUD_BID_BUDGET_NUM.Where(x => x.PROJECT_ID == projectID && x.DETAIL_TASK_ID == taskDetailID && x.LINE_ID == 60).Single();
+                totalData = context.Database.SqlQuery<BUD_BID_BUDGET_NUM>(sql).ToList();
             }
 
-            data1.NOV = 9;
-
-            //GenericData.Update<BUD_BID_BUDGET_NUM>(data);
-
-            // Update Gross Revenue
-
-            // Total
-
-            // Total Directs
-
-            // Operating Profit
-
-            // Net Contribution
-
+            GenericData.Update<BUD_BID_BUDGET_NUM>(totalData);       
         }
 
         protected void deSelectBudgetsOrActuals(object sender, DirectEventArgs e)

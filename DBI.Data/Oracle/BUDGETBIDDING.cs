@@ -596,7 +596,7 @@ namespace DBI.Data
         }
 
         public static string AllOrgSettings(long orgID)
-        {
+        { //FIX
             SYS_PROFILE_OPTIONS profileNumber = SYS_PROFILE_OPTIONS.ProfileOption("BudgetBiddingOrgSettings");
             string profileValue;
             using (Entities context = new Entities())
@@ -690,6 +690,49 @@ namespace DBI.Data
             {
                 return 25;
             }
+        }
+
+        public static string WEDateFiscalYear(string jcDate)
+        {
+            string sql = string.Format(@"
+                SELECT PERIOD_YEAR                        
+                FROM APPS.GL_PERIODS_V
+                WHERE PERIOD_SET_NAME = 'DBI Calendar' AND PERIOD_TYPE = 'Week' AND START_DATE <= TO_DATE('{0}', 'DD-Mon-YYYY') AND END_DATE >= TO_DATE('{0}', 'DD-Mon-YYYY')", jcDate);
+
+            using (Entities context = new Entities())
+            {
+                return context.Database.SqlQuery<long>(sql).SingleOrDefault().ToString();
+            }
+        }
+
+        public static string WEDateFiscalYearStartDate(string fiscalYear)
+        {
+            string sql = string.Format(@"                       
+                SELECT START_DATE                        
+                FROM APPS.GL_PERIODS_V
+                WHERE PERIOD_SET_NAME = 'DBI Calendar' AND PERIOD_TYPE = 'Week' AND PERIOD_YEAR = {0} AND PERIOD_NUM = 1", fiscalYear);
+
+            using (Entities context = new Entities())
+            {
+                return context.Database.SqlQuery<DateTime>(sql).SingleOrDefault().ToString("dd-MMM-yy");
+            }
+        }
+
+        public static long WEDateMonth(string jcDate)
+        {
+            string sql = string.Format(@"
+                SELECT SUBSTR(ENTERED_PERIOD_NAME, 1, 3) ENTERED_PERIOD_NAME                        
+                FROM APPS.GL_PERIODS_V
+                WHERE PERIOD_SET_NAME = 'DBI Calendar' AND PERIOD_TYPE = 'Week' AND START_DATE <= TO_DATE('{0}', 'DD-Mon-YYYY') AND END_DATE >= TO_DATE('{0}', 'DD-Mon-YYYY')", jcDate);
+
+            string data;
+            using (Entities context = new Entities())
+            {
+                data = context.Database.SqlQuery<string>(sql).SingleOrDefault();
+            }
+
+            string[] monthName = { "NOV", "DEC", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT" };
+            return Array.IndexOf(monthName, data) + 1;
         }
     }
     

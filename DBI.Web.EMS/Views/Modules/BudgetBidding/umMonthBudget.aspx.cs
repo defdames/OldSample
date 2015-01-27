@@ -228,8 +228,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxProjectsStore.Reload();
             uxTaskActionsStore.Reload();
             uxMonthDetailStore.Reload();
-
-            //CalcSummaryTotals();
         }
         
 
@@ -427,8 +425,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxProjectsStore.Reload();
             uxTaskActionsStore.Reload();
             uxMonthDetailStore.Reload();
-
-            //CalcSummaryTotals();
         }
         
 
@@ -441,7 +437,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             long verID = long.Parse(Request.QueryString["verID"]);
             string budBidProjectID = uxHidBudBidID.Text;
             string detailSheetID = uxHidDetailTaskID.Text;
-            long weMonth = 1;  //FIX!
+            long weMonth = BB.WEDateMonth("09-Jun-2012");  //FIX
 
             uxMonthDetailStore.DataSource = BBMonthSummary.MainGrid.Data(yearID, verID, weMonth, orgID, budBidProjectID, detailSheetID);
         }
@@ -465,6 +461,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             }
 
             string lineDesc = e.ExtraParams["LineDesc"];
+            bool showActualDropdown = lineID == "340" ? true : false;
             //string hierID = Request.QueryString["hierID"];
             //string leOrgID = Request.QueryString["leOrgID"];
             //long orgID = Convert.ToInt64(Request.QueryString["orgID"]);
@@ -472,7 +469,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             //long verID = long.Parse(Request.QueryString["verID"]);
             //string verName = HttpUtility.UrlEncode(Request.QueryString["verName"]);
 
-            string url = "/Views/Modules/BudgetBidding/umEditMonthRow.aspx?budBidProjectID=" + budBidProjectID + "&detailSheetID=" + detailSheetID + "&lineID=" + lineID;
+            string url = "/Views/Modules/BudgetBidding/umEditMonthRow.aspx?budBidProjectID=" + budBidProjectID + "&detailSheetID=" + detailSheetID + "&lineID=" + lineID + "&showActualDropdown=" + showActualDropdown;
 
             Window win = new Window
             {
@@ -507,100 +504,17 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
         protected void deLoadSummaryReports(object sender, StoreReadDataEventArgs e)
         {
-            //uxReportsStore.DataSource = BB.YearSummaryReports();
+
         }
 
         protected void deChooseSummaryReport(object sender, DirectEventArgs e)
         {
-            //string selectedReport = uxSummaryReports.Text;
 
-            //long orgID = long.Parse(Request.QueryString["OrgID"]);
-            //string orgName = HttpUtility.UrlEncode(Request.QueryString["orgName"]);
-            //long yearID = long.Parse(Request.QueryString["fiscalYear"]);
-            //long verID = long.Parse(Request.QueryString["verID"]);
-            //string verName = HttpUtility.UrlEncode(Request.QueryString["verName"]);
-            //string prevYearID = uxHidPrevYear.Text;
-            //string prevVerID = uxHidPrevVer.Text;
-            //string projectNum = uxProjectNum.Text;
-            //string projectName = HttpUtility.UrlEncode(uxProjectName.Text);
-            //string url = "";
-
-            //uxSummaryReports.Clear();
-            //Int32 reportHeight = 0;
-            //Int32 reportWidth = 0;
-
-            //switch (selectedReport)
-            //{
-            //    case "Org Summary":
-            //        url = "/Views/Modules/BudgetBidding/Reports/umRepOrgSum.aspx?orgID=" + orgID + "&orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&verName=" + verName + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID;
-            //        reportHeight = 600;
-            //        reportWidth = 1020;
-            //        break;
-
-            //    case "Comments & Variances":
-            //        url = "/Views/Modules/BudgetBidding/Reports/umRepOrgComm.aspx?orgID=" + orgID + "&orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&verName=" + verName + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID;
-            //        reportHeight = 600;
-            //        reportWidth = 1020;
-            //        break;
-
-            //    case "Liabilities":
-            //        url = "/Views/Modules/BudgetBidding/Reports/umRepOrgLiab.aspx?orgID=" + orgID + "&orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&verName=" + verName + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID;
-            //        reportHeight = 600;
-            //        reportWidth = 1020;
-            //        break;
-
-            //    case "Selected Project":
-            //        if (uxHidBudBidID.Text == "")
-            //        {
-            //            StandardMsgBox("Report", "A project must be selected before a report can be generated.", "INFO");
-            //            return;
-            //        }
-
-            //        long budBidID = Convert.ToInt64(uxHidBudBidID.Text);
-
-            //        if (BB.ProjectStillExists(budBidID) == false)
-            //        {
-            //            StandardMsgBox("Report", "Project has been deleted or has changed.  Please refresh summary", "INFO");
-            //            return;
-            //        }
-
-            //        url = "/Views/Modules/BudgetBidding/Reports/umRepOrgProject.aspx?orgID=" + orgID + "&orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&verName=" + verName + "&budBidprojectID=" + budBidID + "&projectNum=" + projectNum + "&projectName=" + projectName;
-            //        reportHeight = 600;
-            //        reportWidth = 850;
-            //        break;
-
-            //    case "All Projects - Including Detail Sheets":
-            //        break;
-            //}
-
-            //Window win = new Window
-            //{
-            //    ID = "uxReport",
-            //    Title = "Report",
-            //    Height = reportHeight,
-            //    Width = reportWidth,
-            //    Modal = true,
-            //    Resizable = true,
-            //    CloseAction = CloseAction.Destroy,
-            //    Loader = new ComponentLoader
-            //    {
-            //        Mode = LoadMode.Frame,
-            //        DisableCaching = true,
-            //        Url = url,
-            //        AutoLoad = true,
-            //        LoadMask =
-            //        {
-            //            ShowMask = true
-            //        }
-            //    }
-            //};
-            //win.Render(this.Form);
-            //win.Show();
         }
 
         protected void deUpdateAllActuals(object sender, DirectEventArgs e)
         {
-
+            UpdateJCNumbers();
         }
 
         protected void StandardMsgBox(string title, string msg, string msgIcon)
@@ -614,5 +528,105 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 Icon = (MessageBox.Icon)Enum.Parse(typeof(MessageBox.Icon), msgIcon)
             });
         }
+
+
+
+
+
+        protected void UpdateJCNumbers()
+        {
+            string weDate = "09-Jun-2012";  // FIX TO BE JC WE DATE FY!    
+            string fiscalYear = BB.WEDateFiscalYear(weDate);   
+            string budBidProjectID = uxHidBudBidID.Text;
+            string projectID = uxHidProjectID.Text;
+            string detailTaskID = uxHidDetailTaskID.Text;
+            string taskID = uxHidDetailID.Text;
+            string fiscalYearStart = BB.WEDateFiscalYearStartDate(fiscalYear);
+            string modifiedDate = DateTime.Now.ToString("dd-MMM-yy");
+            string modifiedBy = HttpContext.Current.User.Identity.Name;
+            
+            string sql1 = string.Format(@"
+                WITH        
+                    JC_PERIODS AS (
+                        SELECT PERIOD_NAME, START_DATE, END_DATE, PERIOD_TYPE, ENTERED_PERIOD_NAME
+                        FROM APPS.GL_PERIODS_V
+                        WHERE PERIOD_SET_NAME = 'DBI Calendar' AND PERIOD_YEAR = {0} AND PERIOD_TYPE = 'Month' AND END_DATE < TO_DATE('{1}', 'DD-Mon-YYYY')      
+   
+                            UNION ALL 
+   
+                        SELECT * FROM (
+                            SELECT PERIOD_NAME, START_DATE, END_DATE, PERIOD_TYPE, SUBSTR(ENTERED_PERIOD_NAME, 1, 3) ENTERED_PERIOD_NAME
+                            FROM APPS.GL_PERIODS_V
+                            WHERE PERIOD_SET_NAME = 'DBI Calendar' AND PERIOD_YEAR = {0} AND PERIOD_TYPE = 'Week' AND END_DATE <= TO_DATE('{1}', 'DD-Mon-YYYY')
+                            ORDER BY END_DATE DESC
+                        )
+                        WHERE ROWNUM = 1  
+      
+                            UNION ALL   
+     
+                        SELECT PERIOD_NAME, START_DATE, END_DATE, PERIOD_TYPE, ENTERED_PERIOD_NAME
+                        FROM APPS.GL_PERIODS_V
+                        WHERE PERIOD_SET_NAME = 'DBI Calendar' AND PERIOD_YEAR = {0} AND PERIOD_TYPE = 'Month' AND START_DATE > TO_DATE('{1}', 'DD-Mon-YYYY') 
+                        ),
+
+                    JC_DATA AS (
+                        SELECT JC_WK_DATE, PROJECT_ID, TASK_ID, MTD_RI, MTD_RNB, MTD_RNI, MTD_GREC, MTD_MU, MTD_GREV, MTD_DP, MTD_LB, MTD_TU, MTD_EU, MTD_SC, MTD_ESC, MTD_T, MTD_FE, MTD_PD, MTD_PB, MTD_RRPL, MTD_ME, MTD_TDE, MTD_TOP
+                        FROM XXDBI_DW.JOB_COST
+                        WHERE PROJECT_ID = {2} AND TASK_ID = {3} AND LEVEL_SORT = 9 AND (JC_WK_DATE >= TO_DATE('{4}', 'DD-Mon-YYYY') AND JC_WK_DATE <= TO_DATE('{1}', 'DD-Mon-YYYY'))
+                    )", fiscalYear, weDate, projectID, taskID, fiscalYearStart);
+
+            long[] lineNum = { 20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220, 240, 260, 280, 300, 320, 340, 360 };
+
+
+
+            string[] jcLineName = { "NVL(MTD_GREC, 0)",                                                      // 20   Receipts
+                                    "0",                                            // 40   Insurance Reimbursements
+                                    "NVL(MTD_GREC, 0)",                                                      // 60   Gross Receipts
+                                    "NVL(MTD_MU, 0)",                                                        // 80   Materials
+                                    "NVL(MTD_GREV, 0)",                                                      // 100  Gross Revenue
+                                    "NVL(MTD_DP, 0) + NVL(MTD_LB, 0)",                                        // 120  Direct Payroll & Labor Burden
+                                    "NVL(MTD_TU, 0) + NVL(MTD_EU, 0)",                                        // 140  Truck & Equipment Usage
+                                    "NVL(MTD_DP, 0) + NVL(MTD_LB, 0) + NVL(MTD_TU, 0) + NVL(MTD_EU, 0)",        // 160  Total
+                                    "NVL(MTD_SC, 0)",                                                        // 180  Subcontractor
+                                    "NVL(MTD_ESC, 0)",                                                       // 200  Est. Subcontractor
+                                    "NVL(MTD_T, 0) + NVL(MTD_FE, 0)",                                         // 220  Travel (and Food & Entertainment)
+                                    "NVL(MTD_PD, 0)",                                                        // 240  Per Diem
+                                    "NVL(MTD_PB, 0)",                                                        // 260  Bond
+                                    "NVL(MTD_RRPL, 0) + NVL(MTD_ME, 0)",                                      // 280  Repairs
+                                    "NVL(MTD_TDE, 0)",                                                       // 300  Total Directs
+                                    "NVL(MTD_TOP, 0)",                                                       // 320  Operating Profit
+                                    "0",                                            // 340  Overhead
+                                    "NVL(MTD_TOP, 0) - 0" };                        // 360  Net Contribution
+                         
+            string sql2 ="";
+
+
+            for (int i = 0; i <= 17; i++)
+            {
+                if (i != 0) { sql2 = sql2 + " UNION ALL "; }
+                sql2 = sql2 + string.Format(@"
+                    SELECT * FROM (       
+                        SELECT ENTERED_PERIOD_NAME, (SELECT ACTUAL_NUM_ID FROM BUD_BID_ACTUAL_NUM WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND LINE_ID = {2}) ACTUAL_NUM_ID, {0} PROJECT_ID, {1} DETAIL_TASK_ID, {2} LINE_ID, {3} AMOUNT, (SELECT CREATE_DATE FROM BUD_BID_ACTUAL_NUM WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND LINE_ID = {2})  CREATE_DATE, (SELECT CREATED_BY FROM BUD_BID_ACTUAL_NUM WHERE PROJECT_ID = {0} AND DETAIL_TASK_ID = {1} AND LINE_ID = {2}) CREATED_BY, TO_DATE('{4}', 'DD-Mon-YYYY')  MODIFY_DATE, '{5}' MODIFIED_BY
+                        FROM JC_PERIODS
+                        LEFT JOIN JC_DATA ON JC_PERIODS.END_DATE = JC_DATA.JC_WK_DATE                    
+                    )
+                    
+                    PIVOT(
+                    SUM(AMOUNT)
+                    FOR (ENTERED_PERIOD_NAME)
+                    IN ('NOV' NOV, 'DEC' DEC, 'JAN' JAN, 'FEB' FEB, 'MAR' MAR, 'APR' APR, 'MAY' MAY, 'JUN' JUN, 'JUL' JUL, 'AUG' AUG, 'SEP' SEP, 'OCT' OCT))", budBidProjectID, detailTaskID, lineNum[i], jcLineName[i], modifiedDate, modifiedBy);
+            }
+
+            string sql = sql1 + sql2;
+
+            List<BUD_BID_ACTUAL_NUM> jcData;
+            using (Entities context = new Entities())
+            {
+                jcData = context.Database.SqlQuery<BUD_BID_ACTUAL_NUM>(sql).ToList();
+            }
+
+            GenericData.Update<BUD_BID_ACTUAL_NUM>(jcData);           
+        }
+
     }
 }

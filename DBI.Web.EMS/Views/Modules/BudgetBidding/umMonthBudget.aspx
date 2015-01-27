@@ -182,7 +182,7 @@
                     Region="North"
                     Layout="HBoxLayout">
                     <Items>
-                        <ext:GridPanel ID="uxProjects" runat="server" Flex="1" Height="220" HideHeaders="false">
+                        <ext:GridPanel ID="uxProjects" runat="server" Flex="1" Height="180" HideHeaders="false">
                             <TopBar>
 
                                 <ext:Toolbar ID="Toolbar1" runat="server">
@@ -270,7 +270,7 @@
                             </DirectEvents>
                         </ext:GridPanel>
 
-                        <ext:GridPanel ID="uxTasks" runat="server" Flex="1" Height="220" HideHeaders="false">
+                        <ext:GridPanel ID="uxTasks" runat="server" Flex="1" Height="180" HideHeaders="false">
                             <TopBar>
                                 <ext:Toolbar ID="Toolbar2" runat="server">
                                     <Items>
@@ -439,10 +439,10 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
-                            <ext:Column ID="Column2" runat="server" DataIndex="LINE_DESC" Text="" Width="160">
+                            <ext:Column ID="Column2" runat="server" DataIndex="LINE_DESC" Text="" Width="160" Locked="true">
                                 <Renderer Fn="colorTotalLineName" />
                             </ext:Column>
-                            <ext:NumberColumn ID="NumberColumn6" runat="server" DataIndex="REFORECAST" Text="Reforecast" Width="110" Align="Right">
+                            <ext:NumberColumn ID="NumberColumn6" runat="server" DataIndex="REFORECAST" Text="Reforecast" Width="110" Align="Right" Locked="true">
                                 <Renderer Fn="colorTotalLineNumber" />
                             </ext:NumberColumn>
                             <ext:NumberColumn ID="NumberColumn1" runat="server" DataIndex="NOV_BUDGET" Text="Nov - Budget" Width="110" Align="Right">
@@ -630,7 +630,7 @@
                     </Items>
                 </ext:FormPanel>
 
-                <ext:Hidden ID="uxHidBudBidID" runat="server" />
+                <%--<ext:Hidden ID="uxHidBudBidID" runat="server" />
                 <ext:Hidden ID="uxHidProjectID" runat="server" />
                 <ext:Hidden ID="uxHidProjectNum" runat="server" />
                 <ext:Hidden ID="uxHidProjectName" runat="server" />
@@ -639,13 +639,13 @@
                 <ext:Hidden ID="uxHidDetailID" runat="server" />
                 <ext:Hidden ID="uxHidDetailNum" runat="server" />
                 <ext:Hidden ID="uxHidDetailName" runat="server" />
-                <ext:Hidden ID="uxHidDetailType" runat="server" />
+                <ext:Hidden ID="uxHidDetailType" runat="server" />--%>
 
-                <%--<ext:FormPanel ID="FormPanel2"
+                <ext:FormPanel ID="FormPanel2"
                     runat="server"
                     Region="South"
                     BodyPadding="20"
-                    Height="120"
+                    Height="50"
                     Disabled="false">
                     <Items>
                         <ext:FieldContainer ID="FieldContainer2"
@@ -666,7 +666,7 @@
                             </Items>
                         </ext:FieldContainer>
                     </Items>
-                </ext:FormPanel>--%>
+                </ext:FormPanel>
             </Items>
         </ext:Viewport>
     </form>
