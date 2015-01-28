@@ -371,7 +371,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 Record.SetId(ToBeAdded.QUESTION_ID);
                 Record.Commit();
 
-                if(ToBeAdded.TYPE_ID == 5 || ToBeAdded.TYPE_ID == 6 || ToBeAdded.TYPE_ID == 7)
+                if(ToBeAdded.TYPE_ID == 3 || ToBeAdded.TYPE_ID == 4 || ToBeAdded.TYPE_ID == 5)
                 {
                     uxAddOptionButton.Enable();
                 }
@@ -400,7 +400,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 GenericData.Update<SURVEY_QUESTIONS>(ToBeUpdated);
                 GenericData.Update<SURVEY_RELATION>(FieldsetToUpdate);
 
-                if (ToBeUpdated.TYPE_ID == 5 || ToBeUpdated.TYPE_ID == 6 || ToBeUpdated.TYPE_ID == 7)
+                if (ToBeUpdated.TYPE_ID == 3 || ToBeUpdated.TYPE_ID == 4 || ToBeUpdated.TYPE_ID == 5)
                 {
                     uxAddOptionButton.Enable();
                     uxAddOptionButton.Enable();
@@ -461,7 +461,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
         protected void deLoadOptions(object sender, DirectEventArgs e)
         {
             int TypeId = int.Parse(e.ExtraParams["QuestionType"]);
-            if (TypeId == 5 || TypeId == 6 || TypeId == 7)
+            if (TypeId == 3 || TypeId == 4 || TypeId == 5)
             {
                 uxAddOptionButton.Enable();
             }

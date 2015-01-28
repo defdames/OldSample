@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBI.Core", "DBI.Core\DBI.Core.csproj", "{E472C66E-6529-481A-BF8B-801311480AA4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBI.Data", "DBI.Data\DBI.Data.csproj", "{C03D443B-4573-456E-85FB-B88994490FB5}"

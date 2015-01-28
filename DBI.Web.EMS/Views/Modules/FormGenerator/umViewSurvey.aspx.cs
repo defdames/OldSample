@@ -110,7 +110,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                     TextArea.InvalidCls = "allowBlank";
                                     NewFieldset.Items.Add(TextArea);
                                     break;
-                                case 5:
+                                case 3:
                                     ComboBox Combobox = new ComboBox();
                                     Combobox.ID = "question" + Question.QUESTION_ID;
                                     Combobox.FieldLabel = Question.TEXT;
@@ -137,7 +137,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                     }
                                     NewFieldset.Items.Add(Combobox);
                                     break;
-                                case 6:
+                                case 4:
                                     RadioGroup RadioQuestion = new RadioGroup();
                                     RadioQuestion.ID = "question" + Question.QUESTION_ID;
                                     RadioQuestion.FieldLabel = Question.TEXT;
@@ -165,7 +165,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                     NewFieldset.Items.Add(RadioQuestion);
 
                                     break;
-                                case 7:
+                                case 5:
                                     CheckboxGroup CheckQuestion = new CheckboxGroup();
                                     CheckQuestion.ID = "question" + Question.QUESTION_ID;
                                     CheckQuestion.FieldLabel = Question.TEXT;
@@ -284,7 +284,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                     catch (Exception e) { }
                                     NewFieldset.Items.Add(TextArea);
                                     break;
-                                case 5:
+                                case 3:
                                     ComboBox Combobox = new ComboBox();
                                     Combobox.ID = "question" + Question.QUESTION_ID;
                                     Combobox.FieldLabel = Question.TEXT;
@@ -316,7 +316,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                     NewFieldset.Items.Add(Combobox);
 
                                     break;
-                                case 6:
+                                case 4:
                                     RadioGroup RadioQuestion = new RadioGroup();
                                     RadioQuestion.ID = "question" + Question.QUESTION_ID;
                                     RadioQuestion.FieldLabel = Question.TEXT;
@@ -355,7 +355,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                                     NewFieldset.Items.Add(RadioQuestion);
 
                                     break;
-                                case 7:
+                                case 5:
                                     CheckboxGroup CheckQuestion = new CheckboxGroup();
                                     CheckQuestion.ID = "question" + Question.QUESTION_ID;
                                     CheckQuestion.FieldLabel = Question.TEXT;
