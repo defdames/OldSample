@@ -47,6 +47,12 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
             }
 
             uxHoursStore.DataSource = data;
+            List<object> _data = data.ToList<object>();
+            int count = 0;
+            uxHoursStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
+            e.Total = count;
+
+
         }
 
         private string ForamtTimeSpan(TimeSpan time)

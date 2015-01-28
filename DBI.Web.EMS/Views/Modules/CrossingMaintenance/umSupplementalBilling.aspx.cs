@@ -96,9 +96,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             };
             GenericData.Insert<CROSSING_SUPP_INVOICE>(data);
 
-            InvoiceDateTextField.Text = DateTime.Now.ToString("MM/dd/yyyy");
-            InvoiceNumTextField.Text = (data.INVOICE_SUPP_NUMBER);
-
             decimal SuppInvoiceId = data.INVOICE_SUPP_ID;
 
             CROSSING_SUPPLEMENTAL invoice;
@@ -119,66 +116,41 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 uxFilterForm.Reset();
                 uxInvoiceSupplementalStore.Reload();
 
-              
-                uxBillingReportWindow.Show();
-            
+             string selectedSupp = SuppInvoiceId.ToString();
+          
+            string url = "/Views/Modules/CrossingMaintenance/Reports/SupplementalInvoiceReport.aspx?selectedSupp=" + selectedSupp;
+
+            Window win = new Window
+            {
+                ID = "uxSupplementalInvoice",
+                Height = 600,
+                Width = 1120,
+                Title = "Supplemental Invoice Report",
+                Modal = true,
+                Resizable = false,
+                CloseAction = CloseAction.Destroy,
+                Closable = true,
+                Loader = new ComponentLoader
+                {
+                    Mode = LoadMode.Frame,
+                    DisableCaching = true,
+                    Url = url,
+                    AutoLoad = true,
+                    LoadMask =
+                    {
+                        ShowMask = true
+                    }
+                }
+            };
+            win.Render(this.Form);
+            win.Show();
         }
+        
         protected void deResetInvoice(object sender, DirectEventArgs e)
         {
             uxInvoiceSupplementalStore.RemoveAll();
         }
-        protected void deInvoiceReportGrid(object sender, StoreReadDataEventArgs e)
-        {
-            List<object> allData;
-           
-            string json = (e.Parameters["selectedSupp"]);
-            List<SupplementalDetails> suppList = JSON.Deserialize<List<SupplementalDetails>>(json);
-            List<decimal> ReportList = new List<decimal>();
-            foreach (SupplementalDetails supp in suppList)
-            {
-                ReportList.Add(supp.SUPPLEMENTAL_ID);
-
-                using (Entities _context = new Entities())
-                {
-                //IQueryable<CROSSING_MAINTENANCE.InvoicedCrossingsSupplemental> allData = CROSSING_MAINTENANCE.GetInvoicedCrossings(_context).Where(s => ReportList.Contains(s.SUPPLEMENTAL_ID));
-                allData = (from a in _context.CROSSING_SUPPLEMENTAL
-                           join d in _context.CROSSINGS on a.CROSSING_ID equals d.CROSSING_ID
-                           join v in _context.CROSSING_SUPP_INVOICE on a.INVOICE_SUPP_ID equals v.INVOICE_SUPP_ID
-                           where ReportList.Contains(a.SUPPLEMENTAL_ID)
-                           select new
-                           {
-                             
-                               a.INVOICE_SUPP_ID,
-                               v.INVOICE_SUPP_NUMBER,
-                               v.INVOICE_SUPP_DATE,
-                               d.CROSSING_ID,
-                               a.SUPPLEMENTAL_ID,
-                               a.APPROVED_DATE,
-                               d.CROSSING_NUMBER,
-                               d.SUB_DIVISION,
-                               d.SERVICE_UNIT,
-                               d.STATE,
-                               a.SERVICE_TYPE,
-                               d.MILE_POST,
-                               a.TRUCK_NUMBER,
-                               a.SQUARE_FEET,
-                               a.PROJECT_ID,
-
-
-
-                           }).ToList<object>();
-                uxInvoiceReportStore.DataSource = allData;
-
-                }
-
-              
-               
-                //int count;
-                //uxInvoiceReportStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], allData, out count);
-                //e.Total = count;
-            }
-            
-        }
+       
         protected void deGetRRType(string rrLoad)
         {
 
@@ -199,8 +171,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 if (rrLoad == "Add")
                 {
                     List<ServiceUnitResponse> units = ServiceUnitData.ServiceUnitUnits(rrType).ToList();
-                    //uxAddServiceUnit.Clear();
-                    //uxAddSubDiv.Clear();
+                    
                     uxAddServiceUnitStore.DataSource = units;
                     uxAddServiceUnitStore.DataBind();
                 }
@@ -234,60 +205,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 Button2.Disable();
             }
         }
-        protected void deCloseInvoice(object sender, DirectEventArgs e)
-        {
-            uxBillingReportWindow.Hide();
-           
-        }
-        protected void ToXml(object sender, EventArgs e)
-        {
-            string json = this.Hidden1.Value.ToString();
-            StoreSubmitDataEventArgs eSubmit = new StoreSubmitDataEventArgs(json, null);
-            XmlNode xml = eSubmit.Xml;
-
-            string strXml = xml.OuterXml;
-
-            this.Response.Clear();
-            this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.xml");
-            this.Response.AddHeader("Content-Length", strXml.Length.ToString());
-            this.Response.ContentType = "application/xml";
-            this.Response.Write(strXml);
-            this.Response.End();
-        }
-
-        protected void ToExcel(object sender, EventArgs e)
-        {
-            string json = this.Hidden1.Value.ToString();
-            StoreSubmitDataEventArgs eSubmit = new StoreSubmitDataEventArgs(json, null);
-            XmlNode xml = eSubmit.Xml;
-
-            this.Response.Clear();
-            this.Response.ContentType = "application/vnd.ms-excel";
-            this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.xls");
-
-            XslCompiledTransform xtExcel = new XslCompiledTransform();
-
-            xtExcel.Load(Server.MapPath("Excel.xsl"));
-            xtExcel.Transform(xml, null, this.Response.OutputStream);
-            this.Response.End();
-        }
-
-        protected void ToCsv(object sender, EventArgs e)
-        {
-            string json = this.Hidden1.Value.ToString();
-            StoreSubmitDataEventArgs eSubmit = new StoreSubmitDataEventArgs(json, null);
-            XmlNode xml = eSubmit.Xml;
-
-            this.Response.Clear();
-            this.Response.ContentType = "application/octet-stream";
-            this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.csv");
-
-            XslCompiledTransform xtCsv = new XslCompiledTransform();
-
-            xtCsv.Load(Server.MapPath("Csv.xsl"));
-            xtCsv.Transform(xml, null, this.Response.OutputStream);
-            this.Response.End();
-        }
+        
+       
         public class SupplementalDetails
         {
             public decimal? INVOICE_SUPP_ID { get; set; }

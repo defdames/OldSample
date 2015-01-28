@@ -145,13 +145,18 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
         protected void deReadCompletions(object sender, StoreReadDataEventArgs e)
         {
-            IQueryable<CUSTOMER_SURVEYS.CustomerSurveyCompletions> Completions;
+            IQueryable<SURVEY_FORMS_COMP> Completions;
             using (Entities _context = new Entities())
             {
                 long ProjectId = long.Parse(e.Parameters["ProjectId"]);
                 Completions = CUSTOMER_SURVEYS.GetCompletionStore(ProjectId, _context);
                 int count;
-                var data = GenericData.ListFilterHeader<CUSTOMER_SURVEYS.CustomerSurveyCompletions>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], Completions, out count);
+                var data = GenericData.ListFilterHeader<SURVEY_FORMS_COMP>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], Completions, out count);
+                foreach (var item in data)
+                {
+                    item.FORMS_NAME = item.SURVEY_FORMS.FORMS_NAME;
+                    item.LONG_NAME = _context.PROJECTS_V.Where(x => x.PROJECT_ID == item.PROJECT_ID).Select(x => x.LONG_NAME).Single();
+                }
                 uxCompletedStore.DataSource = data;
                 e.Total = count;
             }
@@ -243,15 +248,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
                     OrgsList = HR.ActiveOrganizationsByHierarchy(HierId, SelectedOrgId, _context).Select(x => x.ORGANIZATION_ID).ToList();
 
-                    List<CUSTOMER_SURVEY_FORMS> FormsList = CUSTOMER_SURVEYS.GetForms(_context).Where(x => OrgsList.Contains((long)x.ORG_ID)).ToList();
+                    List<SURVEY_FORMS> FormsList = CUSTOMER_SURVEYS.GetForms(_context).Where(x => OrgsList.Contains((long)x.ORG_ID)).ToList();
                     
                     
-                    foreach (CUSTOMER_SURVEY_FORMS FormEntry in FormsList)
+                    foreach (SURVEY_FORMS FormEntry in FormsList)
                     {
                         string OrgName = _context.ORG_HIER_V.Where(x => x.ORG_ID == FormEntry.ORG_ID).Select(x => x.ORG_HIER).Distinct().Single();
                         
-                        List<CUSTOMER_SURVEY_QUESTIONS> FormQuestions = CUSTOMER_SURVEYS.GetFormQuestion2(FormEntry.FORM_ID, _context).OrderBy(x => x.QUESTION_ID).ToList();
-                        List<CUSTOMER_SURVEY_FORMS_COMP> Completions = CUSTOMER_SURVEYS.GetCompletionsByDate(StartDate, EndDate, FormEntry.FORM_ID, _context).ToList();
+                        List<SURVEY_QUESTIONS> FormQuestions = CUSTOMER_SURVEYS.GetFormQuestion2(FormEntry.FORM_ID, _context).OrderBy(x => x.QUESTION_ID).ToList();
+                        List<SURVEY_FORMS_COMP> Completions = CUSTOMER_SURVEYS.GetCompletionsByDate(StartDate, EndDate, FormEntry.FORM_ID, _context).ToList();
                         ExcelWorksheet ws;
                         if (Completions.Count > 0)
                         {
@@ -259,7 +264,7 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                             char letter = 'B';
                             int rownumber = 2;
                             ws.Cells["A1"].Value = "Project Name";
-                            foreach (CUSTOMER_SURVEY_QUESTIONS FormQuestion in FormQuestions)
+                            foreach (SURVEY_QUESTIONS FormQuestion in FormQuestions)
                             {
                                 ws.Cells[letter + "1"].Value = FormQuestion.TEXT;
                                 ws.Cells[letter + "1"].Style.Font.Size = 12f;
@@ -267,18 +272,18 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                             }
 
 
-                            foreach (CUSTOMER_SURVEY_FORMS_COMP Completion in Completions)
+                            foreach (SURVEY_FORMS_COMP Completion in Completions)
                             {
                                 letter = 'B';
                                 string ProjectName = _context.PROJECTS_V.Where(x => x.PROJECT_ID == Completion.PROJECT_ID).Select(x => x.LONG_NAME).Single();
 
                                 //Get Answers
-                                List<CUSTOMER_SURVEY_FORMS_ANS> Answers = CUSTOMER_SURVEYS.GetFormAnswersByCompletion(Completion.COMPLETION_ID, _context).OrderBy(x => x.QUESTION_ID).ToList();
+                                List<SURVEY_FORMS_ANS> Answers = CUSTOMER_SURVEYS.GetFormAnswersByCompletion(Completion.COMPLETION_ID, _context).OrderBy(x => x.QUESTION_ID).ToList();
                                 if (Answers.Count > 0)
                                 {
                                     ws.Cells["A" + rownumber].Value = ProjectName;
                                 }
-                                foreach (CUSTOMER_SURVEY_FORMS_ANS Answer in Answers)
+                                foreach (SURVEY_FORMS_ANS Answer in Answers)
                                 {
                                     ws.Cells[letter + rownumber.ToString()].Value = Answer.ANSWER;
                                     letter = GetNextLetter(letter);

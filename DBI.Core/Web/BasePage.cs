@@ -18,7 +18,6 @@ namespace DBI.Core.Web
 {
     public class BasePage : System.Web.UI.Page
     {
-
         /// <summary>
         /// Code the checks for Activity, returns false if user is 
         /// </summary>
@@ -64,8 +63,16 @@ namespace DBI.Core.Web
         {
             ResourceManager.GetInstance(this).Listeners.AjaxRequestException.Handler = GetExceptionHandlerScript(String.Empty);
             ResourceManager.GetInstance(this).RegisterClientScriptBlock("Localization", "Ext.override({showFailure: " + GetExceptionHandlerScript(String.Empty) + "});");
+            ResourceManager.GetInstance(this).Listeners.DocumentReady.Handler = "delete Ext.tip.Tip.prototype.minWidth;";
+
+            if (Session["isDirty"] == null)
+            {
+                Session["isDirty"] = 0;
+            }
 
             base.OnLoad(e);
+
+            
         }
 
         /// <summary>
@@ -99,8 +106,16 @@ namespace DBI.Core.Web
         /// <param name="e"></param>
         protected void deLogout(object sender, DirectEventArgs e)
         {
-            Authentication.Logout();
-            X.Redirect("~/uxLogin.aspx");
+            long isDirty = long.Parse(Session["isDirty"].ToString());
+            //if (isDirty == 0)
+            //{
+                Authentication.Logout();
+                X.Redirect("~/uxLogin.aspx");
+            //}
+            //else
+            //{
+            //    CreateDirtyMessage();
+            //}
         }
 
         /// <summary>
@@ -223,6 +238,24 @@ namespace DBI.Core.Web
 
             return script.ToString();
 
+        }
+
+        protected void CreateDirtyMessage()
+        {
+            X.Msg.Alert("Unsaved Data", "You currently have unsaved data.  Please save changes before continuing").Show();
+        }
+
+        [DirectMethod]
+        public void dmSetDirty(string value)
+        {
+            if (value == "true")
+            {
+                Session["isDirty"] = 1;
+            }
+            else
+            {
+                Session["isDirty"] = 0;
+            }
         }
     }
 }

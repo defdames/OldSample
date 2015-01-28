@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
+<head id="Head1" runat="server">
     <title></title>
     <style type="text/css">
         .grandTotalBackground {
@@ -82,11 +82,36 @@
                 metadata.style = "background-color: #FFFF99;";
             }
 
-            if (isNaN(parseInt.value) == true) { return value; }
+            if (isNaN(value) || isNaN(parseInt(value))) { return value; }
 
             var template = '<span style="color:{0};">{1}</span>';
 
             var dp = 2;
+            var dSeparator = ".";
+            var tSeparator = ",";
+            var symbol = '';
+            var red = false;
+
+            var m = /(\d+)(?:(\.\d+)|)/.exec(value + ""),
+                x = m[1].length > 3 ? m[1].length % 3 : 0;
+            var r = (value < 0 ? '-' : '') // preserve minus sign
+                    + (x ? m[1].substr(0, x) + tSeparator : "")
+                    + m[1].substr(x).replace(/(\d{3})(?=\d)/g, "$1" + tSeparator)
+                    + (dp ? dSeparator + (+m[2] || 0).toFixed(dp).substr(2) : "")
+                    + symbol;
+
+            return Ext.String.format(template, (value >= 0 || red == false) ? "black" : "red", r);
+        };
+        var colorSubGridOverrideMaterial = function (value, metadata, record) {
+            if (record.data.OVERRIDDEN == 1) {
+                metadata.style = "background-color: #FFFF99;";
+            }
+
+            if (isNaN(value) || isNaN(parseInt(value))) { return value; }
+
+            var template = '<span style="color:{0};">{1}</span>';
+
+            var dp = 4;
             var dSeparator = ".";
             var tSeparator = ",";
             var symbol = '';
@@ -131,7 +156,7 @@
                             runat="server"
                             Layout="HBoxLayout">
                             <Items>
-                                <ext:Label ID="Label8" runat="server" Width="665" />
+                                <ext:Label ID="Label12" runat="server" Width="665" />
                             </Items>
                         </ext:FieldContainer>
                         <ext:FieldContainer ID="FieldContainer5"
@@ -339,6 +364,7 @@
                                                             <Fields>
                                                                 <ext:ModelField Name="DETAIL_SHEET_ID" />
                                                                 <ext:ModelField Name="REC_TYPE" />
+                                                                <ext:ModelField Name="AMT_3" />
                                                                 <ext:ModelField Name="DESC_1" />
                                                                 <ext:ModelField Name="AMT_1" />
                                                                 <ext:ModelField Name="DESC_2" />
@@ -358,6 +384,12 @@
                                             </Store>
                                             <ColumnModel>
                                                 <Columns>
+                                                    <ext:NumberColumn ID="NumberColumn26" runat="server" DataIndex="AMT_3" Text="Qty" Flex="1" Align="Right">
+                                                        <Editor>
+                                                            <ext:NumberField ID="NumberField1" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" DecimalPrecision="4" />
+                                                        </Editor>
+                                                        <Renderer Fn="colorSubGridOverrideMaterial" />
+                                                    </ext:NumberColumn>
                                                     <ext:Column ID="Column4" runat="server" DataIndex="DESC_1" Text="Material" Flex="2">
                                                         <Editor>
                                                             <ext:DropDownField ID="uxMaterialPicker" runat="server" Width="110" Mode="Text" Editable="true" MaxLength="200" EnforceMaxLength="true" SelectOnFocus="true">
@@ -424,9 +456,9 @@
                                                     </ext:Column>
                                                     <ext:NumberColumn ID="NumberField4" runat="server" DataIndex="AMT_1" Text="Unit Cost" Flex="1" Align="Right">
                                                         <Editor>
-                                                            <ext:NumberField ID="uxMaterialUnitCost" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
+                                                            <ext:NumberField ID="uxMaterialUnitCost" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" DecimalPrecision="4" />
                                                         </Editor>
-                                                        <Renderer Fn="colorSubGridOverride" />
+                                                        <Renderer Fn="colorSubGridOverrideMaterial" />
                                                     </ext:NumberColumn>
                                                     <ext:Column ID="NumberField5" runat="server" DataIndex="DESC_2" Text="UOM" Flex="1">
                                                         <Editor>
@@ -436,9 +468,9 @@
                                                     </ext:Column>
                                                     <ext:NumberColumn ID="Column3" runat="server" DataIndex="AMT_2" Text="Qty" Flex="1" Align="Right">
                                                         <Editor>
-                                                            <ext:NumberField ID="uxMaterialQuantity" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
+                                                            <ext:NumberField ID="uxMaterialQuantity" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" DecimalPrecision="4" />
                                                         </Editor>
-                                                        <Renderer Fn="colorSubGridOverride" />
+                                                        <Renderer Fn="colorSubGridOverrideMaterial" />
                                                     </ext:NumberColumn>
                                                     <ext:NumberColumn ID="Column5" runat="server" DataIndex="TOTAL" Text="Total" Flex="1" Align="Right">
                                                         <Renderer Fn="colorSubGridOverride" />
@@ -474,6 +506,13 @@
                                                                 </Click>
                                                             </DirectEvents>
                                                         </ext:Button>
+                                                        <ext:Button ID="uxAddNewBOM" runat="server" Text="Add BOM Items" Icon="PackageAdd" Visible="false">
+                                                            <DirectEvents>
+                                                                <Click OnEvent="deAddNewBOM">
+                                                                    <EventMask ShowMask="true" Msg="Processing..." />
+                                                                </Click>
+                                                            </DirectEvents>
+                                                        </ext:Button>
                                                         <ext:Button ID="uxDeleteMaterial" runat="server" Text="Delete Selected" Icon="Delete">
                                                             <DirectEvents>
                                                                 <Click OnEvent="deDeleteRecord">
@@ -494,7 +533,7 @@
                                                         <ext:DisplayField ID="DisplayField6" runat="server" Flex="1" />
                                                         <ext:DisplayField ID="DisplayField1" runat="server" Flex="1" />
                                                         <ext:DisplayField ID="DisplayField2" runat="server" Flex="1" />
-                                                        <ext:DisplayField ID="uxTotalMaterial" runat="server" Text="0.00" Flex="1" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                                        <ext:DisplayField ID="uxTotalMaterial" runat="server" Text="0.0000" Flex="1" FieldStyle="text-align:right" Cls="grandTotalForeground" />
                                                         <ext:DisplayField ID="DisplayField26" runat="server" Width="10" />
                                                     </Items>
                                                 </ext:FieldContainer>
@@ -1549,6 +1588,7 @@
                 <ext:Hidden ID="uxHidSelEquipRecID" runat="server" />
                 <ext:Hidden ID="uxHidSelPersRecID" runat="server" />
 
+                <ext:Hidden ID="uxHidDelRecord" runat="server" />
             </Items>
         </ext:Viewport>
     </form>

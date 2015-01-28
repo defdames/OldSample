@@ -10,6 +10,8 @@ using DBI.Data;
 using Ext.Net;
 using DBI.Data.GMS;
 using DBI.Data.DataFactory;
+using System.Net.Mail;
+
 
 namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 {
@@ -38,20 +40,29 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
               
             }
         }
+        protected void deAddSetFocus(object sender, DirectEventArgs e)
+        {
+            uxIncidentNumber.Focus();
+        }
+        protected void deCloseSetFocus(object sender, DirectEventArgs e)
+        {
+            uxCloseIncidentDateClosed.Focus();
+        }
         protected void GetIncidentGridData(object sender, StoreReadDataEventArgs e)
         {
 
             using (Entities _context = new Entities())
             {
+                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
                 //long CrossingId = long.Parse(e.Parameters["CrossingId"]);
                 IQueryable<CROSSING_MAINTENANCE.IncidentList> data;
                 if (uxToggleClosed.Checked)
                 {
-                    data = CROSSING_MAINTENANCE.GetIncidents(_context);
+                    data = CROSSING_MAINTENANCE.GetIncidents(_context, RailroadId);
                 }
                 else
                 {
-                    data = CROSSING_MAINTENANCE.GetIncidents(_context).Where(i => i.DATE_CLOSED == null);
+                    data = CROSSING_MAINTENANCE.GetIncidents(_context, RailroadId).Where(i => i.DATE_CLOSED == null);
                 }
          
                 int count;

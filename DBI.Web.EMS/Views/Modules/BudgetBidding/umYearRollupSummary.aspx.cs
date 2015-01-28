@@ -6,23 +6,29 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Ext.Net;
 using DBI.Data;
+using DBI.Core.Web;
 
 namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 {
-    public partial class umYearRollupSummary : System.Web.UI.Page
+    public partial class umYearRollupSummary : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!X.IsAjaxRequest)
             {
+                if (!validateComponentSecurity("SYS.BudgetBidding.View"))
+                {
+                    X.Redirect("~/Views/uxDefault.aspx");
+                }
+
                 long orgID = long.Parse(Request.QueryString["OrgID"]);
                 long yearID = long.Parse(Request.QueryString["fiscalYear"]);
                 long verID = long.Parse(Request.QueryString["verID"]);
 
-                if (BBAdjustments.Count(orgID, yearID, verID) == 0)
-                {
-                    BBAdjustments.Create(orgID, yearID, verID);
-                }
+                //if (BBAdjustments.Count(orgID, yearID, verID) == 0)
+                //{
+                //    BBAdjustments.Create(orgID, yearID, verID);
+                //}
 
                 CalcSummaryTotals();
             }
@@ -42,7 +48,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             CalcSummaryTotals();
         }
 
-        protected void deReadOverheadGridData(object sender, StoreReadDataEventArgs e)        
+        protected void deReadOverheadGridData(object sender, StoreReadDataEventArgs e)
         {
             long orgID = long.Parse(Request.QueryString["OrgID"]);
             long yearID = long.Parse(Request.QueryString["fiscalYear"]);
@@ -122,7 +128,29 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxTOPPlusMinus.Text = String.Format("{0:N2}", tOPPlusMinus);
             uxTNetContPlusMinus.Text = String.Format("{0:N2}", tNetContPlusMinus);
 
+            BBOH.Subtotal.Fields ohData = BBOH.Subtotal.Data(orgID, yearID, verID);
+            BBOH.Subtotal.Fields prevOHData = BBOH.Subtotal.Data(orgID, prevYearID, prevVerID);
+            decimal gtGrossRec = tGrossRec;
+            decimal gtMatUsage = tMatUsage;
+            decimal gtGrossRev = tGrossRev;
+            decimal gtDirects = tDirects;
+            decimal gtOP = tOP;
+            decimal gtOPPerc = tOPPerc;
+            decimal gtOH = tOH + ohData.OH;
+            decimal gtNetCont = tNetCont - ohData.OH;
+            decimal gtOPPlusMinus = tOPPlusMinus;
+            decimal gtNetContPlusMinus = (tNetContPlusMinus - ohData.OH) + prevOHData.OH;
 
+            uxGTGrossRec.Text = String.Format("{0:N2}", gtGrossRec);
+            uxGTMatUsage.Text = String.Format("{0:N2}", gtMatUsage);
+            uxGTGrossRev.Text = String.Format("{0:N2}", gtGrossRev);
+            uxGTDirects.Text = String.Format("{0:N2}", gtDirects);
+            uxGTOP.Text = String.Format("{0:N2}", gtOP);
+            uxGTOPPerc.Text = String.Format("{0:#,##0.00%}", gtOPPerc);
+            uxGTOH.Text = String.Format("{0:N2}", gtOH);
+            uxGTNetCont.Text = String.Format("{0:N2}", gtNetCont);
+            uxGTOPPlusMinus.Text = String.Format("{0:N2}", gtOPPlusMinus);
+            uxGTNetContPlusMinus.Text = String.Format("{0:N2}", gtNetContPlusMinus);
 
 
 
@@ -157,10 +185,158 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             //uxGTOPPlusMinus.Text = String.Format("{0:N2}", gtOPPlusMinus);
 
             // Net contribution
-            BBOH.Subtotal.Fields ohData = BBOH.Subtotal.Data(orgID, yearID, verID);
-            decimal oh = ohData.OH;
-            decimal netCont = tNetCont - oh;
-            uxNetCont.Text = String.Format("{0:N2}", netCont);
+            //BBOH.Subtotal.Fields ohData = BBOH.Subtotal.Data(orgID, yearID, verID);
+            //decimal oh = ohData.OH;
+            //decimal netCont = tNetCont - oh;
+            //uxNetCont.Text = String.Format("{0:N2}", netCont);
+        }
+
+        // Reports
+        protected void deLoadRollupReports(object sender, StoreReadDataEventArgs e)
+        {
+            uxRollupReportsStore.DataSource = BB.RollupSummaryReports();
+        }
+        protected void deChooseRollupReport(object sender, DirectEventArgs e)
+        {
+            string selectedReport = uxRollupReports.Text;
+
+            long hierID = long.Parse(Request.QueryString["hierID"]);
+            string leOrgID = Request.QueryString["leOrgID"];
+            long orgID = long.Parse(Request.QueryString["OrgID"]);
+            string orgName = HttpUtility.UrlEncode(Request.QueryString["orgName"]);
+            long yearID = long.Parse(Request.QueryString["fiscalYear"]);
+            string verName = HttpUtility.UrlEncode(Request.QueryString["verName"]);
+            long verID = long.Parse(Request.QueryString["verID"]);
+            long prevYearID = BB.CalcPrevYear(yearID, verID);
+            long prevVerID = BB.CalcPrevVer(yearID, verID);
+            long userID = SYS_USER_INFORMATION.UserID(User.Identity.Name);
+            string url = "";
+
+            uxRollupReports.Clear();
+            string windowTitle = "";
+            Int32 reportHeight = 0;
+            Int32 reportWidth = 0;
+
+            switch (selectedReport)
+            {
+                case "Summary":
+                    url = "/Views/Modules/BudgetBidding/Reports/umRepRollupSum.aspx?hierID=" + hierID + "&orgID=" + orgID + "&orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&verName=" + verName + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID + "&userID=" + userID;
+                    windowTitle = "Report";
+                    reportHeight = 600;
+                    reportWidth = 1020;
+                    break;
+
+                case "Comments & Variances":
+                    url = "/Views/Modules/BudgetBidding/Reports/umRepRollupComm.aspx?hierID=" + hierID + "&orgID=" + orgID + "&orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&verName=" + verName + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID + "&userID=" + userID;
+                    windowTitle = "Report";
+                    reportHeight = 600;
+                    reportWidth = 1020;
+                    break;
+
+                case "Liabilities":
+                    url = "/Views/Modules/BudgetBidding/Reports/umRepRollupLiabilities.aspx?hierID=" + hierID + "&orgID=" + orgID + "&orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&verName=" + verName + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID + "&userID=" + userID;
+                    windowTitle = "Report";
+                    reportHeight = 600;
+                    reportWidth = 1020;
+                    break;
+
+                case "All Projects":
+                    url = "/Views/Modules/BudgetBidding/Reports/umRepRollupAllProjects.aspx?hierID=" + hierID + "&orgID=" + orgID + "&orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&verName=" + verName + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID + "&userID=" + userID;
+                    windowTitle = "Report";
+                    reportHeight = 600;
+                    reportWidth = 1020;
+                    break;
+
+                case "Summary - Budget Year/Version Comparison":
+                    url = "/Views/Modules/BudgetBidding/umReportCompareTo.aspx?report=OP_COMPARE";
+                    windowTitle = "Compare To:";
+                    reportHeight = 210;
+                    reportWidth = 400;
+                    break;
+
+                case "Overhead Comparison":
+                    url = "/Views/Modules/BudgetBidding/umReportCompareTo.aspx?report=OH_COMPARE";
+                    windowTitle = "Compare To:";
+                    reportHeight = 210;
+                    reportWidth = 400;
+                    break;
+            }
+
+            Window win = new Window
+            {
+                ID = "uxReport",
+                Title = windowTitle,
+                Height = reportHeight,
+                Width = reportWidth,
+                Modal = true,
+                Resizable = true,
+                CloseAction = CloseAction.Destroy,
+                Loader = new ComponentLoader
+                {
+                    Mode = LoadMode.Frame,
+                    DisableCaching = true,
+                    Url = url,
+                    AutoLoad = true,
+                    LoadMask =
+                    {
+                        ShowMask = true
+                    }
+                }
+            };
+            win.Render(this.Form);
+            win.Show();
+        }
+        [DirectMethod]
+        public void LoadOHCompareReport(string reportName, string prevYear, string preVer)
+        {
+            long hierID = long.Parse(Request.QueryString["hierID"]);
+            string leOrgID = Request.QueryString["leOrgID"];
+            long orgID = long.Parse(Request.QueryString["OrgID"]);
+            string orgName = HttpUtility.UrlEncode(Request.QueryString["orgName"]);
+            long yearID = long.Parse(Request.QueryString["fiscalYear"]);
+            string verName = HttpUtility.UrlEncode(Request.QueryString["verName"]);
+            long verID = long.Parse(Request.QueryString["verID"]);
+            long prevYearID = long.Parse(prevYear);
+            long prevVerID = long.Parse(preVer);
+            string prevVerName = HttpUtility.UrlEncode(BB.GetPrevVerName(prevVerID));
+            long userID = SYS_USER_INFORMATION.UserID(User.Identity.Name);
+
+            string url = "";
+
+            switch (reportName)
+            {
+                case "OP_COMPARE":
+                    url = "/Views/Modules/BudgetBidding/Reports/umRepRollupOPCompare.aspx?hierID=" + hierID + "&orgID=" + orgID + "&orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&verName=" + verName + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID + "&prevVerName=" + prevVerName + "&userID=" + userID;
+                    break;
+
+                case "OH_COMPARE":
+                    url = "/Views/Modules/BudgetBidding/Reports/umRepRollupOHCompare.aspx?hierID=" + hierID + "&orgID=" + orgID + "&orgName=" + orgName + "&yearID=" + yearID + "&verID=" + verID + "&verName=" + verName + "&prevYearID=" + prevYearID + "&prevVerID=" + prevVerID + "&prevVerName=" + prevVerName + "&userID=" + userID;
+                    break;
+            }
+
+            Window win = new Window
+            {
+                ID = "uxReport",
+                Title = "Report",
+                Height = 600,
+                Width = 1020,
+                Modal = true,
+                Resizable = true,
+                CloseAction = CloseAction.Destroy,
+                Loader = new ComponentLoader
+                {
+                    Mode = LoadMode.Frame,
+                    DisableCaching = true,
+                    Url = url,
+                    AutoLoad = true,
+                    LoadMask =
+                    {
+                        ShowMask = true
+                    }
+                }
+            };
+            win.Render(this.Form);
+            win.Show();
         }
 
         protected decimal ForceToDecimal(string number)

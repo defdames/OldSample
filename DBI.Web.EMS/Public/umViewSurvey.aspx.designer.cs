@@ -67,15 +67,6 @@ namespace DBI.Web.EMS.PublicPages {
         protected global::Ext.Net.FormPanel uxSurveyDisplay;
         
         /// <summary>
-        /// Image2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Image Image2;
-        
-        /// <summary>
         /// uxSubmitSurveyButton control.
         /// </summary>
         /// <remarks>

@@ -21,7 +21,20 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 X.Redirect("~/Views/uxDefault.aspx");
 
             }
+
             long HeaderId = long.Parse(Request.QueryString["HeaderID"]);
+            long EmployeeId = long.Parse(Request.QueryString["EmployeeId"]);
+            using (Entities _context = new Entities())
+            {
+                var currentLunch = _context.DAILY_ACTIVITY_EMPLOYEE.Where(x => x.EMPLOYEE_ID == EmployeeId).SingleOrDefault();
+                if (currentLunch.LUNCH_TASK_ID != null)
+                {
+                    var project = _context.PA_TASKS_V.Where(x => x.TASK_ID == currentLunch.LUNCH_TASK_ID).Select(x => x.PROJECT_ID).Single();
+                    var projectName = _context.PROJECTS_V.Where(x => x.PROJECT_ID == project).Select(x => x.LONG_NAME).Single();
+                    uxLunchDRS.SetValue(HeaderId.ToString(), projectName);
+                    uxHiddenTask.SetValue(currentLunch.LUNCH_TASK_ID.ToString());
+                }
+            }
         }
 
         protected void deReadLunchHeaders(object sender, StoreReadDataEventArgs e)
@@ -163,7 +176,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 GenericData.Update<DAILY_ACTIVITY_EMPLOYEE>(ExistingLunch);
             }
             GenericData.Update<DAILY_ACTIVITY_EMPLOYEE>(EmployeeToUpdate);
-            X.Js.Call("parent.App.uxDetailsPanel.reload(); parent.App.uxPlaceholderWindow.close()");
+            X.Js.Call("parent.frames[0].App.uxWarningStore.reload(); parent.frames[0].App.uxEmployeeStore.reload(); parent.App.uxPlaceholderWindow.close()");
         }
 
         protected int GetLunchLength(long PersonId, DateTime HeaderDate)

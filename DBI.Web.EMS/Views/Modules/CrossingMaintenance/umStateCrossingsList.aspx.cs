@@ -29,7 +29,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         {
             if (!X.IsAjaxRequest)
             {
-             
+               uxSprayedNotSprayed.Data = StaticLists.CrossingsType;
                uxAddStateList.Data = StaticLists.CrossingStateList;
                uxAddAppRequestedStore.Data = StaticLists.ApplicationRequested;
                if (SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue") != string.Empty)
@@ -38,46 +38,42 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                   
                }
                
-            //   deLoadUnit("Add");
             }
         }
 
-        protected void deStateCrossingListGrid(object sender, StoreReadDataEventArgs e)
+        protected void deStateCrossingListGrid(object sender, DirectEventArgs e)
         {
             decimal Application = Convert.ToDecimal(uxAddAppReqeusted.SelectedItem.Value);
             string ServiceUnit = uxAddServiceUnit.SelectedItem.Value;
             string SubDiv = uxAddSubDiv.SelectedItem.Value;
             string State = uxAddStateComboBox.SelectedItem.Value;
+            string SprayNotSpray = uxCrossingSprayed.SelectedItem.Value;
             using (Entities _context = new Entities())
             {
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
 
-                
-                IQueryable<CROSSING_MAINTENANCE.StateCrossingList> allData = CROSSING_MAINTENANCE.GetStateCrossingList(RailroadId, _context);
+                string selectedRailroad = RailroadId.ToString();
+                string selectedServiceUnit = ServiceUnit;
+                string selectedSubDiv = SubDiv;
+                string selectedState = State;
+                string selectedSpray = SprayNotSpray;
+                string url = "/Views/Modules/CrossingMaintenance/Reports/StateCrossingListReport.aspx?selectedRailroad=" + selectedRailroad + "&selectedServiceUnit=" + selectedServiceUnit + "&selectedSubDiv=" + selectedSubDiv + "&selectedState=" + selectedState + "&selectedSpray=" + selectedSpray;
+                Ext.Net.Panel pan = new Ext.Net.Panel();
 
-                if (ServiceUnit != null)
-                {
-                    allData = allData.Where(x => x.SERVICE_UNIT == ServiceUnit);
-                }
-                if (SubDiv != null)
-                {
-                    allData = allData.Where(x => x.SUB_DIVISION == SubDiv);
-                }
-                if (State != null)
-                {
-                    allData = allData.Where(x => x.STATE == State);
-                }
-                List<object> _data = allData.ToList<object>();
-                
-           
-
-                int count;
-                uxStateCrossingListStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
-                e.Total = count;
+                pan.ID = "Tab";
+                pan.Title = "State Crossing List Report";
+                pan.CloseAction = CloseAction.Destroy;
+                pan.Loader = new ComponentLoader();
+                pan.Loader.ID = "loader";
+                pan.Loader.Url = url;
+                pan.Loader.Mode = LoadMode.Frame;
+                pan.Loader.LoadMask.ShowMask = true;
+                pan.Loader.DisableCaching = true;
+                pan.AddTo(uxCenterPanel);
                 
             }
-
         }
+
         protected void deClearFilters(object sender, DirectEventArgs e)
         {
             FilterForm.Reset();      
@@ -163,61 +159,8 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
 
         }
-        protected void deLaunchGrid(object sender, DirectEventArgs e)
-        {
-            GridPanel1.Show();
-        }
-       protected void ToXml(object sender, EventArgs e)
-        {
-            string json = this.Hidden1.Value.ToString();
-            StoreSubmitDataEventArgs eSubmit = new StoreSubmitDataEventArgs(json, null);
-            XmlNode xml = eSubmit.Xml;
 
-            string strXml = xml.OuterXml;
-
-            this.Response.Clear();
-            this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.xml");
-            this.Response.AddHeader("Content-Length", strXml.Length.ToString());
-            this.Response.ContentType = "application/xml";
-            this.Response.Write(strXml);
-            this.Response.End();
-        }
-
-        protected void ToExcel(object sender, EventArgs e)
-        {
-            string json = this.Hidden1.Value.ToString();
-            StoreSubmitDataEventArgs eSubmit = new StoreSubmitDataEventArgs(json, null);
-            XmlNode xml = eSubmit.Xml;
-
-            this.Response.Clear();
-            this.Response.ContentType = "application/vnd.ms-excel";
-            this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.xls");
-
-            XslCompiledTransform xtExcel = new XslCompiledTransform();
-
-            xtExcel.Load(Server.MapPath("Excel.xsl"));
-            xtExcel.Transform(xml, null, this.Response.OutputStream);
-            this.Response.End();
-        }
-
-        protected void ToCsv(object sender, EventArgs e)
-        {
-            string json = this.Hidden1.Value.ToString();
-            StoreSubmitDataEventArgs eSubmit = new StoreSubmitDataEventArgs(json, null);
-            XmlNode xml = eSubmit.Xml;
-
-            this.Response.Clear();
-            this.Response.ContentType = "application/octet-stream";
-            this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.csv");
-
-            XslCompiledTransform xtCsv = new XslCompiledTransform();
-
-            xtCsv.Load(Server.MapPath("Csv.xsl"));
-            xtCsv.Transform(xml, null, this.Response.OutputStream);
-            this.Response.End();
-        }
-      
-      
+          
         public class CrossingForApplicationDetails
         {
             public long CROSSING_ID { get; set; }
@@ -229,10 +172,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             public string STATE { get; set; }
             public string CONTACT_ID { get; set; }
         }
-        
-
-               
-              
+                      
     }
 }
         

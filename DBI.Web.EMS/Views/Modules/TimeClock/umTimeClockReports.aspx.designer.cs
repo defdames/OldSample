@@ -65,14 +65,5 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Panel ux12HourDay;
-        
-        /// <summary>
-        /// uxNoLunch control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel uxNoLunch;
     }
 }

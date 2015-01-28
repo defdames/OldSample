@@ -59,8 +59,16 @@
                         <Items>
                             <ext:TextField ID="uxRRCI" runat="server" FieldLabel="Railroad" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" Hidden="true" />
 
-                           <ext:DateField ID="uxStartDate" runat="server" AnchorHorizontal="25%" FieldLabel="Start Date" LabelAlign="Right" Editable="false" TabIndex="2" EmptyText="ALL" />
-                            <ext:DateField ID="uxEndDate" runat="server" AnchorHorizontal="25%" FieldLabel="End Date" LabelAlign="Right"  Editable="false" TabIndex="3" EmptyText="ALL" />
+                           <ext:DateField ID="uxStartDate" runat="server" AnchorHorizontal="25%" FieldLabel="Start Date" LabelAlign="Right" Editable="false" TabIndex="2" EmptyText="ALL" >
+                                <Plugins>
+                                <ext:ClearButton ID="ClearButton4" runat="server" />
+                            </Plugins>
+                               </ext:DateField>
+                            <ext:DateField ID="uxEndDate" runat="server" AnchorHorizontal="25%" FieldLabel="End Date" LabelAlign="Right"  Editable="false" TabIndex="3" EmptyText="ALL" >
+                                 <Plugins>
+                                <ext:ClearButton ID="ClearButton5" runat="server" />
+                            </Plugins>
+                                </ext:DateField>
 
                             <ext:ComboBox ID="uxAddServiceUnit"
                                 runat="server" FieldLabel="Service Unit"
@@ -92,6 +100,9 @@
                                                 <Listeners>
                                                     <Select Handler="#{uxAddSubDivStore}.load()" />
                                                 </Listeners>
+                                 <Plugins>
+                                <ext:ClearButton ID="ClearButton1" runat="server" />
+                            </Plugins>
                             </ext:ComboBox>
                             <ext:ComboBox ID="uxAddSubDiv"
                                 runat="server"
@@ -114,7 +125,9 @@
                                         </Model>
                                     </ext:Store>
                                 </Store>
-
+                                 <Plugins>
+                                <ext:ClearButton ID="ClearButton2" runat="server" />
+                            </Plugins>
                             </ext:ComboBox>
                             <ext:ComboBox runat="server"
                                 ID="uxAddStateComboBox"
@@ -142,6 +155,9 @@
                                         </Reader>
                                     </ext:Store>
                                 </Store>
+                                 <Plugins>
+                                <ext:ClearButton ID="ClearButton3" runat="server" />
+                            </Plugins>
                             </ext:ComboBox>
                              <ext:RadioGroup ID="RadioGroup1" runat="server" AnchorHorizontal="15%" >
                         <Items>
@@ -160,13 +176,10 @@
                                 Text="Run"
                                 Icon="PlayGreen">
                             <DirectEvents>
-                                <Click OnEvent="deLaunchGrid" >
-                                    <EventMask ShowMask="true" Msg="Loading..." />
+                                <Click OnEvent="deIncidentGrid" >
                                     </Click>
                             </DirectEvents>
-                            <Listeners>
-                                <Click Handler="#{uxIncidentStore}.load()" />
-                            </Listeners>
+                            
                             </ext:Button>
                             <ext:Button runat="server"
                                 ID="Button3"
@@ -180,9 +193,18 @@
                     </ext:Toolbar>
                 </BottomBar>
             </ext:FormPanel>
-          
+           <ext:Panel runat="server" ID="uxCenterPanel" Region="Center">
+              <LayoutConfig>
+                <ext:FitLayoutConfig />
+              </LayoutConfig>
+                    <Items>
+                        <ext:Panel ID="Tab" runat="server" ManageHeight="true">
+                        </ext:Panel>
+                    </Items>
+                </ext:Panel>
+    
        
-        <ext:GridPanel
+       <%-- <ext:GridPanel
             ID="uxIncidentGrid"
             runat="server"
             Title="Incident Report"
@@ -284,7 +306,7 @@
             <BottomBar>
                 <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
             </BottomBar>
-        </ext:GridPanel>
+        </ext:GridPanel>--%>
                     </Items>
              </ext:Viewport>
     </div>

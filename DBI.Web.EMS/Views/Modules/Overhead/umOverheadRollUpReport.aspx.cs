@@ -16,7 +16,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
         {
             if (!X.IsAjaxRequest)
             {
-                if (!validateComponentSecurity("SYS.OverheadBudget.Security"))
+                if (!validateComponentSecurity("SYS.OverheadBudget.Report.Admin.Rollup"))
                 {
                     X.Redirect("~/Views/uxDefault.aspx");
                 }
@@ -136,6 +136,12 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                             {
                                 node.Icon = Icon.Accept;
                                 e.Nodes.Add(node);
+                            }
+                            else if (view.ORGANIZATION_STATUS == "Active")
+                            {
+                                node.Icon = Icon.Accept;
+                                e.Nodes.Add(node);
+                                node.Leaf = true;
                             }
                             else
                             {

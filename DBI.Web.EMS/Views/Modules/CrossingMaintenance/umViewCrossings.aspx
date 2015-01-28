@@ -73,6 +73,9 @@
                             <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
                         </ExtraParams>
                     </Select>
+                    <Select OnEvent="deLoadButtons" >
+
+                    </Select>
                 </DirectEvents>
                
 
@@ -80,10 +83,11 @@
                     <ext:PagingToolbar ID="PagingToolbar1" runat="server" HideRefresh="True">
                     </ext:PagingToolbar>
                 </BottomBar>
-                  <Listeners>
+                <%--  <Listeners>
                         <Select Handler=" #{uxDeleteCrossingButton}.enable(); #{uxReactivateCrossingButton}.enable()" />
 
-                    </Listeners>
+                    </Listeners>--%>
+                
             </ext:GridPanel>
             
           
@@ -106,10 +110,16 @@
                                   
                                 </ext:Button>
                                 <ext:Button ID="uxReactivateCrossingButton" runat="server" Text="Reactivate Crossing" Icon="Add" Disabled="true">
-                                  
-                                      <Listeners>
+                                   <DirectEvents>
+                                       <Click OnEvent="deCheckAssignedStatus" >
+                                            <ExtraParams>
+                                                <ext:Parameter Name="CrossingId" Value="#{uxCrossingMainGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
+                                            </ExtraParams>
+                                           </Click>
+                                   </DirectEvents>
+                                     <%-- <Listeners>
                                         <Click Handler="#{uxCutOnlyWindow}.show()" />
-                                    </Listeners>
+                                    </Listeners>--%>
                                 </ext:Button>
                                
 
@@ -118,11 +128,7 @@
 
                     <ext:FieldSet ID="FieldSet1" runat="server" Title="Crossing Details">
                         <Items>
-                            <%-- <ext:FieldContainer ID="FieldContainer39" runat="server">
-                            <Items>
-                             <ext:TextField ID="uxCrossingNumCI" runat="server" FieldLabel="Crossing #" LabelAlign="Right" AnchorHorizontal="100%" DisableKeyFilter="False" Width="300" ReadOnly="true" />
-                            </Items>
-                                 </ext:FieldContainer>--%>
+                         
                                  <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
                                 <Items>
                                     <ext:TextField ID="uxRRCI" runat="server" FieldLabel="Railroad" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true"/>
@@ -207,12 +213,12 @@
 
                     <ext:FieldSet ID="FieldSet3" runat="server" Title="Special Instructions">
                         <Items>
-                            <ext:FieldContainer ID="FieldContainer34" runat="server" Layout="HBoxLayout">
+                           <%-- <ext:FieldContainer ID="FieldContainer34" runat="server" Layout="HBoxLayout">
                                 <Items>
                                     <ext:TextField ID="uxAddManagerCI" runat="server" FieldLabel="Manager" AnchorHorizontal="100%" LabelAlign="Right" Width="475" ReadOnly="true" />
 
                                 </Items>
-                            </ext:FieldContainer>
+                            </ext:FieldContainer>--%>
 
                             <ext:FieldContainer ID="FieldContainer35" runat="server" Layout="HBoxLayout">
                                 <Items>
@@ -236,7 +242,7 @@
                                     <ext:TextField ID="uxMaxSpeedCI" runat="server" FieldLabel="Max Speed" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
                                 </Items>
                             </ext:FieldContainer>
-                            <ext:TextArea ID="uxSpecialInstructCI" runat="server" FieldLabel="Special Instructions" AnchorHorizontal="92%" LabelAlign="Right" ReadOnly="true" />
+                            <ext:TextArea ID="uxSpecialInstructCI" runat="server" FieldLabel="Remarks" AnchorHorizontal="92%" LabelAlign="Right" ReadOnly="true" />
                                </Items>
                     </ext:FieldSet>
 

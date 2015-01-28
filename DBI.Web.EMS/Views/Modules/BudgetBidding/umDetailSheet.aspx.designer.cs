@@ -13,6 +13,15 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
     public partial class umDetailSheet {
         
         /// <summary>
+        /// Head1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlHead Head1;
+        
+        /// <summary>
         /// form1 control.
         /// </summary>
         /// <remarks>
@@ -94,13 +103,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.FieldContainer FieldContainer6;
         
         /// <summary>
-        /// Label8 control.
+        /// Label12 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Ext.Net.Label Label8;
+        protected global::Ext.Net.Label Label12;
         
         /// <summary>
         /// FieldContainer5 control.
@@ -580,6 +589,24 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Model Model1;
         
         /// <summary>
+        /// NumberColumn26 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberColumn NumberColumn26;
+        
+        /// <summary>
+        /// NumberField1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberField NumberField1;
+        
+        /// <summary>
         /// Column4 control.
         /// </summary>
         /// <remarks>
@@ -776,6 +803,15 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Button uxAddNewMaterial;
+        
+        /// <summary>
+        /// uxAddNewBOM control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Button uxAddNewBOM;
         
         /// <summary>
         /// uxDeleteMaterial control.
@@ -2990,5 +3026,14 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Hidden uxHidSelPersRecID;
+        
+        /// <summary>
+        /// uxHidDelRecord control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Hidden uxHidDelRecord;
     }
 }

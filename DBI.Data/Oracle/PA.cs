@@ -76,5 +76,24 @@ namespace DBI.Data
             return _context.PROJECTS_V.Where(x => OrgsList.Contains(x.CARRYING_OUT_ORGANIZATION_ID) && x.PROJECT_TYPE == "CUSTOMER BILLING");
         }
 
+
+        /// <summary>
+        /// Returns a list of user (person_id) that is assigned as project manager
+        /// </summary>
+        /// <param name="project_id"></param>
+        /// <returns></returns>
+        public static List<long> GetProjectManagersList(long project_id)
+        {
+            string sql = @"select PERSON_ID from apps.pa_project_players_v
+                           where role = 'Project Manager'
+                           and sysdate between start_date_active and nvl(end_date_active,'31-DEC-4712')
+                           and project_id = " + project_id;
+
+            using (Entities context = new Entities())
+            {
+                return context.Database.SqlQuery<long>(sql).ToList();
+            }
+        }
+
     }
 }

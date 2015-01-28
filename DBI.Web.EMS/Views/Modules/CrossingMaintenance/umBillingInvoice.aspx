@@ -67,11 +67,18 @@
                                             </Reader>
                                         </ext:Store>
                                     </Store>
+                                  <Plugins>
+                                <ext:ClearButton ID="ClearButton1" runat="server" />
+                            </Plugins>
                                 </ext:ComboBox>
                              
                             <ext:FieldContainer runat="server" Layout="HBoxLayout">
                                 <Items>
-                                  <ext:DateField ID="uxStartDate" runat="server" AnchorHorizontal="100%" FieldLabel="Start Date" LabelAlign="Right" Editable="false" TabIndex="2" EmptyText="ALL" />
+                                  <ext:DateField ID="uxStartDate" runat="server" AnchorHorizontal="100%" FieldLabel="Start Date" LabelAlign="Right" Editable="false" TabIndex="2" EmptyText="ALL" >
+                                       <Plugins>
+                                <ext:ClearButton ID="ClearButton2" runat="server" />
+                            </Plugins>
+                                      </ext:DateField>
                                   <ext:ComboBox ID="uxAddServiceUnit"
                             runat="server" FieldLabel="Service Unit"
                             LabelAlign="Right"
@@ -102,13 +109,20 @@
                             <Listeners>
                                 <Select Handler="#{uxAddSubDivStore}.load()" />
                             </Listeners>
+                                       <Plugins>
+                                <ext:ClearButton ID="ClearButton3" runat="server" />
+                            </Plugins>
                         </ext:ComboBox>
                       
                                      </Items>
                             </ext:FieldContainer>
                            <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
                                 <Items>
-                                    <ext:DateField ID="uxEndDate" runat="server" AnchorHorizontal="100%" FieldLabel="End Date" LabelAlign="Right"  Editable="false" TabIndex="3" EmptyText="ALL" />
+                                    <ext:DateField ID="uxEndDate" runat="server" AnchorHorizontal="100%" FieldLabel="End Date" LabelAlign="Right"  Editable="false" TabIndex="3" EmptyText="ALL" >
+                                         <Plugins>
+                                <ext:ClearButton ID="ClearButton4" runat="server" />
+                            </Plugins>
+                                        </ext:DateField>
                                 <ext:ComboBox ID="uxAddSubDiv"
                             runat="server"
                             FieldLabel="Sub-Division"
@@ -130,7 +144,9 @@
                                     </Model>
                                 </ext:Store>
                             </Store>
-
+                             <Plugins>
+                                <ext:ClearButton ID="ClearButton5" runat="server" />
+                            </Plugins>
                         </ext:ComboBox>
                                         <ext:Label ID="Label1" runat="server" Text="" Width="25" />
 
@@ -144,8 +160,16 @@
                     </ext:FieldSet>
                       <ext:FieldSet ID="FieldSet2" runat="server" Title="Invoice Information">
                         <Items>
-                                  <ext:TextField ID="uxInvoiceNumber" runat="server" FieldLabel="Invoice Number" AnchorHorizontal="20%" LabelAlign="Right" TabIndex="6" AllowBlank="false" InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side" />
-                                  <ext:DateField ID="uxInvoiceDate" runat="server" AnchorHorizontal="20s%" FieldLabel="Invoice Date" LabelAlign="Right"  Editable="false" TabIndex="7" AllowBlank="false" InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side" />                                 
+                                  <ext:TextField ID="uxInvoiceNumber" runat="server" FieldLabel="Invoice Number" AnchorHorizontal="20%" LabelAlign="Right" TabIndex="6" AllowBlank="false" InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side" >
+                                        <Plugins>
+                                            <ext:ClearButton ID="ClearButton6" runat="server" />
+                                        </Plugins>
+                                      </ext:TextField>
+                                  <ext:DateField ID="uxInvoiceDate" runat="server" AnchorHorizontal="20s%" FieldLabel="Invoice Date" LabelAlign="Right"  Editable="false" TabIndex="7" AllowBlank="false" InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side" >
+                                       <Plugins>
+                                <ext:ClearButton ID="ClearButton7" runat="server" />
+                            </Plugins>
+                                      </ext:DateField>                                 
                         </Items>
                     </ext:FieldSet>
                 </Items>
@@ -158,7 +182,7 @@
                                 Icon="ApplicationViewList" Disabled="true">
                                 
                          <Listeners>
-                                <Click Handler="#{uxInvoiceFormStore}.load(); #{uxBillingReportWindow}.Show()" />
+                                <Click Handler="#{uxInvoiceFormStore}.load()" />
                             </Listeners>
                             </ext:Button>
                             <ext:Button runat="server"
@@ -186,7 +210,7 @@
                         ID="uxInvoiceFormStore" OnReadData="deInvoiceGrid" AutoDataBind="true" AutoLoad="false" >
                       
                         <Model>
-                            <ext:Model ID="Model1" runat="server">
+                            <ext:Model ID="Model1" runat="server" IDProperty="APPLICATION_ID">
                                 <Fields>
                                     <ext:ModelField Name="APPLICATION_ID" />
                                     <ext:ModelField Name="APPLICATION_DATE" />
@@ -197,7 +221,7 @@
                                     <ext:ModelField Name="SERVICE_UNIT" />
                                     <ext:ModelField Name="SUB_DIVISION" />
                                     <ext:ModelField Name="SEGMENT1" />
-                                  
+                                    <ext:ModelField Name="PROJECT_ID" />
 
                                 </Fields>
                             </ext:Model>
@@ -237,9 +261,9 @@
                                 </ExtraParams>
                                  </Click>
                          </DirectEvents>
-                                <Listeners>
+                               <%-- <Listeners>
                                     <Click Handler="#{uxInvoiceReportStore}.reload()" />
-                                </Listeners>
+                                </Listeners>--%>
                             </ext:Button>
                             <ext:Button runat="server"
                                 ID="Button2"
@@ -252,111 +276,7 @@
                         </Items>
                     </ext:Toolbar>
                 </BottomBar>
-            </ext:GridPanel>
-         <ext:Window runat="server"
-            ID="uxBillingReportWindow"
-            Layout="FormLayout"
-            Hidden="true"
-            Title="Invoice Report"
-            Height="550" Width="650" Modal="true" Closable="false">
-            <Items>
-                
-                 <ext:FormPanel ID="uxViewInvoiceForm" runat="server" Height="30" Layout="FormLayout">
-                    <Items>
-                 <ext:FieldContainer runat="server" Layout="HBoxLayout" >
-                <Items>
-                <ext:TextField ID="InvoiceNumTextField" runat="server" FieldLabel="Invoice #" LabelAlign="Right" ReadOnly="true" />
-                <ext:TextField ID="InvoiceDateTextField" runat="server" FieldLabel="Date" LabelAlign="Right" ReadOnly="true"  />
-                </Items>
-                </ext:FieldContainer>
-       
-                        </Items>
-                        </ext:FormPanel>
-                 <ext:GridPanel ID="GridPanel1" Title="Invoiced Items" Height="485" runat="server" Frame="false" Collapsible="true" >
-               
-                <Store>
-                    <ext:Store runat="server"
-                        ID="uxInvoiceReportStore" OnReadData="deInvoiceReportGrid" AutoDataBind="true" AutoLoad="false" GroupField="SUB_DIVISION">
-                        <Parameters>
-                              <ext:StoreParameter Name="selectedApps" Value="Ext.encode(#{uxApplicationEntryGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
-                        </Parameters>
-                        <Model>
-                            <ext:Model ID="Model2" runat="server">
-                                <Fields>
-                                    <ext:ModelField Name="APPLICATION_ID" />
-                                    <ext:ModelField Name="APPLICATION_DATE" />
-                                    <ext:ModelField Name="CROSSING_ID" />  
-                                    <ext:ModelField Name="CROSSING_NUMBER" /> 
-                                    <ext:ModelField Name="APPLICATION_REQUESTED" />                               
-                                    <ext:ModelField Name="MILE_POST" />
-                                    <ext:ModelField Name="SERVICE_UNIT" />
-                                    <ext:ModelField Name="SUB_DIVISION" />
-                                    <ext:ModelField Name="SEGMENT1" />
-                                    
-
-                                </Fields>
-                            </ext:Model>
-                        </Model>
-                        <Proxy>
-                            <ext:PageProxy />
-                        </Proxy>
-
-                    </ext:Store>
-                </Store>
-
-                <ColumnModel>
-                    <Columns>
-                         <ext:Column ID="Column5" runat="server" DataIndex="CROSSING_NUMBER" Text="DOT Number" Flex="1" />
-                        <ext:Column ID="Column6" runat="server" DataIndex="MILE_POST" Text="MP" Flex="1" />
-                        <ext:Column ID="Column7" runat="server" DataIndex="SERVICE_UNIT" Text="Service Unit" Flex="1" />
-                        <ext:DateColumn ID="DateColumn2" runat="server" DataIndex="APPLICATION_DATE" Text="Application Date" Flex="1" Format="MM/dd/yyyy" />
-                        <ext:Column ID="Column8" runat="server" DataIndex="SUB_DIVISION" Text="Sub Division" Flex="1" />                     
-                        <ext:Column ID="Column9" runat="server" DataIndex="SEGMENT1" Text="Project #" Flex="1" />
-                       
-
-                    </Columns>
-                </ColumnModel> 
-                 <Features>
-                <ext:Grouping ID="Grouping1"
-                    runat="server"
-                    HideGroupedHeader="true" Collapsible="false" Cls="x-grid-group-title; x-grid-group-hd" />
-            </Features>
-               <BottomBar>
-                    <ext:Toolbar ID="Toolbar3" runat="server">
-                        <Items>
-                          <ext:Button runat="server" ID="uxSubmitDates" Text="Submit" Icon="Add" Disabled="true">
-                            <DirectEvents>
-                                <Click OnEvent="deExportSurveys" IsUpload="true">
-                                    <EventMask ShowMask="true" />
-                                </Click>
-                            </DirectEvents>
-                        </ext:Button>
-                              <ext:Button runat="server" ID="uxCancelDates" Text="Cancel" Icon="Delete">
-                            <Listeners>
-                                <Click Handler="#{uxDatesForm}.reset(); #{uxExportWindow}.hide()" />
-                            </Listeners>
-                        </ext:Button>
-                           <ext:Button runat="server"
-                                ID="Button5"
-                                Text="Close Invoice Report"
-                                Icon="BinClosed">
-                             <DirectEvents>
-                            <Click OnEvent="deCloseInvoice" />
-                            </DirectEvents>
-                                 <DirectEvents>
-                            <Click OnEvent="deResetInvoice" />
-                            </DirectEvents>
-                                 <DirectEvents>
-                            <Click OnEvent="deClearFilters" />
-                            </DirectEvents>
-                            </ext:Button>
-                        </Items>
-                    </ext:Toolbar>
-                </BottomBar>
-                  
-            </ext:GridPanel>
-        </Items>
-             </ext:Window>
+            </ext:GridPanel>          
                     </Items>
             </ext:Viewport>
     </form>

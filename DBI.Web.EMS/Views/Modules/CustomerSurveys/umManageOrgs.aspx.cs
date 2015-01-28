@@ -32,9 +32,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 long OrgID = GetOrgFromTree(_selectedRecordID);
                 using (Entities _context = new Entities())
                 {
-                    IQueryable<CUSTOMER_SURVEYS.CustomerSurveyThresholdStore> Amounts = CUSTOMER_SURVEYS.GetOrganizationThresholdAmounts(OrgID, _context);
+                    IQueryable<CUSTOMER_SURVEY_THRESH_AMT> Amounts = CUSTOMER_SURVEYS.GetOrganizationThresholdAmounts(OrgID, _context);
+                    foreach (var item in Amounts)
+                    {
+                        item.ORG_HIER = _context.ORG_HIER_V.Where(x => x.ORG_ID == item.ORG_ID).Select(x => x.ORG_HIER).Distinct().Single();
+                    }
                     int count;
-                    uxDollarStore.DataSource = GenericData.ListFilterHeader(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], Amounts, out count);
+                    var data = GenericData.ListFilterHeader(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], Amounts, out count);
+                    
+                    uxDollarStore.DataSource = data;
                     e.Total = count;
                 }
             }
@@ -44,9 +50,10 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
         {
             using (Entities _context = new Entities())
             {
-                uxFormTypeStore.DataSource = _context.CUSTOMER_SURVEY_FORM_TYPES.ToList();
+                uxFormTypeStore.DataSource = _context.SURVEY_TYPES.ToList();
             }
         }
+
         protected long GetOrgFromTree(string _selectedRecordID)
         {
             if (_selectedRecordID.Contains(":"))
@@ -157,22 +164,26 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
         {
             using (Entities _context = new Entities())
             {
-                decimal AmountId = decimal.Parse(e.Parameters["AmountId"]);
-                List<CUSTOMER_SURVEY_THRESHOLDS> Threshold = CUSTOMER_SURVEYS.GetThresholdPercentages(AmountId, _context).Include(x => x.CUSTOMER_SURVEY_THRESH_AMT).ToList();
-                uxThresholdStore.DataSource = Threshold;
+                if (e.Parameters["AmountId"] != null)
+                {
+                    decimal AmountId = decimal.Parse(e.Parameters["AmountId"]);
+                    List<CUSTOMER_SURVEY_THRESHOLDS> Threshold = CUSTOMER_SURVEYS.GetThresholdPercentages(AmountId, _context).Include(x => x.CUSTOMER_SURVEY_THRESH_AMT).ToList();
+                    uxThresholdStore.DataSource = Threshold;
+                }
             }
         }
 
         protected void deSaveThreshold(object sender, DirectEventArgs e)
         {
-            decimal AmountId = decimal.Parse(e.ExtraParams["AmountId"]);
-            
+            ChangeRecords<CUSTOMER_SURVEY_THRESHOLDS> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<CUSTOMER_SURVEY_THRESHOLDS>();
+
             CUSTOMER_SURVEY_THRESHOLDS Threshold;
-            if (uxThresholdFormType.Text == "Add")
+
+            foreach (CUSTOMER_SURVEY_THRESHOLDS item in data.Created)
             {
                 Threshold = new CUSTOMER_SURVEY_THRESHOLDS();
-                Threshold.THRESHOLD = decimal.Parse(uxThreshold.Text);
-                Threshold.AMOUNT_ID = AmountId;
+                Threshold.THRESHOLD = item.THRESHOLD;
+                Threshold.AMOUNT_ID = decimal.Parse(e.ExtraParams["amountId"]);
                 Threshold.CREATE_DATE = DateTime.Now;
                 Threshold.MODIFY_DATE = DateTime.Now;
                 Threshold.CREATED_BY = User.Identity.Name;
@@ -180,37 +191,38 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
                 GenericData.Insert<CUSTOMER_SURVEY_THRESHOLDS>(Threshold);
             }
-            else
+
+            foreach (CUSTOMER_SURVEY_THRESHOLDS item in data.Updated)
             {
                 using (Entities _context = new Entities())
                 {
-                    decimal ThresholdId = decimal.Parse(uxThresholdId.Text);
-                    Threshold = CUSTOMER_SURVEYS.GetThreshold(ThresholdId, _context);
-                    Threshold.THRESHOLD = decimal.Parse(uxThreshold.Text);
+                    Threshold = CUSTOMER_SURVEYS.GetThreshold(item.THRESHOLD_ID, _context);
+                    Threshold.THRESHOLD = item.THRESHOLD;
                     Threshold.MODIFIED_BY = User.Identity.Name;
                     Threshold.MODIFY_DATE = DateTime.Now;
                 }
                 GenericData.Update<CUSTOMER_SURVEY_THRESHOLDS>(Threshold);
             }
 
+            uxCompanySelectionModel.SetLocked(false);
             uxThresholdStore.Reload();
             uxThresholdForm.Reset();
-            uxAddEditThresholdWindow.Hide();
-
+            X.Js.Call("checkEditing");
+            //dmSubtractFromDirty();
         }
 
         protected void deSaveDollar(object sender, DirectEventArgs e)
         {
+            ChangeRecords<CUSTOMER_SURVEY_THRESH_AMT> data = new StoreDataHandler(e.ExtraParams["data"]).BatchObjectData<CUSTOMER_SURVEY_THRESH_AMT>();
             string _selectedRecordID = uxCompanySelectionModel.SelectedRecordID;
             long OrgId = GetOrgFromTree(_selectedRecordID);
-
             CUSTOMER_SURVEY_THRESH_AMT Dollars;
-            if (uxDollarFormType.Value.ToString() == "Add")
+            foreach (CUSTOMER_SURVEY_THRESH_AMT item in data.Created)
             {
                 Dollars = new CUSTOMER_SURVEY_THRESH_AMT();
-                Dollars.TYPE_ID = decimal.Parse(uxFormTypeCombo.Value.ToString());
-                Dollars.LOW_DOLLAR_AMT = decimal.Parse(uxLowDollar.Text);
-                Dollars.HIGH_DOLLAR_AMT = decimal.Parse(uxHighDollar.Text);
+                Dollars.TYPE_ID = item.TYPE_ID;
+                Dollars.LOW_DOLLAR_AMT = item.LOW_DOLLAR_AMT;
+                Dollars.HIGH_DOLLAR_AMT = item.HIGH_DOLLAR_AMT;
                 Dollars.ORG_ID = OrgId;
                 Dollars.CREATED_BY = User.Identity.Name;
                 Dollars.MODIFIED_BY = User.Identity.Name;
@@ -219,49 +231,40 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
 
                 GenericData.Insert<CUSTOMER_SURVEY_THRESH_AMT>(Dollars);
 
-            }
-            else
-            {
-                decimal AmountId = decimal.Parse(uxDollarAmountId.Value.ToString());
+                string ORG_HIER;
+                string TYPE_NAME;
                 using (Entities _context = new Entities())
                 {
-                    Dollars = CUSTOMER_SURVEYS.GetOrganizationThresholdAmount(AmountId, _context);
+                    ORG_HIER = _context.ORG_HIER_V.Where(x => x.ORG_ID == Dollars.ORG_ID).Select(x => x.ORG_HIER).Distinct().Single();
+                    TYPE_NAME = _context.SURVEY_TYPES.Where(x => x.TYPE_ID == Dollars.TYPE_ID).Select(x => x.TYPE_NAME).Single();
                 }
-                Dollars.LOW_DOLLAR_AMT = decimal.Parse(uxLowDollar.Text);
-                Dollars.HIGH_DOLLAR_AMT = decimal.Parse(uxHighDollar.Text);
-                Dollars.MODIFY_DATE = DateTime.Now;
-                Dollars.MODIFIED_BY = User.Identity.Name;
-                Dollars.TYPE_ID = decimal.Parse(uxFormTypeCombo.Value.ToString());
+                ModelProxy Record = uxDollarStore.GetByInternalId(item.PhantomId);
+                Record.CreateVariable = true;
+                Record.SetId(Dollars.AMOUNT_ID);
+                Record.Set("ORG_HIER", ORG_HIER);
+                Record.Set("TYPE_NAME", TYPE_NAME);
+                Record.Commit();
+            }
 
+            foreach (CUSTOMER_SURVEY_THRESH_AMT item in data.Updated)
+            {
+                using (Entities _context = new Entities())
+                {
+                    Dollars = CUSTOMER_SURVEYS.GetOrganizationThresholdAmount(item.AMOUNT_ID, _context);
+                    Dollars.LOW_DOLLAR_AMT = item.LOW_DOLLAR_AMT;
+                    Dollars.HIGH_DOLLAR_AMT = item.HIGH_DOLLAR_AMT;
+                    Dollars.MODIFY_DATE = DateTime.Now;
+                    Dollars.MODIFIED_BY = User.Identity.Name;
+                    Dollars.TYPE_ID = item.TYPE_ID;
+                }
                 GenericData.Update<CUSTOMER_SURVEY_THRESH_AMT>(Dollars);
             }
-
-            uxDollarStore.Reload();
-            uxAddEditDollarWindow.Hide();
-            uxDollarForm.Reset();
-        }
-
-        protected void deLoadDollarWindow(object sender, DirectEventArgs e)
-        {
-            uxDollarFormType.Value = "Edit";
-            uxDollarAmountId.Value = e.ExtraParams["AmountId"];
-
-            string TypeName;
-            CUSTOMER_SURVEY_THRESH_AMT DollarToEdit;
-            using (Entities _context = new Entities())
-            {
-                DollarToEdit = CUSTOMER_SURVEYS.GetOrganizationThresholdAmount(decimal.Parse(e.ExtraParams["AmountId"].ToString()), _context);
-                TypeName = _context.CUSTOMER_SURVEY_FORM_TYPES.Where(x => x.TYPE_ID == DollarToEdit.TYPE_ID).Select(x => x.TYPE_NAME).Single();
-            }
-
-
-            uxLowDollar.Value = DollarToEdit.LOW_DOLLAR_AMT;
-            uxHighDollar.Value = DollarToEdit.HIGH_DOLLAR_AMT;
-            uxFormTypeCombo.SelectedItems.Clear();
-            uxFormTypeCombo.SetRawValue(DollarToEdit.TYPE_ID);
-            uxFormTypeCombo.SelectedItems.Add(new Ext.Net.ListItem(TypeName, DollarToEdit.TYPE_ID));
-            uxFormTypeCombo.UpdateSelectedItems();
-            uxAddEditDollarWindow.Show();
+            //dmSubtractFromDirty();
+            uxDollarGrid.GetView().Refresh();
+            uxCompanySelectionModel.SetLocked(false);
+            uxDollarSelection.SetLocked(false);
+            X.Js.Call("checkEditing");
+            uxThresholdStore.Reload();
         }
 
         protected void deDeleteDollar(object sender, DirectEventArgs e)
@@ -283,9 +286,10 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             {
                 GenericData.Delete<CUSTOMER_SURVEY_THRESH_AMT>(ToBeDeleted);
                 uxDollarStore.Reload();
+                uxDeleteDollarButton.Disable();
             }
-            
-            
+
+
         }
 
         protected void deDeleteThreshold(object sender, DirectEventArgs e)
@@ -294,11 +298,12 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
             CUSTOMER_SURVEY_THRESHOLDS ToBeDeleted;
             using (Entities _context = new Entities())
             {
-                 ToBeDeleted = CUSTOMER_SURVEYS.GetThreshold(ThresholdId, _context);
+                ToBeDeleted = CUSTOMER_SURVEYS.GetThreshold(ThresholdId, _context);
             }
 
             GenericData.Delete<CUSTOMER_SURVEY_THRESHOLDS>(ToBeDeleted);
             uxThresholdStore.Reload();
+            uxDeleteThresholdButton.Disable();
         }
 
         protected void deLoadThresholdForm(object sender, DirectEventArgs e)
@@ -312,5 +317,35 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys
                 uxAddEditThresholdWindow.Show();
             }
         }
+
+        protected void deLoadDollarStore(object sender, DirectEventArgs e)
+        {
+            if (long.Parse(Session["isDirty"].ToString()) == 0)
+            {
+                uxDollarStore.Reload();
+                uxAddDollarButton.Enable();
+                uxDeleteDollarButton.Disable();
+                uxDeleteThresholdButton.Disable();
+                uxThresholdStore.RemoveAll();
+                var selectionModel = uxDollarGrid.GetSelectionModel() as RowSelectionModel;
+                selectionModel.DeselectAll();
+            }
+        }
+
+        //[DirectMethod]
+        //public void dmAddToDirty()
+        //{
+        //    long isDirty = (long)Session["isDirty"];
+        //    isDirty++;
+        //    Session["isDirty"] = isDirty;
+        //}
+
+        //[DirectMethod]
+        //public void dmSubtractFromDirty()
+        //{
+        //    long isDirty = (long)Session["isDirty"];
+        //    isDirty--;
+        //    Session["isDirty"] = isDirty;
+        //}
     }
 }

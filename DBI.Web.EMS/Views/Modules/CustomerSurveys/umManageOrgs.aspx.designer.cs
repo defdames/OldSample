@@ -67,6 +67,33 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.Store uxDollarStore;
         
         /// <summary>
+        /// uxDollarView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.GridView uxDollarView;
+        
+        /// <summary>
+        /// uxLowDollarField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberField uxLowDollarField;
+        
+        /// <summary>
+        /// uxHighDollarField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.NumberField uxHighDollarField;
+        
+        /// <summary>
         /// Column1 control.
         /// </summary>
         /// <remarks>
@@ -74,6 +101,42 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Column Column1;
+        
+        /// <summary>
+        /// uxFormTypeCombo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.ComboBox uxFormTypeCombo;
+        
+        /// <summary>
+        /// uxFormTypeStore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Store uxFormTypeStore;
+        
+        /// <summary>
+        /// Model1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Model Model1;
+        
+        /// <summary>
+        /// uxDollarRowEdit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowEditing uxDollarRowEdit;
         
         /// <summary>
         /// uxAddDollarButton control.
@@ -85,15 +148,6 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.Button uxAddDollarButton;
         
         /// <summary>
-        /// uxEditDollarButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxEditDollarButton;
-        
-        /// <summary>
         /// uxDeleteDollarButton control.
         /// </summary>
         /// <remarks>
@@ -101,6 +155,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Button uxDeleteDollarButton;
+        
+        /// <summary>
+        /// uxDollarSelection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel uxDollarSelection;
         
         /// <summary>
         /// uxThresholdGrid control.
@@ -121,6 +184,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.Store uxThresholdStore;
         
         /// <summary>
+        /// uxThresholdSelection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowSelectionModel uxThresholdSelection;
+        
+        /// <summary>
         /// uxAddThresholdButton control.
         /// </summary>
         /// <remarks>
@@ -130,15 +202,6 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         protected global::Ext.Net.Button uxAddThresholdButton;
         
         /// <summary>
-        /// uxEditThresholdButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Button uxEditThresholdButton;
-        
-        /// <summary>
         /// uxDeleteThresholdButton control.
         /// </summary>
         /// <remarks>
@@ -146,6 +209,15 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Button uxDeleteThresholdButton;
+        
+        /// <summary>
+        /// uxThresholdRowEdit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.RowEditing uxThresholdRowEdit;
         
         /// <summary>
         /// uxAddEditDollarWindow control.
@@ -182,42 +254,6 @@ namespace DBI.Web.EMS.Views.Modules.CustomerSurveys {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Ext.Net.Hidden uxDollarAmountId;
-        
-        /// <summary>
-        /// uxFormTypeCombo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.ComboBox uxFormTypeCombo;
-        
-        /// <summary>
-        /// uxFormTypeStore control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Store uxFormTypeStore;
-        
-        /// <summary>
-        /// uxLowDollar control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.NumberField uxLowDollar;
-        
-        /// <summary>
-        /// uxHighDollar control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.NumberField uxHighDollar;
         
         /// <summary>
         /// uxSaveDollarButton control.

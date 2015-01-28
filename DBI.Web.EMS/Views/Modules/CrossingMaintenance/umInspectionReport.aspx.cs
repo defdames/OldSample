@@ -30,7 +30,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
              if (!X.IsAjaxRequest)
             {
                 uxAddAppRequestedStore.Data = StaticLists.ApplicationRequested;
-                uxAddStateList.Data = StaticLists.StateList;
+                uxAddStateList.Data = StaticLists.CrossingStateList;
 
                 if (SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue") != string.Empty)
                 {
@@ -39,7 +39,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
             }
         }
-         protected void deInspectDateGrid(object sender, StoreReadDataEventArgs e)
+         protected void deInspectDateGrid(object sender, DirectEventArgs e)
          {
             DateTime StartDate = uxStartDate.SelectedDate;
             DateTime EndDate = uxEndDate.SelectedDate;
@@ -49,66 +49,31 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             string State = uxAddStateComboBox.SelectedItem.Value;
             using (Entities _context = new Entities())
             {
-               
-
-                //Get List of all new crossings
                 long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
-                IQueryable<CROSSING_MAINTENANCE.ApplicationDateList> allData = CROSSING_MAINTENANCE.GetInspections(RailroadId, Application, _context);
-               
-               //var allData = (from d in _context.CROSSING_APPLICATION
-               //         join c in _context.CROSSINGS on d.CROSSING_ID equals c.CROSSING_ID
-               //         where c.RAILROAD_ID == RailroadId && d.APPLICATION_REQUESTED == Application && d.INSPECT == "Y"
-               //         select new
-               //         {
-               //             d.CROSSING_ID,
-               //             c.CROSSING_NUMBER,
-               //             c.SUB_DIVISION,
-               //             c.SERVICE_UNIT,
-               //             c.STATE,
-               //             c.MILE_POST,
-               //             c.DOT,
-               //             d.REMARKS,
-               //             d.APPLICATION_DATE,
-               //             d.TRUCK_NUMBER
-               //         });
-              
-               
-               if (StartDate != DateTime.MinValue)
-               {
-                   allData = allData.Where(x => x.APPLICATION_DATE >= StartDate);
-               }
-
-               if (EndDate != DateTime.MinValue)
-               {
-                   allData = allData.Where(x => x.APPLICATION_DATE <= EndDate);
-               }
-
-               if (StartDate != DateTime.MinValue && EndDate != DateTime.MinValue)
-               {
-                   allData = allData.Where(x => x.APPLICATION_DATE >= StartDate && x.APPLICATION_DATE <= EndDate);
-               }
-
-               if (ServiceUnit != null)
-               {
-                   allData = allData.Where(x => x.SERVICE_UNIT == ServiceUnit);
-               }
-
-               if (SubDiv != null)
-               {
-                   allData = allData.Where(x => x.SUB_DIVISION == SubDiv);
-               }
-
-               if (State != null)
-               {
-                   allData = allData.Where(x => x.STATE == State);
-               }
-
-               List<object> _data = allData.ToList<object>();
                 
 
-                int count;
-                uxInspectDateStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], _data, out count);
-                e.Total = count;
+                DateTime selectedStart = StartDate;
+                DateTime selectedEnd = EndDate;
+                decimal selectedApplication = Application;
+                string selectedRailroad = RailroadId.ToString();
+                string selectedServiceUnit = ServiceUnit;
+                string selectedSubDiv = SubDiv;
+                string selectedState = State;
+
+                string url = "/Views/Modules/CrossingMaintenance/Reports/InspectionReport.aspx?selectedRailroad=" + selectedRailroad + "&selectedServiceUnit=" + selectedServiceUnit + "&selectedSubDiv=" + selectedSubDiv + "&selectedState=" + selectedState + "&selectedStart=" + selectedStart + "&selectedEnd=" + selectedEnd + "&selectedApplication=" + selectedApplication;
+                Ext.Net.Panel pan = new Ext.Net.Panel();
+
+                pan.ID = "Tab";
+                pan.Title = "Inspection Date Report";
+                pan.CloseAction = CloseAction.Destroy;
+                pan.Loader = new ComponentLoader();
+                pan.Loader.ID = "loader";
+                pan.Loader.Url = url;
+                pan.Loader.Mode = LoadMode.Frame;
+                pan.Loader.LoadMask.ShowMask = true;
+                pan.Loader.DisableCaching = true;
+                pan.AddTo(uxCenterPanel);
+                
             }
         }
         protected void deClearFilters(object sender, DirectEventArgs e)
@@ -154,59 +119,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 uxAddSubDivStore.DataSource = divisions;
                 uxAddSubDivStore.DataBind();
             }
-        }
-        protected void deLaunchGrid(object sender, DirectEventArgs e)
-        {
-            GridPanel1.Show();
-        }
-        protected void ToXml(object sender, EventArgs e)
-        {
-            string json = this.Hidden1.Value.ToString();
-            StoreSubmitDataEventArgs eSubmit = new StoreSubmitDataEventArgs(json, null);
-            XmlNode xml = eSubmit.Xml;
-
-            string strXml = xml.OuterXml;
-
-            this.Response.Clear();
-            this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.xml");
-            this.Response.AddHeader("Content-Length", strXml.Length.ToString());
-            this.Response.ContentType = "application/xml";
-            this.Response.Write(strXml);
-            this.Response.End();
-        }
-
-        protected void ToExcel(object sender, EventArgs e)
-        {
-            string json = this.Hidden1.Value.ToString();
-            StoreSubmitDataEventArgs eSubmit = new StoreSubmitDataEventArgs(json, null);
-            XmlNode xml = eSubmit.Xml;
-
-            this.Response.Clear();
-            this.Response.ContentType = "application/vnd.ms-excel";
-            this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.xls");
-
-            XslCompiledTransform xtExcel = new XslCompiledTransform();
-
-            xtExcel.Load(Server.MapPath("Excel.xsl"));
-            xtExcel.Transform(xml, null, this.Response.OutputStream);
-            this.Response.End();
-        }
-
-        protected void ToCsv(object sender, EventArgs e)
-        {
-            string json = this.Hidden1.Value.ToString();
-            StoreSubmitDataEventArgs eSubmit = new StoreSubmitDataEventArgs(json, null);
-            XmlNode xml = eSubmit.Xml;
-
-            this.Response.Clear();
-            this.Response.ContentType = "application/octet-stream";
-            this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.csv");
-
-            XslCompiledTransform xtCsv = new XslCompiledTransform();
-
-            xtCsv.Load(Server.MapPath("Csv.xsl"));
-            xtCsv.Transform(xml, null, this.Response.OutputStream);
-            this.Response.End();
-        }
+        }    
+      
     }
 }

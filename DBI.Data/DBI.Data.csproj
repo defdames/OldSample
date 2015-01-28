@@ -42,6 +42,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -170,39 +173,6 @@
     <Compile Include="CROSSING_SUPP_INVOICE.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
-    <Compile Include="CUSTOMER_SURVEY_CAT.cs">
-      <DependentUpon>Oracle.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CUSTOMER_SURVEY_FIELDSETS.cs">
-      <DependentUpon>Oracle.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CUSTOMER_SURVEY_FORMS.cs">
-      <DependentUpon>Oracle.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CUSTOMER_SURVEY_FORMS_ANS.cs">
-      <DependentUpon>Oracle.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CUSTOMER_SURVEY_FORMS_COMP.cs">
-      <DependentUpon>Oracle.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CUSTOMER_SURVEY_FORM_TYPES.cs">
-      <DependentUpon>Oracle.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CUSTOMER_SURVEY_OPTIONS.cs">
-      <DependentUpon>Oracle.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CUSTOMER_SURVEY_QUESTIONS.cs">
-      <DependentUpon>Oracle.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CUSTOMER_SURVEY_QUES_CAT.cs">
-      <DependentUpon>Oracle.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CUSTOMER_SURVEY_QUES_TYPES.cs">
-      <DependentUpon>Oracle.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CUSTOMER_SURVEY_RELATION.cs">
-      <DependentUpon>Oracle.tt</DependentUpon>
-    </Compile>
     <Compile Include="CUSTOMER_SURVEY_THRESHOLDS.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
@@ -286,6 +256,15 @@
     <Compile Include="JOB_TITLE_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="LEADS_COMMENTS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LEADS_CONTACTS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LEADS_MANAGE_MAIN.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="MBL_EMPLOYEE_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
@@ -310,8 +289,10 @@
     <Compile Include="MTL_TRANSACTION_INT_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="Oracle\DAILY_ACTIVITY.cs" />
     <Compile Include="Oracle\OVERHEAD.cs" />
     <Compile Include="Oracle\CROSSING_MAINTENANCE.cs" />
+    <Compile Include="Oracle\SYS_EMAIL.cs" />
     <Compile Include="Oracle\TIMECLOCK.cs" />
     <Compile Include="Oracle\CUSTOMER_SURVEYS.cs" />
     <Compile Include="Oracle\BUDGETBIDDING.cs" />
@@ -400,6 +381,9 @@
     <Compile Include="PA_TRANSACTION_INT_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="PROCESS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="PROJECTS_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
@@ -410,7 +394,46 @@
     <Compile Include="SUBINVENTORY_V.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
+    <Compile Include="SURVEY_CAT.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SURVEY_FIELDSETS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SURVEY_FORMS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SURVEY_FORMS_ANS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SURVEY_FORMS_COMP.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SURVEY_OPTIONS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SURVEY_QUESTIONS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SURVEY_QUES_CAT.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SURVEY_QUES_TYPES.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SURVEY_RELATION.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SURVEY_TYPES.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
     <Compile Include="SYS_ACTIVITY.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SYS_ATTACHMENTS.cs">
+      <DependentUpon>Oracle.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SYS_EMAIL.cs">
       <DependentUpon>Oracle.tt</DependentUpon>
     </Compile>
     <Compile Include="SYS_GROUPS.cs">
@@ -546,6 +569,9 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Oracle\DARSubmittedEmail.html" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

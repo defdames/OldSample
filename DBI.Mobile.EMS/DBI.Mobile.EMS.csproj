@@ -83,6 +83,7 @@
     <Reference Include="System.IdentityModel.Tokens.Jwt">
       <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.1.0.0\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
     </Reference>
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Transactions">
       <Private>True</Private>
     </Reference>
@@ -92,6 +93,12 @@
     <Reference Include="System.Web.ApplicationServices">
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.ComponentModel.DataAnnotations">
       <Private>True</Private>
     </Reference>
@@ -113,6 +120,8 @@
     <Reference Include="System.Web.Routing">
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Xml">
       <Private>True</Private>
     </Reference>
@@ -227,6 +236,8 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\SecurityPermissionsController.cs" />
+    <Compile Include="Controllers\SecurityOrgsController.cs" />
     <Compile Include="Controllers\DARSubmitController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\ProductionController.cs" />
@@ -323,6 +334,7 @@
     <Content Include="iems\1392251685_19.png" />
     <Content Include="iems\iEMS.plist">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="iems\iEMS.ipa">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

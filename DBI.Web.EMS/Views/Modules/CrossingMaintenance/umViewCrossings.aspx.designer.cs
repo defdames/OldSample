@@ -526,24 +526,6 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance {
         protected global::Ext.Net.FieldSet FieldSet3;
         
         /// <summary>
-        /// FieldContainer34 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.FieldContainer FieldContainer34;
-        
-        /// <summary>
-        /// uxAddManagerCI control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.TextField uxAddManagerCI;
-        
-        /// <summary>
         /// FieldContainer35 control.
         /// </summary>
         /// <remarks>

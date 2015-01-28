@@ -81,11 +81,11 @@ namespace DBI.Data
                 .Where(x => x.job_cost.LEVEL_SORT == 8)
                 .Where(x => x.job_cost.BGT_GREC >= x.threshold.LOW_DOLLAR_AMT && x.job_cost.BGT_GREC <= x.threshold.HIGH_DOLLAR_AMT)
                 .Join(_context.CUSTOMER_SURVEY_THRESHOLDS, tham => tham.threshold.AMOUNT_ID, th => th.AMOUNT_ID, (tham, th) => new { job_cost = tham, threshold = th })
-                .Select(x => new Threshold { PROJECT_NAME = x.job_cost.job_cost.PROJECT_NAME, PROJECT_NUMBER = x.job_cost.job_cost.PROJECT_NUMBER, PERCENTAGE = (x.job_cost.job_cost.BGT_GREC == 0 ? 0 : Math.Round((double)(x.job_cost.job_cost.FY_GREC / x.job_cost.job_cost.BGT_GREC * 100))), THRESHOLD = (double)x.threshold.THRESHOLD, THRESHOLD_ID = x.threshold.THRESHOLD_ID, ORG_ID = (long)x.job_cost.job_cost.DIVISION_ID, PROJECT_ID = (long)x.job_cost.job_cost.PROJECT_ID })
+                .Select(x => new Threshold { PROJECT_NAME = x.job_cost.job_cost.PROJECT_NAME, PROJECT_NUMBER = x.job_cost.job_cost.PROJECT_NUMBER, TYPE_ID = x.job_cost.threshold.TYPE_ID, TYPE_NAME = x.job_cost.threshold.SURVEY_TYPES.TYPE_NAME  ,PERCENTAGE = (x.job_cost.job_cost.BGT_GREC == 0 ? 0 : Math.Round((double)(x.job_cost.job_cost.FY_GREC / x.job_cost.job_cost.BGT_GREC * 100))), THRESHOLD = (double)x.threshold.THRESHOLD, THRESHOLD_ID = x.threshold.THRESHOLD_ID, ORG_ID = (long)x.job_cost.job_cost.DIVISION_ID, PROJECT_ID = (long)x.job_cost.job_cost.PROJECT_ID })
                 .Where(x => x.PERCENTAGE > (x.THRESHOLD - 5));
 
             var filtereddata = (from d in data
-                                where !_context.CUSTOMER_SURVEY_FORMS_COMP.Any(x => x.THRESHOLD_ID == d.THRESHOLD_ID && x.PROJECT_ID == d.PROJECT_ID)
+                                where !_context.SURVEY_FORMS_COMP.Any(x => x.THRESHOLD_ID == d.THRESHOLD_ID && x.PROJECT_ID == d.PROJECT_ID)
                                 select d);
                                 
             return filtereddata;
@@ -100,15 +100,23 @@ namespace DBI.Data
         /// <param name="optionalsortDescending"></param>
         /// <param name="optionalNumOfReturnRecords"></param>
         /// <returns></returns>
-        public static List<SingleCombo> LoadedJCWeDates(long hierarchyId, bool optionalsortDescending = false, long optionalNumOfReturnRecords = long.MaxValue)
+        public static List<SingleCombo> LoadedJCWeDates(long hierarchyId, long fiscalYear, bool optionalsortDescending = false, long optionalNumOfReturnRecords = long.MaxValue)
         {
             string sortOrder = optionalsortDescending == false ? sortOrder = "ASC" : sortOrder = "DESC";
             string sql = string.Format(@"
                 SELECT '-- OVERRIDE --' AS ID_NAME FROM DUAL
-                UNION ALL
+
+                    UNION ALL
+    
                 SELECT TO_CHAR(JC_WK_DATE,'DD-Mon-YYYY') ID_NAME
-                FROM (SELECT DISTINCT JC_WK_DATE FROM APPS.XX_JOBCOST_DATES_MV WHERE HIERARCHY_ID = {0} ORDER BY JC_WK_DATE {1}) JC_DATES
-                WHERE ROWNUM <= {2}", hierarchyId, sortOrder, optionalNumOfReturnRecords);
+                FROM 
+                    (SELECT DISTINCT JC_WK_DATE 
+                     FROM APPS.XX_JOBCOST_DATES_MV
+                     WHERE HIERARCHY_ID = {0} 
+                        AND JC_WK_DATE >= (SELECT START_DATE FROM APPS.GL_PERIODS_V WHERE PERIOD_YEAR = {1} AND period_num = 1 AND PERIOD_SET_NAME = 'DBI Calendar' AND period_type = 'Month')
+                        AND JC_WK_DATE <= (SELECT END_DATE FROM APPS.GL_PERIODS_V WHERE PERIOD_YEAR = {1} AND period_num = 12 AND PERIOD_SET_NAME = 'DBI Calendar' AND period_type = 'Month') 
+                     ORDER BY JC_WK_DATE {2}) JC_DATES
+                WHERE ROWNUM <= {3}", hierarchyId, fiscalYear, sortOrder, optionalNumOfReturnRecords);
 
             using (Entities context = new Entities())
             {
@@ -132,6 +140,8 @@ namespace DBI.Data
             public string PROJECT_NAME { get; set; }
             public double THRESHOLD { get; set; }
             public decimal THRESHOLD_ID { get; set; }
+            public string TYPE_NAME { get; set; }
+            public decimal TYPE_ID { get; set; }
             public long PROJECT_ID { get; set; }
             public long ORG_ID { get; set; }
         }

@@ -102,7 +102,7 @@
 
                 <Store>
                     <ext:Store runat="server"
-                        ID="uxIncidentStore" OnReadData="GetIncidentGridData" AutoLoad="true" AutoDataBind="true" GroupField="CROSSING_NUMBER">
+                        ID="uxIncidentStore" OnReadData="GetIncidentGridData" AutoLoad="true" AutoDataBind="true" PageSize="10" GroupField="CROSSING_NUMBER">
                       <%--  <Parameters>
                             <ext:StoreParameter Name="CrossingId" Value="#{uxCrossingIncidentGrid}.getSelectionModel().getSelection()[0].data.CROSSING_ID" Mode="Raw" />
                         </Parameters>--%>
@@ -130,7 +130,7 @@
                 </Store>
                 <ColumnModel>
                     <Columns>
-                        <ext:Column ID="Column2" runat="server" DataIndex="CROSSING_NUMBER" Text="Crossing Number" Flex="1" />
+                        <ext:Column ID="Column2" runat="server" DataIndex="CROSSING_NUMBER" Text="DOT #" Flex="1" />
                         <ext:Column ID="Column6" runat="server" DataIndex="INCIDENT_NUMBER" Text="Incident Number" Flex="1" />
                         <ext:DateColumn ID="DateColumn1" runat="server" DataIndex="DATE_REPORTED" Text="Date Reported" Flex="1" Format="MM/dd/yyyy" />
                         <ext:DateColumn ID="DateColumn2" runat="server" DataIndex="DATE_CLOSED" Text="Date Closed" Flex="1" Format="MM/dd/yyyy" />
@@ -142,13 +142,7 @@
                 <SelectionModel>
                     <ext:RowSelectionModel ID="RowSelectionModel2" runat="server" AllowDeselect="true" Mode="Single" />
                 </SelectionModel>
-                <DirectEvents>
-                    <Select OnEvent="deCloseIncident">
-                        <ExtraParams>
-                            <ext:Parameter Name="IncidentInfo" Value="Ext.encode(#{uxIncidentGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
-                        </ExtraParams>
-                    </Select>
-                </DirectEvents>
+               
                 <TopBar>
                 <ext:Toolbar ID="Toolbar1" runat="server">
                 <Items>
@@ -156,11 +150,25 @@
                         <Listeners>
                             <Click Handler="#{uxIncidentWindow}.show()" />
                         </Listeners>
+                        <DirectEvents>
+                            <Click OnEvent="deAddSetFocus" />
+                        </DirectEvents>
                     </ext:Button>
                     <ext:Button ID="uxCloseIncident" runat="server" Text="Close Incident" Icon="BinClosed" Disabled="true">
                         <Listeners>
                             <Click Handler="#{uxCloseIncidentWindow}.show()" />
                         </Listeners>
+                         <DirectEvents>
+                    <Click OnEvent="deCloseIncident">
+                        <ExtraParams>
+                            <ext:Parameter Name="IncidentInfo" Value="Ext.encode(#{uxIncidentGrid}.getRowsValues({selectedOnly: true}))" Mode="Raw" />
+                        </ExtraParams>
+                    </Click>
+                </DirectEvents>
+                        <DirectEvents>
+                            <Click OnEvent="deCloseSetFocus" />
+                            
+                        </DirectEvents>
                     </ext:Button>
                     <ext:Checkbox runat="server" ID="uxToggleClosed" BoxLabel="Include Closed Incidents" BoxLabelAlign="After">
                         <Listeners>
@@ -179,7 +187,9 @@
                     runat="server"
                     HideGroupedHeader="true" Collapsible="false" Cls="x-grid-group-title; x-grid-group-hd" />
             </Features>
-
+                <BottomBar>
+                    <ext:PagingToolbar runat="server" HideRefresh="true" />
+                </BottomBar>
             </ext:GridPanel>
 
             <ext:Window runat="server"
@@ -194,24 +204,24 @@
                         <Items>
                             <ext:FieldContainer ID="FieldContainer1" runat="server" Layout="HBoxLayout">
                                 <Items>
-                                    <ext:TextField ID="uxIncidentNumber" runat="server" FieldLabel="Incident #" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side"/>
+                                    <ext:TextField ID="uxIncidentNumber" runat="server" FieldLabel="Incident #" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side" TabIndex="1" />
                                 </Items>
                             </ext:FieldContainer>
                             <ext:FieldContainer ID="FieldContainer37" runat="server" Layout="HBoxLayout">
                                 <Items>
-                                    <ext:DateField ID="uxIncidentDateReported" runat="server" FieldLabel="Date Reported" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side" />
+                                    <ext:DateField ID="uxIncidentDateReported" runat="server" FieldLabel="Date Reported" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false"  InvalidCls="allowBlank" IndicatorIcon="BulletRed"  MsgTarget="Side" TabIndex="2" />
                                      <ext:Label ID="Label2" runat="server" Text="" Width="25" />
-                                    <ext:Checkbox ID="uxIncidentSlowOrder" runat="server" BoxLabel="Slow Order" BoxLabelAlign="After" AnchorHorizontal="100%" />
+                                    <ext:Checkbox ID="uxIncidentSlowOrder" runat="server" BoxLabel="Slow Order" BoxLabelAlign="After" AnchorHorizontal="100%" TabIndex="3" />
 
                                     <%-- <ext:DateField ID="uxIncidentDateClosed" runat="server" FieldLabel="Date Closed" AnchorHorizontal="100%" LabelAlign="Right"  />--%>
                                 </Items>
                             </ext:FieldContainer>
 
-                            <ext:TextArea ID="uxIncidentRemarks" runat="server" FieldLabel="Remarks" AnchorHorizontal="100%" LabelAlign="Right" />
+                            <ext:TextArea ID="uxIncidentRemarks" runat="server" FieldLabel="Remarks" AnchorHorizontal="100%" LabelAlign="Right" TabIndex="4" />
 
                         </Items>
                         <Buttons>
-                            <ext:Button runat="server" ID="uxAddIncidentButton" Text="Add" Icon="Add" Disabled="true">
+                            <ext:Button runat="server" ID="uxAddIncidentButton" Text="Add" Icon="Add" Disabled="true" TabIndex="5">
                                 <DirectEvents>
                                     <Click OnEvent="deAddIncident">
                                         <ExtraParams>
@@ -220,7 +230,7 @@
                                     </Click>
                                 </DirectEvents>
                             </ext:Button>
-                            <ext:Button runat="server" ID="Button3" Text="Cancel" Icon="Delete">
+                            <ext:Button runat="server" ID="Button3" Text="Cancel" Icon="Delete" TabIndex="6">
                                 <Listeners>
                                     <Click Handler="#{uxIncidentFormPanel}.reset();
 									#{uxIncidentWindow}.hide()" />
@@ -253,7 +263,7 @@
                             <ext:FieldContainer ID="FieldContainer3" runat="server" Layout="HBoxLayout">
                                 <Items>
                                     <ext:DateField ID="uxCloseDateReported" runat="server" FieldLabel="Date Reported" AnchorHorizontal="100%" LabelAlign="Right" ReadOnly="true" />
-                                    <ext:DateField ID="uxCloseIncidentDateClosed" runat="server" FieldLabel="Date Closed" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false" />
+                                    <ext:DateField ID="uxCloseIncidentDateClosed" runat="server" FieldLabel="Date Closed" AnchorHorizontal="100%" LabelAlign="Right" AllowBlank="false" TabIndex="1" AutoFocus="true" />
 
                                 </Items>
                             </ext:FieldContainer>

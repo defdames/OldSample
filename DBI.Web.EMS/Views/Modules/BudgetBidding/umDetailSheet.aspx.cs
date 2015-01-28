@@ -6,18 +6,23 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Ext.Net;
 using DBI.Data;
+using DBI.Core.Web;
 using Newtonsoft.Json;
-using DBI.Core.Security;
 
 namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 {
-    public partial class umDetailSheet : System.Web.UI.Page
+    public partial class umDetailSheet : BasePage
     {
         // Page Load
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!X.IsAjaxRequest)
             {
+                if (!validateComponentSecurity("SYS.BudgetBidding.View"))
+                {
+                    X.Redirect("~/Views/uxDefault.aspx");
+                }
+
                 long leOrgID = long.Parse(Request.QueryString["leOrgID"]);
                 long orgID = long.Parse(Request.QueryString["orgID"]);
                 long yearID = long.Parse(Request.QueryString["yearID"]);
@@ -40,11 +45,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 string projectName = Request.QueryString["projectName"];
                 long sheetNum = long.Parse(Request.QueryString["sheetNum"]);
                 string detailSheetName = Request.QueryString["detailSheetName"];
-                decimal sGrossRec = Convert.ToDecimal(Request.QueryString["sGrossRec"]);
-                decimal sMatUsage = Convert.ToDecimal(Request.QueryString["sMatUsage"]);
-                decimal sGrossRev = Convert.ToDecimal(Request.QueryString["sGrossRev"]);
-                decimal sDirects = Convert.ToDecimal(Request.QueryString["sDirects"]);
-                decimal sOP = Convert.ToDecimal(Request.QueryString["sOP"]);
                 long sheetCount = BBDetail.Sheets.MaxOrder(budBidProjectID);
 
                 uxYearVersion.Text = yearID + " " + verName;
@@ -54,8 +54,23 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 detailSheetName = (detailSheetName.Length >= 10 && detailSheetName.Substring(0, 10) == "SYS_DETAIL") ? "" : detailSheetName;
                 uxDetailName.Text = detailSheetName;
                 uxComments.Text = BBDetail.Sheet.MainTabField.Comment(detailSheetID);
-                
-                if (sheetNum > 1)
+
+                decimal sGrossRec;
+                decimal sMatUsage;
+                decimal sGrossRev;
+                decimal sDirects;
+                decimal sOP;
+
+                if (sheetNum == 1)
+                {
+                    BBProject.StartNumbers.Fields dataStart = BBProject.StartNumbers.Data(budBidProjectID);
+                    sGrossRec = dataStart.GROSS_REC;
+                    sMatUsage = dataStart.MAT_USAGE;
+                    sGrossRev = dataStart.GROSS_REV;
+                    sDirects = dataStart.DIR_EXP;
+                    sOP = dataStart.OP;
+                }
+                else
                 {
                     long prevSheetID = BBDetail.Sheet.ID(budBidProjectID, sheetNum - 1);
                     BBDetail.Sheet.EndNumbers.Fields sheetStartNums = BBDetail.Sheet.EndNumbers.Get(prevSheetID);
@@ -65,6 +80,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     sDirects = sheetStartNums.DIR_EXP;
                     sOP = sheetStartNums.OP;
                 }
+
                 uxSGrossRec.Text = String.Format("{0:N2}", sGrossRec);
                 uxSMatUsage.Text = String.Format("{0:N2}", sMatUsage);
                 uxSGrossRev.Text = String.Format("{0:N2}", sGrossRev);
@@ -83,6 +99,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
                 decimal laborBurden = BB.LaborBurdenRate(leOrgID, yearID) * 100;
                 uxLaborBurdenLabel.Text = "Labor Burden @ " + (String.Format("{0:N2}", laborBurden)) + "%:";
+
+                uxAddNewBOM.Visible = BB.ShowBOMOrgSetting(orgID);
 
                 CalulateDetailSheet(true);
 
@@ -110,12 +128,12 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 decimal retVal = ForceToDecimal(myTextField.Text, -9999999999.99M, 9999999999.99M);
                 myTextField.Text = String.Format("{0:N2}", retVal);
                 BBDetail.Sheet.MainTabField.DBUpdateNums(budBidProjectID, detailSheetID, recType, retVal);
-                CalulateDetailSheet();                
-            }          
+                CalulateDetailSheet();
+            }
         }
 
- 
-        
+
+
         // Sub grid
         protected void deReadGridData(object sender, StoreReadDataEventArgs e)
         {
@@ -160,10 +178,11 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
                 default:
                     break;
-            }                
+            }
         }
         protected void deAddNewRecord(object sender, DirectEventArgs e)
         {
+            long leOrgID = long.Parse(Request.QueryString["leOrgID"]);
             long projectID = long.Parse(Request.QueryString["projectID"]);
             long detailTaskID = long.Parse(Request.QueryString["detailSheetID"]);
             string detailSheetName = e.ExtraParams["DetailSheetName"];
@@ -173,7 +192,14 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             data = new BUD_BID_DETAIL_SHEET();
             data.DESC_1 = "[NEW]";
             data.DESC_2 = "";
-            data.AMT_1 = 0;
+            if (recType == "PERDIEM")
+            {
+                data.AMT_1 = BB.PerDiemRate(leOrgID);
+            }
+            else
+            {
+                data.AMT_1 = 0;
+            }            
             data.AMT_2 = 0;
             data.AMT_3 = 0;
             data.AMT_4 = 0;
@@ -224,12 +250,22 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     uxLumpSumGridStore.Reload();
                     break;
             }
-
         }
         [DirectMethod(Namespace = "DeleteRecord")]
         public void deDeleteRecord(object sender, DirectEventArgs e)
         {
-            long id = Convert.ToInt64(e.ExtraParams["RecordID"]);
+            uxHidDelRecord.Text = e.ExtraParams["RecordID"];
+
+            X.MessageBox.Confirm("Delete", "Are sure you want to delete the selected record?", new MessageBoxButtonsConfig
+            {
+                Yes = new MessageBoxButtonConfig { Handler = "App.direct.DeleteRecordContinued()", Text = "Yes" },
+                No = new MessageBoxButtonConfig { Text = "No" }
+            }).Show();
+        }
+        [DirectMethod]
+        public void DeleteRecordContinued()
+        {
+            long id = Convert.ToInt64(uxHidDelRecord.Text);
 
             BBDetail.SubGrid.DeleteRecord(id);
             uxMaterialGridStore.Reload();   // FIX THESE WITH SWITCH!
@@ -263,7 +299,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             switch (recType)
             {
                 case "MATERIAL":
-                    data.TOTAL = data.AMT_1 * data.AMT_2;
+                    data.TOTAL = data.AMT_3 * data.AMT_1 * data.AMT_2;
                     GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
                     uxMaterialGridStore.CommitChanges();
                     uxMaterialGridStore.Reload();
@@ -299,7 +335,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
                 case "MOTELS":
                     data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
-                    GenericData.Update<BUD_BID_DETAIL_SHEET>(data);                                
+                    GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
                     uxMotelsGridStore.CommitChanges();
                     uxMotelsGridStore.Reload();
                     break;
@@ -352,10 +388,11 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 data = context.BUD_BID_DETAIL_SHEET.Where(x => x.DETAIL_SHEET_ID == recordID).Single();
             }
 
+            data.AMT_3 = 1;
             data.DESC_1 = material;
             data.DESC_2 = uom;
             data.AMT_1 = Convert.ToDecimal(unitCost);
-            data.TOTAL = data.AMT_1 * data.AMT_2;
+            data.TOTAL = data.AMT_3 * data.AMT_1 * data.AMT_2;
 
             GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
             uxMaterialGridStore.CommitChanges();
@@ -455,9 +492,9 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             string recordID = e.ExtraParams["SelRecordID"];
             uxHidSelPersRecID.Text = recordID;
         }
-        
 
-        
+
+
         // Calculate
         protected void deCalculate(object sender, DirectEventArgs e)
         {
@@ -619,7 +656,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             if (amount < lowRange || amount > highRange) { amount = 0; }
             return amount;
         }
-
         protected void LockDetailSheet()
         {
             uxAddNewMaterial.Disable();
@@ -679,6 +715,52 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxLumpSumDesc.ReadOnly = true;
             uxLumpSumQuantity.ReadOnly = true;
             uxLumpSumCost.ReadOnly = true;
+        }
+
+
+
+        protected void deAddNewBOM(object sender, DirectEventArgs e)
+        {
+            string hierID = Request.QueryString["hierID"];
+            string leOrgID = Request.QueryString["leOrgID"];
+            long orgID = Convert.ToInt64(Request.QueryString["orgID"]);
+            long yearID = Convert.ToInt64(Request.QueryString["fiscalYear"]);
+            string verName = HttpUtility.UrlEncode(Request.QueryString["verName"]);
+            string budBidProjectID = Request.QueryString["projectID"];
+            string detailSheetID = Request.QueryString["detailSheetID"];
+
+            string url = "/Views/Modules/BudgetBidding/umBOM.aspx?hierID=" + hierID + "&leOrgID=" + leOrgID + "&orgID=" + orgID + "&yearID=" + yearID + "&verName=" + verName + "&projectID=" + budBidProjectID + "&detailSheetID=" + detailSheetID;
+
+            Window win = new Window
+            {
+                ID = "uxBOMForm",
+                Height = 330,
+                Width = 600,
+                Title = "BOM",
+                Modal = true,
+                Resizable = false,
+                CloseAction = CloseAction.Destroy,
+                Closable = false,
+                Loader = new ComponentLoader
+                {
+                    Mode = LoadMode.Frame,
+                    DisableCaching = true,
+                    Url = url,
+                    AutoLoad = true,
+                    LoadMask =
+                    {
+                        ShowMask = true
+                    }
+                }
+            };
+            win.Render(this.Form);
+            win.Show();
+        }
+        [DirectMethod]
+        public void CloseBOMWindow()
+        {
+            uxMaterialGridStore.Reload();
+            CalulateDetailSheet();
         }
     }
 }

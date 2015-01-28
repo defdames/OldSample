@@ -6,14 +6,21 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Ext.Net;
 using DBI.Data;
+using DBI.Core.Web;
 
 namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 {
-    public partial class umReorderDetailSheets : System.Web.UI.Page
+    public partial class umReorderDetailSheets : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!X.IsAjaxRequest)
+            {
+                if (!validateComponentSecurity("SYS.BudgetBidding.View"))
+                {
+                    X.Redirect("~/Views/uxDefault.aspx");
+                }
+            }
         }
 
         protected void deLoadDetailSheetNames(object sender, StoreReadDataEventArgs e)
@@ -35,7 +42,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             }
 
             GenericData.Update<BUD_BID_DETAIL_TASK>(gridValues);
-            
+
             X.Js.Call("closeUpdate");
         }
     }

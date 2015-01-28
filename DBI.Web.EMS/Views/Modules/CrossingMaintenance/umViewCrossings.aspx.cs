@@ -21,22 +21,16 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
-            if (!validateComponentSecurity("SYS.CrossingMaintenance.DataEntryView"))
-            {
-                X.Redirect("~/Views/uxDefault.aspx");
-
-            }
             if (!X.IsAjaxRequest)
             {
-                //deLoadUnit();
-                //deLoadType("Edit");
-                //uxAddStateList.Data = StaticLists.CrossingStateList;
-                //uxEditStateList.Data = StaticLists.CrossingStateList;
-                //uxAddPropertyType.Data = StaticLists.PropertyType;
-                //uxEditPropertyType.Data = StaticLists.PropertyType;
-            }
+                if (!validateComponentSecurity("SYS.CrossingMaintenance.DataEntryView"))
+                {
+                    X.Redirect("~/Views/uxDefault.aspx");
 
+                }
+                Toolbar1.Hidden = (!validateComponentSecurity("SYS.CrossingMaintenance.AdminView"));
+           
+            }
         }
 
         protected void deCrossingGridData(object sender, StoreReadDataEventArgs e)
@@ -46,7 +40,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             using (Entities _context = new Entities())
             {
                 //Get List of all new crossings
-                IQueryable<CROSSING_MAINTENANCE.CrossingList> data = CROSSING_MAINTENANCE.GetCrossingProjectListIncidents(RailroadId, _context);
+                IQueryable<CROSSING_MAINTENANCE.CrossingList> data = CROSSING_MAINTENANCE.GetCrossingProjectListView(RailroadId, _context);
               
                 int count;
                 uxCurrentCrossingStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.CrossingList>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
@@ -71,23 +65,20 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                             join r in _context.CROSSING_RAILROAD on d.RAILROAD_ID equals r.RAILROAD_ID
                             where d.CROSSING_ID == CrossingId
                             select new { d, r }).SingleOrDefault();
-                try
-                {
-                    long ContactId = long.Parse(data.d.CONTACT_ID.ToString());
-                    var contactdata = (from c in _context.CROSSING_CONTACTS
-                                       where c.CONTACT_ID == ContactId
+                //try
+                //{
+                //    long Crossing = long.Parse(data.d.CROSSING_ID.ToString());
+                //    var Remarks = (from a in _context.CROSSING_APPLICATION
+                //                   where a.CROSSING_ID == Crossing
+                //                       select a.REMARKS).Last();
 
-                                       select c.CONTACT_NAME).Single();
+                //    uxSpecialInstructCI.SetValue(Remarks);
 
-                    uxAddManagerCI.SetValue(contactdata);
-
-                }
-                catch (Exception)
-                {
-                    uxAddManagerCI.Value = string.Empty;
-
-
-                }
+                //}
+                //catch (NullReferenceException)
+                //{
+                //    uxSpecialInstructCI.Value = null;
+                //}
 
                 uxServiceUnitCI.SetValue(data.d.SERVICE_UNIT);
                 uxSubDivCI.SetValue(data.d.SUB_DIVISION);
@@ -144,6 +135,13 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
 
         }
+        protected void deLoadButtons(object sender, DirectEventArgs e)
+        {
+         
+                uxDeleteCrossingButton.Enable();
+                uxReactivateCrossingButton.Enable();
+            
+        }
         protected void deDeleteCrossing(object sender, DirectEventArgs e)
         {
             CROSSING data;
@@ -176,49 +174,87 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
             });
         }
+        protected void deCheckAssignedStatus(object sender, DirectEventArgs e)
+        {
+            long CrossingId = long.Parse(e.ExtraParams["CrossingId"].ToString());
+      
+               long crossingCount;
+               using (Entities context = new Entities())
+               {
+                  
+                   crossingCount = context.CROSSING_RELATIONSHIP.Where(x => x.CROSSING_ID == CrossingId).Count();
+               }
 
+                   if (crossingCount != 0)
+                   {
+                       uxCutOnlyWindow.Show();                    
+                   }
+                   else
+                   {
+                       Ext.Net.X.Msg.Show(new MessageBoxConfig
+                       {
+                           Title = "Warning",
+                           Message = "Crossing is not assigned to a project. Please assign this crossing to a current project before reactivating.",
+                           Buttons = MessageBox.Button.OK,
+                           Icon = MessageBox.Icon.WARNING
+                       });
+
+            
+                   }
+               
+        }
+        public class AssignedDetails
+        {
+           
+            public long? CROSSING_ID { get; set; }
+         
+
+        }
         protected void deReactivateCrossing(object sender, DirectEventArgs e)
         {
-            CROSSING data;
-            long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
-            string CutOnly = uxCutOnly.Value.ToString();
-            using (Entities _context = new Entities())
-            {
-                data = (from d in _context.CROSSINGS
-                        where d.CROSSING_ID == CrossingId
-                        select d).Single();
+          
+            CROSSING data;        
 
-                data.STATUS = "ACTIVE";
-                if (uxCutOnly.Checked)
+                long CrossingId = long.Parse(e.ExtraParams["CrossingId"]);
+                string CutOnly = uxCutOnly.Value.ToString();
+                using (Entities _context = new Entities())
                 {
-                    CutOnly = "Y";
-                }
-                else
-                {
-                    CutOnly = "N";
-                }
-                data.CUT_ONLY = CutOnly;
-            }
-            GenericData.Update<CROSSING>(data);
+                    data = (from d in _context.CROSSINGS
+                            where d.CROSSING_ID == CrossingId
+                            select d).Single();
 
-            uxCutOnlyWindow.Hide();
-            uxReactivateForm.Reset();
-            uxCrossingForm.Reset();
-            uxCurrentCrossingStore.Reload();
-            uxReactivateCrossingButton.Disable();
-            uxDeleteCrossingButton.Disable();
-
-            Notification.Show(new NotificationConfig()
-            {
-                Title = "Success",
-                Html = "Crossing Reactivated Successfully",
-                HideDelay = 1000,
-                AlignCfg = new NotificationAlignConfig
-                {
-                    ElementAnchor = AnchorPoint.Center,
-                    TargetAnchor = AnchorPoint.Center
+                    data.STATUS = "ACTIVE";
+                    if (uxCutOnly.Checked)
+                    {
+                        CutOnly = "Y";
+                    }
+                    else
+                    {
+                        CutOnly = "N";
+                    }
+                    data.CUT_ONLY = CutOnly;
                 }
-            });
+                GenericData.Update<CROSSING>(data);
+
+                uxCutOnlyWindow.Hide();
+                uxReactivateForm.Reset();
+                uxCrossingForm.Reset();
+                uxCurrentCrossingStore.Reload();
+                uxReactivateCrossingButton.Disable();
+                uxDeleteCrossingButton.Disable();
+
+                Notification.Show(new NotificationConfig()
+                {
+                    Title = "Success",
+                    Html = "Crossing Reactivated Successfully",
+                    HideDelay = 1000,
+                    AlignCfg = new NotificationAlignConfig
+                    {
+                        ElementAnchor = AnchorPoint.Center,
+                        TargetAnchor = AnchorPoint.Center
+                    }
+                });
+            
         }
        
     }

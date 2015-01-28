@@ -174,7 +174,7 @@
                             runat="server"
                             ValueField="ID_NAME"
                             DisplayField="ID_NAME"
-                            Width="253"
+                            Width="200"
                             EmptyText="-- Actions --"
                             Editable="false">
                             <Store>
@@ -202,18 +202,17 @@
 
                         <ext:ComboBox ID="uxSummaryReports"
                             runat="server"
-                            ValueField="ACTION_NAME"
-                            DisplayField="ACTION_NAME"
-                            Width="200"
+                            ValueField="ID_NAME"
+                            DisplayField="ID_NAME"
+                            Width="253"
                             EmptyText="-- Reports/Export --"
                             Editable="false">
                             <Store>
-                                <ext:Store ID="uxSummaryReportsStore" runat="server" OnReadData="deLoadReports" AutoLoad="false">
+                                <ext:Store ID="uxReportsStore" runat="server" OnReadData="deLoadSummaryReports" AutoLoad="false">
                                     <Model>
                                         <ext:Model ID="Model6" runat="server">
                                             <Fields>
-                                                <ext:ModelField Name="ACTION_ID" />
-                                                <ext:ModelField Name="ACTION_NAME" />
+                                                <ext:ModelField Name="ID_NAME" />
                                             </Fields>
                                         </ext:Model>
                                     </Model>
@@ -223,7 +222,7 @@
                                 </ext:Store>
                             </Store>
                             <DirectEvents>
-                                <Select OnEvent="deChooseReport">
+                                <Select OnEvent="deChooseSummaryReport">
                                     <EventMask ShowMask="true" Msg="Processing..." />
                                 </Select>
                             </DirectEvents>
@@ -231,7 +230,7 @@
 
                         <ext:Label ID="uxSpace2" runat="server" Width="5" />
 
-                        <ext:Button ID="uxUpdateAllActuals" runat="server" Text="Update All Actual" Icon="BookEdit">
+                        <ext:Button ID="uxUpdateAllActuals" runat="server" Text="Update All Actuals" Icon="BookEdit">
                             <DirectEvents>
                                 <Click OnEvent="deUpdateAllActuals">
                                     <EventMask ShowMask="true" Msg="Processing..." />
@@ -243,7 +242,7 @@
 
 
                 <%-------------------------------------------------- Top Summary Panel --------------------------------------------------%>
-                <ext:GridPanel ID="uxSummaryGrid" runat="server" Region="North" Height="170">
+                <ext:GridPanel ID="uxSummaryGrid" runat="server" Region="North" Height="190">
                     <SelectionModel>
                         <ext:RowSelectionModel ID="uxGridRowModel" runat="server" AllowDeselect="false" Mode="Single" />
                     </SelectionModel>
@@ -495,6 +494,7 @@
                     </Store>
                     <ColumnModel>
                         <Columns>
+                            <ext:Column ID="Column34" runat="server" DataIndex="BLANK" Text="Blank" Width="10" />
                             <ext:Column ID="Column31" runat="server" DataIndex="ADJUSTMENT" Text="Adjustment" Flex="6" />
                             <ext:Column ID="Column32" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" />
                             <ext:NumberColumn ID="NumberColumn1" runat="server" DataIndex="BLANK" Text="Blank" Flex="1" Align="Right" />
@@ -506,6 +506,7 @@
                             <ext:NumberColumn ID="uxOH" runat="server" DataIndex="OH" Text="Overhead" Flex="2" Align="Right" />
                             <ext:Column ID="Column33" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
                             <ext:NumberColumn ID="NumberColumn8" runat="server" DataIndex="BLANK" Text="Blank" Flex="2" Align="Right" />
+                            <ext:Column ID="Column35" runat="server" DataIndex="BLANK" Text="Blank" Width="20" />
                         </Columns>
                     </ColumnModel>
                     <DockedItems>
@@ -598,7 +599,6 @@
                                                     </ExtraParams>
                                                     <EventMask ShowMask="true" />
                                                 </SelectionChange>
-                                                <SelectionChange OnEvent="deCheckAllowSave" />
                                             </DirectEvents>
                                             <Plugins>
                                                 <ext:FilterHeader runat="server" ID="uxProjectFilter" Remote="true" />
@@ -631,7 +631,7 @@
                             Layout="HBoxLayout">
                             <Items>
                                 <ext:Label ID="Label7" runat="server" Width="120" Text="Project Long Name:" />
-                                <ext:TextField ID="uxProjectName" runat="server" Width="380" ReadOnly="true" SelectOnFocus="true" MaxLength="200" EnforceMaxLength="true">
+                                <ext:TextField ID="uxProjectName" runat="server" Width="380" ReadOnly="true" SelectOnFocus="true" MaxLength="200" EnforceMaxLength="true" FieldStyle="background-color: #EFF7FF; background-image: none;">
                                     <DirectEvents>
                                         <Change OnEvent="deCheckAllowSave" />
                                     </DirectEvents>
@@ -689,7 +689,6 @@
                                     </Store>
                                     <DirectEvents>
                                         <Select OnEvent="deSelectStatus" />
-                                        <Select OnEvent="deCheckAllowSave" />
                                     </DirectEvents>
                                 </ext:ComboBox>
                                 <ext:Label ID="Label14" runat="server" Width="300" />
@@ -760,16 +759,8 @@
                             </Items>
                         </ext:FieldContainer>
 
-                        <ext:FieldContainer ID="FieldContainer11"
-                            runat="server"
-                            Layout="HBoxLayout">
-                            <Items>
-                                <ext:Label ID="Label36" runat="server" Width="60" />
-                            </Items>
-                        </ext:FieldContainer>
-
                         <%----- Begin Detail Sheet Section -----%>
-                        <ext:FieldSet ID="FieldSet1" runat="server" Width="930" Padding="10" Cls="detailBackground">
+                        <ext:FieldSet ID="FieldSet1" runat="server" Width="950" Padding="10" Cls="detailBackground">
                             <Items>
                                 <ext:FieldContainer ID="FieldContainer12"
                                     runat="server"
@@ -854,7 +845,7 @@
                                             runat="server"
                                             ValueField="ID_NAME"
                                             DisplayField="ID_NAME"
-                                            Width="150"
+                                            Width="180"
                                             EmptyText="-- Actions --"
                                             Editable="false">
                                             <Store>
@@ -969,20 +960,13 @@
                                 </ext:FieldContainer>
                             </Items>
                         </ext:FieldSet>
-                        <ext:FieldContainer ID="FieldContainer18"
-                            runat="server"
-                            Layout="HBoxLayout">
-                            <Items>
-                                <ext:Label ID="Label12" runat="server" Width="60" />
-                            </Items>
-                        </ext:FieldContainer>
                         <%----- End Detail Sheet Section -----%>
 
                         <ext:FieldContainer ID="FieldContainer17"
                             runat="server"
                             Layout="HBoxLayout">
                             <Items>
-                                <ext:Label ID="Label3" runat="server" Width="770" />
+                                <ext:Label ID="Label3" runat="server" Width="795" />
                                 <ext:Button ID="uxSave" runat="server" Text="Save" Icon="Add" Width="75">
                                     <DirectEvents>
                                         <Click OnEvent="deSave">

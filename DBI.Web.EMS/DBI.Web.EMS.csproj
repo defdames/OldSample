@@ -48,15 +48,6 @@
     <Reference Include="Antlr3.Runtime">
       <HintPath>..\packages\WebGrease.1.3.0\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
-      <Private>True</Private>
-    </Reference>
     <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
@@ -76,9 +67,10 @@
       <HintPath>..\packages\iTextSharp-LGPL.4.1.6\lib\iTextSharp.dll</HintPath>
     </Reference>
     <Reference Include="MessagingToolkit.Barcode">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\MessagingToolkit\MessagingToolkit-Barcode\Binaries\.NET 3.5\WinForms\x86\MessagingToolkit.Barcode.dll</HintPath>
+      <HintPath>..\lib\MessagingToolkit.Barcode.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\lib\EXT\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -111,6 +103,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -151,7 +144,25 @@
     <Content Include="Resources\Images\wwbnight.png" />
     <Content Include="Resources\Scripts\jquery-2.0.1.js" />
     <Content Include="Resources\Scripts\jquery-2.0.1.min.js" />
+    <Content Include="Views\Modules\BudgetBidding\umAddEditMonthTask.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\umAddEditMonthProject.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\umEditMonthRow.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\umMonthBudget.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\Reports\umRepRollupOPCompare.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\umReportCompareTo.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\Reports\umRepRollupOHCompare.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\Reports\umRepRollupLiab.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\Reports\umRepRollupComm.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\Reports\umRepRollupAllProjects.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\Reports\umRepRollupSum.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\Reports\umRepOrgDetailSheet.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\Reports\umRepOrgProject.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\Reports\umRepOrgComm.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\Reports\umRepOrgLiab.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\Reports\umRepOrgSum.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\umAdminMain.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umBlankBudget.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\umBOM.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umBudgetBiddingMain.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umDetailSheet.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umReorderDetailSheets.aspx" />
@@ -161,10 +172,22 @@
     <Content Include="Views\Modules\CrossingMaintenance\Csv.xsl" />
     <Content Include="Views\Modules\CrossingMaintenance\Excel.xsl" />
     <Content Include="Views\Modules\CrossingMaintenance\ManageKCS.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\AppDateReport.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\IncidentReport.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\InspectionReport.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\MaintenanceInvoiceReport.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\MissingROW.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\PrivateCrossingReport.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\SummaryReport.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\SupplementalBillingReport.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\SupplementalInvoiceReport.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\WeeklyWorkActivity.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umAppDate.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umBillingInvoice.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umBillingMain.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umCrossingHome.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umCrossingSecurityTab.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umDataEntryMain.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umIncident.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umIncidentReports.aspx" />
@@ -183,47 +206,36 @@
     <Content Include="Views\Modules\CrossingMaintenance\umRailroadToolbar.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umReportsMain.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umStateCrossingsList.aspx" />
+    <Content Include="Views\Modules\CrossingMaintenance\umSummaryReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umSuppBillingReport.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umSupplemental.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umSupplementalBilling.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umViewCrossings.aspx" />
     <Content Include="Views\Modules\CrossingMaintenance\umWeeklyWorkActivity.aspx" />
-    <Content Include="Views\Modules\CustomerSurveys\umCopyExisting.aspx" />
-    <Content Include="Views\Modules\CustomerSurveys\umManageForms.aspx" />
+    <Content Include="Views\Modules\FormGenerator\umCopyExisting.aspx" />
+    <Content Include="Views\Modules\CustomerSurveys\umEditFormTarget.aspx" />
+    <Content Include="Views\Modules\FormGenerator\umManageForms.aspx" />
     <Content Include="Views\Modules\CustomerSurveys\umManageOrgs.aspx" />
-    <Content Include="Views\Modules\CustomerSurveys\umQuestionCategories.aspx" />
     <Content Include="Views\Modules\CustomerSurveys\umSurveyCategories.aspx" />
     <Content Include="Views\Modules\CustomerSurveys\umSurveyDashboard.aspx" />
     <Content Include="Views\Modules\CustomerSurveys\umViewCompleted.aspx" />
-    <Content Include="Views\Modules\CustomerSurveys\umViewSurvey.aspx" />
+    <Content Include="Views\Modules\FormGenerator\umViewSurvey.aspx" />
     <Content Include="Views\Modules\DailyActivity\ImageLoader\ImageLoader.aspx" />
-    <Content Include="Views\Modules\DailyActivity\umAddEditChemical.aspx" />
-    <Content Include="Views\Modules\DailyActivity\umAddEditEmployee.aspx" />
-    <Content Include="Views\Modules\DailyActivity\umAddEditEquipment.aspx" />
-    <Content Include="Views\Modules\DailyActivity\umAddEditInventory_DBI.aspx" />
-    <Content Include="Views\Modules\DailyActivity\umAddEditInventory_IRM.aspx" />
-    <Content Include="Views\Modules\DailyActivity\umAddEditProduction_DBI.aspx" />
-    <Content Include="Views\Modules\DailyActivity\umAddEditProduction_IRM.aspx" />
-    <Content Include="Views\Modules\DailyActivity\umAddEditWeather.aspx" />
-    <Content Include="Views\Modules\DailyActivity\umChemicalTab.aspx" />
+    <Content Include="Views\Modules\DailyActivity\test.aspx" />
     <Content Include="Views\Modules\DailyActivity\umChooseLunchHeader.aspx" />
     <Content Include="Views\Modules\DailyActivity\umChoosePerDiem.aspx" />
     <Content Include="Views\Modules\DailyActivity\umCombinedTab_DBI.aspx" />
     <Content Include="Views\Modules\DailyActivity\umCombinedTab_IRM.aspx" />
     <Content Include="Views\Modules\DailyActivity\umDailyActivity.aspx" />
-    <Content Include="Views\Modules\DailyActivity\umEmployeesTab.aspx" />
-    <Content Include="Views\Modules\DailyActivity\umEquipmentTab.aspx" />
     <Content Include="Views\Modules\DailyActivity\umHeaderTab.aspx" />
     <Content Include="Views\Modules\DailyActivity\umInventoryReport.aspx" />
-    <Content Include="Views\Modules\DailyActivity\umInventoryTab_DBI.aspx" />
-    <Content Include="Views\Modules\DailyActivity\umInventoryTab_IRM.aspx" />
     <Content Include="Views\Modules\DailyActivity\umManageExisting.aspx" />
     <Content Include="Views\Modules\DailyActivity\umPostMultipleWindow.aspx" />
-    <Content Include="Views\Modules\DailyActivity\umProductionTab_DBI.aspx" />
-    <Content Include="Views\Modules\DailyActivity\umProductionTab_IRM.aspx" />
+    <Content Include="Views\Modules\DailyActivity\umPrintMultipleWindow.aspx" />
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_DBI.aspx" />
     <Content Include="Views\Modules\DailyActivity\umSubmitActivity_IRM.aspx" />
-    <Content Include="Views\Modules\DailyActivity\umWeatherTab.aspx" />
+    <Content Include="Views\Modules\Fleet\umEquipmentThermalPrintReport.aspx" />
+    <Content Include="Views\Modules\Fleet\umViewEquipmentList.aspx" />
     <Content Include="Views\Modules\Overhead\umMyRollUpReport.aspx" />
     <Content Include="Views\Modules\Overhead\umAddGLAccountForCategory.aspx" />
     <Content Include="Views\Modules\Overhead\umAddOverheadDetailLine.aspx" />
@@ -244,6 +256,8 @@
     <Content Include="Views\Modules\Overhead\umCategoryMaint.aspx" />
     <Content Include="Views\Modules\Overhead\umViewActualsWindow.aspx" />
     <Content Include="Views\Modules\Overhead\umViewBudget.aspx" />
+    <Content Include="Views\Modules\ReportTemplates\Portrait.aspx" />
+    <Content Include="Views\Modules\ReportTemplates\Landscape.aspx" />
     <Content Include="Views\Modules\Security\Options\AddEdit\umAddEditProfileOptions.aspx" />
     <Content Include="Views\Modules\Security\umEditGroups.aspx" />
     <Content Include="Views\Modules\Security\umEditModules.aspx" />
@@ -271,6 +285,7 @@
     </Content>
     <None Include="Web.APPDEV.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
     <None Include="Web.PCL05.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -278,6 +293,7 @@
     </None>
     <None Include="Web.PROD.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -289,6 +305,7 @@
     </Compile>
     <Compile Include="QRCodeGenerator.aspx.cs">
       <DependentUpon>QRCodeGenerator.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="QRCodeGenerator.aspx.designer.cs">
       <DependentUpon>QRCodeGenerator.aspx</DependentUpon>
@@ -314,12 +331,138 @@
     <Compile Include="Views\Handlers\SystemUsers.ashx.cs">
       <DependentUpon>SystemUsers.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umAddEditMonthTask.aspx.cs">
+      <DependentUpon>umAddEditMonthTask.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umAddEditMonthTask.aspx.designer.cs">
+      <DependentUpon>umAddEditMonthTask.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umAddEditMonthProject.aspx.cs">
+      <DependentUpon>umAddEditMonthProject.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umAddEditMonthProject.aspx.designer.cs">
+      <DependentUpon>umAddEditMonthProject.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umEditMonthRow.aspx.cs">
+      <DependentUpon>umEditMonthRow.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umEditMonthRow.aspx.designer.cs">
+      <DependentUpon>umEditMonthRow.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umMonthBudget.aspx.cs">
+      <DependentUpon>umMonthBudget.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umMonthBudget.aspx.designer.cs">
+      <DependentUpon>umMonthBudget.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepRollupOPCompare.aspx.cs">
+      <DependentUpon>umRepRollupOPCompare.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepRollupOPCompare.aspx.designer.cs">
+      <DependentUpon>umRepRollupOPCompare.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umReportCompareTo.aspx.cs">
+      <DependentUpon>umReportCompareTo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umReportCompareTo.aspx.designer.cs">
+      <DependentUpon>umReportCompareTo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepRollupOHCompare.aspx.cs">
+      <DependentUpon>umRepRollupOHCompare.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepRollupOHCompare.aspx.designer.cs">
+      <DependentUpon>umRepRollupOHCompare.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepRollupLiab.aspx.cs">
+      <DependentUpon>umRepRollupLiab.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepRollupLiab.aspx.designer.cs">
+      <DependentUpon>umRepRollupLiab.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepRollupComm.aspx.cs">
+      <DependentUpon>umRepRollupComm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepRollupComm.aspx.designer.cs">
+      <DependentUpon>umRepRollupComm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepRollupAllProjects.aspx.cs">
+      <DependentUpon>umRepRollupAllProjects.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepRollupAllProjects.aspx.designer.cs">
+      <DependentUpon>umRepRollupAllProjects.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepRollupSum.aspx.cs">
+      <DependentUpon>umRepRollupSum.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepRollupSum.aspx.designer.cs">
+      <DependentUpon>umRepRollupSum.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepOrgDetailSheet.aspx.cs">
+      <DependentUpon>umRepOrgDetailSheet.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepOrgDetailSheet.aspx.designer.cs">
+      <DependentUpon>umRepOrgDetailSheet.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepOrgProject.aspx.cs">
+      <DependentUpon>umRepOrgProject.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepOrgProject.aspx.designer.cs">
+      <DependentUpon>umRepOrgProject.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepOrgComm.aspx.cs">
+      <DependentUpon>umRepOrgComm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepOrgComm.aspx.designer.cs">
+      <DependentUpon>umRepOrgComm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepOrgLiab.aspx.cs">
+      <DependentUpon>umRepOrgLiab.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepOrgLiab.aspx.designer.cs">
+      <DependentUpon>umRepOrgLiab.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepOrgSum.aspx.cs">
+      <DependentUpon>umRepOrgSum.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepOrgSum.aspx.designer.cs">
+      <DependentUpon>umRepOrgSum.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umAdminMain.aspx.cs">
+      <DependentUpon>umAdminMain.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umAdminMain.aspx.designer.cs">
+      <DependentUpon>umAdminMain.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\BudgetBidding\umBlankBudget.aspx.cs">
       <DependentUpon>umBlankBudget.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Views\Modules\BudgetBidding\umBlankBudget.aspx.designer.cs">
       <DependentUpon>umBlankBudget.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umBOM.aspx.cs">
+      <DependentUpon>umBOM.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\BudgetBidding\umBOM.aspx.designer.cs">
+      <DependentUpon>umBOM.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\BudgetBidding\umBudgetBiddingMain.aspx.cs">
       <DependentUpon>umBudgetBiddingMain.aspx</DependentUpon>
@@ -370,6 +513,83 @@
     <Compile Include="Views\Modules\CrossingMaintenance\ManageKCS.aspx.designer.cs">
       <DependentUpon>ManageKCS.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\AppDateReport.aspx.cs">
+      <DependentUpon>AppDateReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\AppDateReport.aspx.designer.cs">
+      <DependentUpon>AppDateReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\IncidentReport.aspx.cs">
+      <DependentUpon>IncidentReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\IncidentReport.aspx.designer.cs">
+      <DependentUpon>IncidentReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\InspectionReport.aspx.cs">
+      <DependentUpon>InspectionReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\InspectionReport.aspx.designer.cs">
+      <DependentUpon>InspectionReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\MaintenanceInvoiceReport.aspx.cs">
+      <DependentUpon>MaintenanceInvoiceReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\MaintenanceInvoiceReport.aspx.designer.cs">
+      <DependentUpon>MaintenanceInvoiceReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\MissingROW.aspx.cs">
+      <DependentUpon>MissingROW.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\MissingROW.aspx.designer.cs">
+      <DependentUpon>MissingROW.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\PrivateCrossingReport.aspx.cs">
+      <DependentUpon>PrivateCrossingReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\PrivateCrossingReport.aspx.designer.cs">
+      <DependentUpon>PrivateCrossingReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.aspx.cs">
+      <DependentUpon>StateCrossingListReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.aspx.designer.cs">
+      <DependentUpon>StateCrossingListReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\SummaryReport.aspx.cs">
+      <DependentUpon>SummaryReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\SummaryReport.aspx.designer.cs">
+      <DependentUpon>SummaryReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\SupplementalBillingReport.aspx.cs">
+      <DependentUpon>SupplementalBillingReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\SupplementalBillingReport.aspx.designer.cs">
+      <DependentUpon>SupplementalBillingReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\SupplementalInvoiceReport.aspx.cs">
+      <DependentUpon>SupplementalInvoiceReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\SupplementalInvoiceReport.aspx.designer.cs">
+      <DependentUpon>SupplementalInvoiceReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\WeeklyWorkActivity.aspx.cs">
+      <DependentUpon>WeeklyWorkActivity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\Reports\WeeklyWorkActivity.aspx.designer.cs">
+      <DependentUpon>WeeklyWorkActivity.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\StateCrossingList.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -402,6 +622,13 @@
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umCrossingHome.aspx.designer.cs">
       <DependentUpon>umCrossingHome.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umCrossingSecurityTab.aspx.cs">
+      <DependentUpon>umCrossingSecurityTab.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umCrossingSecurityTab.aspx.designer.cs">
+      <DependentUpon>umCrossingSecurityTab.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umDataEntryMain.aspx.cs">
       <DependentUpon>umDataEntryMain.aspx</DependentUpon>
@@ -529,6 +756,13 @@
     <Compile Include="Views\Modules\CrossingMaintenance\umStateCrossingsList.aspx.designer.cs">
       <DependentUpon>umStateCrossingsList.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umSummaryReport.aspx.cs">
+      <DependentUpon>umSummaryReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CrossingMaintenance\umSummaryReport.aspx.designer.cs">
+      <DependentUpon>umSummaryReport.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\CrossingMaintenance\umSuppBillingReport.aspx.cs">
       <DependentUpon>umSuppBillingReport.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -564,18 +798,25 @@
     <Compile Include="Views\Modules\CrossingMaintenance\umWeeklyWorkActivity.aspx.designer.cs">
       <DependentUpon>umWeeklyWorkActivity.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\CustomerSurveys\umCopyExisting.aspx.cs">
+    <Compile Include="Views\Modules\FormGenerator\umCopyExisting.aspx.cs">
       <DependentUpon>umCopyExisting.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\CustomerSurveys\umCopyExisting.aspx.designer.cs">
+    <Compile Include="Views\Modules\FormGenerator\umCopyExisting.aspx.designer.cs">
       <DependentUpon>umCopyExisting.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\CustomerSurveys\umManageForms.aspx.cs">
+    <Compile Include="Views\Modules\CustomerSurveys\umEditFormTarget.aspx.cs">
+      <DependentUpon>umEditFormTarget.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\CustomerSurveys\umEditFormTarget.aspx.designer.cs">
+      <DependentUpon>umEditFormTarget.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\FormGenerator\umManageForms.aspx.cs">
       <DependentUpon>umManageForms.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\CustomerSurveys\umManageForms.aspx.designer.cs">
+    <Compile Include="Views\Modules\FormGenerator\umManageForms.aspx.designer.cs">
       <DependentUpon>umManageForms.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CustomerSurveys\umManageOrgs.aspx.cs">
@@ -584,13 +825,6 @@
     </Compile>
     <Compile Include="Views\Modules\CustomerSurveys\umManageOrgs.aspx.designer.cs">
       <DependentUpon>umManageOrgs.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\CustomerSurveys\umQuestionCategories.aspx.cs">
-      <DependentUpon>umQuestionCategories.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Modules\CustomerSurveys\umQuestionCategories.aspx.designer.cs">
-      <DependentUpon>umQuestionCategories.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\CustomerSurveys\umSurveyCategories.aspx.cs">
       <DependentUpon>umSurveyCategories.aspx</DependentUpon>
@@ -613,11 +847,11 @@
     <Compile Include="Views\Modules\CustomerSurveys\umViewCompleted.aspx.designer.cs">
       <DependentUpon>umViewCompleted.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\CustomerSurveys\umViewSurvey.aspx.cs">
+    <Compile Include="Views\Modules\FormGenerator\umViewSurvey.aspx.cs">
       <DependentUpon>umViewSurvey.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\CustomerSurveys\umViewSurvey.aspx.designer.cs">
+    <Compile Include="Views\Modules\FormGenerator\umViewSurvey.aspx.designer.cs">
       <DependentUpon>umViewSurvey.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\ImageLoader\ImageLoader.aspx.cs">
@@ -627,68 +861,12 @@
     <Compile Include="Views\Modules\DailyActivity\ImageLoader\ImageLoader.aspx.designer.cs">
       <DependentUpon>ImageLoader.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umAddEditChemical.aspx.cs">
-      <DependentUpon>umAddEditChemical.aspx</DependentUpon>
+    <Compile Include="Views\Modules\DailyActivity\test.aspx.cs">
+      <DependentUpon>test.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umAddEditChemical.aspx.designer.cs">
-      <DependentUpon>umAddEditChemical.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umAddEditEmployee.aspx.cs">
-      <DependentUpon>umAddEditEmployee.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umAddEditEmployee.aspx.designer.cs">
-      <DependentUpon>umAddEditEmployee.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umAddEditEquipment.aspx.cs">
-      <DependentUpon>umAddEditEquipment.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umAddEditEquipment.aspx.designer.cs">
-      <DependentUpon>umAddEditEquipment.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umAddEditInventory_DBI.aspx.cs">
-      <DependentUpon>umAddEditInventory_DBI.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umAddEditInventory_DBI.aspx.designer.cs">
-      <DependentUpon>umAddEditInventory_DBI.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umAddEditInventory_IRM.aspx.cs">
-      <DependentUpon>umAddEditInventory_IRM.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umAddEditInventory_IRM.aspx.designer.cs">
-      <DependentUpon>umAddEditInventory_IRM.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umAddEditProduction_DBI.aspx.cs">
-      <DependentUpon>umAddEditProduction_DBI.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umAddEditProduction_DBI.aspx.designer.cs">
-      <DependentUpon>umAddEditProduction_DBI.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umAddEditProduction_IRM.aspx.cs">
-      <DependentUpon>umAddEditProduction_IRM.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umAddEditProduction_IRM.aspx.designer.cs">
-      <DependentUpon>umAddEditProduction_IRM.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umAddEditWeather.aspx.cs">
-      <DependentUpon>umAddEditWeather.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umAddEditWeather.aspx.designer.cs">
-      <DependentUpon>umAddEditWeather.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umChemicalTab.aspx.cs">
-      <DependentUpon>umChemicalTab.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umChemicalTab.aspx.designer.cs">
-      <DependentUpon>umChemicalTab.aspx</DependentUpon>
+    <Compile Include="Views\Modules\DailyActivity\test.aspx.designer.cs">
+      <DependentUpon>test.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umChooseLunchHeader.aspx.cs">
       <DependentUpon>umChooseLunchHeader.aspx</DependentUpon>
@@ -725,20 +903,6 @@
     <Compile Include="Views\Modules\DailyActivity\umDailyActivity.aspx.designer.cs">
       <DependentUpon>umDailyActivity.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umEmployeesTab.aspx.cs">
-      <DependentUpon>umEmployeesTab.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umEmployeesTab.aspx.designer.cs">
-      <DependentUpon>umEmployeesTab.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umEquipmentTab.aspx.cs">
-      <DependentUpon>umEquipmentTab.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umEquipmentTab.aspx.designer.cs">
-      <DependentUpon>umEquipmentTab.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Views\Modules\DailyActivity\umHeaderTab.aspx.cs">
       <DependentUpon>umHeaderTab.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -752,20 +916,6 @@
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umInventoryReport.aspx.designer.cs">
       <DependentUpon>umInventoryReport.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umInventoryTab_DBI.aspx.cs">
-      <DependentUpon>umInventoryTab_DBI.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umInventoryTab_DBI.aspx.designer.cs">
-      <DependentUpon>umInventoryTab_DBI.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umInventoryTab_IRM.aspx.cs">
-      <DependentUpon>umInventoryTab_IRM.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umInventoryTab_IRM.aspx.designer.cs">
-      <DependentUpon>umInventoryTab_IRM.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umManageExisting.aspx.cs">
       <DependentUpon>umManageExisting.aspx</DependentUpon>
@@ -781,19 +931,12 @@
     <Compile Include="Views\Modules\DailyActivity\umPostMultipleWindow.aspx.designer.cs">
       <DependentUpon>umPostMultipleWindow.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umProductionTab_DBI.aspx.cs">
-      <DependentUpon>umProductionTab_DBI.aspx</DependentUpon>
+    <Compile Include="Views\Modules\DailyActivity\umPrintMultipleWindow.aspx.cs">
+      <DependentUpon>umPrintMultipleWindow.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umProductionTab_DBI.aspx.designer.cs">
-      <DependentUpon>umProductionTab_DBI.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umProductionTab_IRM.aspx.cs">
-      <DependentUpon>umProductionTab_IRM.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umProductionTab_IRM.aspx.designer.cs">
-      <DependentUpon>umProductionTab_IRM.aspx</DependentUpon>
+    <Compile Include="Views\Modules\DailyActivity\umPrintMultipleWindow.aspx.designer.cs">
+      <DependentUpon>umPrintMultipleWindow.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\DailyActivity\umSubmitActivity_DBI.aspx.cs">
       <DependentUpon>umSubmitActivity_DBI.aspx</DependentUpon>
@@ -809,14 +952,21 @@
     <Compile Include="Views\Modules\DailyActivity\umSubmitActivity_IRM.aspx.designer.cs">
       <DependentUpon>umSubmitActivity_IRM.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umWeatherTab.aspx.cs">
-      <DependentUpon>umWeatherTab.aspx</DependentUpon>
+    <Compile Include="Views\Modules\DailyActivity\ValidationChecks.cs" />
+    <Compile Include="Views\Modules\Fleet\umEquipmentThermalPrintReport.aspx.cs">
+      <DependentUpon>umEquipmentThermalPrintReport.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\DailyActivity\umWeatherTab.aspx.designer.cs">
-      <DependentUpon>umWeatherTab.aspx</DependentUpon>
+    <Compile Include="Views\Modules\Fleet\umEquipmentThermalPrintReport.aspx.designer.cs">
+      <DependentUpon>umEquipmentThermalPrintReport.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\DailyActivity\ValidationChecks.cs" />
+    <Compile Include="Views\Modules\Fleet\umViewEquipmentList.aspx.cs">
+      <DependentUpon>umViewEquipmentList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\Fleet\umViewEquipmentList.aspx.designer.cs">
+      <DependentUpon>umViewEquipmentList.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modules\Overhead\umMyRollUpReport.aspx.cs">
       <DependentUpon>umMyRollUpReport.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -956,6 +1106,20 @@
     </Compile>
     <Compile Include="Views\Modules\Overhead\umViewBudget.aspx.designer.cs">
       <DependentUpon>umViewBudget.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\ReportTemplates\Portrait.aspx.cs">
+      <DependentUpon>Portrait.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\ReportTemplates\Portrait.aspx.designer.cs">
+      <DependentUpon>Portrait.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modules\ReportTemplates\Landscape.aspx.cs">
+      <DependentUpon>Landscape.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Modules\ReportTemplates\Landscape.aspx.designer.cs">
+      <DependentUpon>Landscape.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\Security\Options\AddEdit\umAddEditProfileOptions.aspx.cs">
       <DependentUpon>umAddEditProfileOptions.aspx</DependentUpon>
@@ -1146,11 +1310,83 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Report1.rdlc" />
+    <Content Include="Views\Modules\BudgetBidding\Reports\DetailSheet.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Modules\BudgetBidding\Reports\RollupSummary.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Modules\BudgetBidding\Reports\AllProjects.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Modules\BudgetBidding\Reports\RollupComments.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Modules\BudgetBidding\Reports\RollupLiabilities.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Modules\BudgetBidding\Reports\RollupOHCompare.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Modules\BudgetBidding\Reports\RollupOPCompare.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\MaintenanceInvoiceReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\AppDateReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\InspectionReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\IncidentReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\SummaryReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="Views\Modules\CrossingMaintenance\Reports\StateCrossingListReport.rdlc" />
+    <Content Include="Views\Modules\BudgetBidding\Reports\ProjectDetail.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\PrivateCrossingReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\MissingROW.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\WeeklyWorkActivity.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\SupplementalBillingReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Modules\CrossingMaintenance\Reports\SupplementalInvoiceReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="Views\Modules\CrossingMaintenance\StateCrossingList.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>StateCrossingList.cs</LastGenOutput>
     </EmbeddedResource>
+    <Content Include="Views\Modules\BudgetBidding\Reports\Comments.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Modules\BudgetBidding\Reports\Liabilities.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Modules\BudgetBidding\Reports\Summary.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Modules\ReportTemplates\Portrait.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Modules\ReportTemplates\Landscape.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
@@ -1158,6 +1394,7 @@
   <ItemGroup>
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

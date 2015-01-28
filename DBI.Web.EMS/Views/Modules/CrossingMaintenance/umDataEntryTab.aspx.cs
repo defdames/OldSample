@@ -27,7 +27,7 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
             if (!X.IsAjaxRequest)
             {
-                //uxAddAppRequestedStore.Data = StaticLists.ApplicationRequested;
+               
                 Store1.Data = StaticLists.ApplicationRequested;
                 CheckboxSelectionModel sm = CheckboxSelectionModel1;
                 sm.ClearSelection();
@@ -46,7 +46,11 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             uxHidVerOK.Text = "Y";
             uxAppEntryCrossingStore.Reload();
         }
-
+        protected void deSetAppValue(object sender, DirectEventArgs e)
+        {
+            uxAddApp.SetValue(ComboBox1.SelectedItem.Value);
+            uxAddEntryDate.Focus();
+        }
        
         protected void deApplicationGridData(object sender, StoreReadDataEventArgs e)
         {
@@ -70,19 +74,19 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 if (Application == 1)
                 {
                     dataSource = dataSource.Where(x => x.APPLICATION_REQUESTED == null).ToList();
-                    csm.ClearSelection();
+                  
                 }
 
                 if (Application == 2)
                 {
                     dataSource = dataSource.Where(x => x.APPLICATION_REQUESTED == 1).ToList();
-                    csm.ClearSelection();
+              
                 }
 
                 if (Application == 3)
                 {
                     dataSource = dataSource.Where(x => x.APPLICATION_REQUESTED == 2).ToList();
-                    csm.ClearSelection();
+                 
                 }
               
                 List<object> _data = dataSource.ToList<object>();
@@ -97,10 +101,10 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
             }
         
         }
-      
+
         protected void deLoadData(object sender, DirectEventArgs e)
         {
-            uxApplicationStore.Reload();
+            
             uxAddAppButton.Enable();
         }
 
@@ -108,17 +112,11 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
         {
 
             //Get application data and set datasource
-            CheckboxSelectionModel sm = CheckboxSelectionModel1;
-           
-            List<long> crossingIdList = new List<long>();
-          
-            foreach (SelectedRow sr in sm.SelectedRows)
-            {
-              crossingIdList.Add(long.Parse(sr.RecordID));
-            }
+       
                 using (Entities _context = new Entities())
                 {
-                    IQueryable<CROSSING_MAINTENANCE.ApplicationList> data = CROSSING_MAINTENANCE.GetApplications(_context).Where(s => crossingIdList.Contains(s.CROSSING_ID));
+                    long RailroadId = long.Parse(SYS_USER_PROFILE_OPTIONS.UserProfileOption("UserCrossingSelectedValue"));
+                    IQueryable<CROSSING_MAINTENANCE.ApplicationList> data = CROSSING_MAINTENANCE.GetApplications(_context, RailroadId);
                    
                     int count;
                     uxApplicationStore.DataSource = GenericData.ListFilterHeader<CROSSING_MAINTENANCE.ApplicationList>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], data, out count);
@@ -139,9 +137,9 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 }
                 else
                 {
-                    int CurrentOrg = Convert.ToInt32(Authentication.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
+                    List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
                     //Get projects for my org only
-                    dataIn = WEB_EQUIPMENT_V.ListEquipment(CurrentOrg);
+                    dataIn = WEB_EQUIPMENT_V.ListEquipment(OrgsList);
                 }
 
                 int count;
@@ -156,125 +154,244 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
 
             }
         }
-      
+
         protected void deAddApplication(object sender, DirectEventArgs e)
         {
             CheckboxSelectionModel sm = CheckboxSelectionModel1;
 
-                CROSSING_APPLICATION data;
+            CROSSING_APPLICATION data;
 
-                //do type conversions
+            //do type conversions
 
-                long ProjectId = Convert.ToInt64(uxAddProjectDropDownField.Value);                
-                DateTime Date = (DateTime)uxAddEntryDate.Value;
-                decimal AppRequested = Convert.ToDecimal(uxAddApp.Value);
-                string TruckNumber = uxAddEquipmentDropDown.Value.ToString();
-                string Spray = uxAddEntrySprayBox.Value.ToString();
-                string Cut = uxAddEntryCutBox.Value.ToString();
-                string Inspect = uxAddEntryInspectBox.Value.ToString();
-                uxAddApp.SetValue(ComboBox1.SelectedItem.Value);
-                if (uxAddEntrySprayBox.Checked)
-                {
-                    Spray = "Y";
-                }
-                else
-                {
-                    Spray = "N";
-                }
-
-                if (uxAddEntryCutBox.Checked)
-                {
-                    Cut = "Y";
-                }
-                else
-                {
-                    Cut = "N";
-                }
-
-                if (uxAddEntryInspectBox.Checked)
-                {
-                    Inspect = "Y";
-                }
-                else
-                {
-                    Inspect = "N";
-                }
-
-                foreach (SelectedRow sr in sm.SelectedRows)
-                {   
-                    //check for if application requested has been duplicated in the same fiscal year.
-
-                    DateTime AppDate = uxAddEntryDate.SelectedDate;
-                    DateTime Start = new DateTime(2013, 11, 1); //this pulls in november 1st of year for fiscal yr
-                    DateTime End = new DateTime(2014, 10, 31); //this pulls in oct 31st of next year for fiscal yr
-                    string app = (e.ExtraParams["appList"]);
-                    List<AppNumber> appList = JSON.Deserialize<List<AppNumber>>(app);
-
-                    List<object> checkApp;
-                    using (Entities _context = new Entities())
-                    {
-                        checkApp = (from a in _context.CROSSING_APPLICATION
-                                    where a.APPLICATION_REQUESTED == AppRequested
-                                    select new { a.APPLICATION_REQUESTED, a.APPLICATION_ID }).ToList<object>();
-
-
-
-                        if (AppDate >= Start.Date && AppDate <= End.Date && appList.Where(x => x.APPLICATION_REQUESTED == AppRequested).Count() > 0)
-                        {
-
-                            X.Msg.Alert("Warning", "Application exists for this fiscal year").Show();
-
-                        }
-
-                        else
-                        {
-                            data = new CROSSING_APPLICATION();
-                            data.APPLICATION_DATE = Date;
-                            data.APPLICATION_REQUESTED = AppRequested;
-                            data.TRUCK_NUMBER = TruckNumber;
-                            data.SPRAY = Spray;
-                            data.CUT = Cut;
-                            data.INSPECT = Inspect;
-                            data.CROSSING_ID = long.Parse(sr.RecordID);
-                            data.CREATE_DATE = DateTime.Now;
-                            data.MODIFY_DATE = DateTime.Now;
-                            data.CREATED_BY = User.Identity.Name;
-                            data.MODIFIED_BY = User.Identity.Name;
-                            data.PROJECT_ID = ProjectId;
-                            try
-                            {
-                                string Remarks = uxAddEntryRemarks.Value.ToString();
-                                data.REMARKS = Remarks;
-                            }
-                            catch (Exception)
-                            {
-                                data.REMARKS = null;
-                            }
-                            GenericData.Insert<CROSSING_APPLICATION>(data);
-
-                            uxAddNewApplicationEntryWindow.Hide();
-                            uxAppEntryCrossingStore.Reload();
-                            sm.ClearSelection();
-                            uxApplicationStore.Reload();
-                            uxAddApplicationForm.Reset();
-
-
-                            Notification.Show(new NotificationConfig()
-                            {
-                                Title = "Success",
-                                Html = "Application Added Successfully",
-                                HideDelay = 1000,
-                                AlignCfg = new NotificationAlignConfig
-                                {
-                                    ElementAnchor = AnchorPoint.Center,
-                                    TargetAnchor = AnchorPoint.Center
-                                }
-                            });
-                        }
-                    }
-                }
+            long ProjectId = Convert.ToInt64(uxAddProjectDropDownField.Value);
+            DateTime Date = (DateTime)uxAddEntryDate.Value;
+            decimal AppRequested = Convert.ToDecimal(uxAddApp.Value);
+            string TruckNumber = uxAddEquipmentDropDown.Value.ToString();
+            string Spray = uxAddEntrySprayBox.Value.ToString();
+            string Cut = uxAddEntryCutBox.Value.ToString();
+            string Inspect = uxAddEntryInspectBox.Value.ToString();
+            uxAddApp.SetValue(ComboBox1.SelectedItem.Value);
+            if (uxAddEntrySprayBox.Checked)
+            {
+                Spray = "Y";
+            }
+            else
+            {
+                Spray = "N";
             }
 
+            if (uxAddEntryCutBox.Checked)
+            {
+                Cut = "Y";
+            }
+            else
+            {
+                Cut = "N";
+            }
+
+            if (uxAddEntryInspectBox.Checked)
+            {
+                Inspect = "Y";
+            }
+            else
+            {
+                Inspect = "N";
+            }
+
+            foreach (SelectedRow sr in sm.SelectedRows)
+            {
+                //    //check for if application requested has been duplicated in the same fiscal year.
+
+                //    DateTime AppDate = uxAddEntryDate.SelectedDate;
+                //    DateTime Start = new DateTime(2013, 11, 1); //this pulls in november 1st of year for fiscal yr
+                //    DateTime End = new DateTime(2014, 10, 31); //this pulls in oct 31st of next year for fiscal yr
+                //    string app = (e.ExtraParams["appList"]);
+                //    List<AppNumber> appList = JSON.Deserialize<List<AppNumber>>(app);
+
+                //    List<object> checkApp;
+                //    using (Entities _context = new Entities())
+                //    {
+                //        checkApp = (from a in _context.CROSSING_APPLICATION
+                //                    where a.APPLICATION_REQUESTED == AppRequested
+                //                    select new { a.APPLICATION_REQUESTED, a.APPLICATION_ID }).ToList<object>();
+
+
+
+                //        if (AppDate >= Start.Date && AppDate <= End.Date && appList.Where(x => x.APPLICATION_REQUESTED == AppRequested).Count() > 0)
+                //        {
+
+                //            X.Msg.Alert("Warning", "Application exists for this fiscal year").Show();
+
+                //        }
+
+                //        else
+                //        {
+                data = new CROSSING_APPLICATION();
+                data.APPLICATION_DATE = Date;
+                data.APPLICATION_REQUESTED = AppRequested;
+                data.TRUCK_NUMBER = TruckNumber;
+                data.SPRAY = Spray;
+                data.CUT = Cut;
+                data.INSPECT = Inspect;
+                data.CROSSING_ID = long.Parse(sr.RecordID);
+                data.CREATE_DATE = DateTime.Now;
+                data.MODIFY_DATE = DateTime.Now;
+                data.CREATED_BY = User.Identity.Name;
+                data.MODIFIED_BY = User.Identity.Name;
+                data.PROJECT_ID = ProjectId;
+                try
+                {
+                    string Remarks = uxAddEntryRemarks.Value.ToString();
+                    data.REMARKS = Remarks;
+                }
+                catch (Exception)
+                {
+                    data.REMARKS = null;
+                }
+                GenericData.Insert<CROSSING_APPLICATION>(data);
+
+                uxAddNewApplicationEntryWindow.Hide();
+                sm.ClearSelection();
+                uxAppEntryCrossingStore.Reload();
+                uxApplicationStore.Reload();
+                uxAddApplicationForm.Reset();
+
+
+                Notification.Show(new NotificationConfig()
+                {
+                    Title = "Success",
+                    Html = "Application Added Successfully",
+                    HideDelay = 1000,
+                    AlignCfg = new NotificationAlignConfig
+                    {
+                        ElementAnchor = AnchorPoint.Center,
+                        TargetAnchor = AnchorPoint.Center
+                    }
+                });
+            }
+        }
+                
+            
+         protected void deEditAppForm(object sender, DirectEventArgs e)
+        {
+
+            using (Entities _context = new Entities())
+            {
+                long AppId = long.Parse(e.ExtraParams["AppId"]);
+                var data = (from d in _context.CROSSING_APPLICATION
+                            where d.APPLICATION_ID == AppId
+                            select new
+                            {
+                                 d
+                              
+                            }).SingleOrDefault();
+               
+                uxEditAppNum.SetValue(data.d.APPLICATION_REQUESTED);
+                uxEditTruckNumber.SetValue(data.d.TRUCK_NUMBER);
+                uxDateEdit.SetValue(data.d.APPLICATION_DATE);
+                TextArea1.SetValue(data.d.REMARKS);
+
+               
+
+                if (data.d.SPRAY == "Y")
+                {
+                    uxEditSprayBox.Checked = true;
+                }
+                if (data.d.CUT == "Y")
+                {
+                    uxEditCutBox.Checked = true;
+                }
+                if (data.d.INSPECT == "Y")
+                {
+                    uxInspectEdit.Checked = true;
+                }
+               
+            }
+        }
+
+         protected void deEditApp(object sender, DirectEventArgs e)
+         {
+             CROSSING_APPLICATION data;
+
+             //Do type conversions
+
+             decimal AppNum = Convert.ToDecimal(uxEditAppNum.Value);
+             string TruckNumber = uxEditTruckNumber.Value.ToString();
+             DateTime Date = (DateTime)uxDateEdit.Value;
+             string Spray = uxEditSprayBox.Value.ToString();
+             string Cut = uxEditCutBox.Value.ToString();
+             string Inspect = uxInspectEdit.Value.ToString();
+
+             if (uxEditSprayBox.Checked)
+             {
+                 Spray = "Y";
+             }
+             else
+             {
+                 Spray = "N";
+             }
+             if (uxEditCutBox.Checked)
+             {
+                 Cut = "Y";
+             }
+             else
+             {
+                 Cut = "N";
+             }
+             if (uxInspectEdit.Checked)
+             {
+                 Inspect = "Y";
+             }
+             else
+             {
+                 Inspect = "N";
+             }
+             using (Entities _context = new Entities())
+             {
+                 var AppId = long.Parse(e.ExtraParams["AppId"]);
+                 data = (from d in _context.CROSSING_APPLICATION
+                         where d.APPLICATION_ID == AppId
+                         select d).Single();
+             }
+
+                 data.APPLICATION_DATE = Date;
+                 data.APPLICATION_REQUESTED = AppNum;
+                 data.TRUCK_NUMBER = TruckNumber;
+                 data.SPRAY = Spray;
+                 data.CUT = Cut;
+                 data.INSPECT = Inspect;
+                 data.MODIFY_DATE = DateTime.Now;
+                 data.MODIFIED_BY = User.Identity.Name;
+                 try
+                 {
+                     string Remarks = TextArea1.Value.ToString();
+                     data.REMARKS = Remarks;
+                 }
+                 catch (Exception)
+                 {
+                     data.REMARKS = null;
+                 }
+
+                 GenericData.Update<CROSSING_APPLICATION>(data);
+
+                 uxEditApplicationWindow.Hide();
+                 uxEditApplicationForm.Reset();
+                 uxApplicationStore.Reload();
+
+                 Notification.Show(new NotificationConfig()
+                 {
+                     Title = "Success",
+                     Html = "Application Edited Successfully",
+                     HideDelay = 1000,
+                     AlignCfg = new NotificationAlignConfig
+                     {
+                         ElementAnchor = AnchorPoint.Center,
+                         TargetAnchor = AnchorPoint.Center
+                     }
+                 });
+             }
+
+         
         protected void deAddProjectValue(object sender, DirectEventArgs e)
         {
           
@@ -325,15 +442,73 @@ namespace DBI.Web.EMS.Views.Modules.CrossingMaintenance
                 uxEquipmentStore.Reload();
                 if (uxAddEquipmentToggleOrg.Pressed)
                 {
-                    uxAddEquipmentToggleOrg.Text = "My Region";
+                    uxAddEquipmentToggleOrg.Text = "My Organizations";
+                    uxOrgsLabel.Text = "Viewing all organizations";
                 }
                 else
                 {
-                    uxAddEquipmentToggleOrg.Text = "All Regions";
+                    uxAddEquipmentToggleOrg.Text = "All Organizations";
+                    uxOrgsLabel.Text = "Viewing my organizations";
                 }
             }
         }
-      
+        protected void deEditReadGrid(object sender, StoreReadDataEventArgs e)
+        {
+            List<WEB_EQUIPMENT_V> dataIn;
+
+            if (e.Parameters["Form"] == "Edit")
+            {
+                if (uxEditToggle.Pressed)
+                {
+                    //Get All Projects
+                    dataIn = WEB_EQUIPMENT_V.ListEquipment();
+                }
+                else
+                {
+                    int CurrentOrg = Convert.ToInt32(Authentication.GetClaimValue("CurrentOrgId", User as ClaimsPrincipal));
+                    //Get projects for my org only
+                    dataIn = WEB_EQUIPMENT_V.ListEquipment(CurrentOrg);
+                }
+
+                int count;
+                //Get paged, filterable list of Equipment
+                List<WEB_EQUIPMENT_V> data = GenericData.EnumerableFilterHeader<WEB_EQUIPMENT_V>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataIn, out count).ToList();
+
+                e.Total = count;
+                if (e.Parameters["Form"] == "Edit")
+                {
+                    uxEditEquipmentStore.DataSource = data;
+                }
+
+            }
+        }
+        protected void deEditStoreGridValue(object sender, DirectEventArgs e)
+        {
+            if (e.ExtraParams["Form"] == "Edit")
+            {
+                //Set value and text for equipment
+                uxEditTruckNumber.SetValue(e.ExtraParams["EquipmentName"], e.ExtraParams["EquipmentName"]);
+
+                //Clear existing filters
+                uxEditEquipmentFilter.ClearFilter();
+            }
+        }
+        protected void deEditReloadStore(object sender, DirectEventArgs e)
+        {
+            string type = e.ExtraParams["Type"];
+            if (type == "Equipment")
+            {
+                uxEditEquipmentStore.Reload();
+                if (uxEditToggle.Pressed)
+                {
+                    uxEditToggle.Text = "My Region";
+                }
+                else
+                {
+                    uxEditToggle.Text = "All Regions";
+                }
+            }
+        }
         protected void deRemoveApplicationEntry(object sender, DirectEventArgs e)
         {
           

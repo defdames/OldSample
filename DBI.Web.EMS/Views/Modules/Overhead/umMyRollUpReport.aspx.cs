@@ -16,7 +16,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
         {
             if (!X.IsAjaxRequest)
             {
-                if (!validateComponentSecurity("SYS.OverheadBudget.Security"))
+                if (!validateComponentSecurity("SYS.OverheadBudget.Maintenance"))
                 {
                     X.Redirect("~/Views/uxDefault.aspx");
                 }
@@ -138,8 +138,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                         var nextData = HR.OverheadOrganizationStatusByHierarchy(hierarchyID, view.ORGANIZATION_ID);
 
-                        Boolean _ActiveOrganizationsListed = nextData.Where(x => _leList.Contains(x.ORGANIZATION_ID.ToString())).Count() > 0 ? true : false;
-
+                        Boolean _ActiveOrganizationsListed = nextData.Where(x => _leList.Contains(x.ORGANIZATION_ID.ToString()) & x.ORGANIZATION_STATUS == "Active").Count() > 0 ? true : false;
 
                         if (_ActiveOrganizationsListed)
                         {
@@ -151,12 +150,16 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                             }
                             else
                             {
-                                //Add the node as an active leaf
-                                node.Leaf = true;
-                                node.Icon = Icon.Accept;
+                                if (view.ORGANIZATION_STATUS == "Active")
+                                {
+                                    //Add the node as an active leaf
+                                    node.Leaf = true;
+                                    node.Icon = Icon.Accept;
+                                }
 
                             }
 
+             
                             e.Nodes.Add(node);
                         }
                         else
@@ -165,10 +168,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                             if (_leList.Contains(view.ORGANIZATION_ID.ToString()))
                             {
-                                //Add the node as an active leaf
-                                node.Leaf = true;
-                                node.Icon = Icon.Accept;
-                                e.Nodes.Add(node);
+                                if (view.ORGANIZATION_STATUS == "Active")
+                                {
+                                    //Add the node as an active leaf
+                                    node.Leaf = true;
+                                    node.Icon = Icon.Accept;
+                                    e.Nodes.Add(node);
+                                }
                             }
 
                         }
@@ -190,7 +196,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
 
                 
                 string _nodeText = e.ExtraParams["ORGANIZATION_NAME"];
-                AddTab(sm.SelectedRecordID + "OS", _nodeText + " - Budget Rollup", "umViewBudget.aspx?securityView='Y'&orgid=" + sm.SelectedRecordID + "&desc=" + _nodeText + " - Budget Rollup", false, true);
+                AddTab(sm.SelectedRecordID + "OS", _nodeText + " - Budget Rollup", "umViewBudget.aspx?securityView=Y&orgid=" + sm.SelectedRecordID + "&desc=" + _nodeText + " - Budget Rollup", false, true);
                
 
              }
