@@ -152,8 +152,12 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     uxEquipmentGridStore.DataSource = BBDetail.SubGrid.Data.Get(orgID, projectID, detailSheetID, recType);
                     break;
 
-                case "PERSONNEL":
-                    uxPersonnelGridStore.DataSource = BBDetail.SubGrid.Data.Get(orgID, projectID, detailSheetID, recType);
+                case "PERSONNELR":
+                    uxPersonnelRTGridStore.DataSource = BBDetail.SubGrid.Data.Get(orgID, projectID, detailSheetID, recType);
+                    break;
+
+                case "PERSONNELO":
+                    uxPersonnelOTGridStore.DataSource = BBDetail.SubGrid.Data.Get(orgID, projectID, detailSheetID, recType);
                     break;
 
                 case "PERDIEM":
@@ -201,7 +205,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 data.AMT_1 = 0;
             }            
             data.AMT_2 = 0;
-            data.AMT_3 = 0;
+            data.AMT_3 = 1;
             data.AMT_4 = 0;
             data.AMT_5 = 0;
             data.TOTAL = 0;
@@ -226,7 +230,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     break;
 
                 case "PERSONNEL":
-                    uxPersonnelGridStore.Reload();
+                    uxPersonnelRTGridStore.Reload();
                     uxHidSelPersRecID.Text = data.DETAIL_SHEET_ID.ToString();
                     break;
 
@@ -270,7 +274,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             BBDetail.SubGrid.DeleteRecord(id);
             uxMaterialGridStore.Reload();   // FIX THESE WITH SWITCH!
             uxEquipmentGridStore.Reload();
-            uxPersonnelGridStore.Reload();
+            uxPersonnelRTGridStore.Reload();
             uxPerDiemGridStore.Reload();
             uxTravelGridStore.Reload();
             uxMotelsGridStore.Reload();
@@ -315,8 +319,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 case "PERSONNEL":
                     data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
                     GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
-                    uxPersonnelGridStore.CommitChanges();
-                    uxPersonnelGridStore.Reload();
+                    uxPersonnelRTGridStore.CommitChanges();
+                    uxPersonnelRTGridStore.Reload();
                     break;
 
                 case "PERDIEM":
@@ -453,13 +457,13 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
 
         // Personnel grid - MAKE SURE TO UPDATE 'deSaveSubGridData' method above with same formula as 'deSelect...'
-        protected void deLoadPersonnelDropdown(object sender, StoreReadDataEventArgs e)
+        protected void deLoadPersonnelRTDropdown(object sender, StoreReadDataEventArgs e)
         {
             string company = "DBI";
             List<object> dataSource = BBDetail.Sheet.PersonnelListing.Data(company).ToList<object>();
             int count;
 
-            uxPersonnelStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataSource, out count);
+            uxPersonnelRTStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataSource, out count);
             e.Total = count;
         }
         protected void deSelectPosition(object sender, DirectEventArgs e)
@@ -468,7 +472,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             string position = e.ExtraParams["Position"];
             string costPerHour = e.ExtraParams["CostPerHour"];
 
-            uxPersonnelPicker.SetValue(position);
+            uxPersonnelRTPicker.SetValue(position);
 
             BUD_BID_DETAIL_SHEET data;
             using (Entities context = new Entities())
@@ -481,11 +485,11 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
 
             GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
-            uxPersonnelGridStore.CommitChanges();
-            uxPersonnelGridStore.Reload();
+            uxPersonnelRTGridStore.CommitChanges();
+            uxPersonnelRTGridStore.Reload();
 
             CalulateDetailSheet();
-            uxPersonnelFilter.ClearFilter();
+            uxPersonnelRTFilter.ClearFilter();
         }
         protected void deGetPersRecID(object sender, DirectEventArgs e)
         {
@@ -662,8 +666,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxDeleteMaterial.Disable();
             uxAddNewEquipment.Disable();
             uxDeleteEquipment.Disable();
-            uxAddNewPersonnel.Disable();
-            uxDeletePersonnel.Disable();
+            uxAddNewPersonnelRT.Disable();
+            uxDeletePersonnelOT.Disable();
             uxAddNewPerDiem.Disable();
             uxDeletePerDiem.Disable();
             uxAddNewTravel.Disable();
@@ -692,10 +696,10 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxEquipmentHours.ReadOnly = true;
             uxEquipmentCostPerHour.ReadOnly = true;
 
-            uxPersonnelQuantity.ReadOnly = true;
-            uxPersonnelPicker.ReadOnly = true;
-            uxPersonnelHours.ReadOnly = true;
-            uxPersonnelCostPerHour.ReadOnly = true;
+            uxPersonnelRTQuantity.ReadOnly = true;
+            uxPersonnelRTPicker.ReadOnly = true;
+            uxPersonnelRTHours.ReadOnly = true;
+            uxPersonnelRTCostPerHour.ReadOnly = true;
 
             uxPerDiemRate.ReadOnly = true;
             uxPerDiemNumOfDays.ReadOnly = true;

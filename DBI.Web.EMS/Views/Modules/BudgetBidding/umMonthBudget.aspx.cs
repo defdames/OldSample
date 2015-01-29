@@ -595,7 +595,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                                     "NVL(MTD_RRPL, 0) + NVL(MTD_ME, 0)",                                      // 280  Repairs
                                     "NVL(MTD_TDE, 0)",                                                       // 300  Total Directs
                                     "NVL(MTD_TOP, 0)",                                                       // 320  Operating Profit
-                                    "0",                                            // 340  Overhead
+                                    "1000",                                            // 340  Overhead
                                     "NVL(MTD_TOP, 0) - 0" };                        // 360  Net Contribution
                          
             string sql2 ="";
