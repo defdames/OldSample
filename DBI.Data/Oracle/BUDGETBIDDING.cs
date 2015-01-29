@@ -155,7 +155,7 @@ namespace DBI.Data
         
         public static List<SingleCombo> FiscalYears() // Lenny should have this same code.  Remove from here once it's merged in.
         {
-            string sql = "SELECT DISTINCT TO_CHAR(END_DATE, 'YYYY') ID_NAME FROM APPS.GL_PERIODS_V ORDER BY ID_NAME DESC";
+            string sql = "SELECT DISTINCT TO_CHAR(END_DATE, 'YYYY') ID_NAME FROM APPS.GL_PERIODS_V ORDER BY ID_NAME";
             using (Entities context = new Entities())
             {
                 return context.Database.SqlQuery<SingleCombo>(sql).ToList();
@@ -165,13 +165,13 @@ namespace DBI.Data
         public static List<DoubleComboLongID> BudgetVersions()
         {
             List<DoubleComboLongID> comboItem = new List<DoubleComboLongID>();
-            comboItem.Add(new DoubleComboLongID { ID = 7, ID_NAME = "4th Reforecast" });
-            comboItem.Add(new DoubleComboLongID { ID = 6, ID_NAME = "3rd Reforecast" });
-            comboItem.Add(new DoubleComboLongID { ID = 5, ID_NAME = "2nd Reforecast" });
-            comboItem.Add(new DoubleComboLongID { ID = 4, ID_NAME = "1st Reforecast" });
-            comboItem.Add(new DoubleComboLongID { ID = 3, ID_NAME = "Final Draft" });
-            comboItem.Add(new DoubleComboLongID { ID = 2, ID_NAME = "First Draft" });
             //comboItem.Add(new DoubleComboLongID { ID = 1, ID_NAME = "Bid" });
+            comboItem.Add(new DoubleComboLongID { ID = 2, ID_NAME = "First Draft" });
+            comboItem.Add(new DoubleComboLongID { ID = 3, ID_NAME = "Final Draft" });
+            comboItem.Add(new DoubleComboLongID { ID = 4, ID_NAME = "1st Reforecast" });
+            comboItem.Add(new DoubleComboLongID { ID = 5, ID_NAME = "2nd Reforecast" });
+            comboItem.Add(new DoubleComboLongID { ID = 6, ID_NAME = "3rd Reforecast" });
+            comboItem.Add(new DoubleComboLongID { ID = 7, ID_NAME = "4th Reforecast" });
             return comboItem;
         }
         
@@ -625,22 +625,6 @@ namespace DBI.Data
             }
         }
 
-        //public static bool ShowAdjustsOrgSetting(long orgID)
-        //{
-        //    string allOrgSetting = AllOrgSettings(orgID);
-        //    char[] delimChars = { ';' };
-        //    string[] setting = allOrgSetting.Split(delimChars);
-
-        //    if (setting[3] == "0")
-        //    {
-        //        return false;
-        //    }
-        //    else
-        //    {
-        //        return true;
-        //    }
-        //}
-
         public static bool ShowBOMOrgSetting(long orgID)
         {
             string allOrgSetting = AllOrgSettings(orgID);
@@ -734,8 +718,7 @@ namespace DBI.Data
             string[] monthName = { "NOV", "DEC", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT" };
             return Array.IndexOf(monthName, data) + 1;
         }
-    }
-    
+    }    
 
     
     public class BBSummary
@@ -1006,107 +989,6 @@ namespace DBI.Data
     }
 
 
-
-//    public class BBAdjustments
-//    {
-//        #region Fields
-//        public class Fields
-//        {
-//            public long ADJ_ID { get; set; }
-//            public string ADJUSTMENT { get; set; }
-//            public decimal? MAT_ADJ { get; set; }
-//            public decimal? WEATHER_ADJ { get; set; }
-//        }
-//        #endregion
-
-//        public static long Count(long orgID, long yearID, long verID)
-//        {
-//            using (Entities context = new Entities())
-//            {
-//                return context.BUD_BID_ADJUSTMENT.Where(x => x.ORG_ID == orgID && x.YEAR_ID == yearID && x.VER_ID == verID).Count();
-//            }
-//        }
-
-//        public static void Create(long orgID, long yearID, long verID)
-//        {
-//            BUD_BID_ADJUSTMENT data = new BUD_BID_ADJUSTMENT();
-
-//            // Material
-//            data.ORG_ID = orgID;
-//            data.YEAR_ID = yearID;
-//            data.VER_ID = verID;
-//            data.MAT_ADJ = 0;
-//            data.WEATHER_ADJ = 12345678910;
-//            data.CREATE_DATE = DateTime.Now;
-//            data.CREATED_BY = HttpContext.Current.User.Identity.Name;
-//            data.MODIFY_DATE = DateTime.Now;
-//            data.MODIFIED_BY = HttpContext.Current.User.Identity.Name;
-//            GenericData.Insert<BUD_BID_ADJUSTMENT>(data);
-
-//            // Weather
-//            data.MAT_ADJ = 12345678910;
-//            data.WEATHER_ADJ = 0;
-//            GenericData.Insert<BUD_BID_ADJUSTMENT>(data);
-//        }
-
-//        public static List<Fields> Data(long orgID, long yearID, long verID)
-//        {
-//            string sql = string.Format(@"
-//                SELECT ADJ_ID,
-//                    CASE WHEN MAT_ADJ <> 12345678910 THEN 'Material Adjustment' ELSE 'Weather Adjustment' END ADJUSTMENT,
-//                    12345678910 BLANKCOL1,
-//                    12345678910 BLANKCOL2,
-//                    12345678910 BLANKCOL3,
-//                    12345678910 BLANKCOL4,
-//                    MAT_ADJ,
-//                    12345678910 BLANKCOL5,
-//                    WEATHER_ADJ,                    
-//                    12345678910 BLANKCOL6,
-//                    12345678910 BLANKCOL7,
-//                    12345678910 BLANKCOL8
-//                FROM BUD_BID_ADJUSTMENT
-//                WHERE ORG_ID = {0} AND YEAR_ID = {1} AND VER_ID = {2}
-//                ORDER BY ADJUSTMENT", orgID, yearID, verID);
-
-//            using (Entities context = new Entities())
-//            {
-//                return context.Database.SqlQuery<Fields>(sql).ToList();
-//            }
-//        }
-
-//        public class Subtotal
-//        {
-//            #region Fields
-//            public class Fields
-//            {
-//                public decimal? MAT_ADJ { get; set; }
-//                public decimal? WEATHER_ADJ { get; set; }
-//            }
-//            #endregion
-
-//            public static Fields Data(long orgID, long yearID, long verID)
-//            {
-//                string sql = string.Format(@"
-//                    SELECT SUM(MAT_ADJ) - 12345678910 MAT_ADJ,
-//                        SUM(WEATHER_ADJ) - 12345678910 WEATHER_ADJ
-//                    FROM 
-//                    (
-//                        SELECT MAT_ADJ,
-//                            WEATHER_ADJ
-//                        FROM BUD_BID_ADJUSTMENT
-//                        WHERE ORG_ID = {0} AND YEAR_ID = {1} AND VER_ID = {2}
-//                    )", orgID, yearID, verID);
-
-//                using (Entities context = new Entities())
-//                {
-//                    return context.Database.SqlQuery<Fields>(sql).SingleOrDefault();
-//                }
-//            }
-//        }
-//    }
-
-
-
     public class BBOH
     {
         #region Fields
@@ -1117,16 +999,17 @@ namespace DBI.Data
         }
         #endregion
         
-        public static List<Fields> Data(long orgID, long yearID, long verID)
+        public static List<Fields> Data(long orgID, long yearID, long verID, string periodNum = "0")
         {
             string ohVer = BB.BudBidVerToOHBudVer(verID);
+            if (periodNum == "0") { periodNum = "%"; }
             string sql = string.Format(@"
                 SELECT 'Overhead' ADJUSTMENT,
                     NVL(SUM(AMOUNT), 0) OH
                 FROM OVERHEAD_ORG_BUDGETS
                 LEFT JOIN OVERHEAD_BUDGET_TYPE ON OVERHEAD_ORG_BUDGETS.OVERHEAD_BUDGET_TYPE_ID = OVERHEAD_BUDGET_TYPE.OVERHEAD_BUDGET_TYPE_ID
                 LEFT JOIN OVERHEAD_BUDGET_DETAIL ON OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID = OVERHEAD_BUDGET_DETAIL.ORG_BUDGET_ID 
-                WHERE OVERHEAD_ORG_BUDGETS.ORGANIZATION_ID = {0} AND OVERHEAD_ORG_BUDGETS.FISCAL_YEAR = {1} AND OVERHEAD_BUDGET_TYPE.BUDGET_NAME = '{2}'", orgID, yearID, ohVer);
+                WHERE OVERHEAD_ORG_BUDGETS.ORGANIZATION_ID = {0} AND OVERHEAD_ORG_BUDGETS.FISCAL_YEAR = {1} AND OVERHEAD_BUDGET_TYPE.BUDGET_NAME = '{2}' AND PERIOD_NUM LIKE '{3}'", orgID, yearID, ohVer, periodNum);
 
             using (Entities context = new Entities())
             {
@@ -1134,16 +1017,17 @@ namespace DBI.Data
             }
         }
 
-        public static Fields DataSingle(long orgID, long yearID, long verID)
+        public static Fields DataSingle(long orgID, long yearID, long verID, string periodNum = "0")
         {
             string ohVer = BB.BudBidVerToOHBudVer(verID);
+            if (periodNum == "0") { periodNum = "%"; }
             string sql = string.Format(@"
                 SELECT 'Overhead' ADJUSTMENT,
                     NVL(SUM(AMOUNT), 0) OH
                 FROM OVERHEAD_ORG_BUDGETS
                 LEFT JOIN OVERHEAD_BUDGET_TYPE ON OVERHEAD_ORG_BUDGETS.OVERHEAD_BUDGET_TYPE_ID = OVERHEAD_BUDGET_TYPE.OVERHEAD_BUDGET_TYPE_ID
                 LEFT JOIN OVERHEAD_BUDGET_DETAIL ON OVERHEAD_ORG_BUDGETS.ORG_BUDGET_ID = OVERHEAD_BUDGET_DETAIL.ORG_BUDGET_ID 
-                WHERE OVERHEAD_ORG_BUDGETS.ORGANIZATION_ID = {0} AND OVERHEAD_ORG_BUDGETS.FISCAL_YEAR = {1} AND OVERHEAD_BUDGET_TYPE.BUDGET_NAME = '{2}'", orgID, yearID, ohVer);
+                WHERE OVERHEAD_ORG_BUDGETS.ORGANIZATION_ID = {0} AND OVERHEAD_ORG_BUDGETS.FISCAL_YEAR = {1} AND OVERHEAD_BUDGET_TYPE.BUDGET_NAME = '{2}' AND PERIOD_NUM LIKE '{3}'", orgID, yearID, ohVer, periodNum);
 
             using (Entities context = new Entities())
             {
@@ -1179,7 +1063,6 @@ namespace DBI.Data
             }
         }
     }
-
 
 
     public class BBProject
@@ -1624,7 +1507,6 @@ namespace DBI.Data
             }
         }
     }
-
 
 
     public class BBDetail
@@ -2628,7 +2510,6 @@ namespace DBI.Data
     }
 
 
-
     public class BBSummaryRollup
     {
         public class Grid
@@ -2945,7 +2826,6 @@ namespace DBI.Data
             }
         }
     }
-
 
 
     public class BBReports
@@ -3728,7 +3608,6 @@ namespace DBI.Data
             }
         }
     }
-
 
 
     public class BBMonthSummary

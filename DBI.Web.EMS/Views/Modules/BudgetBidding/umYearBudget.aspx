@@ -614,7 +614,7 @@
                                     </DirectEvents>
                                 </ext:Checkbox>
                                 <ext:Label ID="Label6" runat="server" Width="65" />
-                                <ext:Label ID="Label4" runat="server" Width="40" Text="Acres:" />
+                                <ext:Label ID="Label4" runat="server" Width="40" Text="Units:" />
                                 <ext:TextField ID="uxAcres" runat="server" Width="110" ReadOnly="false" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" SelectOnFocus="true">
                                     <Listeners>
                                         <Focus Handler="this.setValue(this.getValue().replace(/,/g, ''));" />
@@ -750,7 +750,7 @@
                                             runat="server"
                                             Layout="HBoxLayout">
                                             <Items>
-                                                <ext:Label ID="Label23" runat="server" Width="85" Text="Chemical Mix:" />
+                                                <ext:Label ID="Label23" runat="server" Width="85" Text="Material:" />
                                                 <ext:TextField ID="uxChemMix" runat="server" Width="135" SelectOnFocus="true" MaxLength="50" EnforceMaxLength="true" />
                                             </Items>
                                         </ext:FieldContainer>
