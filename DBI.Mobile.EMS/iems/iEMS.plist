@@ -11,7 +11,7 @@
 					<key>kind</key>
 					<string>software-package</string>
 					<key>url</key>
-					<string>https://emsmobiletest.dbiservices.com/iems/iEMS.ipa</string>
+					<string>https://emsmobile.dbiservices.com/iems/iEMS.ipa</string>
 				</dict>
 			</array>
 			<key>metadata</key>

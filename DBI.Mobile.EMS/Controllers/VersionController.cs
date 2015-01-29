@@ -19,10 +19,10 @@ namespace DBI.Mobile.EMS.Controllers
             if (id == "production")
             {
                 Version ver = new Version();
-                ver.number = "1.0.T150128";
+                ver.number = "1.0.R150128";
                 ver.mandatory = true;
-                ver.install_url = "itms-services://?action=download-manifest&url=https://emsmobiletest.dbiservices.com/iems/iEMS.plist";
-                ver.descriptionText = "Documentation Menu Added.";
+                ver.install_url = "itms-services://?action=download-manifest&url=https://emsmobile.dbiservices.com/iems/iEMS.plist";
+                ver.descriptionText = "Q/R Scanner, Photo Attachments, Documentation Links and other bug fixes and enhancements.";
 
                 RootObject root = new RootObject();
                 root.version = ver;
@@ -34,7 +34,7 @@ namespace DBI.Mobile.EMS.Controllers
                 Version ver = new Version();
                 ver.number = "1.0.T140626";
                 ver.mandatory = false;
-                ver.install_url = "itms-services://?action=download-manifest&url=https://emsmobiletest.dbiservices.com/iems/iEMS.plist";
+                ver.install_url = "itms-services://?action=download-manifest&url=https://emsmobile.dbiservices.com/iems/iEMS.plist";
                 ver.descriptionText = "Employee drive time removed from non IRM Jobs. Added updated version control and modified the copy feature.";
 
                 RootObject root = new RootObject();
