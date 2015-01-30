@@ -122,6 +122,17 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             {
                 BBDetail.Sheet.MainTabField.DBUpdateComments(detailSheetID, fieldText);
             }
+            else if (recType == "LIABILITY")
+            {
+                if (uxLiabilityCheckbox.Checked == true)
+                {
+                    BBDetail.Sheet.MainTabField.DBUpdateLiability(detailSheetID, "Y");
+                }
+                else
+                {
+                    BBDetail.Sheet.MainTabField.DBUpdateLiability(detailSheetID, "N");
+                }                
+            }
             else
             {
                 Ext.Net.TextField myTextField = sender as Ext.Net.TextField;
@@ -229,9 +240,14 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     uxHidSelEquipRecID.Text = data.DETAIL_SHEET_ID.ToString();
                     break;
 
-                case "PERSONNEL":
+                case "PERSONNELR":
                     uxPersonnelRTGridStore.Reload();
-                    uxHidSelPersRecID.Text = data.DETAIL_SHEET_ID.ToString();
+                    uxHidSelPersRTRecID.Text = data.DETAIL_SHEET_ID.ToString();
+                    break;
+
+                case "PERSONNELO":
+                    uxPersonnelOTGridStore.Reload();
+                    uxHidSelPersOTRecID.Text = data.DETAIL_SHEET_ID.ToString();
                     break;
 
                 case "PERDIEM":
@@ -240,6 +256,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
                 case "TRAVEL":
                     uxTravelGridStore.Reload();
+                    uxHidSelTravelPersRecID.Text = data.DETAIL_SHEET_ID.ToString();
                     break;
 
                 case "MOTELS":
@@ -316,11 +333,18 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     uxEquipmentGridStore.Reload();
                     break;
 
-                case "PERSONNEL":
+                case "PERSONNELR":
                     data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
                     GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
                     uxPersonnelRTGridStore.CommitChanges();
                     uxPersonnelRTGridStore.Reload();
+                    break;
+
+                case "PERSONNELO":
+                    data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
+                    GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    uxPersonnelOTGridStore.CommitChanges();
+                    uxPersonnelOTGridStore.Reload();
                     break;
 
                 case "PERDIEM":
@@ -331,7 +355,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                     break;
 
                 case "TRAVEL":
-                    data.TOTAL = data.AMT_1 * data.AMT_2;
+                    data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
                     GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
                     uxTravelGridStore.CommitChanges();
                     uxTravelGridStore.Reload();
@@ -466,9 +490,18 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxPersonnelRTStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataSource, out count);
             e.Total = count;
         }
-        protected void deSelectPosition(object sender, DirectEventArgs e)
+        protected void deLoadPersonnelOTDropdown(object sender, StoreReadDataEventArgs e)
         {
-            long recordID = Convert.ToInt64(uxHidSelPersRecID.Text);
+            string company = "DBI";
+            List<object> dataSource = BBDetail.Sheet.PersonnelListing.Data(company).ToList<object>();
+            int count;
+
+            uxPersonnelOTStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataSource, out count);
+            e.Total = count;
+        }
+        protected void deSelectRTPosition(object sender, DirectEventArgs e)
+        {
+            long recordID = Convert.ToInt64(uxHidSelPersRTRecID.Text);
             string position = e.ExtraParams["Position"];
             string costPerHour = e.ExtraParams["CostPerHour"];
 
@@ -491,12 +524,83 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             CalulateDetailSheet();
             uxPersonnelRTFilter.ClearFilter();
         }
-        protected void deGetPersRecID(object sender, DirectEventArgs e)
+        protected void deSelectOTPosition(object sender, DirectEventArgs e)
+        {
+            long recordID = Convert.ToInt64(uxHidSelPersOTRecID.Text);
+            string position = e.ExtraParams["Position"];
+            string costPerHour = e.ExtraParams["CostPerHour"];
+
+            uxPersonnelOTPicker.SetValue(position);
+
+            BUD_BID_DETAIL_SHEET data;
+            using (Entities context = new Entities())
+            {
+                data = context.BUD_BID_DETAIL_SHEET.Where(x => x.DETAIL_SHEET_ID == recordID).Single();
+            }
+
+            data.DESC_1 = position;
+            data.AMT_2 = Convert.ToDecimal(costPerHour);
+            data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
+
+            GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+            uxPersonnelOTGridStore.CommitChanges();
+            uxPersonnelOTGridStore.Reload();
+
+            CalulateDetailSheet();
+            uxPersonnelOTFilter.ClearFilter();
+        }
+        protected void deGetPersRTRecID(object sender, DirectEventArgs e)
         {
             string recordID = e.ExtraParams["SelRecordID"];
-            uxHidSelPersRecID.Text = recordID;
+            uxHidSelPersRTRecID.Text = recordID;
+        }
+        protected void deGetPersOTRecID(object sender, DirectEventArgs e)
+        {
+            string recordID = e.ExtraParams["SelRecordID"];
+            uxHidSelPersOTRecID.Text = recordID;
         }
 
+
+        // Travel grid - MAKE SURE TO UPDATE 'deSaveSubGridData' method above with same formula as 'deSelect...'
+        protected void deLoadTravelPersonnelDropdown(object sender, StoreReadDataEventArgs e)
+        {
+            string company = "DBI";
+            List<object> dataSource = BBDetail.Sheet.PersonnelListing.Data(company).ToList<object>();
+            int count;
+
+            uxTravelPersonnelStore.DataSource = GenericData.EnumerableFilterHeader<object>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], dataSource, out count);
+            e.Total = count;
+        }
+        protected void deSelectTravelPosition(object sender, DirectEventArgs e)
+        {
+            long recordID = Convert.ToInt64(uxHidSelTravelPersRecID.Text);
+            string position = e.ExtraParams["Position"];
+            string costPerHour = e.ExtraParams["CostPerHour"];
+
+            uxTravelPersonnelPicker.SetValue(position);
+
+            BUD_BID_DETAIL_SHEET data;
+            using (Entities context = new Entities())
+            {
+                data = context.BUD_BID_DETAIL_SHEET.Where(x => x.DETAIL_SHEET_ID == recordID).Single();
+            }
+
+            data.DESC_1 = position;
+            data.AMT_2 = Convert.ToDecimal(costPerHour);
+            data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
+
+            GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+            uxTravelGridStore.CommitChanges();
+            uxTravelGridStore.Reload();
+
+            CalulateDetailSheet();
+            uxTravelPersonnelFilter.ClearFilter();
+        }
+        protected void deGetTravelPersRecID(object sender, DirectEventArgs e)
+        {
+            string recordID = e.ExtraParams["SelRecordID"];
+            uxHidSelTravelPersRecID.Text = recordID;
+        }
 
 
         // Calculate
@@ -533,7 +637,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             BBDetail.Sheet.Subtotals.Fields subtotal = BBDetail.Sheet.Subtotals.Get(detailSheetID);
             decimal totalMaterial = subtotal.MATERIAL ?? 0;
             decimal totalEquipment = subtotal.EQUIPMENT ?? 0;
-            decimal totalPersonnel = subtotal.PERSONNEL ?? 0;
+            decimal totalPersonnelRT = subtotal.PERSONNELR ?? 0;
+            decimal totalPersonnelOT = subtotal.PERSONNELO ?? 0;
             decimal totalPerDiem = subtotal.PERDIEM ?? 0;
             decimal totalTravel = subtotal.TRAVEL ?? 0;
             decimal totalMotels = subtotal.MOTELS ?? 0;
@@ -541,7 +646,8 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             decimal totalLumpSum = subtotal.LUMPSUM ?? 0;
             uxTotalMaterial.Text = String.Format("{0:N2}", totalMaterial);
             uxTotalEquipment.Text = String.Format("{0:N2}", totalEquipment);
-            uxTotalPersonnel.Text = String.Format("{0:N2}", totalPersonnel);
+            uxTotalPersonnelRT.Text = String.Format("{0:N2}", totalPersonnelRT);
+            uxTotalPersonnelOT.Text = String.Format("{0:N2}", totalPersonnelOT);
             uxTotalPerDiem.Text = String.Format("{0:N2}", totalPerDiem);
             uxTotalTravel.Text = String.Format("{0:N2}", totalTravel);
             uxTotalMotels.Text = String.Format("{0:N2}", totalMotels);
@@ -606,47 +712,50 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 Icon = (MessageBox.Icon)Enum.Parse(typeof(MessageBox.Icon), msgIcon)
             });
         }
-        protected string ConvertSubGridNumToName(string gridNum)
-        {
-            try
-            {
-                long testNum = Convert.ToInt64(gridNum);
-            }
-            catch
-            {
-                return gridNum;
-            }
+        //protected string ConvertSubGridNumToName(string gridNum)
+        //{
+        //    try
+        //    {
+        //        long testNum = Convert.ToInt64(gridNum);
+        //    }
+        //    catch
+        //    {
+        //        return gridNum;
+        //    }
 
-            switch (gridNum)
-            {
-                case "1":
-                    return "MATERIAL";
+        //    switch (gridNum)
+        //    {
+        //        case "1":
+        //            return "MATERIAL";
 
-                case "2":
-                    return "EQUIPMENT";
+        //        case "2":
+        //            return "EQUIPMENT";
 
-                case "3":
-                    return "PERSONNEL";
+        //        case "3":
+        //            return "PERSONNELR";
 
-                case "4":
-                    return "PERDIEM";
+        //        case "3":
+        //            return "PERSONNELO";
 
-                case "5":
-                    return "TRAVEL";
+        //        case "4":
+        //            return "PERDIEM";
 
-                case "6":
-                    return "MOTELS";
+        //        case "5":
+        //            return "TRAVEL";
 
-                case "7":
-                    return "MISC";
+        //        case "6":
+        //            return "MOTELS";
 
-                case "8":
-                    return "LUMPSUM";
+        //        case "7":
+        //            return "MISC";
 
-                default:
-                    return "";
-            }
-        }
+        //        case "8":
+        //            return "LUMPSUM";
+
+        //        default:
+        //            return "";
+        //    }
+        //}
         protected decimal ForceToDecimal(string number)
         {
             decimal amount;
