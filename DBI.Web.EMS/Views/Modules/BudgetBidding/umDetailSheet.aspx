@@ -318,6 +318,16 @@
                                             Layout="HBoxLayout">
                                             <Items>
                                                 <ext:Label ID="Label45" runat="server" Width="180" Text="Comments:" />
+                                                <ext:Label ID="Label8" runat="server" Width="405" Text="" />
+                                                <ext:Checkbox ID="uxLiabilityCheckbox" runat="server" BoxLabel="Liability" Width="85">
+                                                    <DirectEvents>
+                                                        <Change OnEvent="deSaveMainTabField">
+                                                            <ExtraParams>
+                                                                <ext:Parameter Name="RecType" Value="LIABILITY" Mode="Value" />
+                                                            </ExtraParams>
+                                                        </Change>
+                                                    </DirectEvents>
+                                                </ext:Checkbox>
                                             </Items>
                                         </ext:FieldContainer>
                                         <ext:FieldContainer ID="FieldContainer36"
@@ -731,7 +741,7 @@
 
                         <%--------------------------- Personnel RT ---------------------------%>
                         <ext:Panel runat="server"
-                            Title="Personnel - Regular Time"
+                            Title="Personnel - RT"
                             ID="uxPersonnel"
                             Disabled="false"
                             BodyPadding="10"
@@ -853,7 +863,7 @@
                                                 </Columns>
                                             </ColumnModel>
                                             <DirectEvents>
-                                                <Select OnEvent="deGetPersRecID">
+                                                <Select OnEvent="deGetPersRTRecID">
                                                     <ExtraParams>
                                                         <ext:Parameter Name="SelRecordID" Value="#{uxPersonnelRTGridPanel}.getSelectionModel().getSelection()[0].data.DETAIL_SHEET_ID" Mode="Raw" />
                                                     </ExtraParams>
@@ -874,7 +884,7 @@
                                                     <Items>
                                                         <ext:Button ID="uxAddNewPersonnelRT" runat="server" Text="Add New" Icon="Add">
                                                             <DirectEvents>
-                                                                <Click OnEvent="deAddNewRTRecord">
+                                                                <Click OnEvent="deAddNewRecord">
                                                                     <ExtraParams>
                                                                         <ext:Parameter Name="RecordType" Value="PERSONNELR" Mode="Value" />
                                                                     </ExtraParams>
@@ -883,7 +893,7 @@
                                                         </ext:Button>
                                                         <ext:Button ID="uxDeletePersonnelRT" runat="server" Text="Delete Selected" Icon="Delete">
                                                             <DirectEvents>
-                                                                <Click OnEvent="deDeleteRTRecord">
+                                                                <Click OnEvent="deDeleteRecord">
                                                                     <ExtraParams>
                                                                         <ext:Parameter Name="RecordID" Value="#{uxPersonnelRTGridPanel}.getSelectionModel().getSelection()[0].data.DETAIL_SHEET_ID" Mode="Raw" />
                                                                     </ExtraParams>
@@ -897,11 +907,11 @@
                                                 <ext:FieldContainer ID="FieldContainer19" runat="server" Layout="HBoxLayout" Dock="Bottom" Cls="grandTotalBackground">
                                                     <Items>
                                                         <ext:DisplayField ID="DisplayField11" runat="server" Width="10" />
-                                                        <ext:DisplayField ID="DisplayField12" runat="server" Text="Total Personnel:" Flex="2" Cls="grandTotalForeground" />
+                                                        <ext:DisplayField ID="DisplayField12" runat="server" Text="Total Personnel - RT:" Flex="2" Cls="grandTotalForeground" />
                                                         <ext:DisplayField ID="DisplayField13" runat="server" Flex="1" />
                                                         <ext:DisplayField ID="DisplayField14" runat="server" Flex="1" />
                                                         <ext:DisplayField ID="DisplayField15" runat="server" Flex="1" />
-                                                        <ext:DisplayField ID="uxTotalPersonnel" runat="server" Text="0.00" Flex="1" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                                        <ext:DisplayField ID="uxTotalPersonnelRT" runat="server" Text="0.00" Flex="1" FieldStyle="text-align:right" Cls="grandTotalForeground" />
                                                         <ext:DisplayField ID="DisplayField38" runat="server" Width="10" />
                                                     </Items>
                                                 </ext:FieldContainer>
@@ -914,7 +924,7 @@
 
                         <%--------------------------- Personnel OT ---------------------------%>
                         <ext:Panel runat="server"
-                            Title="Personnel - Overtime"
+                            Title="Personnel - OT"
                             ID="Panel1"
                             Disabled="false"
                             BodyPadding="10"
@@ -1036,7 +1046,7 @@
                                                 </Columns>
                                             </ColumnModel>
                                             <DirectEvents>
-                                                <Select OnEvent="deGetPersRecID">
+                                                <Select OnEvent="deGetPersOTRecID">
                                                     <ExtraParams>
                                                         <ext:Parameter Name="SelRecordID" Value="#{uxPersonnelOTGridPanel}.getSelectionModel().getSelection()[0].data.DETAIL_SHEET_ID" Mode="Raw" />
                                                     </ExtraParams>
@@ -1057,7 +1067,7 @@
                                                     <Items>
                                                         <ext:Button ID="uxAddNewPersonnelOT" runat="server" Text="Add New" Icon="Add">
                                                             <DirectEvents>
-                                                                <Click OnEvent="deAddNewOTRecord">
+                                                                <Click OnEvent="deAddNewRecord">
                                                                     <ExtraParams>
                                                                         <ext:Parameter Name="RecordType" Value="PERSONNELO" Mode="Value" />
                                                                     </ExtraParams>
@@ -1066,7 +1076,7 @@
                                                         </ext:Button>
                                                         <ext:Button ID="uxDeletePersonnelOT" runat="server" Text="Delete Selected" Icon="Delete">
                                                             <DirectEvents>
-                                                                <Click OnEvent="deDeleteOTRecord">
+                                                                <Click OnEvent="deDeleteRecord">
                                                                     <ExtraParams>
                                                                         <ext:Parameter Name="RecordID" Value="#{uxPersonnelOTGridPanel}.getSelectionModel().getSelection()[0].data.DETAIL_SHEET_ID" Mode="Raw" />
                                                                     </ExtraParams>
@@ -1080,11 +1090,11 @@
                                                 <ext:FieldContainer ID="FieldContainer37" runat="server" Layout="HBoxLayout" Dock="Bottom" Cls="grandTotalBackground">
                                                     <Items>
                                                         <ext:DisplayField ID="DisplayField44" runat="server" Width="10" />
-                                                        <ext:DisplayField ID="DisplayField50" runat="server" Text="Total Personnel:" Flex="2" Cls="grandTotalForeground" />
+                                                        <ext:DisplayField ID="DisplayField50" runat="server" Text="Total Personnel - OT:" Flex="2" Cls="grandTotalForeground" />
                                                         <ext:DisplayField ID="DisplayField51" runat="server" Flex="1" />
                                                         <ext:DisplayField ID="DisplayField52" runat="server" Flex="1" />
                                                         <ext:DisplayField ID="DisplayField53" runat="server" Flex="1" />
-                                                        <ext:DisplayField ID="DisplayField54" runat="server" Text="0.00" Flex="1" FieldStyle="text-align:right" Cls="grandTotalForeground" />
+                                                        <ext:DisplayField ID="uxTotalPersonnelOT" runat="server" Text="0.00" Flex="1" FieldStyle="text-align:right" Cls="grandTotalForeground" />
                                                         <ext:DisplayField ID="DisplayField55" runat="server" Width="10" />
                                                     </Items>
                                                 </ext:FieldContainer>
@@ -1234,6 +1244,7 @@
                                                                 <ext:ModelField Name="REC_TYPE" />
                                                                 <ext:ModelField Name="AMT_1" />
                                                                 <ext:ModelField Name="AMT_2" />
+                                                                <ext:ModelField Name="AMT_3" />
                                                                 <ext:ModelField Name="TOTAL" />
                                                             </Fields>
                                                         </ext:Model>
@@ -1248,6 +1259,72 @@
                                             </Store>
                                             <ColumnModel>
                                                 <Columns>
+                                                    <ext:NumberColumn ID="NumberColumn31" runat="server" DataIndex="AMT_3" Text="Qty" Flex="1" Align="Right">
+                                                        <Editor>
+                                                            <ext:NumberField ID="uxTravelQuantity" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
+                                                        </Editor>
+                                                        <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
+                                                    </ext:NumberColumn>
+                                                    <ext:Column ID="Column14" runat="server" DataIndex="DESC_1" Text="Position" Flex="2">
+                                                        <Editor>
+                                                            <ext:DropDownField ID="uxTravelPersonnelPicker" runat="server" Width="110" Mode="Text" Editable="true" MaxLength="200" EnforceMaxLength="true" SelectOnFocus="true">
+                                                                <Listeners>
+                                                                    <Expand Handler="this.picker.setWidth(500);" />
+                                                                </Listeners>
+                                                                <Component>
+                                                                    <ext:GridPanel runat="server"
+                                                                        ID="uxTravelPersonnelList"
+                                                                        Width="500"
+                                                                        Layout="HBoxLayout"
+                                                                        Frame="true"
+                                                                        ForceFit="true">
+                                                                        <Store>
+                                                                            <ext:Store runat="server"
+                                                                                ID="uxTravelPersonnelStore"
+                                                                                PageSize="10"
+                                                                                RemoteSort="true"
+                                                                                OnReadData="deLoadTravelPersonnelDropdown">
+                                                                                <Model>
+                                                                                    <ext:Model ID="Model14" runat="server">
+                                                                                        <Fields>
+                                                                                            <ext:ModelField Name="POSITION" />
+                                                                                            <ext:ModelField Name="COST_PER_HR" />
+                                                                                        </Fields>
+                                                                                    </ext:Model>
+                                                                                </Model>
+                                                                                <Proxy>
+                                                                                    <ext:PageProxy />
+                                                                                </Proxy>
+                                                                            </ext:Store>
+                                                                        </Store>
+                                                                        <ColumnModel>
+                                                                            <Columns>
+                                                                                <ext:Column ID="Column15" runat="server" Text="Position" DataIndex="POSITION" Flex="4" />
+                                                                                <ext:Column ID="Column17" runat="server" Text="Cost per Hour" DataIndex="COST_PER_HR" Flex="1" />
+                                                                            </Columns>
+                                                                        </ColumnModel>
+                                                                        <BottomBar>
+                                                                            <ext:PagingToolbar ID="PagingToolbar5" runat="server" />
+                                                                        </BottomBar>
+                                                                        <SelectionModel>
+                                                                            <ext:RowSelectionModel ID="RowSelectionModel14" runat="server" Mode="Single" />
+                                                                        </SelectionModel>
+                                                                        <DirectEvents>
+                                                                            <SelectionChange OnEvent="deSelectTravelPosition">
+                                                                                <ExtraParams>
+                                                                                    <ext:Parameter Name="Position" Value="#{uxPersonnelOTList}.getSelectionModel().getSelection()[0].data.POSITION" Mode="Raw" />
+                                                                                    <ext:Parameter Name="CostPerHour" Value="#{uxPersonnelOTList}.getSelectionModel().getSelection()[0].data.COST_PER_HR" Mode="Raw" />
+                                                                                </ExtraParams>
+                                                                            </SelectionChange>
+                                                                        </DirectEvents>
+                                                                        <Plugins>
+                                                                            <ext:FilterHeader runat="server" ID="uxTravelPersonnelFilter" Remote="true" />
+                                                                        </Plugins>
+                                                                    </ext:GridPanel>
+                                                                </Component>
+                                                            </ext:DropDownField>
+                                                        </Editor>
+                                                    </ext:Column>
                                                     <ext:NumberColumn ID="NumberColumn10" runat="server" DataIndex="AMT_1" Text="Travel Pay" Flex="1" Align="Right">
                                                         <Editor>
                                                             <ext:NumberField ID="uxTravelPay" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
@@ -1769,8 +1846,9 @@
 
                 <ext:Hidden ID="uxHidSelMatRecID" runat="server" />
                 <ext:Hidden ID="uxHidSelEquipRecID" runat="server" />
-                <ext:Hidden ID="uxHidSelPersRecID" runat="server" />
-
+                <ext:Hidden ID="uxHidSelPersRTRecID" runat="server" />
+                <ext:Hidden ID="uxHidSelPersOTRecID" runat="server" />
+                <ext:Hidden ID="uxHidSelTravelPersRecID" runat="server" />
                 <ext:Hidden ID="uxHidDelRecord" runat="server" />
             </Items>
         </ext:Viewport>

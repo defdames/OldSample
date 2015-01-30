@@ -709,35 +709,6 @@
                                     runat="server"
                                     Layout="VBoxLayout">
                                     <Items>
-                                        <ext:FieldContainer ID="FieldContainer10"
-                                            runat="server"
-                                            Layout="HBoxLayout">
-                                            <Items>
-                                                <ext:Checkbox ID="uxLiabilityCheckbox" runat="server" BoxLabel="Liability:" Width="85">
-                                                    <DirectEvents>
-                                                        <Change OnEvent="deLiabilityCheck" />
-                                                    </DirectEvents>
-                                                </ext:Checkbox>
-                                                <ext:Label ID="Label21" runat="server" Width="25" Icon="Information">
-                                                    <ToolTips>
-                                                        <ext:ToolTip ID="ToolTip2"
-                                                            runat="server"
-                                                            Target="Label21"
-                                                            Anchor="top"
-                                                            TrackMouse="true"
-                                                            Html="Please enter any relevant notes in the comments section to the left." />
-                                                    </ToolTips>
-                                                </ext:Label>
-                                                <ext:TextField ID="uxLiabilityAmount" runat="server" Width="110" ReadOnly="false" Text="0.00" MaskRe="/[0-9\.\-]/" Cls="textRightAlign" Disabled="true" SelectOnFocus="true">
-                                                    <Listeners>
-                                                        <Focus Handler="this.setValue(this.getValue().replace(/,/g, ''));" />
-                                                    </Listeners>
-                                                    <DirectEvents>
-                                                        <Blur OnEvent="deFormatNumber" />
-                                                    </DirectEvents>
-                                                </ext:TextField>
-                                            </Items>
-                                        </ext:FieldContainer>
                                         <ext:FieldContainer ID="FieldContainer8"
                                             runat="server"
                                             Layout="HBoxLayout">
@@ -754,6 +725,7 @@
                                                 <ext:TextField ID="uxChemMix" runat="server" Width="135" SelectOnFocus="true" MaxLength="50" EnforceMaxLength="true" />
                                             </Items>
                                         </ext:FieldContainer>
+                                        <ext:Label ID="Label9" runat="server" Width="950" Text="" />
                                     </Items>
                                 </ext:FieldContainer>
                             </Items>

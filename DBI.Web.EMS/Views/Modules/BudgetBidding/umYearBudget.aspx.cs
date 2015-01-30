@@ -472,8 +472,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxComments.Text = data.COMMENTS;
             uxAcres.Text = String.Format("{0:N2}", data.ACRES);
             uxDays.Text = String.Format("{0:N2}", data.DAYS);
-            uxLiabilityCheckbox.Checked = data.LIABILITY == "Y" ? true : false;
-            uxLiabilityAmount.Text = String.Format("{0:N2}", data.LIABILITY_OP);
             uxAppType.Text = data.APP_TYPE;
             uxChemMix.Text = data.CHEMICAL_MIX;
             if (weOverride == "Y")
@@ -725,18 +723,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 }
             }
         }
-        protected void deLiabilityCheck(object sender, DirectEventArgs e)
-        {
-            if (uxLiabilityCheckbox.Checked == true)
-            {
-                uxLiabilityAmount.Enable();
-            }
-            else
-            {
-                uxLiabilityAmount.Disable();
-                uxLiabilityAmount.Text = "0.00";
-            }
-        }
         protected void deCheckAllowSave(object sender, DirectEventArgs e)
         {
             char[] charsToTrim = { ' ', '\t' };
@@ -896,8 +882,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
 
                 data.TYPE = uxHidType.Text;
-                data.LIABILITY = uxLiabilityCheckbox.Checked == true ? "Y" : "N";
-                data.LIABILITY_OP = ForceToDecimal(uxLiabilityAmount.Text, -9999999999.99M, 9999999999.99M);
                 bool overridenOP = uxCompareOverride.Checked;
                 data.COMPARE_PRJ_OVERRIDE = overridenOP == true ? "Y" : "N";
 
@@ -1721,8 +1705,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             uxCompareOP.ReadOnly = true;
             uxAcres.ReadOnly = true;
             uxDays.ReadOnly = true;
-            uxLiabilityCheckbox.ReadOnly = true;
-            uxLiabilityAmount.ReadOnly = true;
             uxAppType.ReadOnly = true;
             uxChemMix.ReadOnly = true;
             uxJCDate.ReadOnly = true;
