@@ -75,11 +75,11 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     {
 
                     //Count unlocked months
-                        _periodListCount = _detail.Where(x => x.ACTUALS_IMPORTED_FLAG == "N").Count();
+                        _periodListCount = _detail.Where(x => x.ACTUALS_IMPORTED_FLAG != "Y").Count();
 
                     foreach (OVERHEAD_BUDGET_DETAIL _item in _detail)
                     {
-                            if (_item.ACTUALS_IMPORTED_FLAG == "N")
+                            if (_item.ACTUALS_IMPORTED_FLAG != "Y")
                             {
                                 string _type = e.Parameters["DISPERSE_TYPE"];
                                 string sql = "select entered_period_name,period_year,period_num,period_type,start_date,end_date from gl.gl_periods where period_set_name = 'DBI Calendar' order by period_num";

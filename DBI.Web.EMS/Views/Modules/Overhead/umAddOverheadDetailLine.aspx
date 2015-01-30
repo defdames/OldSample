@@ -194,7 +194,7 @@
                         LabelStyle="font-weight:bold;padding:0;"
                         Layout="FitLayout">
                         <Items>
-                         <ext:ComboBox runat="server" ID="uxDispersementType" Editable="true" TypeAhead="true"
+                         <ext:ComboBox runat="server" ID="uxDispersementType" Editable="false" TypeAhead="false"
                                 FieldLabel="Type" TriggerAction="All" 
                                 MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;"  >
                                 <Items>

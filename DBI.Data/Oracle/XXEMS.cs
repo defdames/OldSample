@@ -621,48 +621,48 @@ namespace DBI.Data
         /// </summary>
         public static void LogUserActivity(string user_name)
         {
-            using (Entities _context = new Entities())
-            {
+            //using (Entities _context = new Entities())
+            //{
 
-                SYS_USER_INFORMATION _userInformation = _context.SYS_USER_INFORMATION.Where(x => x.USER_NAME == user_name).SingleOrDefault();
-
-
-                if (_userInformation != null)
-                {
-
-                    SYS_USER_ACTIVITY_LOG _userActivity = new SYS_USER_ACTIVITY_LOG();
-
-                    try
-                    {
-                        _userActivity = _context.SYS_USER_ACTIVITY_LOG.Where(x => x.USER_ID == _userInformation.USER_ID).SingleOrDefault();
-                    }
-                    catch (Exception)
-                    {
-                        //Delete offending records
-                        List<SYS_USER_ACTIVITY_LOG> _data = _context.SYS_USER_ACTIVITY_LOG.Where(x => x.USER_ID == _userInformation.USER_ID).ToList();
-                        GenericData.Delete<SYS_USER_ACTIVITY_LOG>(_data);
-                    }
+            //    SYS_USER_INFORMATION _userInformation = _context.SYS_USER_INFORMATION.Where(x => x.USER_NAME == user_name).SingleOrDefault();
 
 
-                    //User should have a count of zero or 1 anything more is a mistake
+            //    if (_userInformation != null)
+            //    {
 
-                    if (_userActivity == null)
-                    {
-                        //Nothing added so let's add it
-                        SYS_USER_ACTIVITY_LOG _activity = new SYS_USER_ACTIVITY_LOG();
-                        _activity.USER_ID = _userInformation.USER_ID;
-                        _activity.LAST_ACTIVITY_DATE = DateTime.Now;
-                        DBI.Data.GenericData.Insert<SYS_USER_ACTIVITY_LOG>(_activity);
-                    }
-                    else
-                    {
-                        //Update user activity
-                        _userActivity.LAST_ACTIVITY_DATE = DateTime.Now;
-                        DBI.Data.GenericData.Update<SYS_USER_ACTIVITY_LOG>(_userActivity);
-                    }
-                }
+            //        SYS_USER_ACTIVITY_LOG _userActivity = new SYS_USER_ACTIVITY_LOG();
 
-            }
+            //        try
+            //        {
+            //            _userActivity = _context.SYS_USER_ACTIVITY_LOG.Where(x => x.USER_ID == _userInformation.USER_ID).SingleOrDefault();
+            //        }
+            //        catch (Exception)
+            //        {
+            //            //Delete offending records
+            //            List<SYS_USER_ACTIVITY_LOG> _data = _context.SYS_USER_ACTIVITY_LOG.Where(x => x.USER_ID == _userInformation.USER_ID).ToList();
+            //            GenericData.Delete<SYS_USER_ACTIVITY_LOG>(_data);
+            //        }
+
+
+            //        //User should have a count of zero or 1 anything more is a mistake
+
+            //        if (_userActivity == null)
+            //        {
+            //            //Nothing added so let's add it
+            //            SYS_USER_ACTIVITY_LOG _activity = new SYS_USER_ACTIVITY_LOG();
+            //            _activity.USER_ID = _userInformation.USER_ID;
+            //            _activity.LAST_ACTIVITY_DATE = DateTime.Now;
+            //            DBI.Data.GenericData.Insert<SYS_USER_ACTIVITY_LOG>(_activity);
+            //        }
+            //        else
+            //        {
+            //            //Update user activity
+            //            _userActivity.LAST_ACTIVITY_DATE = DateTime.Now;
+            //            DBI.Data.GenericData.Update<SYS_USER_ACTIVITY_LOG>(_userActivity);
+            //        }
+            //    }
+
+            //}
 
         }
 
