@@ -140,19 +140,19 @@ namespace DBI.Data
                 return _data.ToList();    
         }
 
-        public static List<OVERHEAD_BUDGET_TYPE> BudgetTypesEnteredAndAvailaible(long legalEntityOrganizationId)
-        {
+        //public static List<OVERHEAD_BUDGET_TYPE> BudgetTypesEnteredAndAvailaible(long legalEntityOrganizationId)
+        //{
 
-            IQueryable<OVERHEAD_BUDGET_TYPE> _data = OVERHEAD_BUDGET_TYPE.BudgetTypes(legalEntityOrganizationId).AsQueryable();
+        //    IQueryable<OVERHEAD_BUDGET_TYPE> _data = OVERHEAD_BUDGET_TYPE.BudgetTypes(legalEntityOrganizationId).AsQueryable();
 
-            List<OVERHEAD_BUDGET_TYPE> _existingData = OVERHEAD_BUDGET_TYPE.BudgetTypes(legalEntityOrganizationId).ToList();
+        //    List<OVERHEAD_BUDGET_TYPE> _existingData = OVERHEAD_BUDGET_TYPE.BudgetTypes(legalEntityOrganizationId).ToList();
 
-            _data = (from dups in _data
-                     where !_existingData.Any(x => x.PARENT_BUDGET_TYPE_ID == dups.OVERHEAD_BUDGET_TYPE_ID)
-                     select dups);
+        //    _data = (from dups in _data
+        //             where !_existingData.Any(x => x.PARENT_BUDGET_TYPE_ID == dups.OVERHEAD_BUDGET_TYPE_ID)
+        //             select dups);
 
-            return _data.ToList();
-        }
+        //    return _data.ToList();
+        //}
 
         /// <summary>
         /// Returns a list of unused budget types by a legal entity. If they were used in the overhead system, they will not show in this returned list. This list will also filter out the same type so it can't be picked again.

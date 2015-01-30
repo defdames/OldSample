@@ -22,18 +22,16 @@ namespace DBI.Data
     
         public decimal LEAD_ID { get; set; }
         public decimal CSR { get; set; }
-        public string BUSINESS_UNIT { get; set; }
-        public string REGION { get; set; }
-        public string DIVISION { get; set; }
         public Nullable<System.DateTime> ENTRY_DATE { get; set; }
         public string STATE { get; set; }
         public string COUNTRY { get; set; }
-        public decimal PROSPECT_ID { get; set; }
         public string BID_TITLE { get; set; }
         public string BID_SOLICIT_NUMBER { get; set; }
+        public string PROSPECT { get; set; }
+        public Nullable<long> ORG_ID { get; set; }
         public string DESCRIPTION { get; set; }
         public string PROSPECT_CONTACT { get; set; }
-        public string CONTEACT_NUMBER { get; set; }
+        public string CONTACT_NUMBER { get; set; }
         public string CONTACT_EMAIL { get; set; }
         public Nullable<System.DateTime> POSTING_DATE { get; set; }
         public Nullable<System.DateTime> PRE_BID_DATE { get; set; }
