@@ -817,7 +817,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						new PdfPCell(new Phrase(Data.DRIVE_TIME_FORMATTED.ToString(), CellFont)),
 						new PdfPCell(new Phrase(Data.SHOPTIME_AM_FORMATTED.ToString(), CellFont)),
 						new PdfPCell(new Phrase(Data.SHOPTIME_PM_FORMATTED.ToString(), CellFont)),
-						new PdfPCell(new Phrase(Data.PER_DIEM.ToString(), CellFont)),
+						new PdfPCell(new Phrase((Data.PER_DIEM == true ? "Y" : "N"), CellFont)),
                         new PdfPCell(new Phrase(Data.ROLE_TYPE, CellFont)),
 						new PdfPCell(new Phrase(Comments, CellFont))
 					};
@@ -835,7 +835,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						new PdfPCell(new Phrase(Data.DRIVE_TIME_FORMATTED.ToString(), CellFont)),
 						new PdfPCell(new Phrase(Data.SHOPTIME_AM_FORMATTED.ToString(), CellFont)),
 						new PdfPCell(new Phrase(Data.SHOPTIME_PM_FORMATTED.ToString(), CellFont)),
-						new PdfPCell(new Phrase(Data.PER_DIEM.ToString(), CellFont)),
+						new PdfPCell(new Phrase((Data.PER_DIEM == true ? "Y" : "N"), CellFont)),
 						new PdfPCell(new Phrase(Comments, CellFont))
                             };
                                 }
@@ -912,7 +912,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						new PdfPCell(new Phrase(Data.TIME_OUT.ToString("hh\\:mm tt"), CellFont)),
 						new PdfPCell(new Phrase(TotalHours.ToString("hh\\:mm"), CellFont)),
 						new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED.ToString(), CellFont)),
-						new PdfPCell(new Phrase(Data.PER_DIEM.ToString(), CellFont)),
+						new PdfPCell(new Phrase((Data.PER_DIEM == true ? "Y" : "N"), CellFont)),
                         new PdfPCell(new Phrase(Data.LUNCH_LENGTH.ToString(), CellFont)),
 						new PdfPCell(new Phrase(Comments, CellFont))
 					};
