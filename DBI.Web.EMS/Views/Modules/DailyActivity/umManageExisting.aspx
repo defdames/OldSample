@@ -53,16 +53,26 @@
             if (App.uxStartFilterDate.value && App.uxEndFilterDate.value && App.uxStartFilterDate.isValid() && App.uxEndFilterDate.isValid()) {
                 var start = new Date(App.uxStartFilterDate.value);
                 var startDayOfMonth = start.getDate();
+                var startMonth = start.getMonth();
+                startMonth++;
+                if (startMonth < 10) {
+                    startMonth = "0" + (startMonth);
+                }
                 if (startDayOfMonth < 10) {
                     startDayOfMonth = "0" + startDayOfMonth;
                 }
                 var end = new Date(App.uxEndFilterDate.value);
+                var endMonth = end.getMonth();
+                endMonth++;
+                if (endMonth < 10) {
+                    endMonth = "0" + (endMonth);
+                }
                 var endDayOfMonth = end.getDate();
                 if (endDayOfMonth < 10) {
                     endDayOfMonth = "0" + endDayOfMonth;
                 }
                 
-                App.uxDropDownFilter.setValue(">= " + (start.getMonth() + 1) + "-" + startDayOfMonth + "-" + start.getFullYear() + " <= " + (end.getMonth() + 1) + "-" + endDayOfMonth + "-" + end.getFullYear());
+                App.uxDropDownFilter.setValue(">= " + startMonth + "-" + startDayOfMonth + "-" + start.getFullYear() + " <= " + endMonth + "-" + endDayOfMonth + "-" + end.getFullYear());
             }
         };
 
@@ -163,7 +173,7 @@
                                                                 Editable="false"
                                                                 LabelWidth="30"
                                                                 FieldLabel="From"
-                                                                InvalidCls="allowBlank">
+                                                                InvalidCls="allowBlank" Format="MM-dd-yyyy">
                                                                 <Listeners>
                                                                     <Render Fn="onFilterRender" />
                                                                     <Select Fn="setDDValue" />
@@ -176,7 +186,7 @@
                                                                 Editable="false"
                                                                 LabelWidth="30"
                                                                 FieldLabel="To"
-                                                                InvalidCls="allowBlank">
+                                                                InvalidCls="allowBlank" Format="MM-dd-yyyy">
                                                                 <Listeners>
                                                                     <Render Fn="onFilterRender" />
                                                                     <Select Fn="setDDValue" />
