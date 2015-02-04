@@ -107,7 +107,11 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                     ws.Cells["C" + _cellCount].Value = _detail.PERIOD_NAME;
                     ws.Cells["D" + _cellCount].Formula = "=DATE(" + _detail.TRANSACTION_DATE.Year.ToString() + "," + _detail.TRANSACTION_DATE.Month.ToString() + "," + _detail.TRANSACTION_DATE.Day.ToString() + ")";
                     ws.Cells["D" + _cellCount].Style.Numberformat.Format = "DD/MM/YYYY";
-                    ws.Cells["E" + _cellCount].Formula = "=DATE(" + _detail.POSTED_DATE.Year.ToString() + "," + _detail.POSTED_DATE.Month.ToString() + "," + _detail.POSTED_DATE.Day.ToString() + ")";
+                    if (_detail.POSTED_DATE != null)
+                    {
+                        DateTime _convertedDate = (DateTime)_detail.POSTED_DATE;
+                        ws.Cells["E" + _cellCount].Formula = "=DATE(" + _convertedDate.Year.ToString() + "," + _convertedDate.Month.ToString() + "," + _convertedDate.Day.ToString() + ")";
+                    }
                     ws.Cells["E" + _cellCount].Style.Numberformat.Format = "DD/MM/YYYY";
                     ws.Cells["F" + _cellCount].Value = _detail.LINE_REFERENCE;
                     ws.Cells["G" + _cellCount].Value = _detail.LINE_DESCRIPTION;
@@ -172,7 +176,7 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
             public decimal CREDIT { get; set; }
             public string CATEGORY { get; set; }
             public DateTime TRANSACTION_DATE { get; set; }
-            public DateTime POSTED_DATE { get; set; }
+            public DateTime? POSTED_DATE { get; set; }
             public decimal TOTAL { get; set; }
             public string PERIOD_NAME { get; set; }
         }

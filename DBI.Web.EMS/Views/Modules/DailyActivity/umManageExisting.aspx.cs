@@ -635,7 +635,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     {
                         OracleHeader = HeaderData.DA_HEADER_ID.ToString();
                     }
-                    catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                    catch (NullReferenceException)
                     {
                         OracleHeader = "0";
                     }
@@ -718,11 +718,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                     try
                     {
                         //Get Equipment/Employee Data
-                        List<DAILY_ACTIVITY.EmployeeDetails> EmployeeData = DAILY_ACTIVITY.GetIRMEmployeeData(_context, HeaderId).ToList();
-
+                        List<DAILY_ACTIVITY.EmployeeDetails> EmployeeData;
                         if (OrgId == 123)
                         {
-
+                            EmployeeData = DAILY_ACTIVITY.GetIRMEmployeeData(_context, HeaderId).ToList();
                             PdfPTable EmployeeTable;
                             if (DAILY_ACTIVITY.RoleNeeded(_context, HeaderId))
                             {
@@ -771,7 +770,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                 string TravelTime;
                                 try
                                 {
-                                    TravelTime = Data.TRAVEL_TIME_FORMATTED.ToString();
+                                    TravelTime = Data.TRAVEL_TIME_FORMATTED.ToString("H:mm");
                                 }
                                 catch (Exception)
                                 {
@@ -814,11 +813,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						new PdfPCell(new Phrase(Data.TIME_IN.ToString("hh\\:mm"), CellFont)),
 						new PdfPCell(new Phrase(Data.TIME_OUT.ToString("hh\\:mm"), CellFont)),
 						new PdfPCell(new Phrase(TotalHours.ToString("hh\\:mm"), CellFont)),
-						new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED.ToString(), CellFont)),
-						new PdfPCell(new Phrase(Data.DRIVE_TIME_FORMATTED.ToString(), CellFont)),
-						new PdfPCell(new Phrase(Data.SHOPTIME_AM_FORMATTED.ToString(), CellFont)),
-						new PdfPCell(new Phrase(Data.SHOPTIME_PM_FORMATTED.ToString(), CellFont)),
-						new PdfPCell(new Phrase(Data.PER_DIEM.ToString(), CellFont)),
+						new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED.ToString("H\\:mm"), CellFont)),
+						new PdfPCell(new Phrase(Data.DRIVE_TIME_FORMATTED.ToString("H\\:mm"), CellFont)),
+						new PdfPCell(new Phrase(Data.SHOPTIME_AM_FORMATTED.ToString("H\\:mm"), CellFont)),
+						new PdfPCell(new Phrase(Data.SHOPTIME_PM_FORMATTED.ToString("H\\:mm"), CellFont)),
+						new PdfPCell(new Phrase((Data.PER_DIEM == true ? "Y" : "N"), CellFont)),
                         new PdfPCell(new Phrase(Data.ROLE_TYPE, CellFont)),
 						new PdfPCell(new Phrase(Comments, CellFont))
 					};
@@ -832,11 +831,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						new PdfPCell(new Phrase(Data.TIME_IN.ToString("hh\\:mm"), CellFont)),
 						new PdfPCell(new Phrase(Data.TIME_OUT.ToString("hh\\:mm"), CellFont)),
 						new PdfPCell(new Phrase(TotalHours.ToString("hh\\:mm"), CellFont)),
-						new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED.ToString(), CellFont)),
-						new PdfPCell(new Phrase(Data.DRIVE_TIME_FORMATTED.ToString(), CellFont)),
-						new PdfPCell(new Phrase(Data.SHOPTIME_AM_FORMATTED.ToString(), CellFont)),
-						new PdfPCell(new Phrase(Data.SHOPTIME_PM_FORMATTED.ToString(), CellFont)),
-						new PdfPCell(new Phrase(Data.PER_DIEM.ToString(), CellFont)),
+						new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED.ToString("H\\:mm"), CellFont)),
+						new PdfPCell(new Phrase(Data.DRIVE_TIME_FORMATTED.ToString("H\\:mm"), CellFont)),
+						new PdfPCell(new Phrase(Data.SHOPTIME_AM_FORMATTED.ToString("H\\:mm"), CellFont)),
+						new PdfPCell(new Phrase(Data.SHOPTIME_PM_FORMATTED.ToString("H\\:mm"), CellFont)),
+						new PdfPCell(new Phrase((Data.PER_DIEM == true ? "Y" : "N"), CellFont)),
 						new PdfPCell(new Phrase(Comments, CellFont))
                             };
                                 }
@@ -848,6 +847,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         }
                         else
                         {
+                            EmployeeData = DAILY_ACTIVITY.GetDBIEmployeeData(_context, HeaderId);
                             PdfPTable EmployeeTable = new PdfPTable(10);
                             EmployeeTable.SetWidths(new float[] { 13f, 13f, 7f, 10f, 10f, 7f, 6f, 6f, 7f, 14f });
                             Cells = new PdfPCell[]{
@@ -870,7 +870,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                 string TravelTime;
                                 try
                                 {
-                                    TravelTime = Data.TRAVEL_TIME_FORMATTED.ToString();
+                                    TravelTime = Data.TRAVEL_TIME_FORMATTED.ToString("H\\:mm");
                                 }
                                 catch (Exception)
                                 {
@@ -911,8 +911,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						new PdfPCell(new Phrase(Data.TIME_IN.ToString("hh\\:mm tt"), CellFont)),
 						new PdfPCell(new Phrase(Data.TIME_OUT.ToString("hh\\:mm tt"), CellFont)),
 						new PdfPCell(new Phrase(TotalHours.ToString("hh\\:mm"), CellFont)),
-						new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED.ToString(), CellFont)),
-						new PdfPCell(new Phrase(Data.PER_DIEM.ToString(), CellFont)),
+						new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED.ToString("H\\:mm"), CellFont)),
+						new PdfPCell(new Phrase((Data.PER_DIEM == true ? "Y" : "N"), CellFont)),
                         new PdfPCell(new Phrase(Data.LUNCH_LENGTH.ToString(), CellFont)),
 						new PdfPCell(new Phrase(Comments, CellFont))
 					};
@@ -1025,7 +1025,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                 {
                                     WorkArea = Data.WORK_AREA.ToString();
                                 }
-                                catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                                catch (NullReferenceException)
                                 {
                                     WorkArea = string.Empty;
                                 }
@@ -1035,7 +1035,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                 {
                                     PoleFrom = Data.POLE_FROM.ToString();
                                 }
-                                catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                                catch (NullReferenceException)
                                 {
                                     PoleFrom = String.Empty;
                                 }
@@ -1043,7 +1043,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                 {
                                     PoleTo = Data.POLE_TO.ToString();
                                 }
-                                catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                                catch (NullReferenceException)
                                 {
                                     PoleTo = String.Empty;
                                 }
@@ -1235,7 +1235,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                 {
                                     EPANumber = Data.EPA_DESCRIPTION;
                                 }
-                                catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                                catch (NullReferenceException)
                                 {
                                     EPANumber = string.Empty;
                                 }

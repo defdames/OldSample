@@ -24,5 +24,6 @@ namespace DBI.Data
         public string CREATED_BY { get; set; }
         public string MODIFIED_BY { get; set; }
         public string COMMENTS { get; set; }
+        public Nullable<long> IMPORT_ID { get; set; }
     }
 }

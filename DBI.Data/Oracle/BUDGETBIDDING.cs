@@ -666,14 +666,7 @@ namespace DBI.Data
 
         public static decimal PerDiemRate(long leOrgID)
         {
-            if (leOrgID == 123)  // IRM
-            {
-                return 35;
-            }
-            else // Everything else
-            {
                 return 25;
-            }
         }
 
         public static string WEDateFiscalYear(string jcDate)
@@ -1711,6 +1704,18 @@ namespace DBI.Data
                     return data.COMMENTS;
                 }
 
+                public static void DBUpdateLiability(long detailSheetID, string liability)
+                {
+                    BUD_BID_DETAIL_TASK data;
+                    using (Entities context = new Entities())
+                    {
+                        data = context.BUD_BID_DETAIL_TASK.Where(x => x.DETAIL_TASK_ID == detailSheetID).SingleOrDefault();
+                    }
+
+                    data.LIABILITY = liability;
+                    GenericData.Update<BUD_BID_DETAIL_TASK>(data);
+                }
+
                 public static void DBUpdateNums(long budBidProjectID, long detailSheetID, string recType, decimal amount)
                 {
                     BUD_BID_DETAIL_SHEET data;
@@ -1765,7 +1770,8 @@ namespace DBI.Data
                 {
                     public decimal? MATERIAL { get; set; }
                     public decimal? EQUIPMENT { get; set; }
-                    public decimal? PERSONNEL { get; set; }
+                    public decimal? PERSONNELR { get; set; }
+                    public decimal? PERSONNELO { get; set; }
                     public decimal? PERDIEM { get; set; }
                     public decimal? TRAVEL { get; set; }
                     public decimal? MOTELS { get; set; }
@@ -1783,7 +1789,7 @@ namespace DBI.Data
                             WHERE DETAIL_TASK_ID = {0})
                         PIVOT(
                             SUM(TOTAL) FOR (REC_TYPE)
-                            IN ('MATERIAL' MATERIAL, 'EQUIPMENT' EQUIPMENT, 'PERSONNEL' PERSONNEL, 'PERDIEM' PERDIEM,
+                            IN ('MATERIAL' MATERIAL, 'EQUIPMENT' EQUIPMENT, 'PERSONNELR' PERSONNELR, 'PERSONNELO' PERSONNELO, 'PERDIEM' PERDIEM,
                                 'TRAVEL' TRAVEL, 'MOTELS' MOTELS, 'MISC' MISC, 'LUMPSUM' LUMPSUM))", detailSheetID);
 
                     Fields data;
@@ -1797,7 +1803,8 @@ namespace DBI.Data
                         Fields nullData = new Fields();
                         nullData.MATERIAL = 0;
                         nullData.EQUIPMENT = 0;
-                        nullData.PERSONNEL = 0;
+                        nullData.PERSONNELR = 0;
+                        nullData.PERSONNELO = 0;
                         nullData.PERDIEM = 0;
                         nullData.TRAVEL = 0;
                         nullData.MOTELS = 0;
@@ -1830,7 +1837,8 @@ namespace DBI.Data
                     BBDetail.Sheet.Subtotals.Fields subtotal = BBDetail.Sheet.Subtotals.Get(detailSheetID);
                     decimal totalMaterial = subtotal.MATERIAL ?? 0;
                     decimal totalEquipment = subtotal.EQUIPMENT ?? 0;
-                    decimal totalPersonnel = subtotal.PERSONNEL ?? 0;
+                    decimal totalPersonnelRT = subtotal.PERSONNELR ?? 0;
+                    decimal totalPersonnelOT = subtotal.PERSONNELO ?? 0;
                     decimal totalPerDiem = subtotal.PERDIEM ?? 0;
                     decimal totalTravel = subtotal.TRAVEL ?? 0;
                     decimal totalMotels = subtotal.MOTELS ?? 0;
@@ -1838,8 +1846,8 @@ namespace DBI.Data
                     decimal totalLumpSum = subtotal.LUMPSUM ?? 0;
 
                     decimal laborBurdenRate = BB.LaborBurdenRate(leOrgID, yearID);
-                    decimal laborBurden = (totalPersonnel + totalTravel) * laborBurdenRate;
-                    decimal totalWklyDirects = totalEquipment + totalPersonnel + totalPerDiem + totalTravel + totalMotels + totalMisc + laborBurden;
+                    decimal laborBurden = (totalPersonnelRT + totalPersonnelOT + totalTravel) * laborBurdenRate;
+                    decimal totalWklyDirects = totalEquipment + totalPersonnelRT + totalPersonnelOT + totalPerDiem + totalTravel + totalMotels + totalMisc + laborBurden;
                     decimal totalDirectsPerDay = totalDaysWorked == 0 ? 0 : totalWklyDirects / totalDaysWorked;
                     decimal avgUnitsPerDay = totalDaysRemain == 0 ? 0 : totalUnitsRemain / totalDaysRemain;
                     decimal totalDirectsLeft = (totalDirectsPerDay * totalDaysRemain) + totalLumpSum;

@@ -393,6 +393,54 @@
       "HIERARCHY_ID_V"."NAME" AS "NAME"
       FROM "XXEMS"."HIERARCHY_ID_V" "HIERARCHY_ID_V"</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="HR_ALL_ORGANIZATION_UNITS_V" EntityType="OracleModel.Store.HR_ALL_ORGANIZATION_UNITS_V" store:Type="Views" store:Schema="XXEMS" store:Name="HR_ALL_ORGANIZATION_UNITS_V">
+            <DefiningQuery>SELECT 
+      "HR_ALL_ORGANIZATION_UNITS_V"."ORGANIZATION_ID" AS "ORGANIZATION_ID", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."BUSINESS_GROUP_ID" AS "BUSINESS_GROUP_ID", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."COST_ALLOCATION_KEYFLEX_ID" AS "COST_ALLOCATION_KEYFLEX_ID", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."LOCATION_ID" AS "LOCATION_ID", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."SOFT_CODING_KEYFLEX_ID" AS "SOFT_CODING_KEYFLEX_ID", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."DATE_FROM" AS "DATE_FROM", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."NAME" AS "NAME", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."DATE_TO" AS "DATE_TO", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."INTERNAL_EXTERNAL_FLAG" AS "INTERNAL_EXTERNAL_FLAG", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."INTERNAL_ADDRESS_LINE" AS "INTERNAL_ADDRESS_LINE", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."TYPE" AS "TYPE", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."REQUEST_ID" AS "REQUEST_ID", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."PROGRAM_APPLICATION_ID" AS "PROGRAM_APPLICATION_ID", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."PROGRAM_ID" AS "PROGRAM_ID", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."PROGRAM_UPDATE_DATE" AS "PROGRAM_UPDATE_DATE", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."ATTRIBUTE_CATEGORY" AS "ATTRIBUTE_CATEGORY", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."ATTRIBUTE1" AS "ATTRIBUTE1", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."ATTRIBUTE2" AS "ATTRIBUTE2", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."ATTRIBUTE3" AS "ATTRIBUTE3", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."ATTRIBUTE4" AS "ATTRIBUTE4", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."ATTRIBUTE5" AS "ATTRIBUTE5", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."ATTRIBUTE6" AS "ATTRIBUTE6", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."ATTRIBUTE7" AS "ATTRIBUTE7", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."ATTRIBUTE8" AS "ATTRIBUTE8", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."ATTRIBUTE9" AS "ATTRIBUTE9", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."ATTRIBUTE10" AS "ATTRIBUTE10", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."ATTRIBUTE11" AS "ATTRIBUTE11", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."ATTRIBUTE12" AS "ATTRIBUTE12", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."ATTRIBUTE13" AS "ATTRIBUTE13", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."ATTRIBUTE14" AS "ATTRIBUTE14", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."ATTRIBUTE15" AS "ATTRIBUTE15", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."ATTRIBUTE16" AS "ATTRIBUTE16", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."ATTRIBUTE17" AS "ATTRIBUTE17", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."ATTRIBUTE18" AS "ATTRIBUTE18", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."ATTRIBUTE19" AS "ATTRIBUTE19", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."ATTRIBUTE20" AS "ATTRIBUTE20", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."LAST_UPDATE_DATE" AS "LAST_UPDATE_DATE", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."LAST_UPDATED_BY" AS "LAST_UPDATED_BY", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."LAST_UPDATE_LOGIN" AS "LAST_UPDATE_LOGIN", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."CREATED_BY" AS "CREATED_BY", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."CREATION_DATE" AS "CREATION_DATE", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."OBJECT_VERSION_NUMBER" AS "OBJECT_VERSION_NUMBER", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."PARTY_ID" AS "PARTY_ID", 
+      "HR_ALL_ORGANIZATION_UNITS_V"."COMMENTS" AS "COMMENTS"
+      FROM "XXEMS"."HR_ALL_ORGANIZATION_UNITS_V" "HR_ALL_ORGANIZATION_UNITS_V"</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="INVENTORY_V" EntityType="OracleModel.Store.INVENTORY_V" store:Type="Views" store:Schema="XXEMS" store:Name="INVENTORY_V">
             <DefiningQuery>SELECT 
       "INVENTORY_V"."ITEM_ID" AS "ITEM_ID", 
@@ -1307,6 +1355,7 @@
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="TASK_ID" Type="varchar2" MaxLength="200" />
           <Property Name="TASK_TYPE" Type="varchar2" MaxLength="10" />
+          <Property Name="LIABILITY" Type="char" MaxLength="1" />
         </EntityType>
         <EntityType Name="BUD_BID_LINES">
           <Key>
@@ -2010,18 +2059,16 @@
           </Key>
           <Property Name="LEAD_ID" Type="number" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="CSR" Type="number" Nullable="false" />
-          <Property Name="BUSINESS_UNIT" Type="varchar2" MaxLength="50" />
-          <Property Name="REGION" Type="varchar2" MaxLength="50" />
-          <Property Name="DIVISION" Type="varchar2" MaxLength="50" />
           <Property Name="ENTRY_DATE" Type="date" />
           <Property Name="STATE" Type="varchar2" MaxLength="50" />
           <Property Name="COUNTRY" Type="varchar2" MaxLength="50" />
-          <Property Name="PROSPECT_ID" Type="number" Nullable="false" />
           <Property Name="BID_TITLE" Type="varchar2" MaxLength="100" />
           <Property Name="BID_SOLICIT_NUMBER" Type="varchar2" MaxLength="100" />
+          <Property Name="PROSPECT" Type="varchar2" MaxLength="200" />
+          <Property Name="ORG_ID" Type="number" Precision="15" />
           <Property Name="DESCRIPTION" Type="clob" />
           <Property Name="PROSPECT_CONTACT" Type="varchar2" MaxLength="100" />
-          <Property Name="CONTEACT_NUMBER" Type="varchar2" MaxLength="100" />
+          <Property Name="CONTACT_NUMBER" Type="varchar2" MaxLength="100" />
           <Property Name="CONTACT_EMAIL" Type="varchar2" MaxLength="100" />
           <Property Name="POSTING_DATE" Type="date" />
           <Property Name="PRE_BID_DATE" Type="date" />
@@ -2100,8 +2147,9 @@
           <Property Name="MODIFY_DATE" Type="date" />
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
-          <Property Name="PARENT_BUDGET_TYPE_ID" Type="number" Precision="15" />
-          <Property Name="IMPORT_ACTUALS_ALLOWED" Type="varchar2" MaxLength="1" />
+          <Property Name="IMPORT_ACTUALS_FLAG" Type="varchar2" MaxLength="1" />
+          <Property Name="EXPORT_FLAG" Type="varchar2" MaxLength="1" />
+          <Property Name="SORT_ORDER" Type="number" Precision="15" />
         </EntityType>
         <EntityType Name="OVERHEAD_CATEGORY">
           <Key>
@@ -2167,6 +2215,7 @@
           <Property Name="CREATED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="50" />
           <Property Name="COMMENTS" Type="clob" />
+          <Property Name="IMPORT_ID" Type="number" Precision="15" />
         </EntityType>
         <EntityType Name="PROCESSES">
           <Key>
@@ -2953,6 +3002,61 @@
           </Key>
           <Property Name="HIERARCHY_ID" Type="number" Nullable="false" Precision="15" />
           <Property Name="NAME" Type="varchar2" Nullable="false" MaxLength="30" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'XXEMS.HR_ALL_ORGANIZATION_UNITS_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="HR_ALL_ORGANIZATION_UNITS_V">
+          <Key>
+            <PropertyRef Name="ORGANIZATION_ID" />
+            <PropertyRef Name="BUSINESS_GROUP_ID" />
+            <PropertyRef Name="DATE_FROM" />
+            <PropertyRef Name="NAME" />
+          </Key>
+          <Property Name="ORGANIZATION_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="BUSINESS_GROUP_ID" Type="number" Nullable="false" Precision="15" />
+          <Property Name="COST_ALLOCATION_KEYFLEX_ID" Type="number" Precision="9" />
+          <Property Name="LOCATION_ID" Type="number" Precision="15" />
+          <Property Name="SOFT_CODING_KEYFLEX_ID" Type="number" Precision="15" />
+          <Property Name="DATE_FROM" Type="date" Nullable="false" />
+          <Property Name="NAME" Type="varchar2" Nullable="false" MaxLength="240" />
+          <Property Name="DATE_TO" Type="date" />
+          <Property Name="INTERNAL_EXTERNAL_FLAG" Type="varchar2" MaxLength="30" />
+          <Property Name="INTERNAL_ADDRESS_LINE" Type="varchar2" MaxLength="80" />
+          <Property Name="TYPE" Type="varchar2" MaxLength="30" />
+          <Property Name="REQUEST_ID" Type="number" Precision="15" />
+          <Property Name="PROGRAM_APPLICATION_ID" Type="number" Precision="15" />
+          <Property Name="PROGRAM_ID" Type="number" Precision="15" />
+          <Property Name="PROGRAM_UPDATE_DATE" Type="date" />
+          <Property Name="ATTRIBUTE_CATEGORY" Type="varchar2" MaxLength="30" />
+          <Property Name="ATTRIBUTE1" Type="varchar2" MaxLength="150" />
+          <Property Name="ATTRIBUTE2" Type="varchar2" MaxLength="150" />
+          <Property Name="ATTRIBUTE3" Type="varchar2" MaxLength="150" />
+          <Property Name="ATTRIBUTE4" Type="varchar2" MaxLength="150" />
+          <Property Name="ATTRIBUTE5" Type="varchar2" MaxLength="150" />
+          <Property Name="ATTRIBUTE6" Type="varchar2" MaxLength="150" />
+          <Property Name="ATTRIBUTE7" Type="varchar2" MaxLength="150" />
+          <Property Name="ATTRIBUTE8" Type="varchar2" MaxLength="150" />
+          <Property Name="ATTRIBUTE9" Type="varchar2" MaxLength="150" />
+          <Property Name="ATTRIBUTE10" Type="varchar2" MaxLength="150" />
+          <Property Name="ATTRIBUTE11" Type="varchar2" MaxLength="150" />
+          <Property Name="ATTRIBUTE12" Type="varchar2" MaxLength="150" />
+          <Property Name="ATTRIBUTE13" Type="varchar2" MaxLength="150" />
+          <Property Name="ATTRIBUTE14" Type="varchar2" MaxLength="150" />
+          <Property Name="ATTRIBUTE15" Type="varchar2" MaxLength="150" />
+          <Property Name="ATTRIBUTE16" Type="varchar2" MaxLength="150" />
+          <Property Name="ATTRIBUTE17" Type="varchar2" MaxLength="150" />
+          <Property Name="ATTRIBUTE18" Type="varchar2" MaxLength="150" />
+          <Property Name="ATTRIBUTE19" Type="varchar2" MaxLength="150" />
+          <Property Name="ATTRIBUTE20" Type="varchar2" MaxLength="150" />
+          <Property Name="LAST_UPDATE_DATE" Type="date" />
+          <Property Name="LAST_UPDATED_BY" Type="number" Precision="15" />
+          <Property Name="LAST_UPDATE_LOGIN" Type="number" Precision="15" />
+          <Property Name="CREATED_BY" Type="number" Precision="15" />
+          <Property Name="CREATION_DATE" Type="date" />
+          <Property Name="OBJECT_VERSION_NUMBER" Type="number" Precision="9" />
+          <Property Name="PARTY_ID" Type="number" Precision="15" />
+          <Property Name="COMMENTS" Type="long" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'XXEMS.INVENTORY_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -4934,6 +5038,7 @@
             <End Role="BUD_BID_DETAIL_TASK" EntitySet="BUD_BID_DETAIL_TASK" />
             <End Role="BUD_BID_DETAIL_SHEET" EntitySet="BUD_BID_DETAIL_SHEET" />
           </AssociationSet>
+          <EntitySet Name="HR_ALL_ORGANIZATION_UNITS_V" EntityType="OracleModel.HR_ALL_ORGANIZATION_UNITS_V" />
           </EntityContainer>
         <EntityType Name="SYS_USERS">
           <Key>
@@ -7772,6 +7877,7 @@
           <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="COMMENTS" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="IMPORT_ID" />
         </EntityType>
         <EntityType Name="OVERHEAD_ACCOUNT_COMMENT">
           <Key>
@@ -8629,18 +8735,16 @@
           </Key>
           <Property Type="Decimal" Name="LEAD_ID" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Decimal" Name="CSR" Nullable="false" Precision="38" Scale="0" />
-          <Property Type="String" Name="BUSINESS_UNIT" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="REGION" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="DIVISION" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="ENTRY_DATE" />
           <Property Type="String" Name="STATE" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="COUNTRY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="PROSPECT_ID" Nullable="false" Precision="38" Scale="0" />
           <Property Type="String" Name="BID_TITLE" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="BID_SOLICIT_NUMBER" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PROSPECT" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="ORG_ID" />
           <Property Type="String" Name="DESCRIPTION" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="PROSPECT_CONTACT" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="CONTEACT_NUMBER" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CONTACT_NUMBER" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="CONTACT_EMAIL" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="POSTING_DATE" />
           <Property Type="DateTime" Name="PRE_BID_DATE" />
@@ -8703,8 +8807,9 @@
           <Property Type="DateTime" Name="MODIFY_DATE" />
           <Property Type="String" Name="CREATED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="Int64" Name="PARENT_BUDGET_TYPE_ID" />
-          <Property Type="String" Name="IMPORT_ACTUALS_ALLOWED" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="IMPORT_ACTUALS_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="EXPORT_FLAG" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="SORT_ORDER" />
         </EntityType>
         <EntityType Name="BUD_BID_DETAIL_TASK">
           <Key>
@@ -8721,6 +8826,7 @@
           <Property Type="String" Name="MODIFIED_BY" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="TASK_ID" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="TASK_TYPE" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="LIABILITY" MaxLength="1" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="BUD_BID_ACTUAL_NUM" Relationship="OracleModel.FK_ACTUAL_NUM_DETAIL_TASK_ID" FromRole="BUD_BID_DETAIL_TASK" ToRole="BUD_BID_ACTUAL_NUM" />
           <NavigationProperty Name="BUD_BID_BUDGET_NUM" Relationship="OracleModel.FK_BUDGET_NUM_DETAIL_TASK_ID" FromRole="BUD_BID_DETAIL_TASK" ToRole="BUD_BID_BUDGET_NUM" />
           <NavigationProperty Name="BUD_BID_DETAIL_SHEET" Relationship="OracleModel.FK_DETAIL_DETAIL_TASK_ID" FromRole="BUD_BID_DETAIL_TASK" ToRole="BUD_BID_DETAIL_SHEET" />
@@ -8761,6 +8867,58 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="HR_ALL_ORGANIZATION_UNITS_V">
+          <Key>
+            <PropertyRef Name="ORGANIZATION_ID" />
+            <PropertyRef Name="BUSINESS_GROUP_ID" />
+            <PropertyRef Name="DATE_FROM" />
+            <PropertyRef Name="NAME" />
+          </Key>
+          <Property Type="Int64" Name="ORGANIZATION_ID" Nullable="false" />
+          <Property Type="Int64" Name="BUSINESS_GROUP_ID" Nullable="false" />
+          <Property Type="Int32" Name="COST_ALLOCATION_KEYFLEX_ID" />
+          <Property Type="Int64" Name="LOCATION_ID" />
+          <Property Type="Int64" Name="SOFT_CODING_KEYFLEX_ID" />
+          <Property Type="DateTime" Name="DATE_FROM" Nullable="false" />
+          <Property Type="String" Name="NAME" Nullable="false" MaxLength="240" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="DATE_TO" />
+          <Property Type="String" Name="INTERNAL_EXTERNAL_FLAG" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="INTERNAL_ADDRESS_LINE" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="TYPE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="REQUEST_ID" />
+          <Property Type="Int64" Name="PROGRAM_APPLICATION_ID" />
+          <Property Type="Int64" Name="PROGRAM_ID" />
+          <Property Type="DateTime" Name="PROGRAM_UPDATE_DATE" />
+          <Property Type="String" Name="ATTRIBUTE_CATEGORY" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE1" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE2" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE3" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE4" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE5" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE6" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE7" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE8" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE9" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE10" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE11" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE12" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE13" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE14" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE15" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE16" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE17" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE18" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE19" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ATTRIBUTE20" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="LAST_UPDATE_DATE" />
+          <Property Type="Int64" Name="LAST_UPDATED_BY" />
+          <Property Type="Int64" Name="LAST_UPDATE_LOGIN" />
+          <Property Type="Int64" Name="CREATED_BY" />
+          <Property Type="DateTime" Name="CREATION_DATE" />
+          <Property Type="Int32" Name="OBJECT_VERSION_NUMBER" />
+          <Property Type="Int64" Name="PARTY_ID" />
+          <Property Type="String" Name="COMMENTS" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -11021,6 +11179,7 @@
           <EntitySetMapping Name="OVERHEAD_ORG_BUDGETS">
             <EntityTypeMapping TypeName="OracleModel.OVERHEAD_ORG_BUDGETS">
               <MappingFragment StoreEntitySet="OVERHEAD_ORG_BUDGETS">
+                <ScalarProperty Name="IMPORT_ID" ColumnName="IMPORT_ID" />
                 <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
                 <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
@@ -11647,18 +11806,16 @@
                 <ScalarProperty Name="PRE_BID_DATE" ColumnName="PRE_BID_DATE" />
                 <ScalarProperty Name="POSTING_DATE" ColumnName="POSTING_DATE" />
                 <ScalarProperty Name="CONTACT_EMAIL" ColumnName="CONTACT_EMAIL" />
-                <ScalarProperty Name="CONTEACT_NUMBER" ColumnName="CONTEACT_NUMBER" />
+                <ScalarProperty Name="CONTACT_NUMBER" ColumnName="CONTACT_NUMBER" />
                 <ScalarProperty Name="PROSPECT_CONTACT" ColumnName="PROSPECT_CONTACT" />
                 <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
+                <ScalarProperty Name="PROSPECT" ColumnName="PROSPECT" />
                 <ScalarProperty Name="BID_SOLICIT_NUMBER" ColumnName="BID_SOLICIT_NUMBER" />
                 <ScalarProperty Name="BID_TITLE" ColumnName="BID_TITLE" />
-                <ScalarProperty Name="PROSPECT_ID" ColumnName="PROSPECT_ID" />
                 <ScalarProperty Name="COUNTRY" ColumnName="COUNTRY" />
                 <ScalarProperty Name="STATE" ColumnName="STATE" />
                 <ScalarProperty Name="ENTRY_DATE" ColumnName="ENTRY_DATE" />
-                <ScalarProperty Name="DIVISION" ColumnName="DIVISION" />
-                <ScalarProperty Name="REGION" ColumnName="REGION" />
-                <ScalarProperty Name="BUSINESS_UNIT" ColumnName="BUSINESS_UNIT" />
                 <ScalarProperty Name="CSR" ColumnName="CSR" />
                 <ScalarProperty Name="LEAD_ID" ColumnName="LEAD_ID" />
               </MappingFragment>
@@ -11667,8 +11824,9 @@
           <EntitySetMapping Name="OVERHEAD_BUDGET_TYPE">
             <EntityTypeMapping TypeName="OracleModel.OVERHEAD_BUDGET_TYPE">
               <MappingFragment StoreEntitySet="OVERHEAD_BUDGET_TYPE">
-                <ScalarProperty Name="IMPORT_ACTUALS_ALLOWED" ColumnName="IMPORT_ACTUALS_ALLOWED" />
-                <ScalarProperty Name="PARENT_BUDGET_TYPE_ID" ColumnName="PARENT_BUDGET_TYPE_ID" />
+                <ScalarProperty Name="SORT_ORDER" ColumnName="SORT_ORDER" />
+                <ScalarProperty Name="EXPORT_FLAG" ColumnName="EXPORT_FLAG" />
+                <ScalarProperty Name="IMPORT_ACTUALS_FLAG" ColumnName="IMPORT_ACTUALS_FLAG" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
                 <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
                 <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
@@ -11683,6 +11841,7 @@
           <EntitySetMapping Name="BUD_BID_DETAIL_TASK">
             <EntityTypeMapping TypeName="OracleModel.BUD_BID_DETAIL_TASK">
               <MappingFragment StoreEntitySet="BUD_BID_DETAIL_TASK">
+                <ScalarProperty Name="LIABILITY" ColumnName="LIABILITY" />
                 <ScalarProperty Name="TASK_TYPE" ColumnName="TASK_TYPE" />
                 <ScalarProperty Name="TASK_ID" ColumnName="TASK_ID" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
@@ -11694,6 +11853,56 @@
                 <ScalarProperty Name="DETAIL_NAME" ColumnName="DETAIL_NAME" />
                 <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
                 <ScalarProperty Name="DETAIL_TASK_ID" ColumnName="DETAIL_TASK_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HR_ALL_ORGANIZATION_UNITS_V">
+            <EntityTypeMapping TypeName="OracleModel.HR_ALL_ORGANIZATION_UNITS_V">
+              <MappingFragment StoreEntitySet="HR_ALL_ORGANIZATION_UNITS_V">
+                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
+                <ScalarProperty Name="PARTY_ID" ColumnName="PARTY_ID" />
+                <ScalarProperty Name="OBJECT_VERSION_NUMBER" ColumnName="OBJECT_VERSION_NUMBER" />
+                <ScalarProperty Name="CREATION_DATE" ColumnName="CREATION_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="LAST_UPDATE_LOGIN" ColumnName="LAST_UPDATE_LOGIN" />
+                <ScalarProperty Name="LAST_UPDATED_BY" ColumnName="LAST_UPDATED_BY" />
+                <ScalarProperty Name="LAST_UPDATE_DATE" ColumnName="LAST_UPDATE_DATE" />
+                <ScalarProperty Name="ATTRIBUTE20" ColumnName="ATTRIBUTE20" />
+                <ScalarProperty Name="ATTRIBUTE19" ColumnName="ATTRIBUTE19" />
+                <ScalarProperty Name="ATTRIBUTE18" ColumnName="ATTRIBUTE18" />
+                <ScalarProperty Name="ATTRIBUTE17" ColumnName="ATTRIBUTE17" />
+                <ScalarProperty Name="ATTRIBUTE16" ColumnName="ATTRIBUTE16" />
+                <ScalarProperty Name="ATTRIBUTE15" ColumnName="ATTRIBUTE15" />
+                <ScalarProperty Name="ATTRIBUTE14" ColumnName="ATTRIBUTE14" />
+                <ScalarProperty Name="ATTRIBUTE13" ColumnName="ATTRIBUTE13" />
+                <ScalarProperty Name="ATTRIBUTE12" ColumnName="ATTRIBUTE12" />
+                <ScalarProperty Name="ATTRIBUTE11" ColumnName="ATTRIBUTE11" />
+                <ScalarProperty Name="ATTRIBUTE10" ColumnName="ATTRIBUTE10" />
+                <ScalarProperty Name="ATTRIBUTE9" ColumnName="ATTRIBUTE9" />
+                <ScalarProperty Name="ATTRIBUTE8" ColumnName="ATTRIBUTE8" />
+                <ScalarProperty Name="ATTRIBUTE7" ColumnName="ATTRIBUTE7" />
+                <ScalarProperty Name="ATTRIBUTE6" ColumnName="ATTRIBUTE6" />
+                <ScalarProperty Name="ATTRIBUTE5" ColumnName="ATTRIBUTE5" />
+                <ScalarProperty Name="ATTRIBUTE4" ColumnName="ATTRIBUTE4" />
+                <ScalarProperty Name="ATTRIBUTE3" ColumnName="ATTRIBUTE3" />
+                <ScalarProperty Name="ATTRIBUTE2" ColumnName="ATTRIBUTE2" />
+                <ScalarProperty Name="ATTRIBUTE1" ColumnName="ATTRIBUTE1" />
+                <ScalarProperty Name="ATTRIBUTE_CATEGORY" ColumnName="ATTRIBUTE_CATEGORY" />
+                <ScalarProperty Name="PROGRAM_UPDATE_DATE" ColumnName="PROGRAM_UPDATE_DATE" />
+                <ScalarProperty Name="PROGRAM_ID" ColumnName="PROGRAM_ID" />
+                <ScalarProperty Name="PROGRAM_APPLICATION_ID" ColumnName="PROGRAM_APPLICATION_ID" />
+                <ScalarProperty Name="REQUEST_ID" ColumnName="REQUEST_ID" />
+                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+                <ScalarProperty Name="INTERNAL_ADDRESS_LINE" ColumnName="INTERNAL_ADDRESS_LINE" />
+                <ScalarProperty Name="INTERNAL_EXTERNAL_FLAG" ColumnName="INTERNAL_EXTERNAL_FLAG" />
+                <ScalarProperty Name="DATE_TO" ColumnName="DATE_TO" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="DATE_FROM" ColumnName="DATE_FROM" />
+                <ScalarProperty Name="SOFT_CODING_KEYFLEX_ID" ColumnName="SOFT_CODING_KEYFLEX_ID" />
+                <ScalarProperty Name="LOCATION_ID" ColumnName="LOCATION_ID" />
+                <ScalarProperty Name="COST_ALLOCATION_KEYFLEX_ID" ColumnName="COST_ALLOCATION_KEYFLEX_ID" />
+                <ScalarProperty Name="BUSINESS_GROUP_ID" ColumnName="BUSINESS_GROUP_ID" />
+                <ScalarProperty Name="ORGANIZATION_ID" ColumnName="ORGANIZATION_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

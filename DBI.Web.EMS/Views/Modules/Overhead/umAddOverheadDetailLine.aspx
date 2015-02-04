@@ -65,7 +65,7 @@
             <Items>
                 <ext:Toolbar runat="server" Region="North" Padding="5" Margins="5 5 5 5">
                     <Items>
-                        <ext:Button runat="server" Icon="CalculatorEdit" Text="Cost Allocation">
+                        <ext:Button runat="server" Icon="CalculatorEdit" Text="Cost Allocation" ID="uxCalculatorEdit">
                             <Listeners>
                                 <Click Handler="#{uxDispersementForm}.reset();#{uxDisbursementDetailsWindow}.show();"></Click>
                             </Listeners>
@@ -184,7 +184,11 @@
             </ext:Viewport>
 
         <ext:Window runat="server" Width="350" Height="150" Title="Cost Allocation" Layout="FitLayout" Header="true" Hidden="true" ID="uxDisbursementDetailsWindow" CloseAction="Hide" Closable="true" Modal="true" DefaultButton="uxCalculate">
+            <Listeners>
+                <Show Handler="#{uxDispersementType}.focus();" />
+            </Listeners>
             <Items>
+                
                 <ext:FormPanel ID="uxDispersementForm" runat="server" Header="false" BodyPadding="10" DefaultButton="uxAddBudgetType" Frame="true"
                     Margins="5 5 5 5" >
                     <Items>
@@ -194,7 +198,7 @@
                         LabelStyle="font-weight:bold;padding:0;"
                         Layout="FitLayout">
                         <Items>
-                         <ext:ComboBox runat="server" ID="uxDispersementType" Editable="true" TypeAhead="true"
+                         <ext:ComboBox runat="server" ID="uxDispersementType" Editable="false" TypeAhead="false"
                                 FieldLabel="Type" TriggerAction="All" 
                                 MinChars="1" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;"  >
                                 <Items>
@@ -204,7 +208,7 @@
                                     <ext:ListItem Text="Weekly" Value="W" />
                                 </Items>
                              <Listeners >
-                                 <Select Handler=" #{uxAmountCalculator}.enable();#{uxCalculate}.enable();"></Select>
+                                 <Select Handler="#{uxAmountCalculator}.enable();#{uxCalculate}.enable();#{uxAmountCalculator}.focus(false,200);"></Select>
                              </Listeners>
                             </ext:ComboBox>
                         </Items>
@@ -215,14 +219,14 @@
                         LabelStyle="font-weight:bold;padding:0;"
                         Layout="FitLayout">
                         <Items>
-                         <ext:Numberfield AllowDecimals="true" ID="uxAmountCalculator" runat="server" FieldLabel="Amount" FieldStyle="background-color: #EFF7FF; background-image: none;" Disabled="true" >
+                         <ext:Numberfield AllowDecimals="true" TabIndex="2" ID="uxAmountCalculator" runat="server" FieldLabel="Amount" FieldStyle="background-color: #EFF7FF; background-image: none;" Disabled="true" >
                          </ext:Numberfield>
                         </Items>
                     </ext:FieldContainer>
 
                     </Items>
                     <Buttons>
-                        <ext:Button runat="server" ID="uxCalculate" Text="Allocate Amount" Disabled="true" icon="CalculatorEdit">
+                        <ext:Button runat="server" ID="uxCalculate" TabIndex="3" Text="Allocate Amount" Disabled="true" icon="CalculatorEdit">
                             <DirectEvents>
                                 <Click OnEvent="deCalcuateAmount"><EventMask ShowMask="true"></EventMask></Click>
                             </DirectEvents>
