@@ -45,8 +45,9 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
             
             using (Entities _context = new Entities())
             {   //Manager Query
-                if ((uxToggleApproved.Checked == false) && (validateComponentSecurity("SYS.TimeClock.Payroll")))
-                {   //Payroll query
+                if ((uxToggleApproved.Checked == false) && (validateComponentSecurity("SYS.TimeClock.Payroll") ))
+                #region Payroll Unapproved only
+                {   
 
                     var data = TIMECLOCK.EmployeeTimeCompletedUnapprovedPayroll();
 
@@ -80,8 +81,11 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                     }
                     uxEmployeeHoursStore.DataSource = data;
                 }
+                #endregion
 
                 else if ((uxToggleApproved.Checked) && (validateComponentSecurity("SYS.TimeClock.Payroll")))
+                #region Payroll Approved and Unapproved
+                
                 {   //Payroll query
                     var data = TIMECLOCK.EmployeeTimeCompletedPayroll();
 
@@ -113,8 +117,10 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                     }
                     uxEmployeeHoursStore.DataSource = data;
                 }
+                #endregion
 
                 else if ((uxToggleApproved.Checked == false) && validateComponentSecurity("SYS.TimeClock.Manager"))
+                #region Manager Apporved only
                 {
 
                     var data = TIMECLOCK.EmployeeTimeCompletedUnapproved(person_id);
@@ -147,8 +153,10 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                     uxEmployeeHoursStore.DataSource = data;
 
                 }
+                #endregion
 
                 else if ((uxToggleApproved.Checked) && (validateComponentSecurity("SYS.TimeClock.Manager")))
+                #region Manager Approved and Unapproved
                 {
                     var data = TIMECLOCK.EmployeeTimeCompleted(person_id);
 
@@ -178,10 +186,11 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
                     }
                     uxEmployeeHoursStore.DataSource = data;
-                
-                }
 
-               
+                }
+                #endregion
+
+
 
             }
 

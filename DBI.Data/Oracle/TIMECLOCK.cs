@@ -17,11 +17,13 @@ namespace DBI.Data
 
                 var _data = (from tc in _context.TIME_CLOCK
                              join ev in _context.EMPLOYEES_V on tc.PERSON_ID equals ev.PERSON_ID
+                             join ui in _context.SYS_USER_INFORMATION on tc.PERSON_ID equals ui.PERSON_ID
                              select new Employee
                              {
                                  TIME_IN = ((DateTime)tc.MODIFIED_TIME_IN == null) ? tc.TIME_IN : tc.MODIFIED_TIME_IN,
                                  TIME_OUT = ((DateTime)tc.MODIFIED_TIME_OUT == null) ? tc.TIME_OUT : tc.MODIFIED_TIME_OUT,
                                  EMPLOYEE_NAME = ev.EMPLOYEE_NAME,
+                                 CURRENT_EMPLOYEE = ev.CURRENT_EMPLOYEE_FLAG,
                                  DAY_OF_WEEK = tc.DAY_OF_WEEK,
                                  TIME_CLOCK_ID = tc.TIME_CLOCK_ID,
                                  ADJUSTED_HOURS = tc.ADJUSTED_HOURS,
@@ -48,13 +50,56 @@ namespace DBI.Data
         /// </summary>
         /// <param name="supervisorId"></param>
         /// <returns></returns>
+        public static List<Employee> EmployeeAllTimeCompletedUnapproved(decimal supervisorId, bool showAllEmployees = false)
+        {
+            string sql = string.Format(@"select distinct Person_id from xxems.sys_user_information where ORACLE_ACCOUNT_STATUS = 'A'
+                                        START WITH SUPERVISOR_ID ={0}
+                                        CONNECT BY PRIOR PERSON_ID = SUPERVISOR_ID", supervisorId);
+
+            using (Entities _context = new Entities())
+            {
+
+
+                if (showAllEmployees)
+                {
+                    List<decimal> _UserHier = _context.Database.SqlQuery<decimal>(sql).ToList();
+
+                    var _data = (from ev in EmployeeTime()
+                                 where _UserHier.Contains(ev.PERSON_ID)
+                                 && ev.COMPLETED == "Y" && ev.APPROVED == "N" && ev.DELETED =="N" && ev.CURRENT_EMPLOYEE != null
+                                 select ev).ToList();
+                    
+
+
+                             
+
+
+                    return _data.ToList();
+                }
+                else
+                {
+                    var _data = EmployeeTime().Where(x => x.SUPERVISOR_ID == supervisorId && x.COMPLETED == "Y" && x.APPROVED == "N" && x.DELETED == "N" && x.CURRENT_EMPLOYEE != null).ToList();
+                    return _data;
+
+                }
+
+
+            }
+
+
+
+            
+
+        }
+        /// <summary>
+        /// Returns employee time by supervisior Id that has been completed by the user and is NOT approved
+        /// </summary>
+        /// <param name="supervisorId"></param>
+        /// <returns></returns>
         public static List<Employee> EmployeeTimeCompletedUnapproved(decimal supervisorId)
         {
-
-            var _data = EmployeeTime().Where(x => x.SUPERVISOR_ID == supervisorId && x.COMPLETED == "Y" && x.APPROVED == "N" && x.DELETED == "N").ToList();
+            var _data = EmployeeTime().Where(x => x.SUPERVISOR_ID == supervisorId && x.COMPLETED == "Y" && x.APPROVED == "N" && x.DELETED == "N" && x.CURRENT_EMPLOYEE != null).ToList();
             return _data;
-
-
         }
         /// <summary>
         /// Returns all employee time that has been completed and NOT approved
@@ -63,7 +108,7 @@ namespace DBI.Data
         public static List<Employee> EmployeeTimeCompletedUnapprovedPayroll()
         {
 
-            var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.APPROVED == "N" && x.DELETED == "N").ToList();
+            var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.APPROVED == "N" && x.DELETED == "N" && x.CURRENT_EMPLOYEE != null).ToList();
             return _data;
 
         }
@@ -75,7 +120,7 @@ namespace DBI.Data
         public static List<Employee> EmployeeTimeCompleted(decimal supervisorId)
         {
 
-            var _data = EmployeeTime().Where(x => x.SUPERVISOR_ID == supervisorId && x.COMPLETED == "Y" && x.DELETED == "N").ToList();
+            var _data = EmployeeTime().Where(x => x.SUPERVISOR_ID == supervisorId && x.COMPLETED == "Y" && x.DELETED == "N" && x.CURRENT_EMPLOYEE != null).ToList();
             return _data;
 
 
@@ -86,7 +131,7 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<Employee> EmployeeTimeCompletedPayroll()
         {
-            var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.DELETED == "N").ToList();
+            var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.DELETED == "N" && x.CURRENT_EMPLOYEE != null).ToList();
             return _data;
 
 
@@ -98,7 +143,7 @@ namespace DBI.Data
         public static List<Employee> EmployeeTimeCompletedApprovedPayroll()
         {
 
-            var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.APPROVED == "Y" && x.SUBMITTED == "N" && x.DELETED == "N").ToList();
+            var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.APPROVED == "Y" && x.SUBMITTED == "N" && x.DELETED == "N" && x.CURRENT_EMPLOYEE != null).ToList();
             return _data;
 
         }
@@ -108,7 +153,7 @@ namespace DBI.Data
         /// <returns></returns>
         public static List<Employee> EmployeeTimeCompletedApprovedSubmittedPayroll()
         {
-            var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.APPROVED == "Y" && x.DELETED == "N").ToList();
+            var _data = EmployeeTime().Where(x => x.COMPLETED == "Y" && x.APPROVED == "Y" && x.DELETED == "N" && x.CURRENT_EMPLOYEE != null).ToList();
             return _data;
         }
         /// <summary>
@@ -376,6 +421,7 @@ namespace DBI.Data
             public string DELETED { get; set; }
             public string DELETED_COMMENTS { get; set; }
             public string TIME_DIFF { get; set; }
+            public string CURRENT_EMPLOYEE { get; set; }
 
 
 

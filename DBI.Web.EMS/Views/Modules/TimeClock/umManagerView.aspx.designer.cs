@@ -175,6 +175,15 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock {
         protected global::Ext.Net.Checkbox uxToggleApproved;
         
         /// <summary>
+        /// uxToggleEmployees control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Ext.Net.Checkbox uxToggleEmployees;
+        
+        /// <summary>
         /// uxTimeClockSelectionModel control.
         /// </summary>
         /// <remarks>
