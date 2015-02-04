@@ -216,43 +216,43 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
         }
 
 
-        protected void deSelectForecast(object sender, DirectEventArgs e)
-        {
-            long _budgetid = long.Parse(e.ExtraParams["ORG_BUDGET_ID"]);
+        //protected void deSelectForecast(object sender, DirectEventArgs e)
+        //{
+        //    long _budgetid = long.Parse(e.ExtraParams["ORG_BUDGET_ID"]);
 
-            if (uxForecastPeriodsByOrganizationSelectionModel.SelectedRows.Count() > 0)
-            {
-                using (Entities _context = new Entities())
-                {
-                    //Return the budget 
-                    OVERHEAD_ORG_BUDGETS _budget = OVERHEAD_BUDGET_FORECAST.BudgetByID(_context, _budgetid);
-                    var _budgetType = OVERHEAD_BUDGET_TYPE.BudgetType(_budget.OVERHEAD_BUDGET_TYPE_ID);
+        //    if (uxForecastPeriodsByOrganizationSelectionModel.SelectedRows.Count() > 0)
+        //    {
+        //        using (Entities _context = new Entities())
+        //        {
+        //            //Return the budget 
+        //            OVERHEAD_ORG_BUDGETS _budget = OVERHEAD_BUDGET_FORECAST.BudgetByID(_context, _budgetid);
+        //            var _budgetType = OVERHEAD_BUDGET_TYPE.BudgetType(_budget.OVERHEAD_BUDGET_TYPE_ID);
 
-                    if (_budgetType.IMPORT_ACTUALS_ALLOWED == "N")
-                    {
-                        uxImportActuals.Disable();
-                    }
-                    else
-                    {
-                        uxImportActuals.Enable();
-                    }
-                }
+        //            //if (_budgetType.IMPORT_ACTUALS_ALLOWED == "N")
+        //            //{
+        //            //    uxImportActuals.Disable();
+        //            //}
+        //            else
+        //            {
+        //                uxImportActuals.Enable();
+        //            }
+        //        }
 
-                uxOpenPeriod.Enable();
-                uxClosePeriod.Enable();
-                uxDelete.Enable();
-                uxEditBudget.Enable();
-            }
-            else
-            {
-                uxOpenPeriod.Disable();
-                uxClosePeriod.Disable();
-                uxDelete.Disable();
-                uxImportActuals.Disable();
-                uxEditBudget.Disable();
-            }
+        //        uxOpenPeriod.Enable();
+        //        uxClosePeriod.Enable();
+        //        uxDelete.Enable();
+        //        uxEditBudget.Enable();
+        //    }
+        //    else
+        //    {
+        //        uxOpenPeriod.Disable();
+        //        uxClosePeriod.Disable();
+        //        uxDelete.Disable();
+        //        uxImportActuals.Disable();
+        //        uxEditBudget.Disable();
+        //    }
 
-        }
+        //}
 
         protected void deDeSelectForecast(object sender, DirectEventArgs e)
         {

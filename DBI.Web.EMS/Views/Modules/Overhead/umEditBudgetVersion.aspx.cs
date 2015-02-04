@@ -35,10 +35,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                  OVERHEAD_ORG_BUDGETS _budget = OVERHEAD_BUDGET_FORECAST.BudgetByID(_context, _budgetid);
                  var _budgetType = OVERHEAD_BUDGET_TYPE.BudgetType(_budget.OVERHEAD_BUDGET_TYPE_ID);
 
-                 if (_budgetType.IMPORT_ACTUALS_ALLOWED == "N")
-                 {
-                     uxImportActualsButton.Disable();
-                 }
+                 //if (_budgetType.IMPORT_ACTUALS_ALLOWED == "N")
+                 //{
+                 //    uxImportActualsButton.Disable();
+                 //}
 
                     long _organizationID;
                     bool checkOrgId = long.TryParse(Request.QueryString["orgid"], out _organizationID);

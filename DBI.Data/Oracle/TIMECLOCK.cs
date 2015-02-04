@@ -50,7 +50,7 @@ namespace DBI.Data
         /// </summary>
         /// <param name="supervisorId"></param>
         /// <returns></returns>
-        public static List<Employee> EmployeeAllTimeCompletedUnapproved(decimal supervisorId, bool showAllEmployees = false)
+        public static List<Employee> EmployeeAllTimeCompletedUnapproved(decimal supervisorId)
         {
             string sql = string.Format(@"select distinct Person_id from xxems.sys_user_information where ORACLE_ACCOUNT_STATUS = 'A'
                                         START WITH SUPERVISOR_ID ={0}
@@ -58,38 +58,16 @@ namespace DBI.Data
 
             using (Entities _context = new Entities())
             {
-
-
-                if (showAllEmployees)
-                {
+               
                     List<decimal> _UserHier = _context.Database.SqlQuery<decimal>(sql).ToList();
 
                     var _data = (from ev in EmployeeTime()
                                  where _UserHier.Contains(ev.PERSON_ID)
                                  && ev.COMPLETED == "Y" && ev.APPROVED == "N" && ev.DELETED =="N" && ev.CURRENT_EMPLOYEE != null
                                  select ev).ToList();
-                    
-
-
-                             
-
 
                     return _data.ToList();
-                }
-                else
-                {
-                    var _data = EmployeeTime().Where(x => x.SUPERVISOR_ID == supervisorId && x.COMPLETED == "Y" && x.APPROVED == "N" && x.DELETED == "N" && x.CURRENT_EMPLOYEE != null).ToList();
-                    return _data;
-
-                }
-
-
             }
-
-
-
-            
-
         }
         /// <summary>
         /// Returns employee time by supervisior Id that has been completed by the user and is NOT approved
@@ -113,7 +91,7 @@ namespace DBI.Data
 
         }
         /// <summary>
-        /// Returns all employee time that has been completed by supervisor ID
+        /// Returns employee time that has been completed by supervisor ID and Approved
         /// </summary>
         /// <param name="supervisorId"></param>
         /// <returns></returns>
@@ -124,6 +102,30 @@ namespace DBI.Data
             return _data;
 
 
+        }
+        /// <summary>
+        /// Returns all employee time that has been completed by supervisor ID and Approved
+        /// </summary>
+        /// <param name="supervisorId"></param>
+        /// <returns></returns>
+        public static List<Employee> EmployeeAllTimeCompleted(decimal supervisorId)
+        {
+            string sql = string.Format(@"select distinct Person_id from xxems.sys_user_information where ORACLE_ACCOUNT_STATUS = 'A'
+                                        START WITH SUPERVISOR_ID ={0}
+                                        CONNECT BY PRIOR PERSON_ID = SUPERVISOR_ID", supervisorId);
+
+            using (Entities _context = new Entities())
+            {
+
+                List<decimal> _UserHier = _context.Database.SqlQuery<decimal>(sql).ToList();
+
+                var _data = (from ev in EmployeeTime()
+                             where _UserHier.Contains(ev.PERSON_ID)
+                             && ev.COMPLETED == "Y" &&  ev.DELETED == "N" && ev.CURRENT_EMPLOYEE != null
+                             select ev).ToList();
+
+                return _data.ToList();
+            }
         }
         /// <summary>
         /// Reuturns all employee time that has been completed

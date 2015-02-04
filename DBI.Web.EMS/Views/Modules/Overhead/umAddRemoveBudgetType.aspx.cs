@@ -35,16 +35,16 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
             }
        }
 
-        protected void deLoadLinkedBudgetNames(object sender, StoreReadDataEventArgs e)
-        {
-            long _businessUnitId = 0;
+        //protected void deLoadLinkedBudgetNames(object sender, StoreReadDataEventArgs e)
+        //{
+        //    long _businessUnitId = 0;
 
-            if (Request.QueryString["buID"] != "" && Request.QueryString["buID"] != null)
-                _businessUnitId = long.Parse(Request.QueryString["buID"]);
+        //    if (Request.QueryString["buID"] != "" && Request.QueryString["buID"] != null)
+        //        _businessUnitId = long.Parse(Request.QueryString["buID"]);
 
-            uxLinkedBudgetTypeStore.DataSource = GL.BudgetTypesEnteredAndAvailaible(_businessUnitId);
-            uxLinkedBudgetTypeStore.DataBind();
-        }
+        //    uxLinkedBudgetTypeStore.DataSource = GL.BudgetTypesEnteredAndAvailaible(_businessUnitId);
+        //    uxLinkedBudgetTypeStore.DataBind();
+        //}
 
         protected void deLoadBudgetNames(object sender, StoreReadDataEventArgs e)
         {
@@ -83,13 +83,13 @@ namespace DBI.Web.EMS.Views.Modules.Overhead.Views
             _data.MODIFY_DATE = DateTime.Now;
             _data.CREATED_BY = User.Identity.Name;
             _data.MODIFIED_BY = User.Identity.Name;
-            _data.IMPORT_ACTUALS_ALLOWED = (uxAllowImportCheckbox.Checked) ? "Y" : "N";
+            //_data.IMPORT_ACTUALS_ALLOWED = (uxAllowImportCheckbox.Checked) ? "Y" : "N";
 
 
             if (uxLinkedBudgetType.SelectedItem.Value != null)
             {
                 _convertBudgetTypeID = long.TryParse(uxLinkedBudgetType.SelectedItem.Value, out _parentBudgetTypeId);
-                _data.PARENT_BUDGET_TYPE_ID = _parentBudgetTypeId;
+                //_data.PARENT_BUDGET_TYPE_ID = _parentBudgetTypeId;
             }
 
             GenericData.Insert<OVERHEAD_BUDGET_TYPE>(_data);

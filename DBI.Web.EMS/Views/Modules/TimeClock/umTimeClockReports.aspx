@@ -23,7 +23,7 @@
                                     <LoadMask ShowMask="true" />                                
                                 </Loader>
                             </ext:Panel>
-                            <ext:Panel runat="server"
+                            <%--<ext:Panel runat="server"
                                 Title="Actual vs Adjusted"
                                 ID="uxAcutalVerseAdjusted"
                                 Disabled="false">
@@ -31,7 +31,7 @@
                                     ID="Loader5" Mode="Frame" AutoLoad="true" ReloadOnEvent="true" Url="umAdjustedverseActualHoursreport.aspx">
                                     <LoadMask ShowMask="true" />
                                 </Loader>
-                            </ext:Panel>
+                            </ext:Panel>--%>
 
                             <ext:Panel runat="server"
                                 Title="12 Hour Day"

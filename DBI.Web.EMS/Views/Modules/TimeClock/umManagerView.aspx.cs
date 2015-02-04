@@ -45,7 +45,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
             
             using (Entities _context = new Entities())
             {   //Manager Query
-                if ((uxToggleApproved.Checked == false) && (validateComponentSecurity("SYS.TimeClock.Payroll") ))
+                if ((uxToggleApproved.Checked == false) && (validateComponentSecurity("SYS.TimeClock.Payroll")))
                 #region Payroll Unapproved only
                 {   
 
@@ -119,8 +119,8 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                 }
                 #endregion
 
-                else if ((uxToggleApproved.Checked == false) && validateComponentSecurity("SYS.TimeClock.Manager"))
-                #region Manager Apporved only
+                else if ((uxToggleApproved.Checked == false) && (validateComponentSecurity("SYS.TimeClock.Manager")) && (uxToggleEmployees.Checked == false))
+                #region Manager Unapporved only
                 {
 
                     var data = TIMECLOCK.EmployeeTimeCompletedUnapproved(person_id);
@@ -155,7 +155,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                 }
                 #endregion
 
-                else if ((uxToggleApproved.Checked) && (validateComponentSecurity("SYS.TimeClock.Manager")))
+                else if ((uxToggleApproved.Checked) && (validateComponentSecurity("SYS.TimeClock.Manager")) && (uxToggleEmployees.Checked == false))
                 #region Manager Approved and Unapproved
                 {
                     var data = TIMECLOCK.EmployeeTimeCompleted(person_id);
@@ -190,8 +190,76 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                 }
                 #endregion
 
+                else if ((uxToggleApproved.Checked == false) && (validateComponentSecurity("SYS.TimeClock.Manager")) && (uxToggleEmployees.Checked))
+                #region Manager Unapporved and Hierarchy view
+                {
+
+                    var data = TIMECLOCK.EmployeeAllTimeCompletedUnapproved(person_id);
 
 
+                    foreach (var item in data)
+                    {
+                        TimeSpan ts = (DateTime)item.TIME_OUT - (DateTime)item.TIME_IN;
+                        DateTime dow = (DateTime)item.TIME_IN;
+
+                        TimeSpan adjustedhours = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_HOURS.Value));
+                        item.ADJUSTED_HOURS_GRID = adjustedhours.ToString("dd\\.hh\\:mm");
+
+                        TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
+                        item.ACTUAL_HOURS_GRID = actualhours.ToString("dd\\.hh\\:mm");
+
+                        if (item.ADJUSTED_LUNCH != null)
+                        {
+                            TimeSpan adjustedlunch = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_LUNCH.Value));
+                            item.ADJUSTED_LUNCH_GRID = adjustedlunch.ToString("dd\\.hh\\:mm");
+                        }
+                        else
+                        {
+                            item.ADJUSTED_LUNCH_GRID = "0.00:00";
+                        }
+
+
+
+                    }
+                    uxEmployeeHoursStore.DataSource = data;
+
+                }
+                #endregion
+
+                else if ((uxToggleApproved.Checked) && (validateComponentSecurity("SYS.TimeClock.Manager")) && (uxToggleEmployees.Checked))
+                #region Manager Approved and Unapproved and Hierarchy view
+                {
+                    var data = TIMECLOCK.EmployeeAllTimeCompleted(person_id);
+
+
+                    foreach (var item in data)
+                    {
+                        TimeSpan ts = (DateTime)item.TIME_OUT - (DateTime)item.TIME_IN;
+                        DateTime dow = (DateTime)item.TIME_IN;
+
+                        TimeSpan adjustedhours = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_HOURS.Value));
+                        item.ADJUSTED_HOURS_GRID = adjustedhours.ToString("dd\\.hh\\:mm");
+
+                        TimeSpan actualhours = TimeSpan.FromHours(decimal.ToDouble(item.ACTUAL_HOURS.Value));
+                        item.ACTUAL_HOURS_GRID = actualhours.ToString("dd\\.hh\\:mm");
+
+                        if (item.ADJUSTED_LUNCH != null)
+                        {
+                            TimeSpan adjustedlunch = TimeSpan.FromHours(decimal.ToDouble(item.ADJUSTED_LUNCH.Value));
+                            item.ADJUSTED_LUNCH_GRID = adjustedlunch.ToString("dd\\.hh\\:mm");
+                        }
+                        else
+                        {
+                            item.ADJUSTED_LUNCH_GRID = "0.00:00";
+                        }
+
+
+
+                    }
+                    uxEmployeeHoursStore.DataSource = data;
+
+                }
+                #endregion
             }
 
         }
