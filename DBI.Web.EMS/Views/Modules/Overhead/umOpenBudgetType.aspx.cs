@@ -136,50 +136,50 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                                     OVERHEAD_BUDGET_TYPE _budgetType = OVERHEAD_BUDGET_TYPE.BudgetType(_newBudget.OVERHEAD_BUDGET_TYPE_ID);
 
                                     //If first budget and parent is null there will be nothing to copy
-                                    if (_budgetType.PARENT_BUDGET_TYPE_ID != null)
-                                    {
-                                        //Search for budget header data of parent budget
-                                        OVERHEAD_ORG_BUDGETS _prevBudgetData = _context.OVERHEAD_ORG_BUDGETS.Where(x => x.FISCAL_YEAR == _fiscalYear & x.ORGANIZATION_ID == _version.ORGANIZATION_ID & x.OVERHEAD_BUDGET_TYPE_ID == _budgetType.PARENT_BUDGET_TYPE_ID).SingleOrDefault();
+                                    //if (_budgetType.PARENT_BUDGET_TYPE_ID != null)
+                                    //{
+                                    //    //Search for budget header data of parent budget
+                                    //    OVERHEAD_ORG_BUDGETS _prevBudgetData = _context.OVERHEAD_ORG_BUDGETS.Where(x => x.FISCAL_YEAR == _fiscalYear & x.ORGANIZATION_ID == _version.ORGANIZATION_ID & x.OVERHEAD_BUDGET_TYPE_ID == _budgetType.PARENT_BUDGET_TYPE_ID).SingleOrDefault();
 
-                                        //Return detail for this budget
-                                        List<OVERHEAD_BUDGET_DETAIL> _budgetDetail = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _prevBudgetData.ORG_BUDGET_ID).ToList();
+                                    //    //Return detail for this budget
+                                    //    List<OVERHEAD_BUDGET_DETAIL> _budgetDetail = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _prevBudgetData.ORG_BUDGET_ID).ToList();
 
-                                        foreach (OVERHEAD_BUDGET_DETAIL _line in _budgetDetail)
-                                        {
-                                            OVERHEAD_BUDGET_DETAIL _record = new OVERHEAD_BUDGET_DETAIL();
-                                            _record.ORG_BUDGET_ID = _newBudget.ORG_BUDGET_ID;
-                                            _record.PERIOD_NAME = _line.PERIOD_NAME;
-                                            _record.PERIOD_NUM = _line.PERIOD_NUM;
-                                            _record.CODE_COMBINATION_ID = _line.CODE_COMBINATION_ID;
-                                            _record.AMOUNT = _line.AMOUNT;
-                                            _record.CREATE_DATE = DateTime.Now;
-                                            _record.MODIFY_DATE = DateTime.Now;
-                                            _record.CREATED_BY = User.Identity.Name;
-                                            _record.MODIFIED_BY = User.Identity.Name;
-                                            _record.ACTUALS_IMPORTED_FLAG = "N";
-                                            GenericData.Insert<OVERHEAD_BUDGET_DETAIL>(_record);
-                                        }
+                                    //    foreach (OVERHEAD_BUDGET_DETAIL _line in _budgetDetail)
+                                    //    {
+                                    //        OVERHEAD_BUDGET_DETAIL _record = new OVERHEAD_BUDGET_DETAIL();
+                                    //        _record.ORG_BUDGET_ID = _newBudget.ORG_BUDGET_ID;
+                                    //        _record.PERIOD_NAME = _line.PERIOD_NAME;
+                                    //        _record.PERIOD_NUM = _line.PERIOD_NUM;
+                                    //        _record.CODE_COMBINATION_ID = _line.CODE_COMBINATION_ID;
+                                    //        _record.AMOUNT = _line.AMOUNT;
+                                    //        _record.CREATE_DATE = DateTime.Now;
+                                    //        _record.MODIFY_DATE = DateTime.Now;
+                                    //        _record.CREATED_BY = User.Identity.Name;
+                                    //        _record.MODIFIED_BY = User.Identity.Name;
+                                    //        _record.ACTUALS_IMPORTED_FLAG = "N";
+                                    //        GenericData.Insert<OVERHEAD_BUDGET_DETAIL>(_record);
+                                    //    }
 
-                                        List<OVERHEAD_ACCOUNT_COMMENT> _comments = _context.OVERHEAD_ACCOUNT_COMMENT.Where(x => x.ORG_BUDGET_ID == _prevBudgetData.ORG_BUDGET_ID).ToList();
+                                    //    List<OVERHEAD_ACCOUNT_COMMENT> _comments = _context.OVERHEAD_ACCOUNT_COMMENT.Where(x => x.ORG_BUDGET_ID == _prevBudgetData.ORG_BUDGET_ID).ToList();
 
-                                        foreach (OVERHEAD_ACCOUNT_COMMENT _comment in _comments)
-                                        {
-                                            OVERHEAD_ACCOUNT_COMMENT _c = new OVERHEAD_ACCOUNT_COMMENT();
-                                            _c.CODE_COMBINATION_ID = _comment.CODE_COMBINATION_ID;
-                                            _c.COMMENTS = _comment.COMMENTS;
-                                            _c.CREATE_DATE = (DateTime?)DateTime.Now;
-                                            _c.MODIFY_DATE = (DateTime?)DateTime.Now;
-                                            _c.CREATED_BY = User.Identity.Name;
-                                            _c.MODIFIED_BY = User.Identity.Name;
-                                            _c.ORG_BUDGET_ID = _newBudget.ORG_BUDGET_ID;
-                                            GenericData.Insert<OVERHEAD_ACCOUNT_COMMENT>(_c);
-                                        }
+                                    //    foreach (OVERHEAD_ACCOUNT_COMMENT _comment in _comments)
+                                    //    {
+                                    //        OVERHEAD_ACCOUNT_COMMENT _c = new OVERHEAD_ACCOUNT_COMMENT();
+                                    //        _c.CODE_COMBINATION_ID = _comment.CODE_COMBINATION_ID;
+                                    //        _c.COMMENTS = _comment.COMMENTS;
+                                    //        _c.CREATE_DATE = (DateTime?)DateTime.Now;
+                                    //        _c.MODIFY_DATE = (DateTime?)DateTime.Now;
+                                    //        _c.CREATED_BY = User.Identity.Name;
+                                    //        _c.MODIFIED_BY = User.Identity.Name;
+                                    //        _c.ORG_BUDGET_ID = _newBudget.ORG_BUDGET_ID;
+                                    //        GenericData.Insert<OVERHEAD_ACCOUNT_COMMENT>(_c);
+                                    //    }
 
-                                        //We need to update the new budget with any comments from the last one
-                                        OVERHEAD_ORG_BUDGETS _insertedBudgetData = _context.OVERHEAD_ORG_BUDGETS.Where(x => x.FISCAL_YEAR == _fiscalYear & x.ORGANIZATION_ID == _version.ORGANIZATION_ID & x.OVERHEAD_BUDGET_TYPE_ID == _nextBudgetType.OVERHEAD_BUDGET_TYPE_ID).SingleOrDefault();
-                                        _insertedBudgetData.COMMENTS = _prevBudgetData.COMMENTS;
-                                        GenericData.Update<OVERHEAD_ORG_BUDGETS>(_insertedBudgetData);
-                                    }
+                                    //    //We need to update the new budget with any comments from the last one
+                                    //    OVERHEAD_ORG_BUDGETS _insertedBudgetData = _context.OVERHEAD_ORG_BUDGETS.Where(x => x.FISCAL_YEAR == _fiscalYear & x.ORGANIZATION_ID == _version.ORGANIZATION_ID & x.OVERHEAD_BUDGET_TYPE_ID == _nextBudgetType.OVERHEAD_BUDGET_TYPE_ID).SingleOrDefault();
+                                    //    _insertedBudgetData.COMMENTS = _prevBudgetData.COMMENTS;
+                                    //    GenericData.Update<OVERHEAD_ORG_BUDGETS>(_insertedBudgetData);
+                                    //}
                                 }
                             }
                             else
@@ -233,50 +233,50 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                                     OVERHEAD_BUDGET_TYPE _budgetType = OVERHEAD_BUDGET_TYPE.BudgetType(_newBudget.OVERHEAD_BUDGET_TYPE_ID);
 
                                     //If first budget and parent is null there will be nothing to copy
-                                    if (_budgetType.PARENT_BUDGET_TYPE_ID != null)
-                                    {
-                                        //Search for budget header data of parent budget
-                                        OVERHEAD_ORG_BUDGETS _prevBudgetData = _context.OVERHEAD_ORG_BUDGETS.Where(x => x.FISCAL_YEAR == _fiscalYear & x.ORGANIZATION_ID == _businessUnitId & x.OVERHEAD_BUDGET_TYPE_ID == _budgetType.PARENT_BUDGET_TYPE_ID).SingleOrDefault();
+                                    //if (_budgetType.PARENT_BUDGET_TYPE_ID != null)
+                                    //{
+                                    //    //Search for budget header data of parent budget
+                                    //    OVERHEAD_ORG_BUDGETS _prevBudgetData = _context.OVERHEAD_ORG_BUDGETS.Where(x => x.FISCAL_YEAR == _fiscalYear & x.ORGANIZATION_ID == _businessUnitId & x.OVERHEAD_BUDGET_TYPE_ID == _budgetType.PARENT_BUDGET_TYPE_ID).SingleOrDefault();
 
-                                        //Return detail for this budget
-                                        List<OVERHEAD_BUDGET_DETAIL> _budgetDetail = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _prevBudgetData.ORG_BUDGET_ID).ToList();
+                                    //    //Return detail for this budget
+                                    //    List<OVERHEAD_BUDGET_DETAIL> _budgetDetail = _context.OVERHEAD_BUDGET_DETAIL.Where(x => x.ORG_BUDGET_ID == _prevBudgetData.ORG_BUDGET_ID).ToList();
 
-                                        foreach (OVERHEAD_BUDGET_DETAIL _line in _budgetDetail)
-                                        {
-                                            OVERHEAD_BUDGET_DETAIL _record = new OVERHEAD_BUDGET_DETAIL();
-                                            _record.ORG_BUDGET_ID = _newBudget.ORG_BUDGET_ID;
-                                            _record.PERIOD_NAME = _line.PERIOD_NAME;
-                                            _record.PERIOD_NUM = _line.PERIOD_NUM;
-                                            _record.CODE_COMBINATION_ID = _line.CODE_COMBINATION_ID;
-                                            _record.AMOUNT = _line.AMOUNT;
-                                            _record.CREATE_DATE = DateTime.Now;
-                                            _record.MODIFY_DATE = DateTime.Now;
-                                            _record.CREATED_BY = User.Identity.Name;
-                                            _record.MODIFIED_BY = User.Identity.Name;
-                                            _record.ACTUALS_IMPORTED_FLAG = "N";
-                                            GenericData.Insert<OVERHEAD_BUDGET_DETAIL>(_record);
-                                        }
+                                    //    foreach (OVERHEAD_BUDGET_DETAIL _line in _budgetDetail)
+                                    //    {
+                                    //        OVERHEAD_BUDGET_DETAIL _record = new OVERHEAD_BUDGET_DETAIL();
+                                    //        _record.ORG_BUDGET_ID = _newBudget.ORG_BUDGET_ID;
+                                    //        _record.PERIOD_NAME = _line.PERIOD_NAME;
+                                    //        _record.PERIOD_NUM = _line.PERIOD_NUM;
+                                    //        _record.CODE_COMBINATION_ID = _line.CODE_COMBINATION_ID;
+                                    //        _record.AMOUNT = _line.AMOUNT;
+                                    //        _record.CREATE_DATE = DateTime.Now;
+                                    //        _record.MODIFY_DATE = DateTime.Now;
+                                    //        _record.CREATED_BY = User.Identity.Name;
+                                    //        _record.MODIFIED_BY = User.Identity.Name;
+                                    //        _record.ACTUALS_IMPORTED_FLAG = "N";
+                                    //        GenericData.Insert<OVERHEAD_BUDGET_DETAIL>(_record);
+                                    //    }
 
-                                        List<OVERHEAD_ACCOUNT_COMMENT> _comments = _context.OVERHEAD_ACCOUNT_COMMENT.Where(x => x.ORG_BUDGET_ID == _prevBudgetData.ORG_BUDGET_ID).ToList();
+                                    //    List<OVERHEAD_ACCOUNT_COMMENT> _comments = _context.OVERHEAD_ACCOUNT_COMMENT.Where(x => x.ORG_BUDGET_ID == _prevBudgetData.ORG_BUDGET_ID).ToList();
 
-                                        foreach (OVERHEAD_ACCOUNT_COMMENT _comment in _comments)
-                                        {
-                                            OVERHEAD_ACCOUNT_COMMENT _c = new OVERHEAD_ACCOUNT_COMMENT();
-                                            _c.CODE_COMBINATION_ID = _comment.CODE_COMBINATION_ID;
-                                            _c.COMMENTS = _comment.COMMENTS;
-                                            _c.CREATE_DATE = (DateTime?)DateTime.Now;
-                                            _c.MODIFY_DATE = (DateTime?)DateTime.Now;
-                                            _c.CREATED_BY = User.Identity.Name;
-                                            _c.MODIFIED_BY = User.Identity.Name;
-                                            _c.ORG_BUDGET_ID = _newBudget.ORG_BUDGET_ID;
-                                            GenericData.Insert<OVERHEAD_ACCOUNT_COMMENT>(_c);
-                                        }
+                                    //    foreach (OVERHEAD_ACCOUNT_COMMENT _comment in _comments)
+                                    //    {
+                                    //        OVERHEAD_ACCOUNT_COMMENT _c = new OVERHEAD_ACCOUNT_COMMENT();
+                                    //        _c.CODE_COMBINATION_ID = _comment.CODE_COMBINATION_ID;
+                                    //        _c.COMMENTS = _comment.COMMENTS;
+                                    //        _c.CREATE_DATE = (DateTime?)DateTime.Now;
+                                    //        _c.MODIFY_DATE = (DateTime?)DateTime.Now;
+                                    //        _c.CREATED_BY = User.Identity.Name;
+                                    //        _c.MODIFIED_BY = User.Identity.Name;
+                                    //        _c.ORG_BUDGET_ID = _newBudget.ORG_BUDGET_ID;
+                                    //        GenericData.Insert<OVERHEAD_ACCOUNT_COMMENT>(_c);
+                                    //    }
 
-                                        //We need to update the new budget with any comments from the last one
-                                        OVERHEAD_ORG_BUDGETS _insertedBudgetData = _context.OVERHEAD_ORG_BUDGETS.Where(x => x.FISCAL_YEAR == _fiscalYear & x.ORGANIZATION_ID == _businessUnitId & x.OVERHEAD_BUDGET_TYPE_ID == _nextBudgetType.OVERHEAD_BUDGET_TYPE_ID).SingleOrDefault();
-                                        _insertedBudgetData.COMMENTS = _prevBudgetData.COMMENTS;
-                                        GenericData.Update<OVERHEAD_ORG_BUDGETS>(_insertedBudgetData);
-                                    }
+                                    //    //We need to update the new budget with any comments from the last one
+                                    //    OVERHEAD_ORG_BUDGETS _insertedBudgetData = _context.OVERHEAD_ORG_BUDGETS.Where(x => x.FISCAL_YEAR == _fiscalYear & x.ORGANIZATION_ID == _businessUnitId & x.OVERHEAD_BUDGET_TYPE_ID == _nextBudgetType.OVERHEAD_BUDGET_TYPE_ID).SingleOrDefault();
+                                    //    _insertedBudgetData.COMMENTS = _prevBudgetData.COMMENTS;
+                                    //    GenericData.Update<OVERHEAD_ORG_BUDGETS>(_insertedBudgetData);
+                                    //}
                                 }
 
 

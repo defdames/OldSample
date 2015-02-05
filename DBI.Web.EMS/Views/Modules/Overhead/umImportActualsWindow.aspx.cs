@@ -94,10 +94,10 @@ namespace DBI.Web.EMS.Views.Modules.Overhead
                                 {
                                     var _budgetType = OVERHEAD_BUDGET_TYPE.BudgetType(_budget.OVERHEAD_BUDGET_TYPE_ID);
 
-                                    if (_budgetType.IMPORT_ACTUALS_ALLOWED == "Y")
-                                    {
-                                        OVERHEAD_BUDGET_FORECAST.ImportActualForBudgetVersion(_context, _periodToImport, _budget.ORG_BUDGET_ID, User.Identity.Name, _lockImported);
-                                    }
+                                    //if (_budgetType.IMPORT_ACTUALS_ALLOWED == "Y")
+                                    //{
+                                    //    OVERHEAD_BUDGET_FORECAST.ImportActualForBudgetVersion(_context, _periodToImport, _budget.ORG_BUDGET_ID, User.Identity.Name, _lockImported);
+                                    //}
                                 }
                             }
                         }

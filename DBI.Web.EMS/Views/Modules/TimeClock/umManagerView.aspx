@@ -181,6 +181,12 @@
 							<Change Handler="#{uxEmployeeHoursStore}.reload()" />
 						</Listeners>
 					</ext:Checkbox>
+                    <ext:ToolbarSpacer runat="server" />
+                    <ext:Checkbox runat="server" ID="uxToggleEmployees" BoxLabel="Show All Employees" BoxLabelAlign="After" >
+						<Listeners>
+							<Change Handler="#{uxEmployeeHoursStore}.reload()" />
+						</Listeners>
+					</ext:Checkbox>
 						</Items>
 				</ext:Toolbar>
 			</TopBar>

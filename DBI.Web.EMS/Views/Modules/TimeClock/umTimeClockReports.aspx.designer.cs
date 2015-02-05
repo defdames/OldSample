@@ -49,15 +49,6 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock {
         protected global::Ext.Net.Panel uxUnapprovedHours;
         
         /// <summary>
-        /// uxAcutalVerseAdjusted control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.Panel uxAcutalVerseAdjusted;
-        
-        /// <summary>
         /// ux12HourDay control.
         /// </summary>
         /// <remarks>
