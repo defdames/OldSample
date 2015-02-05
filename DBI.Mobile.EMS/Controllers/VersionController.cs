@@ -19,10 +19,10 @@ namespace DBI.Mobile.EMS.Controllers
             if (id == "production")
             {
                 Version ver = new Version();
-                ver.number = "1.0.R150128";
+                ver.number = "1.0.R150205";
                 ver.mandatory = true;
                 ver.install_url = "itms-services://?action=download-manifest&url=https://emsmobile.dbiservices.com/iems/iEMS.plist";
-                ver.descriptionText = "Q/R Scanner, Photo Attachments, Documentation Links and other bug fixes and enhancements.";
+                ver.descriptionText = "Bug fixes and enhancements";
 
                 RootObject root = new RootObject();
                 root.version = ver;
