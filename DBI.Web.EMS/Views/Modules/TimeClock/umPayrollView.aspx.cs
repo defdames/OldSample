@@ -338,7 +338,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
             if(_value != null)
 
             {
-                returnhours = _value.ADJUSTED_LUNCH;
+                returnhours = _value.ACTUAL_HOURS;
                 
             }
             return (decimal)returnhours;
@@ -367,7 +367,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
                             var _employeeInfo = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == _person.employee_id).SingleOrDefault();
                             var _employeeTime = SubmittedTime.Where(x => x.PERSON_ID == _person.employee_id).ToList();
-                             var _TimeSum = _employeeTime.Sum(x => x.ADJUSTED_LUNCH);
+                             var _TimeSum = _employeeTime.Sum(x => x.ACTUAL_HOURS);
 
 
                             XXDBI_PAYROLL_AUDIT_V dtrecord = new XXDBI_PAYROLL_AUDIT_V();
@@ -413,8 +413,6 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                             uxPayrollAuditStore.Reload();
                             uxPayrollAuditGrid.Refresh();
                         }
-
-                        
 
                     }
 

@@ -101,12 +101,12 @@
 						<ext:Column ID="Column1" runat="server" Text="Actual Time" Flex="1" DataIndex="ACTUAL_HOURS_GRID">
                             <Renderer Fn="colorErrors" />
                         </ext:Column>
-						<ext:Column ID="Column2" runat="server" Text="Adjusted Time" Flex="1" DataIndex="ADJUSTED_HOURS_GRID">
+						<%--<ext:Column ID="Column2" runat="server" Text="Adjusted Time" Flex="1" DataIndex="ADJUSTED_HOURS_GRID">
                             <Renderer Fn="colorErrors" />
                         </ext:Column>
                         <ext:Column ID="AdjustedLunch" runat="server" Text="Adjusted Lunch" Flex="1" DataIndex="ADJUSTED_LUNCH_GRID">
                         <Renderer Fn="colorErrors" />
-                        </ext:Column>
+                        </ext:Column>--%>
 						<ext:Column ID="Approved" runat="server" Text="Approved" Flex="1" DataIndex="APPROVED" />
 						<ext:Column ID="Submitted" runat="server" Text="Submitted" Flex="1" DataIndex="SUBMITTED" />
 						<ext:CommandColumn ID="ccEditTime" runat="server">
