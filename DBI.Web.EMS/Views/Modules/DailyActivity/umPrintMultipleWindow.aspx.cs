@@ -31,8 +31,13 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             using (Entities _context = new Entities())
             {
+                // Read data from other window
+                Boolean _showPosted = (Request.QueryString["showPosted"] == "Y") ? true : false;
+                Boolean _showInActive = (Request.QueryString["showInActive"] == "Y") ? true : false;
+
+
                 List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
-                IQueryable<DAILY_ACTIVITY.HeaderData> HeaderList = DAILY_ACTIVITY.GetHeaders(_context, true, true, OrgsList);
+                IQueryable<DAILY_ACTIVITY.HeaderData> HeaderList = DAILY_ACTIVITY.GetHeaders(_context,_showInActive,_showPosted, OrgsList);
 
                 int count;
                 uxHeaderPostStore.DataSource = GenericData.ListFilterHeader<DAILY_ACTIVITY.HeaderData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], HeaderList, out count);

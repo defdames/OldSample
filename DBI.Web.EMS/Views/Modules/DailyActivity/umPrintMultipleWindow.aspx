@@ -17,8 +17,8 @@
                         <ext:Store runat="server" ID="uxHeaderPostStore"
                             AutoDataBind="true"
                             OnReadData="deReadPostableData"
-                            PageSize="10"
-                            RemoteSort="true">
+                            PageSize="8"
+                            RemoteSort="false">
                             <Model>
                                 <ext:Model ID="Model1" runat="server">
                                     <Fields>
@@ -26,15 +26,17 @@
                                         <ext:ModelField Name="DA_DATE" Type="Date" />
                                         <ext:ModelField Name="SEGMENT1" />
                                         <ext:ModelField Name="LONG_NAME" />
+                                        <ext:ModelField Name="STATUS" Type="Int" />
                                     </Fields>
                                 </ext:Model>
                             </Model>
                             <Proxy>
                                 <ext:PageProxy />
                             </Proxy>
-                            <Sorters>
-                                <ext:DataSorter Property="HEADER_ID" Direction="ASC" />
-                            </Sorters>
+                              <Sorters>
+                                  <ext:DataSorter Property="DA_DATE" Direction="DESC" />
+                                  <ext:DataSorter Property="STATUS" Direction="ASC" />
+                              </Sorters>
                         </ext:Store>
                     </Store>
                     <ColumnModel>
