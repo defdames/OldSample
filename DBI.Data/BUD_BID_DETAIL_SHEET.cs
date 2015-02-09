@@ -30,6 +30,9 @@ namespace DBI.Data
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string MODIFIED_BY { get; set; }
         public decimal DETAIL_TASK_ID { get; set; }
+        public Nullable<long> ORACLE_LOOKUP_ID { get; set; }
+        public string OVERRIDDEN { get; set; }
+        public Nullable<long> PARENT_REC_ID { get; set; }
     
         public virtual BUD_BID_DETAIL_TASK BUD_BID_DETAIL_TASK { get; set; }
     }

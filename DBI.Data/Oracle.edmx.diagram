@@ -115,7 +115,6 @@
         <EntityTypeShape EntityType="OracleModel.CROSSING_SUPPLEMENTAL" Width="1.5" PointX="28.75" PointY="13.25" />
         <EntityTypeShape EntityType="OracleModel.EMPLOYEES_V" Width="1.5" PointX="2.5" PointY="11" />
         <EntityTypeShape EntityType="OracleModel.CROSSING_PRICING" Width="1.5" PointX="8.875" PointY="145" />
-        <EntityTypeShape EntityType="OracleModel.BUD_BID_DETAIL_SHEET" Width="1.5" PointX="18.25" PointY="87.5" />
         <EntityTypeShape EntityType="OracleModel.BUD_BID_PROJECTS" Width="1.5" PointX="20.5" PointY="89.375" />
         <AssociationConnector Association="OracleModel.FK_PROJECTS_STATUS_ID" />
         <EntityTypeShape EntityType="OracleModel.TIME_CLOCK" Width="1.5" PointX="7.0014169714420191" PointY="10.70302919051751" />
@@ -165,8 +164,9 @@
         <EntityTypeShape EntityType="OracleModel.BUD_BID_DETAIL_TASK" Width="1.5" PointX="26.875" PointY="86.625" />
         <AssociationConnector Association="OracleModel.FK_ACTUAL_NUM_DETAIL_TASK_ID" />
         <AssociationConnector Association="OracleModel.FK_BUDGET_NUM_DETAIL_TASK_ID" />
-        <AssociationConnector Association="OracleModel.FK_DETAIL_DETAIL_TASK_ID" />
         <EntityTypeShape EntityType="OracleModel.HR_ALL_ORGANIZATION_UNITS_V" Width="1.5" PointX="6.5851237655548029" PointY="6.1650973140099543" />
+        <EntityTypeShape EntityType="OracleModel.BUD_BID_DETAIL_SHEET" Width="1.5" PointX="10.366465541704773" PointY="30.000937162898918" />
+        <AssociationConnector Association="OracleModel.FK_DETAIL_DETAIL_TASK_ID" />
         </Diagram>
       <Diagram DiagramId="e84dee89c5a844eb84c350f94a998eb6" Name="OVERHEAD" >
         <EntityTypeShape EntityType="OracleModel.OVERHEAD_GL_ACCOUNT" Width="4.25" PointX="2.75" PointY="0.75" />

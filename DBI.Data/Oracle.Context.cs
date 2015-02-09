@@ -110,7 +110,6 @@ namespace DBI.Data
         public DbSet<OVERHEAD_BUDGET_DETAIL> OVERHEAD_BUDGET_DETAIL { get; set; }
         public DbSet<EMPLOYEES_V> EMPLOYEES_V { get; set; }
         public DbSet<CROSSING_PRICING> CROSSING_PRICING { get; set; }
-        public DbSet<BUD_BID_DETAIL_SHEET> BUD_BID_DETAIL_SHEET { get; set; }
         public DbSet<BUD_BID_PROJECTS> BUD_BID_PROJECTS { get; set; }
         public DbSet<TIME_CLOCK> TIME_CLOCK { get; set; }
         public DbSet<CUSTOMER_SURVEY_THRESH_AMT> CUSTOMER_SURVEY_THRESH_AMT { get; set; }
@@ -139,5 +138,6 @@ namespace DBI.Data
         public DbSet<OVERHEAD_BUDGET_TYPE> OVERHEAD_BUDGET_TYPE { get; set; }
         public DbSet<BUD_BID_DETAIL_TASK> BUD_BID_DETAIL_TASK { get; set; }
         public DbSet<HR_ALL_ORGANIZATION_UNITS_V> HR_ALL_ORGANIZATION_UNITS_V { get; set; }
+        public DbSet<BUD_BID_DETAIL_SHEET> BUD_BID_DETAIL_SHEET { get; set; }
     }
 }
