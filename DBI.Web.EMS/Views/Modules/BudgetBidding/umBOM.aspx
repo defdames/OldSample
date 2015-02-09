@@ -149,18 +149,6 @@
                                     <ext:Column ID="Column1" runat="server" DataIndex="TOTAL" Text="Total" Flex="1" />
                                 </Columns>
                             </ColumnModel>
-                            <%--<DirectEvents>
-                                <Select OnEvent="deGetFormData">
-                                    <ExtraParams>
-                                        <ext:Parameter Name="BudBidProjectID" Value="#{uxSummaryGrid}.getSelectionModel().getSelection()[0].data.BUD_BID_PROJECTS_ID" Mode="Raw" />
-                                        <ext:Parameter Name="ProjectNumID" Value="#{uxSummaryGrid}.getSelectionModel().getSelection()[0].data.PROJECT_ID" Mode="Raw" />
-                                        <ext:Parameter Name="Type" Value="#{uxSummaryGrid}.getSelectionModel().getSelection()[0].data.TYPE" Mode="Raw" />
-                                        <ext:Parameter Name="ProjectNum" Value="#{uxSummaryGrid}.getSelectionModel().getSelection()[0].data.PROJECT_NUM" Mode="Raw" />
-                                        <ext:Parameter Name="ProjectName" Value="#{uxSummaryGrid}.getSelectionModel().getSelection()[0].data.PROJECT_NAME" Mode="Raw" />
-                                    </ExtraParams>
-                                    <EventMask ShowMask="true" />
-                                </Select>
-                            </DirectEvents>--%>
                         </ext:GridPanel>
 
                         <ext:FieldContainer ID="FieldContainer3"
