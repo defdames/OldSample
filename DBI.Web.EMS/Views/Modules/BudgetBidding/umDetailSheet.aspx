@@ -31,6 +31,10 @@
         .labelRightAlign {
             text-align: right;
         }
+
+        .labelBold {
+            font-weight: bold;
+        }
     </style>
     <script type="text/javascript">
         var editRecord = function (editor, e) {
@@ -39,8 +43,15 @@
             }
         }
         var closeWindow = function () {
+
             parent.App.direct.CloseDetailWindow(App.uxDetailName.value);
-            parent.Ext.getCmp('uxAddEditDetailSheet').close();
+
+            var loadmask = new Ext.LoadMask(Ext.getBody(), { msg: "Closing..." });
+            loadmask.show();
+
+            setTimeout(function () {
+                parent.Ext.getCmp('uxAddEditDetailSheet').close()
+            }, 4000);
         }
         Ext.util.Format.CurrencyFactory = function (dp, dSeparator, tSeparator, symbol, red) {
             return function (n) {
@@ -67,16 +78,6 @@
                 return Ext.String.format(template, (n >= 0 || red == false) ? "black" : "red", r);
             };
         };
-        // EXAMPLE
-        //var colorErrors = function (value, metadata, record) {
-        //    if (record.data.WARNING == "Error") {
-        //        metadata.style = "background-color: red;";
-        //    }
-        //    else if (record.data.WARNING == "Warning") {
-        //        metadata.style = "background-color: yellow;";
-        //    }
-        //    return value;
-        //};
         var colorSubGridOverride = function (value, metadata, record) {
             if (record.data.OVERRIDDEN == 1) {
                 metadata.style = "background-color: #FFFF99;";
@@ -172,7 +173,7 @@
                             Layout="HBoxLayout">
                             <Items>
                                 <ext:Label ID="uxDetailNameLabel" runat="server" Width="140" Text="Detail Sheet (1 of 1): " />
-                                <ext:TextField ID="uxDetailName" runat="server" Width="480" ReadOnly="false" Text="" SelectOnFocus="true" MaxLength="200" EnforceMaxLength="true" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;">
+                                <ext:TextField ID="uxDetailName" runat="server" Width="480" AutoFocus="true" ReadOnly="false" Text="" SelectOnFocus="true" MaxLength="200" EnforceMaxLength="true" TabIndex="1" FieldStyle="background-color: #EFF7FF; background-image: none;">
                                     <DirectEvents>
                                         <Change OnEvent="deCheckAllowDetailSave" />
                                     </DirectEvents>
@@ -374,7 +375,6 @@
                                                             <Fields>
                                                                 <ext:ModelField Name="DETAIL_SHEET_ID" />
                                                                 <ext:ModelField Name="REC_TYPE" />
-                                                                <ext:ModelField Name="AMT_3" />
                                                                 <ext:ModelField Name="DESC_1" />
                                                                 <ext:ModelField Name="AMT_1" />
                                                                 <ext:ModelField Name="DESC_2" />
@@ -394,12 +394,6 @@
                                             </Store>
                                             <ColumnModel>
                                                 <Columns>
-                                                    <ext:NumberColumn ID="NumberColumn26" runat="server" DataIndex="AMT_3" Text="Qty" Flex="1" Align="Right" Visible="false">
-                                                        <Editor>
-                                                            <ext:NumberField ID="NumberField1" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" DecimalPrecision="4" />
-                                                        </Editor>
-                                                        <Renderer Fn="colorSubGridOverrideMaterial" />
-                                                    </ext:NumberColumn>
                                                     <ext:Column ID="Column4" runat="server" DataIndex="DESC_1" Text="Material" Flex="2">
                                                         <Editor>
                                                             <ext:DropDownField ID="uxMaterialPicker" runat="server" Width="110" Mode="Text" Editable="true" MaxLength="200" EnforceMaxLength="true" SelectOnFocus="true">
@@ -1243,6 +1237,7 @@
                                                                 <ext:ModelField Name="DETAIL_SHEET_ID" />
                                                                 <ext:ModelField Name="REC_TYPE" />
                                                                 <ext:ModelField Name="AMT_1" />
+                                                                <ext:ModelField Name="DESC_1" />
                                                                 <ext:ModelField Name="AMT_2" />
                                                                 <ext:ModelField Name="AMT_3" />
                                                                 <ext:ModelField Name="TOTAL" />
@@ -1259,7 +1254,7 @@
                                             </Store>
                                             <ColumnModel>
                                                 <Columns>
-                                                    <ext:NumberColumn ID="NumberColumn31" runat="server" DataIndex="AMT_3" Text="Qty" Flex="1" Align="Right">
+                                                    <ext:NumberColumn ID="NumberColumn31" runat="server" DataIndex="AMT_1" Text="Qty" Flex="1" Align="Right">
                                                         <Editor>
                                                             <ext:NumberField ID="uxTravelQuantity" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
                                                         </Editor>
@@ -1312,8 +1307,8 @@
                                                                         <DirectEvents>
                                                                             <SelectionChange OnEvent="deSelectTravelPosition">
                                                                                 <ExtraParams>
-                                                                                    <ext:Parameter Name="Position" Value="#{uxPersonnelOTList}.getSelectionModel().getSelection()[0].data.POSITION" Mode="Raw" />
-                                                                                    <ext:Parameter Name="CostPerHour" Value="#{uxPersonnelOTList}.getSelectionModel().getSelection()[0].data.COST_PER_HR" Mode="Raw" />
+                                                                                    <ext:Parameter Name="Position" Value="#{uxTravelPersonnelList}.getSelectionModel().getSelection()[0].data.POSITION" Mode="Raw" />
+                                                                                    <ext:Parameter Name="CostPerHour" Value="#{uxTravelPersonnelList}.getSelectionModel().getSelection()[0].data.COST_PER_HR" Mode="Raw" />
                                                                                 </ExtraParams>
                                                                             </SelectionChange>
                                                                         </DirectEvents>
@@ -1325,13 +1320,13 @@
                                                             </ext:DropDownField>
                                                         </Editor>
                                                     </ext:Column>
-                                                    <ext:NumberColumn ID="NumberColumn10" runat="server" DataIndex="AMT_1" Text="Travel Pay" Flex="1" Align="Right">
+                                                    <ext:NumberColumn ID="NumberColumn10" runat="server" DataIndex="AMT_2" Text="Travel Pay" Flex="1" Align="Right">
                                                         <Editor>
                                                             <ext:NumberField ID="uxTravelPay" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
                                                         </Editor>
                                                         <Renderer Fn="Ext.util.Format.CurrencyFactory(2,'.',',','',false)" />
                                                     </ext:NumberColumn>
-                                                    <ext:NumberColumn ID="NumberColumn11" runat="server" DataIndex="AMT_2" Text="Hours" Flex="1" Align="Right">
+                                                    <ext:NumberColumn ID="NumberColumn11" runat="server" DataIndex="AMT_3" Text="Hours" Flex="1" Align="Right">
                                                         <Editor>
                                                             <ext:NumberField ID="uxTravelHours" runat="server" SelectOnFocus="true" MinValue="-9999999999.99" MaxValue="9999999999.99" HideTrigger="true" />
                                                         </Editor>
@@ -1754,33 +1749,33 @@
                             runat="server"
                             Layout="HBoxLayout">
                             <Items>
-                                <ext:Label ID="uxLaborBurdenLabel" runat="server" Width="180" Text="Labor Burden @ XX.XX%:" />
-                                <ext:TextField ID="uxLaborBurden" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" TabIndex="-6" />
-                                <ext:Label ID="Label22" runat="server" Width="105" />
-                                <ext:Label ID="Label23" runat="server" Width="180" Text="Average Units per Day:" />
-                                <ext:TextField ID="uxAvgUnitsPerDay" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" TabIndex="-7" />
+                                <ext:Label ID="uxLaborBurdenLabel" runat="server" Width="200" Text="Labor Burden @ XX.XX%:" Cls="labelBold" />
+                                <ext:TextField ID="uxLaborBurden" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" TabIndex="-6" FieldStyle="border-color: white; background-image: none; font-weight: bold;" />
+                                <ext:Label ID="Label22" runat="server" Width="65" />
+                                <ext:Label ID="Label23" runat="server" Width="200" Text="Average Units per Day:" Cls="labelBold" />
+                                <ext:TextField ID="uxAvgUnitsPerDay" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" TabIndex="-7" FieldStyle="border-color: white; background-image: none; font-weight: bold;" />
                             </Items>
                         </ext:FieldContainer>
                         <ext:FieldContainer ID="FieldContainer11"
                             runat="server"
                             Layout="HBoxLayout">
                             <Items>
-                                <ext:Label ID="Label24" runat="server" Width="180" Text="Total Weekly Direct Expense:" />
-                                <ext:TextField ID="uxTotalWklyDirects" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" TabIndex="-8" />
-                                <ext:Label ID="Label38" runat="server" Width="105" />
-                                <ext:Label ID="Label39" runat="server" Width="180" Text="Total Direct Expenses Left:" />
-                                <ext:TextField ID="uxTotalDirectsLeft" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" TabIndex="-9" />
+                                <ext:Label ID="Label24" runat="server" Width="200" Text="Total Weekly Direct Expense:" Cls="labelBold" />
+                                <ext:TextField ID="uxTotalWklyDirects" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" TabIndex="-8" FieldStyle="border-color: white; background-image: none; font-weight: bold;" />
+                                <ext:Label ID="Label38" runat="server" Width="65" />
+                                <ext:Label ID="Label39" runat="server" Width="200" Text="Total Direct Expenses Left:" Cls="labelBold" />
+                                <ext:TextField ID="uxTotalDirectsLeft" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" TabIndex="-9" FieldStyle="border-color: white; background-image: none; font-weight: bold;" />
                             </Items>
                         </ext:FieldContainer>
                         <ext:FieldContainer ID="FieldContainer14"
                             runat="server"
                             Layout="HBoxLayout">
                             <Items>
-                                <ext:Label ID="Label25" runat="server" Width="180" Text="Total Direct Expenses per Day:" />
-                                <ext:TextField ID="uxTotalDirectsPerDay" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" TabIndex="-10" />
-                                <ext:Label ID="Label41" runat="server" Width="105" />
-                                <ext:Label ID="Label42" runat="server" Width="180" Text="Total Material Expense Left:" />
-                                <ext:TextField ID="uxTotalMaterialLeft" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" TabIndex="-11" />
+                                <ext:Label ID="Label25" runat="server" Width="200" Text="Total Direct Expenses per Day:" Cls="labelBold" />
+                                <ext:TextField ID="uxTotalDirectsPerDay" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" TabIndex="-10" FieldStyle="border-color: white; background-image: none; font-weight: bold;" />
+                                <ext:Label ID="Label41" runat="server" Width="65" />
+                                <ext:Label ID="Label42" runat="server" Width="200" Text="Total Material Expense Left:" Cls="labelBold" />
+                                <ext:TextField ID="uxTotalMaterialLeft" runat="server" Width="100" ReadOnly="true" Text="0.00" Cls="textRightAlign" TabIndex="-11" FieldStyle="border-color: white; background-image: none; font-weight: bold;" />
                             </Items>
                         </ext:FieldContainer>
                         <ext:FieldContainer ID="FieldContainer16"
@@ -1832,11 +1827,6 @@
                                     <Listeners>
                                         <Click Fn="closeWindow" />
                                     </Listeners>
-                                    <DirectEvents>
-                                        <Click>
-                                            <EventMask ShowMask="true" Msg="Closing..." />
-                                        </Click>
-                                    </DirectEvents>
                                 </ext:Button>
                             </Items>
                         </ext:FieldContainer>

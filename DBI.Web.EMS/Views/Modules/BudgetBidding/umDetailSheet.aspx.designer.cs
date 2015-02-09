@@ -607,24 +607,6 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding {
         protected global::Ext.Net.Model Model1;
         
         /// <summary>
-        /// NumberColumn26 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.NumberColumn NumberColumn26;
-        
-        /// <summary>
-        /// NumberField1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Ext.Net.NumberField NumberField1;
-        
-        /// <summary>
         /// Column4 control.
         /// </summary>
         /// <remarks>

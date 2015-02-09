@@ -529,6 +529,8 @@ namespace DBI.Data
 
         public static string BudBidVerToOHBudVer(long verID)
         {
+            // FIX THIS SO PULLS DBIS, IRM - USE LENNY'S TABLE (DEV SETUP) - OVERHEAD_BUDFET_TYPE
+
             switch (verID)
             {
                 case 1:  // Bid
@@ -1549,6 +1551,7 @@ namespace DBI.Data
                 detailData.PROJECT_ID = budBidID;
                 detailData.DETAIL_NAME = "SYS_DETAIL_" + sheetOrder;
                 detailData.SHEET_ORDER = sheetOrder;
+                detailData.LIABILITY = "N";
                 detailData.CREATE_DATE = DateTime.Now;
                 detailData.CREATED_BY = HttpContext.Current.User.Identity.Name;
                 detailData.MODIFY_DATE = DateTime.Now;
@@ -1605,6 +1608,8 @@ namespace DBI.Data
                 taskData.SHEET_ORDER = BBDetail.Sheets.MaxOrder(budBidID) + 1;
                 string origTaskName = taskData.DETAIL_NAME;
                 taskData.DETAIL_NAME = "* " + (origTaskName.Length >= 20 ? origTaskName.Substring(0, 20) : origTaskName) + " (COPIED: " + DateTime.Now + ")";
+                string origLiability = taskData.LIABILITY;
+                taskData.LIABILITY = origLiability;
                 taskData.CREATE_DATE = DateTime.Now;
                 taskData.CREATED_BY = HttpContext.Current.User.Identity.Name;
                 taskData.MODIFY_DATE = DateTime.Now;
@@ -1702,6 +1707,22 @@ namespace DBI.Data
                     }
 
                     return data.COMMENTS;
+                }
+
+                public static string Liability(long detailSheetID)
+                {
+                    BUD_BID_DETAIL_TASK data;
+                    using (Entities context = new Entities())
+                    {
+                        data = context.BUD_BID_DETAIL_TASK.Where(x => x.DETAIL_TASK_ID == detailSheetID).SingleOrDefault();
+                    }
+
+                    if (data == null)
+                    {
+                        return "";
+                    }
+
+                    return data.LIABILITY;
                 }
 
                 public static void DBUpdateLiability(long detailSheetID, string liability)
@@ -2349,7 +2370,7 @@ namespace DBI.Data
                             data.DESC_2 = record.PRIMARY_UOM_CODE;
                             data.AMT_1 = record.ITEM_COST;
                             data.AMT_2 = record.COMPONENT_QUANTITY;
-                            data.AMT_3 = 1;
+                            data.AMT_3 = 0;
                             data.AMT_4 = 0;
                             data.AMT_5 = 0;
                             data.TOTAL = record.TOTAL;

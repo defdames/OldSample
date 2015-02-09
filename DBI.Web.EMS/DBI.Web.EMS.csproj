@@ -151,7 +151,7 @@
     <Content Include="Views\Modules\BudgetBidding\Reports\umRepRollupOPCompare.aspx" />
     <Content Include="Views\Modules\BudgetBidding\umReportCompareTo.aspx" />
     <Content Include="Views\Modules\BudgetBidding\Reports\umRepRollupOHCompare.aspx" />
-    <Content Include="Views\Modules\BudgetBidding\Reports\umRepRollupLiab.aspx" />
+    <Content Include="Views\Modules\BudgetBidding\Reports\umRepRollupLiabilities.aspx" />
     <Content Include="Views\Modules\BudgetBidding\Reports\umRepRollupComm.aspx" />
     <Content Include="Views\Modules\BudgetBidding\Reports\umRepRollupAllProjects.aspx" />
     <Content Include="Views\Modules\BudgetBidding\Reports\umRepRollupSum.aspx" />
@@ -380,12 +380,12 @@
     <Compile Include="Views\Modules\BudgetBidding\Reports\umRepRollupOHCompare.aspx.designer.cs">
       <DependentUpon>umRepRollupOHCompare.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepRollupLiab.aspx.cs">
-      <DependentUpon>umRepRollupLiab.aspx</DependentUpon>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepRollupLiabilities.aspx.cs">
+      <DependentUpon>umRepRollupLiabilities.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepRollupLiab.aspx.designer.cs">
-      <DependentUpon>umRepRollupLiab.aspx</DependentUpon>
+    <Compile Include="Views\Modules\BudgetBidding\Reports\umRepRollupLiabilities.aspx.designer.cs">
+      <DependentUpon>umRepRollupLiabilities.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Modules\BudgetBidding\Reports\umRepRollupComm.aspx.cs">
       <DependentUpon>umRepRollupComm.aspx</DependentUpon>

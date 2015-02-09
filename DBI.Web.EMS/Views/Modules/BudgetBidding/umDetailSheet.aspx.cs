@@ -54,6 +54,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 detailSheetName = (detailSheetName.Length >= 10 && detailSheetName.Substring(0, 10) == "SYS_DETAIL") ? "" : detailSheetName;
                 uxDetailName.Text = detailSheetName;
                 uxComments.Text = BBDetail.Sheet.MainTabField.Comment(detailSheetID);
+                uxLiabilityCheckbox.Checked = BBDetail.Sheet.MainTabField.Liability(detailSheetID) == "Y" ? true : false;
 
                 decimal sGrossRec;
                 decimal sMatUsage;
@@ -205,21 +206,109 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
 
             BUD_BID_DETAIL_SHEET data;
             data = new BUD_BID_DETAIL_SHEET();
-            data.DESC_1 = "[NEW]";
-            data.DESC_2 = "";
-            if (recType == "PERDIEM")
+
+            switch (recType)
             {
-                data.AMT_1 = BB.PerDiemRate(leOrgID);
+                case "MATERIAL":
+                    data.DESC_1 = "[NEW]";
+                    data.DESC_2 = "";
+                    data.AMT_1 = 0;
+                    data.AMT_2 = 0;
+                    data.AMT_3 = 0;
+                    data.AMT_4 = 0;
+                    data.AMT_5 = 0;
+                    data.TOTAL = 0;
+                    break;
+
+                case "EQUIPMENT":
+                    data.DESC_1 = "[NEW]";
+                    data.DESC_2 = "";
+                    data.AMT_1 = 1;
+                    data.AMT_2 = 0;
+                    data.AMT_3 = 0;
+                    data.AMT_4 = 0;
+                    data.AMT_5 = 0;
+                    data.TOTAL = 0;
+                    break;
+
+                case "PERSONNELR":
+                    data.DESC_1 = "[NEW]";
+                    data.DESC_2 = "";
+                    data.AMT_1 = 1;
+                    data.AMT_2 = 0;
+                    data.AMT_3 = 0;
+                    data.AMT_4 = 0;
+                    data.AMT_5 = 0;
+                    data.TOTAL = 0;
+                    break;
+
+                case "PERSONNELO":
+                    data.DESC_1 = "[NEW]";
+                    data.DESC_2 = "";
+                    data.AMT_1 = 1;
+                    data.AMT_2 = 0;
+                    data.AMT_3 = 0;
+                    data.AMT_4 = 0;
+                    data.AMT_5 = 0;
+                    data.TOTAL = 0;
+                    break;
+
+                case "PERDIEM":
+                    data.DESC_1 = "";
+                    data.DESC_2 = "";
+                    data.AMT_1 = BB.PerDiemRate(leOrgID);
+                    data.AMT_2 = 0;
+                    data.AMT_3 = 0;
+                    data.AMT_4 = 0;
+                    data.AMT_5 = 0;
+                    data.TOTAL = 0;
+                    break;
+
+                case "TRAVEL":
+                    data.DESC_1 = "[NEW]";
+                    data.DESC_2 = "";
+                    data.AMT_1 = 1;
+                    data.AMT_2 = 0;
+                    data.AMT_3 = 0;
+                    data.AMT_4 = 0;
+                    data.AMT_5 = 0;
+                    data.TOTAL = 0;
+                    break;
+
+                case "MOTELS":
+                    data.DESC_1 = "";
+                    data.DESC_2 = "";
+                    data.AMT_1 = 0;
+                    data.AMT_2 = 0;
+                    data.AMT_3 = 0;
+                    data.AMT_4 = 0;
+                    data.AMT_5 = 0;
+                    data.TOTAL = 0;
+                    break;
+
+                case "MISC":
+                    data.DESC_1 = "[NEW]";
+                    data.DESC_2 = "";
+                    data.AMT_1 = 0;
+                    data.AMT_2 = 0;
+                    data.AMT_3 = 0;
+                    data.AMT_4 = 0;
+                    data.AMT_5 = 0;
+                    data.TOTAL = 0;
+                    break;
+
+                case "LUMPSUM":
+                    data.DESC_1 = "[NEW]";
+                    data.DESC_2 = "";
+                    data.AMT_1 = 0;
+                    data.AMT_2 = 0;
+                    data.AMT_3 = 0;
+                    data.AMT_4 = 0;
+                    data.AMT_5 = 0;
+                    data.TOTAL = 0;
+                    break;
             }
-            else
-            {
-                data.AMT_1 = 0;
-            }            
-            data.AMT_2 = 0;
-            data.AMT_3 = 1;
-            data.AMT_4 = 0;
-            data.AMT_5 = 0;
-            data.TOTAL = 0;
+         
             data.PROJECT_ID = projectID;
             data.DETAIL_TASK_ID = detailTaskID;
             data.REC_TYPE = recType;
@@ -289,7 +378,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             long id = Convert.ToInt64(uxHidDelRecord.Text);
 
             BBDetail.SubGrid.DeleteRecord(id);
-            uxMaterialGridStore.Reload();   // FIX THESE WITH SWITCH!
+            uxMaterialGridStore.Reload();
             uxEquipmentGridStore.Reload();
             uxPersonnelRTGridStore.Reload();
             uxPerDiemGridStore.Reload();
@@ -320,7 +409,7 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             switch (recType)
             {
                 case "MATERIAL":
-                    data.TOTAL = data.AMT_3 * data.AMT_1 * data.AMT_2;
+                    data.TOTAL = data.AMT_1 * data.AMT_2;
                     GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
                     uxMaterialGridStore.CommitChanges();
                     uxMaterialGridStore.Reload();
@@ -416,11 +505,10 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 data = context.BUD_BID_DETAIL_SHEET.Where(x => x.DETAIL_SHEET_ID == recordID).Single();
             }
 
-            data.AMT_3 = 1;
-            data.DESC_1 = material;
-            data.DESC_2 = uom;
+            data.DESC_1 = material;  
             data.AMT_1 = Convert.ToDecimal(unitCost);
-            data.TOTAL = data.AMT_3 * data.AMT_1 * data.AMT_2;
+            data.DESC_2 = uom;
+            data.TOTAL = data.AMT_1 * data.AMT_2;
 
             GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
             uxMaterialGridStore.CommitChanges();
