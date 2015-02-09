@@ -103,7 +103,6 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                 }
         }
 
-
         protected void deEditTime(object sender, DirectEventArgs e)
         {
             try
@@ -196,7 +195,7 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
             }
         }
 
-         public static long generatePayrollAuditSequence()
+        public static long generatePayrollAuditSequence()
         {
             using (Entities _context = new Entities())
             {
@@ -227,7 +226,6 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
              }
 
          }
-
 
         //protected void deSubmitTime (object sender, DirectEventArgs e)
         //{
@@ -322,34 +320,23 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
         //        }
         //    }
 
-        
-
-
-
-
         private static decimal getDays(List<TIME_CLOCK> employeeData, string dayweek)
         {
            
             decimal? returnhours = 0;
-
-            var _value = employeeData.Where(X => X.DAY_OF_WEEK == dayweek).SingleOrDefault();
-            
-            
-            if(_value != null)
-
-            {
-                returnhours = _value.ACTUAL_HOURS;
-                
-            }
+            var _value = employeeData.Where(x => x.DAY_OF_WEEK == dayweek).ToList();
+                foreach(var _timevalue in _value)
+                {
+                    if(_timevalue != null)
+                    {
+                    returnhours = _value.Sum(x => x.ACTUAL_HOURS);
+                  
+                    }
+                }
             return (decimal)returnhours;
-            
-            
-
         }
 
-
-
-            protected void deSubmitTime(object sender, DirectEventArgs e)
+        protected void deSubmitTime(object sender, DirectEventArgs e)
             {
                 List<TIME_CLOCK> SubmittedTime = JSON.Deserialize<List<TIME_CLOCK>>(e.ExtraParams["SubmittedTime"]);
                 long person_id = Convert.ToInt64(Authentication.GetClaimValue("PersonId", User as ClaimsPrincipal));
@@ -367,7 +354,8 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
 
                             var _employeeInfo = _context.EMPLOYEES_V.Where(x => x.PERSON_ID == _person.employee_id).SingleOrDefault();
                             var _employeeTime = SubmittedTime.Where(x => x.PERSON_ID == _person.employee_id).ToList();
-                             var _TimeSum = _employeeTime.Sum(x => x.ACTUAL_HOURS);
+                            var _TimeSum = _employeeTime.Sum(x => x.ACTUAL_HOURS);
+                            var _DailySum = _employeeTime.GroupBy(x => x.DAY_OF_WEEK).Select(group => group.Sum(x => x.ACTUAL_HOURS));
 
 
                             XXDBI_PAYROLL_AUDIT_V dtrecord = new XXDBI_PAYROLL_AUDIT_V();
@@ -401,32 +389,43 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock
                             foreach (var _time in _employeeTime)
                             {
                                 dtrecord.SUNDAY = (decimal)getDays(_employeeTime, "Sunday");
-                                dtrecord.MONDAY = (decimal)getDays(_employeeTime, "Monday");
-                                dtrecord.TUESDAY = (decimal)getDays(_employeeTime, "Tuesday");
-                                dtrecord.WEDNESDAY = (decimal)getDays(_employeeTime, "Wednesday");
-                                dtrecord.THURSDAY = (decimal)getDays(_employeeTime, "Thursday");
-                                dtrecord.FRIDAY = (decimal)getDays(_employeeTime, "Friday");
-                                dtrecord.SATURDAY = (decimal)getDays(_employeeTime, "Saturday");
-
                             }
+                            foreach (var _time in _employeeTime)
+                            {
+                                dtrecord.MONDAY = (decimal)getDays(_employeeTime, "Monday");
+                            }
+                            foreach (var _time in _employeeTime)
+                            {
+                            dtrecord.TUESDAY = (decimal)getDays(_employeeTime, "Tuesday");
+                            }
+                            foreach (var _time in _employeeTime)
+                            {
+                                dtrecord.WEDNESDAY = (decimal)getDays(_employeeTime, "Wednesday");
+                            }
+                            foreach (var _time in _employeeTime)
+                            {
+                                dtrecord.THURSDAY = (decimal)getDays(_employeeTime, "Thursday");
+                            }
+                            foreach (var _time in _employeeTime)
+                            {
+                                dtrecord.FRIDAY = (decimal)getDays(_employeeTime, "Friday");
+                            }
+                            foreach (var _time in _employeeTime)
+                            {
+                                dtrecord.SATURDAY = (decimal)getDays(_employeeTime, "Saturday");
+                            }
+                            
                             GenericData.Insert<XXDBI_PAYROLL_AUDIT_V>(dtrecord);
                             uxPayrollAuditStore.Reload();
                             uxPayrollAuditGrid.Refresh();
                         }
-
                     }
-
             }
-        }
+   }
 
-        
-        public class DistinctPerson
-        {
-
-            public decimal employee_id { get; set; }
-
-        }
-
-
+    public class DistinctPerson
+    {
+        public decimal employee_id { get; set; }
     }
+}
 
