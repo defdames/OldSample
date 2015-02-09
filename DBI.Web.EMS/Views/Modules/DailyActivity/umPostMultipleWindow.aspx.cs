@@ -31,10 +31,10 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             using (Entities _context = new Entities())
             {
                 List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
-                IQueryable<DAILY_ACTIVITY.HeaderData> HeaderList = DAILY_ACTIVITY.GetHeaders(_context, false, false, OrgsList).Where(x => x.STATUS == 3);
+                List<DAILY_ACTIVITY.HeaderData> HeaderList = DAILY_ACTIVITY.GetHeaders(_context, false, false, OrgsList).Where(x => x.STATUS == 3).ToList();
 
                 int count;
-                uxHeaderPostStore.DataSource = GenericData.ListFilterHeader<DAILY_ACTIVITY.HeaderData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], HeaderList, out count);
+                uxHeaderPostStore.DataSource = GenericData.EnumerableFilterHeader<DAILY_ACTIVITY.HeaderData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], HeaderList, out count);
                 e.Total = count;
             }
         }

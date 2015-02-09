@@ -1545,7 +1545,6 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             //Pass in parameters that allows selected checkbox to show on the printed window
             string _togglePostedChecked = (uxTogglePosted.Checked) ? "Y" : "N";
             string _toggleInActiveChecked = (uxToggleInactive.Checked) ? "Y" : "N";
-
             string url = string.Format("umPrintMultipleWindow.aspx?showPosted={0}&showInActive={1}", _togglePostedChecked, _toggleInActiveChecked);
 
             CreateWindow(url, "Export Multiple DRS");

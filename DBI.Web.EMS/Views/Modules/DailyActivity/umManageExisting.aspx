@@ -244,7 +244,11 @@
                                             Text="Export Multple DRS"
                                             Icon="PageWhiteAcrobat">
                                             <DirectEvents>
-                                                <Click OnEvent="deOpenExportMultipleWindow" />
+                                                <Click OnEvent="deOpenExportMultipleWindow">
+                                                    <ExtraParams>
+                                                        <ext:Parameter Name="filters" Value="App.uxManageGrid.filterHeader.getFilterValues()" Mode="Raw" Encode="true" />
+                                                    </ExtraParams>
+                                                </Click>
                                             </DirectEvents>
                                         </ext:Button>
                                         <ext:Button runat="server"
@@ -281,7 +285,7 @@
                                 </ext:Toolbar>
                             </BottomBar>
                             <Plugins>
-                                <ext:FilterHeader runat="server" Remote="true" DateFormat="MM-dd-yyyy" />
+                                <ext:FilterHeader runat="server" ID="uxManageGridFilter" Remote="true" DateFormat="MM-dd-yyyy" />
                             </Plugins>
                             <DirectEvents>
                                 <Select OnEvent="deUpdateUrlAndButtons">

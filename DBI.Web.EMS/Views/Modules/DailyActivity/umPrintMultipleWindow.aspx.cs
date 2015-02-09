@@ -24,6 +24,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             if (!X.IsAjaxRequest)
             {
+                
             }
         }
 
@@ -34,13 +35,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                 // Read data from other window
                 Boolean _showPosted = (Request.QueryString["showPosted"] == "Y") ? true : false;
                 Boolean _showInActive = (Request.QueryString["showInActive"] == "Y") ? true : false;
-
-
                 List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
-                IQueryable<DAILY_ACTIVITY.HeaderData> HeaderList = DAILY_ACTIVITY.GetHeaders(_context,_showInActive,_showPosted, OrgsList);
+                List<DAILY_ACTIVITY.HeaderData> HeaderList = DAILY_ACTIVITY.GetHeaders(_context,_showInActive,_showPosted, OrgsList).ToList();
 
                 int count;
-                uxHeaderPostStore.DataSource = GenericData.ListFilterHeader<DAILY_ACTIVITY.HeaderData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], HeaderList, out count);
+                uxHeaderPostStore.DataSource = GenericData.EnumerableFilterHeader<DAILY_ACTIVITY.HeaderData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], HeaderList, out count);
                 e.Total = count;
             }
         }
