@@ -47,8 +47,9 @@ namespace DBI.Web.EMS.Views.Modules.TimeClock.Edit
 
              DateTime updateTimeIn = uxDateInField.SelectedDate + uxTimeInField.SelectedTime;
              DateTime updateTimeOut = uxDateOutField.SelectedDate + uxTimeOutField.SelectedTime;
+             string dow = updateTimeIn.DayOfWeek.ToString();
 
-             TIMECLOCK.InsertEditedEmployeeTime(decimal.Parse(_TimeClockId), updateTimeIn, updateTimeOut, person_name);
+             TIMECLOCK.InsertEditedEmployeeTime(decimal.Parse(_TimeClockId), updateTimeIn, updateTimeOut, person_name, dow);
             
         }
 

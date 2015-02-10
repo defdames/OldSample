@@ -168,7 +168,7 @@ namespace DBI.Data
         /// <param name="newTimeOut"></param>
         /// <param name="personName"></param>
 
-        public static void InsertEditedEmployeeTime(decimal tcID, DateTime newTimeIn, DateTime newTimeOut, string personName)
+        public static void InsertEditedEmployeeTime(decimal tcID, DateTime newTimeIn, DateTime newTimeOut, string personName, string dayofweek)
         {
 
             TIME_CLOCK _data;
@@ -184,6 +184,7 @@ namespace DBI.Data
                 _data.ACTUAL_HOURS = (decimal)ts.TotalHours;
                 _data.ADJUSTED_HOURS = adjts;
                 _data.ADJUSTED_LUNCH = lcts;
+                _data.DAY_OF_WEEK = dayofweek;
                 _data.MODIFIED_TIME_IN = newTimeIn;
                 _data.MODIFIED_TIME_OUT = newTimeOut;
                 _data.MODIFIED_BY = personName;
