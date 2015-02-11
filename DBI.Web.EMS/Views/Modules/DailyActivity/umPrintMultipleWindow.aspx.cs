@@ -24,6 +24,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
             }
             if (!X.IsAjaxRequest)
             {
+                
             }
         }
 
@@ -31,11 +32,14 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
         {
             using (Entities _context = new Entities())
             {
+                // Read data from other window
+                Boolean _showPosted = (Request.QueryString["showPosted"] == "Y") ? true : false;
+                Boolean _showInActive = (Request.QueryString["showInActive"] == "Y") ? true : false;
                 List<long> OrgsList = SYS_USER_ORGS.GetUserOrgs(SYS_USER_INFORMATION.UserID(User.Identity.Name)).Select(x => x.ORG_ID).ToList();
-                IQueryable<DAILY_ACTIVITY.HeaderData> HeaderList = DAILY_ACTIVITY.GetHeaders(_context, true, true, OrgsList);
+                List<DAILY_ACTIVITY.HeaderData> HeaderList = DAILY_ACTIVITY.GetHeaders(_context,_showInActive,_showPosted, OrgsList).ToList();
 
                 int count;
-                uxHeaderPostStore.DataSource = GenericData.ListFilterHeader<DAILY_ACTIVITY.HeaderData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], HeaderList, out count);
+                uxHeaderPostStore.DataSource = GenericData.EnumerableFilterHeader<DAILY_ACTIVITY.HeaderData>(e.Start, e.Limit, e.Sort, e.Parameters["filterheader"], HeaderList, out count);
                 e.Total = count;
             }
         }
@@ -94,7 +98,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                         {
                             OracleHeader = HeaderData.DA_HEADER_ID.ToString();
                         }
-                        catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                        catch (NullReferenceException)
                         {
                             OracleHeader = "0";
                         }
@@ -227,7 +231,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                     string TravelTime;
                                     try
                                     {
-                                        TravelTime = Data.TRAVEL_TIME_FORMATTED.ToString();
+                                        TravelTime = Data.TRAVEL_TIME_FORMATTED.ToString("H:mm");
                                     }
                                     catch (Exception)
                                     {
@@ -270,11 +274,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						new PdfPCell(new Phrase(Data.TIME_IN.ToString("hh\\:mm"), CellFont)),
 						new PdfPCell(new Phrase(Data.TIME_OUT.ToString("hh\\:mm"), CellFont)),
 						new PdfPCell(new Phrase(TotalHours.ToString("hh\\:mm"), CellFont)),
-						new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED.ToString(), CellFont)),
-						new PdfPCell(new Phrase(Data.DRIVE_TIME_FORMATTED.ToString(), CellFont)),
-						new PdfPCell(new Phrase(Data.SHOPTIME_AM_FORMATTED.ToString(), CellFont)),
-						new PdfPCell(new Phrase(Data.SHOPTIME_PM_FORMATTED.ToString(), CellFont)),
-						new PdfPCell(new Phrase(Data.PER_DIEM.ToString(), CellFont)),
+						new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED.ToString("H\\:mm"), CellFont)),
+						new PdfPCell(new Phrase(Data.DRIVE_TIME_FORMATTED.ToString("H\\:mm"), CellFont)),
+						new PdfPCell(new Phrase(Data.SHOPTIME_AM_FORMATTED.ToString("H\\:mm"), CellFont)),
+						new PdfPCell(new Phrase(Data.SHOPTIME_PM_FORMATTED.ToString("H\\:mm"), CellFont)),
+						new PdfPCell(new Phrase((Data.PER_DIEM == true ? "Y" : "N"), CellFont)),
                         new PdfPCell(new Phrase(Data.ROLE_TYPE, CellFont)),
 						new PdfPCell(new Phrase(Comments, CellFont))
 					};
@@ -288,11 +292,11 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						new PdfPCell(new Phrase(Data.TIME_IN.ToString("hh\\:mm"), CellFont)),
 						new PdfPCell(new Phrase(Data.TIME_OUT.ToString("hh\\:mm"), CellFont)),
 						new PdfPCell(new Phrase(TotalHours.ToString("hh\\:mm"), CellFont)),
-						new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED.ToString(), CellFont)),
-						new PdfPCell(new Phrase(Data.DRIVE_TIME_FORMATTED.ToString(), CellFont)),
-						new PdfPCell(new Phrase(Data.SHOPTIME_AM_FORMATTED.ToString(), CellFont)),
-						new PdfPCell(new Phrase(Data.SHOPTIME_PM_FORMATTED.ToString(), CellFont)),
-						new PdfPCell(new Phrase(Data.PER_DIEM.ToString(), CellFont)),
+						new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED.ToString("H\\:mm"), CellFont)),
+						new PdfPCell(new Phrase(Data.DRIVE_TIME_FORMATTED.ToString("H\\:mm"), CellFont)),
+						new PdfPCell(new Phrase(Data.SHOPTIME_AM_FORMATTED.ToString("H\\:mm"), CellFont)),
+						new PdfPCell(new Phrase(Data.SHOPTIME_PM_FORMATTED.ToString("H\\:mm"), CellFont)),
+						new PdfPCell(new Phrase((Data.PER_DIEM == true ? "Y" : "N"), CellFont)),
 						new PdfPCell(new Phrase(Comments, CellFont))
                             };
                                     }
@@ -326,7 +330,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                     string TravelTime;
                                     try
                                     {
-                                        TravelTime = Data.TRAVEL_TIME_FORMATTED.ToString();
+                                        TravelTime = Data.TRAVEL_TIME_FORMATTED.ToString("H\\:mm");
                                     }
                                     catch (Exception)
                                     {
@@ -367,8 +371,8 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
 						new PdfPCell(new Phrase(Data.TIME_IN.ToString("hh\\:mm tt"), CellFont)),
 						new PdfPCell(new Phrase(Data.TIME_OUT.ToString("hh\\:mm tt"), CellFont)),
 						new PdfPCell(new Phrase(TotalHours.ToString("hh\\:mm"), CellFont)),
-						new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED.ToString(), CellFont)),
-						new PdfPCell(new Phrase(Data.PER_DIEM.ToString(), CellFont)),
+						new PdfPCell(new Phrase(Data.TRAVEL_TIME_FORMATTED.ToString("H\\:mm"), CellFont)),
+						new PdfPCell(new Phrase((Data.PER_DIEM == true ? "Y" : "N"), CellFont)),
                         new PdfPCell(new Phrase(Data.LUNCH_LENGTH.ToString(), CellFont)),
 						new PdfPCell(new Phrase(Comments, CellFont))
 					};
@@ -479,7 +483,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                     {
                                         WorkArea = Data.WORK_AREA.ToString();
                                     }
-                                    catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                                    catch (NullReferenceException)
                                     {
                                         WorkArea = string.Empty;
                                     }
@@ -489,7 +493,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                     {
                                         PoleFrom = Data.POLE_FROM.ToString();
                                     }
-                                    catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                                    catch (NullReferenceException)
                                     {
                                         PoleFrom = String.Empty;
                                     }
@@ -497,7 +501,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                     {
                                         PoleTo = Data.POLE_TO.ToString();
                                     }
-                                    catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                                    catch (NullReferenceException)
                                     {
                                         PoleTo = String.Empty;
                                     }
@@ -686,7 +690,7 @@ namespace DBI.Web.EMS.Views.Modules.DailyActivity
                                     {
                                         EPANumber = Data.EPA_DESCRIPTION;
                                     }
-                                    catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                                    catch (NullReferenceException)
                                     {
                                         EPANumber = string.Empty;
                                     }
