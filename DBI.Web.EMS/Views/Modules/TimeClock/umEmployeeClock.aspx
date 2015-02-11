@@ -16,7 +16,7 @@
 			// For the time now
 			Date.prototype.timeNow = function () {
 				//return ((this.getHours() < 10) ? "0" : "") + this.getHours() + ":" + ((this.getMinutes() < 10) ? "0" : "") + this.getMinutes() + ":" + ((this.getSeconds() < 10) ? "0" : "") + this.getSeconds();
-				return ((this.getHours() > 12) ? (this.getHours() - 12)  : this.getHours()) + ":" + ((this.getMinutes() < 10) ? "0" : "") + this.getMinutes() + " " + ((this.getHours() > 12) ? ('pm') : 'am');
+				return ((this.getHours() > 12) ? (this.getHours() - 12)  : this.getHours()) + ":" + ((this.getMinutes() < 10) ? "0" : "") + this.getMinutes() + " " + ((this.getHours() >= 12) ? ('pm') : 'am');
 			}
 				var datetime = new Date().today() + " " + new Date().timeNow();
 			   
