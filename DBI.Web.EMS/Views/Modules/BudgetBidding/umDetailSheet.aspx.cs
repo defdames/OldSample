@@ -197,169 +197,184 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             }
         }
         protected void deAddNewRecord(object sender, DirectEventArgs e)
-        {
+        {            
             long leOrgID = long.Parse(Request.QueryString["leOrgID"]);
             long projectID = long.Parse(Request.QueryString["projectID"]);
             long detailTaskID = long.Parse(Request.QueryString["detailSheetID"]);
             string detailSheetName = e.ExtraParams["DetailSheetName"];
             string recType = e.ExtraParams["RecordType"];
 
-            BUD_BID_DETAIL_SHEET data;
-            data = new BUD_BID_DETAIL_SHEET();
-
-            switch (recType)
+            bool addPersOTRec;
+            long rtDetailSheetID = 0;
+            do
             {
-                case "MATERIAL":
-                    data.DESC_1 = "[NEW]";
-                    data.DESC_2 = "";
-                    data.AMT_1 = 0;
-                    data.AMT_2 = 0;
-                    data.AMT_3 = 0;
-                    data.AMT_4 = 0;
-                    data.AMT_5 = 0;
-                    data.TOTAL = 0;
-                    break;
+                addPersOTRec = false;
 
-                case "EQUIPMENT":
-                    data.DESC_1 = "[NEW]";
-                    data.DESC_2 = "";
-                    data.AMT_1 = 1;
-                    data.AMT_2 = 0;
-                    data.AMT_3 = 0;
-                    data.AMT_4 = 0;
-                    data.AMT_5 = 0;
-                    data.TOTAL = 0;
-                    break;
+                BUD_BID_DETAIL_SHEET data;
+                data = new BUD_BID_DETAIL_SHEET();
 
-                case "PERSONNELR":
-                    data.DESC_1 = "[NEW]";
-                    data.DESC_2 = "";
-                    data.AMT_1 = 1;
-                    data.AMT_2 = 0;
-                    data.AMT_3 = 0;
-                    data.AMT_4 = 0;
-                    data.AMT_5 = 0;
-                    data.TOTAL = 0;
-                    break;
+                switch (recType)
+                {
+                    case "MATERIAL":
+                        data.DESC_1 = "[NEW]";
+                        data.DESC_2 = "";
+                        data.AMT_1 = 0;
+                        data.AMT_2 = 0;
+                        data.AMT_3 = 0;
+                        data.AMT_4 = 0;
+                        data.AMT_5 = 0;
+                        data.TOTAL = 0;
+                        break;
 
-                case "PERSONNELO":
-                    data.DESC_1 = "[NEW]";
-                    data.DESC_2 = "";
-                    data.AMT_1 = 1;
-                    data.AMT_2 = 0;
-                    data.AMT_3 = 0;
-                    data.AMT_4 = 0;
-                    data.AMT_5 = 0;
-                    data.TOTAL = 0;
-                    break;
+                    case "EQUIPMENT":
+                        data.DESC_1 = "[NEW]";
+                        data.DESC_2 = "";
+                        data.AMT_1 = 1;
+                        data.AMT_2 = 0;
+                        data.AMT_3 = 0;
+                        data.AMT_4 = 0;
+                        data.AMT_5 = 0;
+                        data.TOTAL = 0;
+                        break;
 
-                case "PERDIEM":
-                    data.DESC_1 = "";
-                    data.DESC_2 = "";
-                    data.AMT_1 = BB.PerDiemRate(leOrgID);
-                    data.AMT_2 = 0;
-                    data.AMT_3 = 0;
-                    data.AMT_4 = 0;
-                    data.AMT_5 = 0;
-                    data.TOTAL = 0;
-                    break;
+                    case "PERSONNELR":
+                        data.DESC_1 = "[NEW]";
+                        data.DESC_2 = "";
+                        data.AMT_1 = 1;
+                        data.AMT_2 = 0;
+                        data.AMT_3 = 0;
+                        data.AMT_4 = 0;
+                        data.AMT_5 = 0;
+                        data.TOTAL = 0;
+                        break;
 
-                case "TRAVEL":
-                    data.DESC_1 = "[NEW]";
-                    data.DESC_2 = "";
-                    data.AMT_1 = 1;
-                    data.AMT_2 = 0;
-                    data.AMT_3 = 0;
-                    data.AMT_4 = 0;
-                    data.AMT_5 = 0;
-                    data.TOTAL = 0;
-                    break;
+                    case "PERSONNELO":
+                        data.DESC_1 = "[NEW]";
+                        data.DESC_2 = "";
+                        data.AMT_1 = 1;
+                        data.AMT_2 = 0;
+                        data.AMT_3 = 0;
+                        data.AMT_4 = 0;
+                        data.AMT_5 = 0;
+                        data.TOTAL = 0;
+                        data.PARENT_REC_ID = rtDetailSheetID;
+                        break;
 
-                case "MOTELS":
-                    data.DESC_1 = "";
-                    data.DESC_2 = "";
-                    data.AMT_1 = 0;
-                    data.AMT_2 = 0;
-                    data.AMT_3 = 0;
-                    data.AMT_4 = 0;
-                    data.AMT_5 = 0;
-                    data.TOTAL = 0;
-                    break;
+                    case "PERDIEM":
+                        data.DESC_1 = "";
+                        data.DESC_2 = "";
+                        data.AMT_1 = BB.PerDiemRate(leOrgID);
+                        data.AMT_2 = 0;
+                        data.AMT_3 = 0;
+                        data.AMT_4 = 0;
+                        data.AMT_5 = 0;
+                        data.TOTAL = 0;
+                        break;
 
-                case "MISC":
-                    data.DESC_1 = "[NEW]";
-                    data.DESC_2 = "";
-                    data.AMT_1 = 0;
-                    data.AMT_2 = 0;
-                    data.AMT_3 = 0;
-                    data.AMT_4 = 0;
-                    data.AMT_5 = 0;
-                    data.TOTAL = 0;
-                    break;
+                    case "TRAVEL":
+                        data.DESC_1 = "[NEW]";
+                        data.DESC_2 = "";
+                        data.AMT_1 = 1;
+                        data.AMT_2 = 0;
+                        data.AMT_3 = 0;
+                        data.AMT_4 = 0;
+                        data.AMT_5 = 0;
+                        data.TOTAL = 0;
+                        break;
 
-                case "LUMPSUM":
-                    data.DESC_1 = "[NEW]";
-                    data.DESC_2 = "";
-                    data.AMT_1 = 0;
-                    data.AMT_2 = 0;
-                    data.AMT_3 = 0;
-                    data.AMT_4 = 0;
-                    data.AMT_5 = 0;
-                    data.TOTAL = 0;
-                    break;
-            }
+                    case "MOTELS":
+                        data.DESC_1 = "";
+                        data.DESC_2 = "";
+                        data.AMT_1 = 0;
+                        data.AMT_2 = 0;
+                        data.AMT_3 = 0;
+                        data.AMT_4 = 0;
+                        data.AMT_5 = 0;
+                        data.TOTAL = 0;
+                        break;
+
+                    case "MISC":
+                        data.DESC_1 = "[NEW]";
+                        data.DESC_2 = "";
+                        data.AMT_1 = 0;
+                        data.AMT_2 = 0;
+                        data.AMT_3 = 0;
+                        data.AMT_4 = 0;
+                        data.AMT_5 = 0;
+                        data.TOTAL = 0;
+                        break;
+
+                    case "LUMPSUM":
+                        data.DESC_1 = "[NEW]";
+                        data.DESC_2 = "";
+                        data.AMT_1 = 0;
+                        data.AMT_2 = 0;
+                        data.AMT_3 = 0;
+                        data.AMT_4 = 0;
+                        data.AMT_5 = 0;
+                        data.TOTAL = 0;
+                        break;
+                }
          
-            data.PROJECT_ID = projectID;
-            data.DETAIL_TASK_ID = detailTaskID;
-            data.REC_TYPE = recType;
-            data.CREATE_DATE = DateTime.Now;
-            data.CREATED_BY = User.Identity.Name;
-            data.MODIFY_DATE = DateTime.Now; ;
-            data.MODIFIED_BY = "TEMP";
-            GenericData.Insert<BUD_BID_DETAIL_SHEET>(data);
-            switch (recType)
-            {
-                case "MATERIAL":
-                    uxMaterialGridStore.Reload();
-                    uxHidSelMatRecID.Text = data.DETAIL_SHEET_ID.ToString();
-                    break;
+                data.PROJECT_ID = projectID;
+                data.DETAIL_TASK_ID = detailTaskID;
+                data.REC_TYPE = recType;
+                data.CREATE_DATE = DateTime.Now;
+                data.CREATED_BY = User.Identity.Name;
+                data.MODIFY_DATE = DateTime.Now; ;
+                data.MODIFIED_BY = "TEMP";
+                GenericData.Insert<BUD_BID_DETAIL_SHEET>(data);
 
-                case "EQUIPMENT":
-                    uxEquipmentGridStore.Reload();
-                    uxHidSelEquipRecID.Text = data.DETAIL_SHEET_ID.ToString();
-                    break;
+                // Get newly created detail sheet id
+                rtDetailSheetID = Convert.ToInt64(data.DETAIL_SHEET_ID);
 
-                case "PERSONNELR":
-                    uxPersonnelRTGridStore.Reload();
-                    uxHidSelPersRTRecID.Text = data.DETAIL_SHEET_ID.ToString();
-                    break;
+                switch (recType)
+                {
+                    case "MATERIAL":
+                        uxMaterialGridStore.Reload();
+                        uxHidSelMatRecID.Text = data.DETAIL_SHEET_ID.ToString();
+                        break;
 
-                case "PERSONNELO":
-                    uxPersonnelOTGridStore.Reload();
-                    uxHidSelPersOTRecID.Text = data.DETAIL_SHEET_ID.ToString();
-                    break;
+                    case "EQUIPMENT":
+                        uxEquipmentGridStore.Reload();
+                        uxHidSelEquipRecID.Text = data.DETAIL_SHEET_ID.ToString();
+                        break;
 
-                case "PERDIEM":
-                    uxPerDiemGridStore.Reload();
-                    break;
+                    case "PERSONNELR":
+                        uxPersonnelRTGridStore.Reload();
+                        uxHidSelPersRTRecID.Text = data.DETAIL_SHEET_ID.ToString();
+                        addPersOTRec = true;
+                        recType = "PERSONNELO";
+                        break;
 
-                case "TRAVEL":
-                    uxTravelGridStore.Reload();
-                    uxHidSelTravelPersRecID.Text = data.DETAIL_SHEET_ID.ToString();
-                    break;
+                    case "PERSONNELO":
+                        uxPersonnelOTGridStore.Reload();
+                        uxHidSelPersOTRecID.Text = data.DETAIL_SHEET_ID.ToString();
+                        break;
 
-                case "MOTELS":
-                    uxMotelsGridStore.Reload();
-                    break;
+                    case "PERDIEM":
+                        uxPerDiemGridStore.Reload();
+                        break;
 
-                case "MISC":
-                    uxMiscGridStore.Reload();
-                    break;
+                    case "TRAVEL":
+                        uxTravelGridStore.Reload();
+                        uxHidSelTravelPersRecID.Text = data.DETAIL_SHEET_ID.ToString();
+                        break;
 
-                case "LUMPSUM":
-                    uxLumpSumGridStore.Reload();
-                    break;
-            }
+                    case "MOTELS":
+                        uxMotelsGridStore.Reload();
+                        break;
+
+                    case "MISC":
+                        uxMiscGridStore.Reload();
+                        break;
+
+                    case "LUMPSUM":
+                        uxLumpSumGridStore.Reload();
+                        break;
+                }
+
+            } while (addPersOTRec == true);
         }
         [DirectMethod(Namespace = "DeleteRecord")]
         public void deDeleteRecord(object sender, DirectEventArgs e)
@@ -376,11 +391,15 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         public void DeleteRecordContinued()
         {
             long id = Convert.ToInt64(uxHidDelRecord.Text);
-
             BBDetail.SubGrid.DeleteRecord(id);
+
+            long otDetailID = BBDetail.SubGrid.GetOTRecID(id);
+            if (otDetailID != 0) { BBDetail.SubGrid.DeleteRecord(otDetailID); }
+
             uxMaterialGridStore.Reload();
             uxEquipmentGridStore.Reload();
             uxPersonnelRTGridStore.Reload();
+            uxPersonnelOTGridStore.Reload();
             uxPerDiemGridStore.Reload();
             uxTravelGridStore.Reload();
             uxMotelsGridStore.Reload();
@@ -409,64 +428,206 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             switch (recType)
             {
                 case "MATERIAL":
-                    data.TOTAL = data.AMT_1 * data.AMT_2;
-                    GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    try
+                    {
+                        data.TOTAL = data.AMT_1 * data.AMT_2;
+                        GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    }
+                    catch
+                    {
+                        StandardMsgBox("Error", "Calculated number to large.", "WARNING");
+                        data.AMT_1 = 0;
+                        data.AMT_2 = 0;
+                        data.TOTAL = 0;
+                        GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    }
+
                     uxMaterialGridStore.CommitChanges();
                     uxMaterialGridStore.Reload();
                     break;
 
                 case "EQUIPMENT":
-                    data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
-                    GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    try
+                    {
+                        data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
+                        GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    }
+                    catch
+                    {
+                        StandardMsgBox("Error", "Calculated number to large.", "WARNING");
+                        data.AMT_1 = 0;
+                        data.AMT_2 = 0;
+                        data.AMT_3 = 0;
+                        data.TOTAL = 0;
+                        GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    }
+
                     uxEquipmentGridStore.CommitChanges();
                     uxEquipmentGridStore.Reload();
                     break;
 
                 case "PERSONNELR":
-                    data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
-                    GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    try
+                    {
+                        data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
+                        GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    }
+                    catch
+                    {
+                        StandardMsgBox("Error", "Calculated number to large.", "WARNING");
+                        data.AMT_1 = 0;
+                        data.AMT_2 = 0;
+                        data.AMT_3 = 0;
+                        data.TOTAL = 0;
+                        GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    }
+
                     uxPersonnelRTGridStore.CommitChanges();
                     uxPersonnelRTGridStore.Reload();
+
+                    BUD_BID_DETAIL_SHEET otData;
+                    using (Entities context = new Entities())
+                    {
+                        otData = context.BUD_BID_DETAIL_SHEET.Where(x => x.PARENT_REC_ID == id).Single();
+                    }
+
+                    try
+                    {
+                        otData.AMT_1 = data.AMT_1;
+                        otData.DESC_1 = data.DESC_1;
+                        otData.AMT_3 = data.AMT_3 * 1.5M;
+                        otData.TOTAL = otData.AMT_1 * otData.AMT_2 * (data.AMT_3 * 1.5M);
+                        GenericData.Update<BUD_BID_DETAIL_SHEET>(otData);
+                    }
+                    catch
+                    {
+                        StandardMsgBox("Error", "Calculated number to large.", "WARNING");
+                        otData.AMT_1 = 0;
+                        otData.AMT_2 = 0;
+                        otData.AMT_3 = 0;
+                        otData.TOTAL = 0;
+                        GenericData.Update<BUD_BID_DETAIL_SHEET>(otData);
+                    }
+
+                    uxPersonnelOTGridStore.CommitChanges();
+                    uxPersonnelOTGridStore.Reload();
+
                     break;
 
                 case "PERSONNELO":
-                    data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
-                    GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    try
+                    {
+                        data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
+                        GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    }
+                    catch
+                    {
+                        StandardMsgBox("Error", "Calculated number to large.", "WARNING");
+                        data.AMT_1 = 0;
+                        data.AMT_2 = 0;
+                        data.AMT_3 = 0;
+                        data.TOTAL = 0;
+                        GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    }
+
                     uxPersonnelOTGridStore.CommitChanges();
                     uxPersonnelOTGridStore.Reload();
                     break;
 
                 case "PERDIEM":
-                    data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
-                    GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    try
+                    {
+                        data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
+                        GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    }
+                    catch
+                    {
+                        StandardMsgBox("Error", "Calculated number to large.", "WARNING");
+                        data.AMT_1 = 0;
+                        data.AMT_2 = 0;
+                        data.AMT_3 = 0;
+                        data.TOTAL = 0;
+                        GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    }
+
                     uxPerDiemGridStore.CommitChanges();
                     uxPerDiemGridStore.Reload();
                     break;
 
                 case "TRAVEL":
-                    data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
-                    GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    try
+                    {
+                        data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
+                        GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    }
+                    catch
+                    {
+                        StandardMsgBox("Error", "Calculated number to large.", "WARNING");
+                        data.AMT_1 = 0;
+                        data.AMT_2 = 0;
+                        data.AMT_3 = 0;
+                        data.TOTAL = 0;
+                        GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    }
+
                     uxTravelGridStore.CommitChanges();
                     uxTravelGridStore.Reload();
                     break;
 
                 case "MOTELS":
-                    data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
-                    GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    try
+                    {
+                        data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
+                        GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    }
+                    catch
+                    {
+                        StandardMsgBox("Error", "Calculated number to large.", "WARNING");
+                        data.AMT_1 = 0;
+                        data.AMT_2 = 0;
+                        data.AMT_3 = 0;
+                        data.TOTAL = 0;
+                        GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    }
+
                     uxMotelsGridStore.CommitChanges();
                     uxMotelsGridStore.Reload();
                     break;
 
                 case "MISC":
-                    data.TOTAL = data.AMT_1 * data.AMT_2;
-                    GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    try
+                    {
+                        data.TOTAL = data.AMT_1 * data.AMT_2;
+                        GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    }
+                    catch
+                    {
+                        StandardMsgBox("Error", "Calculated number to large.", "WARNING");
+                        data.AMT_1 = 0;
+                        data.AMT_2 = 0;
+                        data.TOTAL = 0;
+                        GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    }
+
                     uxMiscGridStore.CommitChanges();
                     uxMiscGridStore.Reload();
                     break;
 
                 case "LUMPSUM":
-                    data.TOTAL = data.AMT_1 * data.AMT_2;
-                    GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    try
+                    {
+                        data.TOTAL = data.AMT_1 * data.AMT_2;
+                        GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    }
+                    catch
+                    {
+                        StandardMsgBox("Error", "Calculated number to large.", "WARNING");
+                        data.AMT_1 = 0;
+                        data.AMT_2 = 0;
+                        data.TOTAL = 0;
+                        GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+                    }
+
                     uxLumpSumGridStore.CommitChanges();
                     uxLumpSumGridStore.Reload();
                     break;
@@ -505,12 +666,23 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 data = context.BUD_BID_DETAIL_SHEET.Where(x => x.DETAIL_SHEET_ID == recordID).Single();
             }
 
-            data.DESC_1 = material;  
-            data.AMT_1 = Convert.ToDecimal(unitCost);
-            data.DESC_2 = uom;
-            data.TOTAL = data.AMT_1 * data.AMT_2;
+            try
+            {
+                data.DESC_1 = material;
+                data.AMT_1 = Convert.ToDecimal(unitCost);
+                data.DESC_2 = uom;
+                data.TOTAL = data.AMT_1 * data.AMT_2;
+                GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+            }
+            catch
+            {
+                StandardMsgBox("Error", "Calculated number to large.", "WARNING");
+                data.AMT_1 = 0;
+                data.AMT_2 = 0;
+                data.TOTAL = 0;
+                GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+            }
 
-            GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
             uxMaterialGridStore.CommitChanges();
             uxMaterialGridStore.Reload();
 
@@ -549,11 +721,23 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 data = context.BUD_BID_DETAIL_SHEET.Where(x => x.DETAIL_SHEET_ID == recordID).Single();
             }
 
-            data.DESC_1 = equipment;
-            data.AMT_3 = Convert.ToDecimal(costPerHour);
-            data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
-
-            GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+            try
+            {
+                data.DESC_1 = equipment;
+                data.AMT_3 = Convert.ToDecimal(costPerHour);
+                data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
+                GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+            }
+            catch
+            {
+                StandardMsgBox("Error", "Calculated number to large.", "WARNING");
+                data.AMT_1 = 0;
+                data.AMT_2 = 0;
+                data.AMT_3 = 0;
+                data.TOTAL = 0;
+                GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+            }
+            
             uxEquipmentGridStore.CommitChanges();
             uxEquipmentGridStore.Reload();
 
@@ -601,13 +785,51 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 data = context.BUD_BID_DETAIL_SHEET.Where(x => x.DETAIL_SHEET_ID == recordID).Single();
             }
 
-            data.DESC_1 = position;
-            data.AMT_2 = Convert.ToDecimal(costPerHour);
-            data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
+            try
+            {
+                data.DESC_1 = position;
+                data.AMT_3 = Convert.ToDecimal(costPerHour);
+                data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
+                GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+            }
+            catch
+            {
+                StandardMsgBox("Error", "Calculated number to large.", "WARNING");
+                data.AMT_1 = 0;
+                data.AMT_2 = 0;
+                data.AMT_3 = 0;
+                data.TOTAL = 0;
+                GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+            }
 
-            GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
             uxPersonnelRTGridStore.CommitChanges();
             uxPersonnelRTGridStore.Reload();
+
+            BUD_BID_DETAIL_SHEET otData;
+            using (Entities context = new Entities())
+            {
+                otData = context.BUD_BID_DETAIL_SHEET.Where(x => x.PARENT_REC_ID == recordID).Single();
+            }
+
+            try
+            {
+                otData.DESC_1 = position;
+                otData.AMT_3 = data.AMT_3 * 1.5M;
+                otData.TOTAL = otData.AMT_1 * otData.AMT_2 * (data.AMT_3 * 1.5M);
+                GenericData.Update<BUD_BID_DETAIL_SHEET>(otData);
+            }
+            catch
+            {
+                StandardMsgBox("Error", "Calculated number to large.", "WARNING");
+                otData.AMT_1 = 0;
+                otData.AMT_2 = 0;
+                otData.AMT_3 = 0;
+                otData.TOTAL = 0;
+                GenericData.Update<BUD_BID_DETAIL_SHEET>(otData);
+            }
+
+            uxPersonnelOTGridStore.CommitChanges();
+            uxPersonnelOTGridStore.Reload();
 
             CalulateDetailSheet();
             uxPersonnelRTFilter.ClearFilter();
@@ -626,11 +848,23 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 data = context.BUD_BID_DETAIL_SHEET.Where(x => x.DETAIL_SHEET_ID == recordID).Single();
             }
 
-            data.DESC_1 = position;
-            data.AMT_2 = Convert.ToDecimal(costPerHour);
-            data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
+            try
+            {
+                data.DESC_1 = position;
+                data.AMT_3 = Convert.ToDecimal(costPerHour);
+                data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
+                GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+            }
+            catch
+            {
+                StandardMsgBox("Error", "Calculated number to large.", "WARNING");
+                data.AMT_1 = 0;
+                data.AMT_2 = 0;
+                data.AMT_3 = 0;
+                data.TOTAL = 0;
+                GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+            }
 
-            GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
             uxPersonnelOTGridStore.CommitChanges();
             uxPersonnelOTGridStore.Reload();
 
@@ -673,11 +907,23 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
                 data = context.BUD_BID_DETAIL_SHEET.Where(x => x.DETAIL_SHEET_ID == recordID).Single();
             }
 
-            data.DESC_1 = position;
-            data.AMT_2 = Convert.ToDecimal(costPerHour);
-            data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
+            try
+            {
+                data.DESC_1 = position;
+                data.AMT_2 = Convert.ToDecimal(costPerHour);
+                data.TOTAL = data.AMT_1 * data.AMT_2 * data.AMT_3;
+                GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+            }
+            catch
+            {
+                StandardMsgBox("Error", "Calculated number to large.", "WARNING");
+                data.AMT_1 = 0;
+                data.AMT_2 = 0;
+                data.AMT_3 = 0;
+                data.TOTAL = 0;
+                GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
+            }
 
-            GenericData.Update<BUD_BID_DETAIL_SHEET>(data);
             uxTravelGridStore.CommitChanges();
             uxTravelGridStore.Reload();
 
@@ -698,74 +944,81 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
         }
         protected void CalulateDetailSheet(bool pageLoad = false)
         {
-            long leOrgID = long.Parse(Request.QueryString["leOrgID"]);
-            long orgID = long.Parse(Request.QueryString["orgID"]);
-            long yearID = long.Parse(Request.QueryString["yearID"]);
-            long verID = long.Parse(Request.QueryString["verID"]);
+            try
+            {
+                long leOrgID = long.Parse(Request.QueryString["leOrgID"]);
+                long orgID = long.Parse(Request.QueryString["orgID"]);
+                long yearID = long.Parse(Request.QueryString["yearID"]);
+                long verID = long.Parse(Request.QueryString["verID"]);
 
-            if (pageLoad == false && BB.IsReadOnly(orgID, yearID, verID) == true) { return; }
+                if (pageLoad == false && BB.IsReadOnly(orgID, yearID, verID) == true) { return; }
 
-            long budBidProjectID = long.Parse(Request.QueryString["projectID"]);
-            long detailSheetID = long.Parse(Request.QueryString["detailSheetID"]);
+                long budBidProjectID = long.Parse(Request.QueryString["projectID"]);
+                long detailSheetID = long.Parse(Request.QueryString["detailSheetID"]);
 
-            // Get Start Numbers
-            decimal sGrossRec = Convert.ToDecimal(uxSGrossRec.Text);
-            decimal sMatUsage = Convert.ToDecimal(uxSMatUsage.Text);
-            decimal sGrossRev = Convert.ToDecimal(uxSGrossRev.Text);
-            decimal sDirects = Convert.ToDecimal(uxSDirects.Text);
-            decimal sOP = Convert.ToDecimal(uxSOP.Text);
+                // Get Start Numbers
+                decimal sGrossRec = Convert.ToDecimal(uxSGrossRec.Text);
+                decimal sMatUsage = Convert.ToDecimal(uxSMatUsage.Text);
+                decimal sGrossRev = Convert.ToDecimal(uxSGrossRev.Text);
+                decimal sDirects = Convert.ToDecimal(uxSDirects.Text);
+                decimal sOP = Convert.ToDecimal(uxSOP.Text);
 
-            // Get Main Tab Numbers
-            decimal recRemaining = Convert.ToDecimal(uxRecRemaining.Text);
-            decimal totalDaysRemain = Convert.ToDecimal(uxDaysRemaining.Text);
-            decimal totalUnitsRemain = Convert.ToDecimal(uxUnitsRemaining.Text);
-            decimal totalDaysWorked = Convert.ToDecimal(uxDaysWorked.Text);
+                // Get Main Tab Numbers
+                decimal recRemaining = Convert.ToDecimal(uxRecRemaining.Text);
+                decimal totalDaysRemain = Convert.ToDecimal(uxDaysRemaining.Text);
+                decimal totalUnitsRemain = Convert.ToDecimal(uxUnitsRemaining.Text);
+                decimal totalDaysWorked = Convert.ToDecimal(uxDaysWorked.Text);
 
-            // Update Sheet's Sub Grid Totals
-            BBDetail.Sheet.Subtotals.Fields subtotal = BBDetail.Sheet.Subtotals.Get(detailSheetID);
-            decimal totalMaterial = subtotal.MATERIAL ?? 0;
-            decimal totalEquipment = subtotal.EQUIPMENT ?? 0;
-            decimal totalPersonnelRT = subtotal.PERSONNELR ?? 0;
-            decimal totalPersonnelOT = subtotal.PERSONNELO ?? 0;
-            decimal totalPerDiem = subtotal.PERDIEM ?? 0;
-            decimal totalTravel = subtotal.TRAVEL ?? 0;
-            decimal totalMotels = subtotal.MOTELS ?? 0;
-            decimal totalMisc = subtotal.MISC ?? 0;
-            decimal totalLumpSum = subtotal.LUMPSUM ?? 0;
-            uxTotalMaterial.Text = String.Format("{0:N2}", totalMaterial);
-            uxTotalEquipment.Text = String.Format("{0:N2}", totalEquipment);
-            uxTotalPersonnelRT.Text = String.Format("{0:N2}", totalPersonnelRT);
-            uxTotalPersonnelOT.Text = String.Format("{0:N2}", totalPersonnelOT);
-            uxTotalPerDiem.Text = String.Format("{0:N2}", totalPerDiem);
-            uxTotalTravel.Text = String.Format("{0:N2}", totalTravel);
-            uxTotalMotels.Text = String.Format("{0:N2}", totalMotels);
-            uxTotalMisc.Text = String.Format("{0:N2}", totalMisc);
-            uxTotalLumpSum.Text = String.Format("{0:N2}", totalLumpSum);
+                // Update Sheet's Sub Grid Totals
+                BBDetail.Sheet.Subtotals.Fields subtotal = BBDetail.Sheet.Subtotals.Get(detailSheetID);
+                decimal totalMaterial = subtotal.MATERIAL ?? 0;
+                decimal totalEquipment = subtotal.EQUIPMENT ?? 0;
+                decimal totalPersonnelRT = subtotal.PERSONNELR ?? 0;
+                decimal totalPersonnelOT = subtotal.PERSONNELO ?? 0;
+                decimal totalPerDiem = subtotal.PERDIEM ?? 0;
+                decimal totalTravel = subtotal.TRAVEL ?? 0;
+                decimal totalMotels = subtotal.MOTELS ?? 0;
+                decimal totalMisc = subtotal.MISC ?? 0;
+                decimal totalLumpSum = subtotal.LUMPSUM ?? 0;
+                uxTotalMaterial.Text = String.Format("{0:N2}", totalMaterial);
+                uxTotalEquipment.Text = String.Format("{0:N2}", totalEquipment);
+                uxTotalPersonnelRT.Text = String.Format("{0:N2}", totalPersonnelRT);
+                uxTotalPersonnelOT.Text = String.Format("{0:N2}", totalPersonnelOT);
+                uxTotalPerDiem.Text = String.Format("{0:N2}", totalPerDiem);
+                uxTotalTravel.Text = String.Format("{0:N2}", totalTravel);
+                uxTotalMotels.Text = String.Format("{0:N2}", totalMotels);
+                uxTotalMisc.Text = String.Format("{0:N2}", totalMisc);
+                uxTotalLumpSum.Text = String.Format("{0:N2}", totalLumpSum);
 
-            // Update Sheet's Bottom Numbers
-            BBDetail.Sheet.BottomNumbers.Fields bottomData = BBDetail.Sheet.BottomNumbers.Calculate(leOrgID, yearID, detailSheetID, sGrossRec, sMatUsage, sGrossRev, sDirects, sOP, totalDaysRemain, totalUnitsRemain, totalDaysWorked);
-            uxLaborBurden.Text = String.Format("{0:N2}", bottomData.LABOR_BURDEN);
-            uxAvgUnitsPerDay.Text = String.Format("{0:N2}", bottomData.AVG_UNITS_PER_DAY);
-            uxTotalWklyDirects.Text = String.Format("{0:N2}", bottomData.TOTAL_WKLY_DIRECTS);
-            uxTotalDirectsLeft.Text = String.Format("{0:N2}", bottomData.TOTAL_DIRECTS_LEFT);
-            uxTotalDirectsPerDay.Text = String.Format("{0:N2}", bottomData.TOTAL_DIRECTS_PER_DAY);
-            uxTotalMaterialLeft.Text = String.Format("{0:N2}", bottomData.TOTAL_MATERIAL_LEFT);
+                // Update Sheet's Bottom Numbers
+                BBDetail.Sheet.BottomNumbers.Fields bottomData = BBDetail.Sheet.BottomNumbers.Calculate(leOrgID, yearID, detailSheetID, sGrossRec, sMatUsage, sGrossRev, sDirects, sOP, totalDaysRemain, totalUnitsRemain, totalDaysWorked);
+                uxLaborBurden.Text = String.Format("{0:N2}", bottomData.LABOR_BURDEN);
+                uxAvgUnitsPerDay.Text = String.Format("{0:N2}", bottomData.AVG_UNITS_PER_DAY);
+                uxTotalWklyDirects.Text = String.Format("{0:N2}", bottomData.TOTAL_WKLY_DIRECTS);
+                uxTotalDirectsLeft.Text = String.Format("{0:N2}", bottomData.TOTAL_DIRECTS_LEFT);
+                uxTotalDirectsPerDay.Text = String.Format("{0:N2}", bottomData.TOTAL_DIRECTS_PER_DAY);
+                uxTotalMaterialLeft.Text = String.Format("{0:N2}", bottomData.TOTAL_MATERIAL_LEFT);
 
-            // Update End Numbers
-            BBDetail.Sheet.EndNumbers.Fields endNums = BBDetail.Sheet.EndNumbers.Calculate(leOrgID, yearID, detailSheetID, sGrossRec, sMatUsage, sGrossRev, sDirects, sOP, recRemaining, totalDaysRemain, totalUnitsRemain, totalDaysWorked);
-            decimal eGrossRec = endNums.GROSS_REC;
-            decimal eMatUsage = endNums.MAT_USAGE;
-            decimal eGrossRev = endNums.GROSS_REV;
-            decimal eDirects = endNums.DIR_EXP;
-            decimal eOP = endNums.OP;
-            uxEGrossRec.Text = String.Format("{0:N2}", eGrossRec);
-            uxEMatUsage.Text = String.Format("{0:N2}", eMatUsage);
-            uxEGrossRev.Text = String.Format("{0:N2}", eGrossRev);
-            uxEDirects.Text = String.Format("{0:N2}", eDirects);
-            uxEOP.Text = String.Format("{0:N2}", eOP);
+                // Update End Numbers
+                BBDetail.Sheet.EndNumbers.Fields endNums = BBDetail.Sheet.EndNumbers.Calculate(leOrgID, yearID, detailSheetID, sGrossRec, sMatUsage, sGrossRev, sDirects, sOP, recRemaining, totalDaysRemain, totalUnitsRemain, totalDaysWorked);
+                decimal eGrossRec = endNums.GROSS_REC;
+                decimal eMatUsage = endNums.MAT_USAGE;
+                decimal eGrossRev = endNums.GROSS_REV;
+                decimal eDirects = endNums.DIR_EXP;
+                decimal eOP = endNums.OP;
+                uxEGrossRec.Text = String.Format("{0:N2}", eGrossRec);
+                uxEMatUsage.Text = String.Format("{0:N2}", eMatUsage);
+                uxEGrossRev.Text = String.Format("{0:N2}", eGrossRev);
+                uxEDirects.Text = String.Format("{0:N2}", eDirects);
+                uxEOP.Text = String.Format("{0:N2}", eOP);
 
-            // Also Update End Numbers in DB
-            BBDetail.Sheet.EndNumbers.DBUpdate(detailSheetID, eGrossRec, eMatUsage, eGrossRev, eDirects, eOP);
+                // Also Update End Numbers in DB
+                BBDetail.Sheet.EndNumbers.DBUpdate(detailSheetID, eGrossRec, eMatUsage, eGrossRev, eDirects, eOP);
+            }
+            catch
+            {
+                X.Js.Call("closeWindowError");
+            }
         }
 
 
