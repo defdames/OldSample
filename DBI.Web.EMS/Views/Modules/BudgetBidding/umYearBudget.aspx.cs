@@ -1284,10 +1284,18 @@ namespace DBI.Web.EMS.Views.Modules.BudgetBidding
             win.Show();
         }
         [DirectMethod]
-        public void CloseDetailWindow(string sheetName)
+        public void CloseDetailWindow(bool error, string sheetName = "")
         {
+            if (error == true)
+            {
+                X.Redirect("~/Views/Modules/BudgetBidding/umBlankBudget.aspx");
+                StandardMsgBox("Error", "Calculated number to large.", "WARNING");
+                return;
+            }
+
             long detailSheetID = Convert.ToInt64(uxHidDetailSheetID.Text);
             BBDetail.Sheet.DBUpdateName(detailSheetID, sheetName);
+            BBDetail.Sheet.ClearBlankNewRecords(detailSheetID);
 
             uxHidDetailSheetID.Text = "";
             uxHidDetailSheetOrder.Text = "";

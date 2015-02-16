@@ -44,7 +44,18 @@
         }
         var closeWindow = function () {
 
-            parent.App.direct.CloseDetailWindow(App.uxDetailName.value);
+            parent.App.direct.CloseDetailWindow(false, App.uxDetailName.value);
+
+            var loadmask = new Ext.LoadMask(Ext.getBody(), { msg: "Closing..." });
+            loadmask.show();
+
+            setTimeout(function () {
+                parent.Ext.getCmp('uxAddEditDetailSheet').close()
+            }, 4000);
+        }
+        var closeWindowError = function () {
+
+            parent.App.direct.CloseDetailWindow(true, "");
 
             var loadmask = new Ext.LoadMask(Ext.getBody(), { msg: "Closing..." });
             loadmask.show();

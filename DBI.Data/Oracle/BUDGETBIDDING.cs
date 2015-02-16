@@ -1595,6 +1595,18 @@ namespace DBI.Data
                 GenericData.Update<BUD_BID_DETAIL_TASK>(data);
             }
 
+            public static void ClearBlankNewRecords(long detailSheetID)
+            {
+                List<BUD_BID_DETAIL_SHEET> detailSheetData;
+
+                using (Entities context = new Entities())
+                {
+                    detailSheetData = context.BUD_BID_DETAIL_SHEET.Where(x => x.DETAIL_TASK_ID == detailSheetID && x.DESC_1 == "[NEW]" && x.TOTAL == 0).ToList();
+                }
+
+                GenericData.Delete<BUD_BID_DETAIL_SHEET>(detailSheetData);
+            }
+
             public static long DBCopy(long detailTaskID)
             {
                 // Task
@@ -2534,6 +2546,22 @@ namespace DBI.Data
 
                     return data;
                 }
+            }
+
+            public static long GetOTRecID(long rtRecID)
+            {
+                BUD_BID_DETAIL_SHEET data;
+                using (Entities context = new Entities())
+                {
+                    data = context.BUD_BID_DETAIL_SHEET.Where(x => x.PARENT_REC_ID == rtRecID).SingleOrDefault();
+                }
+
+                if (data == null)
+                {
+                    return 0;
+                }
+
+                return Convert.ToInt64(data.DETAIL_SHEET_ID);
             }
         }
     }
